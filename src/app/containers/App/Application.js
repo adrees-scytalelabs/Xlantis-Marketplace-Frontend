@@ -4,23 +4,24 @@ import { SnackbarProvider } from 'notistack';
 import React, { useEffect } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
-import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
 import AuctionDrops from "../Pages/Users/AuctionDrops";
+import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
 import DropCubes from "../Pages/Users/Drops/DropCubes";
 // import ExporterDashboard from "../Pages/Dashboard/ExporterDashboard";
 // import ImporterDashboard from "../Pages/Dashboard/ImporterDashboard";
 import EmailVerification from "../Pages/Users/EmailVerification";
 import ForgotPassword from "../Pages/Users/ForgotPassword";
 import HomeScreen from "../Pages/Users/HomeScreen";
-import KYCScreen from "../Pages/Users/KYCScreen";
 import LoginScreen from "../Pages/Users/LoginScreen";
 import MarketPlace from "../Pages/Users/MarketPlace";
+import AuctionCubeNFTs from "../Pages/Users/MarketPlace/AuctionCubeNFT";
+import SaleCubeNFTs from "../Pages/Users/MarketPlace/SaleCubeNFT";
 import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
 import RegisterScreen from "../Pages/Users/RegisterScreen";
 import TermsAndConditions from "../Pages/Users/TermsAndConditions";
-import SaleCubeNFTs from "../Pages/Users/MarketPlace/SaleCubeNFT";
-import AuctionCubeNFTs from "../Pages/Users/MarketPlace/AuctionCubeNFT";
+import UserLoginScreen from "../Pages/Users/UserLoginScreen";
+import UserProfileScreen from "../Pages/Users/UserProfileScreen";
 
 function App() {
   let isLoggedIn;
@@ -77,20 +78,7 @@ function App() {
           />
         );
       }
-      // else if (jwtDecoded.roles === "exporter") {
-      //   return (
-      //     <Route
-      //       {...rest}
-      //       render={(props) =>
-      //         isLoggedIn ? (
-      //           <ExporterDashboard {...props} jwtDecoded={jwtDecoded} />
-      //         ) : (
-      //             <Redirect to="/login" />
-      //           )
-      //       }
-      //     />
-      //   );
-      // }
+    
     }
     else {
       return <Redirect to="/" />;
@@ -103,6 +91,10 @@ function App() {
       return <Redirect to="/dashboard" />;
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;
+    } else if (path === "/login") {
+      return <Route component={UserLoginScreen} />;
+    } else if (path === "/register") {
+      return <Route component={RegisterScreen} />;
     } else if (path === "/marketPlace") {
       return <Route component={MarketPlace} />;
     } else if (path === "/auctionDrops") {
@@ -129,6 +121,8 @@ function App() {
           <LoginRegisterRedirectCheck exact path="/register" />
           <LoginRegisterRedirectCheck exact path="/marketPlace" />
           <LoginRegisterRedirectCheck exact path="/admin-login" />
+          <LoginRegisterRedirectCheck exact path="/login" />
+          {/* <LoginRegisterRedirectCheck exact path="/" /> */}
           <LoginRegisterRedirectCheck exact path="/auctionDrops" />
           <LoginRegisterRedirectCheck exact path="/auctionDrops/DropCubes/:dropId" component={DropCubes} />
           <LoginRegisterRedirectCheck exact path="/auctionDrops/DropCubes/Nfts/:dropId/:cubeId" component={CubeNFTs} />
@@ -137,15 +131,19 @@ function App() {
 
           <Route path="/forgotpassword" component={ForgotPassword} />
           <Route
-            path="/emailverification/:email/:token"
+            path="/users/emailverification/:email/:token"
             render={(routeProps) => <EmailVerification {...routeProps} />}
           />
           {/* <Route exact path="/admin-login"component={LoginScreen} /> */}
           <Route path="/termsandconditions" component={TermsAndConditions} />
           <Route path="/privacy-policy" component={PrivacyPolicy} />
-          {/* {jwtDecoded.roles === "user" ? (
-            <Route path="/dasboard" component={UserDashboard} />
-          ) : (null)} */}
+          
+          <Route
+            exact path="/User/Profile/Detail/:userRole/:userId/:cubeId"
+            render={(routeProps) => (
+              <UserProfileScreen {...routeProps} />
+            )}
+          />
 
           <PrivateRoute path="/dashboard" />
         </Switch>

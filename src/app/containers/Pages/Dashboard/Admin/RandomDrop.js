@@ -1,57 +1,23 @@
 import { Grid } from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { Scrollbars } from 'react-custom-scrollbars';
 import DateTimePicker from 'react-datetime-picker';
 import NewNFTCards from '../../../../components/Cards/NewNFTCards';
-import { Scrollbars } from 'react-custom-scrollbars';
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-        width: '100%',
-        backgroundColor: theme.palette.background.paper,
-    },
-    badge: {
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-    },
-    card: {
-        minWidth: 250,
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-}));
-
-
 
 function RandomDrop(props) {
 
     const { enqueueSnackbar } = useSnackbar();
-    const classes = useStyles();
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
-    const [inputList, setInputList] = useState([{ id: 0, name: "Robot", price: "20" }, { id: 1, name: "Robot Cube", price: "2" }, { id: 2, name: "Cube", price: "15" }]);
     let [isSaving, setIsSaving] = useState(false);
-    let [supply, setSupply] = useState("");
     let [salePrice, setSalePrice] = useState();
     let [minimumBid, setMinimumBid] = useState();
-
+    // eslint-disable-next-line
     let [type, setType] = useState();
     let [types, setTypes] = useState([]);
 
@@ -62,18 +28,18 @@ function RandomDrop(props) {
             newNFT: "",
             newDrop: "",
             newRandomDrop: "active",
-            newCollection:"",
-            myNFTs:"",
-            mySeason:"",
-            myCubes:"",
+            newCollection: "",
+            myNFTs: "",
+            mySeason: "",
+            myCubes: "",
             myDrops: "",
             orders: "",
             settings: "",
             privacyPolicy: "",
             termsandconditions: "",
             changePassword: "",
-            newSupefNFT:"",
-        });
+            newCube: "",
+        });// eslint-disable-next-line
     }, []);
     const handleRemoveClick = (index) => {
         console.log("index", index);
@@ -84,14 +50,6 @@ function RandomDrop(props) {
         list.splice(index, 1);
 
         setTypes(list);
-    };
-    const handleAddClick = (value) => {
-
-        setTypes([...types, { id: value.id, name: value.name, price: value.price }]);
-        setType("");
-        // setCategory('');
-        // setDescription('');
-        // setFileData('');
     };
 
 
@@ -184,13 +142,15 @@ function RandomDrop(props) {
                                     <div className="filter-widget">
                                         <input
                                             type="number"
-                                            placeholder="Enter Total Supply"
                                             required
                                             value={salePrice}
-                                            placeholder=""
                                             className="form-control"
                                             onChange={(e) => {
-                                                setSalePrice(e.target.value);
+                                                if (e.target.value < 0) {
+                                                    setSalePrice(0);
+                                                } else {
+                                                    setSalePrice(e.target.value);
+                                                }
                                             }}
                                         />
                                     </div>
@@ -244,13 +204,15 @@ function RandomDrop(props) {
                                         <div className="filter-widget">
                                             <input
                                                 type="number"
-                                                placeholder="Enter Total Supply"
                                                 required
                                                 value={minimumBid}
-                                                placeholder=""
                                                 className="form-control"
                                                 onChange={(e) => {
-                                                    setMinimumBid(e.target.value);
+                                                    if (e.target.value < 0) {
+                                                        setMinimumBid(0);
+                                                    } else {
+                                                        setMinimumBid(e.target.value);
+                                                    }
                                                 }}
                                             />
                                         </div>
@@ -274,7 +236,6 @@ function RandomDrop(props) {
                                             spacing={3}
                                             direction="row"
                                             justify="flex-start"
-                                        // alignItems="flex-start"
                                         >
                                             {types.map((data, index) =>
                                                 <NewNFTCards key={index} index={index} data={data} handleRemoveClick={handleRemoveClick}></NewNFTCards>

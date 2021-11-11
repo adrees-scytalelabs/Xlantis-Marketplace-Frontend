@@ -47,10 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DropCubes(props) {
     const { dropId } = useParams();
-
-    console.log("id", dropId);
     const classes = useStyles();
-    const [hide, setHide] = useState(false);
     const [tokenList, setTokenList] = useState([]);
     const [imageData, setImageData] = useState([]);
     const [cubeData, setCubeData] = useState([]);
@@ -102,10 +99,10 @@ function DropCubes(props) {
             termsandconditions: "",
             changePassword: "",
             newDrop: "",
-            newSupefNFT: "",
+            newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });
+        });// eslint-disable-next-line
     }, []);
 
     return (
@@ -175,7 +172,7 @@ function DropCubes(props) {
                         // alignItems="flex-start"
                         >
                             {cubeData.map((i, index) => (
-                                <Grid item xs={12} sm={6} md={3}>
+                                <Grid item xs={12} sm={6} md={3} key={index}>
                                     <Link to={"/dashboard/myCubes/Nfts/" + dropId + "/" + i._id}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             {/* style={{ height: "100%" }} variant="outlined" */}
@@ -185,14 +182,10 @@ function DropCubes(props) {
                                                     // image={img}
                                                     title=""
                                                 >
-                                                    <div class="wrapper">
-                                                        <div class="cube-box">
-                                                            {console.log("imageData", imageData)}
+                                                    <div className="wrapper">
+                                                        <div className="cube-box">
                                                             {imageData[index].map((j, jindex) => (
-                                                                <>
-                                                                    {console.log(j)}
                                                                     <img src={j.artwork} style={{ border: j.type === "Mastercraft" ? '4px solid #ff0000' : j.type === "Legendary" ? '4px solid #FFD700' : j.type === "Epic" ? '4px solid #9400D3' : j.type === "Rare" ? '4px solid #0000FF' : j.type === "Uncommon" ? '4px solid #008000' : j.type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
-                                                                </>
                                                             ))}
                                                             {new Array(6 - imageData[index].length).fill(0).map((_, index) => (
                                                                 < img src={r1} alt="" />

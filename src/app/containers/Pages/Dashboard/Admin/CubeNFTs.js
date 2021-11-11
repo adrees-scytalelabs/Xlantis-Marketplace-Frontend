@@ -1,32 +1,31 @@
 import { Grid } from '@material-ui/core/';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Avatar from '@material-ui/core/Avatar';
+import Backdrop from '@material-ui/core/Backdrop';
 import Card from '@material-ui/core/Card';
-import CardContent from '@material-ui/core/CardContent';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
-import axios from 'axios';
-import React, { useEffect, useState } from "react";
-import { Button } from 'react-bootstrap';
-import { useSnackbar } from 'notistack';
-import Cookies from "js-cookie";
-import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import { Spinner } from "react-bootstrap";
-import Chip from '@material-ui/core/Chip';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import { Row } from "react-bootstrap";
-import r1 from '../../../../assets/img/patients/patient.jpg';
-import Countdown from 'react-countdown';
-import Web3 from 'web3';
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import axios from 'axios';
+import Cookies from "js-cookie";
+import { useSnackbar } from 'notistack';
+import React, { useEffect, useState } from "react";
+import { Button, Spinner } from 'react-bootstrap';
+import Countdown from 'react-countdown';
+import { useParams } from "react-router-dom";
+import Web3 from 'web3';
 import CreateAuctionContract from '../../../../components/blockchain/Abis/CreateAuctionContract.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
-import { useParams } from "react-router-dom";
+import BiddingHistory from '../../../../components/Cards/BiddingHistory';
+import NFTCard from '../../../../components/Cards/NFTCard';
+import TxHistory from '../../../../components/Cards/TxHistory';
+import CubeComponent from '../../../../components/Cube/CubeComponent';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 
 const useStyles = makeStyles((theme) => ({
@@ -86,6 +85,7 @@ function CubeNFTs(props) {
     const [open, setOpen] = React.useState(false);
     const [isClaimFunds, setIsClaimFunds] = useState(null);
     const [ownerAudio, setOwnerAudio] = useState(new Audio());
+    const [isPlaying, setIsPlaying] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -100,14 +100,12 @@ function CubeNFTs(props) {
         setOpenNetwork(true);
     };
     useEffect(() => {
-
         (async () => {
             ownerAudio.addEventListener('ended', () => ownerAudio.pause());
             return () => {
                 ownerAudio.removeEventListener('ended', () => ownerAudio.pause());
             };
-        })();
-
+        })();// eslint-disable-next-line
     }, []);
 
     let getCubeNFTs = () => {
@@ -312,10 +310,10 @@ function CubeNFTs(props) {
             termsandconditions: "",
             changePassword: "",
             newDrop: "",
-            newSupefNFT: "",
+            newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });
+        });// eslint-disable-next-line
     }, []);
 
     return (
@@ -340,20 +338,17 @@ function CubeNFTs(props) {
                                                     title=""
                                                     image=""
                                                     onClick={() => {
-                                                        ownerAudio.setAttribute('crossorigin', 'anonymous');
-                                                        ownerAudio.play();
+                                                        setIsPlaying(!isPlaying)
+                                                        if (!isPlaying) {
+                                                            ownerAudio.setAttribute('crossorigin', 'anonymous');
+                                                            ownerAudio.play();
+                                                        } else {
+                                                            ownerAudio.setAttribute('crossorigin', 'anonymous');
+                                                            ownerAudio.pause();
+                                                        }
                                                     }}
                                                 >
-                                                    <div class="wrapper">
-                                                        <div class="cube-box">
-                                                            {tokenList.map((j, jindex) => (
-                                                                <img src={j[0].artwork} key={jindex} style={{ border: j[0].type === "Mastercraft" ? '4px solid #ff0000' : j[0].type === "Legendary" ? '4px solid #FFD700' : j[0].type === "Epic" ? '4px solid #9400D3' : j[0].type === "Rare" ? '4px solid #0000FF' : j[0].type === "Uncommon" ? '4px solid #008000' : j[0].type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
-                                                            ))}
-                                                            {new Array(6 - tokenList.length).fill(0).map((_, index) => (
-                                                                < img src={r1} alt="" />
-                                                            ))}
-                                                        </div>
-                                                    </div>
+                                                    <CubeComponent data={tokenList} />
                                                 </CardMedia>
                                             </CardActionArea>
                                         </Card>
@@ -456,66 +451,7 @@ function CubeNFTs(props) {
                                     {console.log("tokenList", tokenList)}
 
                                     {tokenList.map((i, index) => (
-
-                                        <Grid item xs={12} sm={6} md={6} key={index}>
-                                            <Card style={{ height: "100%" }} variant="outlined">
-                                                <CardHeader className="text-center"
-                                                    title={i[0].title}
-                                                />
-                                                <CardMedia
-                                                    style={{ height: "100%" }} variant="outlined" style={{ border: i[0].type === "Mastercraft" ? '4px solid #ff0000' : i[0].type === "Legendary" ? '4px solid #FFD700' : i[0].type === "Mastercraft" ? '4px solid ##ff0000' : i[0].type === "Epic" ? '4px solid #9400D3' : i[0].type === "Rare" ? '4px solid #0000FF' : i[0].type === "Uncommon" ? '4px solid #008000' : i[0].type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                    className={classes.media}
-                                                    image={i[0].artwork}
-
-                                                    title="NFT Image"
-                                                />
-                                                <CardContent>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Artwork Description: </strong>{i[0].description}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Rarity: </strong>{i[0].type}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Supply: </strong>{i[0].tokensupply}
-                                                    </Typography>
-                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={i[0].ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                        title={i[0].ImageArtistName}
-                                                        subheader={i[0].ImageArtistAbout}
-                                                    />
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Website URL: </strong>{i[0].ImageArtistWebsite}
-                                                    </Typography>
-                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={i[0].ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                        title={i[0].ProducerName}
-                                                        subheader={i[0].ProducerInspiration}
-                                                    />
-                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={i[0].ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                        title={i[0].ExecutiveProducerName}
-                                                        subheader={i[0].ExecutiveProducerInspiration}
-                                                    />
-                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={i[0].FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                        title={i[0].FanName}
-                                                        subheader={i[0].FanInspiration}
-                                                    />
-
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Other: </strong>{i[0].other}
-                                                    </Typography>
-                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                    <strong>Collection: </strong>{i[0].collectiontitle}
-                                                </Typography> */}
-                                                </CardContent>
-                                            </Card>
-                                        </Grid>
+                                        <NFTCard data={i[0]} key={index}></NFTCard>
                                     ))}
 
                                 </Grid>
@@ -542,28 +478,10 @@ function CubeNFTs(props) {
                                                 spacing={2}
                                                 direction="row"
                                                 justify="flex-start"
-                                            // alignItems="flex-start"
+
                                             >
                                                 {transactionHistory.map((i, index) => (
-                                                    <Grid item xs={12} sm={12} md={12} key={index}>
-                                                        <Card className={classes.root}>
-                                                            <CardActionArea style={{ margin: '5px' }}>
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>From : </strong>{i.from}
-                                                                </Typography>
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>To : </strong>{i.to}
-                                                                </Typography>
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Hash : </strong>
-                                                                    <a href={"https://ropsten.etherscan.io/tx/" + i.transaction} target="_blank" style={{ color: 'rgb(167,0,0)' }}>
-                                                                        <span style={{ cursor: 'pointer' }}>{i.transaction.substr(0, 20)}. . .</span>
-                                                                    </a>
-                                                                </Typography>
-                                                            </CardActionArea>
-                                                        </Card>
-                                                    </Grid>
-
+                                                    <TxHistory data={i} key={index} />
                                                 ))}
                                             </Grid>
                                         </AccordionDetails>
@@ -589,18 +507,7 @@ function CubeNFTs(props) {
                                                 justify="flex-start"
                                             >
                                                 {bidHistory.slice(0).reverse().map((i, index) => (
-                                                    <Grid item xs={12} sm={12} md={12} key={index}>
-                                                        <Card className={classes.root} >
-                                                            <CardActionArea style={{ margin: '5px' }}>
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Address : </strong>{i.address}
-                                                                </Typography>
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Bid : </strong><span style={{ cursor: 'pointer', color: 'rgb(167,0,0)' }}>{i.Bid / 10 ** 18} WETH</span>
-                                                                </Typography>
-                                                            </CardActionArea>
-                                                        </Card>
-                                                    </Grid>
+                                                    <BiddingHistory data={i} key={index} />
                                                 ))}
                                             </Grid>
                                         </AccordionDetails>

@@ -1,19 +1,17 @@
-import { Avatar, CardHeader, Grid, TablePagination } from '@material-ui/core/';
+import { CardHeader, Grid, TablePagination } from '@material-ui/core/';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Cookies from "js-cookie";
-import Countdown from 'react-countdown';
-import r1 from '../../../../assets/img/patients/patient.jpg';
 import { Link } from 'react-router-dom';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,7 +47,6 @@ const useStyles = makeStyles((theme) => ({
 
 function MySeasons(props) {
     const classes = useStyles();
-    const [hide, setHide] = useState(false);
     const [tokenList, setTokenList] = useState([]);
     const [page, setPage] = useState(0);
 
@@ -117,10 +114,10 @@ function MySeasons(props) {
             termsandconditions: "",
             changePassword: "",
             newDrop: "",
-            newSupefNFT: "",
+            newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });
+        });// eslint-disable-next-line
     }, []);
 
     return (
@@ -145,9 +142,11 @@ function MySeasons(props) {
                             <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                         </div>
                     ) : tokenList.length === 0 ? (
-                        <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
-                            <strong>Nothing to Display </strong>
-                        </Typography>
+                        <Card variant="outlined" style={{ padding: "40px", marginTop: '20px', marginBottom: '20px' }}>
+                            <Typography variant="body2" className="text-center" color="textSecondary" component="p"  >
+                                <strong>No items to display </strong>
+                            </Typography>
+                        </Card>
                     ) : (
                         <Grid
                             container

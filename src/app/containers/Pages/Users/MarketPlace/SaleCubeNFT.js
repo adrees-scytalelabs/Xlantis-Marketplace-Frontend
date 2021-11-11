@@ -6,7 +6,6 @@ import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -20,18 +19,20 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from "react";
 import { Button, Row, Spinner } from "react-bootstrap";
 import Countdown from 'react-countdown';
-import { useHistory, useParams } from "react-router-dom";
+import { Link, useHistory, useParams } from "react-router-dom";
 import Web3 from 'web3';
-import r1 from '../../../../assets/img/patients/patient.jpg';
 import MarketPlaceContract from '../../../../components/blockchain/Abis/MarketPlaceContract.json';
 import WethContract from '../../../../components/blockchain/Abis/WethContract.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
+import NewNFTCard from '../../../../components/Cards/NewNFTCards';
+import TxHistory from '../../../../components/Cards/TxHistory';
+import CubeComponent from '../../../../components/Cube/CubeComponent';
 import HeaderHome from '../../../../components/Headers/Header';
 import ConfirmBuyCubeModal from '../../../../components/Modals/ConfirmBuyCubeModal';
 import LoginErrorModal from '../../../../components/Modals/LoginErrorModal';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import WethModal from '../../../../components/Modals/WethModal';
-
+import { Alert } from 'reactstrap';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -85,15 +86,14 @@ function SaleCubeNFTs(props) {
         jwtDecoded = jwtDecode(jwt);
     }
     const [ownerAudio, setOwnerAudio] = useState(new Audio());
-    const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio());
-    const [isClaiming, setIsClaiming] = useState(false);
+    const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio());// eslint-disable-next-line
     const [isClaimingWeth, setIsClaimingWeth] = useState(false);
     const [weth, setWeth] = useState(0);
     const [enableWethButton, setEnableWethButton] = useState(false);
     const [isConfirmingWeth, setIsConfirmingWeth] = useState(false);
+    const [isPlaying, setIsPlaying] = useState(false);
 
     useEffect(() => {
-
         (async () => {
             ownerAudio.addEventListener('ended', () => ownerAudio.pause());
             nonOwnerAudio.addEventListener('ended', () => nonOwnerAudio.pause());
@@ -101,8 +101,7 @@ function SaleCubeNFTs(props) {
                 ownerAudio.removeEventListener('ended', () => ownerAudio.pause());
                 nonOwnerAudio.addEventListener('ended', () => nonOwnerAudio.pause());
             };
-        })();
-
+        })();// eslint-disable-next-line
     }, []);
 
     const { enqueueSnackbar } = useSnackbar();
@@ -110,18 +109,12 @@ function SaleCubeNFTs(props) {
     const { expiresAt, cubeId, auctionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
     const [cubeData, setCubeData] = useState({});
-    const [dropData, setDropData] = useState({});
-    const [minBid, setMinBid] = useState(0);
-    const [bid, setBid] = useState();
     const [balance, setBalance] = useState();
     const [hide, setHide] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isRemoving, setIsRemoving] = useState(false);
     const [network, setNetwork] = useState("");
     const [transactionHistory, setTransactionHistory] = useState([]);
-    const [bidHistory, setBidHistory] = useState([]);
-    // if(bidHistory.length!==0)
-    // console.log("bidHistory.findIndex(i => i.userId === jwtDecoded.userId)",);
     const [openWeth, setOpenWeth] = useState(false);
     const handleCloseWeth = () => {
         setOpenWeth(false);
@@ -181,7 +174,6 @@ function SaleCubeNFTs(props) {
 
         let jwt = Cookies.get("Authorization");
         if (jwt) {
-            //   console.log(jwtDecode(jwt));
             await loadWeb3();
             const web3 = window.web3
             const accounts = await web3.eth.getAccounts();
@@ -210,6 +202,10 @@ function SaleCubeNFTs(props) {
             tokenId: cubeId
         }
         console.log("saleData", saleData);
+        
+        axios.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${Cookies.get("Authorization")}`;
         axios.post("auction/deleteauction", saleData).then(
             (response) => {
                 console.log('response', response);
@@ -234,7 +230,6 @@ function SaleCubeNFTs(props) {
     let ConfirmBuyCube = async () => {
         handleCloseBuyCubeModal();
         setIsSaving(true);
-        console.log("bid", bid);
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
@@ -262,14 +257,13 @@ function SaleCubeNFTs(props) {
             }
             else {
                 setEnableWethButton(false);
-                let wethReceipt = await myWethContractInstance.methods.approve(address, (cubeData.SalePrice).toString()).send({ from: accounts[0] }, (err, response) => {
+                await myWethContractInstance.methods.approve(address, (cubeData.SalePrice).toString()).send({ from: accounts[0] }, (err, response) => {
                     console.log('get transaction', err, response);
                     if (err !== null) {
                         console.log("err", err);
                         let variant = "error";
                         enqueueSnackbar('User Canceled Transaction', { variant });
                         handleCloseBackdrop();
-                        setIsClaiming(false);
                     }
                 })
 
@@ -285,15 +279,20 @@ function SaleCubeNFTs(props) {
                         let variant = "error";
                         enqueueSnackbar('User Canceled Transaction', { variant });
                         handleCloseBackdrop();
-                        setIsClaiming(false);
                     }
                 })
                 // console.log("receipt", receipt);
                 let BuyData = {
                     auctionId: auctionId,
-                    tokenId: cubeId
+                    tokenId: cubeId,
+                    owneraddress: accounts[0],
+
                 }
-                console.log("BidData", BuyData);
+                console.log("BuyData", BuyData);
+                
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${Cookies.get("Authorization")}`;
                 axios.post("token/buyuserToken", BuyData).then(
                     (response) => {
 
@@ -323,6 +322,9 @@ function SaleCubeNFTs(props) {
                     transaction: receipt1.transactionHash
                 }
 
+                axios.defaults.headers.common[
+                    "Authorization"
+                ] = `Bearer ${Cookies.get("Authorization")}`;
                 axios.post("/transaction/tokenTransaction ", TrasactionData).then(
                     (response) => {
                         console.log('response', response);
@@ -348,6 +350,10 @@ function SaleCubeNFTs(props) {
             check: "notdrop"
         }
         console.log("Data", Data);
+        
+        axios.defaults.headers.common[
+            "Authorization"
+        ] = `Bearer ${Cookies.get("Authorization")}`;
         axios.post("/token/SingleTokenId", Data).then(
             (response) => {
                 console.log("response", response);
@@ -396,38 +402,11 @@ function SaleCubeNFTs(props) {
             const web3 = window.web3
             const accounts = await web3.eth.getAccounts();
             const balance = await web3.eth.getBalance(accounts[0]);
-            // let TrasactionData = {
-            //     tokenId: 2,
-            //     from: "0xf363D646C2767dB90Af945ebD6F71367166159A2",
-            //     to: accounts[0],
-            //     transaction: "0xbe29d7a2ad4ee12732c5a9d38b0b539e514e01b9686d5af3be4d08d769ccfa17"
-            // }
-
-            // axios.post("/transaction/tokenTransaction ", TrasactionData).then(
-            //     (response) => {
-            //         console.log('response', response);
-            //         setIsSaving(false);
-            //     },
-            //     (error) => {
-            //         if (process.env.NODE_ENV === "development") {
-            //             console.log(error);
-            //             console.log(error.response);
-            //         }
-            //         setIsSaving(false);
-            //     }
-            // );
-            // const address = Addresses.AuctionAddress;
-            // const abi = CreateAuctionContract;
-            // var myContractInstance = await new web3.eth.Contract(abi, address);
-            // let receipt = await myContractInstance.methods.getHighestBid(cubeData.tokenId).call();
-            // console.log("receipt",receipt);
             console.log("balance", (balance / 10 ** 18).toString());
             setBalance(balance);
-        })();
-
+        })();// eslint-disable-next-line
     }, []);
     let getWeth = () => {
-        // console.log("GET");
         handleShowWeth();
     }
     let confirmGetWeth = async () => {
@@ -437,7 +416,6 @@ function SaleCubeNFTs(props) {
         const web3 = window.web3
         const wethAddress = Addresses.WethAddress;
         const wethAbi = WethContract;
-        const address = Addresses.AuctionAddress;
         const accounts = await web3.eth.getAccounts();
         var myWethContractInstance = await new web3.eth.Contract(wethAbi, wethAddress);
         let wethReceipt = await myWethContractInstance.methods.deposit().send({ from: accounts[0], value: weth * 10 ** 18 }, (err, response) => {
@@ -490,54 +468,70 @@ function SaleCubeNFTs(props) {
                                                                 className={classes.media1}
                                                                 title=""
                                                                 image=""
+                                                                onClick={() => {
+                                                                    setIsPlaying(!isPlaying)
+
+                                                                    if (!isPlaying) {
+                                                                        console.log("jwtDecoded", jwtDecoded);
+                                                                        if (jwtDecoded !== undefined && jwtDecoded !== null) {
+                                                                            if (jwtDecoded.userId === cubeData.userId) {
+                                                                                console.log("Owner");
+                                                                                setHide(true)
+                                                                                ownerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                                ownerAudio.play();
+                                                                            }
+                                                                            else {
+                                                                                console.log("NON Owner");
+                                                                                setHide(true)
+                                                                                nonOwnerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                                nonOwnerAudio.play();
+                                                                                setTimeout(() => {
+                                                                                    setHide(false)
+                                                                                    nonOwnerAudio.pause()
+                                                                                }, 10000);
+                                                                            }
+                                                                        } else {
+                                                                            console.log("NON Owner");
+                                                                            setTimeout(() => {
+                                                                                setHide(false)
+                                                                                nonOwnerAudio.pause()
+                                                                            }, 10000);
+                                                                            nonOwnerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                            nonOwnerAudio.play();
+                                                                            setHide(true)
+                                                                        }
+                                                                    } else {
+                                                                        if (jwtDecoded !== undefined && jwtDecoded !== null) {
+                                                                            if (jwtDecoded.userId === cubeData.userId) {
+                                                                                console.log("Owner Pause");
+                                                                                ownerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                                ownerAudio.pause();
+                                                                                setHide(false)
+                                                                            }
+                                                                            else {
+                                                                                console.log("Non Owner Pause");
+                                                                                nonOwnerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                                nonOwnerAudio.pause();
+                                                                                setHide(false)
+                                                                            }
+                                                                        } else {
+                                                                            console.log("Non Owner Pause");
+                                                                            nonOwnerAudio.setAttribute('crossorigin', 'anonymous');
+                                                                            nonOwnerAudio.pause();
+                                                                            setHide(false)
+                                                                        }
+                                                                    }
+                                                                }}
                                                             >
                                                                 {hide ? (
-                                                                    <div class="wrapper">
-                                                                        <div class="cube-box">
-                                                                            {tokenList.map((j, jindex) => (
-                                                                                <img src={j[0].artwork} key={jindex} style={{ border: j[0].type === "Mastercraft" ? '4px solid #ff0000' : j[0].type === "Legendary" ? '4px solid #FFD700' : j[0].type === "Epic" ? '4px solid #9400D3' : j[0].type === "Rare" ? '4px solid #0000FF' : j[0].type === "Uncommon" ? '4px solid #008000' : j[0].type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
-                                                                            ))}
-                                                                            {new Array(6 - tokenList.length).fill(0).map((_, index) => (
-                                                                                < img src={r1} alt="" />
-                                                                            ))}
-                                                                        </div>
-                                                                    </div>
+                                                                    <CubeComponent data={tokenList} />
                                                                 ) : (
-                                                                    <div class="mainDiv">
-                                                                        {jwt ? (
-                                                                            cubeData.userId === jwtDecoded.userId ? (
-                                                                                <span onClick={(e) => {
-                                                                                    e.preventDefault()
-                                                                                    setHide(true);
-                                                                                    // ownerAudio.crossOrigin = 'anonymous';
-                                                                                    ownerAudio.setAttribute('crossorigin', 'anonymous');
-                                                                                    ownerAudio.play()
-                                                                                }}>
-                                                                                    <div className="square"></div>
-                                                                                    <div className="square2"></div>
-                                                                                    <div className="square3"></div>
-                                                                                </span>
-
-                                                                            ) : (
-                                                                                <span onClick={(e) => {
-                                                                                    e.preventDefault()
-                                                                                    setHide(true);
-                                                                                    // nonOwnerAudio.crossOrigin = 'anonymous';
-                                                                                    nonOwnerAudio.setAttribute('crossorigin', 'anonymous');
-                                                                                    nonOwnerAudio.play()
-                                                                                    setTimeout(() => {
-                                                                                        setHide(false)
-                                                                                        nonOwnerAudio.pause()
-                                                                                    }, 10000);
-                                                                                }}>
-                                                                                    <div className="square"></div>
-                                                                                    <div className="square2"></div>
-                                                                                    <div className="square3"></div>
-                                                                                </span>
-                                                                            )) : (<Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>LOGIN TO GET ACCESS </strong>
-                                                                            </Typography>)}
-
+                                                                    <div className="mainDiv">
+                                                                        <span >
+                                                                            <div className="square"></div>
+                                                                            <div className="square2"></div>
+                                                                            <div className="square3"></div>
+                                                                        </span>
                                                                     </div>
                                                                 )}
                                                             </CardMedia>
@@ -561,6 +555,11 @@ function SaleCubeNFTs(props) {
                                                         ) : (
                                                             <Button variant="primary" onClick={(e) => getWeth(e)} style={{ float: "right" }} >Get More Weth</Button>
                                                         )) : (null)}
+                                                    {jwtDecoded === undefined || jwtDecoded === null ? (
+                                                        <Alert color="danger">
+                                                            LOGIN TO BUY CUBE
+                                                        </Alert>
+                                                    ) : (null)}
                                                     {new Date() > new Date(expiresAt) ? (
                                                         jwt ? (
                                                             <>
@@ -602,12 +601,13 @@ function SaleCubeNFTs(props) {
                                                     )}
                                                     {/* </Typography> */}
                                                     <h3 className="text-muted">Music Artist</h3>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={cubeData.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                        title={cubeData.MusicArtistName}
-                                                        subheader={cubeData.MusicArtistAbout}
-                                                    />
-
+                                                    <Link to={"/User/Profile/Detail/musicArtist/" + cubeData.MusicArtistId + "/null"} style={{ color: '#000' }}>
+                                                        <CardHeader
+                                                            avatar={<Avatar src={cubeData.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                            title={cubeData.MusicArtistName}
+                                                            subheader={cubeData.MusicArtistAbout}
+                                                        />
+                                                    </Link>
                                                     <Row>
 
                                                         {(cubeData.SalePrice) / 10 ** 18 > balance / 10 ** 18 ? (
@@ -666,68 +666,11 @@ function SaleCubeNFTs(props) {
                                                 spacing={2}
                                                 direction="row"
                                                 justify="flex-start"
-                                            // alignItems="flex-start"
+
                                             >
-                                                {/* {console.log("tokenList", tokenList)} */}
                                                 {hide ? (
                                                     tokenList.map((i, index) => (
-
-                                                        <Grid item xs={12} sm={6} md={6} key={index}>
-                                                            <Card style={{ height: "100%" }} variant="outlined">
-                                                                <CardHeader className="text-center"
-                                                                    title={i[0].title}
-                                                                />
-                                                                <CardMedia
-                                                                    style={{ height: "100%" }} variant="outlined" style={{ border: i[0].type === "Mastercraft" ? '4px solid #ff0000' : i[0].type === "Legendary" ? '4px solid #FFD700' : i[0].type === "Mastercraft" ? '4px solid ##ff0000' : i[0].type === "Epic" ? '4px solid #9400D3' : i[0].type === "Rare" ? '4px solid #0000FF' : i[0].type === "Uncommon" ? '4px solid #008000' : i[0].type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                                    className={classes.media}
-                                                                    image={i[0].artwork}
-
-                                                                    title="NFT Image"
-                                                                />
-                                                                <CardContent>
-                                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                                        <strong>Artwork Description: </strong>{i[0].description}
-                                                                    </Typography>
-                                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                                        <strong>Token Rarity: </strong>{i[0].type}
-                                                                    </Typography>
-                                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                                        <strong>Token Supply: </strong>{i[0].tokensupply}
-                                                                    </Typography>
-                                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                                                                    <CardHeader
-                                                                        avatar={<Avatar src={i[0].ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                                        title={i[0].ImageArtistName}
-                                                                        subheader={i[0].ImageArtistAbout}
-                                                                    />
-                                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                                        <strong>Website URL: </strong>{i[0].ImageArtistWebsite}
-                                                                    </Typography>
-                                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                                    <CardHeader
-                                                                        avatar={<Avatar src={i[0].ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                                        title={i[0].ProducerName}
-                                                                        subheader={i[0].ProducerInspiration}
-                                                                    />
-                                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                                    <CardHeader
-                                                                        avatar={<Avatar src={i[0].ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                                        title={i[0].ExecutiveProducerName}
-                                                                        subheader={i[0].ExecutiveProducerInspiration}
-                                                                    />
-                                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                                    <CardHeader
-                                                                        avatar={<Avatar src={i[0].FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                                        title={i[0].FanName}
-                                                                        subheader={i[0].FanInspiration}
-                                                                    />
-
-                                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                                        <strong>Other: </strong>{i[0].other}
-                                                                    </Typography>
-                                                                </CardContent>
-                                                            </Card>
-                                                        </Grid>
+                                                        <NewNFTCard data={i[0]} key={index}></NewNFTCard>
                                                     ))) : (
                                                     null
                                                 )}
@@ -756,69 +699,14 @@ function SaleCubeNFTs(props) {
                                                             spacing={2}
                                                             direction="row"
                                                             justify="flex-start"
-                                                        // alignItems="flex-start"
+
                                                         >
                                                             {transactionHistory.slice(0).reverse().map((i, index) => (
-                                                                <Grid item xs={12} sm={12} md={12} key={index}>
-                                                                    <Card className={classes.root}>
-                                                                        <CardActionArea style={{ margin: '5px' }}>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>From : </strong>{i.from}
-                                                                            </Typography>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>To : </strong>{i.to}
-                                                                            </Typography>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>Hash : </strong>
-                                                                                <a href={"https://ropsten.etherscan.io/tx/" + i.transaction} target="_blank" style={{ color: 'rgb(167,0,0)' }}>
-                                                                                    <span style={{ cursor: 'pointer' }}>{i.transaction.substr(0, 20)}. . .</span>
-                                                                                </a>
-                                                                            </Typography>
-                                                                        </CardActionArea>
-                                                                    </Card>
-                                                                </Grid>
-
+                                                                <TxHistory data={i} key={index} />
                                                             ))}
                                                         </Grid>
                                                     </AccordionDetails>
                                                 </Accordion>
-                                                {/* <Accordion>
-                                                    <AccordionSummary
-                                                        expandIcon={<ExpandMoreIcon />}
-                                                        aria-controls="panel2a-content"
-                                                        id="panel2a-header"
-                                                    >
-                                                        <Typography variant="h6" gutterBottom>Bidding History</Typography>
-                                                    </AccordionSummary>
-                                                    <AccordionDetails>
-                                                        {bidHistory.length === 0 ? (
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>No Bidding History Found </strong>
-                                                            </Typography>
-                                                        ) : (null)}
-                                                        <Grid
-                                                            container
-                                                            spacing={2}
-                                                            direction="row"
-                                                            justify="flex-start"
-                                                        >
-                                                            {bidHistory.slice(0).reverse().map((i, index) => (
-                                                                <Grid item xs={12} sm={12} md={12} key={index}>
-                                                                    <Card className={classes.root} >
-                                                                        <CardActionArea style={{ margin: '5px' }}>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>Address : </strong>{i.address}
-                                                                            </Typography>
-                                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                                <strong>Bid : </strong><span style={{ cursor: 'pointer', color: 'rgb(167,0,0)' }}>{i.Bid / 10 ** 18} WETH</span>
-                                                                            </Typography>
-                                                                        </CardActionArea>
-                                                                    </Card>
-                                                                </Grid>
-                                                            ))}
-                                                        </Grid>
-                                                    </AccordionDetails>
-                                                </Accordion> */}
                                             </div>
                                         </div>
 

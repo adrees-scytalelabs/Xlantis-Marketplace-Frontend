@@ -101,10 +101,10 @@ function MyCubes(props) {
             termsandconditions: "",
             changePassword: "",
             newDrop: "",
-            newSupefNFT: "",
+            newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });
+        });// eslint-disable-next-line
     }, []);
     const handleChangePage = (event, newPage) => {
         console.log("newPage", newPage);
@@ -144,9 +144,11 @@ function MyCubes(props) {
                                 <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                             </div>
                         ) : tokenList.length === 0 ? (
-                            <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
-                                <strong>Nothing to Display </strong>
-                            </Typography>
+                            <Card variant="outlined" style={{ padding: "40px", marginTop: '20px', marginBottom: '20px' }}>
+                                <Typography variant="body2" className="text-center" color="textSecondary" component="p"  >
+                                    <strong>No items to display </strong>
+                                </Typography>
+                            </Card>
                         ) : (
                             <Grid
                                 container
@@ -157,7 +159,7 @@ function MyCubes(props) {
                             >
                                 {tokenList.map((i, index) => (
 
-                                    <Grid item xs={12} sm={6} md={3}>
+                                    <Grid item xs={12} sm={6} md={3} key={index}>
                                         <Link to={"/dashboard/myCubes/Nfts/notdrop/" + i._id}>
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                                 {/* style={{ height: "100%" }} variant="outlined" */}
@@ -170,13 +172,10 @@ function MyCubes(props) {
                                                     >
 
 
-                                                        <div class="wrapper">
-                                                            <div class="cube-box">
+                                                        <div className="wrapper">
+                                                            <div className="cube-box">
                                                                 {imageData[index].map((j, jindex) => (
-                                                                    <>
-                                                                        {/* {console.log(j)} */}
-                                                                        <img src={j.artwork} style={{ border: j.type === "Mastercraft" ? '4px solid #ff0000' : j.type === "Legendary" ? '4px solid #FFD700' : j.type === "Epic" ? '4px solid #9400D3' : j.type === "Rare" ? '4px solid #0000FF' : j.type === "Uncommon" ? '4px solid #008000' : j.type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
-                                                                    </>
+                                                                    <img src={j.artwork} style={{ border: j.type === "Mastercraft" ? '4px solid #ff0000' : j.type === "Legendary" ? '4px solid #FFD700' : j.type === "Epic" ? '4px solid #9400D3' : j.type === "Rare" ? '4px solid #0000FF' : j.type === "Uncommon" ? '4px solid #008000' : j.type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
                                                                 ))}
                                                                 {new Array(6 - imageData[index].length).fill(0).map((_, index) => (
                                                                     < img src={r1} alt="" />

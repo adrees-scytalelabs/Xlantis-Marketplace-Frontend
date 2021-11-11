@@ -1,21 +1,18 @@
 
 import { Avatar, CardHeader, Grid } from '@material-ui/core/';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Countdown from 'react-countdown';
 import { Link } from 'react-router-dom';
-import { useParams } from "react-router-dom";
-import TablePagination from '@material-ui/core/TablePagination';
-// import HeaderHome from '../../../../components/Headers/Header';
+
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
@@ -48,22 +45,11 @@ const useStyles = makeStyles((theme) => ({
 
 
 function MarketPlace(props) {
-    const { dropId } = useParams();
-
-    console.log("id", dropId);
     const classes = useStyles();
-    const [hide, setHide] = useState(false);
-    const [tokenList, setTokenList] = useState([]);
     const [userSaleData, setUserSaledata] = useState([]);
     const [cubeData, setCubeData] = useState([]);
-
     const [userAuctionData, setUserAuctiondata] = useState([]);
     const [cubeAuctionData, setCubeAuctionData] = useState([]);
-
-    const [rowsPerPage, setRowsPerPage] = React.useState(4);
-    const [totalSaleCube, setTotalSaleCube] = React.useState(0);
-    const [page, setPage] = React.useState(0);
-
     const [open, setOpen] = React.useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
@@ -78,11 +64,8 @@ function MarketPlace(props) {
                 console.log("responseeeee", response);
                 setCubeData(response.data.Saletokendata);
                 setUserSaledata(response.data.Usersaledata)
-                setTotalSaleCube(response.data.Salecount)
                 setCubeAuctionData(response.data.Auctiontokendata)
                 setUserAuctiondata(response.data.Userauctiondata)
-                // setTokenList(response.data.Dropdata);
-                // setTotalDrops(response.data.Dropscount);
                 handleCloseBackdrop();
             },
             (error) => {
@@ -95,7 +78,7 @@ function MarketPlace(props) {
     }
 
     useEffect(() => {
-        getCubes(0, 4);
+        getCubes(0, 4);// eslint-disable-next-line
     }, []);
 
     return (
@@ -119,9 +102,11 @@ function MarketPlace(props) {
                                 <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                             </div>
                         ) : cubeData.length === 0 && cubeAuctionData.length === 0 ? (
-                            <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
-                                <strong>Nothing to Display </strong>
-                            </Typography>
+                            <Card variant="outlined" style={{ padding: "40px", marginTop: '20px', marginBottom: '20px' }}>
+                                <Typography variant="body2" className="text-center" color="textSecondary" component="p"  >
+                                    <strong>No items to display </strong>
+                                </Typography>
+                            </Card>
                         ) : (
                             <>
                                 {cubeData.length !== 0 ? (
@@ -150,7 +135,7 @@ function MarketPlace(props) {
                                                             // image={img}
                                                             title=""
                                                         >
-                                                            <div class="mainDiv">
+                                                            <div className="mainDiv">
 
                                                                 <div className="square"></div>
                                                                 <div className="square2"></div>
@@ -170,11 +155,13 @@ function MarketPlace(props) {
                                                                 <strong>Sale Price: </strong>{i.SalePrice / 10 ** 18} ETH
                                                             </Typography>
                                                             <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                                title={i.MusicArtistName}
-                                                                subheader={i.MusicArtistAbout}
-                                                            />
+                                                            <Link to={"/User/Profile/Detail/musicArtist/" + i.MusicArtistId + "/null"} style={{ color: '#000' }}>
+                                                                <CardHeader
+                                                                    avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                                    title={i.MusicArtistName}
+                                                                    subheader={i.MusicArtistAbout}
+                                                                />
+                                                            </Link>
                                                             <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
                                                                 {new Date() < new Date(userSaleData[index].expiresAt) ? (
                                                                     <div style={{ color: "#FF0000" }}>
@@ -216,7 +203,7 @@ function MarketPlace(props) {
                                 >
 
                                     {cubeAuctionData.map((i, index) => (
-                                        <Grid item xs={12} sm={6} md={3}>
+                                        <Grid item xs={12} sm={6} md={3} key={index}>
                                             <Link to={"/marketPlace/Cubes/Nfts/userauction/" + i._id + "/" + userAuctionData[index]._id}>
                                                 <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                                     <CardActionArea>
@@ -225,7 +212,7 @@ function MarketPlace(props) {
                                                             // image={img}
                                                             title=""
                                                         >
-                                                            <div class="mainDiv">
+                                                            <div className="mainDiv">
 
                                                                 <div className="square"></div>
                                                                 <div className="square2"></div>
@@ -244,6 +231,14 @@ function MarketPlace(props) {
                                                             <Typography variant="body2" color="textSecondary" component="p">
                                                                 <strong>Minimum Bid: </strong>{(userAuctionData[index].minimumBid) / 10 ** 18}  WETH
                                                             </Typography>
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
+                                                            <Link to={"/User/Profile/Detail/musicArtist/" + i.MusicArtistId + "/null"} style={{ color: '#000' }}>
+                                                                <CardHeader
+                                                                    avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                                    title={i.MusicArtistName}
+                                                                    subheader={i.MusicArtistAbout}
+                                                                />
+                                                            </Link>
                                                             <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
                                                                 {new Date() < new Date(userAuctionData[index].auctionStartsAt) ? (
                                                                     <div style={{ color: "#00FF00" }} >

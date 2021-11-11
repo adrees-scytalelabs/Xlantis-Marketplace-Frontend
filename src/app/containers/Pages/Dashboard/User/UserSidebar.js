@@ -29,12 +29,63 @@ function AdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            
+            <li className={props.activeTab.newNFT}>
+              <Link to={`${props.match.url}/newNFT`}>
+                <i className="fa fa-file-medical"></i> <span>New NFT</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.myNFTs}>
+              <Link to={`${props.match.url}/myNFTs`}>
+                <ListAltIcon /> <span>My NFTs</span>
+              </Link>
+            </li>
+
+            <li className={props.activeTab.newCube}>
+              <Link to={`${props.match.url}/newCube`}>
+                <i className="fas fa-cube"></i> <span>New Cube</span>
+              </Link>
+            </li>
             <li className={props.activeTab.myCubes}>
               <Link to={`${props.match.url}/myCubes`}>
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li>
+
+            <li className={props.activeTab.newDrop}>
+              <Link to={`${props.match.url}/newDrop`}>
+                <i className="fas fa-plus"></i> <span>New Drop</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.myDrops}>
+              <Link to={`${props.match.url}/myDrops`}>
+                <StorageIcon/> <span>My Drops</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.newRandomDrop}>
+              <Link to={`${props.match.url}/newRandomDrop`}>
+                <i className="fas fa-random"></i> <span>New Random Drop</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.newSeason}>
+              <Link to={`${props.match.url}/newSeason`}>
+                <i className="fas fa-boxes"></i> <span>New Season</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.mySeason}>
+              <Link to={`${props.match.url}/mySeason`}>
+                <LibraryBooksIcon/> <span>My Season</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.newCollection}>
+              <Link to={`${props.match.url}/newCollection`}>
+                <i className="fas fa-layer-group"></i><span>Collection</span>
+              </Link>
+            </li>
+            {/* <li className={props.activeTab.myCubes}>
+              <Link to={`${props.match.url}/myCubes`}>
+                <i className="fas fa-cubes"></i><span>My Cubes</span>
+              </Link>
+            </li> */}
 
 
             {/* <li className={props.activeTab.totalUserAccount}>
@@ -89,11 +140,11 @@ function AdminSidebar(props) {
             <li className="menu-title">
               <span>Settings</span>
             </li>
-            {/* <li className={props.activeTab.settings}>
+            <li className={props.activeTab.settings}>
               <Link to={`${props.match.url}/profilesettings`}>
                 <i className="fa fa-cog"></i> <span>Profile Settings</span>
               </Link>
-            </li> */}
+            </li>
             {/* <li className={props.activeTab.changePassword}>
               <Link to={`${props.match.url}/changepassword`}>
                 <i className="fa fa-key"></i> <span>Change Password</span>
