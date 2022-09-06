@@ -103,10 +103,12 @@ function NewNFT(props) {
     let [producerTypes, setProducerTypes] = useState([]);
 
     let [imageArtist, setImageArtist] = useState('');
+    let [imageArtistId, setImageArtistId] = useState('');
     let [collectionTypes, setCollectionTypes] = useState([]);
     let [collectionType, setCollectionType] = useState("New");
     let [collection, setCollection] = useState('');
 
+    let [producerId, setProducerId] = useState('');
     let [producer, setProducer] = useState('');
     let [tokenSupply, setTokenSupply] = useState("1");
     let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
@@ -116,6 +118,7 @@ function NewNFT(props) {
     // let [isUploadingImageArtist, setIsUploadingImageArtist] = useState(false);
     let [rarity, setRarity] = useState('');
     let [fan, setFan] = useState('');
+    let [fanId, setFanId] = useState('');
     let [other, setOther] = useState('');
     let [image, setImage] = useState(r1);
     let [artistImage, setArtistImage] = useState(r1);
@@ -128,6 +131,7 @@ function NewNFT(props) {
     let [fanType, setFanType] = useState("New");
     let [collectionId, setCollectionId] = useState('');
 
+    let [executiveProducerId, setExecutiveProducerId] = useState('');
     let [executiveProducer, setExecutiveProducer] = useState('');
 
 
@@ -281,16 +285,20 @@ function NewNFT(props) {
                                 setRarity("");
                                 setTokenSupply(1);
                                 setImageArtist("");
+                                setImageArtistId("");
                                 setAboutTheArt("");
                                 setWebsite("");
                                 setArtistImage(r1);
                                 setProducer("");
+                                setProducerId("");
                                 setInspirationForThePiece("");
                                 setProducerImage(r1);
                                 setExecutiveProducer("");
+                                setExecutiveProducerId("");
                                 setExecutiveInspirationForThePiece("");
                                 setExecutiveProducerImage(r1);
                                 setFan("");
+                                setFanId("");
                                 setFanInspirationForThePiece("");
                                 setFanImage(r1);
                                 setOther("");
@@ -405,15 +413,19 @@ function NewNFT(props) {
                 type: rarity,
                 tokensupply: tokenSupply,
                 ImageArtistName: imageArtist,
+                ImageArtistId:imageArtistId,
                 ImageArtistAbout: aboutTheArt,
                 ImageArtistWebsite: website,
                 ImageArtistProfile: artistImage,
+                ProducerId: producerId,
                 ProducerName: producer,
                 ProducerInspiration: inspirationForThePiece,
                 ProducerProfile: producerImage,
+                ExecutiveProducerId: executiveProducerId,
                 ExecutiveProducerName: executiveProducer,
                 ExecutiveProducerInspiration: executiveInspirationForThePiece,
                 ExecutiveProducerProfile: executiveProducerImage,
+                FanId: fanId,
                 FanName: fan,
                 FanInspiration: fanInspirationForThePiece,
                 FanProfile: fanImage,
@@ -434,16 +446,20 @@ function NewNFT(props) {
             setRarity("");
             setTokenSupply(1);
             setImageArtist("");
+            setImageArtistId("");
             setAboutTheArt("");
             setWebsite("");
             setArtistImage(r1);
             setProducer("");
+            setProducerId("");
             setInspirationForThePiece("");
             setProducerImage(r1);
             setExecutiveProducer("");
+            setExecutiveProducerId("");
             setExecutiveInspirationForThePiece("");
             setExecutiveProducerImage(r1);
             setFan("");
+            setFanId("");
             setFanInspirationForThePiece("");
             setFanImage(r1);
             setOther("");
@@ -462,12 +478,14 @@ function NewNFT(props) {
         setIsUploadingIPFS(true);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0]
+        console.log("e.target.files[0]",e.target.files[0]);
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onloadend = () => {
+            console.log("reader.result", reader.result);
             // setBuffer(Buffer(reader.result));
             ipfs.add(Buffer(reader.result), async (err, result) => {
                 if (err) {
-                    console.log(err);
+                    console.log("err", err);
                     setIsUploadingIPFS(false);
                     let variant = "error";
                     enqueueSnackbar('Unable to Upload Image to IPFS ', { variant });
@@ -657,7 +675,7 @@ function NewNFT(props) {
                                                 </div>
                                                 <small className="form-text text-muted">
                                                     Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                                                </small>
                                             </div>
 
                                         </div>
@@ -862,43 +880,45 @@ function NewNFT(props) {
                                             </div>
                                         </>
                                     ) : ( */}
-                                        <div className="form-group">
+                                    <div className="form-group">
 
-                                            <label>Select Artist</label>
-                                            <div className="filter-widget">
-                                                <Autocomplete
-                                                    id="combo-dox-demo"
-                                                    required
-                                                    options={imageArtistTypes}
-                                                    // disabled={isDisabledImporter}
-                                                    getOptionLabel={(option) =>
-                                                        option.Name
+                                        <label>Select Artist</label>
+                                        <div className="filter-widget">
+                                            <Autocomplete
+                                                id="combo-dox-demo"
+                                                required
+                                                options={imageArtistTypes}
+                                                // disabled={isDisabledImporter}
+                                                getOptionLabel={(option) =>
+                                                    option.Name
+                                                }
+                                                onChange={(event, value) => {
+                                                    if (value == null) {
+                                                        setImageArtist("");
+                                                        setImageArtistId("");
+                                                        setWebsite("");
+                                                        setAboutTheArt("");
+                                                        setArtistImage("");
                                                     }
-                                                    onChange={(event, value) => {
-                                                        if (value == null) {
-                                                            setImageArtist("");
-                                                            setWebsite("");
-                                                            setAboutTheArt("");
-                                                            setArtistImage("");
-                                                        }
-                                                        else {
-                                                            console.log(value);
-                                                            setImageArtist(value.Name);
-                                                            setWebsite(value.Website);
-                                                            setAboutTheArt(value.About);
-                                                            setArtistImage(value.Profile);
-                                                        }
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Image Artists"
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                />
-                                            </div>
+                                                    else {
+                                                        console.log(value);
+                                                        setImageArtistId(value._id)
+                                                        setImageArtist(value.Name);
+                                                        setWebsite(value.Website);
+                                                        setAboutTheArt(value.About);
+                                                        setArtistImage(value.Profile);
+                                                    }
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Image Artists"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
                                         </div>
+                                    </div>
 
                                     {/* )} */}
                                     {/* <FormControl component="fieldset">
@@ -982,41 +1002,43 @@ function NewNFT(props) {
                                             </div>
                                         </>
                                     ) : ( */}
-                                        <div className="form-group">
+                                    <div className="form-group">
 
-                                            <label>Select Producer</label>
-                                            <div className="filter-widget">
-                                                <Autocomplete
-                                                    id="combo-dox-demo"
-                                                    required
-                                                    options={producerTypes}
-                                                    // disabled={isDisabledImporter}
-                                                    getOptionLabel={(option) =>
-                                                        option.Name
+                                        <label>Select Producer</label>
+                                        <div className="filter-widget">
+                                            <Autocomplete
+                                                id="combo-dox-demo"
+                                                required
+                                                options={producerTypes}
+                                                // disabled={isDisabledImporter}
+                                                getOptionLabel={(option) =>
+                                                    option.Name
+                                                }
+                                                onChange={(event, value) => {
+                                                    if (value == null) {
+                                                        setProducer("");
+                                                        setProducerId("");
+                                                        setInspirationForThePiece("");
+                                                        setProducerImage("");
                                                     }
-                                                    onChange={(event, value) => {
-                                                        if (value == null) {
-                                                            setProducer("");
-                                                            setInspirationForThePiece("");
-                                                            setProducerImage("");
-                                                        }
-                                                        else {
-                                                            console.log(value);
-                                                            setProducer(value.Name);
-                                                            setInspirationForThePiece(value.Inspiration);
-                                                            setProducerImage(value.Profile);
-                                                        }
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Producers"
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                />
-                                            </div>
+                                                    else {
+                                                        console.log(value);
+                                                        setProducerId(value._id);
+                                                        setProducer(value.Name);
+                                                        setInspirationForThePiece(value.Inspiration);
+                                                        setProducerImage(value.Profile);
+                                                    }
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Producers"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
                                         </div>
+                                    </div>
 
                                     {/* )} */}
 
@@ -1102,37 +1124,44 @@ function NewNFT(props) {
                                             </div>
                                         </>
                                     ) : ( */}
-                                        <div className="form-group">
+                                    <div className="form-group">
 
-                                            <label>Select Executive Producer</label>
-                                            <div className="filter-widget">
-                                                <Autocomplete
-                                                    id="combo-dox-demo"
-                                                    required
-                                                    options={executiveProducerTypes}
-                                                    // disabled={isDisabledImporter}
-                                                    getOptionLabel={(option) =>
-                                                        option.Name
+                                        <label>Select Executive Producer</label>
+                                        <div className="filter-widget">
+                                            <Autocomplete
+                                                id="combo-dox-demo"
+                                                required
+                                                options={executiveProducerTypes}
+                                                // disabled={isDisabledImporter}
+                                                getOptionLabel={(option) =>
+                                                    option.Name
+                                                }
+                                                onChange={(event, value) => {
+                                                    if (value == null) {
+                                                        setExecutiveProducerId("");
+                                                        setExecutiveProducer("");
+                                                        setExecutiveInspirationForThePiece("");
+                                                        setExecutiveProducerImage("");
                                                     }
-                                                    onChange={(event, value) => {
-                                                        if (value == null) setExecutiveProducer("");
-                                                        else {
-                                                            console.log(value);
-                                                            setExecutiveProducer(value.Name);
-                                                            setExecutiveInspirationForThePiece(value.Inspiration);
-                                                            setExecutiveProducerImage(value.Profile);
-                                                        }
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Executive Producers"
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                />
-                                            </div>
+
+                                                    else {
+                                                        console.log(value);
+                                                        setExecutiveProducerId(value._id);
+                                                        setExecutiveProducer(value.Name);
+                                                        setExecutiveInspirationForThePiece(value.Inspiration);
+                                                        setExecutiveProducerImage(value.Profile);
+                                                    }
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Executive Producers"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
                                         </div>
+                                    </div>
 
                                     {/* // )} */}
                                     {/* <FormControl component="fieldset">
@@ -1217,37 +1246,43 @@ function NewNFT(props) {
                                             </div>
                                         </>
                                     ) : ( */}
-                                        <div className="form-group">
+                                    <div className="form-group">
 
-                                            <label>Select Fan</label>
-                                            <div className="filter-widget">
-                                                <Autocomplete
-                                                    id="combo-dox-demo"
-                                                    required
-                                                    options={fans}
-                                                    // disabled={isDisabledImporter}
-                                                    getOptionLabel={(option) =>
-                                                        option.Name
+                                        <label>Select Fan</label>
+                                        <div className="filter-widget">
+                                            <Autocomplete
+                                                id="combo-dox-demo"
+                                                required
+                                                options={fans}
+                                                // disabled={isDisabledImporter}
+                                                getOptionLabel={(option) =>
+                                                    option.Name
+                                                }
+                                                onChange={(event, value) => {
+                                                    if (value == null) {
+                                                        setFanId("");
+                                                        setFan("");
+                                                        setFanImage("");
+                                                        setFanInspirationForThePiece("");
                                                     }
-                                                    onChange={(event, value) => {
-                                                        if (value == null) setFan("");
-                                                        else {
-                                                            console.log(value);
-                                                            setFan(value.Name);
-                                                            setFanImage(value.Profile);
-                                                            setFanInspirationForThePiece(value.Inspiration);
-                                                        }
-                                                    }}
-                                                    renderInput={(params) => (
-                                                        <TextField
-                                                            {...params}
-                                                            label="Fans"
-                                                            variant="outlined"
-                                                        />
-                                                    )}
-                                                />
-                                            </div>
+                                                    else {
+                                                        console.log(value);
+                                                        setFanId(value._id);
+                                                        setFan(value.Name);
+                                                        setFanImage(value.Profile);
+                                                        setFanInspirationForThePiece(value.Inspiration);
+                                                    }
+                                                }}
+                                                renderInput={(params) => (
+                                                    <TextField
+                                                        {...params}
+                                                        label="Fans"
+                                                        variant="outlined"
+                                                    />
+                                                )}
+                                            />
                                         </div>
+                                    </div>
 
                                     {/* )} */}
                                     <div className="form-group">
@@ -1337,7 +1372,7 @@ function NewNFT(props) {
                                     onClick={() => handleAddClick()}
                                 >
                                     <i className="fa fa-plus"></i> Add NFT to queue
-                                    </button>
+                                </button>
                                 {/* )} */}
                             </div>
                         </form>
@@ -1365,7 +1400,7 @@ function NewNFT(props) {
                                                             title={i.title}
                                                         />
                                                         <CardMedia
-                                                            variant="outlined" style={{height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                            variant="outlined" style={{ height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
                                                             image={i.artwork}
 
@@ -1427,7 +1462,7 @@ function NewNFT(props) {
 
                                                             >
                                                                 Remove NFT
-    </Button>
+                                                            </Button>
                                                         </CardActions>
                                                     </Card>
                                                 </Grid>
@@ -1462,7 +1497,7 @@ function NewNFT(props) {
                         <div className="submit-section">
                             <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
                                 Batch create NFTs
-                  </button>
+                            </button>
                         </div>
                         // )
 
