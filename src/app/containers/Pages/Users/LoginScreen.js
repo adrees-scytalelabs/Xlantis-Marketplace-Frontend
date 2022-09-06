@@ -12,7 +12,7 @@ import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
 
 function LoginScreen(props) {
-  let [userName, setUserName] = useState();
+  let [email, setEmail] = useState();
   let [password, setPassword] = useState();
   let [isLoading, setIsLoading] = useState(false);
   let [msg, setMsg] = useState("");
@@ -24,7 +24,7 @@ function LoginScreen(props) {
     event.preventDefault();
     axios
       .post("user/auth/adminlogin", {
-        username: userName.toLowerCase(),
+        email: email.toLowerCase(),
         password: password,
       })
       .then((response) => {
@@ -95,9 +95,9 @@ function LoginScreen(props) {
                                 type="text"
                                 required
                                 className="form-control floating"
-                                value={userName}
+                                value={email}
                                 onChange={(e) => {
-                                  setUserName(e.target.value);
+                                  setEmail(e.target.value);
                                 }}
                               />
                               <label className="focus-label">User Name</label>
