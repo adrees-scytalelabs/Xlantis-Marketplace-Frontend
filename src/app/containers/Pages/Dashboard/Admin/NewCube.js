@@ -60,6 +60,10 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
+    media: {
+        height: 0,
+        paddingTop: '100%', // 16:9
+    },
 }));
 
 
@@ -78,6 +82,7 @@ function NewCube(props) {
 
     let [artistType, setArtistType] = useState("New");
     let [artist, setArtist] = useState('');// eslint-disable-next-line
+    let [artistId, setArtistId] = useState('');// eslint-disable-next-line
     let [nftName, setNFTName] = useState();
 
     let [musicOwner, setMusicOwner] = useState("");
@@ -294,6 +299,7 @@ function NewCube(props) {
                     nftids: nftIds,
                     ownermusicfile: musicOwner,
                     nonownermusicfile: musicNonOwner,
+                    MusicArtistId: artistId,
                     MusicArtistName: artist,
                     MusicArtistAbout: aboutTheTrack,
                     MusicArtistProfile: artistImage,
@@ -342,6 +348,7 @@ function NewCube(props) {
                                     ownermusicfile: musicOwner,
                                     nonownermusicfile: musicNonOwner,
                                     MusicArtistName: artist,
+                                    MusicArtistId: artistId,
                                     MusicArtistAbout: aboutTheTrack,
                                     MusicArtistProfile: artistImage,
                                     musicartisttype: artistType,
@@ -360,6 +367,7 @@ function NewCube(props) {
                                         setMusicOwner('');
                                         setMusicNonOwner('');
                                         setArtist('');
+                                        setArtistId('');
                                         setAboutTheTrack('');
                                         setArtistImage(logo)
                                         setArtistType('New')
@@ -457,7 +465,7 @@ function NewCube(props) {
                                             option.title + "," + option.type + ',' + option.tokensupplyalternative
                                         }
                                         onChange={(event, value) => {
-                                            if (value == null) {
+                                            if (value !== null) {
                                                 console.log(value);
                                                 setNFTName(value.title)
                                                 handleAddClick(value);
@@ -548,87 +556,6 @@ function NewCube(props) {
 
                                         />
                                     </div>
-                                    {/* <FormControl component="fieldset">
-                                        <lable component="legend">Select to add Music Artist </lable>
-                                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                                            <FormControlLabel style={{ color: 'black' }} value="New Artist" onChange={() => setArtistType("New")} checked={artistType === 'New'} control={<Radio color="secondary" />} label="New Artist" />
-                                            <FormControlLabel style={{ color: 'black' }} value="Existing Artist" onChange={() => setArtistType("Existing")} checked={artistType === 'Existing'} control={<Radio color="secondary" />} label="Existing Artist" />
-                                        </RadioGroup>
-                                    </FormControl> */}
-                                    {/* {artistType === 'New' ? (
-                                        <>
-                                            <div className="form-group">
-                                                <input
-                                                    type="text"
-                                                    required
-                                                    value={artist}
-                                                    placeholder="Enter Music Artist Name"
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        setArtist(e.target.value)
-                                                    }}
-                                                />
-                                            </div>
-                                            <label className="focus-label">Artist Profile Photo</label>
-                                            <div className="form-group">
-                                                <div className="change-avatar">
-                                                    <div className="profile-img">
-                                                        <div
-                                                            style={{
-                                                                background: "#E9ECEF",
-                                                                width: "100px",
-                                                                height: "100px",
-                                                            }}
-                                                        >
-                                                            <img src={artistImage} alt="Selfie" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="upload-img">
-                                                        <div
-                                                            className="change-photo-btn"
-                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                        >
-                                                            {isUploadingArtist ? (
-                                                                <div className="text-center">
-                                                                    <Spinner
-                                                                        animation="border"
-                                                                        role="status"
-                                                                        style={{ color: "#fff" }}
-                                                                    >
-                                                                    </Spinner>
-                                                                </div>
-                                                            ) : (
-                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                            )}
-                                                            <input
-                                                                name="sampleFile"
-                                                                type="file"
-                                                                className="upload"
-                                                                accept=".png,.jpg,.jpeg,.gif"
-                                                                onChange={onChangeArtistHandler}
-                                                            />
-                                                        </div>
-                                                        <small className="form-text text-muted">
-                                                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="form-group">
-                                                <textarea
-                                                    type="text"
-                                                    required
-                                                    rows="4"
-                                                    value={aboutTheTrack}
-                                                    placeholder="About the Track"
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        setAboutTheTrack(e.target.value)
-                                                    }}
-                                                />
-                                            </div>
-                                        </>
-                                    ) : ( */}
                                     <div className="form-group">
 
                                         <label>Select Artist</label>
@@ -642,9 +569,15 @@ function NewCube(props) {
                                                     option.Name
                                                 }
                                                 onChange={(event, value) => {
-                                                    if (value == null) setArtist("");
+                                                    if (value == null) {
+                                                        setArtistId("");
+                                                        setArtist("");
+                                                        setAboutTheTrack("");
+                                                        setArtistImage("")
+                                                    }
                                                     else {
                                                         console.log(value);
+                                                        setArtistId(value._id);
                                                         setArtist(value.Name);
                                                         setAboutTheTrack(value.About);
                                                         setArtistImage(value.Profile)
@@ -701,7 +634,7 @@ function NewCube(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
-                                                            // image={i.artwork}
+                                                            image={i.artwork}
 
                                                             title="NFT Image"
                                                         />
@@ -762,7 +695,7 @@ function NewCube(props) {
 
                                                             >
                                                                 Remove NFT
-    </Button>
+                                                            </Button>
                                                         </CardActions>
                                                     </Card>
                                                 </Grid>
@@ -797,7 +730,7 @@ function NewCube(props) {
                     <div className="submit-section">
                         <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
                             Create Cube
-                  </button>
+                        </button>
                     </div>
                     // )
 
@@ -819,3 +752,4 @@ function NewCube(props) {
 }
 
 export default NewCube;
+
