@@ -75,6 +75,11 @@ function AdminSidebar(props) {
                 <LibraryBooksIcon/> <span>My Season</span>
               </Link>
             </li>
+            <li className={props.activeTab.createNewCollection}>
+              <Link to={`${props.match.url}/createNewCollection`}>
+                <i className="fas fa-layer-group"></i><span>New Collection</span>
+              </Link>
+            </li>
             <li className={props.activeTab.newCollection}>
               <Link to={`${props.match.url}/newCollection`}>
                 <i className="fas fa-layer-group"></i><span>Collection</span>
