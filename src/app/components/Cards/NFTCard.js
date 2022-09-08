@@ -56,7 +56,7 @@ function NFTCard(props) {
     console.log("props",props)
     const classes = useStyles();
     return (
-        <Grid item xs={12} sm={6} md={6} >
+        <Grid item xs={12} sm={6} md={6} lg={3} >
             <Card style={{ height: "100%" }} variant="outlined">
                 <CardHeader className="text-center"
                     title={props.data.title}
