@@ -77,7 +77,7 @@ function NFTCard(props) {
                     <Typography variant="body2" color="textSecondary" component="p">
                         <strong>Token Supply: </strong>{props.data.tokensupplyalternative}
                     </Typography>
-                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
+                    {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
                     <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
                         <CardHeader
                             avatar={<Avatar src={props.data.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
@@ -115,7 +115,7 @@ function NFTCard(props) {
 
                     <Typography variant="body2" color="textSecondary" component="p">
                         <strong>Other: </strong>{props.data.other}
-                    </Typography>
+                    </Typography> */}
                 </CardContent>
             </Card>
         </Grid>
