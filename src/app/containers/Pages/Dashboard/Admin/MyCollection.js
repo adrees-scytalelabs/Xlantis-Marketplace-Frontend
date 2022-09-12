@@ -209,8 +209,8 @@ function MyCollection(props) {// eslint-disable-next-line
                                             <CardActionArea>
                                                 <CardMedia
                                                     className={classes.media}
-                                                    image={i.image}
-                                                    title="Contemplative Reptile"
+                                                    image={i.artwork}
+                                                    title="Collection Image"
                                                 />
                                                 <CardContent>
                                                     <Typography gutterBottom variant="h5" className="text-center" component="h2">
