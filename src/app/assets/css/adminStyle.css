@@ -1714,6 +1714,7 @@ html.menu-opened body {
   transition: all 0.2s ease-in-out 0s;
   width: 230px;
   z-index: 1001;
+  overflow-y: scroll;
 }
 .sidebar.opened {
   -webkit-transition: all 0.4s ease;

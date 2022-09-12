@@ -29,6 +29,7 @@ import ChangePassword from "./ChangePassword";
 import ProfileSetting from "./ProfileSetting";
 import CollectionNfts from "./Admin/CollectionNfts";
 import CubeNFTs from "./Admin/CubeNFTs";
+import NewCollection from "./Admin/NewCollection";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
@@ -66,6 +67,7 @@ function AdminDashboard(props) {
     newDrop: "",
     newSeason: "",
     newCollection: "",
+    createNewCollection: "",
     myNFTs: "",
     myCubes: "",
     newRandomDrop: ""
@@ -225,6 +227,9 @@ function AdminDashboard(props) {
               <CubeNFTs setActiveTab={setActiveTab} />
             </Route>
 
+            <Route exact path={`${path}/createNewCollection`}>
+              <NewCollection setActiveTab={setActiveTab} />
+            </Route>
             <Route exact path={`${path}/newCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
