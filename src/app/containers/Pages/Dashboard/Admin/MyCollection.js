@@ -61,8 +61,8 @@ function MyCollection(props) {// eslint-disable-next-line
             .get(`/collection/collections/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
-                setCollections(response.data.Collectiondata);
-                setCollectionCount(response.data.CollectionCount)
+                setCollections(response.data.collectionData);
+                setCollectionCount(response.data.collectionCount)
                 setOpen(false);
             })
             .catch((error) => {
@@ -116,6 +116,7 @@ function MyCollection(props) {// eslint-disable-next-line
     };
 
     useEffect(() => {
+        console.log("Entered in my collection tab");
         getCollections(0, rowsPerPage);
         props.setActiveTab({
             dashboard: "",
@@ -209,12 +210,12 @@ function MyCollection(props) {// eslint-disable-next-line
                                             <CardActionArea>
                                                 <CardMedia
                                                     className={classes.media}
-                                                    image={i.artwork}
+                                                    image={i.thumbnail}
                                                     title="Collection Image"
                                                 />
                                                 <CardContent>
                                                     <Typography gutterBottom variant="h5" className="text-center" component="h2">
-                                                        {i.collectiontitle}
+                                                        {i.name}
                                                     </Typography>
                                                 </CardContent>
                                             </CardActionArea>
