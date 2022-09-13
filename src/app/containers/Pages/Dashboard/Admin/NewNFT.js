@@ -168,11 +168,11 @@ function NewNFT(props) {
         axios.get("/collection/collections").then(
             (response) => {
                 console.log("response", response);
-                response.data.Collectiondata = [{
-                    collectiontitle: "+ Create new Collection"
-                }, ...response.data.Collectiondata]
-                console.log("response.data.Collectiondata", response.data.Collectiondata);
-                setCollectionTypes(...collectionTypes, response.data.Collectiondata)
+                response.data.collectionData = [{
+                    name: "+ Create new Collection"
+                }, ...response.data.collectionData]
+                console.log("response.data.collectionData", response.data.collectionData);
+                setCollectionTypes(...collectionTypes, response.data.collectionData)
             },
             (error) => {
                 if (process.env.NODE_ENV === "development") {
@@ -900,7 +900,7 @@ function NewNFT(props) {
                                                 options={collectionTypes}
                                                 // disabled={isDisabledImporter}
                                                 getOptionLabel={(option) =>
-                                                    option.collectiontitle
+                                                    option.name
                                                 }
                                                 onChange={(event, value) => {
                                                     if (value == null) setCollection("");
