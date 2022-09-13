@@ -20,7 +20,7 @@ import { Spinner } from "react-bootstrap";
 // import { Icon } from 'semantic-ui-react';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
-import CreateNFTContract from '../../../../components/blockchain/Abis/CreateNFTContract.json';
+import Factory1155Contract from '../../../../components/blockchain/Abis/Factory1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 
@@ -152,13 +152,34 @@ function NewCollection(props) {
         else {
             handleShowBackdrop();
 
+            const abi = Factory1155Contract;
+            const address = Addresses.Factory1155Address;
+            var cloneContractAddress;
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            await myContractInstance.methods.createNFT1155().send({ from: accounts[0] }, (err, response) => {
+                console.log("Get transaction ", err, response);
+                if(err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+                }
+            })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt.events.CloneCreated.returnValues.cloneAddress);
+                    cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                }
+            )
+
             let fileData = new FormData();
             fileData.append("thumbnail", imageFile);
             fileData.append("name", collectionName);
             fileData.append("symbol", collectionSymbol);
             fileData.append("description", collectionDescription);
+            fileData.append("nftContractAddress", cloneContractAddress);
 
-            axios.post("/collection/createCollection", fileData).then(
+            axios.post("/collection/createcollection", fileData).then(
                 (response) => {
                     console.log("response", response);
                     let variant = "success";
