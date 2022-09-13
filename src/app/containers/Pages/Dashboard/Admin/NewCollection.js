@@ -153,7 +153,7 @@ function NewCollection(props) {
             handleShowBackdrop();
 
             let fileData = new FormData();
-            fileData.append("image", imageFile);
+            fileData.append("thumbnail", imageFile);
             fileData.append("name", collectionName);
             fileData.append("symbol", collectionSymbol);
             fileData.append("description", collectionDescription);
