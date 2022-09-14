@@ -96,6 +96,9 @@ function NewNFT(props) {
     let [inspirationForThePiece, setInspirationForThePiece] = useState("");
     let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
     let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
+    let [properties, setProperties] = useState([
+        { key: "", value: "" }
+    ]);
 
     let [value, setValue] = useState("");
     let [key, setKey] = useState("");
@@ -106,6 +109,7 @@ function NewNFT(props) {
     let [executiveProducerTypes, setExecutiveProducerTypes] = useState([]);
     let [fans, setFanTypes] = useState([]);
     let [producerTypes, setProducerTypes] = useState([]);
+    let [nftContractAddress, setNftContractAddress] = useState("");
 
     let [imageArtist, setImageArtist] = useState('');
     let [imageArtistId, setImageArtistId] = useState('');
@@ -171,7 +175,7 @@ function NewNFT(props) {
                 response.data.collectionData = [{
                     name: "+ Create new Collection"
                 }, ...response.data.collectionData]
-                console.log("response.data.collectionData", response.data.collectionData);
+                console.log("response.data.collectionData", response.data.collectionData.nftContractAddress);
                 setCollectionTypes(...collectionTypes, response.data.collectionData)
             },
             (error) => {
@@ -223,6 +227,7 @@ function NewNFT(props) {
             window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
         }
     }
+    
     const handleSubmitEvent = async (event) => {
         event.preventDefault();
         setIsSaving(true);
@@ -234,108 +239,108 @@ function NewNFT(props) {
             setIsSaving(false);
         }
         else {
-            await loadWeb3();
-            const web3 = window.web3
-            const accounts = await web3.eth.getAccounts();
-            const network = await web3.eth.net.getNetworkType()
-            if (network !== 'ropsten') {
-                setNetwork(network);
-                setIsSaving(false);
-                handleShow();
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'ropsten') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShow();
+        }
+        else {
+            handleShowBackdrop();
+            const address = Addresses.CreateNftAddress;
+            const abi = CreateNFTContract;
+            let totalImages = tokenList.length;
+            let AmountofNFTs = [];
+            let IPFsHashes = [];
+            for (let i = 0; i < tokenList.length; i++) {
+                AmountofNFTs.push(tokenList[i].tokensupply);
+                IPFsHashes.push(tokenList[i].ipfsHash);
             }
-            else {
-                handleShowBackdrop();
-                const address = Addresses.CreateNftAddress;
-                const abi = CreateNFTContract;
-                let totalImages = tokenList.length;
-                let AmountofNFTs = [];
-                let IPFsHashes = [];
-                for (let i = 0; i < tokenList.length; i++) {
-                    AmountofNFTs.push(tokenList[i].tokensupply);
-                    IPFsHashes.push(tokenList[i].ipfsHash);
+            console.log("AmountofNFTs", AmountofNFTs);
+            console.log("IPFsHashes", IPFsHashes);
+
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            console.log("myContractInstance", myContractInstance);
+            await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
+                console.log('get transaction', err, response);
+                if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
                 }
-                console.log("AmountofNFTs", AmountofNFTs);
-                console.log("IPFsHashes", IPFsHashes);
-
-                var myContractInstance = await new web3.eth.Contract(abi, address);
-                console.log("myContractInstance", myContractInstance);
-                await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
-                    console.log('get transaction', err, response);
-                    if (err !== null) {
-                        console.log("err", err);
-                        let variant = "error";
-                        enqueueSnackbar('User Canceled Transaction', { variant });
-                        handleCloseBackdrop();
-                        setIsSaving(false);
+            })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt);
+                    console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
+                    let ids = receipt.events.TransferBatch.returnValues.ids;
+                    for (let i = 0; i < tokenList.length; i++) {
+                        tokenList[i].nftId = ids[i];
                     }
+
+                    let Data = {
+                        nftdata: tokenList
+                    }
+                    console.log("Data", Data);
+                    axios.post("/nft/createnft", Data).then(
+                        (response) => {
+                            console.log("response", response);
+                            let variant = "success";
+                            enqueueSnackbar('Nfts Created Successfully.', { variant });
+                            setTokenList([]);
+                            setIpfsHash("");
+                            setImage(r1);
+                            setName("");
+                            setDescription("");
+                            setRarity("");
+                            setTokenSupply(1);
+                            setImageArtist("");
+                            setImageArtistId("");
+                            setAboutTheArt("");
+                            setWebsite("");
+                            setArtistImage(r1);
+                            setProducer("");
+                            setProducerId("");
+                            setInspirationForThePiece("");
+                            setProducerImage(r1);
+                            setExecutiveProducer("");
+                            setExecutiveProducerId("");
+                            setExecutiveInspirationForThePiece("");
+                            setExecutiveProducerImage(r1);
+                            setFan("");
+                            setFanId("");
+                            setFanInspirationForThePiece("");
+                            setFanImage(r1);
+                            setOther("");
+                            setCollection("");
+                            setCollectionType("New");
+                            setImageArtistType("New");
+                            setProducerType("New");
+                            setExecutiveProducerType("New");
+                            setFanType("New");
+                            setSupplyType("Single");
+                            setCollectionId("");
+                            handleCloseBackdrop();
+                            setIsSaving(false);
+                        },
+                        (error) => {
+                            if (process.env.NODE_ENV === "development") {
+                                console.log(error);
+                                console.log(error.response);
+                            }
+
+                            let variant = "error";
+                            enqueueSnackbar('Unable to Create Nfts.', { variant });
+
+                            handleCloseBackdrop();
+                            setIsSaving(false);
+                        })
                 })
-                    .on('receipt', (receipt) => {
-                        console.log("receipt", receipt);
-                        console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
-                        let ids = receipt.events.TransferBatch.returnValues.ids;
-                        for (let i = 0; i < tokenList.length; i++) {
-                            tokenList[i].nftId = ids[i];
-                        }
-
-                        let Data = {
-                            nftdata: tokenList
-                        }
-                        console.log("Data", Data);
-                        axios.post("/nft/createnft", Data).then(
-                            (response) => {
-                                console.log("response", response);
-                                let variant = "success";
-                                enqueueSnackbar('Nfts Created Successfully.', { variant });
-                                setTokenList([]);
-                                setIpfsHash("");
-                                setImage(r1);
-                                setName("");
-                                setDescription("");
-                                setRarity("");
-                                setTokenSupply(1);
-                                setImageArtist("");
-                                setImageArtistId("");
-                                setAboutTheArt("");
-                                setWebsite("");
-                                setArtistImage(r1);
-                                setProducer("");
-                                setProducerId("");
-                                setInspirationForThePiece("");
-                                setProducerImage(r1);
-                                setExecutiveProducer("");
-                                setExecutiveProducerId("");
-                                setExecutiveInspirationForThePiece("");
-                                setExecutiveProducerImage(r1);
-                                setFan("");
-                                setFanId("");
-                                setFanInspirationForThePiece("");
-                                setFanImage(r1);
-                                setOther("");
-                                setCollection("");
-                                setCollectionType("New");
-                                setImageArtistType("New");
-                                setProducerType("New");
-                                setExecutiveProducerType("New");
-                                setFanType("New");
-                                setSupplyType("Single");
-                                setCollectionId("");
-                                handleCloseBackdrop();
-                                setIsSaving(false);
-                            },
-                            (error) => {
-                                if (process.env.NODE_ENV === "development") {
-                                    console.log(error);
-                                    console.log(error.response);
-                                }
-
-                                let variant = "error";
-                                enqueueSnackbar('Unable to Create Nfts.', { variant });
-
-                                handleCloseBackdrop();
-                                setIsSaving(false);
-                            })
-                    })
-            }
+        }
         }
     };
     const handleRemoveClick = (index) => {
@@ -628,6 +633,26 @@ function NewNFT(props) {
     //         }
     //     );
     // }
+
+    let handleRemoveProperty = (index) => {
+        let data = [...properties];
+        data.splice(index, 1);
+        setProperties(data);
+    }
+
+    let handleAddProperty = () => {
+        let newData = { key: "", value: ""};
+        setProperties([...properties, newData]);
+        console.log("Add button pressed.");
+        console.log("Properties: ", properties);
+    }
+
+    let handlePropertyChange = (index, event) => {
+        let data = [...properties];
+        data[index][event.target.name] = event.target.value;
+        setProperties(data);
+    }
+
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -795,70 +820,72 @@ function NewNFT(props) {
                                             </div>
                                         </div>
                                     )}
+
                                     <div>
                                         <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
                                     </div>
                                     <div>
-                                        <Row>
-                                            <Col>
-                                                <div className="form-group">
-                                                    <label>Key</label>
-                                                    <div className="filter-widget">
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Enter key of the property"
-                                                            required
-                                                            value={key}
-                                                            className="form-control"
-                                                            onChange={(e) => {
-                                                                setKey(e.target.value);
-
-                                                            }}
-                                                        />
+                                        {properties.map((property, index) => {return (
+                                            <div key={index}>
+                                            <Row>
+                                                <Col>
+                                                    <div className="form-group">
+                                                        <label>Key</label>
+                                                        <div className="filter-widget">
+                                                            <input
+                                                                name= "key"
+                                                                type="text"
+                                                                placeholder="Enter key of the property"
+                                                                required
+                                                                value={property.key}
+                                                                className="form-control"
+                                                                onChange={(e) => handlePropertyChange(index, e)}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-group">
-                                                    <label>Value</label>
-                                                    <div className="filter-widget">
-                                                        <input
-                                                            type="text"
-                                                            placeholder="Enter Value of the property"
-                                                            required
-                                                            value={value}
-                                                            className="form-control"
-                                                            onChange={(e) => {
-                                                                setValue(e.target.value);
-
-                                                            }}
-                                                        />
+                                                </Col>
+                                                <Col>
+                                                    <div className="form-group">
+                                                        <label>Value</label>
+                                                        <div className="filter-widget">
+                                                            <input
+                                                                name= "value"
+                                                                type="text"
+                                                                placeholder="Enter Value of the property"
+                                                                required
+                                                                value={property.value}
+                                                                className="form-control"
+                                                                onChange={(e) => handlePropertyChange(index, e)}
+                                                            />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </Col>
-                                            <Col>
-                                                <div className="form-group">
-                                                    <label>Action</label>
-                                                    <div className="filter-widget">
-                                                        <button
-                                                            className="btn btn-submit btn-lg"
-                                                            color="primary"
-                                                        // className="btn submit-btn"
-                                                        // onClick={onDialogOpenClick}
-                                                        >
-                                                            -
-                                                        </button>
+                                                </Col>
+                                                <Col>
+                                                    <div className="form-group">
+                                                        <label>Action</label>
+                                                        <div className="filter-widget">
+                                                            <button
+                                                                className="btn btn-submit btn-lg"
+                                                                color="primary"
+                                                            // className="btn submit-btn"
+                                                                onClick={handleRemoveProperty}
+                                                            >
+                                                                -
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
 
-                                            </Col>
-                                        </Row>
-
+                                                </Col>
+                                            </Row>
+                                        </div>)
+                                        })
+                                        
+                                        }
                                         <button
                                             className="btn btn-submit"
                                             color="primary"
                                         // className="btn submit-btn"
-                                        // onClick={onDialogOpenClick}
+                                            onClick={handleAddProperty}
                                         >
                                             +
                                         </button>
@@ -888,6 +915,7 @@ function NewNFT(props) {
                                                 </form>
                                             </DialogContent>
                                         </Dialog> */}
+                                    
                                     </div>
 
                                     <div className="form-group">
@@ -905,12 +933,14 @@ function NewNFT(props) {
                                                 onChange={(event, value) => {
                                                     if (value == null) setCollection("");
                                                     else {
-                                                        if (value.collectiontitle === "+ Create new Collection") {
+                                                        if (value.name === "+ Create new Collection") {
                                                             history.push('/dashboard/createNewCollection')
                                                         } else {
                                                             console.log(value);
-                                                            setCollection(value.collectiontitle)
+                                                            setCollection(value.name)
                                                             setCollectionId(value._id)
+                                                            setNftContractAddress(value.nftContractAddress);
+                                                            console.log("Value: ", value);
                                                         }
                                                     }
                                                 }}

@@ -20,7 +20,7 @@ function CollectionNfts(props) {
         axios.get(`/collection/collections/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
-                setTokenList(response.data.Nftsdata);
+                setTokenList(response.data.nftsdata);
                 handleCloseBackdrop();
             },
             (error) => {
