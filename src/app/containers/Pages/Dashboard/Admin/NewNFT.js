@@ -734,7 +734,7 @@ function NewNFT(props) {
 
 
                                 <div className="form-group">
-                                    <label>Artwork</label>
+                                    <label>NFT Title</label>
                                     <div className="form-group">
                                         <input
                                             type="text"
@@ -747,7 +747,8 @@ function NewNFT(props) {
                                             }}
                                         />
                                     </div>
-
+                                    
+                                    <label>NFT Description</label>
                                     <div className="form-group">
                                         {/* <label>About the Art</label> */}
                                         <textarea
