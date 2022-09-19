@@ -140,6 +140,7 @@ function NewNFT(props) {
     let [fanType, setFanType] = useState("New");
     let [collectionId, setCollectionId] = useState('');
     let [ipfsURI, setIpfsURI] = useState("");
+    let [imageType, setImageType] = useState("");
 
     let [executiveProducerId, setExecutiveProducerId] = useState('');
     let [executiveProducer, setExecutiveProducer] = useState('');
@@ -271,6 +272,7 @@ function NewNFT(props) {
             console.log("ipfsURI: ", ipfsURI);
             console.log("tokenSupply: ", tokenSupply);
             console.log("Account address: ", accounts[0]);
+            console.log("Image Type: ", imageType);
             await myContractInstance.methods.createAsset(name, description, ipfsURI,  "0", tokenSupply, "0x00").send({ from: accounts[0] }, (err, response) => {
                 console.log('get transaction', err, response);
                 if (err !== null) {
@@ -299,7 +301,7 @@ function NewNFT(props) {
                                 "nftURI": ipfsURI,
                                 "metadataURI": ipfsURI,
                                 "tokenSupply": tokenSupply,
-                                "nftFormat": "jpeg",
+                                "nftFormat": imageType,
                                 "type": rarity,
                                 "supplyType": supplyType,
                                 // "properties": properties
@@ -316,6 +318,7 @@ function NewNFT(props) {
                             let variant = "success";
                             enqueueSnackbar('Nfts Created Successfully.', { variant });
                             // setTokenList([]);
+                            setImageType("");
                             setIpfsHash("");
                             setImage(r1);
                             setName("");
@@ -506,8 +509,10 @@ function NewNFT(props) {
     let onChangeFile = (e) => {
         setIsUploadingIPFS(true);
         const reader = new window.FileReader();
-        let imageNFT = e.target.files[0]
+        let imageNFT = e.target.files[0];
+        setImageType(e.target.files[0].type.split("/")[1]);
         console.log("e.target.files[0]", e.target.files[0]);
+        // console.log("Image type: ", imageType);
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onloadend = () => {
             console.log("reader.result", reader.result);
