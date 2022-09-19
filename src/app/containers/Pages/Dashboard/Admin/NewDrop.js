@@ -65,8 +65,8 @@ function NewDrop(props) {
     const classes = useStyles();
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
-    const [startTimeStamp, setStartTimeStamp] = useState(startTime.getTime() / 1000);
-    const [endTimeStamp, setEndTimeStamp] = useState(endTime.getTime() / 1000);
+    const [startTimeStamp, setStartTimeStamp] = useState(Math.round(startTime.getTime() / 1000));
+    const [endTimeStamp, setEndTimeStamp] = useState(Math.round(endTime.getTime() / 1000));
     const [inputList, setInputList] = useState([]);
     const [imageData, setImageData] = useState([]);
     let [name, setName] = useState("");
@@ -211,12 +211,12 @@ function NewDrop(props) {
                 enqueueSnackbar("Please Select title image for Drop to continue.", { variant });
                 setIsSaving(false);
                 handleCloseBackdrop();
-            } else if (new Date(startTime) === new Date(endTime)) {
+            } else if (startTimeStamp === endTimeStamp || new Date(startTime) === new Date(endTime)) {
                 let variant = "error";
                 enqueueSnackbar("Auction cannot be Start and End on same time.", { variant });
                 setIsSaving(false);
                 handleCloseBackdrop();
-            } else if (new Date(startTime) > new Date(endTime)) {
+            } else if (startTimeStamp > endTimeStamp || new Date(startTime) > new Date(endTime)) {
                 let variant = "error";
                 enqueueSnackbar("Auction End time must be greater than Start time.", { variant });
                 setIsSaving(false);
@@ -236,6 +236,9 @@ function NewDrop(props) {
                 for (let i = 0; i < types.length; i++) {
                     tokenId.push(types[i].tokenId);
                 }
+                console.log("startTimeStamp", Math.round(startTimeStamp));
+                console.log("endTimeStamp", endTimeStamp);
+                console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
                 var myContractInstance = await new web3.eth.Contract(abi, address);
                 var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
                     console.log('get transaction', err, response);
@@ -445,7 +448,7 @@ function NewDrop(props) {
                                                         </div>
                                                         <small className="form-text text-muted">
                                                             Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                                                        </small>
                                                     </div>
 
                                                 </div>
@@ -462,7 +465,7 @@ function NewDrop(props) {
                                             onChange={(e) => {
                                                 console.log(e);
                                                 console.log("e.getTime()", Math.round(e.getTime() / 1000));
-                                                setStartTimeStamp(Math.round(e.getTime() / 1000));
+                                                setStartTimeStamp(Number(Math.round(e.getTime() / 1000)));
 
                                                 setStartTime(e)
                                             }}
@@ -579,7 +582,7 @@ function NewDrop(props) {
 
                                                             >
                                                                 Remove NFT
-    </Button>
+                                                            </Button>
                                                         </CardActions>
                                                     </Card>
                                                 </Grid >
@@ -609,7 +612,7 @@ function NewDrop(props) {
                     <div className="submit-section">
                         <button type="button" onClick={handleSubmitEvent} className="btn submit-btn">
                             Create Drop
-                  </button>
+                        </button>
                     </div>
                 )}
             </div>

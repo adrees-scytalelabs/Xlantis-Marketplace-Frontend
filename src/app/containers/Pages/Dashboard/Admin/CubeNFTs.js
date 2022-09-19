@@ -278,7 +278,7 @@ function CubeNFTs(props) {
             tokenId: cubeId,
         }
 
-        axios.post(`/adminclaimfunds/getclaimfunds`, Data).then((res) => {
+        axios.post(`/adminClaimFunds/getClaimFunds`, Data).then((res) => {
             console.log("res", res);
             if (res.data.success)
                 setIsClaimFunds(res.data.Adminclaimfundsresult)

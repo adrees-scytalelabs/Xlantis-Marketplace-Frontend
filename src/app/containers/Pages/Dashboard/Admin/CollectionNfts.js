@@ -17,13 +17,10 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        let CollectioId = {
-            collectionId: collectionId
-        }
-        axios.post("/collection/collections", CollectioId).then(
+        axios.get(`/collection/collections/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
-                setTokenList(response.data.Nftsdata);
+                setTokenList(response.data.nftsdata);
                 handleCloseBackdrop();
             },
             (error) => {

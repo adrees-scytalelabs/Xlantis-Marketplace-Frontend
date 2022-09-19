@@ -1,42 +1,62 @@
 // eslint-disable-next-line
 import axios from "axios";// eslint-disable-next-line
 import React, { useEffect, useState } from "react";
-
-
+import { Link } from "react-router-dom";
+// import React, { useEffect } from "react";
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import StorageIcon from '@material-ui/icons/Storage';
+import Cookies from "js-cookie";
 function AdminDashboardDefaultScreen(props) {
-  // let [approved, setApproved] = useState(0);
-  // let [pending, setPending] = useState(0);
-  // let [disputed, setDisputed] = useState(0);
 
-  // let getCounts = () => {
-  //   axios
-  //     .get("/api/v1/admin/getCounts")
-  //     .then((response) => {
-  //       console.log(response);
-  //       setApproved(response.data.approved);
-  //       setPending(response.data.pending);
-  //       setDisputed(response.data.UnderDisputed)
-  //     })
-  //     .catch((error) => {
-  //       console.log(error);
-  //       console.log(error.response);
-  //     });
-  // };
+  let [totalCubes, setTotalCubes] = useState(0);
+  let [totalNFTs, setTotalNFTs] = useState(0);
+  let [totalDrops, setTotalDrops] = useState(0);
+  let [totalSeasons, setTotalSeasons] = useState(0);
+  let [totalCollections, setTotalCollections] = useState(0);
+
+
+  let getCounts = () => {
+
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${Cookies.get("Authorization")}`;
+    axios
+      .get("users/getcounts")
+      .then((response) => {
+        console.log(response);
+        setTotalCubes(response.data.Cubescount);
+        setTotalNFTs(response.data.NFTscount);
+        setTotalDrops(response.data.Dropscount);
+        setTotalSeasons(response.data.Seasonscount);
+        setTotalCollections(response.data.Collectionscount);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response);
+      });
+  };
 
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      disputedOrders: "",
-      mySeason:"",
-      earningsList:"",
-      referralEarnings:"",
+      newNFT: "",
+      orders: "",
+      myNFTs: "",
+      myCubes: "",
+      myDrops: "",
+      mySeason: "",
       settings: "",
+      privacyPolicy: "",
+      termsandconditions: "",
       changePassword: "",
-    });// eslint-disable-next-line
+      newDrop: "",
+      newCube: "",
+      newCollection: "",
+      newRandomDrop: "",
+    });
+    getCounts();
+    // eslint-disable-next-line
   }, []);
-
   return (
     <>
       {/* <!-- Page Header --> */}
@@ -57,21 +77,21 @@ function AdminDashboardDefaultScreen(props) {
       </div>
       {/* <!-- /Page Header --> */}
 
-      {/* <div className="row">
+      <div className="row">
         <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/totalUserAccount`}>
+          <Link to={`${props.match.url}/myNFTs`}>
             <div className="card">
               <div className="card-body">
                 <div className="dash-widget-header">
                   <span className="dash-widget-icon text-warning border-warning">
-                    <i className="fa fa-file-medical"></i>
+                    <ListAltIcon />
                   </span>
                   <div className="dash-count">
-                    <h3>{approved}</h3>
+                    <h3>{totalNFTs}</h3>
                   </div>
                 </div>
                 <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Accounts</h6>
+                  <h6 className="text-muted">Total NFTs</h6>
                   <div className="progress progress-sm">
                     <div className="progress-bar bg-warning w-100"></div>
                   </div>
@@ -80,20 +100,20 @@ function AdminDashboardDefaultScreen(props) {
             </div>
           </Link>
         </div>
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/pendingUserAccount`}>
+        {/* <div className="col-12 col-sm-3">
+          <Link to={`${props.match.url}/myCubes`}>
             <div className="card">
               <div className="card-body">
                 <div className="dash-widget-header">
                   <span className="dash-widget-icon text-secondary border-secondary">
-                    <i className="fa fa-hourglass"></i>
+                    <i className="fas fa-cubes" />
                   </span>
                   <div className="dash-count">
-                    <h3>{pending}</h3>
+                    <h3>{totalCubes}</h3>
                   </div>
                 </div>
                 <div className="dash-widget-info">
-                  <h6 className="text-muted">Pending Accounts</h6>
+                  <h6 className="text-muted">Total Cubes</h6>
                   <div className="progress progress-sm">
                     <div className="progress-bar bg-secondary w-100"></div>
                   </div>
@@ -101,22 +121,22 @@ function AdminDashboardDefaultScreen(props) {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
 
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/disputedOrders`}>
+        {/* <div className="col-12 col-sm-3">
+          <Link to={`${props.match.url}/myDrops`}>
             <div className="card">
               <div className="card-body">
                 <div className="dash-widget-header">
                   <span className="dash-widget-icon text-danger border-danger">
-                    <i className="fa fa-user"></i>
+                    <StorageIcon />
                   </span>
                   <div className="dash-count">
-                    <h3>{disputed}</h3>
+                    <h3>{totalDrops}</h3>
                   </div>
                 </div>
                 <div className="dash-widget-info">
-                  <h6 className="text-muted">Disputed Orders</h6>
+                  <h6 className="text-muted">Total Drops</h6>
                   <div className="progress progress-sm">
                     <div className="progress-bar bg-danger w-100"></div>
                   </div>
@@ -124,22 +144,22 @@ function AdminDashboardDefaultScreen(props) {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
 
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/resolvedDisputedOrders`}>
+        {/* <div className="col-12 col-sm-3">
+          <Link to={`${props.match.url}/mySeason`}>
             <div className="card">
               <div className="card-body">
                 <div className="dash-widget-header">
                   <span className="dash-widget-icon text-success border-success">
-                  <i className="fas fa-check"></i>
+                    <i className="fas fa-boxes"></i>
                   </span>
                   <div className="dash-count">
-                    <h3>{1}</h3>
+                    <h3>{totalSeasons}</h3>
                   </div>
                 </div>
                 <div className="dash-widget-info">
-                  <h6 className="text-muted">Resolved Disputes</h6>
+                  <h6 className="text-muted">Total Seasons</h6>
                   <div className="progress progress-sm">
                     <div className="progress-bar bg-success w-100"></div>
                   </div>
@@ -147,21 +167,21 @@ function AdminDashboardDefaultScreen(props) {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
         <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/tradeListOrders`}>
+          <Link to={`${props.match.url}/newCollection`}>
             <div className="card">
               <div className="card-body">
                 <div className="dash-widget-header">
                   <span className="dash-widget-icon text-info border-info">
-                  <i className="fas fa-clipboard-list"></i>
+                    <i className="fas fa-layer-group"></i>
                   </span>
                   <div className="dash-count">
-                    <h3>{7}</h3>
+                    <h3>{totalCollections}</h3>
                   </div>
                 </div>
                 <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Trades</h6>
+                  <h6 className="text-muted">Total Collections</h6>
                   <div className="progress progress-sm">
                     <div className="progress-bar bg-info w-100"></div>
                   </div>
@@ -171,7 +191,6 @@ function AdminDashboardDefaultScreen(props) {
           </Link>
         </div>
       </div>
-     */}
     </>
   );
 }

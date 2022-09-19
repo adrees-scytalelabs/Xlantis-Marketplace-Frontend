@@ -1,11 +1,7 @@
-import { Dialog, DialogContent, DialogContentText, DialogTitle, IconButton, InputLabel } from '@material-ui/core/';
 // import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 // import Button from '@material-ui/core/Button';
-import Card from '@material-ui/core/Card';
 // import CardActions from '@material-ui/core/CardActions';
-// import CardContent from '@material-ui/core/CardContent';
-import CardHeader from '@material-ui/core/CardHeader';
 // import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from '@material-ui/core/CircularProgress';
 // import FormControl from '@material-ui/core/FormControl';
@@ -13,9 +9,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 // import Radio from '@material-ui/core/Radio';
 // import RadioGroup from '@material-ui/core/RadioGroup';
 import { makeStyles } from '@material-ui/core/styles';
-import TextField from "@material-ui/core/TextField";
 // import Typography from '@material-ui/core/Typography';
-import { Clear } from '@material-ui/icons';
 // import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from 'axios';
 // import Cookies from "js-cookie";
@@ -26,9 +20,8 @@ import { Spinner } from "react-bootstrap";
 // import { Icon } from 'semantic-ui-react';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
-import CreateNFTContract from '../../../../components/blockchain/Abis/CreateNFTContract.json';
+import Factory1155Contract from '../../../../components/blockchain/Abis/Factory1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
-import ipfs from '../../../../components/IPFS/ipfs';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 
 const useStyles = makeStyles((theme) => ({
@@ -101,33 +94,14 @@ function NewCollection(props) {
     let [aboutTheArt, setAboutTheArt] = useState("");
     let [ipfsHash, setIpfsHash] = useState(null);
     let [collectionDescription, setCollectionDescription] = useState("");
+    let [collectionSymbol, setCollectionSymbol] = useState("");
     let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
     let [image, setImage] = useState(r1);
+    let [imageFile, setImageFile] = useState();
+    let [fileURL, setFileURL] = useState(r1);
 
-
-    // let getCollections = () => {
-    //     axios.get("/collection/collections").then(
-    //         (response) => {
-    //             console.log("response", response);
-    //             setCollectionTypes(response.data.Collectiondata)
-    //         },
-    //         (error) => {
-    //             if (process.env.NODE_ENV === "development") {
-    //                 console.log(error);
-    //                 console.log(error.response);
-    //             }
-    //             if (error.response.data !== undefined) {
-    //                 if (error.response.data === "Unauthorized access (invalid token) !!") {
-    //                     Cookies.remove("Authorization");
-    //                     localStorage.removeItem("Address")
-    //                     window.location.reload();
-    //                 }
-    //             }
-    //         })
-    // }
 
     useEffect(() => {
-        // getCollections();
 
         props.setActiveTab({
             dashboard: "",
@@ -166,362 +140,137 @@ function NewCollection(props) {
         event.preventDefault();
         setIsSaving(true);
 
-        if (tokenList.length === 0) {
-
-            let variant = "error";
-            enqueueSnackbar('Add Nfts to Queue before Creation.', { variant });
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'ropsten') {
+            setNetwork(network);
             setIsSaving(false);
+            handleShow();
         }
         else {
-            await loadWeb3();
-            const web3 = window.web3
-            const accounts = await web3.eth.getAccounts();
-            const network = await web3.eth.net.getNetworkType()
-            if (network !== 'ropsten') {
-                setNetwork(network);
-                setIsSaving(false);
-                handleShow();
-            }
-            else {
-                handleShowBackdrop();
-                const address = Addresses.CreateNftAddress;
-                const abi = CreateNFTContract;
-                let totalImages = tokenList.length;
-                let AmountofNFTs = [];
-                let IPFsHashes = [];
-                for (let i = 0; i < tokenList.length; i++) {
-                    AmountofNFTs.push(tokenList[i].tokensupply);
-                    IPFsHashes.push(tokenList[i].ipfsHash);
+            handleShowBackdrop();
+
+            const abi = Factory1155Contract;
+            const address = Addresses.Factory1155Address;
+            var cloneContractAddress;
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            await myContractInstance.methods.createNFT1155().send({ from: accounts[0] }, (err, response) => {
+                console.log("Get transaction ", err, response);
+                if(err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
                 }
-                console.log("AmountofNFTs", AmountofNFTs);
-                console.log("IPFsHashes", IPFsHashes);
+            })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt.events.CloneCreated.returnValues.cloneAddress);
+                    cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                }
+            )
 
-                var myContractInstance = await new web3.eth.Contract(abi, address);
-                console.log("myContractInstance", myContractInstance);
-                await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
-                    console.log('get transaction', err, response);
-                    if (err !== null) {
-                        console.log("err", err);
-                        let variant = "error";
-                        enqueueSnackbar('User Canceled Transaction', { variant });
-                        handleCloseBackdrop();
-                        setIsSaving(false);
+            let fileData = new FormData();
+            fileData.append("thumbnail", imageFile);
+            fileData.append("name", collectionName);
+            fileData.append("symbol", collectionSymbol);
+            fileData.append("description", collectionDescription);
+            fileData.append("nftContractAddress", cloneContractAddress);
+
+            axios.post("/collection/createcollection", fileData).then(
+                (response) => {
+                    console.log("response", response);
+                    let variant = "success";
+                    enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false)
+                },
+                (error) => {
+                    if (process.env.NODE_ENV === "development") {
+                        console.log(error);
+                        console.log(error.response);
                     }
+
+                    let variant = "error";
+                    enqueueSnackbar('Unable to Create New Collection.', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false)
                 })
-                    .on('receipt', (receipt) => {
-                        console.log("receipt", receipt);
-                        console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
-                        let ids = receipt.events.TransferBatch.returnValues.ids;
-                        for (let i = 0; i < tokenList.length; i++) {
-                            tokenList[i].nftId = ids[i];
-                        }
+            // const address = Addresses.CreateNftAddress;
+            // const abi = CreateNFTContract;
+            // let totalImages = tokenList.length;
+            // let AmountofNFTs = [];
+            // let IPFsHashes = [];
+            // for (let i = 0; i < tokenList.length; i++) {
+            //     AmountofNFTs.push(tokenList[i].tokensupply);
+            //     IPFsHashes.push(tokenList[i].ipfsHash);
+            // }
+            // console.log("AmountofNFTs", AmountofNFTs);
+            // console.log("IPFsHashes", IPFsHashes);
 
-                        let Data = {
-                            nftdata: tokenList
-                        }
-                        console.log("Data", Data);
-                        axios.post("/nft/createnft", Data).then(
-                            (response) => {
-                                console.log("response", response);
-                                let variant = "success";
-                                enqueueSnackbar('Nfts Created Successfully.', { variant });
-                                setTokenList([]);
-                                setIpfsHash("");
-                                setImage(r1);
-                                setCollectionName("");
-                                setCollectionDescription("");
-                                // setRarity("");
-                                // setTokenSupply(1);
-                                // setImageArtist("");
-                                // setImageArtistId("");
-                                setAboutTheArt("");
-                                setWebsite("");
-                                // setArtistImage(r1);
-                                // setProducer("");
-                                // setProducerId("");
-                                // setInspirationForThePiece("");
-                                // setProducerImage(r1);
-                                // setExecutiveProducer("");
-                                // setExecutiveProducerId("");
-                                // setExecutiveInspirationForThePiece("");
-                                // setExecutiveProducerImage(r1);
-                                // setFan("");
-                                // setFanId("");
-                                // setFanInspirationForThePiece("");
-                                // setFanImage(r1);
-                                // setOther("");
-                                // setCollection("");
-                                // setCollectionType("New");
-                                // setImageArtistType("New");
-                                // setProducerType("New");
-                                // setExecutiveProducerType("New");
-                                // setFanType("New");
-                                // setSupplyType("Single");
-                                // setCollectionId("");
-                                handleCloseBackdrop();
-                                setIsSaving(false);
-                            },
-                            (error) => {
-                                if (process.env.NODE_ENV === "development") {
-                                    console.log(error);
-                                    console.log(error.response);
-                                }
+            // var myContractInstance = await new web3.eth.Contract(abi, address);
+            // console.log("myContractInstance", myContractInstance);
+            // await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
+            //     console.log('get transaction', err, response);
+            //     if (err !== null) {
+            //         console.log("err", err);
+            //         let variant = "error";
+            //         enqueueSnackbar('User Canceled Transaction', { variant });
+            //         handleCloseBackdrop();
+            //         setIsSaving(false);
+            //     }
+            // })
+            //     .on('receipt', (receipt) => {
+            //         console.log("receipt", receipt);
+            //         console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
+            //         let ids = receipt.events.TransferBatch.returnValues.ids;
+            //         for (let i = 0; i < tokenList.length; i++) {
+            //             tokenList[i].nftId = ids[i];
+            //         }
 
-                                let variant = "error";
-                                enqueueSnackbar('Unable to Create Nfts.', { variant });
+            //         let Data = {
+            //             nftdata: tokenList
+            //         }
+            //         console.log("Data", Data);
+            //         axios.post("/nft/createnft", Data).then(
+            //             (response) => {
+            //                 console.log("response", response);
+            //                 let variant = "success";
+            //                 enqueueSnackbar('Nfts Created Successfully.', { variant });
+            //                 setTokenList([]);
+            //                 setIpfsHash("");
+            //                 setImage(r1);
+            //                 setCollectionName("");
+            //                 setCollectionDescription("");
+            //                 setAboutTheArt("");
+            //                 setWebsite("");
+            //                 handleCloseBackdrop();
+            //                 setIsSaving(false);
+            //             },
+            //             (error) => {
+            //                 if (process.env.NODE_ENV === "development") {
+            //                     console.log(error);
+            //                     console.log(error.response);
+            //                 }
 
-                                handleCloseBackdrop();
-                                setIsSaving(false);
-                            })
-                    })
-            }
+            //                 let variant = "error";
+            //                 enqueueSnackbar('Unable to Create Nfts.', { variant });
+
+            //                 handleCloseBackdrop();
+            //                 setIsSaving(false);
+            //             })
+            //     })
         }
-    };
 
-    const handleRemoveClick = (index) => {
-        const list = [...tokenList];
-        list.splice(index, 1);
-        setTokenList(list);
     };
-
-    // handle click event of the Add button
-    // const handleAddClick = () => {
-    //     if (image === r1) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Upload Artwork Photo', { variant });
-    //     } else if (collectionName === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Artwork Name', { variant });
-    //     } else if (collectionDescription === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Artwork Description', { variant });
-    //     } else if (rarity === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Select Artwork Rarity', { variant });
-    //     } else if (tokenSupply === "" || tokenSupply === undefined || tokenSupply === null) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Token Supply cannot be Empty', { variant });
-    //     } else if (tokenSupply < 0) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Token Supply cannot be Negative', { variant });
-    //     } else if (tokenSupply < 0) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Token Supply cannot be Negative', { variant });
-    //     } else if (imageArtist === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Image Artist Name', { variant });
-    //     } else if (aboutTheArt === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter About the Art', { variant });
-    //     } else if (artistImage === r1) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Select Image Artist Image', { variant });
-    //     } else if (website === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Website of Image Artist', { variant });
-    //     } else if (producer === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Producer Name', { variant });
-    //     } else if (producerImage === r1) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Select Producer Image', { variant });
-    //     } else if (inspirationForThePiece === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Producer Inspiration For The Piece', { variant });
-    //     } else if (executiveProducer === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Executive Producer Name', { variant });
-    //     } else if (executiveProducerImage === r1) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Select Executive Producer Image', { variant });
-    //     } else if (executiveInspirationForThePiece === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Executive Producer Inspiration For The Piece', { variant });
-    //     } else if (fan === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Fan Name', { variant });
-    //     } else if (fanImage === r1) {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Select Fan Image', { variant });
-    //     } else if (fanInspirationForThePiece === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Fan Inspiration For The Piece', { variant });
-    //     } else if (other === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter other Input field', { variant });
-    //     } else if (collection === "") {
-    //         let variant = "error";
-    //         enqueueSnackbar('Please Enter Collection Name', { variant });
-    //     }
-    //     else {
-    //         setTokenList([...tokenList, {
-    //             ipfsHash: ipfsHash,
-    //             artwork: image,
-    //             title: collectionName,
-    //             description: collectionDescription,
-    //             type: rarity,
-    //             tokensupply: tokenSupply,
-    //             ImageArtistName: imageArtist,
-    //             ImageArtistId:imageArtistId,
-    //             ImageArtistAbout: aboutTheArt,
-    //             ImageArtistWebsite: website,
-    //             ImageArtistProfile: artistImage,
-    //             ProducerId: producerId,
-    //             ProducerName: producer,
-    //             ProducerInspiration: inspirationForThePiece,
-    //             ProducerProfile: producerImage,
-    //             ExecutiveProducerId: executiveProducerId,
-    //             ExecutiveProducerName: executiveProducer,
-    //             ExecutiveProducerInspiration: executiveInspirationForThePiece,
-    //             ExecutiveProducerProfile: executiveProducerImage,
-    //             FanId: fanId,
-    //             FanName: fan,
-    //             FanInspiration: fanInspirationForThePiece,
-    //             FanProfile: fanImage,
-    //             other: other,
-    //             collectiontitle: collection,
-    //             collectiontype: collectionType,
-    //             imageartisttype: imageArtistType,
-    //             producertype: producerType,
-    //             executiveproducertype: executiveProducerType,
-    //             fantype: fanType,
-    //             supplytype: supplyType,
-    //             collectionId: collectionId,
-    //         }]);
-    //         setIpfsHash("");
-    //         setImage(r1);
-    //         setCollectionName("");
-    //         setCollectionDescription("");
-    //         setRarity("");
-    //         setTokenSupply(1);
-    //         setImageArtist("");
-    //         setImageArtistId("");
-    //         setAboutTheArt("");
-    //         setWebsite("");
-    //         setArtistImage(r1);
-    //         setProducer("");
-    //         setProducerId("");
-    //         setInspirationForThePiece("");
-    //         setProducerImage(r1);
-    //         setExecutiveProducer("");
-    //         setExecutiveProducerId("");
-    //         setExecutiveInspirationForThePiece("");
-    //         setExecutiveProducerImage(r1);
-    //         setFan("");
-    //         setFanId("");
-    //         setFanInspirationForThePiece("");
-    //         setFanImage(r1);
-    //         setOther("");
-    //         setCollection("");
-    //         setCollectionType("New");
-    //         setImageArtistType("New");
-    //         setProducerType("New");
-    //         setExecutiveProducerType("New");
-    //         setFanType("New");
-    //         setSupplyType("Single");
-    //         setCollectionId("");
-    //     }
-    // };
 
     let onChangeFile = (e) => {
-        setIsUploadingIPFS(true);
-        const reader = new window.FileReader();
-        let imageNFT = e.target.files[0]
-        console.log("e.target.files[0]",e.target.files[0]);
-        reader.readAsArrayBuffer(e.target.files[0]);
-        reader.onloadend = () => {
-            console.log("reader.result", reader.result);
-            ipfs.add(Buffer(reader.result), async (err, result) => {
-                if (err) {
-                    console.log("err", err);
-                    setIsUploadingIPFS(false);
-                    let variant = "error";
-                    enqueueSnackbar('Unable to Upload Image to IPFS ', { variant });
-                    return
-                }
-                console.log("HASH", result[0].hash);
-
-                setIpfsHash(result[0].hash);
-                let variant = "success";
-                enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
-                // 
-            })
-        }
-        // setIsUploadingIPFS(true);
-        let fileData = new FormData();
-        fileData.append("image", imageNFT);
-        axios.post("upload/uploadtos3", fileData).then(
-            (response) => {
-                console.log("response", response);
-                setImage(response.data.url);
-                setIsUploadingIPFS(false);
-                let variant = "success";
-                enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
-            },
-            (error) => {
-                if (process.env.NODE_ENV === "development") {
-                    console.log(error);
-                    console.log(error.response);
-                }
-                setIsUploadingIPFS(false);
-                let variant = "error";
-                enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
-            }
-        );
-
+        setImageFile(e.target.files[0]);
+        setFileURL(URL.createObjectURL(e.target.files[0]));
     }
 
-    const handleOnChangeLevel = (index, event) => {
-        let newData = [...levelValues];
-        newData[index][event.target.name] = event.target.value;
-        console.log("event target name: ", event.target.name);
-        console.log("event target value: ", event.target.value);
-        setLevelValues(newData);
-    }
-
-    const addLevels = () => {
-        let newLevels = { name: '', lowLevel: 0, highLevel: 0 };
-        setLevelValues([...levelValues, newLevels]);
-    }
-
-    const onSubmit = (e) => {
-        e.preventDefault();
-        console.log(levelValues);
-    }
-
-    const onRemoveLevels = (index) => {
-        let data = [...levelValues];
-        data.splice(index, 1);
-        setLevelValues(data);
-    }
-
-    // const handleAddChipButton = () => {
-    //     console.log("Add button clicked");
-    // }
-
-    const onDialogOpenClick = () => {
-        // console.log("Dialog button Clicked");
-        setOpenDialog(true);
-        // console.log("Collection Types are: ", collectionTypes);
-    }
-
-    const onDialogCloseClick = () => {
-        setOpenDialog(false);
-    }
-
-    const onClickDialogFormSubmit = (e) => {
-        e.preventDefault();
-
-        let newData = {
-            key: propertyKey,
-            value: propertyValue
-        };
-        setProperties([...properties, newData]);
-        setOpenDialog(false);
-        setPropertyKey("");
-        setPropertyValue("");
-    }
 
     return (
         <div className="card">
@@ -548,7 +297,7 @@ function NewCollection(props) {
                                                         height: "100px",
                                                     }}
                                                 >
-                                                    <img src={image} alt="Selfie" />
+                                                    <img src={fileURL} alt="Selfie" />
                                                 </div>
                                             </div>
                                             <div className="upload-img">
@@ -601,10 +350,23 @@ function NewCollection(props) {
                                             }}
                                         />
                                     </div>
-                                    <div>
-                                        <label>Collection Description</label><small style={{marginLeft: "5px"}}>(optional)</small>
+                                    <label>Collection Symbol</label>
+                                    <div className="form-group">
+                                        <input
+                                            type="text"
+                                            required
+                                            value={collectionSymbol}
+                                            placeholder="Enter Symbol of Collection"
+                                            className="form-control"
+                                            onChange={(e) => {
+                                                setCollectionSymbol(e.target.value)
+                                            }}
+                                        />
                                     </div>
-                                    
+                                    <div>
+                                        <label>Collection Description</label><small style={{ marginLeft: "5px" }}></small>
+                                    </div>
+
                                     <div className="form-group">
                                         {/* <label>About the Art</label> */}
                                         <textarea
@@ -619,77 +381,65 @@ function NewCollection(props) {
                                             }}
                                         />
                                     </div>
-                                    <div>
-                                        <label>Add Properties</label><small style={{marginLeft: "5px"}}>(optional)</small>
+                                    {/* <div>
+                                        <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
                                     </div>
                                     <div>
-                                        {/* <Chip
-                                            label="Add Property"
-                                            variant="outlined"
-                                            color= "primary"
-                                            onDelete= {handleAddChipButton}
-                                            deleteIcon= { <Icon className="fa fa-plus-circle" color="secondary" />}
-                                        /> */}
-                                        <button 
-                                            className= "btn btn-submit"
-                                            color= "primary"
+                                        <button
+                                            className="btn btn-submit"
+                                            color="primary"
                                             // className="btn submit-btn"
-                                            onClick= {onDialogOpenClick}
+                                            onClick={onDialogOpenClick}
                                         >
                                             Add Properties
                                         </button>
                                         <Dialog
-                                            fullWidth= {true}
-                                            maxWidth= {true}
+                                            fullWidth={true}
+                                            maxWidth={true}
                                             open={openDialog}
                                             onClose={onDialogCloseClick}
                                             aria-labelledby="max-width-dialog-title"
                                         >
-                                            <DialogTitle id= "max-width-dialog-title">Enter Properties</DialogTitle>
+                                            <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
                                             <DialogContent>
                                                 <DialogContentText>Enter Properties in key value pair</DialogContentText>
                                                 <form>
                                                     <TextField
-                                                        label= "Key"
-                                                        value= {propertyKey}
-                                                        onChange= {(e) => setPropertyKey(e.target.value) }
+                                                        label="Key"
+                                                        value={propertyKey}
+                                                        onChange={(e) => setPropertyKey(e.target.value)}
                                                     />
                                                     <TextField
-                                                        label= "Value"
-                                                        value= {propertyValue}
-                                                        onChange= {(e) => setPropertyValue(e.target.value)}
+                                                        label="Value"
+                                                        value={propertyValue}
+                                                        onChange={(e) => setPropertyValue(e.target.value)}
                                                         style={{ marginLeft: "5px" }}
                                                     />
-                                                    <button className="btn submit-btn" onClick={ onClickDialogFormSubmit } >Add</button>
+                                                    <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
                                                 </form>
                                             </DialogContent>
                                         </Dialog>
-                                    </div>
-                                    <div>
+                                    </div> */}
+                                    {/* <div>
                                         <div>
                                             {properties.map((property, index) => {
-                                                return(
+                                                return (
                                                     <Card>
                                                         <CardHeader
-                                                            title= {property.key}
-                                                            subheader= {property.value}
+                                                            title={property.key}
+                                                            subheader={property.value}
                                                         />
                                                     </Card>
                                                 )
                                             })}
                                         </div>
-                                    </div>
-                                    <div style={{marginTop: "5px"}}>
+                                    </div> */}
+                                    {/* <div style={{marginTop: "5px"}}>
                                         <label>Add Level</label>
-                                    </div>
-                                    {levelValues.map((level, index)=> {
+                                    </div> */}
+                                    {/* {levelValues.map((level, index)=> {
                                       return (
                                         <div>
-                                            {/* <div style={{width: "10%", float: "left"}}>
-                                                    <IconButton onClick={() => onRemoveLevels(index)} >
-                                                        <Clear />
-                                                    </IconButton>
-                                            </div> */}
                                             <div 
                                                 style={{
                                                 float: "left",
@@ -735,116 +485,20 @@ function NewCollection(props) {
                                                     />
                                                 </div>
                                             </div>
-                                            {/* <button onClick={() => onRemoveLevels(index)}>Remove</button> */}
                                             <IconButton onClick={() => onRemoveLevels(index)} >
                                                 <Clear />
                                             </IconButton>
                                         </div>
                                       )      
-                                    })}
-                                    <button className= "btn" onClick={addLevels} >Add more</button>
+                                    })} */}
+                                    {/* <button className= "btn" onClick={addLevels} >Add more</button> */}
                                     {/* <button onClick={ onSubmit }>Submit</button> */}
                                 </div>
                             </div>
                         </form>
 
                     </div>
-                    {/* <div className="col-md-12 col-lg-6"> */}
-                        {/* <!-- Change Password Form --> */}
-                        {/* <form > */}
-                            {/* <Scrollbars style={{ height: 1500 }}> */}
 
-                                {/* <div className="form-group"> */}
-                                    {/* <div > */}
-                                        {/* <Grid */}
-                                            {/* container */}
-                                            {/* spacing={2} */}
-                                            {/* direction="row" */}
-                                            {/* justify="flex-start" */}
-                                        {/*  */}
-                                        {/* > */}
-                                            {/* {tokenList.map((i, index) => ( */}
-
-                                                {/* <Grid item xs={12} sm={6} md={6} key={index}> */}
-                                                    {/* <Card > */}
-                                                        {/* <CardHeader className="text-center" */}
-                                                            {/* title={i.title} */}
-                                                        {/* /> */}
-                                                        {/* <CardMedia
-                                                            variant="outlined" style={{ height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                            className={classes.media}
-                                                            image={i.artwork}
-
-                                                            title="NFT Image"
-                                                        /> */}
-                                                        {/* <CardContent>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Artwork Description: </strong>{i.description}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Token Rarity: </strong>{i.type}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Token Supply: </strong>{i.tokensupply}
-                                                            </Typography>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                                title={i.ImageArtistName}
-                                                                subheader={i.ImageArtistAbout}
-                                                            />
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Website URL: </strong>{i.ImageArtistWebsite}
-                                                            </Typography>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                                title={i.ProducerName}
-                                                                subheader={i.ProducerInspiration}
-                                                            />
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                                title={i.ExecutiveProducerName}
-                                                                subheader={i.ExecutiveProducerInspiration}
-                                                            />
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                                title={i.FanName}
-                                                                subheader={i.FanInspiration}
-                                                            /> */}
-
-                                                            {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Other: </strong>{i.other}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Collection: </strong>{i.collectiontitle}
-                                                            </Typography>
-                                                        </CardContent>
-                                                        <CardActions>
-
-                                                            <Button
-                                                                onClick={(e) => {
-                                                                    e.preventDefault();
-                                                                    handleRemoveClick(index);
-                                                                }}
-                                                                className="btn btn-sm bg-danger-light btn-block"
-
-                                                            >
-                                                                Remove NFT
-                                                            </Button>
-                                                        </CardActions>
-                                                    </Card>
-                                                </Grid>
-
-                                            ))}
-                                        </Grid> */}
-                                    {/* </div>
-                                </div>
-                            </Scrollbars>
-                        </form>
-                    </div> */}
                 </div>
                 {
                     isSaving ? (
