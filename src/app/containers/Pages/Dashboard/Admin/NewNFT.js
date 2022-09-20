@@ -114,7 +114,7 @@ function NewNFT(props) {
     // let [imageArtist, setImageArtist] = useState('');
     // let [imageArtistId, setImageArtistId] = useState('');
     let [collectionTypes, setCollectionTypes] = useState([]);
-    let [collectionType, setCollectionType] = useState("New");
+    // let [collectionType, setCollectionType] = useState("New");
     let [collection, setCollection] = useState('');
 
     // let [producerId, setProducerId] = useState('');
@@ -344,7 +344,7 @@ function NewNFT(props) {
                             // setFanImage(r1);
                             // setOther("");
                             setCollection("");
-                            setCollectionType("New");
+                            // setCollectionType("New");
                             // setImageArtistType("New");
                             // setProducerType("New");
                             // setExecutiveProducerType("New");
@@ -371,9 +371,9 @@ function NewNFT(props) {
         }
     };
     const handleRemoveClick = (index) => {
-    //     const list = [...tokenList];
-    //     list.splice(index, 1);
-    //     setTokenList(list);
+        const list = [...tokenList];
+        list.splice(index, 1);
+        setTokenList(list);
     };
 
     // handle click event of the Add button
@@ -439,10 +439,10 @@ function NewNFT(props) {
         else {
             setTokenList([...tokenList, {
                 ipfsHash: ipfsHash,
-                artwork: image,
+                nftImage: image,
                 title: name,
                 description: description,
-                type: rarity,
+                rarity: rarity,
                 tokensupply: tokenSupply,
                 // ImageArtistName: imageArtist,
                 // ImageArtistId: imageArtistId,
@@ -463,7 +463,7 @@ function NewNFT(props) {
                 // FanProfile: fanImage,
                 // other: other,
                 collectiontitle: collection,
-                collectiontype: collectionType,
+                // collectiontype: collectionType,
                 // imageartisttype: imageArtistType,
                 // producertype: producerType,
                 // executiveproducertype: executiveProducerType,
@@ -496,7 +496,7 @@ function NewNFT(props) {
             // setFanImage(r1);
             // setOther("");
             setCollection("");
-            setCollectionType("New");
+            // setCollectionType("New");
             // setImageArtistType("New");
             // setProducerType("New");
             // setExecutiveProducerType("New");
@@ -785,6 +785,7 @@ function NewNFT(props) {
                                                     setRarity(value)
                                                 }
                                             }}
+                                            inputValue = {rarity}
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
@@ -966,6 +967,7 @@ function NewNFT(props) {
                                                         }
                                                     }
                                                 }}
+                                                inputValue = {collection}
                                                 renderInput={(params) => (
                                                     <TextField
                                                         {...params}
@@ -1028,7 +1030,7 @@ function NewNFT(props) {
                                                     <CardMedia
                                                         variant="outlined" style={{ height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                         className={classes.media}
-                                                        image={i.artwork}
+                                                        image={i.nftImage}
 
                                                         title="NFT Image"
                                                     />
@@ -1037,7 +1039,7 @@ function NewNFT(props) {
                                                             <strong>Artwork Description: </strong>{i.description}
                                                         </Typography>
                                                         <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Token Rarity: </strong>{i.type}
+                                                            <strong>Token Rarity: </strong>{i.rarity}
                                                         </Typography>
                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                             <strong>Token Supply: </strong>{i.tokensupply}
