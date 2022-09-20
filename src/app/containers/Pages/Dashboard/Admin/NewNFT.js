@@ -1028,7 +1028,7 @@ function NewNFT(props) {
                                                         title={i.title}
                                                     />
                                                     <CardMedia
-                                                        variant="outlined" style={{ height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                        variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                         className={classes.media}
                                                         image={i.nftImage}
 
@@ -1036,16 +1036,16 @@ function NewNFT(props) {
                                                     />
                                                     <CardContent>
                                                         <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Artwork Description: </strong>{i.description}
+                                                            <strong>Description: </strong>{i.description}
                                                         </Typography>
                                                         <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Token Rarity: </strong>{i.rarity}
+                                                            <strong>Rarity: </strong>{i.rarity}
                                                         </Typography>
                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                             <strong>Token Supply: </strong>{i.tokensupply}
                                                         </Typography>
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                                                        <CardHeader
+                                                        {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography> */}
+                                                        {/* <CardHeader
                                                             avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
                                                             title={i.ImageArtistName}
                                                             subheader={i.ImageArtistAbout}
@@ -1074,7 +1074,7 @@ function NewNFT(props) {
 
                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                             <strong>Other: </strong>{i.other}
-                                                        </Typography>
+                                                        </Typography> */}
                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                             <strong>Collection: </strong>{i.collectiontitle}
                                                         </Typography>
