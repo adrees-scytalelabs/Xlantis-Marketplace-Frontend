@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core/';
+import { CardActionArea, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@material-ui/core/';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Button from '@material-ui/core/Button';
@@ -29,6 +29,7 @@ import CreateNFTContract from '../../../../components/blockchain/Abis/Collectibl
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import ipfs from '../../../../components/IPFS/ipfs';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -141,6 +142,8 @@ function NewNFT(props) {
     let [collectionId, setCollectionId] = useState('');
     let [ipfsURI, setIpfsURI] = useState("");
     let [imageType, setImageType] = useState("");
+    let [openDialog, setOpenDialog] = useState(false);
+    let [tempTokenList, setTempTokenList] = useState([]);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -674,6 +677,19 @@ function NewNFT(props) {
         setProperties(data);
     }
 
+    let handleOpenNFTDetailModal = () => {
+        // setTempTokenList([...tokenList]);
+        // console.log([...tokenList]);
+        setOpenDialog(true);
+    }
+
+    let handleCloseNFTDetailModal = () => {
+        // setTokenList([...tempTokenList]);
+        // setTempTokenList([]);
+        console.log("Close button called from modal.");
+        setOpenDialog(false);
+    }
+
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -1023,76 +1039,124 @@ function NewNFT(props) {
                                         {tokenList.map((i, index) => (
 
                                             <Grid item xs={12} sm={6} md={6} key={index}>
-                                                <Card >
-                                                    <CardHeader className="text-center"
-                                                        title={i.title}
-                                                    />
-                                                    <CardMedia
-                                                        variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                        className={classes.media}
-                                                        image={i.nftImage}
-
-                                                        title="NFT Image"
-                                                    />
-                                                    <CardContent>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Description: </strong>{i.description}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Rarity: </strong>{i.rarity}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Token Supply: </strong>{i.tokensupply}
-                                                        </Typography>
-                                                        {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography> */}
-                                                        {/* <CardHeader
-                                                            avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                            title={i.ImageArtistName}
-                                                            subheader={i.ImageArtistAbout}
+                                                <CardActionArea onClick={() => {
+                                                    handleOpenNFTDetailModal();
+                                                    console.log("Open Dialog Value: ", openDialog);
+                                                }}>
+                                                    <Card>
+                                                        <CardHeader className="text-center"
+                                                            title={i.title}
                                                         />
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Website URL: </strong>{i.ImageArtistWebsite}
-                                                        </Typography>
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                            title={i.ProducerName}
-                                                            subheader={i.ProducerInspiration}
-                                                        />
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                            title={i.ExecutiveProducerName}
-                                                            subheader={i.ExecutiveProducerInspiration}
-                                                        />
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                            title={i.FanName}
-                                                            subheader={i.FanInspiration}
-                                                        />
+                                                        <CardMedia
+                                                            variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                            className={classes.media}
+                                                            image={i.nftImage}
 
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Other: </strong>{i.other}
-                                                        </Typography> */}
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Collection: </strong>{i.collectiontitle}
-                                                        </Typography>
-                                                    </CardContent>
-                                                    <CardActions>
+                                                            title="NFT Image"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Description: </strong>{i.description}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Rarity: </strong>{i.rarity}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Token Supply: </strong>{i.tokensupply}
+                                                            </Typography>
+                                                            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography> */}
+                                                            {/* <CardHeader
+                                                                avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                                title={i.ImageArtistName}
+                                                                subheader={i.ImageArtistAbout}
+                                                            />
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Website URL: </strong>{i.ImageArtistWebsite}
+                                                            </Typography>
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
+                                                                title={i.ProducerName}
+                                                                subheader={i.ProducerInspiration}
+                                                            />
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
+                                                                title={i.ExecutiveProducerName}
+                                                                subheader={i.ExecutiveProducerInspiration}
+                                                            />
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
+                                                                title={i.FanName}
+                                                                subheader={i.FanInspiration}
+                                                            />
 
-                                                        <Button
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleRemoveClick(index);
-                                                            }}
-                                                            className="btn btn-sm bg-danger-light btn-block"
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Other: </strong>{i.other}
+                                                            </Typography> */}
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Collection: </strong>{i.collectiontitle}
+                                                            </Typography>
+                                                        </CardContent>
+                                                        <CardActions>
 
-                                                        >
-                                                            Remove NFT
-                                                        </Button>
-                                                    </CardActions>
-                                                </Card>
+                                                            <Button
+                                                                onClick={(e) => {
+                                                                    e.preventDefault();
+                                                                    handleRemoveClick(index);
+                                                                }}
+                                                                className="btn btn-sm bg-danger-light btn-block"
+
+                                                            >
+                                                                Remove NFT
+                                                            </Button>
+                                                        </CardActions>
+                                                    </Card>
+                                                    {/* <Dialog
+                                                        fullWidth={true}
+                                                        maxWidth={true}
+                                                        open={openDialog}
+                                                        onClose={handleClickCloseDialog}
+                                                        aria-labelledby="max-width-dialog-title"
+                                                    >
+                                                        <DialogTitle id="max-width-dialog-title">Edit NFT Details</DialogTitle>
+                                                        <DialogContent>
+                                                            <DialogContentText></DialogContentText>
+                                                            <form>
+                                                                <TextField
+                                                                    label="NFT Title"
+                                                                    variant="outlined"
+                                                                    value={tempTokenList.title}
+                                                                    onChange={(e) => {
+                                                                        let temp = [...tempTokenList];
+                                                                        temp[index].title = e.target.value;
+                                                                        console.log(tempTokenList);
+                                                                        setTempTokenList(temp);
+                                                                    }}
+                                                                />
+                                                                <TextField
+                                                                    label="NFT Description"
+                                                                    variant="outlined"
+                                                                    value={tempTokenList.description}
+                                                                    onChange={(e) => {
+                                                                        let temp = [...tempTokenList];
+                                                                        temp[index].description = e.target.value;
+                                                                        setTempTokenList(temp);
+                                                                    }}
+                                                                    style={{ marginLeft: "5px" }}
+                                                                />
+                                                                <button className="btn submit-btn" onClick={console.log("Submit clicked")} >Save</button> 
+                                                            </form>
+                                                        </DialogContent>
+                                                    </Dialog> */}
+                                                </CardActionArea>
+                                                <NFTDetailModal 
+                                                    show={openDialog} 
+                                                    handleClose={handleCloseNFTDetailModal}
+                                                    nftDetail={tokenList[index]}
+                                                >
+                                                </NFTDetailModal>
                                             </Grid>
 
                                         ))}
