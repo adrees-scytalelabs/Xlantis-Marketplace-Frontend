@@ -30,6 +30,7 @@ import * as Addresses from '../../../../components/blockchain/Addresses/Addresse
 import ipfs from '../../../../components/IPFS/ipfs';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
+import NFTEditModal from '../../../../components/Modals/NFTEditModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -143,7 +144,9 @@ function NewNFT(props) {
     let [ipfsURI, setIpfsURI] = useState("");
     let [imageType, setImageType] = useState("");
     let [openDialog, setOpenDialog] = useState(false);
-    let [tempTokenList, setTempTokenList] = useState([]);
+    let [openEditModal, setOpenEditModal] = useState(false);
+    let [nftDetail, setNftDetail] = useState({});
+    let [editObjectIndex, setEditObjectIndex] = useState(0);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -677,9 +680,8 @@ function NewNFT(props) {
         setProperties(data);
     }
 
-    let handleOpenNFTDetailModal = () => {
-        // setTempTokenList([...tokenList]);
-        // console.log([...tokenList]);
+    let handleOpenNFTDetailModal = (nftObject) => {
+        setNftDetail(nftObject);
         setOpenDialog(true);
     }
 
@@ -688,6 +690,25 @@ function NewNFT(props) {
         // setTempTokenList([]);
         console.log("Close button called from modal.");
         setOpenDialog(false);
+    }
+
+    let handleEdit = () => {
+        // setNftDetail(nftObject);
+        console.log("Nft detail: ", nftDetail);
+        // setNftDetail(nftDetail);
+        setOpenDialog(false);
+        setOpenEditModal(true);
+    }
+
+    let handleEditClose = () => {
+        setOpenEditModal(false);
+    }
+
+    let onUpdateEditModal = (obj) => {
+        let data = [...tokenList];
+        data[editObjectIndex] = obj;
+        setTokenList(data);
+        setOpenEditModal(false);
     }
 
     return (
@@ -1040,7 +1061,8 @@ function NewNFT(props) {
 
                                             <Grid item xs={12} sm={6} md={6} key={index}>
                                                 <CardActionArea onClick={() => {
-                                                    handleOpenNFTDetailModal();
+                                                    handleOpenNFTDetailModal(i);
+                                                    setEditObjectIndex(index);
                                                     console.log("Open Dialog Value: ", openDialog);
                                                 }}>
                                                     <Card>
@@ -1099,19 +1121,6 @@ function NewNFT(props) {
                                                                 <strong>Collection: </strong>{i.collectiontitle}
                                                             </Typography>
                                                         </CardContent>
-                                                        <CardActions>
-
-                                                            <Button
-                                                                onClick={(e) => {
-                                                                    e.preventDefault();
-                                                                    handleRemoveClick(index);
-                                                                }}
-                                                                className="btn btn-sm bg-danger-light btn-block"
-
-                                                            >
-                                                                Remove NFT
-                                                            </Button>
-                                                        </CardActions>
                                                     </Card>
                                                     {/* <Dialog
                                                         fullWidth={true}
@@ -1151,12 +1160,34 @@ function NewNFT(props) {
                                                         </DialogContent>
                                                     </Dialog> */}
                                                 </CardActionArea>
-                                                <NFTDetailModal 
+                                                <CardActions>
+
+                                                    <Button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRemoveClick(index);
+                                                        }}
+                                                        className="btn btn-sm bg-danger-light btn-block"
+
+                                                    >
+                                                        Remove NFT
+                                                    </Button>
+                                                </CardActions>
+                                                {/* <NFTDetailModal 
                                                     show={openDialog} 
                                                     handleClose={handleCloseNFTDetailModal}
                                                     nftDetail={tokenList[index]}
+                                                    handleEdit={handleEdit}
                                                 >
                                                 </NFTDetailModal>
+                                                <NFTEditModal
+                                                    show={openEditModal}
+                                                    handleClose={handleEditClose}
+                                                    nftDetail={i}
+                                                    index={index}
+                                                    onUpdate={onUpdateEditModal}
+                                                >
+                                                </NFTEditModal> */}
                                             </Grid>
 
                                         ))}
@@ -1202,6 +1233,21 @@ function NewNFT(props) {
                 network={network}
             >
             </NetworkErrorModal>
+            <NFTDetailModal 
+                show={openDialog} 
+                handleClose={handleCloseNFTDetailModal}
+                nftDetail={nftDetail}
+                handleEdit={handleEdit}
+            >
+            </NFTDetailModal>
+            <NFTEditModal
+                show={openEditModal}
+                handleClose={handleEditClose}
+                nftDetail={nftDetail}
+                // index={index}
+                onUpdate={onUpdateEditModal}
+            >
+            </NFTEditModal>
             <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>

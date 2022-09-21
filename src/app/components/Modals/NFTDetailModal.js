@@ -45,6 +45,9 @@ const NFTDetailModal = (props) => {
                 <Button variant="primary" onClick={props.handleClose}>
                     Close
                 </Button>
+                <Button variant="primary" onClick={props.handleEdit} >
+                    Edit Details
+                </Button>
             </Modal.Footer>
         </Modal>
     );
