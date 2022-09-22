@@ -147,6 +147,7 @@ function NewNFT(props) {
     let [openEditModal, setOpenEditModal] = useState(false);
     let [nftDetail, setNftDetail] = useState({});
     let [editObjectIndex, setEditObjectIndex] = useState(0);
+    let [batchId, setBatchId] = useState("");
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -477,6 +478,43 @@ function NewNFT(props) {
                 supplytype: supplyType,
                 collectionId: collectionId,
             }]);
+
+            //sending data to backend
+            let data ={
+                "collectionId": collectionId,
+                "title": name,
+                "description": description,
+                "nftURI": ipfsURI,
+                "metadataURI": ipfsURI,
+                "nftFormat": imageType,
+                "type": rarity,
+                "tokenSupply": tokenSupply,
+                "supplyType": supplyType
+            }
+
+            if (batchId === ""){
+                axios.post("/nft/batch-mint", data).then(
+                    (response) => {
+                        console.log("Response on batch mint: ", response.data.batchId);
+                        setBatchId(response.data.batchId);
+                    },
+                    (error) => {
+                        console.log("Error on batch mint: ", error);
+                    }
+                )
+            } else {
+                data["batchId"] = batchId;
+                console.log("data: ", data);
+                axios.post("nft/batch-mint/nft", data).then(
+                    (response) => {
+                        console.log("Batch minting into existing batch response: ", response);
+                    },
+                    (error) => {
+                        console.log("Batch minting into existing batch error: ", error);
+                    }
+                )
+            }
+
             setIpfsHash("");
             setImage(r1);
             setName("");
