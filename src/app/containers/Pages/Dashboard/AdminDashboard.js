@@ -30,6 +30,7 @@ import ProfileSetting from "./ProfileSetting";
 import CollectionNfts from "./Admin/CollectionNfts";
 import CubeNFTs from "./Admin/CubeNFTs";
 import NewCollection from "./Admin/NewCollection";
+import SingleNftDetail from "./Admin/singleNftDetail";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
@@ -234,6 +235,9 @@ function AdminDashboard(props) {
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 
+            <Route exact path={`${path}/nftDetail/:nftId`}>
+              <SingleNftDetail setActiveTab={setActiveTab} />
+            </Route>
 
             <Route exact path={`${path}/collection/nfts/:collectionId`}>
               <CollectionNfts setActiveTab={setActiveTab} />
