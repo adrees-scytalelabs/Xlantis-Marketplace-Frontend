@@ -150,6 +150,7 @@ function NewNFT(props) {
     let [editObjectIndex, setEditObjectIndex] = useState(0);
     let [batchId, setBatchId] = useState("");
     let [changeCollection, setChangeCollection] = useState(false);
+    let [changeCollectionList, setChangeCollectionList] = useState([]);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -183,6 +184,7 @@ function NewNFT(props) {
         axios.get("/collection/collections").then(
             (response) => {
                 console.log("response", response);
+                setChangeCollectionList(response.data.collectionData);
                 response.data.collectionData = [{
                     name: "+ Create new Collection"
                 }, ...response.data.collectionData]
@@ -758,6 +760,18 @@ function NewNFT(props) {
 
     let handleChangeCollectionOpen = () => {
         setChangeCollection(true);
+    }
+
+    let updateChangeCollection = (collectionObj) => {
+        console.log("Collection obj: ", collectionObj);
+        setCollection(collectionObj.name)
+        setCollectionId(collectionObj._id)
+        setNftContractAddress(collectionObj.nftContractAddress);
+        tokenList.map((token) => {
+            token.collectiontitle = collectionObj.name;
+            token.collectionId = collectionObj._id;
+        })
+        setChangeCollection(false);
     }
 
     return (
@@ -1342,6 +1356,8 @@ function NewNFT(props) {
             <ChangeCollectionConfirmationModal
                 show={changeCollection}
                 handleClose={handleChangeCollectionClose}
+                collectionDetails={changeCollectionList}
+                updateChangeCollection={updateChangeCollection}
             >
             </ChangeCollectionConfirmationModal>
             <Backdrop className={classes.backdrop} open={open} >
