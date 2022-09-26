@@ -268,6 +268,10 @@ const NFTEditModal = (props) => {
                                 </div>
                             )}
 
+                            <button type="button" className="btn submit-btn" onClick={props.handleChangeCollection}>
+                                Change Collection
+                            </button>
+
                         </div>
 
                     </div>

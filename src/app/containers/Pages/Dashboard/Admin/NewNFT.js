@@ -1336,6 +1336,7 @@ function NewNFT(props) {
                 nftDetail={nftDetail}
                 // index={index}
                 onUpdate={onUpdateEditModal}
+                handleChangeCollection={handleChangeCollectionOpen}
             >
             </NFTEditModal>
             <ChangeCollectionConfirmationModal
