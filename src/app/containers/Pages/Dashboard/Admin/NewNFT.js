@@ -539,7 +539,7 @@ function NewNFT(props) {
             // setFanInspirationForThePiece("");
             // setFanImage(r1);
             // setOther("");
-            setCollection("");
+            // setCollection("");
             // setCollectionType("New");
             // setImageArtistType("New");
             // setProducerType("New");
@@ -548,6 +548,7 @@ function NewNFT(props) {
             setSupplyType("Single");
             setCollectionId("");
         }
+        console.log("Token list length: ", tokenList.length);
     };
 
     let onChangeFile = (e) => {
@@ -1016,43 +1017,84 @@ function NewNFT(props) {
                                     
                                     </div>
 
-                                    <div className="form-group">
-
-                                        <label>Select Collection</label>
-                                        <div className="filter-widget">
-                                            <Autocomplete
-                                                id="combo-dox-demo"
-                                                required
-                                                options={collectionTypes}
-                                                // disabled={isDisabledImporter}
-                                                getOptionLabel={(option) =>
-                                                    option.name
-                                                }
-                                                onChange={(event, value) => {
-                                                    if (value == null) setCollection("");
-                                                    else {
-                                                        if (value.name === "+ Create new Collection") {
-                                                            history.push('/dashboard/createNewCollection')
-                                                        } else {
-                                                            console.log(value);
-                                                            setCollection(value.name)
-                                                            setCollectionId(value._id)
-                                                            setNftContractAddress(value.nftContractAddress);
-                                                            console.log("Value: ", value);
+                                        {(tokenList.length > 0) ? (
+                                            <div className="form-group">
+                                                <label>Select Collection</label>
+                                                <div className="filter-widget">
+                                                    <Autocomplete
+                                                        id="combo-dox-demo"
+                                                        disabled
+                                                        options={collectionTypes}
+                                                        // disabled={isDisabledImporter}
+                                                        getOptionLabel={(option) =>
+                                                            option.name
                                                         }
-                                                    }
-                                                }}
-                                                inputValue = {collection}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        label="Collections"
-                                                        variant="outlined"
+                                                        onChange={(event, value) => {
+                                                            if (value == null) setCollection("");
+                                                            else {
+                                                                if (value.name === "+ Create new Collection") {
+                                                                    history.push('/dashboard/createNewCollection')
+                                                                } else {
+                                                                    console.log(value);
+                                                                    setCollection(value.name)
+                                                                    setCollectionId(value._id)
+                                                                    setNftContractAddress(value.nftContractAddress);
+                                                                    console.log("Value: ", value);
+                                                                }
+                                                            }
+                                                        }}
+                                                        inputValue = {collection}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Collections"
+                                                                variant="outlined"
+                                                            />
+                                                        )}
                                                     />
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="form-group">
+                                                <label>Select Collection</label>
+                                                <div className="filter-widget">
+                                                    <Autocomplete
+                                                        id="combo-dox-demo"
+                                                        required
+                                                        options={collectionTypes}
+                                                        // disabled={isDisabledImporter}
+                                                        getOptionLabel={(option) =>
+                                                            option.name
+                                                        }
+                                                        onChange={(event, value) => {
+                                                            if (value == null) setCollection("");
+                                                            else {
+                                                                if (value.name === "+ Create new Collection") {
+                                                                    history.push('/dashboard/createNewCollection')
+                                                                } else {
+                                                                    console.log(value);
+                                                                    setCollection(value.name)
+                                                                    setCollectionId(value._id)
+                                                                    setNftContractAddress(value.nftContractAddress);
+                                                                    console.log("Value: ", value);
+                                                                }
+                                                            }
+                                                        }}
+                                                        inputValue = {collection}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Collections"
+                                                                variant="outlined"
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                        
+                                    }
+                                        
 
                                     {/* )} */}
 
