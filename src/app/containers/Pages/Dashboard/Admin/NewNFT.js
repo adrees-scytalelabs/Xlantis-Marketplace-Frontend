@@ -28,6 +28,7 @@ import r1 from '../../../../assets/img/patients/patient.jpg';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import ipfs from '../../../../components/IPFS/ipfs';
+import ChangeCollectionConfirmationModal from '../../../../components/Modals/ChangeCollectionConfirmationModal';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 import NFTEditModal from '../../../../components/Modals/NFTEditModal';
@@ -148,6 +149,7 @@ function NewNFT(props) {
     let [nftDetail, setNftDetail] = useState({});
     let [editObjectIndex, setEditObjectIndex] = useState(0);
     let [batchId, setBatchId] = useState("");
+    let [changeCollection, setChangeCollection] = useState(false);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -750,6 +752,14 @@ function NewNFT(props) {
         setOpenEditModal(false);
     }
 
+    let handleChangeCollectionClose = () => {
+        setChangeCollection(false);
+    }
+
+    let handleChangeCollectionOpen = () => {
+        setChangeCollection(true);
+    }
+
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -1328,6 +1338,11 @@ function NewNFT(props) {
                 onUpdate={onUpdateEditModal}
             >
             </NFTEditModal>
+            <ChangeCollectionConfirmationModal
+                show={changeCollection}
+                handleClose={handleChangeCollectionClose}
+            >
+            </ChangeCollectionConfirmationModal>
             <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>
