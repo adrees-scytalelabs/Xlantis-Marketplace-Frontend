@@ -267,13 +267,13 @@ function NewNFT(props) {
             const abi = CreateNFTContract;
             let totalImages = tokenList.length;
             let AmountofNFTs = [];
-            let IPFsHashes = [];
+            let IPFsURIs = [];
             for (let i = 0; i < tokenList.length; i++) {
-                AmountofNFTs.push(tokenList[i].tokensupply);
-                IPFsHashes.push(tokenList[i].ipfsHash);
+                AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
+                IPFsURIs.push(tokenList[i].ipfsURI);
             }
             console.log("AmountofNFTs", AmountofNFTs);
-            console.log("IPFsHashes", IPFsHashes);
+            console.log("IPFsHashes", IPFsURIs);
 
             console.log("Contract Address: ", address);
             var myContractInstance = await new web3.eth.Contract(abi, address);
@@ -284,7 +284,7 @@ function NewNFT(props) {
             console.log("tokenSupply: ", tokenSupply);
             console.log("Account address: ", accounts[0]);
             console.log("Image Type: ", imageType);
-            await myContractInstance.methods.createAsset(name, description, ipfsURI,  "0", tokenSupply, "0x00").send({ from: accounts[0] }, (err, response) => {
+            await myContractInstance.methods.mintBatch(accounts[0], AmountofNFTs, IPFsURIs).send({ from: accounts[0] }, (err, response) => {
                 console.log('get transaction', err, response);
                 if (err !== null) {
                     console.log("err", err);
@@ -450,6 +450,7 @@ function NewNFT(props) {
         else {
             setTokenList([...tokenList, {
                 ipfsHash: ipfsHash,
+                ipfsURI: ipfsURI,
                 nftImage: image,
                 title: name,
                 description: description,
@@ -550,7 +551,7 @@ function NewNFT(props) {
             // setExecutiveProducerType("New");
             // setFanType("New");
             setSupplyType("Single");
-            setCollectionId("");
+            // setCollectionId("");
         }
         console.log("Token list length: ", tokenList.length);
     };
