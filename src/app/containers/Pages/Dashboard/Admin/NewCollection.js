@@ -178,8 +178,10 @@ function NewCollection(props) {
             fileData.append("symbol", collectionSymbol);
             fileData.append("description", collectionDescription);
             fileData.append("nftContractAddress", cloneContractAddress);
+            console.log("NFT Clone Address: ", cloneContractAddress);
+            console.log("File data while creating collection on backend: ", fileData);
 
-            axios.post("/collection/createcollection", fileData).then(
+            axios.post("/collection/create", fileData).then(
                 (response) => {
                     console.log("response", response);
                     let variant = "success";
