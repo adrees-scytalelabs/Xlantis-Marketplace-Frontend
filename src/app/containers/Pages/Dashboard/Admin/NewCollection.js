@@ -156,7 +156,7 @@ function NewCollection(props) {
             const address = Addresses.Factory1155Address;
             var cloneContractAddress;
             var myContractInstance = await new web3.eth.Contract(abi, address);
-            await myContractInstance.methods.createNFT1155().send({ from: accounts[0] }, (err, response) => {
+            await myContractInstance.methods.createNFT1155(true).send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 if(err !== null) {
                     console.log("err", err);
@@ -167,7 +167,7 @@ function NewCollection(props) {
                 }
             })
                 .on('receipt', (receipt) => {
-                    console.log("receipt", receipt.events.CloneCreated.returnValues.cloneAddress);
+                    console.log("receipt", receipt);
                     cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
                 }
             )
