@@ -382,9 +382,17 @@ function NewNFT(props) {
         }
     };
     const handleRemoveClick = (index) => {
-        const list = [...tokenList];
-        list.splice(index, 1);
-        setTokenList(list);
+        axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
+            (response) => {
+                console.log("Response for delete nft from batch: ", response);
+                const list = [...tokenList];
+                list.splice(index, 1);
+                setTokenList(list);
+            },
+            (error) => {
+                console.log("Error for delete nft from batch: ", error);
+            }
+        )
     };
 
     // handle click event of the Add button
