@@ -33,7 +33,7 @@ const NFTDetailModal = (props) => {
                     <CardMedia
                         variant="outlined" style={{ height: "100%", border: props.nftDetail.rarity === "Mastercraft" ? '4px solid #ff0000' : props.nftDetail.rarity === "Legendary" ? '4px solid #FFD700' : props.nftDetail.rarity === "Epic" ? '4px solid #9400D3' : props.nftDetail.rarity === "Rare" ? '4px solid #0000FF' : props.nftDetail.rarity === "Uncommon" ? '4px solid #008000' : props.nftDetail.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
                         className={classes.media}
-                        image={props.nftDetail.nftImage}
+                        image={props.nftDetail.ipfsURI}
                         title="NFT Image"
                     />
                     <CardContent>

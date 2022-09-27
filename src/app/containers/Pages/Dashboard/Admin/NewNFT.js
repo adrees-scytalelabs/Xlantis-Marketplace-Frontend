@@ -218,6 +218,8 @@ function NewNFT(props) {
             console.log("Type is: ", typeof(batchMintId));
             setTokenList(JSON.parse(data));
             setBatchId(batchMintId);
+            setCollection(JSON.parse(data)[0].collectiontitle);
+            setCollectionId(JSON.parse(data)[0].collectionId);
         } else {
             console.log("No data in cookies");
         }
@@ -1281,7 +1283,7 @@ function NewNFT(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
-                                                            image={i.nftImage}
+                                                            image={i.ipfsURI}
 
                                                             title="NFT Image"
                                                         />

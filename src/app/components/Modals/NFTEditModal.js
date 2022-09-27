@@ -52,6 +52,9 @@ const NFTEditModal = (props) => {
 
                 setIpfsHash(result[0].hash);
                 setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+                let data = {...nftDetail};
+                data.ipfsURI = `https://ipfs.io/ipfs/${result[0].hash}`;
+                setNftDetail(data);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
                 // 
@@ -105,7 +108,7 @@ const NFTEditModal = (props) => {
                                                 height: "100px",
                                             }}
                                         >
-                                            <img src={nftDetail.nftImage} alt="Selfie" />
+                                            <img src={nftDetail.ipfsURI} alt="Selfie" />
                                         </div>
                                     </div>
                                     <div className="upload-img">
