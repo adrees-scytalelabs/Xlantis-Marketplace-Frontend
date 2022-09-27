@@ -159,6 +159,7 @@ function NewCollection(props) {
             fileData.append("name", collectionName);
             fileData.append("symbol", collectionSymbol);
             fileData.append("description", collectionDescription);
+
             // fileData.append("nftContractAddress", cloneContractAddress);
             // console.log("NFT Clone Address: ", cloneContractAddress);
             // console.log("File data while creating collection on backend: ", fileData);
@@ -170,6 +171,9 @@ function NewCollection(props) {
                     collectionID = response.data.collection._id;
                     let variant = "success";
                     enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    setCollectionName("");
+                    setCollectionSymbol("");
+                    setCollectionDescription("");
                     handleCloseBackdrop();
                     setIsSaving(false)
                 },
@@ -191,6 +195,7 @@ function NewCollection(props) {
             var myContractInstance = await new web3.eth.Contract(abi, address);
             await myContractInstance.methods.createNFT1155(true).send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
+                console.log(typeof(response));
                 // console.log("Collection ID: ", collectionId);
                 axios.put(`/collection/txHash/${collectionID}`, {"txHash": response}).then(
                     (response) => {

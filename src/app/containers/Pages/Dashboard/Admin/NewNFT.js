@@ -144,6 +144,7 @@ function NewNFT(props) {
     // let [fanType, setFanType] = useState("New");
     let [collectionId, setCollectionId] = useState('');
     let [ipfsURI, setIpfsURI] = useState("");
+    let [metaDataURI, setMetaDataURI] = useState("");
     let [imageType, setImageType] = useState("");
     let [openDialog, setOpenDialog] = useState(false);
     let [openEditModal, setOpenEditModal] = useState(false);
@@ -153,6 +154,7 @@ function NewNFT(props) {
     let [changeCollection, setChangeCollection] = useState(false);
     let [changeCollectionList, setChangeCollectionList] = useState([]);
     let [nftId, setNftId] = useState("");
+    let [isUploadingData, setIsUploadingData] = useState(false);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -499,6 +501,37 @@ function NewNFT(props) {
             enqueueSnackbar('Please Enter Collection Name', { variant });
         }
         else {
+            // handleShowBackdrop(true);
+            // setIsUploadingData(true);
+
+            // //uploading metadata to ipfs
+            // let ipfsMetaData;
+            // let metaData = {
+            //     name: name,
+            //     description: description,
+            //     image: ipfsURI
+            // }
+            // const reader = new window.FileReader();
+            // const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+            // console.log("blob", blob);
+            // var dataIpfsHash;
+            // reader.readAsArrayBuffer(blob);
+            // reader.onloadend = () => {
+            //     // setBuffer(Buffer(reader.result));
+            //     ipfs.add(Buffer(reader.result), async (err, result) => {
+            //         if (err) {
+            //             console.log("Error: ", err);
+            //             let variant = "error";
+            //             enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+            //             return;
+            //         }
+            //         console.log("HASH: ", result[0].hash);
+            //         ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`
+            //         setMetaDataURI(ipfsMetaData);
+            //         let variant = "success";
+            //         enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+            //     })
+            // }
 
             let propertiesObject = {};
             properties.map((property) => {
@@ -672,6 +705,8 @@ function NewNFT(props) {
             // setCollectionId("");
         }
         console.log("Token list length: ", tokenList.length);
+        // setIsUploadingData(false);
+        // handleShowBackdrop(false);
     };
 
     let onChangeFile = (e) => {
@@ -867,6 +902,7 @@ function NewNFT(props) {
     }
 
     let onUpdateEditModal = (obj) => {
+        // setIsUploadingData(true);
         let data = [...tokenList];
         data[editObjectIndex] = obj;
 
@@ -874,6 +910,31 @@ function NewNFT(props) {
             data[editObjectIndex].properties.map((property) => {
             propertiesObject[property.key] = property.value;
         });
+
+        // let metaData = {
+        //     name: data[editObjectIndex].title,
+        //     description: data[editObjectIndex].description,
+        //     image: data[editObjectIndex].nftURI
+        // }
+        // const reader = new window.FileReader();
+        // const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+        // console.log("blob", blob);
+        // reader.readAsArrayBuffer(blob);
+        // reader.onloadend = () => {
+        //     // setBuffer(Buffer(reader.result));
+        //     ipfs.add(Buffer(reader.result), async (err, result) => {
+        //         if (err) {
+        //             console.log("Error: ", err);
+        //             let variant = "error";
+        //             enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+        //             return;
+        //         }
+        //         console.log("HASH: ", result[0].hash);
+        //         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+        //         let variant = "success";
+        //         enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+        //     })
+        // }
 
         let updatedObject = {
             "title": data[editObjectIndex].title,
@@ -916,6 +977,7 @@ function NewNFT(props) {
         );
 
         setTokenList(data);
+        // setIsUploadingData(false);
         setOpenEditModal(false);
     }
 
@@ -949,7 +1011,7 @@ function NewNFT(props) {
                 console.log("Error on updating collection id: ", error);
             }
         )
-        setChangeCollection(false);
+        handleChangeCollectionClose();
     }
 
     return (
@@ -1304,7 +1366,7 @@ function NewNFT(props) {
 
                                 </div>
 
-                                {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" ? (
+                                {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
                                     <button
                                         className="btn"
                                         type="submit"
@@ -1537,6 +1599,7 @@ function NewNFT(props) {
                 handleClose={handleChangeCollectionClose}
                 collectionDetails={changeCollectionList}
                 updateChangeCollection={updateChangeCollection}
+                isUploading={isUploadingData}
             >
             </ChangeCollectionConfirmationModal>
             <Backdrop className={classes.backdrop} open={open} >

@@ -2,7 +2,7 @@ import { useSnackbar } from "notistack";
 import React from "react";
 import { useState } from "react";
 import { useEffect } from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import { Col, Modal, Row, Spinner } from "react-bootstrap";
 import ipfs from '../../components/IPFS/ipfs';
 import axios from 'axios';
 import r1 from '../../assets/img/patients/patient.jpg';
@@ -86,6 +86,30 @@ const NFTEditModal = (props) => {
             }
         );
 
+    }
+
+    let handleRemoveProperty = (index) => {
+        let data = [...nftDetail];
+        let newData = [...data.properties];
+        newData.splice(index, 1);
+        data.properties = newData;
+        setNftDetail(data);
+    }
+
+    let handleAddProperty = () => {
+        let newData = { key: "", value: ""};
+        let data = {...nftDetail};
+        data.properties = [...data.properties, newData];
+        setNftDetail(data);
+    }
+
+    let handlePropertyChange = (index, event) => {
+        let data = [...nftDetail];
+        let newData = [...data.properties];
+        console.log("New Data: ", newData);
+        newData[index][event.target.name] = event.target.value;
+        data.properties = newData;
+        setNftDetail(data);
     }
 
     return (
@@ -270,6 +294,103 @@ const NFTEditModal = (props) => {
                                     </div>
                                 </div>
                             )}
+
+                            <div>
+                                <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
+                            </div>
+                            <div>
+                                {nftDetail.properties?.map((property, index) => {return (
+                                    <div key={index}>
+                                    <Row>
+                                        <Col>
+                                            <div className="form-group">
+                                                <label>Key</label>
+                                                <div className="filter-widget">
+                                                    <input
+                                                        name= "key"
+                                                        type="text"
+                                                        placeholder="Enter key of the property"
+                                                        required
+                                                        value={property.key}
+                                                        className="form-control"
+                                                        onChange={(e) => handlePropertyChange(index, e)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col>
+                                            <div className="form-group">
+                                                <label>Value</label>
+                                                <div className="filter-widget">
+                                                    <input
+                                                        name= "value"
+                                                        type="text"
+                                                        placeholder="Enter Value of the property"
+                                                        required
+                                                        value={property.value}
+                                                        className="form-control"
+                                                        onChange={(e) => handlePropertyChange(index, e)}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </Col>
+                                        <Col>
+                                            <div className="form-group">
+                                                <label>Action</label>
+                                                <div className="filter-widget">
+                                                    <button
+                                                        className="btn btn-submit btn-lg"
+                                                        color="primary"
+                                                    // className="btn submit-btn"
+                                                        onClick={() => handleRemoveProperty(index)}
+                                                    >
+                                                        -
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                        </Col>
+                                    </Row>
+                                </div>)
+                                })
+                                
+                                }
+                                <button
+                                    className="btn btn-submit"
+                                    color="primary"
+                                // className="btn submit-btn"
+                                    onClick={handleAddProperty}
+                                >
+                                    +
+                                </button>
+                                {/* <Dialog
+                                    fullWidth={true}
+                                    maxWidth={true}
+                                    open={openDialog}
+                                    onClose={onDialogCloseClick}
+                                    aria-labelledby="max-width-dialog-title"
+                                >
+                                    <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
+                                    <DialogContent>
+                                        <DialogContentText>Enter Properties in key value pair</DialogContentText>
+                                        <form>
+                                            <TextField
+                                                label="Key"
+                                                value={propertyKey}
+                                                onChange={(e) => setPropertyKey(e.target.value)}
+                                            />
+                                            <TextField
+                                                label="Value"
+                                                value={propertyValue}
+                                                onChange={(e) => setPropertyValue(e.target.value)}
+                                                style={{ marginLeft: "5px" }}
+                                            />
+                                            <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
+                                        </form>
+                                    </DialogContent>
+                                </Dialog> */}
+                            
+                            </div>
 
                             <button type="button" className="btn submit-btn" onClick={props.handleChangeCollection}>
                                 Change Collection
