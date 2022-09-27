@@ -553,6 +553,7 @@ function NewNFT(props) {
                 collectiontitle: collection,
                 supplytype: supplyType,
                 collectionId: collectionId,
+                nftContractAddress: nftContractAddress
             }]
 
             //sending data to backend
@@ -586,7 +587,8 @@ function NewNFT(props) {
                             collectiontitle: collection,
                             supplytype: supplyType,
                             collectionId: collectionId,
-                            nftId: response.data.nftId
+                            nftId: response.data.nftId,
+                            nftContractAddress: nftContractAddress
                         }]);
 
                         Cookies.set("Batch-ID", response.data.batchId, {
@@ -617,7 +619,8 @@ function NewNFT(props) {
                             collectiontitle: collection,
                             supplytype: supplyType,
                             collectionId: collectionId,
-                            nftId: response.data.nftId
+                            nftId: response.data.nftId,
+                            nftContractAddress: nftContractAddress
                         }]);
 
                         Cookies.remove("NFT-Detail");
@@ -932,7 +935,20 @@ function NewNFT(props) {
         tokenList.map((token) => {
             token.collectiontitle = collectionObj.name;
             token.collectionId = collectionObj._id;
-        })
+        });
+
+        let updatedCollectionID = {
+            "batchId" : batchId,
+            "collectionId": collectionObj._id
+        }
+        axios.put(`/batch-mint/collection`, updatedCollectionID).then(
+            (response) => {
+                console.log("Response after updating collection id: ", response);
+            },
+            (error) => {
+                console.log("Error on updating collection id: ", error);
+            }
+        )
         setChangeCollection(false);
     }
 
