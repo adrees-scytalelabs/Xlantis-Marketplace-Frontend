@@ -1,5 +1,7 @@
 import { Button, CardContent, CardMedia, makeStyles, Typography } from '@material-ui/core';
 import React from 'react';
+import { useState } from 'react';
+import { useEffect } from 'react';
 import { Card, Modal } from 'react-bootstrap';
 
 const useStyles = makeStyles(() => ({
@@ -11,6 +13,15 @@ const useStyles = makeStyles(() => ({
 
 const NFTDetailModal = (props) => {
     const classes = useStyles();
+    let [properties, setProperties] = useState([]);
+
+
+    useEffect(() => {
+        console.log("NFT detail props are: ", props);
+        // console.log("Properties object is: ", props.nftDetail.properties);
+        // let keys = Object.keys(props.nftDetail.properties);
+        // console.log("Keys are: ", keys);
+    },[props.show])
 
     return (
         <Modal show={props.show} onHide={props.handleClose}>
@@ -34,6 +45,10 @@ const NFTDetailModal = (props) => {
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <strong>Token Supply: </strong>{props.nftDetail.tokensupply}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Properties: </strong>
+                            {/* {props.nftDetail.properties} */}
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <strong>Collection: </strong>{props.nftDetail.collectiontitle}

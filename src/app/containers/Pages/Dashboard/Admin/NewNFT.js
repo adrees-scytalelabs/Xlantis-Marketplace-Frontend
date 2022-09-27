@@ -448,7 +448,15 @@ function NewNFT(props) {
             enqueueSnackbar('Please Enter Collection Name', { variant });
         }
         else {
+
+            let propertiesObject = {};
+            properties.map((property) => {
+                propertiesObject[property.key] = property.value;
+            });
+            console.log("Properties are: ", propertiesObject);
+
             setTokenList([...tokenList, {
+                properties: propertiesObject,
                 ipfsHash: ipfsHash,
                 ipfsURI: ipfsURI,
                 nftImage: image,
@@ -494,7 +502,8 @@ function NewNFT(props) {
                 "nftFormat": imageType,
                 "type": rarity,
                 "tokenSupply": tokenSupply,
-                "supplyType": supplyType
+                "supplyType": supplyType,
+                "properties": propertiesObject
             }
 
             if (batchId === ""){
@@ -520,6 +529,9 @@ function NewNFT(props) {
                 )
             }
 
+            setProperties([
+                { key: "", value: ""}
+            ]);
             setIpfsHash("");
             setImage(r1);
             setName("");
@@ -757,8 +769,8 @@ function NewNFT(props) {
             "type": data[editObjectIndex].rarity,
             "tokenSupply": data[editObjectIndex].tokensupply,
             "supplyType": data[editObjectIndex].supplytype,
-            // "properties": data[editObjectIndex].properties,
-            // "nftFormat": data[editObjectIndex].nftFormat,
+            "properties": data[editObjectIndex].properties,
+            "nftFormat": data[editObjectIndex].nftFormat,
             "metadataURI": data[editObjectIndex].metadataURI,
             "nftURI": data[editObjectIndex].nftURI,
         }
@@ -771,7 +783,7 @@ function NewNFT(props) {
                 console.log("Error of updated nft: ", error);
             }
         );
-        
+
         setTokenList(data);
         setOpenEditModal(false);
     }
@@ -1013,7 +1025,7 @@ function NewNFT(props) {
                                                                 className="btn btn-submit btn-lg"
                                                                 color="primary"
                                                             // className="btn submit-btn"
-                                                                onClick={handleRemoveProperty}
+                                                                onClick={() => handleRemoveProperty(index)}
                                                             >
                                                                 -
                                                             </button>
@@ -1187,6 +1199,7 @@ function NewNFT(props) {
 
                                             <Grid item xs={12} sm={6} md={6} key={index}>
                                                 <CardActionArea onClick={() => {
+                                                    console.log("nftDetailObject: ", i);
                                                     handleOpenNFTDetailModal(i);
                                                     setEditObjectIndex(index);
                                                     console.log("Open Dialog Value: ", openDialog);
