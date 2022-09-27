@@ -99,6 +99,7 @@ function NewCollection(props) {
     let [image, setImage] = useState(r1);
     let [imageFile, setImageFile] = useState();
     let [fileURL, setFileURL] = useState(r1);
+    let [collectionId, setCollectionId] = useState("");
 
 
     useEffect(() => {
@@ -151,39 +152,22 @@ function NewCollection(props) {
         }
         else {
             handleShowBackdrop();
-
-            const abi = Factory1155Contract;
-            const address = Addresses.Factory1155Address;
-            var cloneContractAddress;
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            await myContractInstance.methods.createNFT1155(true).send({ from: accounts[0] }, (err, response) => {
-                console.log("Get transaction ", err, response);
-                if(err !== null) {
-                    console.log("err", err);
-                    let variant = "error";
-                    enqueueSnackbar('User Canceled Transaction', { variant });
-                    handleCloseBackdrop();
-                    setIsSaving(false);
-                }
-            })
-                .on('receipt', (receipt) => {
-                    console.log("receipt", receipt);
-                    cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
-                }
-            )
+            let collectionID;
 
             let fileData = new FormData();
             fileData.append("thumbnail", imageFile);
             fileData.append("name", collectionName);
             fileData.append("symbol", collectionSymbol);
             fileData.append("description", collectionDescription);
-            fileData.append("nftContractAddress", cloneContractAddress);
-            console.log("NFT Clone Address: ", cloneContractAddress);
-            console.log("File data while creating collection on backend: ", fileData);
+            // fileData.append("nftContractAddress", cloneContractAddress);
+            // console.log("NFT Clone Address: ", cloneContractAddress);
+            // console.log("File data while creating collection on backend: ", fileData);
 
-            axios.post("/collection", fileData).then(
+            axios.post("/collection/", fileData).then(
                 (response) => {
-                    console.log("response", response);
+                    console.log("collection creation response", response);
+                    setCollectionId(response.data.collection._id);
+                    collectionID = response.data.collection._id;
                     let variant = "success";
                     enqueueSnackbar('New Collection Created Successfully.', { variant });
                     handleCloseBackdrop();
@@ -200,6 +184,37 @@ function NewCollection(props) {
                     handleCloseBackdrop();
                     setIsSaving(false)
                 })
+
+            const abi = Factory1155Contract;
+            const address = Addresses.Factory1155Address;
+            var cloneContractAddress;
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            await myContractInstance.methods.createNFT1155(true).send({ from: accounts[0] }, (err, response) => {
+                console.log("Get transaction ", err, response);
+                // console.log("Collection ID: ", collectionId);
+                axios.put(`/collection/txHash/${collectionID}`, {"txHash": response}).then(
+                    (response) => {
+                        console.log("Transaction Hash sending on backend response: ", response);
+                    },
+                    (error) => {
+                        console.log("Transaction hash on backend error: ", error);
+                    }
+                )
+                if(err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+                }
+            })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt);
+                    cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                }
+            )
+
+            
             // const address = Addresses.CreateNftAddress;
             // const abi = CreateNFTContract;
             // let totalImages = tokenList.length;
