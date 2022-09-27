@@ -209,6 +209,11 @@ function NewNFT(props) {
     useEffect(() => {
         // getProfileData();
         getCollections();
+        // setTokenList(Cookies.get("NFT-Detail"));
+        let data = JSON.parse(Cookies.get("NFT-Detail"));
+        console.log("Data: ", data);
+        console.log("Type is: ", typeof(data));
+        setTokenList(data);
 
         props.setActiveTab({
             dashboard: "",
@@ -296,6 +301,7 @@ function NewNFT(props) {
             })
                 .on('receipt', (receipt) => {
                     console.log("receipt", receipt);
+                    Cookies.remove("NFT-Detail");
                     // console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
                     // let ids = receipt.events.TransferBatch.returnValues.ids;
                     // for (let i = 0; i < tokenList.length; i++) {
@@ -467,7 +473,6 @@ function NewNFT(props) {
                 properties: propertiesObject,
                 ipfsHash: ipfsHash,
                 ipfsURI: ipfsURI,
-                nftImage: image,
                 title: name,
                 description: description,
                 rarity: rarity,
@@ -500,6 +505,19 @@ function NewNFT(props) {
                 collectionId: collectionId,
             }]);
 
+            let cookieData = [...tokenList, {
+                properties: propertiesObject,
+                ipfsHash: ipfsHash,
+                ipfsURI: ipfsURI,
+                title: name,
+                description: description,
+                rarity: rarity,
+                tokensupply: tokenSupply,
+                collectiontitle: collection,
+                supplytype: supplyType,
+                collectionId: collectionId,
+            }]
+
             //sending data to backend
             let data ={
                 "collectionId": collectionId,
@@ -519,6 +537,12 @@ function NewNFT(props) {
                     (response) => {
                         console.log("Response on batch mint: ", response);
                         setBatchId(response.data.batchId);
+
+                        Cookies.set("Batch-ID", response.data.batchId, {
+                        });
+
+                        Cookies.set("NFT-Detail", cookieData, {
+                        });
                     },
                     (error) => {
                         console.log("Error on batch mint: ", error);
@@ -530,6 +554,11 @@ function NewNFT(props) {
                 axios.post("batch-mint/nft", data).then(
                     (response) => {
                         console.log("Batch minting into existing batch response: ", response);
+
+                        Cookies.remove("NFT-Detail");
+
+                        Cookies.set("NFT-Detail", cookieData, {
+                        });
                     },
                     (error) => {
                         console.log("Batch minting into existing batch error: ", error);
@@ -782,6 +811,25 @@ function NewNFT(props) {
             "metadataURI": data[editObjectIndex].metadataURI,
             "nftURI": data[editObjectIndex].nftURI,
         }
+
+        Cookies.remove("NFT-Detail");
+
+        Cookies.set("NFT-Detail", data, {
+        });
+        // let data ={
+        //     "collectionId": collectionId,
+        //     "title": name,
+        //     "description": description,
+        //     "nftURI": ipfsURI,
+        //     "metadataURI": ipfsURI,
+        //     "nftFormat": imageType,
+        //     "type": rarity,
+        //     "tokenSupply": tokenSupply,
+        //     "supplyType": supplyType,
+        //     "properties": propertiesObject
+        // }
+
+
 
         axios.put(`nft/${data[editObjectIndex.nftId]}`, updatedObject).then(
             (response) => {
