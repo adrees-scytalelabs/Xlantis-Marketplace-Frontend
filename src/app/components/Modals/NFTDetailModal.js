@@ -13,11 +13,14 @@ const useStyles = makeStyles(() => ({
 
 const NFTDetailModal = (props) => {
     const classes = useStyles();
-    let [properties, setProperties] = useState([]);
+    let [isProperties, setIsProperties] = useState(false);
 
 
     useEffect(() => {
         console.log("NFT detail props are: ", props);
+        // if (props.nftDetail.properties.length > 0 ) {
+        //     setIsProperties(true);
+        // }
         // console.log("Properties object is: ", props.nftDetail.properties);
         // let keys = Object.keys(props.nftDetail.properties);
         // console.log("Keys are: ", keys);
@@ -48,7 +51,13 @@ const NFTDetailModal = (props) => {
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <strong>Properties: </strong>
-                            {/* {props.nftDetail.properties} */}
+                            {
+                                props.nftDetail.properties?.map((i, index) => (
+                                    <Typography variant="body2" color="textSecondary" component="p" key={index}>
+                                        {i.key} : {i.value}
+                                    </Typography>            
+                                ))
+                            }
                         </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             <strong>Collection: </strong>{props.nftDetail.collectiontitle}

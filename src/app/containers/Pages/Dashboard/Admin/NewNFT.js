@@ -152,6 +152,7 @@ function NewNFT(props) {
     let [batchId, setBatchId] = useState("");
     let [changeCollection, setChangeCollection] = useState(false);
     let [changeCollectionList, setChangeCollectionList] = useState([]);
+    let [nftId, setNftId] = useState("");
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -406,17 +407,35 @@ function NewNFT(props) {
         }
     };
     const handleRemoveClick = (index) => {
-        axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
-            (response) => {
-                console.log("Response for delete nft from batch: ", response);
-                const list = [...tokenList];
-                list.splice(index, 1);
-                setTokenList(list);
-            },
-            (error) => {
-                console.log("Error for delete nft from batch: ", error);
-            }
-        )
+
+        if(tokenList.length === 1) {
+            axios.delete(`/batch-mint/${batchId}`).then(
+                (response) => {
+                    console.log("deleting batch response: ", response);
+                    Cookies.remove("NFT-Detail");
+                    Cookies.remove("Batch-ID");
+                    setTokenList([]);
+                    setBatchId("");
+                },
+                (error) => {
+                    console.log("Error on deleting response: ", error);
+                }
+            )
+        } else {
+            axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
+                (response) => {
+                    console.log("Response for delete nft from batch: ", response);
+                    const list = [...tokenList];
+                    list.splice(index, 1);
+                    Cookies.remove("NFT-Detail");
+                    Cookies.set("NFT-Detail", list, {
+                    });
+                    setTokenList(list);
+                },
+                (error) => {
+                    console.log("Error for delete nft from batch: ", error);
+                }
+        )}
     };
 
     // handle click event of the Add button
@@ -487,44 +506,44 @@ function NewNFT(props) {
             });
             console.log("Properties are: ", propertiesObject);
 
-            setTokenList([...tokenList, {
-                properties: propertiesObject,
-                ipfsHash: ipfsHash,
-                ipfsURI: ipfsURI,
-                title: name,
-                description: description,
-                rarity: rarity,
-                tokensupply: tokenSupply,
-                // ImageArtistName: imageArtist,
-                // ImageArtistId: imageArtistId,
-                // ImageArtistAbout: aboutTheArt,
-                // ImageArtistWebsite: website,
-                // ImageArtistProfile: artistImage,
-                // ProducerId: producerId,
-                // ProducerName: producer,
-                // ProducerInspiration: inspirationForThePiece,
-                // ProducerProfile: producerImage,
-                // ExecutiveProducerId: executiveProducerId,
-                // ExecutiveProducerName: executiveProducer,
-                // ExecutiveProducerInspiration: executiveInspirationForThePiece,
-                // ExecutiveProducerProfile: executiveProducerImage,
-                // FanId: fanId,
-                // FanName: fan,
-                // FanInspiration: fanInspirationForThePiece,
-                // FanProfile: fanImage,
-                // other: other,
-                collectiontitle: collection,
-                // collectiontype: collectionType,
-                // imageartisttype: imageArtistType,
-                // producertype: producerType,
-                // executiveproducertype: executiveProducerType,
-                // fantype: fanType,
-                supplytype: supplyType,
-                collectionId: collectionId,
-            }]);
+            // setTokenList([...tokenList, {
+            //     properties: properties,
+            //     ipfsHash: ipfsHash,
+            //     ipfsURI: ipfsURI,
+            //     title: name,
+            //     description: description,
+            //     rarity: rarity,
+            //     tokensupply: tokenSupply,
+            //     // ImageArtistName: imageArtist,
+            //     // ImageArtistId: imageArtistId,
+            //     // ImageArtistAbout: aboutTheArt,
+            //     // ImageArtistWebsite: website,
+            //     // ImageArtistProfile: artistImage,
+            //     // ProducerId: producerId,
+            //     // ProducerName: producer,
+            //     // ProducerInspiration: inspirationForThePiece,
+            //     // ProducerProfile: producerImage,
+            //     // ExecutiveProducerId: executiveProducerId,
+            //     // ExecutiveProducerName: executiveProducer,
+            //     // ExecutiveProducerInspiration: executiveInspirationForThePiece,
+            //     // ExecutiveProducerProfile: executiveProducerImage,
+            //     // FanId: fanId,
+            //     // FanName: fan,
+            //     // FanInspiration: fanInspirationForThePiece,
+            //     // FanProfile: fanImage,
+            //     // other: other,
+            //     collectiontitle: collection,
+            //     // collectiontype: collectionType,
+            //     // imageartisttype: imageArtistType,
+            //     // producertype: producerType,
+            //     // executiveproducertype: executiveProducerType,
+            //     // fantype: fanType,
+            //     supplytype: supplyType,
+            //     collectionId: collectionId,
+            // }]);
 
             let cookieData = [...tokenList, {
-                properties: propertiesObject,
+                properties: properties,
                 ipfsHash: ipfsHash,
                 ipfsURI: ipfsURI,
                 title: name,
@@ -555,6 +574,20 @@ function NewNFT(props) {
                     (response) => {
                         console.log("Response on batch mint: ", response);
                         setBatchId(response.data.batchId);
+                        setNftId(response.data.nftId);
+                        setTokenList([...tokenList, {
+                            properties: properties,
+                            ipfsHash: ipfsHash,
+                            ipfsURI: ipfsURI,
+                            title: name,
+                            description: description,
+                            rarity: rarity,
+                            tokensupply: tokenSupply,
+                            collectiontitle: collection,
+                            supplytype: supplyType,
+                            collectionId: collectionId,
+                            nftId: response.data.nftId
+                        }]);
 
                         Cookies.set("Batch-ID", response.data.batchId, {
                         });
@@ -572,6 +605,20 @@ function NewNFT(props) {
                 axios.post("batch-mint/nft", data).then(
                     (response) => {
                         console.log("Batch minting into existing batch response: ", response);
+                        setNftId(response.data.nftId);
+                        setTokenList([...tokenList, {
+                            properties: properties,
+                            ipfsHash: ipfsHash,
+                            ipfsURI: ipfsURI,
+                            title: name,
+                            description: description,
+                            rarity: rarity,
+                            tokensupply: tokenSupply,
+                            collectiontitle: collection,
+                            supplytype: supplyType,
+                            collectionId: collectionId,
+                            nftId: response.data.nftId
+                        }]);
 
                         Cookies.remove("NFT-Detail");
 
@@ -587,6 +634,7 @@ function NewNFT(props) {
             setProperties([
                 { key: "", value: ""}
             ]);
+            setNftId("");
             setIpfsHash("");
             setImage(r1);
             setName("");
@@ -818,13 +866,19 @@ function NewNFT(props) {
     let onUpdateEditModal = (obj) => {
         let data = [...tokenList];
         data[editObjectIndex] = obj;
+
+        let propertiesObject = {};
+            data[editObjectIndex].properties.map((property) => {
+            propertiesObject[property.key] = property.value;
+        });
+
         let updatedObject = {
             "title": data[editObjectIndex].title,
             "description": data[editObjectIndex].description,
             "type": data[editObjectIndex].rarity,
             "tokenSupply": data[editObjectIndex].tokensupply,
             "supplyType": data[editObjectIndex].supplytype,
-            "properties": data[editObjectIndex].properties,
+            "properties": propertiesObject,
             "nftFormat": data[editObjectIndex].nftFormat,
             "metadataURI": data[editObjectIndex].metadataURI,
             "nftURI": data[editObjectIndex].nftURI,
@@ -849,7 +903,7 @@ function NewNFT(props) {
 
 
 
-        axios.put(`nft/${data[editObjectIndex.nftId]}`, updatedObject).then(
+        axios.put(`nft/${data[editObjectIndex].nftId}`, updatedObject).then(
             (response) => {
                 console.log("Response of updated nft: ", response);
             },
