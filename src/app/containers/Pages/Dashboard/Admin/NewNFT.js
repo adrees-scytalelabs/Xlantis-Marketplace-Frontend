@@ -324,32 +324,34 @@ function NewNFT(props) {
                     //     tokenList[i].nftId = ids[i];
                     // }
 
-                    let Data = {
-                        "collectionId": collectionId,
-                        "data": [
-                            {
-                                "title": name,
-                                "description": description,
-                                "collectionId": collectionId,
-                                "nftURI": ipfsURI,
-                                "metadataURI": ipfsURI,
-                                "tokenSupply": tokenSupply,
-                                "nftFormat": imageType,
-                                "type": rarity,
-                                "supplyType": supplyType,
-                                // "properties": properties
-                                "userAddress": accounts[0]
-                            }
-                        ]
-                    }
+                    // let Data = {
+                    //     "collectionId": collectionId,
+                    //     "data": [
+                    //         {
+                    //             "title": name,
+                    //             "description": description,
+                    //             "collectionId": collectionId,
+                    //             "nftURI": ipfsURI,
+                    //             "metadataURI": ipfsURI,
+                    //             "tokenSupply": tokenSupply,
+                    //             "nftFormat": imageType,
+                    //             "type": rarity,
+                    //             "supplyType": supplyType,
+                    //             // "properties": properties
+                    //             "userAddress": accounts[0]
+                    //         }
+                    //     ]
+                    // }
                     
                     // let Data = new FormData();
-                    console.log("Data", Data);
-                    axios.post("/nft/addNFTs", Data).then(
+                    // console.log("Data", Data);
+                    axios.put(`/batch-mint/minted/${batchId}`).then(
                         (response) => {
                             console.log("response", response);
                             let variant = "success";
                             enqueueSnackbar('Nfts Created Successfully.', { variant });
+                            Cookies.remove("Batch-ID");
+                            Cookies.remove("NFT-Detail");
                             setTokenList([]);
                             setImageType("");
                             setIpfsHash("");
