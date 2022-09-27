@@ -18,6 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from 'axios';
 import Cookies from "js-cookie";
+import { isUndefined } from 'lodash';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from "react";
 import { Col, Row, Spinner } from "react-bootstrap";
@@ -206,16 +207,29 @@ function NewNFT(props) {
             })
     }
 
+    let getDataFromCookies = () => {
+        let data = Cookies.get("NFT-Detail");
+        let batchMintId = Cookies.get("Batch-ID");
+        if ((data && batchMintId) !== null && (typeof(data) && typeof(batchMintId)) !== 'undefined' && (data && batchMintId) !== "") {
+            
+            console.log("Data: ", data);
+            console.log("Batch ID: ", batchMintId);
+            console.log("Type is: ", typeof(data));
+            console.log("Type is: ", typeof(batchMintId));
+            setTokenList(JSON.parse(data));
+            setBatchId(batchMintId);
+        } else {
+            console.log("No data in cookies");
+        }
+    }
+
     useEffect(() => {
         // getProfileData();
         getCollections();
         // setTokenList(Cookies.get("NFT-Detail"));
-        let data = JSON.parse(Cookies.get("NFT-Detail"));
-        console.log("Data: ", data);
-        console.log("Type is: ", typeof(data));
-        setTokenList(data);
+       getDataFromCookies();
 
-        props.setActiveTab({
+       props.setActiveTab({
             dashboard: "",
             newNFT: "active",
             orders: "",
