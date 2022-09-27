@@ -500,7 +500,7 @@ function NewNFT(props) {
             if (batchId === ""){
                 axios.post("/batch-mint", data).then(
                     (response) => {
-                        console.log("Response on batch mint: ", response.data.batchId);
+                        console.log("Response on batch mint: ", response);
                         setBatchId(response.data.batchId);
                     },
                     (error) => {
@@ -751,6 +751,27 @@ function NewNFT(props) {
     let onUpdateEditModal = (obj) => {
         let data = [...tokenList];
         data[editObjectIndex] = obj;
+        let updatedObject = {
+            "title": data[editObjectIndex].title,
+            "description": data[editObjectIndex].description,
+            "type": data[editObjectIndex].rarity,
+            "tokenSupply": data[editObjectIndex].tokensupply,
+            "supplyType": data[editObjectIndex].supplytype,
+            // "properties": data[editObjectIndex].properties,
+            // "nftFormat": data[editObjectIndex].nftFormat,
+            "metadataURI": data[editObjectIndex].metadataURI,
+            "nftURI": data[editObjectIndex].nftURI,
+        }
+
+        axios.put(`nft/${data[editObjectIndex.nftId]}`, updatedObject).then(
+            (response) => {
+                console.log("Response of updated nft: ", response);
+            },
+            (error) => {
+                console.log("Error of updated nft: ", error);
+            }
+        );
+        
         setTokenList(data);
         setOpenEditModal(false);
     }
