@@ -88,15 +88,17 @@ const NFTEditModal = (props) => {
 
     }
 
-    let handleRemoveProperty = (index) => {
-        let data = [...nftDetail];
+    let handleRemoveProperty = (e, index) => {
+        e.preventDefault();
+        let data = {...nftDetail};
         let newData = [...data.properties];
         newData.splice(index, 1);
         data.properties = newData;
         setNftDetail(data);
     }
 
-    let handleAddProperty = () => {
+    let handleAddProperty = (e) => {
+        e.preventDefault();
         let newData = { key: "", value: ""};
         let data = {...nftDetail};
         data.properties = [...data.properties, newData];
@@ -104,7 +106,7 @@ const NFTEditModal = (props) => {
     }
 
     let handlePropertyChange = (index, event) => {
-        let data = [...nftDetail];
+        let data = {...nftDetail};
         let newData = [...data.properties];
         console.log("New Data: ", newData);
         newData[index][event.target.name] = event.target.value;
@@ -342,7 +344,7 @@ const NFTEditModal = (props) => {
                                                         className="btn btn-submit btn-lg"
                                                         color="primary"
                                                     // className="btn submit-btn"
-                                                        onClick={() => handleRemoveProperty(index)}
+                                                        onClick={(e) => handleRemoveProperty(e, index)}
                                                     >
                                                         -
                                                     </button>
@@ -359,7 +361,7 @@ const NFTEditModal = (props) => {
                                     className="btn btn-submit"
                                     color="primary"
                                 // className="btn submit-btn"
-                                    onClick={handleAddProperty}
+                                    onClick={(e) => handleAddProperty(e)}
                                 >
                                     +
                                 </button>

@@ -858,13 +858,15 @@ function NewNFT(props) {
     //     );
     // }
 
-    let handleRemoveProperty = (index) => {
+    let handleRemoveProperty = (e, index) => {
+        e.preventDefault();
         let data = [...properties];
         data.splice(index, 1);
         setProperties(data);
     }
 
-    let handleAddProperty = () => {
+    let handleAddProperty = (e) => {
+        e.preventDefault();
         let newData = { key: "", value: ""};
         setProperties([...properties, newData]);
         console.log("Add button pressed.");
@@ -1231,7 +1233,7 @@ function NewNFT(props) {
                                                                 className="btn btn-submit btn-lg"
                                                                 color="primary"
                                                             // className="btn submit-btn"
-                                                                onClick={() => handleRemoveProperty(index)}
+                                                                onClick={(e) => handleRemoveProperty(e, index)}
                                                             >
                                                                 -
                                                             </button>
@@ -1248,7 +1250,7 @@ function NewNFT(props) {
                                             className="btn btn-submit"
                                             color="primary"
                                         // className="btn submit-btn"
-                                            onClick={handleAddProperty}
+                                            onClick={(e) => handleAddProperty(e)}
                                         >
                                             +
                                         </button>
