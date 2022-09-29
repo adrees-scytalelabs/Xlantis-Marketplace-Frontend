@@ -575,19 +575,7 @@ function NewNFT(props) {
             //     collectionId: collectionId,
             // }]);
 
-            let cookieData = [...tokenList, {
-                properties: properties,
-                ipfsHash: ipfsHash,
-                ipfsURI: ipfsURI,
-                title: name,
-                description: description,
-                rarity: rarity,
-                tokensupply: tokenSupply,
-                collectiontitle: collection,
-                supplytype: supplyType,
-                collectionId: collectionId,
-                nftContractAddress: nftContractAddress
-            }]
+            
 
             //sending data to backend
             let data ={
@@ -624,6 +612,21 @@ function NewNFT(props) {
                             nftContractAddress: nftContractAddress
                         }]);
 
+                        let cookieData = [...tokenList, {
+                            properties: properties,
+                            ipfsHash: ipfsHash,
+                            ipfsURI: ipfsURI,
+                            title: name,
+                            description: description,
+                            rarity: rarity,
+                            tokensupply: tokenSupply,
+                            collectiontitle: collection,
+                            supplytype: supplyType,
+                            collectionId: collectionId,
+                            nftContractAddress: nftContractAddress,
+                            nftId: response.data.nftId
+                        }]
+
                         Cookies.set("Batch-ID", response.data.batchId, {
                         });
 
@@ -655,6 +658,21 @@ function NewNFT(props) {
                             nftId: response.data.nftId,
                             nftContractAddress: nftContractAddress
                         }]);
+
+                        let cookieData = [...tokenList, {
+                            properties: properties,
+                            ipfsHash: ipfsHash,
+                            ipfsURI: ipfsURI,
+                            title: name,
+                            description: description,
+                            rarity: rarity,
+                            tokensupply: tokenSupply,
+                            collectiontitle: collection,
+                            supplytype: supplyType,
+                            collectionId: collectionId,
+                            nftContractAddress: nftContractAddress,
+                            nftId: response.data.nftId
+                        }]
 
                         Cookies.remove("NFT-Detail");
 
@@ -904,6 +922,8 @@ function NewNFT(props) {
     }
 
     let onUpdateEditModal = (obj) => {
+
+        console.log(obj);
         // setIsUploadingData(true);
         let data = [...tokenList];
         data[editObjectIndex] = obj;
