@@ -60,10 +60,25 @@ const ChangeCollectionConfirmationModal = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={props.handleClose} >
+                <Button 
+                    variant="primary" 
+                    onClick={() => {
+                        setCollection({});
+                        setCollectionName("");
+                        props.handleClose();
+                    }} 
+                >
                     Cancle
                 </Button>
-                <button type='button' className="btn btn-submit" onClick={() => props.updateChangeCollection(collection)} >
+                <button 
+                    type='button' 
+                    className="btn btn-submit" 
+                    onClick={() => {
+                        setCollection({});
+                        setCollectionName("");
+                        props.updateChangeCollection(collection)
+                    }} 
+                >
                     Change
                 </button>
             </Modal.Footer>
