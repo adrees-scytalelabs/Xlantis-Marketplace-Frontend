@@ -441,7 +441,8 @@ function NewNFT(props) {
     };
 
     // handle click event of the Add button
-    const handleAddClick = () => {
+    const handleAddClick = (e) => {
+        e.preventDefault();
         if (image === r1) {
             let variant = "error";
             enqueueSnackbar('Please Upload Artwork Photo', { variant });
@@ -463,268 +464,178 @@ function NewNFT(props) {
         } else if (tokenSupply < 0) {
             let variant = "error";
             enqueueSnackbar('Token Supply cannot be Negative', { variant });
-        // } else if (imageArtist === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Image Artist Name', { variant });
-        // } else if (aboutTheArt === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter About the Art', { variant });
-        // } else if (artistImage === r1) {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Select Image Artist Image', { variant });
-        // } else if (website === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Website of Image Artist', { variant });
-        // } else if (producer === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Producer Name', { variant });
-        // } else if (producerImage === r1) {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Select Producer Image', { variant });
-        // } else if (inspirationForThePiece === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Producer Inspiration For The Piece', { variant });
-        // } else if (executiveProducer === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Executive Producer Name', { variant });
-        // } else if (executiveInspirationForThePiece === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Executive Producer Inspiration For The Piece', { variant });
-        // } else if (fanImage === r1) {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Select Fan Image', { variant });
-        // } else if (fanInspirationForThePiece === "") {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Enter Fan Inspiration For The Piece', { variant });
         } else if (collection === "") {
             let variant = "error";
             enqueueSnackbar('Please Enter Collection Name', { variant });
         }
         else {
-            // handleShowBackdrop(true);
-            // setIsUploadingData(true);
+            handleShowBackdrop();
+            setIsUploadingData(true);
 
-            // //uploading metadata to ipfs
-            // let ipfsMetaData;
-            // let metaData = {
-            //     name: name,
-            //     description: description,
-            //     image: ipfsURI
-            // }
-            // const reader = new window.FileReader();
-            // const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
-            // console.log("blob", blob);
-            // var dataIpfsHash;
-            // reader.readAsArrayBuffer(blob);
-            // reader.onloadend = () => {
-            //     // setBuffer(Buffer(reader.result));
-            //     ipfs.add(Buffer(reader.result), async (err, result) => {
-            //         if (err) {
-            //             console.log("Error: ", err);
-            //             let variant = "error";
-            //             enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
-            //             return;
-            //         }
-            //         console.log("HASH: ", result[0].hash);
-            //         ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`
-            //         setMetaDataURI(ipfsMetaData);
-            //         let variant = "success";
-            //         enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
-            //     })
-            // }
+            // uploading metadata to ipfs
+            let ipfsMetaData;
+            let metaData = {
+                name: name,
+                description: description,
+                image: ipfsURI
+            }
+            const reader = new window.FileReader();
+            const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+            console.log("blob", blob);
+            var dataIpfsHash;
+            reader.readAsArrayBuffer(blob);
+            reader.onloadend = () => {
+                // setBuffer(Buffer(reader.result));
+                ipfs.add(Buffer(reader.result), async (err, result) => {
+                    if (err) {
+                        console.log("Error: ", err);
+                        let variant = "error";
+                        enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+                        return;
+                    }
+                    console.log("HASH: ", result[0].hash);
+                    ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`
+                    setMetaDataURI(ipfsMetaData);
 
-            let propertiesObject = {};
-            properties.map((property) => {
-                propertiesObject[property.key] = property.value;
-            });
-            console.log("Properties are: ", propertiesObject);
+                    let propertiesObject = {};
+                    properties.map((property) => {
+                        propertiesObject[property.key] = property.value;
+                    });
+                    console.log("Properties are: ", propertiesObject);
 
-            // setTokenList([...tokenList, {
-            //     properties: properties,
-            //     ipfsHash: ipfsHash,
-            //     ipfsURI: ipfsURI,
-            //     title: name,
-            //     description: description,
-            //     rarity: rarity,
-            //     tokensupply: tokenSupply,
-            //     // ImageArtistName: imageArtist,
-            //     // ImageArtistId: imageArtistId,
-            //     // ImageArtistAbout: aboutTheArt,
-            //     // ImageArtistWebsite: website,
-            //     // ImageArtistProfile: artistImage,
-            //     // ProducerId: producerId,
-            //     // ProducerName: producer,
-            //     // ProducerInspiration: inspirationForThePiece,
-            //     // ProducerProfile: producerImage,
-            //     // ExecutiveProducerId: executiveProducerId,
-            //     // ExecutiveProducerName: executiveProducer,
-            //     // ExecutiveProducerInspiration: executiveInspirationForThePiece,
-            //     // ExecutiveProducerProfile: executiveProducerImage,
-            //     // FanId: fanId,
-            //     // FanName: fan,
-            //     // FanInspiration: fanInspirationForThePiece,
-            //     // FanProfile: fanImage,
-            //     // other: other,
-            //     collectiontitle: collection,
-            //     // collectiontype: collectionType,
-            //     // imageartisttype: imageArtistType,
-            //     // producertype: producerType,
-            //     // executiveproducertype: executiveProducerType,
-            //     // fantype: fanType,
-            //     supplytype: supplyType,
-            //     collectionId: collectionId,
-            // }]);
+                    
+
+                    //sending data to backend
+                    let data ={
+                        "collectionId": collectionId,
+                        "title": name,
+                        "description": description,
+                        "nftURI": ipfsURI,
+                        "metadataURI": ipfsURI,
+                        "nftFormat": imageType,
+                        "type": rarity,
+                        "tokenSupply": tokenSupply,
+                        "supplyType": supplyType,
+                        "properties": propertiesObject
+                    }
+
+                    if (batchId === ""){
+                        axios.post("/batch-mint", data).then(
+                            (response) => {
+                                console.log("Response on batch mint: ", response);
+                                setBatchId(response.data.batchId);
+                                setNftId(response.data.nftId);
+                                setTokenList([...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftId: response.data.nftId,
+                                    nftContractAddress: nftContractAddress
+                                }]);
+
+                                let cookieData = [...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftContractAddress: nftContractAddress,
+                                    nftId: response.data.nftId
+                                }]
+
+                                Cookies.set("Batch-ID", response.data.batchId, {
+                                });
+
+                                Cookies.set("NFT-Detail", cookieData, {
+                                });
+                            },
+                            (error) => {
+                                console.log("Error on batch mint: ", error);
+                            }
+                        )
+                    } else {
+                        data["batchId"] = batchId;
+                        console.log("data: ", data);
+                        axios.post("batch-mint/nft", data).then(
+                            (response) => {
+                                console.log("Batch minting into existing batch response: ", response);
+                                setNftId(response.data.nftId);
+                                setTokenList([...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftId: response.data.nftId,
+                                    nftContractAddress: nftContractAddress
+                                }]);
+
+                                let cookieData = [...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftContractAddress: nftContractAddress,
+                                    nftId: response.data.nftId
+                                }]
+
+                                Cookies.remove("NFT-Detail");
+
+                                Cookies.set("NFT-Detail", cookieData, {
+                                });
+                            },
+                            (error) => {
+                                console.log("Batch minting into existing batch error: ", error);
+                            }
+                        )
+                    }
+
+                    setProperties([
+                        { key: "", value: ""}
+                    ]);
+                    setNftId("");
+                    setIpfsHash("");
+                    setImage(r1);
+                    setName("");
+                    setDescription("");
+                    setRarity("");
+                    setTokenSupply(1);
+                    setSupplyType("Single")
+
+                    let variant = "success";
+                    enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+
+                    console.log("Token list length: ", tokenList.length);
+                    setIsUploadingData(false);
+                    handleCloseBackdrop();
+                })
+            }
 
             
-
-            //sending data to backend
-            let data ={
-                "collectionId": collectionId,
-                "title": name,
-                "description": description,
-                "nftURI": ipfsURI,
-                "metadataURI": ipfsURI,
-                "nftFormat": imageType,
-                "type": rarity,
-                "tokenSupply": tokenSupply,
-                "supplyType": supplyType,
-                "properties": propertiesObject
-            }
-
-            if (batchId === ""){
-                axios.post("/batch-mint", data).then(
-                    (response) => {
-                        console.log("Response on batch mint: ", response);
-                        setBatchId(response.data.batchId);
-                        setNftId(response.data.nftId);
-                        setTokenList([...tokenList, {
-                            properties: properties,
-                            ipfsHash: ipfsHash,
-                            ipfsURI: ipfsURI,
-                            title: name,
-                            description: description,
-                            rarity: rarity,
-                            tokensupply: tokenSupply,
-                            collectiontitle: collection,
-                            supplytype: supplyType,
-                            collectionId: collectionId,
-                            nftId: response.data.nftId,
-                            nftContractAddress: nftContractAddress
-                        }]);
-
-                        let cookieData = [...tokenList, {
-                            properties: properties,
-                            ipfsHash: ipfsHash,
-                            ipfsURI: ipfsURI,
-                            title: name,
-                            description: description,
-                            rarity: rarity,
-                            tokensupply: tokenSupply,
-                            collectiontitle: collection,
-                            supplytype: supplyType,
-                            collectionId: collectionId,
-                            nftContractAddress: nftContractAddress,
-                            nftId: response.data.nftId
-                        }]
-
-                        Cookies.set("Batch-ID", response.data.batchId, {
-                        });
-
-                        Cookies.set("NFT-Detail", cookieData, {
-                        });
-                    },
-                    (error) => {
-                        console.log("Error on batch mint: ", error);
-                    }
-                )
-            } else {
-                data["batchId"] = batchId;
-                console.log("data: ", data);
-                axios.post("batch-mint/nft", data).then(
-                    (response) => {
-                        console.log("Batch minting into existing batch response: ", response);
-                        setNftId(response.data.nftId);
-                        setTokenList([...tokenList, {
-                            properties: properties,
-                            ipfsHash: ipfsHash,
-                            ipfsURI: ipfsURI,
-                            title: name,
-                            description: description,
-                            rarity: rarity,
-                            tokensupply: tokenSupply,
-                            collectiontitle: collection,
-                            supplytype: supplyType,
-                            collectionId: collectionId,
-                            nftId: response.data.nftId,
-                            nftContractAddress: nftContractAddress
-                        }]);
-
-                        let cookieData = [...tokenList, {
-                            properties: properties,
-                            ipfsHash: ipfsHash,
-                            ipfsURI: ipfsURI,
-                            title: name,
-                            description: description,
-                            rarity: rarity,
-                            tokensupply: tokenSupply,
-                            collectiontitle: collection,
-                            supplytype: supplyType,
-                            collectionId: collectionId,
-                            nftContractAddress: nftContractAddress,
-                            nftId: response.data.nftId
-                        }]
-
-                        Cookies.remove("NFT-Detail");
-
-                        Cookies.set("NFT-Detail", cookieData, {
-                        });
-                    },
-                    (error) => {
-                        console.log("Batch minting into existing batch error: ", error);
-                    }
-                )
-            }
-
-            setProperties([
-                { key: "", value: ""}
-            ]);
-            setNftId("");
-            setIpfsHash("");
-            setImage(r1);
-            setName("");
-            setDescription("");
-            setRarity("");
-            setTokenSupply(1);
-            // setImageArtist("");
-            // setImageArtistId("");
-            // setAboutTheArt("");
-            // setWebsite("");
-            // setArtistImage(r1);
-            // setProducer("");
-            // setProducerId("");
-            // setInspirationForThePiece("");
-            // setProducerImage(r1);
-            // setExecutiveProducer("");
-            // setExecutiveProducerId("");
-            // setExecutiveInspirationForThePiece("");
-            // setExecutiveProducerImage(r1);
-            // setFan("");
-            // setFanId("");
-            // setFanInspirationForThePiece("");
-            // setFanImage(r1);
-            // setOther("");
-            // setCollection("");
-            // setCollectionType("New");
-            // setImageArtistType("New");
-            // setProducerType("New");
-            // setExecutiveProducerType("New");
-            // setFanType("New");
-            setSupplyType("Single");
-            // setCollectionId("");
         }
-        console.log("Token list length: ", tokenList.length);
-        // setIsUploadingData(false);
-        // handleShowBackdrop(false);
     };
 
     let onChangeFile = (e) => {
@@ -924,7 +835,8 @@ function NewNFT(props) {
     let onUpdateEditModal = (obj) => {
 
         console.log(obj);
-        // setIsUploadingData(true);
+        setIsUploadingData(true);
+        handleShowBackdrop();
         let data = [...tokenList];
         data[editObjectIndex] = obj;
 
@@ -933,47 +845,64 @@ function NewNFT(props) {
             propertiesObject[property.key] = property.value;
         });
 
-        // let metaData = {
-        //     name: data[editObjectIndex].title,
-        //     description: data[editObjectIndex].description,
-        //     image: data[editObjectIndex].nftURI
-        // }
-        // const reader = new window.FileReader();
-        // const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
-        // console.log("blob", blob);
-        // reader.readAsArrayBuffer(blob);
-        // reader.onloadend = () => {
-        //     // setBuffer(Buffer(reader.result));
-        //     ipfs.add(Buffer(reader.result), async (err, result) => {
-        //         if (err) {
-        //             console.log("Error: ", err);
-        //             let variant = "error";
-        //             enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
-        //             return;
-        //         }
-        //         console.log("HASH: ", result[0].hash);
-        //         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-        //         let variant = "success";
-        //         enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
-        //     })
-        // }
+        let metaData = {
+            name: data[editObjectIndex].title,
+            description: data[editObjectIndex].description,
+            image: data[editObjectIndex].nftURI
+        }
+        const reader = new window.FileReader();
+        const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+        console.log("blob", blob);
+        reader.readAsArrayBuffer(blob);
+        reader.onloadend = () => {
+            // setBuffer(Buffer(reader.result));
+            ipfs.add(Buffer(reader.result), async (err, result) => {
+                if (err) {
+                    console.log("Error: ", err);
+                    let variant = "error";
+                    enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+                    return;
+                }
+                console.log("HASH: ", result[0].hash);
+                setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
 
-        let updatedObject = {
-            "title": data[editObjectIndex].title,
-            "description": data[editObjectIndex].description,
-            "type": data[editObjectIndex].rarity,
-            "tokenSupply": data[editObjectIndex].tokensupply,
-            "supplyType": data[editObjectIndex].supplytype,
-            "properties": propertiesObject,
-            "nftFormat": data[editObjectIndex].nftFormat,
-            "metadataURI": data[editObjectIndex].metadataURI,
-            "nftURI": data[editObjectIndex].nftURI,
+                let updatedObject = {
+                    "title": data[editObjectIndex].title,
+                    "description": data[editObjectIndex].description,
+                    "type": data[editObjectIndex].rarity,
+                    "tokenSupply": data[editObjectIndex].tokensupply,
+                    "supplyType": data[editObjectIndex].supplytype,
+                    "properties": propertiesObject,
+                    "nftFormat": data[editObjectIndex].nftFormat,
+                    "metadataURI": data[editObjectIndex].metadataURI,
+                    "nftURI": data[editObjectIndex].nftURI,
+                }
+        
+                Cookies.remove("NFT-Detail");
+        
+                Cookies.set("NFT-Detail", data, {
+                });
+
+                axios.put(`nft/${data[editObjectIndex].nftId}`, updatedObject).then(
+                    (response) => {
+                        console.log("Response of updated nft: ", response);
+                    },
+                    (error) => {
+                        console.log("Error of updated nft: ", error);
+                    }
+                );
+        
+                setTokenList(data);
+                setIsUploadingData(false);
+                setOpenEditModal(false);
+                handleCloseBackdrop();
+
+                let variant = "success";
+                enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+            })
         }
 
-        Cookies.remove("NFT-Detail");
-
-        Cookies.set("NFT-Detail", data, {
-        });
+        
         // let data ={
         //     "collectionId": collectionId,
         //     "title": name,
@@ -989,18 +918,7 @@ function NewNFT(props) {
 
 
 
-        axios.put(`nft/${data[editObjectIndex].nftId}`, updatedObject).then(
-            (response) => {
-                console.log("Response of updated nft: ", response);
-            },
-            (error) => {
-                console.log("Error of updated nft: ", error);
-            }
-        );
-
-        setTokenList(data);
-        // setIsUploadingData(false);
-        setOpenEditModal(false);
+        
     }
 
     let handleChangeCollectionClose = () => {
@@ -1400,7 +1318,7 @@ function NewNFT(props) {
                                 <button
                                     className="btn"
                                     type="button"
-                                    onClick={() => handleAddClick()}
+                                    onClick={(e) => handleAddClick(e)}
                                 >
                                     <i className="fa fa-plus"></i> Add NFT to queue
                                 </button>
@@ -1614,6 +1532,7 @@ function NewNFT(props) {
                 // index={index}
                 onUpdate={onUpdateEditModal}
                 handleChangeCollection={handleChangeCollectionOpen}
+                isUploadingData={isUploadingData}
             >
             </NFTEditModal>
             <ChangeCollectionConfirmationModal

@@ -169,12 +169,12 @@ function NewCollection(props) {
                     console.log("collection creation response", response);
                     setCollectionId(response.data.collection._id);
                     collectionID = response.data.collection._id;
-                    let variant = "success";
-                    enqueueSnackbar('New Collection Created Successfully.', { variant });
-                    setCollectionName("");
-                    setCollectionSymbol("");
-                    setCollectionDescription("");
-                    handleCloseBackdrop();
+                    // let variant = "success";
+                    // enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    // setCollectionName("");
+                    // setCollectionSymbol("");
+                    // setCollectionDescription("");
+                    // handleCloseBackdrop();
                     setIsSaving(false)
                 },
                 (error) => {
@@ -216,6 +216,12 @@ function NewCollection(props) {
                 .on('receipt', (receipt) => {
                     console.log("receipt", receipt);
                     cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                    let variant = "success";
+                    enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    setCollectionName("");
+                    setCollectionSymbol("");
+                    setCollectionDescription("");
+                    handleCloseBackdrop();
                 }
             )
 
