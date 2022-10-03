@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core/';
+import { CardActionArea, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid } from '@material-ui/core/';
 import Avatar from '@material-ui/core/Avatar';
 import Backdrop from '@material-ui/core/Backdrop';
 import Button from '@material-ui/core/Button';
@@ -18,6 +18,7 @@ import Typography from '@material-ui/core/Typography';
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from 'axios';
 import Cookies from "js-cookie";
+import { isUndefined } from 'lodash';
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from "react";
 import { Col, Row, Spinner } from "react-bootstrap";
@@ -28,7 +29,10 @@ import r1 from '../../../../assets/img/patients/patient.jpg';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import ipfs from '../../../../components/IPFS/ipfs';
+import ChangeCollectionConfirmationModal from '../../../../components/Modals/ChangeCollectionConfirmationModal';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
+import NFTEditModal from '../../../../components/Modals/NFTEditModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -89,13 +93,13 @@ function NewNFT(props) {
     const [tokenList, setTokenList] = useState([]);
     let [isSaving, setIsSaving] = useState(false);
     let [name, setName] = useState("");
-    let [website, setWebsite] = useState("");
-    let [aboutTheArt, setAboutTheArt] = useState("");
+    // let [website, setWebsite] = useState("");
+    // let [aboutTheArt, setAboutTheArt] = useState("");
     let [ipfsHash, setIpfsHash] = useState(null);
     let [description, setDescription] = useState("");
-    let [inspirationForThePiece, setInspirationForThePiece] = useState("");
-    let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
-    let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
+    // let [inspirationForThePiece, setInspirationForThePiece] = useState("");
+    // let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
+    // let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
     let [properties, setProperties] = useState([
         { key: "", value: "" }
     ]);
@@ -111,14 +115,14 @@ function NewNFT(props) {
     // let [producerTypes, setProducerTypes] = useState([]);
     let [nftContractAddress, setNftContractAddress] = useState("");
 
-    let [imageArtist, setImageArtist] = useState('');
-    let [imageArtistId, setImageArtistId] = useState('');
+    // let [imageArtist, setImageArtist] = useState('');
+    // let [imageArtistId, setImageArtistId] = useState('');
     let [collectionTypes, setCollectionTypes] = useState([]);
-    let [collectionType, setCollectionType] = useState("New");
+    // let [collectionType, setCollectionType] = useState("New");
     let [collection, setCollection] = useState('');
 
-    let [producerId, setProducerId] = useState('');
-    let [producer, setProducer] = useState('');
+    // let [producerId, setProducerId] = useState('');
+    // let [producer, setProducer] = useState('');
     let [tokenSupply, setTokenSupply] = useState("1");
     let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
     // let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] = useState(false);
@@ -130,20 +134,30 @@ function NewNFT(props) {
     // let [fanId, setFanId] = useState('');
     // let [other, setOther] = useState('');
     let [image, setImage] = useState(r1);
-    let [artistImage, setArtistImage] = useState(r1);
-    let [producerImage, setProducerImage] = useState(r1);
+    // let [artistImage, setArtistImage] = useState(r1);
+    // let [producerImage, setProducerImage] = useState(r1);
     // let [executiveProducerImage, setExecutiveProducerImage] = useState(r1);
-    let [fanImage, setFanImage] = useState(r1);
-    let [imageArtistType, setImageArtistType] = useState("New");
-    let [producerType, setProducerType] = useState("New");
-    let [executiveProducerType, setExecutiveProducerType] = useState("New");
-    let [fanType, setFanType] = useState("New");
+    // let [fanImage, setFanImage] = useState(r1);
+    // let [imageArtistType, setImageArtistType] = useState("New");
+    // let [producerType, setProducerType] = useState("New");
+    // let [executiveProducerType, setExecutiveProducerType] = useState("New");
+    // let [fanType, setFanType] = useState("New");
     let [collectionId, setCollectionId] = useState('');
     let [ipfsURI, setIpfsURI] = useState("");
+    let [metaDataURI, setMetaDataURI] = useState("");
     let [imageType, setImageType] = useState("");
+    let [openDialog, setOpenDialog] = useState(false);
+    let [openEditModal, setOpenEditModal] = useState(false);
+    let [nftDetail, setNftDetail] = useState({});
+    let [editObjectIndex, setEditObjectIndex] = useState(0);
+    let [batchId, setBatchId] = useState("");
+    let [changeCollection, setChangeCollection] = useState(false);
+    let [changeCollectionList, setChangeCollectionList] = useState([]);
+    let [nftId, setNftId] = useState("");
+    let [isUploadingData, setIsUploadingData] = useState(false);
 
-    let [executiveProducerId, setExecutiveProducerId] = useState('');
-    let [executiveProducer, setExecutiveProducer] = useState('');
+    // let [executiveProducerId, setExecutiveProducerId] = useState('');
+    // let [executiveProducer, setExecutiveProducer] = useState('');
     
 
 
@@ -174,6 +188,7 @@ function NewNFT(props) {
         axios.get("/collection/collections").then(
             (response) => {
                 console.log("response", response);
+                setChangeCollectionList(response.data.collectionData);
                 response.data.collectionData = [{
                     name: "+ Create new Collection"
                 }, ...response.data.collectionData]
@@ -195,11 +210,31 @@ function NewNFT(props) {
             })
     }
 
+    let getDataFromCookies = () => {
+        let data = Cookies.get("NFT-Detail");
+        let batchMintId = Cookies.get("Batch-ID");
+        if ((data && batchMintId) !== null && (typeof(data) && typeof(batchMintId)) !== 'undefined' && (data && batchMintId) !== "") {
+            
+            console.log("Data: ", data);
+            console.log("Batch ID: ", batchMintId);
+            console.log("Type is: ", typeof(data));
+            console.log("Type is: ", typeof(batchMintId));
+            setTokenList(JSON.parse(data));
+            setBatchId(batchMintId);
+            setCollection(JSON.parse(data)[0].collectiontitle);
+            setCollectionId(JSON.parse(data)[0].collectionId);
+        } else {
+            console.log("No data in cookies");
+        }
+    }
+
     useEffect(() => {
         // getProfileData();
         getCollections();
+        // setTokenList(Cookies.get("NFT-Detail"));
+       getDataFromCookies();
 
-        props.setActiveTab({
+       props.setActiveTab({
             dashboard: "",
             newNFT: "active",
             orders: "",
@@ -234,13 +269,13 @@ function NewNFT(props) {
         event.preventDefault();
         setIsSaving(true);
 
-        // if (tokenList.length === 0) {
+        if (tokenList.length === 0) {
 
-        //     let variant = "error";
-        //     enqueueSnackbar('Add Nfts to Queue before Creation.', { variant });
-        //     setIsSaving(false);
-        // }
-        // else {
+            let variant = "error";
+            enqueueSnackbar('Add Nfts to Queue before Creation.', { variant });
+            setIsSaving(false);
+        }
+        else {
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
@@ -254,15 +289,15 @@ function NewNFT(props) {
             handleShowBackdrop();
             const address = nftContractAddress;
             const abi = CreateNFTContract;
-            // let totalImages = tokenList.length;
-            // let AmountofNFTs = [];
-            // let IPFsHashes = [];
-            // for (let i = 0; i < tokenList.length; i++) {
-            //     AmountofNFTs.push(tokenList[i].tokensupply);
-            //     IPFsHashes.push(tokenList[i].ipfsHash);
-            // }
-            // console.log("AmountofNFTs", AmountofNFTs);
-            // console.log("IPFsHashes", IPFsHashes);
+            let totalImages = tokenList.length;
+            let AmountofNFTs = [];
+            let IPFsURIs = [];
+            for (let i = 0; i < tokenList.length; i++) {
+                AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
+                IPFsURIs.push(tokenList[i].ipfsURI);
+            }
+            console.log("AmountofNFTs", AmountofNFTs);
+            console.log("IPFsHashes", IPFsURIs);
 
             console.log("Contract Address: ", address);
             var myContractInstance = await new web3.eth.Contract(abi, address);
@@ -273,7 +308,7 @@ function NewNFT(props) {
             console.log("tokenSupply: ", tokenSupply);
             console.log("Account address: ", accounts[0]);
             console.log("Image Type: ", imageType);
-            await myContractInstance.methods.createAsset(name, description, ipfsURI,  "0", tokenSupply, "0x00").send({ from: accounts[0] }, (err, response) => {
+            await myContractInstance.methods.mintBatch(accounts[0], AmountofNFTs, IPFsURIs).send({ from: accounts[0] }, (err, response) => {
                 console.log('get transaction', err, response);
                 if (err !== null) {
                     console.log("err", err);
@@ -285,39 +320,42 @@ function NewNFT(props) {
             })
                 .on('receipt', (receipt) => {
                     console.log("receipt", receipt);
+                    Cookies.remove("NFT-Detail");
                     // console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
                     // let ids = receipt.events.TransferBatch.returnValues.ids;
                     // for (let i = 0; i < tokenList.length; i++) {
                     //     tokenList[i].nftId = ids[i];
                     // }
 
-                    let Data = {
-                        "collectionId": collectionId,
-                        "data": [
-                            {
-                                "title": name,
-                                "description": description,
-                                "collectionId": collectionId,
-                                "nftURI": ipfsURI,
-                                "metadataURI": ipfsURI,
-                                "tokenSupply": tokenSupply,
-                                "nftFormat": imageType,
-                                "type": rarity,
-                                "supplyType": supplyType,
-                                // "properties": properties
-                                "userAddress": accounts[0]
-                            }
-                        ]
-                    }
+                    // let Data = {
+                    //     "collectionId": collectionId,
+                    //     "data": [
+                    //         {
+                    //             "title": name,
+                    //             "description": description,
+                    //             "collectionId": collectionId,
+                    //             "nftURI": ipfsURI,
+                    //             "metadataURI": ipfsURI,
+                    //             "tokenSupply": tokenSupply,
+                    //             "nftFormat": imageType,
+                    //             "type": rarity,
+                    //             "supplyType": supplyType,
+                    //             // "properties": properties
+                    //             "userAddress": accounts[0]
+                    //         }
+                    //     ]
+                    // }
                     
                     // let Data = new FormData();
-                    console.log("Data", Data);
-                    axios.post("/nft/addNFTs", Data).then(
+                    // console.log("Data", Data);
+                    axios.put(`/batch-mint/minted/${batchId}`).then(
                         (response) => {
                             console.log("response", response);
                             let variant = "success";
                             enqueueSnackbar('Nfts Created Successfully.', { variant });
-                            // setTokenList([]);
+                            Cookies.remove("Batch-ID");
+                            Cookies.remove("NFT-Detail");
+                            setTokenList([]);
                             setImageType("");
                             setIpfsHash("");
                             setImage(r1);
@@ -344,7 +382,7 @@ function NewNFT(props) {
                             // setFanImage(r1);
                             // setOther("");
                             setCollection("");
-                            setCollectionType("New");
+                            // setCollectionType("New");
                             // setImageArtistType("New");
                             // setProducerType("New");
                             // setExecutiveProducerType("New");
@@ -368,16 +406,43 @@ function NewNFT(props) {
                         })
                 })
         }
-        // }
+        }
     };
     const handleRemoveClick = (index) => {
-    //     const list = [...tokenList];
-    //     list.splice(index, 1);
-    //     setTokenList(list);
+
+        if(tokenList.length === 1) {
+            axios.delete(`/batch-mint/${batchId}`).then(
+                (response) => {
+                    console.log("deleting batch response: ", response);
+                    Cookies.remove("NFT-Detail");
+                    Cookies.remove("Batch-ID");
+                    setTokenList([]);
+                    setBatchId("");
+                },
+                (error) => {
+                    console.log("Error on deleting response: ", error);
+                }
+            )
+        } else {
+            axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
+                (response) => {
+                    console.log("Response for delete nft from batch: ", response);
+                    const list = [...tokenList];
+                    list.splice(index, 1);
+                    Cookies.remove("NFT-Detail");
+                    Cookies.set("NFT-Detail", list, {
+                    });
+                    setTokenList(list);
+                },
+                (error) => {
+                    console.log("Error for delete nft from batch: ", error);
+                }
+        )}
     };
 
     // handle click event of the Add button
-    const handleAddClick = () => {
+    const handleAddClick = (e) => {
+        e.preventDefault();
         if (image === r1) {
             let variant = "error";
             enqueueSnackbar('Please Upload Artwork Photo', { variant });
@@ -399,111 +464,178 @@ function NewNFT(props) {
         } else if (tokenSupply < 0) {
             let variant = "error";
             enqueueSnackbar('Token Supply cannot be Negative', { variant });
-        } else if (imageArtist === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Image Artist Name', { variant });
-        } else if (aboutTheArt === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter About the Art', { variant });
-        } else if (artistImage === r1) {
-            let variant = "error";
-            enqueueSnackbar('Please Select Image Artist Image', { variant });
-        } else if (website === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Website of Image Artist', { variant });
-        } else if (producer === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Producer Name', { variant });
-        } else if (producerImage === r1) {
-            let variant = "error";
-            enqueueSnackbar('Please Select Producer Image', { variant });
-        } else if (inspirationForThePiece === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Producer Inspiration For The Piece', { variant });
-        } else if (executiveProducer === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Executive Producer Name', { variant });
-        } else if (executiveInspirationForThePiece === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Executive Producer Inspiration For The Piece', { variant });
-        } else if (fanImage === r1) {
-            let variant = "error";
-            enqueueSnackbar('Please Select Fan Image', { variant });
-        } else if (fanInspirationForThePiece === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Enter Fan Inspiration For The Piece', { variant });
         } else if (collection === "") {
             let variant = "error";
             enqueueSnackbar('Please Enter Collection Name', { variant });
         }
-        // else {
-        //     setTokenList([...tokenList, {
-        //         ipfsHash: ipfsHash,
-        //         artwork: image,
-        //         title: name,
-        //         description: description,
-        //         type: rarity,
-        //         tokensupply: tokenSupply,
-        //         ImageArtistName: imageArtist,
-        //         ImageArtistId: imageArtistId,
-        //         ImageArtistAbout: aboutTheArt,
-        //         ImageArtistWebsite: website,
-        //         ImageArtistProfile: artistImage,
-        //         ProducerId: producerId,
-        //         ProducerName: producer,
-        //         ProducerInspiration: inspirationForThePiece,
-        //         ProducerProfile: producerImage,
-        //         ExecutiveProducerId: executiveProducerId,
-        //         ExecutiveProducerName: executiveProducer,
-        //         ExecutiveProducerInspiration: executiveInspirationForThePiece,
-        //         ExecutiveProducerProfile: executiveProducerImage,
-        //         FanId: fanId,
-        //         FanName: fan,
-        //         FanInspiration: fanInspirationForThePiece,
-        //         FanProfile: fanImage,
-        //         other: other,
-        //         collectiontitle: collection,
-        //         collectiontype: collectionType,
-        //         imageartisttype: imageArtistType,
-        //         producertype: producerType,
-        //         executiveproducertype: executiveProducerType,
-        //         fantype: fanType,
-        //         supplytype: supplyType,
-        //         collectionId: collectionId,
-        //     }]);
-        //     setIpfsHash("");
-        //     setImage(r1);
-        //     setName("");
-        //     setDescription("");
-        //     setRarity("");
-        //     setTokenSupply(1);
-        //     setImageArtist("");
-        //     setImageArtistId("");
-        //     setAboutTheArt("");
-        //     setWebsite("");
-        //     setArtistImage(r1);
-        //     setProducer("");
-        //     setProducerId("");
-        //     setInspirationForThePiece("");
-        //     setProducerImage(r1);
-        //     setExecutiveProducer("");
-        //     setExecutiveProducerId("");
-        //     setExecutiveInspirationForThePiece("");
-        //     setExecutiveProducerImage(r1);
-        //     setFan("");
-        //     setFanId("");
-        //     setFanInspirationForThePiece("");
-        //     setFanImage(r1);
-        //     setOther("");
-        //     setCollection("");
-        //     setCollectionType("New");
-        //     setImageArtistType("New");
-        //     setProducerType("New");
-        //     setExecutiveProducerType("New");
-        //     setFanType("New");
-        //     setSupplyType("Single");
-        //     setCollectionId("");
-        // }
+        else {
+            handleShowBackdrop();
+            setIsUploadingData(true);
+
+            // uploading metadata to ipfs
+            let ipfsMetaData;
+            let metaData = {
+                name: name,
+                description: description,
+                image: ipfsURI
+            }
+            const reader = new window.FileReader();
+            const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+            console.log("blob", blob);
+            var dataIpfsHash;
+            reader.readAsArrayBuffer(blob);
+            reader.onloadend = () => {
+                // setBuffer(Buffer(reader.result));
+                ipfs.add(Buffer(reader.result), async (err, result) => {
+                    if (err) {
+                        console.log("Error: ", err);
+                        let variant = "error";
+                        enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+                        return;
+                    }
+                    console.log("HASH: ", result[0].hash);
+                    ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`
+                    setMetaDataURI(ipfsMetaData);
+
+                    let propertiesObject = {};
+                    properties.map((property) => {
+                        propertiesObject[property.key] = property.value;
+                    });
+                    console.log("Properties are: ", propertiesObject);
+
+                    
+
+                    //sending data to backend
+                    let data ={
+                        "collectionId": collectionId,
+                        "title": name,
+                        "description": description,
+                        "nftURI": ipfsURI,
+                        "metadataURI": ipfsURI,
+                        "nftFormat": imageType,
+                        "type": rarity,
+                        "tokenSupply": tokenSupply,
+                        "supplyType": supplyType,
+                        "properties": propertiesObject
+                    }
+
+                    if (batchId === ""){
+                        axios.post("/batch-mint", data).then(
+                            (response) => {
+                                console.log("Response on batch mint: ", response);
+                                setBatchId(response.data.batchId);
+                                setNftId(response.data.nftId);
+                                setTokenList([...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftId: response.data.nftId,
+                                    nftContractAddress: nftContractAddress
+                                }]);
+
+                                let cookieData = [...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftContractAddress: nftContractAddress,
+                                    nftId: response.data.nftId
+                                }]
+
+                                Cookies.set("Batch-ID", response.data.batchId, {
+                                });
+
+                                Cookies.set("NFT-Detail", cookieData, {
+                                });
+                            },
+                            (error) => {
+                                console.log("Error on batch mint: ", error);
+                            }
+                        )
+                    } else {
+                        data["batchId"] = batchId;
+                        console.log("data: ", data);
+                        axios.post("batch-mint/nft", data).then(
+                            (response) => {
+                                console.log("Batch minting into existing batch response: ", response);
+                                setNftId(response.data.nftId);
+                                setTokenList([...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftId: response.data.nftId,
+                                    nftContractAddress: nftContractAddress
+                                }]);
+
+                                let cookieData = [...tokenList, {
+                                    properties: properties,
+                                    ipfsHash: ipfsHash,
+                                    ipfsURI: ipfsURI,
+                                    title: name,
+                                    description: description,
+                                    rarity: rarity,
+                                    tokensupply: tokenSupply,
+                                    collectiontitle: collection,
+                                    supplytype: supplyType,
+                                    collectionId: collectionId,
+                                    nftContractAddress: nftContractAddress,
+                                    nftId: response.data.nftId
+                                }]
+
+                                Cookies.remove("NFT-Detail");
+
+                                Cookies.set("NFT-Detail", cookieData, {
+                                });
+                            },
+                            (error) => {
+                                console.log("Batch minting into existing batch error: ", error);
+                            }
+                        )
+                    }
+
+                    setProperties([
+                        { key: "", value: ""}
+                    ]);
+                    setNftId("");
+                    setIpfsHash("");
+                    setImage(r1);
+                    setName("");
+                    setDescription("");
+                    setRarity("");
+                    setTokenSupply(1);
+                    setSupplyType("Single")
+
+                    let variant = "success";
+                    enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+
+                    console.log("Token list length: ", tokenList.length);
+                    setIsUploadingData(false);
+                    handleCloseBackdrop();
+                })
+            }
+
+            
+        }
     };
 
     let onChangeFile = (e) => {
@@ -655,13 +787,15 @@ function NewNFT(props) {
     //     );
     // }
 
-    let handleRemoveProperty = (index) => {
+    let handleRemoveProperty = (e, index) => {
+        e.preventDefault();
         let data = [...properties];
         data.splice(index, 1);
         setProperties(data);
     }
 
-    let handleAddProperty = () => {
+    let handleAddProperty = (e) => {
+        e.preventDefault();
         let newData = { key: "", value: ""};
         setProperties([...properties, newData]);
         console.log("Add button pressed.");
@@ -672,6 +806,152 @@ function NewNFT(props) {
         let data = [...properties];
         data[index][event.target.name] = event.target.value;
         setProperties(data);
+    }
+
+    let handleOpenNFTDetailModal = (nftObject) => {
+        setNftDetail(nftObject);
+        setOpenDialog(true);
+    }
+
+    let handleCloseNFTDetailModal = () => {
+        // setTokenList([...tempTokenList]);
+        // setTempTokenList([]);
+        console.log("Close button called from modal.");
+        setOpenDialog(false);
+    }
+
+    let handleEdit = () => {
+        // setNftDetail(nftObject);
+        console.log("Nft detail: ", nftDetail);
+        // setNftDetail(nftDetail);
+        setOpenDialog(false);
+        setOpenEditModal(true);
+    }
+
+    let handleEditClose = () => {
+        setOpenEditModal(false);
+    }
+
+    let onUpdateEditModal = (obj) => {
+
+        console.log(obj);
+        setIsUploadingData(true);
+        handleShowBackdrop();
+        let data = [...tokenList];
+        data[editObjectIndex] = obj;
+
+        let propertiesObject = {};
+            data[editObjectIndex].properties.map((property) => {
+            propertiesObject[property.key] = property.value;
+        });
+
+        let metaData = {
+            name: data[editObjectIndex].title,
+            description: data[editObjectIndex].description,
+            image: data[editObjectIndex].nftURI
+        }
+        const reader = new window.FileReader();
+        const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
+        console.log("blob", blob);
+        reader.readAsArrayBuffer(blob);
+        reader.onloadend = () => {
+            // setBuffer(Buffer(reader.result));
+            ipfs.add(Buffer(reader.result), async (err, result) => {
+                if (err) {
+                    console.log("Error: ", err);
+                    let variant = "error";
+                    enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
+                    return;
+                }
+                console.log("HASH: ", result[0].hash);
+                setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+
+                let updatedObject = {
+                    "title": data[editObjectIndex].title,
+                    "description": data[editObjectIndex].description,
+                    "type": data[editObjectIndex].rarity,
+                    "tokenSupply": data[editObjectIndex].tokensupply,
+                    "supplyType": data[editObjectIndex].supplytype,
+                    "properties": propertiesObject,
+                    "nftFormat": data[editObjectIndex].nftFormat,
+                    "metadataURI": data[editObjectIndex].metadataURI,
+                    "nftURI": data[editObjectIndex].nftURI,
+                }
+        
+                Cookies.remove("NFT-Detail");
+        
+                Cookies.set("NFT-Detail", data, {
+                });
+
+                axios.put(`nft/${data[editObjectIndex].nftId}`, updatedObject).then(
+                    (response) => {
+                        console.log("Response of updated nft: ", response);
+                    },
+                    (error) => {
+                        console.log("Error of updated nft: ", error);
+                    }
+                );
+        
+                setTokenList(data);
+                setIsUploadingData(false);
+                setOpenEditModal(false);
+                handleCloseBackdrop();
+
+                let variant = "success";
+                enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
+            })
+        }
+
+        
+        // let data ={
+        //     "collectionId": collectionId,
+        //     "title": name,
+        //     "description": description,
+        //     "nftURI": ipfsURI,
+        //     "metadataURI": ipfsURI,
+        //     "nftFormat": imageType,
+        //     "type": rarity,
+        //     "tokenSupply": tokenSupply,
+        //     "supplyType": supplyType,
+        //     "properties": propertiesObject
+        // }
+
+
+
+        
+    }
+
+    let handleChangeCollectionClose = () => {
+        setChangeCollection(false);
+    }
+
+    let handleChangeCollectionOpen = () => {
+        setChangeCollection(true);
+    }
+
+    let updateChangeCollection = (collectionObj) => {
+        console.log("Collection obj: ", collectionObj);
+        setCollection(collectionObj.name)
+        setCollectionId(collectionObj._id)
+        setNftContractAddress(collectionObj.nftContractAddress);
+        tokenList.map((token) => {
+            token.collectiontitle = collectionObj.name;
+            token.collectionId = collectionObj._id;
+        });
+
+        let updatedCollectionID = {
+            "batchId" : batchId,
+            "collectionId": collectionObj._id
+        }
+        axios.put(`/batch-mint/collection`, updatedCollectionID).then(
+            (response) => {
+                console.log("Response after updating collection id: ", response);
+            },
+            (error) => {
+                console.log("Error on updating collection id: ", error);
+            }
+        )
+        handleChangeCollectionClose();
     }
 
     return (
@@ -785,6 +1065,7 @@ function NewNFT(props) {
                                                     setRarity(value)
                                                 }
                                             }}
+                                            inputValue = {rarity}
                                             renderInput={(params) => (
                                                 <TextField
                                                     {...params}
@@ -890,7 +1171,7 @@ function NewNFT(props) {
                                                                 className="btn btn-submit btn-lg"
                                                                 color="primary"
                                                             // className="btn submit-btn"
-                                                                onClick={handleRemoveProperty}
+                                                                onClick={(e) => handleRemoveProperty(e, index)}
                                                             >
                                                                 -
                                                             </button>
@@ -907,7 +1188,7 @@ function NewNFT(props) {
                                             className="btn btn-submit"
                                             color="primary"
                                         // className="btn submit-btn"
-                                            onClick={handleAddProperty}
+                                            onClick={(e) => handleAddProperty(e)}
                                         >
                                             +
                                         </button>
@@ -940,42 +1221,84 @@ function NewNFT(props) {
                                     
                                     </div>
 
-                                    <div className="form-group">
-
-                                        <label>Select Collection</label>
-                                        <div className="filter-widget">
-                                            <Autocomplete
-                                                id="combo-dox-demo"
-                                                required
-                                                options={collectionTypes}
-                                                // disabled={isDisabledImporter}
-                                                getOptionLabel={(option) =>
-                                                    option.name
-                                                }
-                                                onChange={(event, value) => {
-                                                    if (value == null) setCollection("");
-                                                    else {
-                                                        if (value.name === "+ Create new Collection") {
-                                                            history.push('/dashboard/createNewCollection')
-                                                        } else {
-                                                            console.log(value);
-                                                            setCollection(value.name)
-                                                            setCollectionId(value._id)
-                                                            setNftContractAddress(value.nftContractAddress);
-                                                            console.log("Value: ", value);
+                                        {(tokenList.length > 0) ? (
+                                            <div className="form-group">
+                                                <label>Select Collection</label>
+                                                <div className="filter-widget">
+                                                    <Autocomplete
+                                                        id="combo-dox-demo"
+                                                        disabled
+                                                        options={collectionTypes}
+                                                        // disabled={isDisabledImporter}
+                                                        getOptionLabel={(option) =>
+                                                            option.name
                                                         }
-                                                    }
-                                                }}
-                                                renderInput={(params) => (
-                                                    <TextField
-                                                        {...params}
-                                                        label="Collections"
-                                                        variant="outlined"
+                                                        onChange={(event, value) => {
+                                                            if (value == null) setCollection("");
+                                                            else {
+                                                                if (value.name === "+ Create new Collection") {
+                                                                    history.push('/dashboard/createNewCollection')
+                                                                } else {
+                                                                    console.log(value);
+                                                                    setCollection(value.name)
+                                                                    setCollectionId(value._id)
+                                                                    setNftContractAddress(value.nftContractAddress);
+                                                                    console.log("Value: ", value);
+                                                                }
+                                                            }
+                                                        }}
+                                                        inputValue = {collection}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Collections"
+                                                                variant="outlined"
+                                                            />
+                                                        )}
                                                     />
-                                                )}
-                                            />
-                                        </div>
-                                    </div>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="form-group">
+                                                <label>Select Collection</label>
+                                                <div className="filter-widget">
+                                                    <Autocomplete
+                                                        id="combo-dox-demo"
+                                                        required
+                                                        options={collectionTypes}
+                                                        // disabled={isDisabledImporter}
+                                                        getOptionLabel={(option) =>
+                                                            option.name
+                                                        }
+                                                        onChange={(event, value) => {
+                                                            if (value == null) setCollection("");
+                                                            else {
+                                                                if (value.name === "+ Create new Collection") {
+                                                                    history.push('/dashboard/createNewCollection')
+                                                                } else {
+                                                                    console.log(value);
+                                                                    setCollection(value.name)
+                                                                    setCollectionId(value._id)
+                                                                    setNftContractAddress(value.nftContractAddress);
+                                                                    console.log("Value: ", value);
+                                                                }
+                                                            }
+                                                        }}
+                                                        inputValue = {collection}
+                                                        renderInput={(params) => (
+                                                            <TextField
+                                                                {...params}
+                                                                label="Collections"
+                                                                variant="outlined"
+                                                            />
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                        
+                                    }
+                                        
 
                                     {/* )} */}
 
@@ -983,7 +1306,7 @@ function NewNFT(props) {
 
                                 </div>
 
-                                {/* {image === "" || name === "" || description === "" || tokenSupply === "" || imageArtist === "" || aboutTheArt === "" || website === "" || artistImage === "" || producer === "" || inspirationForThePiece === "" || producerImage === "" || executiveProducer === "" || executiveInspirationForThePiece === "" || executiveProducerImage === "" || fan === "" || fanInspirationForThePiece === "" || fanImage === "" || other === "" || collection === "" ? (
+                                {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
                                     <button
                                         className="btn"
                                         type="submit"
@@ -991,15 +1314,15 @@ function NewNFT(props) {
                                     >
                                         <i className="fa fa-plus"></i> Add NFT to queue
                                     </button>
-                                ) : ( */}
-                                {/* <button
+                                ) : (
+                                <button
                                     className="btn"
                                     type="button"
-                                    onClick={() => handleAddClick()}
+                                    onClick={(e) => handleAddClick(e)}
                                 >
                                     <i className="fa fa-plus"></i> Add NFT to queue
-                                </button> */}
-                                {/* )} */}
+                                </button>
+                                )}
                             </div>
                         </form>
 
@@ -1021,76 +1344,135 @@ function NewNFT(props) {
                                         {tokenList.map((i, index) => (
 
                                             <Grid item xs={12} sm={6} md={6} key={index}>
-                                                <Card >
-                                                    <CardHeader className="text-center"
-                                                        title={i.title}
-                                                    />
-                                                    <CardMedia
-                                                        variant="outlined" style={{ height: "100%", border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                        className={classes.media}
-                                                        image={i.artwork}
-
-                                                        title="NFT Image"
-                                                    />
-                                                    <CardContent>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Artwork Description: </strong>{i.description}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Token Rarity: </strong>{i.type}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Token Supply: </strong>{i.tokensupply}
-                                                        </Typography>
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                            title={i.ImageArtistName}
-                                                            subheader={i.ImageArtistAbout}
+                                                <CardActionArea onClick={() => {
+                                                    console.log("nftDetailObject: ", i);
+                                                    handleOpenNFTDetailModal(i);
+                                                    setEditObjectIndex(index);
+                                                    console.log("Open Dialog Value: ", openDialog);
+                                                }}>
+                                                    <Card>
+                                                        <CardHeader className="text-center"
+                                                            title={i.title}
                                                         />
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Website URL: </strong>{i.ImageArtistWebsite}
-                                                        </Typography>
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                            title={i.ProducerName}
-                                                            subheader={i.ProducerInspiration}
-                                                        />
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                            title={i.ExecutiveProducerName}
-                                                            subheader={i.ExecutiveProducerInspiration}
-                                                        />
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                        <CardHeader
-                                                            avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                            title={i.FanName}
-                                                            subheader={i.FanInspiration}
-                                                        />
+                                                        <CardMedia
+                                                            variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                            className={classes.media}
+                                                            image={i.ipfsURI}
 
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Other: </strong>{i.other}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Collection: </strong>{i.collectiontitle}
-                                                        </Typography>
-                                                    </CardContent>
-                                                    <CardActions>
+                                                            title="NFT Image"
+                                                        />
+                                                        <CardContent>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Description: </strong>{i.description}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Rarity: </strong>{i.rarity}
+                                                            </Typography>
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Token Supply: </strong>{i.tokensupply}
+                                                            </Typography>
+                                                            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography> */}
+                                                            {/* <CardHeader
+                                                                avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                                title={i.ImageArtistName}
+                                                                subheader={i.ImageArtistAbout}
+                                                            />
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Website URL: </strong>{i.ImageArtistWebsite}
+                                                            </Typography>
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
+                                                                title={i.ProducerName}
+                                                                subheader={i.ProducerInspiration}
+                                                            />
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
+                                                                title={i.ExecutiveProducerName}
+                                                                subheader={i.ExecutiveProducerInspiration}
+                                                            />
+                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
+                                                            <CardHeader
+                                                                avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
+                                                                title={i.FanName}
+                                                                subheader={i.FanInspiration}
+                                                            />
 
-                                                        <Button
-                                                            onClick={(e) => {
-                                                                e.preventDefault();
-                                                                handleRemoveClick(index);
-                                                            }}
-                                                            className="btn btn-sm bg-danger-light btn-block"
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Other: </strong>{i.other}
+                                                            </Typography> */}
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Collection: </strong>{i.collectiontitle}
+                                                            </Typography>
+                                                        </CardContent>
+                                                    </Card>
+                                                    {/* <Dialog
+                                                        fullWidth={true}
+                                                        maxWidth={true}
+                                                        open={openDialog}
+                                                        onClose={handleClickCloseDialog}
+                                                        aria-labelledby="max-width-dialog-title"
+                                                    >
+                                                        <DialogTitle id="max-width-dialog-title">Edit NFT Details</DialogTitle>
+                                                        <DialogContent>
+                                                            <DialogContentText></DialogContentText>
+                                                            <form>
+                                                                <TextField
+                                                                    label="NFT Title"
+                                                                    variant="outlined"
+                                                                    value={tempTokenList.title}
+                                                                    onChange={(e) => {
+                                                                        let temp = [...tempTokenList];
+                                                                        temp[index].title = e.target.value;
+                                                                        console.log(tempTokenList);
+                                                                        setTempTokenList(temp);
+                                                                    }}
+                                                                />
+                                                                <TextField
+                                                                    label="NFT Description"
+                                                                    variant="outlined"
+                                                                    value={tempTokenList.description}
+                                                                    onChange={(e) => {
+                                                                        let temp = [...tempTokenList];
+                                                                        temp[index].description = e.target.value;
+                                                                        setTempTokenList(temp);
+                                                                    }}
+                                                                    style={{ marginLeft: "5px" }}
+                                                                />
+                                                                <button className="btn submit-btn" onClick={console.log("Submit clicked")} >Save</button> 
+                                                            </form>
+                                                        </DialogContent>
+                                                    </Dialog> */}
+                                                </CardActionArea>
+                                                <CardActions>
 
-                                                        >
-                                                            Remove NFT
-                                                        </Button>
-                                                    </CardActions>
-                                                </Card>
+                                                    <Button
+                                                        onClick={(e) => {
+                                                            e.preventDefault();
+                                                            handleRemoveClick(index);
+                                                        }}
+                                                        className="btn btn-sm bg-danger-light btn-block"
+
+                                                    >
+                                                        Remove NFT
+                                                    </Button>
+                                                </CardActions>
+                                                {/* <NFTDetailModal 
+                                                    show={openDialog} 
+                                                    handleClose={handleCloseNFTDetailModal}
+                                                    nftDetail={tokenList[index]}
+                                                    handleEdit={handleEdit}
+                                                >
+                                                </NFTDetailModal>
+                                                <NFTEditModal
+                                                    show={openEditModal}
+                                                    handleClose={handleEditClose}
+                                                    nftDetail={i}
+                                                    index={index}
+                                                    onUpdate={onUpdateEditModal}
+                                                >
+                                                </NFTEditModal> */}
                                             </Grid>
 
                                         ))}
@@ -1113,13 +1495,13 @@ function NewNFT(props) {
                             </Spinner>
                         </div>
                     ) : (
-                        // tokenList.length === 0 ? (
-                        //     <div className="submit-section">
-                        //         <button type="button" disabled className="btn submit-btn">
-                        //             Batch create NFTs
-                        // </button>
-                        //     </div>
-                        // ) : (
+                        tokenList.length === 0 ? (
+                            <div className="submit-section">
+                                <button type="button" disabled className="btn submit-btn">
+                                    Batch create NFTs
+                        </button>
+                            </div>
+                        ) : (
                         <div className="submit-section">
                             <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
                                 Batch create NFTs
@@ -1128,7 +1510,7 @@ function NewNFT(props) {
                         // )
 
                     )
-                }
+                )}
             </div >
             <NetworkErrorModal
                 show={show}
@@ -1136,6 +1518,31 @@ function NewNFT(props) {
                 network={network}
             >
             </NetworkErrorModal>
+            <NFTDetailModal 
+                show={openDialog} 
+                handleClose={handleCloseNFTDetailModal}
+                nftDetail={nftDetail}
+                handleEdit={handleEdit}
+            >
+            </NFTDetailModal>
+            <NFTEditModal
+                show={openEditModal}
+                handleClose={handleEditClose}
+                nftDetail={nftDetail}
+                // index={index}
+                onUpdate={onUpdateEditModal}
+                handleChangeCollection={handleChangeCollectionOpen}
+                isUploadingData={isUploadingData}
+            >
+            </NFTEditModal>
+            <ChangeCollectionConfirmationModal
+                show={changeCollection}
+                handleClose={handleChangeCollectionClose}
+                collectionDetails={changeCollectionList}
+                updateChangeCollection={updateChangeCollection}
+                isUploading={isUploadingData}
+            >
+            </ChangeCollectionConfirmationModal>
             <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>

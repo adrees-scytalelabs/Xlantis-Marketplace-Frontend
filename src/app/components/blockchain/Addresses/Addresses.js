@@ -3,8 +3,8 @@ export const CreateCubeAddress = '0x2fC35aEDBC3d47837F24A746D67782fe9c87C0E8';
 export const AuctionAddress = "0x21A6256e5BB6Fe4f83F76A9701402ed555bDCFac";
 export const WethAddress = "0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5";
 export const MarketPlaceAddress = "0x89c91582cD0098449E066eB5A31fC10986eACBB1";
-export const Collectible1155Address = "0x7f889AaD32d341A78036A2F8106CD7120F0e4C6A";
-export const Factory1155Address = "0x340B7C18A0d91959f74b5326422D991249e72D8d";
-export const Collectible721Address = "0xFFA7F34e634C7B24c7E2Fb3f01e2646d4a323579";
-export const Factory721Address = "0xC5a93BA2d2d10abAb623E9Db6BAD927488d5a24d";
+export const Collectible1155Address = "0x969BeE61c3DDa4B3555e796Dc4d778cBD243F53D";
+export const Factory1155Address = "0x0C71F769F45b12dC8421730229730B36EA4Ab508";
+export const Collectible721Address = "0x7717a1b5FEC2d7e22E1d2e54EA17AAd0358B6EB3";
+export const Factory721Address = "0xA343276B0F853918de9BC2DEc2DcEb2B9F6214AE";
 
