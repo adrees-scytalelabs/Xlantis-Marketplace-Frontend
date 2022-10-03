@@ -57,67 +57,69 @@ function NFTCard(props) {
     const classes = useStyles();
     return (
         <Grid item xs={12} sm={6} md={6} lg={3} >
-            <Card style={{ height: "100%" }} variant="outlined">
-                <CardHeader className="text-center"
-                    title={props.data.title}
-                />
-                <CardMedia
-                    variant="outlined" style={{ border: props.data.type === "Mastercraft" ? '4px solid #ff0000' : props.data.type === "Legendary" ? '4px solid #FFD700' : props.data.type === "Epic" ? '4px solid #9400D3' : props.data.type === "Rare" ? '4px solid #0000FF' : props.data.type === "Uncommon" ? '4px solid #008000' : props.data.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                    className={classes.media}
-                    image={props.data.nftURI}
-                    title="NFT Image"
-                />
-                <CardContent>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Artwork Description: </strong>{props.data.description}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Token Rarity: </strong>{props.data.type}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Token Supply: </strong>{props.data.tokenSupply}
-                    </Typography>
-                    {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
-                    <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                            title={props.data.ImageArtistName}
-                            subheader={props.data.ImageArtistAbout}
-                        />
-                    </Link>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Website URL: </strong>{props.data.ImageArtistWebsite}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                    <Link to={"/User/Profile/Detail/producer/" + props.data.ProducerId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                            title={props.data.ProducerName}
-                            subheader={props.data.ProducerInspiration}
-                        />
-                    </Link>
-                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                    <Link to={"/User/Profile/Detail/executiveProducer/" + props.data.ExecutiveProducerId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                            title={props.data.ExecutiveProducerName}
-                            subheader={props.data.ExecutiveProducerInspiration}
-                        />
-                    </Link>
-                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                    <Link to={"/User/Profile/Detail/fan/" + props.data.FanId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.FanProfile} aria-label="Fan" className={classes.avatar} />}
-                            title={props.data.FanName}
-                            subheader={props.data.FanInspiration}
-                        />
-                    </Link>
+            <Link to={"/dashboard/nftDetail/" + props.data._id}>
+                <Card style={{ height: "100%" }} variant="outlined">
+                    <CardHeader className="text-center"
+                        title={props.data.title}
+                    />
+                    <CardMedia
+                        variant="outlined" style={{ border: props.data.type === "Mastercraft" ? '4px solid #ff0000' : props.data.type === "Legendary" ? '4px solid #FFD700' : props.data.type === "Epic" ? '4px solid #9400D3' : props.data.type === "Rare" ? '4px solid #0000FF' : props.data.type === "Uncommon" ? '4px solid #008000' : props.data.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                        className={classes.media}
+                        image={props.data.nftURI}
+                        title="NFT Image"
+                    />
+                    <CardContent>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Artwork Description: </strong>{props.data.description}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Token Rarity: </strong>{props.data.type}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Token Supply: </strong>{props.data.tokenSupply}
+                        </Typography>
+                        {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
+                        <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
+                            <CardHeader
+                                avatar={<Avatar src={props.data.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                title={props.data.ImageArtistName}
+                                subheader={props.data.ImageArtistAbout}
+                            />
+                        </Link>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Website URL: </strong>{props.data.ImageArtistWebsite}
+                        </Typography>
+                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
+                        <Link to={"/User/Profile/Detail/producer/" + props.data.ProducerId + "/null"} style={{ color: '#000' }}>
+                            <CardHeader
+                                avatar={<Avatar src={props.data.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
+                                title={props.data.ProducerName}
+                                subheader={props.data.ProducerInspiration}
+                            />
+                        </Link>
+                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
+                        <Link to={"/User/Profile/Detail/executiveProducer/" + props.data.ExecutiveProducerId + "/null"} style={{ color: '#000' }}>
+                            <CardHeader
+                                avatar={<Avatar src={props.data.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
+                                title={props.data.ExecutiveProducerName}
+                                subheader={props.data.ExecutiveProducerInspiration}
+                            />
+                        </Link>
+                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
+                        <Link to={"/User/Profile/Detail/fan/" + props.data.FanId + "/null"} style={{ color: '#000' }}>
+                            <CardHeader
+                                avatar={<Avatar src={props.data.FanProfile} aria-label="Fan" className={classes.avatar} />}
+                                title={props.data.FanName}
+                                subheader={props.data.FanInspiration}
+                            />
+                        </Link>
 
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Other: </strong>{props.data.other}
-                    </Typography> */}
-                </CardContent>
-            </Card>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Other: </strong>{props.data.other}
+                        </Typography> */}
+                    </CardContent>
+                </Card>
+            </Link>
         </Grid>
     );
 }
