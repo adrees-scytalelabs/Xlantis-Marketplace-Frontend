@@ -156,6 +156,7 @@ function NewNFT(props) {
     let [changeCollectionList, setChangeCollectionList] = useState([]);
     let [nftId, setNftId] = useState("");
     let [isUploadingData, setIsUploadingData] = useState(false);
+    let [isGlbFile, setIsGlbFile] = useState(false);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -643,7 +644,17 @@ function NewNFT(props) {
         setIsUploadingIPFS(true);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
-        setImageType(e.target.files[0].type.split("/")[1]);
+        let typeImage;
+        
+        if(e.target.files[0].name.includes(".glb")) {
+            typeImage = "glb";
+        }
+        else {
+            setImageType(e.target.files[0].type.split("/")[1]);
+            typeImage = e.target.files[0].type.split("/")[1];
+        }
+
+        console.log("Image Type: ", typeImage);
         console.log("e.target.files[0]", e.target.files[0]);
         // console.log("Image type: ", imageType);
         reader.readAsArrayBuffer(e.target.files[0]);
@@ -677,6 +688,9 @@ function NewNFT(props) {
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                if(typeImage === "glb") {
+                    setIsGlbFile(true);
+                }
             },
             (error) => {
                 if (process.env.NODE_ENV === "development") {
@@ -969,54 +983,138 @@ function NewNFT(props) {
                         <form>
                             <div className="form-group">
                                 <label>Select Artwork</label>
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar">
-                                            <div className="profile-img">
-                                                <div
-                                                    style={{
-                                                        background: "#E9ECEF",
-                                                        width: "100px",
-                                                        height: "100px",
-                                                    }}
-                                                >
-                                                    <img src={image} alt="Selfie" />
+                                {!isGlbFile ? (
+                                    <div className="filter-widget">
+                                        <div className="form-group">
+                                            <div className="change-avatar">
+                                                <div className="profile-img">
+                                                    <div
+                                                        style={{
+                                                            background: "#E9ECEF",
+                                                            width: "100px",
+                                                            height: "100px",
+                                                        }}
+                                                    >
+                                                        <img src={image} alt="Selfie" />
+                                                    </div>
+                                                </div>
+                                                <div className="upload-img">
+                                                    <div
+                                                        className="change-photo-btn"
+                                                        style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                    >
+                                                        {isUploadingIPFS ? (
+                                                            <div className="text-center">
+                                                                <Spinner
+                                                                    animation="border"
+                                                                    role="status"
+                                                                    style={{ color: "#fff" }}
+                                                                >
+                                                                </Spinner>
+                                                            </div>
+                                                        ) : (
+                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                        )}
+
+                                                        <input
+                                                            name="sampleFile"
+                                                            type="file"
+                                                            className="upload"
+                                                            accept=".png,.jpg,.jpeg,.gif,.glb"
+                                                            onChange={onChangeFile}
+                                                        />
+                                                    </div>
+                                                    <small className="form-text text-muted">
+                                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                    </small>
                                                 </div>
                                             </div>
-                                            <div className="upload-img">
-                                                <div
-                                                    className="change-photo-btn"
-                                                    style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                >
-                                                    {isUploadingIPFS ? (
-                                                        <div className="text-center">
-                                                            <Spinner
-                                                                animation="border"
-                                                                role="status"
-                                                                style={{ color: "#fff" }}
-                                                            >
-                                                            </Spinner>
-                                                        </div>
-                                                    ) : (
-                                                        <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                    )}
-
-                                                    <input
-                                                        name="sampleFile"
-                                                        type="file"
-                                                        className="upload"
-                                                        accept=".png,.jpg,.jpeg,.gif"
-                                                        onChange={onChangeFile}
-                                                    />
-                                                </div>
-                                                <small className="form-text text-muted">
-                                                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                </small>
-                                            </div>
-
                                         </div>
                                     </div>
-                                </div>
+                                ): (
+                                    <div>
+                                        <div>
+                                            <GLTFModel src={ipfsURI} >
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 100, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 50, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 0, z: 0 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 100, z: 200 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: -100, y: 200, z: -100}}
+                                                />
+                                            </GLTFModel>
+                                        </div>
+                                        <label>Select Preview Image</label>
+                                        <div className="filter-widget">
+                                            <div className="form-group">
+                                                <div className="change-avatar">
+                                                    <div className="profile-img">
+                                                        <div
+                                                            style={{
+                                                                background: "#E9ECEF",
+                                                                width: "100px",
+                                                                height: "100px",
+                                                            }}
+                                                        >
+                                                            <img src={image} alt="Selfie" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="upload-img">
+                                                        <div
+                                                            className="change-photo-btn"
+                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                        >
+                                                            {isUploadingIPFS ? (
+                                                                <div className="text-center">
+                                                                    <Spinner
+                                                                        animation="border"
+                                                                        role="status"
+                                                                        style={{ color: "#fff" }}
+                                                                    >
+                                                                    </Spinner>
+                                                                </div>
+                                                            ) : (
+                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                            )}
+
+                                                            <input
+                                                                name="sampleFile"
+                                                                type="file"
+                                                                className="upload"
+                                                                accept=".png,.jpg,.jpeg,.gif,.glb"
+                                                                onChange={onChangeFile}
+                                                            />
+                                                        </div>
+                                                        <small className="form-text text-muted">
+                                                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
 
 
                                 <div className="form-group">
