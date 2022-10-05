@@ -33,6 +33,7 @@ import ChangeCollectionConfirmationModal from '../../../../components/Modals/Cha
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 import NFTEditModal from '../../../../components/Modals/NFTEditModal';
+import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
