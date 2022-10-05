@@ -11,6 +11,10 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from "@material-ui/core/TextField";
 import Typography from '@material-ui/core/Typography';
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from 'notistack';
@@ -24,6 +28,9 @@ import CreateAuctionContract from '../../../../components/blockchain/Abis/Create
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import CubeComponent1 from '../../../../components/Cube/CubeComponent1';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import ipfs from '../../../../components/IPFS/ipfs';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -62,27 +69,38 @@ const useStyles = makeStyles((theme) => ({
 function NewDrop(props) {
 
     const { enqueueSnackbar } = useSnackbar();
+    let { path } = useRouteMatch();
+
     const classes = useStyles();
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());
     const [startTimeStamp, setStartTimeStamp] = useState(Math.round(startTime.getTime() / 1000));
     const [endTimeStamp, setEndTimeStamp] = useState(Math.round(endTime.getTime() / 1000));
-    const [inputList, setInputList] = useState([]);
-    const [imageData, setImageData] = useState([]);
+    // const [inputList, setInputList] = useState([]);
+    // const [imageData, setImageData] = useState([]);
+    let [saleType, setSaleType] = useState("auction");
     let [name, setName] = useState("");
     let [description, setDescription] = useState("");
     let [image, setImage] = useState(r1);
+    let [dropId, setDropId] = useState("");
+
 
     let [isUploading, setIsUploading] = useState();
     let [isSaving, setIsSaving] = useState(false);
-    let [minimumBid, setMinimumBid] = useState();
-    let [bidDelta, setBidDelta] = useState();
+    // let [minimumBid, setMinimumBid] = useState();
+    // let [bidDelta, setBidDelta] = useState();
 
     // eslint-disable-next-line
     let [type, setType] = useState();
     let [types, setTypes] = useState([]);
     const [typesImages, setTypesImages] = useState([]);
     const [network, setNetwork] = useState("");
+
+    let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+    let [imageType, setImageType] = useState("");
+    let [ipfsURI, setIpfsURI] = useState("");
+    let [ipfsHash, setIpfsHash] = useState(null);
+
 
     const [showNetworkModal, setShowNetworkModal] = useState(false);
     const handleCloseNetworkModal = () => setShowNetworkModal(false);
@@ -96,29 +114,31 @@ function NewDrop(props) {
         setOpen(true);
     };
 
-    let getMyCubes = () => {
-        axios.get("/token/TokenIdsnotonauction").then(
-            (response) => {
-                console.log("response", response);
-                setInputList(response.data.tokensdata);
-                setImageData(response.data.nftsdata);
-            },
-            (error) => {
-                if (process.env.NODE_ENV === "development") {
-                    console.log(error);
-                    console.log(error.response);
-                }
-                if (error.response.data !== undefined) {
-                    if (error.response.data === "Unauthorized access (invalid token) !!") {
-                        Cookies.remove("Authorization");
-                        localStorage.removeItem("Address")
-                        window.location.reload();
-                    }
-                }
-            })
-    }
+    const history = useHistory();
+
+    // let getMyCubes = () => {
+    //     axios.get("/token/TokenIdsnotonauction").then(
+    //         (response) => {
+    //             console.log("response", response);
+    //             setInputList(response.data.tokensdata);
+    //             setImageData(response.data.nftsdata);
+    //         },
+    //         (error) => {
+    //             if (process.env.NODE_ENV === "development") {
+    //                 console.log(error);
+    //                 console.log(error.response);
+    //             }
+    //             if (error.response.data !== undefined) {
+    //                 if (error.response.data === "Unauthorized access (invalid token) !!") {
+    //                     Cookies.remove("Authorization");
+    //                     localStorage.removeItem("Address")
+    //                     window.location.reload();
+    //                 }
+    //             }
+    //         })
+    // }
     useEffect(() => {
-        getMyCubes();
+        // getMyCubes();
         props.setActiveTab({
             dashboard: "",
             newNFT: "",
@@ -137,26 +157,26 @@ function NewDrop(props) {
             newRandomDrop: ""
         });// eslint-disable-next-line
     }, []);
-    const handleRemoveClick = (index, newCube) => {
-        console.log("index", index);
-        console.log("inputList", types);
+    // const handleRemoveClick = (index, newCube) => {
+    //     console.log("index", index);
+    //     console.log("inputList", types);
 
-        const list = [...types];
-        console.log("list", list);
-        list.splice(index, 1);
-        setInputList(inputList => [...inputList, newCube])
-        setTypes(list);
-    };
-    const handleAddClick = (value) => {
+    //     const list = [...types];
+    //     console.log("list", list);
+    //     list.splice(index, 1);
+    //     setInputList(inputList => [...inputList, newCube])
+    //     setTypes(list);
+    // };
+    // const handleAddClick = (value) => {
 
-        setTypes([...types, value]);
-        var index = inputList.findIndex(i => i._id === value._id);
-        setTypesImages([...typesImages, imageData[index]])
-        const list = [...inputList];
-        list.splice(index, 1);
-        setInputList(list);
-        setType("");
-    };
+    //     setTypes([...types, value]);
+    //     var index = inputList.findIndex(i => i._id === value._id);
+    //     setTypesImages([...typesImages, imageData[index]])
+    //     const list = [...inputList];
+    //     list.splice(index, 1);
+    //     setInputList(list);
+    //     setType("");
+    // };
     let loadWeb3 = async () => {
         if (window.ethereum) {
             window.web3 = new Web3(window.ethereum)
@@ -188,15 +208,16 @@ function NewDrop(props) {
             const abi = CreateAuctionContract;
             let tokensId = [];
             // handleCloseBackdrop();
-            for (let i = 0; i < types.length; i++) {
-                tokensId.push(types[i]._id);
-            }
-            if (tokensId.length === 0) {
-                let variant = "error";
-                enqueueSnackbar('Please Select Cubes to create drop', { variant });
-                setIsSaving(false);
-                handleCloseBackdrop();
-            } else if (name === "") {
+            // for (let i = 0; i < types.length; i++) {
+            //     tokensId.push(types[i]._id);
+            // }
+            // if (tokensId.length === 0) {
+            //     let variant = "error";
+            //     enqueueSnackbar('Please Select Cubes to create drop', { variant });
+            //     setIsSaving(false);
+            //     handleCloseBackdrop();
+            // } else 
+            if (name === "") {
                 let variant = "error";
                 enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
                 setIsSaving(false);
@@ -221,72 +242,79 @@ function NewDrop(props) {
                 enqueueSnackbar("Auction End time must be greater than Start time.", { variant });
                 setIsSaving(false);
                 handleCloseBackdrop();
-            } else if (minimumBid === undefined || minimumBid === null) {
-                let variant = "error";
-                enqueueSnackbar("Please Enter minimum bid.", { variant });
-                setIsSaving(false);
-                handleCloseBackdrop();
-            } else if (bidDelta === undefined || bidDelta === null) {
-                let variant = "error";
-                enqueueSnackbar("Please Enter Bid Delta.", { variant });
-                setIsSaving(false);
-                handleCloseBackdrop();
+            // } else if (minimumBid === undefined || minimumBid === null) {
+            //     let variant = "error";
+            //     enqueueSnackbar("Please Enter minimum bid.", { variant });
+            //     setIsSaving(false);
+            //     handleCloseBackdrop();
+            // } else if (bidDelta === undefined || bidDelta === null) {
+            //     let variant = "error";
+            //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
+            //     setIsSaving(false);
+            //     handleCloseBackdrop();
             } else {
-                let tokenId = [];
-                for (let i = 0; i < types.length; i++) {
-                    tokenId.push(types[i].tokenId);
-                }
-                console.log("startTimeStamp", Math.round(startTimeStamp));
-                console.log("endTimeStamp", endTimeStamp);
-                console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
-                var myContractInstance = await new web3.eth.Contract(abi, address);
-                var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
-                    console.log('get transaction', err, response);
-                    if (err !== null) {
-                        console.log("err", err);
-                        let variant = "error";
-                        enqueueSnackbar('User Canceled Transaction', { variant });
-                        handleCloseBackdrop();
-                        setIsSaving(false);
-                        return;
-                    }
-                })
+                let dropID; 
+                // let tokenId = [];
+                // for (let i = 0; i < types.length; i++) {
+                //     tokenId.push(types[i].tokenId);
+                // }
+                // console.log("startTimeStamp", Math.round(startTimeStamp));
+                // console.log("endTimeStamp", endTimeStamp);
+                // console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
+                // var myContractInstance = await new web3.eth.Contract(abi, address);
+                // var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
+                //     console.log('get transaction', err, response);
+                //     if (err !== null) {
+                //         console.log("err", err);
+                //         let variant = "error";
+                //         enqueueSnackbar('User Canceled Transaction', { variant });
+                //         handleCloseBackdrop();
+                //         setIsSaving(false);
+                //         return;
+                //     }
+                // })
                 // .on('receipt', (receipt) => {
-                console.log("receipt", receipt);
-                console.log("receipt.events.Transfer.returnValues.tokenId", receipt.events.New_Auction.returnValues.dropId);
-                let dropId = receipt.events.New_Auction.returnValues.dropId;
+                // console.log("receipt", receipt);
+                // console.log("receipt.events.Transfer.returnValues.tokenId", receipt.events.New_Auction.returnValues.dropId);
+                // let dropId = receipt.events.New_Auction.returnValues.dropId;
 
                 let DropData = {
-                    tokenId: tokensId,
-                    dropId: dropId,
-                    AuctionStartsAt: startTime,
-                    AuctionEndsAt: endTime,
-                    MinimumBid: minimumBid * 10 ** 18,
-                    bidDelta: bidDelta * 10 ** 18,
+                    // tokenId: tokensId,
+                    // dropId: dropId,
+                    // MinimumBid: minimumBid * 10 ** 18,
+                    // bidDelta: bidDelta * 10 ** 18,
                     title: name,
+                    image: image,
                     description: description,
-                    image: image
-                }
-                console.log("cubeData", DropData);
-                axios.post("/drop/createdrop", DropData).then(
-                    (response) => {
-                        console.log('response', response);
-                        setIsSaving(false);
-                        setStartTime(new Date());
-                        setEndTime(new Date());
-                        setName("");
-                        setMinimumBid();
-                        setDescription("");
-                        setTypes([]);
-                        setTypesImages([])
-                        setType("");
-                        setMinimumBid(0);
-                        setBidDelta(0);
-                        setImage(r1);
-                        handleCloseBackdrop();
+                    startTime: startTime,
+                    endTime: endTime,
+                    saleType : saleType
 
-                        let variant = "success";
-                        enqueueSnackbar('Drop Created Successfully.', { variant });
+                }
+                console.log("Drop Data", DropData);
+                axios.post("/drop/", DropData).then(
+                    (response) => {
+                        console.log('drop creation response', response);
+                        setDropId(response.data.dropId);
+                        dropID = response.data.dropId;
+                        setIsSaving(false);
+                        
+                        // setStartTime(new Date());
+                        // setEndTime(new Date());
+                        // setName("");
+                        // setMinimumBid();
+                        // setDescription("");
+                        // setTypes([]);
+                        // setTypesImages([])
+                        // setType("");
+                        // setMinimumBid(0);
+                        // setBidDelta(0);
+                        // setImage(r1);
+                        handleCloseBackdrop();
+                        // history.push(`${path}/addNft`);
+
+                        // let variant = "success";
+                        // enqueueSnackbar('Drop Created Successfully.', { variant });
                     },
                     (error) => {
                         if (process.env.NODE_ENV === "development") {
@@ -300,6 +328,8 @@ function NewDrop(props) {
                         enqueueSnackbar('Unable to Create Drop.', { variant });
                     }
                 );
+
+                
                 // })
             }
         }
@@ -307,15 +337,42 @@ function NewDrop(props) {
     };
 
     let onChangeFile = (e) => {
-        setIsUploading(true);
-        let imageNFT = e.target.files[0]
+
+        setIsUploadingIPFS(true);
+        const reader = new window.FileReader();
+        let imageNFT = e.target.files[0];
+        setImageType(e.target.files[0].type.split("/")[1]);
+        console.log("e.target.files[0]", e.target.files[0]);
+        // console.log("Image type: ", imageType);
+        reader.readAsArrayBuffer(e.target.files[0]);
+        reader.onloadend = () => {
+            console.log("reader.result", reader.result);
+            // setBuffer(Buffer(reader.result));
+            ipfs.add(Buffer(reader.result), async (err, result) => {
+                if (err) {
+                    console.log("err", err);
+                    setIsUploadingIPFS(false);
+                    let variant = "error";
+                    enqueueSnackbar('Unable to Upload Image to IPFS ', { variant });
+                    return
+                }
+                console.log("HASH", result[0].hash);
+
+                setIpfsHash(result[0].hash);
+                setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+                let variant = "success";
+                enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
+                // 
+            })
+        }
+        // setIsUploadingIPFS(true);
         let fileData = new FormData();
         fileData.append("image", imageNFT);
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
                 setImage(response.data.url);
-                setIsUploading(false);
+                setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
             },
@@ -324,12 +381,36 @@ function NewDrop(props) {
                     console.log(error);
                     console.log(error.response);
                 }
-                setIsUploading(false);
+                setIsUploadingIPFS(false);
                 let variant = "error";
                 enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
 
             }
         );
+       
+        // setIsUploading(true);
+        // let imageNFT = e.target.files[0]
+        // let fileData = new FormData();
+        // fileData.append("image", imageNFT);
+        // axios.post("upload/uploadtos3", fileData).then(
+        //     (response) => {
+        //         console.log("response", response);
+        //         setImage(response.data.url);
+        //         setIsUploading(false);
+        //         let variant = "success";
+        //         enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        //     },
+        //     (error) => {
+        //         if (process.env.NODE_ENV === "development") {
+        //             console.log(error);
+        //             console.log(error.response);
+        //         }
+        //         setIsUploading(false);
+        //         let variant = "error";
+        //         enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+
+        //     }
+        // );
 
     }
     return (
@@ -346,7 +427,7 @@ function NewDrop(props) {
                         <form onSubmit={handleSubmitEvent}>
                             <div className="form-group">
 
-                                <label>Select Cubes</label>
+                                {/* <label>Select Cubes</label>
                                 <div className="filter-widget">
                                     <Autocomplete
                                         id="combo-dox-demo"
@@ -374,21 +455,74 @@ function NewDrop(props) {
                                             />
                                         )}
                                     />
-                                </div>
+                                </div> */}
                                 <div className="form-group">
-                                    <label>Drop Name</label>
                                     <div className="form-group">
-                                        <input
-                                            type="text"
-                                            required
-                                            value={name}
-                                            placeholder="Enter Name of Drop"
-                                            className="form-control"
-                                            onChange={(e) => {
-                                                setName(e.target.value)
-                                            }}
-                                        />
-                                    </div>
+                                            <label>Select Title Image</label>
+                                            <div className="filter-widget">
+                                                <div className="form-group">
+                                                    <div className="change-avatar">
+                                                        <div className="profile-img">
+                                                            <div
+                                                                style={{
+                                                                    background: "#E9ECEF",
+                                                                    width: "100px",
+                                                                    height: "100px",
+                                                                }}
+                                                            >
+                                                                <img src={image} alt="Selfie" />
+                                                            </div>
+                                                        </div>
+                                                        <div className="upload-img">
+                                                            <div
+                                                                className="change-photo-btn"
+                                                                style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                            >
+                                                                {isUploadingIPFS ? (
+                                                                    <div className="text-center">
+                                                                        <Spinner
+                                                                            animation="border"
+                                                                            role="status"
+                                                                            style={{ color: "#fff" }}
+                                                                        >
+                                                                        </Spinner>
+                                                                    </div>
+                                                                ) : (
+                                                                    <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                                )}
+
+                                                                <input
+                                                                    name="sampleFile"
+                                                                    type="file"
+                                                                    className="upload"
+                                                                    accept=".png,.jpg,.jpeg,.gif"
+                                                                    onChange={onChangeFile}
+                                                                />
+                                                            </div>
+                                                            <small className="form-text text-muted">
+                                                                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                            </small>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <label>Drop Name</label>
+                                        <div className="form-group">
+                                            <input
+                                                type="text"
+                                                required
+                                                value={name}
+                                                placeholder="Enter Name of Drop"
+                                                className="form-control"
+                                                onChange={(e) => {
+                                                    setName(e.target.value)
+                                                }}
+                                            />
+                                        </div>
 
                                     <div className="form-group">
                                         <label>Drop Description</label>
@@ -403,58 +537,6 @@ function NewDrop(props) {
                                                 setDescription(e.target.value)
                                             }}
                                         />
-                                    </div>
-                                    <div className="form-group">
-                                        <label>Select Title Image</label>
-                                        <div className="filter-widget">
-                                            <div className="form-group">
-                                                <div className="change-avatar">
-                                                    <div className="profile-img">
-                                                        <div
-                                                            style={{
-                                                                background: "#E9ECEF",
-                                                                width: "100px",
-                                                                height: "100px",
-                                                            }}
-                                                        >
-                                                            <img src={image} alt="Selfie" />
-                                                        </div>
-                                                    </div>
-                                                    <div className="upload-img">
-                                                        <div
-                                                            className="change-photo-btn"
-                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                        >
-                                                            {isUploading ? (
-                                                                <div className="text-center">
-                                                                    <Spinner
-                                                                        animation="border"
-                                                                        role="status"
-                                                                        style={{ color: "#fff" }}
-                                                                    >
-                                                                    </Spinner>
-                                                                </div>
-                                                            ) : (
-                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                            )}
-
-                                                            <input
-                                                                name="sampleFile"
-                                                                type="file"
-                                                                className="upload"
-                                                                accept=".png,.jpg,.jpeg,.gif"
-                                                                onChange={onChangeFile}
-                                                            />
-                                                        </div>
-                                                        <small className="form-text text-muted">
-                                                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                        </small>
-                                                    </div>
-
-                                                </div>
-                                            </div>
-                                        </div>
-
                                     </div>
                                 </div>
                                 <div className="form-group">
@@ -485,7 +567,7 @@ function NewDrop(props) {
                                             value={endTime}
                                         />
                                     </div>
-                                    <label>Minimum Bid (WETH)</label>
+                                    {/* <label>Minimum Bid (WETH)</label>
                                     <div className="form-group">
                                         <div className="filter-widget">
                                             <input
@@ -520,8 +602,20 @@ function NewDrop(props) {
                                                 }}
                                             />
                                         </div>
-                                    </div>
+                                    </div> */}
                                 </div>
+                                <FormControl component="fieldset">
+                                    <lable component="legend">Select Sale Type</lable>
+                                    <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                        <FormControlLabel style={{ color: 'black' }} value="auction" onChange={() => {
+                                            setSaleType("auction");
+                                        }} checked={saleType === 'auction'} control={<Radio color="secondary" />} label="Auction" />
+                                        <FormControlLabel style={{ color: 'black' }} value="fixed-price" onChange={() => {
+                                            setSaleType("fixed-price")
+                                        }} checked={saleType === 'fixed-price'} control={<Radio color="secondary" />} label="Fixed Price" />
+
+                                    </RadioGroup>
+                                </FormControl>
                             </div>
                         </form>
                     </div>
@@ -576,7 +670,7 @@ function NewDrop(props) {
                                                             <Button
                                                                 onClick={(e) => {
                                                                     e.preventDefault();
-                                                                    handleRemoveClick(index, i);
+                                                                    // handleRemoveClick(index, i);
                                                                 }}
                                                                 className="btn btn-sm bg-danger-light btn-block"
 
