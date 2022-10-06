@@ -412,7 +412,6 @@ function NewNFT(props) {
         }
     };
     const handleRemoveClick = (index) => {
-        setIsGlbFile(false);
 
         if(tokenList.length === 1) {
             axios.delete(`/batch-mint/${batchId}`).then(
@@ -1540,7 +1539,7 @@ function NewNFT(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
-                                                            image={i.nftURI}
+                                                            image={i.previewImageURI === "" ? i.nftURI : i.previewImageURI}
 
                                                             title="NFT Image"
                                                         />
