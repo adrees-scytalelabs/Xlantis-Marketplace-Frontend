@@ -144,7 +144,7 @@ function NewNFT(props) {
     // let [executiveProducerType, setExecutiveProducerType] = useState("New");
     // let [fanType, setFanType] = useState("New");
     let [collectionId, setCollectionId] = useState('');
-    let [ipfsURI, setIpfsURI] = useState("");
+    let [nftURI, setNftURI] = useState("");
     let [metaDataURI, setMetaDataURI] = useState("");
     let [imageType, setImageType] = useState("");
     let [openDialog, setOpenDialog] = useState(false);
@@ -157,6 +157,7 @@ function NewNFT(props) {
     let [nftId, setNftId] = useState("");
     let [isUploadingData, setIsUploadingData] = useState(false);
     let [isGlbFile, setIsGlbFile] = useState(false);
+    let [previewImageURI, setPreviewImageURI] = useState(r1);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -296,7 +297,7 @@ function NewNFT(props) {
             let IPFsURIs = [];
             for (let i = 0; i < tokenList.length; i++) {
                 AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
-                IPFsURIs.push(tokenList[i].ipfsURI);
+                IPFsURIs.push(tokenList[i].nftURI);
             }
             console.log("AmountofNFTs", AmountofNFTs);
             console.log("IPFsHashes", IPFsURIs);
@@ -306,7 +307,7 @@ function NewNFT(props) {
             console.log("myContractInstance", myContractInstance);
             console.log("Name: ", name);
             console.log("Description: ", description);
-            console.log("ipfsURI: ", ipfsURI);
+            console.log("nftURI: ", nftURI);
             console.log("tokenSupply: ", tokenSupply);
             console.log("Account address: ", accounts[0]);
             console.log("Image Type: ", imageType);
@@ -411,6 +412,7 @@ function NewNFT(props) {
         }
     };
     const handleRemoveClick = (index) => {
+        setIsGlbFile(false);
 
         if(tokenList.length === 1) {
             axios.delete(`/batch-mint/${batchId}`).then(
@@ -479,7 +481,7 @@ function NewNFT(props) {
             let metaData = {
                 name: name,
                 description: description,
-                image: ipfsURI
+                image: nftURI
             }
             const reader = new window.FileReader();
             const blob = new Blob([JSON.stringify(metaData, null, 2)], { type: 'application/json' });
@@ -498,6 +500,7 @@ function NewNFT(props) {
                     console.log("HASH: ", result[0].hash);
                     ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`
                     setMetaDataURI(ipfsMetaData);
+                    console.log("Meta Data URI: ", ipfsMetaData);
 
                     let propertiesObject = {};
                     properties.map((property) => {
@@ -512,13 +515,17 @@ function NewNFT(props) {
                         "collectionId": collectionId,
                         "title": name,
                         "description": description,
-                        "nftURI": ipfsURI,
-                        "metadataURI": ipfsURI,
+                        "nftURI": nftURI,
+                        "metadataURI": nftURI,
                         "nftFormat": imageType,
                         "type": rarity,
                         "tokenSupply": tokenSupply,
                         "supplyType": supplyType,
                         "properties": propertiesObject
+                    }
+
+                    if(previewImageURI !== "") {
+                        data["previewImageURI"] = previewImageURI;
                     }
 
                     if (batchId === ""){
@@ -530,7 +537,7 @@ function NewNFT(props) {
                                 setTokenList([...tokenList, {
                                     properties: properties,
                                     ipfsHash: ipfsHash,
-                                    ipfsURI: ipfsURI,
+                                    nftURI: nftURI,
                                     title: name,
                                     description: description,
                                     rarity: rarity,
@@ -539,13 +546,14 @@ function NewNFT(props) {
                                     supplytype: supplyType,
                                     collectionId: collectionId,
                                     nftId: response.data.nftId,
-                                    nftContractAddress: nftContractAddress
+                                    nftContractAddress: nftContractAddress,
+                                    previewImageURI: previewImageURI
                                 }]);
 
                                 let cookieData = [...tokenList, {
                                     properties: properties,
                                     ipfsHash: ipfsHash,
-                                    ipfsURI: ipfsURI,
+                                    nftURI: nftURI,
                                     title: name,
                                     description: description,
                                     rarity: rarity,
@@ -554,7 +562,8 @@ function NewNFT(props) {
                                     supplytype: supplyType,
                                     collectionId: collectionId,
                                     nftContractAddress: nftContractAddress,
-                                    nftId: response.data.nftId
+                                    nftId: response.data.nftId,
+                                    previewImageURI: previewImageURI
                                 }]
 
                                 Cookies.set("Batch-ID", response.data.batchId, {
@@ -577,7 +586,7 @@ function NewNFT(props) {
                                 setTokenList([...tokenList, {
                                     properties: properties,
                                     ipfsHash: ipfsHash,
-                                    ipfsURI: ipfsURI,
+                                    nftURI: nftURI,
                                     title: name,
                                     description: description,
                                     rarity: rarity,
@@ -586,13 +595,14 @@ function NewNFT(props) {
                                     supplytype: supplyType,
                                     collectionId: collectionId,
                                     nftId: response.data.nftId,
-                                    nftContractAddress: nftContractAddress
+                                    nftContractAddress: nftContractAddress,
+                                    previewImageURI: previewImageURI
                                 }]);
 
                                 let cookieData = [...tokenList, {
                                     properties: properties,
                                     ipfsHash: ipfsHash,
-                                    ipfsURI: ipfsURI,
+                                    nftURI: nftURI,
                                     title: name,
                                     description: description,
                                     rarity: rarity,
@@ -601,7 +611,8 @@ function NewNFT(props) {
                                     supplytype: supplyType,
                                     collectionId: collectionId,
                                     nftContractAddress: nftContractAddress,
-                                    nftId: response.data.nftId
+                                    nftId: response.data.nftId,
+                                    previewImageURI: previewImageURI
                                 }]
 
                                 Cookies.remove("NFT-Detail");
@@ -619,13 +630,17 @@ function NewNFT(props) {
                         { key: "", value: ""}
                     ]);
                     setNftId("");
+                    setNftURI("");
+                    setPreviewImageURI("");
                     setIpfsHash("");
                     setImage(r1);
                     setName("");
                     setDescription("");
                     setRarity("");
                     setTokenSupply(1);
-                    setSupplyType("Single")
+                    setSupplyType("Single");
+                    setIpfsHash("");
+                    setIsGlbFile(false);
 
                     let variant = "success";
                     enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
@@ -642,16 +657,23 @@ function NewNFT(props) {
 
     let onChangeFile = (e) => {
         setIsUploadingIPFS(true);
+        setIsGlbFile(false);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
         let typeImage;
         
         if(e.target.files[0].name.includes(".glb")) {
             typeImage = "glb";
+            setImageType("glb");
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
             typeImage = e.target.files[0].type.split("/")[1];
+            
+            if(previewImageURI !== "") {
+                setPreviewImageURI("");
+            }
+            // setIsGlbFile(false);
         }
 
         console.log("Image Type: ", typeImage);
@@ -672,9 +694,12 @@ function NewNFT(props) {
                 console.log("HASH", result[0].hash);
 
                 setIpfsHash(result[0].hash);
-                setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+                setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
+                if(typeImage === "glb") {
+                    setIsGlbFile(true);
+                }
                 // 
             })
         }
@@ -688,9 +713,7 @@ function NewNFT(props) {
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
-                if(typeImage === "glb") {
-                    setIsGlbFile(true);
-                }
+                
             },
             (error) => {
                 if (process.env.NODE_ENV === "development") {
@@ -969,6 +992,38 @@ function NewNFT(props) {
         handleChangeCollectionClose();
     }
 
+    let onChangePreviewImage = (e) => {
+        setIsUploadingIPFS(true);
+        const reader = new window.FileReader();
+        let imageNFT = e.target.files[0];
+        let typeImage;
+
+        console.log("Image Type: ", typeImage);
+        console.log("e.target.files[0]", e.target.files[0]);
+        reader.readAsArrayBuffer(e.target.files[0]);
+        reader.onloadend = () => {
+            console.log("reader.result", reader.result);
+            // setBuffer(Buffer(reader.result));
+            ipfs.add(Buffer(reader.result), async (err, result) => {
+                if (err) {
+                    console.log("err", err);
+                    setIsUploadingIPFS(false);
+                    let variant = "error";
+                    enqueueSnackbar('Unable to Upload Preview Image to IPFS ', { variant });
+                    return
+                }
+                console.log("HASH", result[0].hash);
+
+                // setIpfsHash(result[0].hash);
+                setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+                let variant = "success";
+                enqueueSnackbar('Preview Image Uploaded to IPFS Successfully', { variant });
+                setIsUploadingIPFS(false);
+                // 
+            })
+        }
+    }
+
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -1034,15 +1089,14 @@ function NewNFT(props) {
                                 ): (
                                     <div>
                                         <div>
-                                            <GLTFModel src={ipfsURI} >
+                                            <GLTFModel src={nftURI} >
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
+                                                {/* <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} /> */}
                                                 <DirectionLight
                                                     color={0xffffff}
                                                     position={{ x: 100, y: 200, z: 100 }}
@@ -1065,6 +1119,36 @@ function NewNFT(props) {
                                                 />
                                             </GLTFModel>
                                         </div>
+                                        <div className="upload-img">
+                                            <div
+                                                className="change-photo-btn"
+                                                style={{ backgroundColor: "rgb(167,0,0)" }}
+                                            >
+                                                {isUploadingIPFS ? (
+                                                    <div className="text-center">
+                                                        <Spinner
+                                                            animation="border"
+                                                            role="status"
+                                                            style={{ color: "#fff" }}
+                                                        >
+                                                        </Spinner>
+                                                    </div>
+                                                ) : (
+                                                    <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                )}
+
+                                                <input
+                                                    name="sampleFile"
+                                                    type="file"
+                                                    className="upload"
+                                                    accept=".png,.jpg,.jpeg,.gif,.glb"
+                                                    onChange={onChangeFile}
+                                                />
+                                            </div>
+                                            <small className="form-text text-muted">
+                                                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                            </small>
+                                        </div>
                                         <label>Select Preview Image</label>
                                         <div className="filter-widget">
                                             <div className="form-group">
@@ -1077,7 +1161,7 @@ function NewNFT(props) {
                                                                 height: "100px",
                                                             }}
                                                         >
-                                                            <img src={image} alt="Selfie" />
+                                                            <img src={previewImageURI} alt="Selfie" />
                                                         </div>
                                                     </div>
                                                     <div className="upload-img">
@@ -1102,12 +1186,12 @@ function NewNFT(props) {
                                                                 name="sampleFile"
                                                                 type="file"
                                                                 className="upload"
-                                                                accept=".png,.jpg,.jpeg,.gif,.glb"
-                                                                onChange={onChangeFile}
+                                                                accept=".png,.jpg,.jpeg"
+                                                                onChange={onChangePreviewImage}
                                                             />
                                                         </div>
                                                         <small className="form-text text-muted">
-                                                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                            Allowed JPG, JPEG. Max size of 5MB
                                                         </small>
                                                     </div>
                                                 </div>
@@ -1456,7 +1540,7 @@ function NewNFT(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ height: "100%", border: i.rarity === "Mastercraft" ? '4px solid #ff0000' : i.rarity === "Legendary" ? '4px solid #FFD700' : i.rarity === "Epic" ? '4px solid #9400D3' : i.rarity === "Rare" ? '4px solid #0000FF' : i.rarity === "Uncommon" ? '4px solid #008000' : i.rarity === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
-                                                            image={i.ipfsURI}
+                                                            image={i.nftURI}
 
                                                             title="NFT Image"
                                                         />
