@@ -871,7 +871,7 @@ function NewNFT(props) {
 
     let onUpdateEditModal = (obj) => {
 
-        console.log(obj);
+        console.log("object in new nft screen: ", obj);
         setIsUploadingData(true);
         handleShowBackdrop();
         let data = [...tokenList];
@@ -929,6 +929,7 @@ function NewNFT(props) {
                     }
                 );
         
+                console.log("Data: ", data);
                 setTokenList(data);
                 setIsUploadingData(false);
                 setOpenEditModal(false);
