@@ -48,6 +48,11 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
+            <li className={props.activeTab.myNFTs}>
+              <Link to={`${props.match.url}/marketPlace`}>
+                <ListAltIcon /> <span>Market Place</span>
+              </Link>
+            </li>
 
             {/* <li className={props.activeTab.newCube}>
               <Link to={`${props.match.url}/newCube`}>

@@ -31,6 +31,7 @@ import CollectionNfts from "./Admin/CollectionNfts";
 import CubeNFTs from "./Admin/CubeNFTs";
 import NewCollection from "./Admin/NewCollection";
 import SingleNftDetail from "./Admin/singleNftDetail";
+import MarketPlace from "./Admin/MarketPlace";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
@@ -71,7 +72,8 @@ function AdminDashboard(props) {
     createNewCollection: "",
     myNFTs: "",
     myCubes: "",
-    newRandomDrop: ""
+    newRandomDrop: "",
+    marketPlace: ""
   });
 
   return (
@@ -242,6 +244,11 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/collection/nfts/:collectionId`}>
               <CollectionNfts setActiveTab={setActiveTab} />
             </Route>
+
+            <Route exact path={`${path}/marketPlace`}>
+              <MarketPlace setActiveTab={setActiveTab} />
+            </Route>
+
             <Route exact path={`${path}/profilesettings`}>
               <ProfileSetting
                 setActiveTab={setActiveTab}
