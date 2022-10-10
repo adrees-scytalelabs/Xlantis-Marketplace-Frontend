@@ -48,7 +48,7 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.myNFTs}>
+            <li className={props.activeTab.marketPlace}>
               <Link to={`${props.match.url}/marketPlace`}>
                 <ListAltIcon /> <span>Market Place</span>
               </Link>
