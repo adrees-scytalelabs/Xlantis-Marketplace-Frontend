@@ -189,7 +189,7 @@ const NFTEditModal = (props) => {
     }
 
     return (
-        <Modal show={props.show} onHide={props.handleClose} >
+        <Modal show={props.show} onHide={props.handleClose} size="lg" >
             <Modal.Header closeButton>
                 Edit Detail of NFT {nftDetail.title}
             </Modal.Header>
