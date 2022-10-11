@@ -28,7 +28,7 @@ const NFTDetailModal = (props) => {
     },[props.show])
 
     return (
-        <Modal show={props.show} onHide={props.handleClose} size="lg" >
+        <Modal show={props.show} onHide={props.handleClose} >
             <Modal.Header closeButton>
                 <Modal.Title>{ props.nftDetail.title }</Modal.Title>
             </Modal.Header>

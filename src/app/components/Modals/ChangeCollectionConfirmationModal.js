@@ -19,7 +19,7 @@ const ChangeCollectionConfirmationModal = (props) => {
     })
 
     return ( 
-        <Modal show={props.show} onHide={props.handleClose} size="xl" >
+        <Modal show={props.show} onHide={props.handleClose} size="lg" >
             <Modal.Header closeButton>
                 <Modal.Title> Change Collection? </Modal.Title>
             </Modal.Header>
