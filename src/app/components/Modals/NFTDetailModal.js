@@ -36,7 +36,7 @@ const NFTDetailModal = (props) => {
                 <Card>
                     <div>
                         {props.nftDetail.previewImageURI !== "" ? (
-                            <GLTFModel src={props.nftDetail.nftURI} >
+                            <GLTFModel src={props.nftDetail.nftURI} width={250} height={250} >
                                 <AmbientLight color={0xffffff} />
                                 <AmbientLight color={0xffffff} />
                                 <AmbientLight color={0xffffff} />

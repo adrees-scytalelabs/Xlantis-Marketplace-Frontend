@@ -248,7 +248,7 @@ const NFTEditModal = (props) => {
                         ): (
                             <div>
                                 <div>
-                                    <GLTFModel src={nftDetail.nftURI} >
+                                    <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
                                         <AmbientLight color={0xffffff} />
                                         <AmbientLight color={0xffffff} />
                                         <AmbientLight color={0xffffff} />
