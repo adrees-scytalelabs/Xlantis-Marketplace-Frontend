@@ -897,6 +897,7 @@ function NewNFT(props) {
             ipfs.add(Buffer(reader.result), async (err, result) => {
                 if (err) {
                     console.log("Error: ", err);
+                    setIsUploadingData(false);
                     let variant = "error";
                     enqueueSnackbar('Unable to Upload Meta Data to IPFS ', { variant });
                     return;

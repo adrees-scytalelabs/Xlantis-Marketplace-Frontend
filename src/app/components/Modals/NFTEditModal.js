@@ -593,12 +593,26 @@ const NFTEditModal = (props) => {
                 </form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={props.handleClose} >
+                <Button variant="sceondary" onClick={props.handleClose} >
                     Cancel
                 </Button>
-                <Button variant="primary" onClick={() => updateModal(nftDetail)}>
+                {/* <Button variant="primary" onClick={() => updateModal(nftDetail)}>
                     Update
-                </Button>
+                </Button> */}
+                {props.isUploadingData ? (
+                    <div className="text-center">
+                        <Spinner
+                            animation="border"
+                            role="status"
+                            style={{ color: "#a70000" }}
+                        >
+                        </Spinner>
+                    </div>
+                ) : (
+                    <button type="button" className="btn" onClick={() => updateModal(nftDetail)}>
+                        Update
+                    </button>
+                )}
             </Modal.Footer>
         </Modal>
     );
