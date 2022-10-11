@@ -17,6 +17,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
 import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
+import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
@@ -61,6 +62,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AddNFT(props) {
     let location = useLocation();
+    let history = useHistory();
     const { enqueueSnackbar } = useSnackbar();
     const classes = useStyles();
     let [network, setNetwork] = useState(false);
@@ -281,15 +283,57 @@ function AddNFT(props) {
                 enqueueSnackbar('New Collection Created Successfully.', { variant });
                 setIsAdded(false);
                 handleCloseBackdrop();
-
+                setIsSaving(false);
+                // history.goBack();
             })
         }
 
         
     };
+
+    //approval
+    let giveApproval = async() => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShow();
+        }
+        else{
+
+        const addressNft = nftContractAddresses;
+        const addressDropFactory = Addresses.FactoryDrop;
+        const abiNft = CreateNFTContract;            
+
+        console.log("Contract Address: ", nftContractAddresses);
+        var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+        console.log("myContractInstance", myContractInstance)
+        
+
+        await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+            console.log('get transaction', err, response);
+            
+            if (err !== null) {
+                console.log("err", err);
+                let variant = "error";
+                enqueueSnackbar('User Canceled Transaction', { variant });
+                handleCloseBackdrop();
+                setIsSaving(false);
+
+            }
+            
+        })
+        .on('receipt', (receipt) => {
+            console.log("receipt", receipt);
+        })
+        }
+    }
            
     // handle click event of the Add button
-    const handleAddClick = (e) => {
+    const handleAddClick = async(e) => {
         e.preventDefault();
         if (collection === "") {
             let variant = "error";
@@ -315,21 +359,22 @@ function AddNFT(props) {
             setIsUploadingData(true);
 
             
-     
+            
 
                     //sending data to backend
                     let data ={
                         // "collectionId": collectionId,
                         "nftId" : nftId,
                         "dropId" : dropId,
-                        "price" : price * 10 ** 18 ,
+                        "price" : price ,
                         "supply": parseInt(supply)
                     }
+                    
                     let newObject = {
                         "nftContractAddress" : nftContractAddresses,
                         "tokenIds" : [tokenId],
                         "amounts" : [parseInt(supply)],
-                        "prices" : [data.price.toString()]
+                        "prices" : [parseInt(data.price)]
                     }
 
                     console.log("data", data);
@@ -368,6 +413,7 @@ function AddNFT(props) {
                             
                             if (found === false) {
                                 const dropp = [...dropInfo, newObject];
+                                giveApproval();
                                 console.log("drop", dropp);
                                 console.log("here");
                                 setDropInfo(dropp);
