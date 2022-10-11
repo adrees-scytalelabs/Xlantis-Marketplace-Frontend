@@ -158,6 +158,7 @@ function NewNFT(props) {
     let [isUploadingData, setIsUploadingData] = useState(false);
     let [isGlbFile, setIsGlbFile] = useState(false);
     let [previewImageURI, setPreviewImageURI] = useState(r1);
+    let [isUploadingPreview, setIsUploadingPreview] = useState(false);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -993,7 +994,7 @@ function NewNFT(props) {
     }
 
     let onChangePreviewImage = (e) => {
-        setIsUploadingIPFS(true);
+        setIsUploadingPreview(true);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
         let typeImage;
@@ -1007,7 +1008,7 @@ function NewNFT(props) {
             ipfs.add(Buffer(reader.result), async (err, result) => {
                 if (err) {
                     console.log("err", err);
-                    setIsUploadingIPFS(false);
+                    setIsUploadingPreview(false);
                     let variant = "error";
                     enqueueSnackbar('Unable to Upload Preview Image to IPFS ', { variant });
                     return
@@ -1018,7 +1019,7 @@ function NewNFT(props) {
                 setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
                 let variant = "success";
                 enqueueSnackbar('Preview Image Uploaded to IPFS Successfully', { variant });
-                setIsUploadingIPFS(false);
+                setIsUploadingPreview(false);
                 // 
             })
         }
@@ -1169,7 +1170,7 @@ function NewNFT(props) {
                                                             className="change-photo-btn"
                                                             style={{ backgroundColor: "rgb(167,0,0)" }}
                                                         >
-                                                            {isUploadingIPFS ? (
+                                                            {isUploadingPreview ? (
                                                                 <div className="text-center">
                                                                     <Spinner
                                                                         animation="border"
