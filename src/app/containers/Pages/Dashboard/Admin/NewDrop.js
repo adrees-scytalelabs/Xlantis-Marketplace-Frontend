@@ -193,21 +193,7 @@ function NewDrop(props) {
 
     const handleSubmitEvent = async (e) => {
         e.preventDefault();
-        // history.push(`${path}/addNft`);
-
-        // {
-            // <Redirect
-            //  to = {{
-            //     pathname : `${path}/addNft`,
-            //     state : {
-            //         dropID : "6340891d2c7fbff94dcc1ce1",
-            //         type : "auction"
-            //     }
-            //  }}
-            // />
-
-        // }
-        // history.push({pathname :`${path}/addNft`, state : {dropId : "6340891d2c7fbff94dcc1ce1", saleType : "auction" },});
+        
         setIsSaving(true);
         await loadWeb3();
         const web3 = window.web3
@@ -233,8 +219,7 @@ function NewDrop(props) {
             //     setIsSaving(false);
             //     handleCloseBackdrop();
             // } else 
-            console.log("current Time",currentTimeStamp);
-            console.log("start time", startTimeStamp);
+           
             if (name === "") {
                 let variant = "error";
                 enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
@@ -565,7 +550,7 @@ function NewDrop(props) {
                                     </div>
                                 </div>
                                 <div className="form-group">
-                                    <label>Auction Starts At</label>
+                                    <label>Starts At</label>
                                     <div className="form-group">
                                         <DateTimePicker
                                             className="form-control"
@@ -583,7 +568,7 @@ function NewDrop(props) {
                                             value={startTime}
                                         />
                                     </div>
-                                    <label>Auction Ends At</label>
+                                    <label>Ends At</label>
                                     <div className="form-group">
                                         <DateTimePicker
                                             className="form-control"
