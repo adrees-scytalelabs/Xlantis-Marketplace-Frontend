@@ -22,6 +22,7 @@ import MyCollection from "./Admin/MyCollection";
 import NewCube from "./Admin/NewCube";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
+import AddNFT from "./Admin/AddNFT";
 import NewSeason from "./Admin/NewSeason";
 import RandomDrop from "./Admin/RandomDrop";
 import SeasonDrops from "./Admin/SeasonDrops";
@@ -191,6 +192,9 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/newDrop`}>
               <NewDrop setActiveTab={setActiveTab} />
             </Route>
+            <Route exact path={`${path}/newDrop/addNft`}>
+              <AddNFT setActiveTab={setActiveTab} />
+            </Route>
             <Route exact path={`${path}/myCubes`}>
               <MyCubes setActiveTab={setActiveTab} />
             </Route>
@@ -216,9 +220,15 @@ function AdminDashboard(props) {
               <NewDrop setActiveTab={setActiveTab} />
             </Route>
 
+            <Route exact path={`${path}/newDrop/addNft`}>
+              <AddNFT setActiveTab={setActiveTab} />
+            </Route>
+
             <Route exact path={`${path}/myDrops`}>
               <MyDrops setActiveTab={setActiveTab} />
             </Route>
+
+           
 
             <Route exact path={`${path}/myDrops/cubes/:dropId`}>
               <DropCubes setActiveTab={setActiveTab} />

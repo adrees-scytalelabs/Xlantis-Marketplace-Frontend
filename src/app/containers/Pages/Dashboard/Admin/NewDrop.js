@@ -76,6 +76,7 @@ function NewDrop(props) {
     const [endTime, setEndTime] = useState(new Date());
     const [startTimeStamp, setStartTimeStamp] = useState(Math.round(startTime.getTime() / 1000));
     const [endTimeStamp, setEndTimeStamp] = useState(Math.round(endTime.getTime() / 1000));
+    const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
     // const [inputList, setInputList] = useState([]);
     // const [imageData, setImageData] = useState([]);
     let [saleType, setSaleType] = useState("auction");
@@ -192,21 +193,36 @@ function NewDrop(props) {
 
     const handleSubmitEvent = async (e) => {
         e.preventDefault();
+        // history.push(`${path}/addNft`);
+
+        // {
+            // <Redirect
+            //  to = {{
+            //     pathname : `${path}/addNft`,
+            //     state : {
+            //         dropID : "6340891d2c7fbff94dcc1ce1",
+            //         type : "auction"
+            //     }
+            //  }}
+            // />
+
+        // }
+        // history.push({pathname :`${path}/addNft`, state : {dropId : "6340891d2c7fbff94dcc1ce1", saleType : "auction" },});
         setIsSaving(true);
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'ropsten') {
+        if (network !== 'goerli') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();
         }
         else {
             handleShowBackdrop();
-            const address = Addresses.AuctionAddress;
-            const abi = CreateAuctionContract;
-            let tokensId = [];
+            // const address = Addresses.AuctionAddress;
+            // const abi = CreateAuctionContract;
+            // let tokensId = [];
             // handleCloseBackdrop();
             // for (let i = 0; i < types.length; i++) {
             //     tokensId.push(types[i]._id);
@@ -217,6 +233,8 @@ function NewDrop(props) {
             //     setIsSaving(false);
             //     handleCloseBackdrop();
             // } else 
+            console.log("current Time",currentTimeStamp);
+            console.log("start time", startTimeStamp);
             if (name === "") {
                 let variant = "error";
                 enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
@@ -240,6 +258,11 @@ function NewDrop(props) {
             } else if (startTimeStamp > endTimeStamp || new Date(startTime) > new Date(endTime)) {
                 let variant = "error";
                 enqueueSnackbar("Auction End time must be greater than Start time.", { variant });
+                setIsSaving(false);
+                handleCloseBackdrop();
+            } else if (currentTimeStamp === startTimeStamp ) {
+                let variant = "error";
+                enqueueSnackbar("Auction Start time must be greater than Current time.", { variant });
                 setIsSaving(false);
                 handleCloseBackdrop();
             // } else if (minimumBid === undefined || minimumBid === null) {
@@ -312,6 +335,8 @@ function NewDrop(props) {
                         // setImage(r1);
                         handleCloseBackdrop();
                         // history.push(`${path}/addNft`);
+                        history.push({pathname :`${path}/addNft`, state : {dropId : dropID, saleType : saleType, startTime : startTimeStamp, endTime : endTimeStamp },});
+
 
                         // let variant = "success";
                         // enqueueSnackbar('Drop Created Successfully.', { variant });
@@ -546,8 +571,12 @@ function NewDrop(props) {
                                             className="form-control"
                                             onChange={(e) => {
                                                 console.log(e);
-                                                console.log("e.getTime()", Math.round(e.getTime() / 1000));
-                                                setStartTimeStamp(Number(Math.round(e.getTime() / 1000)));
+                                                console.log("START", Math.round(e.getTime()));
+                                                console.log("NOW", Math.round(Date.now()));
+                                                
+
+                                                setCurrentTimeStamp(Number(Math.round(Date.now())));
+                                                setStartTimeStamp(Number(Math.round(e.getTime())));
 
                                                 setStartTime(e)
                                             }}
@@ -560,8 +589,8 @@ function NewDrop(props) {
                                             className="form-control"
                                             onChange={(e) => {
                                                 console.log(e);
-                                                console.log("e.getTime()", Math.round(e.getTime() / 1000));
-                                                setEndTimeStamp(Math.round(e.getTime() / 1000));
+                                                console.log("e.getTime()", Math.round(e.getTime() ));
+                                                setEndTimeStamp(Math.round(e.getTime()));
                                                 setEndTime(e)
                                             }}
                                             value={endTime}

@@ -1,10 +1,11 @@
 export const CreateNftAddress = '0x9B2D957D6Da0477be3d7070F30F7524E69976A0d';
 export const CreateCubeAddress = '0x2fC35aEDBC3d47837F24A746D67782fe9c87C0E8';
 export const AuctionAddress = "0x21A6256e5BB6Fe4f83F76A9701402ed555bDCFac";
-export const WethAddress = "0x0a180a76e4466bf68a7f86fb029bed3cccfaaac5";
+export const WethAddress = "0xe46Ad90011Ea093C63F72Ae3d0BE24415BCE529F";
 export const MarketPlaceAddress = "0x89c91582cD0098449E066eB5A31fC10986eACBB1";
-export const Collectible1155Address = "0x969BeE61c3DDa4B3555e796Dc4d778cBD243F53D";
-export const Factory1155Address = "0x0C71F769F45b12dC8421730229730B36EA4Ab508";
-export const Collectible721Address = "0x7717a1b5FEC2d7e22E1d2e54EA17AAd0358B6EB3";
-export const Factory721Address = "0xA343276B0F853918de9BC2DEc2DcEb2B9F6214AE";
+export const Collectible1155Address = "0x4205df64B357AA2f139C56D2D74bb6f5887ad6BD";
+export const Factory1155Address = "0x3669aFdA9B50e69D8a495A3B3Fa91B25eF4C9843";
+export const Collectible721Address = "0xa89468f2dc966C997d9bFE974568eC9F34766211";
+export const Factory721Address = "0x769a0C6B02529Fb6CCC57bfAe1d30272bFc6AD57";
+export const FactoryDrop = "0x61259982727eDbc02d9eb08a29A3c87d14da0571";
 
