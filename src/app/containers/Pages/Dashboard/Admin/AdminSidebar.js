@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import StorageIcon from '@material-ui/icons/Storage';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import BusinessIcon from '@material-ui/icons/Business';
+
 function AdminSidebar(props) {
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
@@ -46,6 +48,11 @@ function AdminSidebar(props) {
             <li className={props.activeTab.myNFTs}>
               <Link to={`${props.match.url}/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.marketPlace}>
+              <Link to={`${props.match.url}/marketPlace`}>
+                <BusinessIcon /> <span>Market Place</span>
               </Link>
             </li>
 
