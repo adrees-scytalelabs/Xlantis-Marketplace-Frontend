@@ -77,7 +77,7 @@ function NewCollection(props) {
     const classes = useStyles();
     let [network, setNetwork] = useState(false);
     const [show, setShow] = useState(false);
-    let [approvalModalShow, setApprovalModalShow] = useState(true);
+    let [approvalModalShow, setApprovalModalShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
