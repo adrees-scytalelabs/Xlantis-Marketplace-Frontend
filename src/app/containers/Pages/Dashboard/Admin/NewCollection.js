@@ -359,8 +359,49 @@ function NewCollection(props) {
         }
     }
 
-    let giveAuctionApproval = () => {
-        console.log("Approve for auction button called.");
+    let giveAuctionApproval = async () => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShow();
+        }
+        else{
+            setApprovingAuction(true);
+
+            const addressNft = nftContractAddress;
+            const addressDropFactory = Addresses.AuctionDropFactory;
+            const abiNft = CreateNFTContract;            
+
+            console.log("Contract Address: ", nftContractAddress);
+            var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+            console.log("myContractInstance", myContractInstance)
+            
+
+            await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+                console.log('get transaction', err, response);
+                
+                if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    setApprovingAuction(false);
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+
+                }
+            
+            }
+        )
+            .on('receipt', (receipt) => {
+                console.log("receipt", receipt);
+                setIsAuctionApproved(true);
+                setApprovingAuction(false);
+            })
+        }
     }
 
 
