@@ -21,6 +21,7 @@ import CreateNFTContract from '../../../../components/blockchain/Abis/Collectibl
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
+import { Web } from '@material-ui/icons';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -92,6 +93,7 @@ function AddNFT(props) {
     let [changeCollectionList, setChangeCollectionList] = useState([]);
     let [nftName, setNftName] = useState("");
     let [nftURI, setNftURI] = useState("");
+    let [nftTokenSupply, setNftTokenSupply] = useState(0);
     let [nftDetail, setNftDetail] = useState({});
     let [openDialog, setOpenDialog] = useState(false);
     let [openEditModal, setOpenEditModal] = useState(false);
@@ -280,11 +282,11 @@ function AddNFT(props) {
             .on('receipt', (receipt) => {
                 console.log("receipt", receipt);
                 let variant = "success";
-                enqueueSnackbar('New Collection Created Successfully.', { variant });
+                enqueueSnackbar('New Drop Created Successfully.', { variant });
                 setIsAdded(false);
                 handleCloseBackdrop();
                 setIsSaving(false);
-                // history.goBack();
+                history.goBack();
             })
         }
 
@@ -292,45 +294,45 @@ function AddNFT(props) {
     };
 
     //approval
-    let giveApproval = async() => {
-        await loadWeb3();
-        const web3 = window.web3
-        const accounts = await web3.eth.getAccounts();
-        const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
-            setNetwork(network);
-            setIsSaving(false);
-            handleShow();
-        }
-        else{
+    // let giveApproval = async() => {
+    //     await loadWeb3();
+    //     const web3 = window.web3
+    //     const accounts = await web3.eth.getAccounts();
+    //     const network = await web3.eth.net.getNetworkType()
+    //     if (network !== 'goerli') {
+    //         setNetwork(network);
+    //         setIsSaving(false);
+    //         handleShow();
+    //     }
+    //     else{
 
-        const addressNft = nftContractAddresses;
-        const addressDropFactory = Addresses.FactoryDrop;
-        const abiNft = CreateNFTContract;            
+    //     const addressNft = nftContractAddresses;
+    //     const addressDropFactory = Addresses.FactoryDrop;
+    //     const abiNft = CreateNFTContract;            
 
-        console.log("Contract Address: ", nftContractAddresses);
-        var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-        console.log("myContractInstance", myContractInstance)
+    //     console.log("Contract Address: ", nftContractAddresses);
+    //     var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+    //     console.log("myContractInstance", myContractInstance)
         
 
-        await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
-            console.log('get transaction', err, response);
+    //     await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+    //         console.log('get transaction', err, response);
             
-            if (err !== null) {
-                console.log("err", err);
-                let variant = "error";
-                enqueueSnackbar('User Canceled Transaction', { variant });
-                handleCloseBackdrop();
-                setIsSaving(false);
+    //         if (err !== null) {
+    //             console.log("err", err);
+    //             let variant = "error";
+    //             enqueueSnackbar('User Canceled Transaction', { variant });
+    //             handleCloseBackdrop();
+    //             setIsSaving(false);
 
-            }
+    //         }
             
-        })
-        .on('receipt', (receipt) => {
-            console.log("receipt", receipt);
-        })
-        }
-    }
+    //     })
+    //     .on('receipt', (receipt) => {
+    //         console.log("receipt", receipt);
+    //     })
+    //     }
+    // }
            
     // handle click event of the Add button
     const handleAddClick = async(e) => {
@@ -353,6 +355,9 @@ function AddNFT(props) {
         } else if (price < 0) {
             let variant = "error";
             enqueueSnackbar('Price cannot be Negative', { variant });
+        } else if (supply > nftTokenSupply) {
+            let variant = "error";
+            enqueueSnackbar('Supply cannot be greater than NFT token supply', { variant });
         }
         else {
             handleShowBackdrop();
@@ -361,12 +366,13 @@ function AddNFT(props) {
             
             
 
+                    let weiPrice = Web3.utils.toWei(price);
                     //sending data to backend
                     let data ={
                         // "collectionId": collectionId,
                         "nftId" : nftId,
                         "dropId" : dropId,
-                        "price" : price ,
+                        "price" : weiPrice,
                         "supply": parseInt(supply)
                     }
                     
@@ -374,7 +380,7 @@ function AddNFT(props) {
                         "nftContractAddress" : nftContractAddresses,
                         "tokenIds" : [tokenId],
                         "amounts" : [parseInt(supply)],
-                        "prices" : [parseInt(data.price)]
+                        "prices" : [weiPrice]
                     }
 
                     console.log("data", data);
@@ -391,16 +397,16 @@ function AddNFT(props) {
                                 current.map(obj => {
                                     
                                     if (obj.nftContractAddress === nftContractAddresses ) {
-                                        let tokens = obj.tokenIDs.concat(newObject.tokenIds);
+                                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
                                         let amount = obj.amounts.concat(newObject.amounts);
-                                        let prices = obj.price.concat(newObject.prices);
+                                        let price = obj.prices.concat(newObject.prices);
                                         found = true
 
                                         return {
                                             ...obj,
-                                            tokenIDs : tokens,
+                                            tokenIds : tokens,
                                             amounts : amount,
-                                            price : prices
+                                            prices : price
 
                                         }
                                     
@@ -413,7 +419,7 @@ function AddNFT(props) {
                             
                             if (found === false) {
                                 const dropp = [...dropInfo, newObject];
-                                giveApproval();
+                                // giveApproval();
                                 console.log("drop", dropp);
                                 console.log("here");
                                 setDropInfo(dropp);
@@ -559,6 +565,7 @@ function AddNFT(props) {
                                                                 setNftId(value._id)
                                                                 setNftURI(value.nftURI);
                                                                 setTokenId(value.nftId);
+                                                                setNftTokenSupply(value.tokenSupply);
 
                                                                 handleOpenNFTDetailModal(value);
 
