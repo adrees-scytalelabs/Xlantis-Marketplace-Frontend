@@ -5,8 +5,8 @@ import { Check } from '@material-ui/icons';
 
 const RequestApprovalModal = (props) => {
     return ( 
-        <Modal show={props.show} onHide={props.handleClose} centered >
-            <Modal.Header closeButton>
+        <Modal show={props.show} onHide={props.handleClose} centered backdrop='static' >
+            <Modal.Header>
                 Approval Required
             </Modal.Header>
             <Modal.Body>
@@ -60,6 +60,11 @@ const RequestApprovalModal = (props) => {
                     </Row>
                 </div>
             </Modal.Body>
+            <Modal.Footer>
+                <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.done} >
+                    Done
+                </button>
+            </Modal.Footer>
         </Modal>
     );
 }

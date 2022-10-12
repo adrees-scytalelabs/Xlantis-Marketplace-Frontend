@@ -77,7 +77,7 @@ function NewCollection(props) {
     const classes = useStyles();
     let [network, setNetwork] = useState(false);
     const [show, setShow] = useState(false);
-    let [approvalModalShow, setApprovalModalShow] = useState(false);
+    let [approvalModalShow, setApprovalModalShow] = useState(true);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -404,6 +404,20 @@ function NewCollection(props) {
         }
     }
 
+    let handleDoneButton = () => {
+        if(isFixedPriceApproved === false){
+            let variant="error";
+            enqueueSnackbar('Approve For Fixed Price First', { variant });
+        }
+        if(isAuctionApproved === false){
+            let variant="error";
+            enqueueSnackbar('Approve For Auction First', { variant });
+        } 
+        if(isAuctionApproved === true && isFixedPriceApproved === true){
+            handleApprovalModalClose();
+        }
+    }
+
 
     return (
         <div className="card">
@@ -670,6 +684,7 @@ function NewCollection(props) {
                 approvingFixedPrice={approvingFixedPrice}
                 isAuctionApproved={isAuctionApproved}
                 isFixedPriceApproved={isFixedPriceApproved}
+                done={handleDoneButton}
             >
             </RequestApprovalModal>
             <Backdrop className={classes.backdrop} open={open} >
