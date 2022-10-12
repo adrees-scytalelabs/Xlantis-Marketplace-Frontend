@@ -1,6 +1,6 @@
 import { Button } from '@material-ui/core';
 import React from 'react';
-import { Modal, Spinner } from 'react-bootstrap';
+import { Col, Modal, Row, Spinner } from 'react-bootstrap';
 import { Check } from '@material-ui/icons';
 
 const RequestApprovalModal = (props) => {
@@ -13,41 +13,51 @@ const RequestApprovalModal = (props) => {
                 <div>
                     Give approval to put NFTs on sale.
                 </div>
-                <div>
-                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveFixPriceApproval} >
-                        Approve for sale
-                    </button>
-                    {props.approvingFixedPrice ? (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            style={{ color: "#a70000" }}
-                        >
-                        </Spinner>
-                        ): null
-                    }
-                    {props.isFixedPriceApproved ? (
-                        <Check color="success" styles={{color: 'green'}} ></Check>
-                        ) : null
-                    }
-                </div>
-                <div>
-                    <button className="btn" style={{ margin: "10px" }} onClick={props.giveAuctionApproval} >
-                        Approve for auction
-                    </button>
-                    {props.approvingAuction ? (
-                        <Spinner
-                            animation="border"
-                            role="status"
-                            style={{ color: "#a70000" }}
-                        >
-                        </Spinner>
-                        ): null 
-                    }
-                    {props.isAuctionApproved ? (
-                        <Check color="success" styles={{color: 'green'}}></Check>
-                        ): null
-                    }
+                <div style={{ margin: "10px" }}>
+                    <Row>
+                        <Col>
+                            Give Approval to Fixed Price Drop.
+                        </Col>
+                        <Col>
+                        {props.approvingFixedPrice ? (
+                            <Spinner
+                                animation="border"
+                                role="status"
+                                style={{ color: "#a70000" }}
+                            >
+                            </Spinner>
+                            ): props.isFixedPriceApproved ? (
+                                <Check color='success'></Check>
+                            ) : (
+                                <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveFixPriceApproval} >
+                                    Approve
+                                </button>
+                            )
+                        }
+                        </Col>    
+                    </Row>
+                    <Row>
+                        <Col>
+                            Give Approval to Auction Drop.
+                        </Col>
+                        <Col>
+                            {props.approvingAuction ? (
+                                <Spinner
+                                    animation="border"
+                                    role="status"
+                                    style={{ color: "#a70000" }}
+                                >
+                                </Spinner>
+                                ): props.isAuctionApproved ? (
+                                    <Check color='success'></Check>
+                                ) : (
+                                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveFixPriceApproval} >
+                                        Approve
+                                    </button>
+                                )
+                            }   
+                        </Col>
+                    </Row>
                 </div>
             </Modal.Body>
         </Modal>
