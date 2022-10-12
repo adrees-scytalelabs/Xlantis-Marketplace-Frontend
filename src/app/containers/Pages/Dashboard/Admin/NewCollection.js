@@ -23,6 +23,7 @@ import r1 from '../../../../assets/img/patients/patient.jpg';
 import Factory1155Contract from '../../../../components/blockchain/Abis/Factory1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import RequestApprovalModal from '../../../../components/Modals/RequestApprovalModal';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,6 +76,7 @@ function NewCollection(props) {
     const classes = useStyles();
     let [network, setNetwork] = useState(false);
     const [show, setShow] = useState(false);
+    let [approvalModalShow, setApprovalModalShow] = useState(true);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -218,6 +220,7 @@ function NewCollection(props) {
                     cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
                     let variant = "success";
                     enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    setApprovalModalShow(true);
                     setCollectionName("");
                     setCollectionSymbol("");
                     setCollectionDescription("");
@@ -298,6 +301,11 @@ function NewCollection(props) {
         setImageFile(e.target.files[0]);
         setFileURL(URL.createObjectURL(e.target.files[0]));
     }
+
+    let handleApprovalModalClose = () => {
+        setApprovalModalShow(false);
+    }
+    
 
 
     return (
@@ -556,6 +564,11 @@ function NewCollection(props) {
                 network={network}
             >
             </NetworkErrorModal>
+            <RequestApprovalModal
+                show={approvalModalShow}
+                handleClose={handleApprovalModalClose}
+            >
+            </RequestApprovalModal>
             <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>
