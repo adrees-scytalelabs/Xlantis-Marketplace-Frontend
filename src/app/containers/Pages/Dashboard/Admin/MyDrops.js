@@ -46,7 +46,7 @@ function TabPanel(props) {
     },
   }));
 
-const MarketPlace = (props) => {
+const MyDrops = (props) => {
 
     const classes = useStyles();
     const theme = useTheme();
@@ -123,4 +123,4 @@ const MarketPlace = (props) => {
     );
 }
  
-export default MarketPlace;
+export default MyDrops;
