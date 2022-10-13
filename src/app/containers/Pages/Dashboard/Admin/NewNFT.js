@@ -280,7 +280,7 @@ function NewNFT(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'ropsten') {
+        if (network !== 'goerli') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -321,12 +321,15 @@ function NewNFT(props) {
                 .on('receipt', (receipt) => {
                     console.log("receipt", receipt);
                     Cookies.remove("NFT-Detail");
-                    // console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
-                    // let ids = receipt.events.TransferBatch.returnValues.ids;
+                    console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
+                    let ids = receipt.events.TransferBatch.returnValues.ids;
                     // for (let i = 0; i < tokenList.length; i++) {
                     //     tokenList[i].nftId = ids[i];
                     // }
 
+                    let data = {
+                        "blockchainIds" : ids
+                    }
                     // let Data = {
                     //     "collectionId": collectionId,
                     //     "data": [
@@ -348,7 +351,7 @@ function NewNFT(props) {
                     
                     // let Data = new FormData();
                     // console.log("Data", Data);
-                    axios.put(`/batch-mint/minted/${batchId}`).then(
+                    axios.put(`/batch-mint/minted/${batchId}`, data).then(
                         (response) => {
                             console.log("response", response);
                             let variant = "success";
