@@ -189,12 +189,6 @@ function AdminDashboard(props) {
               <MyNFTs setActiveTab={setActiveTab} />
             </Route>
             {/* myNFTs:"", */}
-            <Route exact path={`${path}/newDrop`}>
-              <NewDrop setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newDrop/addNft`}>
-              <AddNFT setActiveTab={setActiveTab} />
-            </Route>
             <Route exact path={`${path}/myCubes`}>
               <MyCubes setActiveTab={setActiveTab} />
             </Route>

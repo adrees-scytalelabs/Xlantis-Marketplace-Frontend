@@ -181,7 +181,7 @@ function AddNFT(props) {
             privacyPolicy: "",
             termsandconditions: "",
             changePassword: "",
-            newDrop: "Active",
+            newDrop: "active",
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
