@@ -212,13 +212,6 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/mySeason/drops/:seasonId`}>
               <SeasonDrops setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/newDrop`}>
-              <NewDrop setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/newDrop/addNft`}>
-              <AddNFT setActiveTab={setActiveTab} />
-            </Route>
 
             <Route exact path={`${path}/myDrops`}>
               <MyDrops setActiveTab={setActiveTab} />

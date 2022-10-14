@@ -23,6 +23,8 @@ import r1 from '../../../../assets/img/patients/patient.jpg';
 import Factory1155Contract from '../../../../components/blockchain/Abis/Factory1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import RequestApprovalModal from '../../../../components/Modals/RequestApprovalModal';
+import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -75,6 +77,7 @@ function NewCollection(props) {
     const classes = useStyles();
     let [network, setNetwork] = useState(false);
     const [show, setShow] = useState(false);
+    let [approvalModalShow, setApprovalModalShow] = useState(false);
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -100,6 +103,11 @@ function NewCollection(props) {
     let [imageFile, setImageFile] = useState();
     let [fileURL, setFileURL] = useState(r1);
     let [collectionId, setCollectionId] = useState("");
+    let [nftContractAddress, setNftContractAddress] = useState("");
+    let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
+    let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
+    let [isAuctionApproved, setIsAuctionApproved] = useState(false);
+    let [approvingAuction, setApprovingAuction] = useState(false);
 
 
     useEffect(() => {
@@ -145,7 +153,7 @@ function NewCollection(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'ropsten') {
+        if (network !== 'goerli') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -218,6 +226,8 @@ function NewCollection(props) {
                     cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
                     let variant = "success";
                     enqueueSnackbar('New Collection Created Successfully.', { variant });
+                    setApprovalModalShow(true);
+                    setNftContractAddress(cloneContractAddress);
                     setCollectionName("");
                     setCollectionSymbol("");
                     setCollectionDescription("");
@@ -297,6 +307,115 @@ function NewCollection(props) {
     let onChangeFile = (e) => {
         setImageFile(e.target.files[0]);
         setFileURL(URL.createObjectURL(e.target.files[0]));
+    }
+
+    let handleApprovalModalClose = () => {
+        setApprovalModalShow(false);
+    }
+
+    //approval
+    let giveFixedPriceApproval = async () => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShow();
+        }
+        else{
+            setApprovingFixedPrice(true);
+
+            const addressNft = nftContractAddress;
+            const addressDropFactory = Addresses.FactoryDrop;
+            const abiNft = CreateNFTContract;            
+
+            console.log("Contract Address: ", nftContractAddress);
+            var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+            console.log("myContractInstance", myContractInstance)
+            
+
+            await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+                console.log('get transaction', err, response);
+                
+                if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    setApprovingFixedPrice(false);
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+
+                }
+            
+            }
+        )
+            .on('receipt', (receipt) => {
+                console.log("receipt", receipt);
+                setIsFixedPriceApproved(true);
+                setApprovingFixedPrice(false);
+            })
+        }
+    }
+
+    let giveAuctionApproval = async () => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShow();
+        }
+        else{
+            setApprovingAuction(true);
+
+            const addressNft = nftContractAddress;
+            const addressDropFactory = Addresses.AuctionDropFactory;
+            const abiNft = CreateNFTContract;            
+
+            console.log("Contract Address: ", nftContractAddress);
+            var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+            console.log("myContractInstance", myContractInstance)
+            
+
+            await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+                console.log('get transaction', err, response);
+                
+                if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    setApprovingAuction(false);
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+
+                }
+            
+            }
+        )
+            .on('receipt', (receipt) => {
+                console.log("receipt", receipt);
+                setIsAuctionApproved(true);
+                setApprovingAuction(false);
+            })
+        }
+    }
+
+    let handleDoneButton = () => {
+        if(isFixedPriceApproved === false){
+            let variant="error";
+            enqueueSnackbar('Approve For Fixed Price First', { variant });
+        }
+        if(isAuctionApproved === false){
+            let variant="error";
+            enqueueSnackbar('Approve For Auction First', { variant });
+        } 
+        if(isAuctionApproved === true && isFixedPriceApproved === true){
+            handleApprovalModalClose();
+        }
     }
 
 
@@ -556,6 +675,18 @@ function NewCollection(props) {
                 network={network}
             >
             </NetworkErrorModal>
+            <RequestApprovalModal
+                show={approvalModalShow}
+                handleClose={handleApprovalModalClose}
+                giveFixPriceApproval={giveFixedPriceApproval}
+                giveAuctionApproval={giveAuctionApproval}
+                approvingAuction={approvingAuction}
+                approvingFixedPrice={approvingFixedPrice}
+                isAuctionApproved={isAuctionApproved}
+                isFixedPriceApproved={isFixedPriceApproved}
+                done={handleDoneButton}
+            >
+            </RequestApprovalModal>
             <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop>
