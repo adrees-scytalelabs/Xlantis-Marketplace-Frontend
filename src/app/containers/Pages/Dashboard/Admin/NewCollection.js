@@ -108,6 +108,7 @@ function NewCollection(props) {
     let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
     let [isAuctionApproved, setIsAuctionApproved] = useState(false);
     let [approvingAuction, setApprovingAuction] = useState(false);
+    let [doneLoader, setDoneLoader] = useState(false);
 
 
     useEffect(() => {
@@ -231,6 +232,7 @@ function NewCollection(props) {
                     setCollectionName("");
                     setCollectionSymbol("");
                     setCollectionDescription("");
+                    setFileURL(r1);
                     handleCloseBackdrop();
                 }
             )
@@ -414,6 +416,22 @@ function NewCollection(props) {
             enqueueSnackbar('Approve For Auction First', { variant });
         } 
         if(isAuctionApproved === true && isFixedPriceApproved === true){
+            setDoneLoader(true);
+            axios.put(`/collection/approve/${collectionId}`).then(
+                (response) => {
+                    console.log("Response from collection approval: ", response);
+                    let variant = "success";
+                    enqueueSnackbar("Collection Approval Successful", { variant });
+                    setDoneLoader(false);
+                },
+                (error) => {
+                    console.log("Error from collection approval: ", error);
+                    let variant = "error";
+                    enqueueSnackbar("Collection Approval Unsuccessful", { variant });
+                    setDoneLoader(false);
+                }
+            );
+            
             handleApprovalModalClose();
         }
     }
@@ -685,6 +703,7 @@ function NewCollection(props) {
                 isAuctionApproved={isAuctionApproved}
                 isFixedPriceApproved={isFixedPriceApproved}
                 done={handleDoneButton}
+                doneLoader={doneLoader}
             >
             </RequestApprovalModal>
             <Backdrop className={classes.backdrop} open={open} >
