@@ -20,9 +20,9 @@
     "inputs": [
       {
         "indexed": true,
-        "internalType": "uint256",
+        "internalType": "bytes32",
         "name": "cloneId",
-        "type": "uint256"
+        "type": "bytes32"
       },
       {
         "indexed": true,
@@ -62,9 +62,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_dropClone",
-        "type": "address"
+        "internalType": "bytes32",
+        "name": "_dropId",
+        "type": "bytes32"
       },
       {
         "internalType": "address",
@@ -85,9 +85,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_dropClone",
-        "type": "address"
+        "internalType": "bytes32",
+        "name": "_dropId",
+        "type": "bytes32"
       },
       {
         "internalType": "address",
@@ -107,6 +107,30 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "cloneAddresses",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_cloneId",
+        "type": "bytes32"
+      },
       {
         "internalType": "uint256",
         "name": "_dropStartTime",
@@ -140,7 +164,7 @@
             "type": "uint256[]"
           }
         ],
-        "internalType": "struct DropData.dropData[]",
+        "internalType": "struct DropData.Data[]",
         "name": "_orders",
         "type": "tuple[]"
       }
@@ -172,9 +196,28 @@
   {
     "inputs": [
       {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "name": "dropSellers",
+    "outputs": [
+      {
         "internalType": "address",
-        "name": "_dropClone",
+        "name": "",
         "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_dropId",
+        "type": "bytes32"
       },
       {
         "internalType": "address",
@@ -205,9 +248,9 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_dropClone",
-        "type": "address"
+        "internalType": "bytes32",
+        "name": "_dropId",
+        "type": "bytes32"
       },
       {
         "internalType": "address",
@@ -238,9 +281,9 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
+        "internalType": "bytes32",
         "name": "_id",
-        "type": "uint256"
+        "type": "bytes32"
       }
     ],
     "name": "getCloneAddress",
@@ -260,6 +303,19 @@
     "outputs": [
       {
         "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "paymentToken",
+    "outputs": [
+      {
+        "internalType": "contract IERC20",
         "name": "",
         "type": "address"
       }
