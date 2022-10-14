@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-function MyDrops(props) {
+function DropsPage(props) {
     const classes = useStyles();
     const [tokenList, setTokenList] = useState([]);
 
@@ -165,16 +165,18 @@ function MyDrops(props) {
                                                 <CardMedia
                                                     className={classes.media}
                                                     image={i.image}
-                                                    title=""
+                                                    title="Drop Image"
                                                 >
                                                 </CardMedia>
                                                 <CardContent>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Description: </strong>{i.description}
-                                                    </Typography>
+                                                    
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>No Of Nfts: </strong>{i.totalNFTs}
                                                     </Typography>
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Description: </strong>{i.description}
+                                                    </Typography>
+                                                    <br></br>
                                                     {/* {(i.saleType === "auction") ? 
                                                     (<Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Minimum Bid: </strong>{i.price} WETH
@@ -199,7 +201,7 @@ function MyDrops(props) {
                                                             </div>
                                                         ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
                                                             <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                                                 <Typography variant="body2" color="textSecondary" component="p">
                                                                     <strong>Auction Ends At:</strong>
                                                                 </Typography>
@@ -225,7 +227,7 @@ function MyDrops(props) {
                                                             </div>
                                                         ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
                                                             <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                                                 <Typography variant="body2" color="textSecondary" component="p">
                                                                     <strong>Sale Ends At:</strong>
                                                                 </Typography>
@@ -291,4 +293,4 @@ function MyDrops(props) {
     );
 }
 
-export default MyDrops;
+export default DropsPage;
