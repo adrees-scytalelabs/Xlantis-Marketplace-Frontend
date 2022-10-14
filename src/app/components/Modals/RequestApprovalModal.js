@@ -51,7 +51,7 @@ const RequestApprovalModal = (props) => {
                                 ): props.isAuctionApproved ? (
                                     <Check color='success'></Check>
                                 ) : (
-                                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveFixPriceApproval} >
+                                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveAuctionApproval} >
                                         Approve
                                     </button>
                                 )
