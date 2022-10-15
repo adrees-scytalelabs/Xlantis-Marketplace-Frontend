@@ -7,7 +7,7 @@ import ipfs from '../../components/IPFS/ipfs';
 import axios from 'axios';
 import r1 from '../../assets/img/patients/patient.jpg';
 import { Autocomplete } from "@material-ui/lab";
-import { Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from "@material-ui/core";
+import { Button, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField } from "@material-ui/core";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 
 const NFTEditModal = (props) => {
@@ -26,19 +26,18 @@ const NFTEditModal = (props) => {
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
 
     useEffect(() => {
+        setIsGlbFile(false);
         console.log("nft edit Props: ", props);
         if(props.show === true) {
             setNftDetail(props.nftDetail);
+            if(props.nftDetail.previewImageURI !== "") {
+                setIsGlbFile(true);
+                console.log("In the condition ");
+            }
         }
 
         setImage(props.nftDetail.nftImage);
-        if(props.nftDetail.previewImageURI !== "") {
-            setIsGlbFile(true);
-            console.log("In the condition ");
-        }
-        else {
-            setIsGlbFile(false);
-        }
+        
     },[props.show]);
 
     let onChangeFile = (e) => {
@@ -248,36 +247,38 @@ const NFTEditModal = (props) => {
                             </div>
                         ): (
                             <div>
-                                <div>
-                                    <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
-                                        <AmbientLight color={0xffffff} />
-                                        <AmbientLight color={0xffffff} />
-                                        <AmbientLight color={0xffffff} />
-                                        <AmbientLight color={0xffffff} />
-                                        {/* <AmbientLight color={0xffffff} />
-                                        <AmbientLight color={0xffffff} />
-                                        <AmbientLight color={0xffffff} /> */}
-                                        <DirectionLight
-                                            color={0xffffff}
-                                            position={{ x: 100, y: 200, z: 100 }}
-                                        />
-                                        <DirectionLight
-                                            color={0xffffff}
-                                            position={{ x: 50, y: 200, z: 100 }}
-                                        />
-                                        <DirectionLight
-                                            color={0xffffff}
-                                            position={{ x: 0, y: 0, z: 0 }}
-                                        />
-                                        <DirectionLight
-                                            color={0xffffff}
-                                            position={{ x: 0, y: 100, z: 200 }}
-                                        />
-                                        <DirectionLight
-                                            color={0xffffff}
-                                            position={{ x: -100, y: 200, z: -100}}
-                                        />
-                                    </GLTFModel>
+                                <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}} >
+                                    <Paper elevation={2} >
+                                        <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
+                                            <AmbientLight color={0xffffff} />
+                                            <AmbientLight color={0xffffff} />
+                                            <AmbientLight color={0xffffff} />
+                                            <AmbientLight color={0xffffff} />
+                                            {/* <AmbientLight color={0xffffff} />
+                                            <AmbientLight color={0xffffff} />
+                                            <AmbientLight color={0xffffff} /> */}
+                                            <DirectionLight
+                                                color={0xffffff}
+                                                position={{ x: 100, y: 200, z: 100 }}
+                                            />
+                                            <DirectionLight
+                                                color={0xffffff}
+                                                position={{ x: 50, y: 200, z: 100 }}
+                                            />
+                                            <DirectionLight
+                                                color={0xffffff}
+                                                position={{ x: 0, y: 0, z: 0 }}
+                                            />
+                                            <DirectionLight
+                                                color={0xffffff}
+                                                position={{ x: 0, y: 100, z: 200 }}
+                                            />
+                                            <DirectionLight
+                                                color={0xffffff}
+                                                position={{ x: -100, y: 200, z: -100}}
+                                            />
+                                        </GLTFModel>
+                                    </Paper>
                                 </div>
                                 <div className="upload-img">
                                     <div
@@ -309,7 +310,7 @@ const NFTEditModal = (props) => {
                                         Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
                                     </small>
                                 </div>
-                                <label>Select Preview Image</label>
+                                <label style={{margin: "10px"}}>Select Preview Image</label>
                                 <div className="filter-widget">
                                     <div className="form-group">
                                         <div className="change-avatar">
@@ -583,7 +584,7 @@ const NFTEditModal = (props) => {
                             
                             </div>
 
-                            <button type="button" className="btn submit-btn" onClick={props.handleChangeCollection}>
+                            <button style={{marginTop: "10px"}} type="button" className="btn submit-btn" onClick={props.handleChangeCollection}>
                                 Change Collection
                             </button>
 
