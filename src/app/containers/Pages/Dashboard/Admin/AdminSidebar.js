@@ -72,11 +72,11 @@ function AdminSidebar(props) {
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
-            {/* <li className={props.activeTab.myDrops}>
+            <li className={props.activeTab.myDrops}>
               <Link to={`${props.match.url}/myDrops`}>
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
-            </li> */}
+            </li>
             {/* <li className={props.activeTab.newRandomDrop}>
               <Link to={`${props.match.url}/newRandomDrop`}>
                 <i className="fas fa-random"></i> <span>New Random Drop</span>
