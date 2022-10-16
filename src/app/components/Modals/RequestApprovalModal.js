@@ -51,7 +51,7 @@ const RequestApprovalModal = (props) => {
                                 ): props.isAuctionApproved ? (
                                     <Check color='success'></Check>
                                 ) : (
-                                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveFixPriceApproval} >
+                                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.giveAuctionApproval} >
                                         Approve
                                     </button>
                                 )
@@ -61,9 +61,18 @@ const RequestApprovalModal = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.done} >
-                    Done
-                </button>
+                {props.doneLoader ? (
+                    <Spinner
+                        animation="border"
+                        role="status"
+                        style={{ color: "#a70000" }}
+                    >
+                    </Spinner>
+                ) : (
+                    <button className="btn" type="button" style={{ margin: "10px" }} onClick={props.done} >
+                        Done
+                    </button>
+                )}
             </Modal.Footer>
         </Modal>
     );
