@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from '@material-ui/styles';
+import MarketPlacePage from './MarketPlacePage';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -100,10 +101,10 @@ const MarketPlace = (props) => {
                     </Tabs>
                 </AppBar>
                 <TabPanel value={value} index={0}>
-                    Auction Tab
+                    <MarketPlacePage saleType = "auction" />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
-                    Fixed Price Tab
+                  <MarketPlacePage saleType = "fixed-price" />
                 </TabPanel>
 
             </div>
