@@ -23,7 +23,8 @@ import * as Addresses from '../../../../components/blockchain/Addresses/Addresse
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 import { Web } from '@material-ui/icons';
-const crypto = require('crypto');
+import crypto from 'crypto';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -134,8 +135,7 @@ function AddNFT(props) {
     }
 
     const getHash = (id) => {
-        const hash = crypto.createHash('sha256').update(id).digest('hex');
-        console.log('hex hash generation: ', hash);    
+     
         const hex = Web3.utils.toHex(id);
         console.log('conversion to hex: ', hex);
         return hex;
@@ -360,7 +360,7 @@ function AddNFT(props) {
         
     };
 
-    //approval
+    // approval
     // let giveApproval = async() => {
     //     await loadWeb3();
     //     const web3 = window.web3
