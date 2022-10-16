@@ -17,11 +17,14 @@ import { useHistory, useLocation } from 'react-router-dom';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
 import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
+import AuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 import { Web } from '@material-ui/icons';
+import crypto from 'crypto';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -102,6 +105,7 @@ function AddNFT(props) {
     let [isUploadingData, setIsUploadingData] = useState(false);
     let [price, setPrice] = useState(0);
     let [supply, setSupply] = useState(0);
+    let [saleType, setSaleType] = useState('');
 
     let [dropInfo, setDropInfo] = useState([]);
 
@@ -127,6 +131,14 @@ function AddNFT(props) {
                     }
                 }
             })
+
+    }
+
+    const getHash = (id) => {
+     
+        const hex = Web3.utils.toHex(id);
+        console.log('conversion to hex: ', hex);
+        return hex;
 
     }
 
@@ -165,6 +177,7 @@ function AddNFT(props) {
     setDropId(location.state.dropId);
     setStartTime(location.state.startTime);
     setEndTime(location.state.endTime);
+    setSaleType(location.state.saleType);
     console.log("dropid",dropId);
     
     getCollections();
@@ -242,58 +255,112 @@ function AddNFT(props) {
                     enqueueSnackbar('Unable to Add Nft To Drop.', { variant });
                 }
             )
-            const address = Addresses.FactoryDrop;
-            const abi = DropFactory;            
+            
+            let dropCloneId = getHash(dropId);
+            if (saleType === "fixed-price") {
+                const address = Addresses.FactoryDrop;
+                const abi = DropFactory;            
 
-            console.log("Contract Address: ", address);
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            console.log("myContractInstance", myContractInstance);
+                console.log("Contract Address: ", address);
+                var myContractInstance = await new web3.eth.Contract(abi, address);
+                console.log("myContractInstance", myContractInstance);
 
-            console.log("Start TIME", startTime);
-            console.log("end time", startTime);
-            console.log("drop", dropInfo);
+                console.log("Start TIME", startTime);
+                console.log("end time", startTime);
+                console.log("drop", dropInfo);
 
 
 
-            await myContractInstance.methods.createDrop(startTime, endTime, dropInfo).send({from : accounts[0]}, (err, response) => {
-                console.log('get transaction', err, response);
-                let data = {
-                    "dropId" : dropId,
-                    "txHash" : response
-                }
-                console.log("data",data);
-                axios.put(`/drop/txHash`, data).then(
-                    (response) => {
-                        console.log("Transaction Hash sending on backend response: ", response);
-                    },
-                    (error) => {
-                        console.log("Transaction hash on backend error: ", error.response);
+                await myContractInstance.methods.createDrop(dropCloneId, startTime, endTime, dropInfo).send({from : accounts[0]}, (err, response) => {
+                    console.log('get transaction', err, response);
+                    let data = {
+                        "dropId" : dropId,
+                        "txHash" : response
                     }
-                )
-                if (err !== null) {
-                    console.log("err", err);
-                    let variant = "error";
-                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    console.log("data",data);
+                    axios.put(`/drop/txHash`, data).then(
+                        (response) => {
+                            console.log("Transaction Hash sending on backend response: ", response);
+                        },
+                        (error) => {
+                            console.log("Transaction hash on backend error: ", error.response);
+                        }
+                    )
+                    if (err !== null) {
+                        console.log("err", err);
+                        let variant = "error";
+                        enqueueSnackbar('User Canceled Transaction', { variant });
+                        handleCloseBackdrop();
+                        setIsSaving(false);
+                    }
+                    
+                    })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt);
+                    let variant = "success";
+                    enqueueSnackbar('New Drop Created Successfully.', { variant });
+                    setIsAdded(false);
                     handleCloseBackdrop();
                     setIsSaving(false);
-                }
-                
-            })
-            .on('receipt', (receipt) => {
-                console.log("receipt", receipt);
-                let variant = "success";
-                enqueueSnackbar('New Drop Created Successfully.', { variant });
-                setIsAdded(false);
-                handleCloseBackdrop();
-                setIsSaving(false);
-                history.goBack();
-            })
+                    history.goBack();
+                })
+            }
+
+            else if (saleType === "auction") {
+                const address = Addresses.AuctionDropFactory;
+                const abi = AuctionDropFactory;            
+
+                console.log("Contract Address: ", address);
+                var myContractInstance = await new web3.eth.Contract(abi, address);
+                console.log("myContractInstance", myContractInstance);
+
+                console.log("Start TIME", startTime);
+                console.log("end time", startTime);
+                console.log("drop", dropInfo);
+
+
+
+                await myContractInstance.methods.createAuctionDrop(dropCloneId, startTime, endTime, dropInfo).send({from : accounts[0]}, (err, response) => {
+                    console.log('get transaction', err, response);
+                    let data = {
+                        "dropId" : dropId,
+                        "txHash" : response
+                    }
+                    console.log("data",data);
+                    axios.put(`/drop/txHash`, data).then(
+                        (response) => {
+                            console.log("Transaction Hash sending on backend response: ", response);
+                        },
+                        (error) => {
+                            console.log("Transaction hash on backend error: ", error.response);
+                        }
+                    )
+                    if (err !== null) {
+                        console.log("err", err);
+                        let variant = "error";
+                        enqueueSnackbar('User Canceled Transaction', { variant });
+                        handleCloseBackdrop();
+                        setIsSaving(false);
+                    }
+                    
+                    })
+                .on('receipt', (receipt) => {
+                    console.log("receipt", receipt);
+                    let variant = "success";
+                    enqueueSnackbar('New Drop Created Successfully.', { variant });
+                    setIsAdded(false);
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+                    history.goBack();
+                })
+            }
+            
         }
 
         
     };
 
-    //approval
+    // approval
     // let giveApproval = async() => {
     //     await loadWeb3();
     //     const web3 = window.web3
@@ -308,6 +375,7 @@ function AddNFT(props) {
 
     //     const addressNft = nftContractAddresses;
     //     const addressDropFactory = Addresses.FactoryDrop;
+    //     const addressAuctionFactory = Addresses.AuctionDropFactory;
     //     const abiNft = CreateNFTContract;            
 
     //     console.log("Contract Address: ", nftContractAddresses);
@@ -315,7 +383,7 @@ function AddNFT(props) {
     //     console.log("myContractInstance", myContractInstance)
         
 
-    //     await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
+    //     await myContractInstance.methods.setApprovalForAll(addressAuctionFactory, true).send({from : accounts[0]}, (err, response) => {
     //         console.log('get transaction', err, response);
             
     //         if (err !== null) {
