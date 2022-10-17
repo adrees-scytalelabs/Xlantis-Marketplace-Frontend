@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Card from '@material-ui/core/Card';
 import Web3 from 'web3';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { CardContent, CardMedia, CardHeader } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
@@ -123,6 +123,7 @@ function DropNfts(props) {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
+            marketPlace: "active"
         });// eslint-disable-next-line
     }, []);
     const handleChangePage = (event, newPage) => {
@@ -177,6 +178,7 @@ function DropNfts(props) {
                                 {tokenList.map((i, index) => (
                                     
                                 <Grid item xs={12} sm={6} md={3} key={index}>
+                                    <Link to={`/dashboard/marketPlace/${i.dropId}/${i._id}`} >
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
                                                 <CardHeader className="text-center"
@@ -204,6 +206,7 @@ function DropNfts(props) {
                                             </CardActionArea>
                                             
                                         </Card>
+                                    </Link>
                                 </Grid >
                             ))}
                             </Grid>
