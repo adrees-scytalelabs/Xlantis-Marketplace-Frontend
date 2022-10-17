@@ -7,15 +7,10 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Card from '@material-ui/core/Card';
 import Web3 from 'web3';
-
 import { useLocation } from 'react-router-dom';
-import {
-    CardContent,
-    CardMedia,
-} from '@material-ui/core/';
+import { CardContent, CardMedia, CardHeader } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardHeader } from 'reactstrap';
 
 const useStyles = makeStyles((theme) => ({
     root: {
