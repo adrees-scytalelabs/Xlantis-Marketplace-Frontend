@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardContent, CardHeader, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Backdrop, Card, CardContent, CardHeader, CardMedia, CircularProgress, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import { Col, Row, Table } from 'react-bootstrap';
+import Web3 from 'web3';
+import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
+import { useSnackbar } from 'notistack';
 
 
 
@@ -54,11 +57,21 @@ const useStyles = makeStyles((theme) => ({
 
 const AuctionNFT = (props) => {
     const classes = useStyles();
+    const { enqueueSnackbar } = useSnackbar();
     const { nftId } = useParams();
+    const location = useLocation();
+    const { nftContractAddress } = location.state;
     const [open, setOpen] = useState(false);
     const [nftDetail, setNftDetail] = useState({});
     const [properties, setProperties] = useState([]);
     const [keys, setKeys] = useState([]);
+    const [biddingValue, setBiddingValue] = useState(0);
+    const [network, setNetwork] = useState("");
+    const [show, setShow] = useState(false);
+    // const [nftContractAddress, setNftContractAddress] = useState("");
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
 
     const handleCloseBackdrop = () => {
         setOpen(false);
@@ -77,6 +90,7 @@ const AuctionNFT = (props) => {
                 const keys = Object.keys(response.data.data[0].properties);
                 console.log("Keys: ", keys);
                 setKeys(keys);
+                // setNftContractAddress(response.data.data[0].collectionId.nftContractAddress);
                 // for(let i = 0; i < keys.length; i++) {
                 //     properties[i]['key'] = keys[i];
                 //     properties[i].value = response.data.data[0].properties.keys[i];
@@ -92,6 +106,7 @@ const AuctionNFT = (props) => {
     }
 
     useEffect(() => {
+        console.log("Auction contract address: ", location);
         getNftDetail();
 
         props.setActiveTab({
@@ -113,6 +128,56 @@ const AuctionNFT = (props) => {
             marketPlace: "active"
         });
     }, []);
+
+    let handleChangeBiddingValue = (event) => {
+        if(event.target.value >= 0) {
+            setBiddingValue(event.target.value);
+        }
+    }
+
+    let loadWeb3 = async () => {
+        if (window.ethereum) {
+            window.web3 = new Web3(window.ethereum)
+            await window.ethereum.enable()
+        }
+        else if (window.web3) {
+            window.web3 = new Web3(window.web3.currentProvider)
+        }
+        else {
+            window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+        }
+    }
+
+    let handleBidSubmit = async (event) => {
+        event.preventDefault();
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            handleShow();
+        }
+        else {
+            handleShowBackdrop();
+            //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+            let bidData = {
+                nftId: nftDetail._id,
+                bidAmount: biddingValue.toString(),
+                bidderAddress: accounts[0],
+                expiryTime: location.state.endTime
+            }
+            
+            axios.post("/auction/bid", bidData).then(
+                (response) => {
+                    console.log("Response from sending bid data to backend: ", response);
+                },
+                (error) => {
+                    console.log("Error from sending bid data to backend: ", error);
+                }
+            )
+        }
+    }
     
     return (
         <div className="card">
@@ -222,11 +287,44 @@ const AuctionNFT = (props) => {
                                         </Table>
                                     </Col>
                                 </Row>
+                                <Row>
+                                    <Col>
+                                        <form>
+                                            <div className="form-group">
+                                                <TextField
+                                                    style={{marginTop:'5px'}} 
+                                                    autoComplete='false'
+                                                    value={biddingValue}
+                                                    variant="outlined" 
+                                                    type='number' 
+                                                    color='secondary'
+                                                    onChange={(e) => {
+                                                        handleChangeBiddingValue(e);
+                                                    }}  
+                                                />
+                                                <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onChange={() => handleBidSubmit()} >
+                                                    Bid
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </Col>
+                                </Row>
                             </CardContent>
                         </Card>
                     </div>
                 </div>
             </div>
+
+            <NetworkErrorModal
+                show={show}
+                handleClose={handleClose}
+                network={network}
+            >
+            </NetworkErrorModal>
+
+            <Backdrop className={classes.backdrop} open={open} >
+                <CircularProgress color="inherit" />
+            </Backdrop>
         </div >
     );
 }
