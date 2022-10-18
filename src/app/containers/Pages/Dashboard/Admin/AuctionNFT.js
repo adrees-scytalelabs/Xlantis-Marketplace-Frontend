@@ -7,6 +7,10 @@ import { Col, Row, Table } from 'react-bootstrap';
 import Web3 from 'web3';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import { useSnackbar } from 'notistack';
+import DateTimePicker from 'react-datetime-picker';
+import CreateNFTContract from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
+import { now } from 'lodash';
 
 
 
@@ -68,7 +72,9 @@ const AuctionNFT = (props) => {
     const [biddingValue, setBiddingValue] = useState(0);
     const [network, setNetwork] = useState("");
     const [show, setShow] = useState(false);
-    // const [nftContractAddress, setNftContractAddress] = useState("");
+    const [dropId, setDropId] = useState("");
+    const [nftBlockChainId, setNftBlockChainId] = useState("");
+    const [bidExpiryTime, setBidExpiryTime] = useState(new Date());
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -86,17 +92,12 @@ const AuctionNFT = (props) => {
             (response) => {
                 console.log("Response: ", response);
                 setNftDetail(response.data.data[0]);
-                // let properties = [{}];
+                setDropId(response.data.data[0].dropId);
+                setNftBlockChainId(response.data.data[0].nftId);
                 const keys = Object.keys(response.data.data[0].properties);
                 console.log("Keys: ", keys);
                 setKeys(keys);
-                // setNftContractAddress(response.data.data[0].collectionId.nftContractAddress);
-                // for(let i = 0; i < keys.length; i++) {
-                //     properties[i]['key'] = keys[i];
-                //     properties[i].value = response.data.data[0].properties.keys[i];
-                // }
                 setProperties(response.data.data[0].properties);
-
             }
         )
         .catch((error) => {
@@ -148,6 +149,14 @@ const AuctionNFT = (props) => {
         }
     }
 
+    let getHash = (id) => {
+     
+        const hex = Web3.utils.toHex(id);
+        console.log('conversion to hex: ', hex);
+        return hex;
+
+    }
+
     let handleBidSubmit = async (event) => {
         event.preventDefault();
         await loadWeb3();
@@ -165,15 +174,47 @@ const AuctionNFT = (props) => {
                 nftId: nftDetail._id,
                 bidAmount: biddingValue.toString(),
                 bidderAddress: accounts[0],
-                expiryTime: location.state.endTime
+                expiryTime: bidExpiryTime
             }
+
+            console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
+            console.log("Bid data: ", bidData);
+            
+
+            let dropIdHash = getHash(dropId);
+            let nftId = nftBlockChainId;
+            let bidValue = web3.utils.toWei(biddingValue, 'ether');
+
+            console.log("NFT id type: ", typeof(nftId));
+            console.log("Bid Value type: ", typeof(bidValue), bidValue);
+            console.log("Drop Id Hash: ", dropIdHash);
+
+            let contractAddress = Addresses.AuctionDropFactory;
+            let contractAbi = CreateNFTContract;
+            let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
             
             axios.post("/auction/bid", bidData).then(
                 (response) => {
                     console.log("Response from sending bid data to backend: ", response);
+                    let bidIdHash = getHash(response.data.id);
+
+                    //sending call on blockchain
+                    // myContractInstance.methods.bid(dropIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                    //     console.log('get transaction: ', err, response);
+                    //     if (err !== null) {
+                    //         console.log('err: ', err);
+                    //         handleCloseBackdrop();
+                    //     }
+                    // })
+                    //     .on('receipt', (receipt) => {
+                    //         console.log('receipt: ', receipt);
+                    //         handleCloseBackdrop();
+                    //     });
+
                 },
                 (error) => {
                     console.log("Error from sending bid data to backend: ", error);
+                    handleCloseBackdrop();
                 }
             )
         }
@@ -290,6 +331,18 @@ const AuctionNFT = (props) => {
                                 <Row>
                                     <Col>
                                         <form>
+                                            <label style={{color:"#a70000"}}>Set Expiry Time</label>
+                                            <div className="form-group">
+                                                <DateTimePicker
+                                                    className="form-control"
+                                                    onChange={(e) => {
+                                                        console.log(e);
+                                                        console.log("e.getTime()", Math.round(e.getTime() ));
+                                                        setBidExpiryTime(e);
+                                                    }}
+                                                    value={bidExpiryTime}
+                                                />
+                                            </div>
                                             <div className="form-group">
                                                 <TextField
                                                     style={{marginTop:'5px'}} 
@@ -302,7 +355,7 @@ const AuctionNFT = (props) => {
                                                         handleChangeBiddingValue(e);
                                                     }}  
                                                 />
-                                                <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onChange={() => handleBidSubmit()} >
+                                                <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onClick={(e) => handleBidSubmit(e)} >
                                                     Bid
                                                 </button>
                                             </div>
