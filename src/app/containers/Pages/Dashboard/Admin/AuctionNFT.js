@@ -196,20 +196,29 @@ const AuctionNFT = (props) => {
             axios.post("/auction/bid", bidData).then(
                 (response) => {
                     console.log("Response from sending bid data to backend: ", response);
-                    let bidIdHash = getHash(response.data.id);
+                    let bidIdHash = getHash(response.data.bidId);
 
                     //sending call on blockchain
-                    // myContractInstance.methods.bid(dropIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-                    //     console.log('get transaction: ', err, response);
-                    //     if (err !== null) {
-                    //         console.log('err: ', err);
-                    //         handleCloseBackdrop();
-                    //     }
-                    // })
-                    //     .on('receipt', (receipt) => {
-                    //         console.log('receipt: ', receipt);
-                    //         handleCloseBackdrop();
-                    //     });
+
+                    console.log("Bid data for blockchain: ");
+                    console.log("drop id hash: ", dropIdHash);
+                    console.log("bid id hash: ", bidIdHash);
+                    console.log("nft address: ", location.state.nftContractAddress);
+                    console.log("nft id: ", nftId);
+                    console.log("bid Value: ", bidValue);
+                    
+
+                    myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                        console.log('get transaction: ', err, response);
+                        if (err !== null) {
+                            console.log('err: ', err);
+                            handleCloseBackdrop();
+                        }
+                    })
+                        .on('receipt', (receipt) => {
+                            console.log('receipt: ', receipt);
+                            handleCloseBackdrop();
+                        });
 
                 },
                 (error) => {
