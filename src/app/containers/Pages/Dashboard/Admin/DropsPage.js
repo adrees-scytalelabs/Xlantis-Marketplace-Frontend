@@ -283,7 +283,7 @@ function DropsPage(props) {
                                         </Card>
                                     </Link>
                                     ) : (
-                                        <Link to={{pathname :`/dashboard/myDrops/nfts`, state : {nftId : i.NFTIds, dropId : i._id}}}>
+                                        <Link to={{pathname :`/dashboard/myDrops/nfts`, state : {nftId : i.NFTIds, dropId : i._id, saleType : i.saleType}}}>
 
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>

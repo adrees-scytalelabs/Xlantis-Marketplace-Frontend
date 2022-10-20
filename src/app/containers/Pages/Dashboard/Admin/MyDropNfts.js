@@ -91,6 +91,7 @@ function MyDropNFTs(props) {
         handleShowBackdrop();
         console.log("nftids", location.state.nftId);
         console.log("dropId", location.state.dropId);
+        console.log("saleType", location.state.saleType);
 
         let data = {
             nftIds : location.state.nftId
@@ -194,7 +195,7 @@ function MyDropNFTs(props) {
                             >
                                 {tokenList.map((i, index) => (
                                      <Grid item xs={12} sm={6} md={3} key={index}>
-                                        <Link to={{pathname :`${path}/singleNft`, state : {nftDetail : i}}} >
+                                        <Link to={{pathname :`${path}/singleNft`, state : {nftDetail : i, saleType : location.state.saleType}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);

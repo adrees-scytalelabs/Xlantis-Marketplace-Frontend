@@ -173,6 +173,7 @@ const DropSingleNFT = (props) => {
         // getNftDetail();
         console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);
+        console.log("saleType", location.state.saleType);
 
         props.setActiveTab({
             dashboard: "",
