@@ -11,6 +11,7 @@ import DateTimePicker from 'react-datetime-picker';
 import CreateNFTContract from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { now } from 'lodash';
+import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 
 
 
@@ -157,11 +158,55 @@ const AuctionNFT = (props) => {
 
     }
 
+    let giveAuctionErc20Approval = async () => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        console.log("Account 0: ", accounts[0]);
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            handleShow();
+        }
+        else{
+
+            const addressErc20Auction = Addresses.AuctionERC20;
+            const addressDropClone = "address"; //we need address of drop clone here which is to be implmented            
+            const abiERC20 = ERC20Abi;
+
+            let bidValue = web3.utils.toWei(biddingValue, 'ether');
+
+
+            console.log("Contract Address: ", addressErc20Auction);
+            var myContractInstance = await new web3.eth.Contract(abiERC20, addressErc20Auction);
+            console.log("myContractInstance", myContractInstance)
+            
+
+            await myContractInstance.methods.approve(addressDropClone, bidValue).send({from : accounts[0]}, (err, response) => {
+                console.log('get transaction', err, response);
+                
+                if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar('User Canceled Transaction', { variant });
+                    handleCloseBackdrop();
+
+                }
+            
+            }
+        )
+            .on('receipt', (receipt) => {
+                console.log("receipt", receipt);
+            })
+        }
+    }
+
     let handleBidSubmit = async (event) => {
         event.preventDefault();
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
+        console.log("Accounts[0]: ", accounts[[0]]);
         const network = await web3.eth.net.getNetworkType()
         if (network !== 'goerli') {
             setNetwork(network);
@@ -169,6 +214,7 @@ const AuctionNFT = (props) => {
         }
         else {
             handleShowBackdrop();
+            giveAuctionErc20Approval();
             //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
             let bidData = {
                 nftId: nftDetail._id,
