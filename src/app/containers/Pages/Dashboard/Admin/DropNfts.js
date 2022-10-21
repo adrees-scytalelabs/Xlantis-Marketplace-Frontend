@@ -16,6 +16,8 @@ import {
 } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
+import {Chip} from '@material-ui/core/';
+import { green  } from '@material-ui/core/colors/';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -50,6 +52,7 @@ const useStyles = makeStyles((theme) => ({
 function DropNfts(props) {
     let location = useLocation();
     const classes = useStyles();
+    const successColor = green[500];
     const [rowsPerPage, setRowsPerPage] = React.useState(8);
     const [totalNfts, setTotalNfts] = React.useState(0);
     const [page, setPage] = React.useState(0);
@@ -128,6 +131,7 @@ function DropNfts(props) {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
+            marketPlace: "active",
         });// eslint-disable-next-line
     }, []);
     const handleChangePage = (event, newPage) => {
@@ -187,12 +191,26 @@ function DropNfts(props) {
                                                 <CardHeader className="text-center"
                                                     title={i.title}
                                                 />
-                                                <CardMedia
-                                                    className={classes.media}
-                                                    image={i.nftURI}
-                                                    title="Drop Image"
-                                                >
-                                                </CardMedia>
+                                                <div style={{ position: "relative" }}>
+                                                    <CardMedia
+                                                        variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                        className={classes.media}
+                                                        image={i.nftURI}
+                                                        title="NFT Image"
+                                                    />
+                                                    <div style={{position: "absolute", top: 10,textAlign : 'left' , marginLeft : '8px',}}> 
+                                                            
+                                                    {(i.currentMarketplaceId.isSold === true) ? (
+                                                        
+                                                            <Chip color={successColor} size="small" label = "SOLD" />
+                                                        
+                                                
+                                                        
+                                                    ) : (null) }
+                                                                
+
+                                                    </div>
+                                                </div>
                                                 <CardContent>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Rarity: </strong>{i.type}

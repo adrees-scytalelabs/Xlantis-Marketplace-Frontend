@@ -88,7 +88,7 @@ const MarketPlace = (props) => {
                 <li className="breadcrumb-item">
                     <a href="/">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item active">Market Palce</li>
+                <li className="breadcrumb-item active">MarketPlace</li>
             </ul>
             <div>
                 <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} >
