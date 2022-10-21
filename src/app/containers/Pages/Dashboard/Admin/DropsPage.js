@@ -65,7 +65,7 @@ function DropsPage(props) {
     };
     let getMyDrops = (status,start, end) => {
         handleShowBackdrop();
-        axios.get(`/drop/${status}/${start}/${end}`).then(
+        axios.get(`drop/myDrops/${status}/${start}/${end}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.data);
@@ -163,9 +163,8 @@ function DropsPage(props) {
                                     
                                        
                                         <Link to={{pathname :`/dashboard/newDrop/addNft`, state : {dropId : i._id, saleType : i.saleType, startTime : i.startTime, endTime : i.endTime } }}>
-                                        
-                                    
-                                    
+                      
+
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
                                                 <CardHeader className="text-center"
