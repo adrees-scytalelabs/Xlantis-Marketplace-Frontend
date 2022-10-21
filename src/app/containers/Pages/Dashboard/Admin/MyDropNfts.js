@@ -15,6 +15,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import crypto from 'crypto';
+import {Chip} from '@material-ui/core/';
+import { green  } from '@material-ui/core/colors/';
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,6 +58,8 @@ const useStyles = makeStyles((theme) => ({
 function MyDropNFTs(props) {
     let location = useLocation();
     const classes = useStyles();
+    const successColor = green[500];
+
     let { path } = useRouteMatch();
     const [rowsPerPage, setRowsPerPage] = React.useState(8);
     const [totalNfts, setTotalNfts] = React.useState(0);
@@ -204,12 +209,28 @@ function MyDropNFTs(props) {
                                                 }}> */}
                                                     <CardHeader className="text-center"
                                                         title={i.title}/>
-                                                    <CardMedia
-                                                        variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                        className={classes.media}
-                                                        image={i.nftURI}
-                                                        title="NFT Image"
-                                                    />
+                                                    <div style={{ position: "relative" }}>
+                                                        <CardMedia
+                                                            variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                            className={classes.media}
+                                                            image={i.nftURI}
+                                                            title="NFT Image"
+                                                        />
+                                                        <div style={{position: "absolute", top: 10,textAlign : 'left' , marginLeft : '8px',}}> 
+                                                            
+                                                            {(i.currentMarketplaceId.isSold === true) ? (
+                                                                
+                                                                    <Chip color={successColor} size="small" label = "SOLD" />
+                                                                
+                                                        
+                                                                
+                                                            ) : (null) }
+                                                            
+
+                                                        </div>
+
+                                                    </div>
+                                                    
                                                     <CardContent>
                                                     
                                                     <Typography variant="body2" color="textSecondary" component="p">
@@ -221,28 +242,7 @@ function MyDropNFTs(props) {
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}
                                                     </Typography>
-                                                    <br></br>
-
-                                                    
-                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                        {(i.currentMarketplaceId.isSold === true) ? (
-                                                            <div style={{ color: "#00FF00" }} >
-
-                                                            <Typography variant="body2"  component="p">
-                                                                <strong>SOLD</strong>
-                                                            </Typography>
-                                                    
-                                                            </div>
-                                                        ) : (
-                                                            <div style={{ color: "#FF0000" }}>
-                                                                
-                                                                <Typography variant="body2"  component="p">
-                                                                    <strong>NOT SOLD</strong>
-                                                                </Typography>
-                                                                
-                                                            </div>) 
-                                                        }
-                                                        </Typography>
+                                                   
 
                                                     </CardContent>
                                                 {/* </CardActionArea> */}
