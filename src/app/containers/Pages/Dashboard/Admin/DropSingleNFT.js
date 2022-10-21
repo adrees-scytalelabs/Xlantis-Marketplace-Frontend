@@ -10,6 +10,8 @@ import Web3 from 'web3';
 import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { useSnackbar } from 'notistack';
+import AcceptBidModal from '../../../../components/Modals/AcceptBidModal';
+import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 
 
 
@@ -73,6 +75,8 @@ const DropSingleNFT = (props) => {
     let [isSaving, setIsSaving] = useState(false);
     const [network, setNetwork] = useState("");
     const [showNetworkModal, setShowNetworkModal] = useState(false);
+    let [show, setShow] = useState(false);
+    let [bidDetail, setBidDetail] = useState([]);
 
 
     const handleCloseBackdrop = () => {
@@ -169,10 +173,28 @@ const DropSingleNFT = (props) => {
 
     }
 
+    let getBidList = (nftId) => {
+        axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
+            (response) => {
+                console.log("Response from getting bid: ", response);
+                console.log("Bid array: ", response.data.data);
+                setBidDetail(response.data.data);
+            },
+            (err) => {
+                console.log("Error from getting bids: ", err);
+                console.log("Error response from getting bids: ", err);
+                setBidDetail([]);
+            }
+        )
+    }
+
     useEffect(() => {
         // getNftDetail();
         console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);
+        setKeys(Object.keys(location.state.nftDetail.properties));
+        setProperties(location.state.nftDetail.properties);
+        getBidList(location.state.nftDetail._id);
         console.log("saleType", location.state.saleType);
 
         props.setActiveTab({
@@ -194,6 +216,60 @@ const DropSingleNFT = (props) => {
             marketPlace: "active"
         });
     }, []);
+
+    let handleCloseModal = () => {
+        setShow(false);
+    }
+
+    let handleAcceptBid = async () => {
+        await loadWeb3();
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        if (network !== 'goerli') {
+            setNetwork(network);
+            setIsSaving(false);
+            handleShowNetworkModal();
+        }
+        else {
+
+            //sending call on blockchain
+            let abiAuctionFactory = abiAuctionDropFactory;
+            let addressAuctionFactory = Addresses.AuctionDropFactory;
+
+            //getting data to send call
+            let dropIdHash = getHash(nftDetail.dropId);
+            let nftAddress = "address" //to be confirmed to send request
+            let tokenId = nftDetail.nftId;
+            let bidIdHash = "" //getHash() //get bid object id and get hash to send to blockchain
+
+            let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
+            console.log("My auction drop factory instance: ", myContractInstance);
+
+            await myContractInstance.methods.acceptBid().send({ from: accounts[0] }, (err, response) => {
+                console.log("get Transaction: ", err, response);
+
+                if(err !== null) {
+                    console.log("Err: ", err);
+                }
+
+
+            }).
+            on('receipt', (receipt) => {
+                console.log("receipt: ", receipt);
+
+                //sending call on backend to update data
+                axios.post().then(
+                    (response) => {
+                        console.log("response", response);
+                    },
+                    (error) => {
+                        console.log("Error: ", error);
+                    }
+                )
+            });
+        }   
+    }
     
     return (
         <div className="card">
@@ -303,6 +379,15 @@ const DropSingleNFT = (props) => {
                                         </Table>
                                     </Col>
                                 </Row>
+                                <Row style={{marginTop: '5px'}}>
+                                    <Col>
+                                        <div style={{display: 'flex', justifyContent: 'center'}}>
+                                            <button className="btn btn-submit" onClick={() => setShow(true)}>
+                                                Bid Details
+                                            </button>
+                                        </div>
+                                    </Col>
+                                </Row>
                                 
                                 
                             </CardContent>
@@ -310,6 +395,13 @@ const DropSingleNFT = (props) => {
                     </div>
                 </div>
             </div>
+            <AcceptBidModal
+                show={show}
+                handleClose={handleCloseModal}
+                acceptBid={handleAcceptBid}
+                bidDetails={bidDetail}
+            >
+            </AcceptBidModal>
         </div >
         
     );
