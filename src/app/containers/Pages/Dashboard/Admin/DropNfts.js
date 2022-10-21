@@ -12,10 +12,10 @@ import { useLocation } from 'react-router-dom';
 import {
     CardContent,
     CardMedia,
+    CardHeader,
 } from '@material-ui/core/';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
-import { CardHeader } from 'reactstrap';
 
 const useStyles = makeStyles((theme) => ({
     root: {
