@@ -195,6 +195,7 @@ const DropSingleNFT = (props) => {
         // getNftDetail();
         console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);
+        console.log("NFT detail: ", location.state.nftDetail);
         setKeys(Object.keys(location.state.nftDetail.properties));
         setProperties(location.state.nftDetail.properties);
         getBidList(location.state.nftDetail._id);
@@ -224,7 +225,8 @@ const DropSingleNFT = (props) => {
         setShow(false);
     }
 
-    let handleAcceptBid = async () => {
+    let handleAcceptBid = async (e, bidId) => {
+        e.preventDefault();
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
@@ -242,14 +244,14 @@ const DropSingleNFT = (props) => {
 
             //getting data to send call
             let dropIdHash = getHash(nftDetail.dropId);
-            let nftAddress = "address" //to be confirmed to send request
+            let nftAddress = nftDetail.collectionId.nftContractAddress //to be confirmed to send request
             let tokenId = nftDetail.nftId;
-            let bidIdHash = "" //getHash() //get bid object id and get hash to send to blockchain
+            let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
 
             let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
             console.log("My auction drop factory instance: ", myContractInstance);
 
-            await myContractInstance.methods.acceptBid().send({ from: accounts[0] }, (err, response) => {
+            await myContractInstance.methods.acceptBid(dropIdHash, nftAddress, tokenId, bidIdHash).send({ from: accounts[0] }, (err, response) => {
                 console.log("get Transaction: ", err, response);
 
                 if(err !== null) {
@@ -262,7 +264,7 @@ const DropSingleNFT = (props) => {
                 console.log("receipt: ", receipt);
 
                 //sending call on backend to update data
-                axios.post().then(
+                axios.post("/auction/bid/accept").then(
                     (response) => {
                         console.log("response", response);
                     },
@@ -418,7 +420,7 @@ const DropSingleNFT = (props) => {
                                                         </td>
                                                         <td>{bid.bidAmount}</td>
                                                         <td>
-                                                            <button className="btn">
+                                                            <button className="btn" onClick={(e) => handleAcceptBid(e, bid._id)}>
                                                                 Accept
                                                             </button>
                                                         </td>
