@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
 const AuctionNFT = (props) => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
-    const { nftId } = useParams();
+    const { nftId, dropId } = useParams();
     const location = useLocation();
     const { nftContractAddress } = location.state;
     const [open, setOpen] = useState(false);
@@ -73,9 +73,10 @@ const AuctionNFT = (props) => {
     const [biddingValue, setBiddingValue] = useState(0);
     const [network, setNetwork] = useState("");
     const [show, setShow] = useState(false);
-    const [dropId, setDropId] = useState("");
+    const [dropIdObj, setDropIdObj] = useState("");
     const [nftBlockChainId, setNftBlockChainId] = useState("");
     const [bidExpiryTime, setBidExpiryTime] = useState(new Date());
+    const [dropCloneAddress, setDropCloneAddress] = useState('');
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -93,7 +94,7 @@ const AuctionNFT = (props) => {
             (response) => {
                 console.log("Response: ", response);
                 setNftDetail(response.data.data[0]);
-                setDropId(response.data.data[0].dropId);
+                setDropIdObj(response.data.data[0].dropId);
                 setNftBlockChainId(response.data.data[0].nftId);
                 const keys = Object.keys(response.data.data[0].properties);
                 console.log("Keys: ", keys);
@@ -107,9 +108,25 @@ const AuctionNFT = (props) => {
 
     }
 
+    let getDropCloneAddress = () => {
+        console.log("Drop ID: ", dropId);
+        axios.get(`/drop/${dropId}`).then(
+            (response) => {
+                console.log("Response from getting drop details: ", response);
+                console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
+                setDropCloneAddress(response.data.dropData.dropCloneAddress);
+            },
+            (err) => {
+                console.log("Err from getting drop details: ", err);
+                console.log("Err response from getting drop details: ", err.response);
+            }
+        )
+    }
+
     useEffect(() => {
         console.log("Auction contract address: ", location);
         getNftDetail();
+        getDropCloneAddress();
 
         props.setActiveTab({
             dashboard: "",
@@ -171,7 +188,7 @@ const AuctionNFT = (props) => {
         else{
 
             const addressErc20Auction = Addresses.AuctionERC20;
-            const addressDropClone = "address"; //we need address of drop clone here which is to be implmented            
+            const addressDropClone = dropCloneAddress;            
             const abiERC20 = ERC20Abi;
 
             let bidValue = web3.utils.toWei(biddingValue, 'ether');
@@ -214,7 +231,7 @@ const AuctionNFT = (props) => {
         }
         else {
             handleShowBackdrop();
-            giveAuctionErc20Approval();
+            await giveAuctionErc20Approval();
             //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
             let bidData = {
                 nftId: nftDetail._id,
@@ -227,7 +244,7 @@ const AuctionNFT = (props) => {
             console.log("Bid data: ", bidData);
             
 
-            let dropIdHash = getHash(dropId);
+            let dropIdHash = getHash(dropIdObj);
             let nftId = nftBlockChainId;
             let bidValue = web3.utils.toWei(biddingValue, 'ether');
 
@@ -238,11 +255,13 @@ const AuctionNFT = (props) => {
             let contractAddress = Addresses.AuctionDropFactory;
             let contractAbi = CreateNFTContract;
             let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
-            
+            let trxHash;
+
             axios.post("/auction/bid", bidData).then(
                 (response) => {
                     console.log("Response from sending bid data to backend: ", response);
                     let bidIdHash = getHash(response.data.bidId);
+                    let bidId = response.data.bidId;
 
                     //sending call on blockchain
 
@@ -260,9 +279,28 @@ const AuctionNFT = (props) => {
                             console.log('err: ', err);
                             handleCloseBackdrop();
                         }
+                        trxHash = response;
+                        
+
                     })
                         .on('receipt', (receipt) => {
                             console.log('receipt: ', receipt);
+
+                            //sending finalize call on backend
+                            let finalizeBidData = {
+                                "bidId": bidId,
+                                "txHash": trxHash 
+                            }
+
+                            axios.put('/auction/bid/finalize', finalizeBidData).then(
+                                (response) => {
+                                    console.log("Response from finalize bid: ", response);
+                                },
+                                (err) => {
+                                    console.log("Err from finalize bid: ", err);
+                                    console.log("Err response from finalize bid: ", err);
+                                }
+                            )
                             handleCloseBackdrop();
                         });
 
