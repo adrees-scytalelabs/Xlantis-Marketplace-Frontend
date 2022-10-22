@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CardMedia, makeStyles, Paper, Tooltip, Typography } from '@material-ui/core';
 import { Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import {Button} from '@material-ui/core';
@@ -13,6 +13,7 @@ import { useSnackbar } from 'notistack';
 import AcceptBidModal from '../../../../components/Modals/AcceptBidModal';
 import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 import { ExpandMore } from '@material-ui/icons';
+import ListIcon from "@material-ui/icons/List";
 
 
 
@@ -381,54 +382,54 @@ const DropSingleNFT = (props) => {
                                         </Table>
                                     </Col>
                                 </Row>
-                                <Row style={{marginTop: '5px'}}>
-                                    <Col>
-                                        <Accordion>
-                                            <AccordionSummary
-                                                expandIcon={<ExpandMore />}
-                                            >
-                                                <Typography>Offers</Typography>
-                                            </AccordionSummary>
-                                            <AccordionDetails>
-                                                <Table striped hover bordered size="sm" responsive>
-                                                    <thead>
-                                                        <tr>
-                                                            <th>#</th>
-                                                            <th>Bidder</th>
-                                                            <th>Bid</th>
-                                                            {/* <th colSpan={2}></th> */}
-                                                            <th>
-                                                                <button className="btn" onClick={props.acceptBid}>
-                                                                    Accept
-                                                                </button>
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        {bidDetail?.map((bid, index) => (
-                                                            <tr key={index}>
-                                                                <td>{index+1}</td>
-                                                                <td>
-                                                                    {bid.bidderAddress}
-                                                                </td>
-                                                                <td>{bid.bidAmount}</td>
-                                                                <td>
-                                                                    <button className="btn">
-                                                                        Accept
-                                                                    </button>
-                                                                </td>
-                                                            </tr>
-                                                        ))}
-                                                    </tbody>
-                                                </Table>
-                                            </AccordionDetails>
-                                        </Accordion>
-                                    </Col>
-                                </Row>
-                                
-                                
                             </CardContent>
                         </Card>
+                        <Row style={{marginTop: '5px'}}>
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color: '#a70000'}}><ListIcon /><strong> Offers</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped hover bordered size="sm" responsive>
+                                            <thead>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Bidder</th>
+                                                    <th>Bid</th>
+                                                    {/* <th colSpan={2}></th> */}
+                                                    <th>
+                                                        <button className="btn" onClick={props.acceptBid}>
+                                                            Accept
+                                                        </button>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {bidDetail?.map((bid, index) => (
+                                                    <tr key={index}>
+                                                        <td>{index+1}</td>
+                                                        <td>
+                                                            <Tooltip title={bid.bidderAddress}>
+                                                                <span>{bid.bidderAddress.slice(0,6)}...</span>
+                                                            </Tooltip>
+                                                        </td>
+                                                        <td>{bid.bidAmount}</td>
+                                                        <td>
+                                                            <button className="btn">
+                                                                Accept
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </Table>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
             </div>
