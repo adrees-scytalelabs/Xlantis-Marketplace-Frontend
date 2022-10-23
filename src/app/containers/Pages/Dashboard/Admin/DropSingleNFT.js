@@ -287,7 +287,7 @@ const DropSingleNFT = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-4">
+                    <div className="col-md-12 col-lg-6">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -304,7 +304,7 @@ const DropSingleNFT = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-8">
+                    <div className="col-md-12 col-lg-6">
                         <Card>
                             <CardContent>
                                 <Row>
