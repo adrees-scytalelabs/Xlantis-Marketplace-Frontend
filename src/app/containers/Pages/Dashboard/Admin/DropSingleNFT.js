@@ -14,6 +14,7 @@ import AcceptBidModal from '../../../../components/Modals/AcceptBidModal';
 import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 import { ExpandMore } from '@material-ui/icons';
 import ListIcon from "@material-ui/icons/List";
+import Countdown from 'react-countdown';
 
 
 
@@ -286,7 +287,7 @@ const DropSingleNFT = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -303,7 +304,7 @@ const DropSingleNFT = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
                                 <Row>
@@ -401,12 +402,13 @@ const DropSingleNFT = (props) => {
                                                     <th>#</th>
                                                     <th>Bidder</th>
                                                     <th>Bid</th>
-                                                    {/* <th colSpan={2}></th> */}
-                                                    <th>
+                                                    <th>Expiration</th>
+                                                    <th colSpan={2}></th>
+                                                    {/* <th>
                                                         <button className="btn" onClick={props.acceptBid}>
                                                             Accept
                                                         </button>
-                                                    </th>
+                                                    </th> */}
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -419,6 +421,10 @@ const DropSingleNFT = (props) => {
                                                             </Tooltip>
                                                         </td>
                                                         <td>{bid.bidAmount}</td>
+                                                        <td>
+                                                            <Countdown daysInHour date={new Date(bid.expiryTime)}>
+                                                            </Countdown>
+                                                        </td>
                                                         <td>
                                                             <button className="btn" onClick={(e) => handleAcceptBid(e, bid._id)}>
                                                                 Accept
