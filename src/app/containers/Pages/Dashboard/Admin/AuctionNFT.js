@@ -421,42 +421,43 @@ const AuctionNFT = (props) => {
                                         </Table>
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <form>
-                                            <label style={{color:"#a70000"}}>Set Expiry Time</label>
-                                            <div className="form-group">
-                                                <DateTimePicker
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        console.log(e);
-                                                        console.log("e.getTime()", Math.round(e.getTime() ));
-                                                        setBidExpiryTime(e);
-                                                    }}
-                                                    value={bidExpiryTime}
-                                                />
-                                            </div>
-                                            <div className="form-group">
-                                                <TextField
-                                                    style={{marginTop:'5px'}} 
-                                                    autoComplete='false'
-                                                    value={biddingValue}
-                                                    variant="outlined" 
-                                                    type='number' 
-                                                    color='secondary'
-                                                    onChange={(e) => {
-                                                        handleChangeBiddingValue(e);
-                                                    }}  
-                                                />
-                                                <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onClick={(e) => handleBidSubmit(e)} >
-                                                    Bid
-                                                </button>
-                                            </div>
-                                        </form>
-                                    </Col>
-                                </Row>
                             </CardContent>
                         </Card>
+                        <Row>
+                            <Col>
+                                <form>
+                                    <label style={{color:"#a70000", marginTop: "10px"}}>Set Bid Expiry Time</label>
+                                    <div className="form-group">
+                                        <DateTimePicker
+                                            className="form-control"
+                                            onChange={(e) => {
+                                                console.log(e);
+                                                console.log("e.getTime()", Math.round(e.getTime() ));
+                                                setBidExpiryTime(e);
+                                            }}
+                                            value={bidExpiryTime}
+                                        />
+                                    </div>
+                                    <label>Bidding value</label>
+                                    <div className="form-group">
+                                        <TextField
+                                            style={{marginTop:'5px'}} 
+                                            autoComplete='false'
+                                            value={biddingValue}
+                                            variant="outlined" 
+                                            type='number' 
+                                            color='secondary'
+                                            onChange={(e) => {
+                                                handleChangeBiddingValue(e);
+                                            }}  
+                                        />
+                                        <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onClick={(e) => handleBidSubmit(e)} >
+                                            Bid
+                                        </button>
+                                    </div>
+                                </form>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
             </div>
