@@ -34,6 +34,8 @@ import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
 import NFTEditModal from '../../../../components/Modals/NFTEditModal';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -159,6 +161,7 @@ function NewNFT(props) {
     let [isGlbFile, setIsGlbFile] = useState(false);
     let [previewImageURI, setPreviewImageURI] = useState(r1);
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
+    let [isMp3File, setIsMp3File] = useState(false);
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -669,6 +672,11 @@ function NewNFT(props) {
             typeImage = "glb";
             setImageType("glb");
         }
+        else if(e.target.files[0].type.split("/")[1] === "mp3" || e.target.files[0].name.includes(".mp3")) {
+            typeImage = "mp3"
+            setIsMp3File(true);
+            setImageType(e.target.files[0].type.split("/")[1]);
+        }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
             typeImage = e.target.files[0].type.split("/")[1];
@@ -1043,55 +1051,7 @@ function NewNFT(props) {
                         <form>
                             <div className="form-group">
                                 <label>Select Artwork</label>
-                                {!isGlbFile ? (
-                                    <div className="filter-widget">
-                                        <div className="form-group">
-                                            <div className="change-avatar">
-                                                <div className="profile-img">
-                                                    <div
-                                                        style={{
-                                                            background: "#E9ECEF",
-                                                            width: "100px",
-                                                            height: "100px",
-                                                        }}
-                                                    >
-                                                        <img src={image} alt="Selfie" />
-                                                    </div>
-                                                </div>
-                                                <div className="upload-img">
-                                                    <div
-                                                        className="change-photo-btn"
-                                                        style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                    >
-                                                        {isUploadingIPFS ? (
-                                                            <div className="text-center">
-                                                                <Spinner
-                                                                    animation="border"
-                                                                    role="status"
-                                                                    style={{ color: "#fff" }}
-                                                                >
-                                                                </Spinner>
-                                                            </div>
-                                                        ) : (
-                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                        )}
-
-                                                        <input
-                                                            name="sampleFile"
-                                                            type="file"
-                                                            className="upload"
-                                                            accept=".png,.jpg,.jpeg,.gif,.glb"
-                                                            onChange={onChangeFile}
-                                                        />
-                                                    </div>
-                                                    <small className="form-text text-muted">
-                                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ): (
+                                {isGlbFile ? (
                                     <div>
                                         <div>
                                             <GLTFModel src={nftURI} width={250} height={250} >
@@ -1146,7 +1106,7 @@ function NewNFT(props) {
                                                     name="sampleFile"
                                                     type="file"
                                                     className="upload"
-                                                    accept=".png,.jpg,.jpeg,.gif,.glb"
+                                                    accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
                                                     onChange={onChangeFile}
                                                 />
                                             </div>
@@ -1199,6 +1159,153 @@ function NewNFT(props) {
                                                             Allowed JPG, JPEG. Max size of 5MB
                                                         </small>
                                                     </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ): isMp3File ? (
+                                    <div>
+                                        <div>
+                                            <AudioPlayer
+                                                // style={{ width: "300px" }}
+                                                style={{ borderRadius: "1rem" }}
+                                                autoPlay
+                                                layout="horizontal"
+                                                src={nftURI}
+                                                onPlay={(e) => console.log("onPlay")}
+                                                showSkipControls={false}
+                                                showJumpControls={false}
+                                                header={`Now playing: ${name}`}
+                                                showDownloadProgress
+                                                // onClickPrevious={handleClickPrevious}
+                                                // onClickNext={handleClickNext}
+                                                // onEnded={handleClickNext}
+                                                // other props here
+                                            />
+                                        </div>
+                                        <div className="upload-img">
+                                            <div
+                                                className="change-photo-btn"
+                                                style={{ backgroundColor: "rgb(167,0,0)" }}
+                                            >
+                                                {isUploadingIPFS ? (
+                                                    <div className="text-center">
+                                                        <Spinner
+                                                            animation="border"
+                                                            role="status"
+                                                            style={{ color: "#fff" }}
+                                                        >
+                                                        </Spinner>
+                                                    </div>
+                                                ) : (
+                                                    <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                )}
+
+                                                <input
+                                                    name="sampleFile"
+                                                    type="file"
+                                                    className="upload"
+                                                    accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                                                    onChange={onChangeFile}
+                                                />
+                                            </div>
+                                            <small className="form-text text-muted">
+                                                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                            </small>
+                                        </div>
+                                        <label>Select Preview Image</label>
+                                        <div className="filter-widget">
+                                            <div className="form-group">
+                                                <div className="change-avatar">
+                                                    <div className="profile-img">
+                                                        <div
+                                                            style={{
+                                                                background: "#E9ECEF",
+                                                                width: "100px",
+                                                                height: "100px",
+                                                            }}
+                                                        >
+                                                            <img src={previewImageURI} alt="Selfie" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="upload-img">
+                                                        <div
+                                                            className="change-photo-btn"
+                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                        >
+                                                            {isUploadingPreview ? (
+                                                                <div className="text-center">
+                                                                    <Spinner
+                                                                        animation="border"
+                                                                        role="status"
+                                                                        style={{ color: "#fff" }}
+                                                                    >
+                                                                    </Spinner>
+                                                                </div>
+                                                            ) : (
+                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                            )}
+
+                                                            <input
+                                                                name="sampleFile"
+                                                                type="file"
+                                                                className="upload"
+                                                                accept=".png,.jpg,.jpeg"
+                                                                onChange={onChangePreviewImage}
+                                                            />
+                                                        </div>
+                                                        <small className="form-text text-muted">
+                                                            Allowed JPG, JPEG. Max size of 5MB
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ): (
+                                    <div className="filter-widget">
+                                        <div className="form-group">
+                                            <div className="change-avatar">
+                                                <div className="profile-img">
+                                                    <div
+                                                        style={{
+                                                            background: "#E9ECEF",
+                                                            width: "100px",
+                                                            height: "100px",
+                                                        }}
+                                                    >
+                                                        <img src={image} alt="Selfie" />
+                                                    </div>
+                                                </div>
+                                                <div className="upload-img">
+                                                    <div
+                                                        className="change-photo-btn"
+                                                        style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                    >
+                                                        {isUploadingIPFS ? (
+                                                            <div className="text-center">
+                                                                <Spinner
+                                                                    animation="border"
+                                                                    role="status"
+                                                                    style={{ color: "#fff" }}
+                                                                >
+                                                                </Spinner>
+                                                            </div>
+                                                        ) : (
+                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                        )}
+
+                                                        <input
+                                                            name="sampleFile"
+                                                            type="file"
+                                                            className="upload"
+                                                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                                                            onChange={onChangeFile}
+                                                        />
+                                                    </div>
+                                                    <small className="form-text text-muted">
+                                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                    </small>
                                                 </div>
                                             </div>
                                         </div>
