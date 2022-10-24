@@ -76,6 +76,9 @@ const AuctionNFT = (props) => {
     const [dropIdObj, setDropIdObj] = useState("");
     const [nftBlockChainId, setNftBlockChainId] = useState("");
     const [bidExpiryTime, setBidExpiryTime] = useState(new Date());
+    const [bidExpiryTimeStamp, setBidExpiryTimeStamp] = useState(Math.round(bidExpiryTime.getTime() /1000))
+    const [dropExpiryTime, setDropExpiryTime] = useState(new Date());
+    const [dropExpiryTimeStamp, setDropExpiryTimeStamp] = useState(Math.round(dropExpiryTime.getTime()/1000));
     const [dropCloneAddress, setDropCloneAddress] = useState('');
 
     const handleClose = () => setShow(false);
@@ -92,7 +95,7 @@ const AuctionNFT = (props) => {
         // handleShowBackdrop();
         axios.get(`drop/nft/${nftId}`).then(
             (response) => {
-                console.log("Response: ", response);
+                console.log("Response getting NFT Detail: ", response);
                 setNftDetail(response.data.data[0]);
                 setDropIdObj(response.data.data[0].dropId);
                 setNftBlockChainId(response.data.data[0].nftId);
@@ -125,6 +128,8 @@ const AuctionNFT = (props) => {
 
     useEffect(() => {
         console.log("Auction contract address: ", location);
+        setDropExpiryTime(new Date(location.state.endTime));
+        setDropExpiryTimeStamp(Math.round(new Date(location.state.endTime).getTime()));
         getNftDetail();
         getDropCloneAddress();
 
@@ -220,96 +225,113 @@ const AuctionNFT = (props) => {
 
     let handleBidSubmit = async (event) => {
         event.preventDefault();
-        await loadWeb3();
-        const web3 = window.web3
-        const accounts = await web3.eth.getAccounts();
-        console.log("Accounts[0]: ", accounts[[0]]);
-        const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
-            setNetwork(network);
-            handleShow();
+
+        //conditions checking
+        console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
+        console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
+        console.log("Bid Expiry Time: ", bidExpiryTime);
+        console.log("Drop Expiry Time: ", dropExpiryTime);
+
+        if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
+            let variant = 'error';
+            enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
+        }
+        if (biddingValue === 0) {
+            let variant = "error";
+            enqueueSnackbar("Bidding Value cannot be zero.", { variant });
         }
         else {
-            handleShowBackdrop();
-            await giveAuctionErc20Approval();
-            //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
-            let bidData = {
-                nftId: nftDetail._id,
-                bidAmount: biddingValue.toString(),
-                bidderAddress: accounts[0],
-                expiryTime: bidExpiryTime
+            await loadWeb3();
+            const web3 = window.web3
+            const accounts = await web3.eth.getAccounts();
+            console.log("Accounts[0]: ", accounts[[0]]);
+            const network = await web3.eth.net.getNetworkType()
+            if (network !== 'goerli') {
+                setNetwork(network);
+                handleShow();
             }
+            else {
+                handleShowBackdrop();
+                await giveAuctionErc20Approval();
+                //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+                let bidData = {
+                    nftId: nftDetail._id,
+                    bidAmount: biddingValue.toString(),
+                    bidderAddress: accounts[0],
+                    expiryTime: bidExpiryTime
+                }
 
-            console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
-            console.log("Bid data: ", bidData);
-            
+                console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
+                console.log("Bid data: ", bidData);
+                
 
-            let dropIdHash = getHash(dropIdObj);
-            let nftId = nftBlockChainId;
-            let bidValue = web3.utils.toWei(biddingValue, 'ether');
+                let dropIdHash = getHash(dropIdObj);
+                let nftId = nftBlockChainId;
+                let bidValue = web3.utils.toWei(biddingValue, 'ether');
 
-            console.log("NFT id type: ", typeof(nftId));
-            console.log("Bid Value type: ", typeof(bidValue), bidValue);
-            console.log("Drop Id Hash: ", dropIdHash);
+                console.log("NFT id type: ", typeof(nftId));
+                console.log("Bid Value type: ", typeof(bidValue), bidValue);
+                console.log("Drop Id Hash: ", dropIdHash);
 
-            let contractAddress = Addresses.AuctionDropFactory;
-            let contractAbi = CreateNFTContract;
-            let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
-            let trxHash;
+                let contractAddress = Addresses.AuctionDropFactory;
+                let contractAbi = CreateNFTContract;
+                let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
+                let trxHash;
 
-            axios.post("/auction/bid", bidData).then(
-                (response) => {
-                    console.log("Response from sending bid data to backend: ", response);
-                    let bidIdHash = getHash(response.data.bidId);
-                    let bidId = response.data.bidId;
+                axios.post("/auction/bid", bidData).then(
+                    (response) => {
+                        console.log("Response from sending bid data to backend: ", response);
+                        let bidIdHash = getHash(response.data.bidId);
+                        let bidId = response.data.bidId;
 
-                    //sending call on blockchain
+                        //sending call on blockchain
 
-                    console.log("Bid data for blockchain: ");
-                    console.log("drop id hash: ", dropIdHash);
-                    console.log("bid id hash: ", bidIdHash);
-                    console.log("nft address: ", location.state.nftContractAddress);
-                    console.log("nft id: ", nftId);
-                    console.log("bid Value: ", bidValue);
-                    
-
-                    myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-                        console.log('get transaction: ', err, response);
-                        if (err !== null) {
-                            console.log('err: ', err);
-                            handleCloseBackdrop();
-                        }
-                        trxHash = response;
+                        console.log("Bid data for blockchain: ");
+                        console.log("drop id hash: ", dropIdHash);
+                        console.log("bid id hash: ", bidIdHash);
+                        console.log("nft address: ", location.state.nftContractAddress);
+                        console.log("nft id: ", nftId);
+                        console.log("bid Value: ", bidValue);
                         
 
-                    })
-                        .on('receipt', (receipt) => {
-                            console.log('receipt: ', receipt);
-
-                            //sending finalize call on backend
-                            let finalizeBidData = {
-                                "bidId": bidId,
-                                "txHash": trxHash 
+                        myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                            console.log('get transaction: ', err, response);
+                            if (err !== null) {
+                                console.log('err: ', err);
+                                handleCloseBackdrop();
                             }
+                            trxHash = response;
+                            
 
-                            axios.put('/auction/bid/finalize', finalizeBidData).then(
-                                (response) => {
-                                    console.log("Response from finalize bid: ", response);
-                                },
-                                (err) => {
-                                    console.log("Err from finalize bid: ", err);
-                                    console.log("Err response from finalize bid: ", err);
+                        })
+                            .on('receipt', (receipt) => {
+                                console.log('receipt: ', receipt);
+
+                                //sending finalize call on backend
+                                let finalizeBidData = {
+                                    "bidId": bidId,
+                                    "txHash": trxHash 
                                 }
-                            )
-                            handleCloseBackdrop();
-                        });
 
-                },
-                (error) => {
-                    console.log("Error from sending bid data to backend: ", error);
-                    handleCloseBackdrop();
-                }
-            )
+                                axios.put('/auction/bid/finalize', finalizeBidData).then(
+                                    (response) => {
+                                        console.log("Response from finalize bid: ", response);
+                                    },
+                                    (err) => {
+                                        console.log("Err from finalize bid: ", err);
+                                        console.log("Err response from finalize bid: ", err);
+                                    }
+                                )
+                                handleCloseBackdrop();
+                            });
+
+                    },
+                    (error) => {
+                        console.log("Error from sending bid data to backend: ", error);
+                        handleCloseBackdrop();
+                    }
+                )
+            }
         }
     }
     
@@ -434,6 +456,7 @@ const AuctionNFT = (props) => {
                                                 console.log(e);
                                                 console.log("e.getTime()", Math.round(e.getTime() ));
                                                 setBidExpiryTime(e);
+                                                setBidExpiryTimeStamp(Number(Math.round(e.getTime())));
                                             }}
                                             value={bidExpiryTime}
                                         />
