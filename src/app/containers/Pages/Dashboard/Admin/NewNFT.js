@@ -553,7 +553,8 @@ function NewNFT(props) {
                                     collectionId: collectionId,
                                     nftId: response.data.nftId,
                                     nftContractAddress: nftContractAddress,
-                                    previewImageURI: previewImageURI
+                                    previewImageURI: previewImageURI,
+                                    nftFormat: imageType,
                                 }]);
 
                                 let cookieData = [...tokenList, {
@@ -569,7 +570,9 @@ function NewNFT(props) {
                                     collectionId: collectionId,
                                     nftContractAddress: nftContractAddress,
                                     nftId: response.data.nftId,
-                                    previewImageURI: previewImageURI
+                                    previewImageURI: previewImageURI,
+                                    nftFormat: imageType,
+
                                 }]
 
                                 Cookies.set("Batch-ID", response.data.batchId, {
@@ -675,7 +678,9 @@ function NewNFT(props) {
         else if(e.target.files[0].type.split("/")[1] === "mp3" || e.target.files[0].name.includes(".mp3")) {
             typeImage = "mp3"
             setIsMp3File(true);
-            setImageType(e.target.files[0].type.split("/")[1]);
+            setImageType("mp3");
+
+            // setImageType(e.target.files[0].type.split("/")[1]);
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
@@ -1169,7 +1174,7 @@ function NewNFT(props) {
                                             <AudioPlayer
                                                 // style={{ width: "300px" }}
                                                 style={{ borderRadius: "1rem" }}
-                                                autoPlay
+                                                autoPlay 
                                                 layout="horizontal"
                                                 src={nftURI}
                                                 onPlay={(e) => console.log("onPlay")}
@@ -1813,7 +1818,7 @@ function NewNFT(props) {
                 network={network}
             >
             </NetworkErrorModal>
-            <NFTDetailModal 
+            <NFTDetailModal
                 show={openDialog} 
                 handleClose={handleCloseNFTDetailModal}
                 nftDetail={nftDetail}

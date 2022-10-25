@@ -9,6 +9,8 @@ import r1 from '../../assets/img/patients/patient.jpg';
 import { Autocomplete } from "@material-ui/lab";
 import { Button, FormControl, FormControlLabel, Paper, Radio, RadioGroup, TextField } from "@material-ui/core";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 const NFTEditModal = (props) => {
 
@@ -22,6 +24,8 @@ const NFTEditModal = (props) => {
     let [image, setImage] = useState(r1);
     let [rarities] = useState(["Mastercraft", "Legendary", "Epic", "Rare", "Uncommon", "Common"]);
     let [isGlbFile, setIsGlbFile] = useState(false);
+    let [isMp3File, setIsMp3File] = useState(false);
+
     let [previewImageURI, setPreviewImageURI] = useState("");
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
 
@@ -30,9 +34,14 @@ const NFTEditModal = (props) => {
         console.log("nft edit Props: ", props);
         if(props.show === true) {
             setNftDetail(props.nftDetail);
-            if(props.nftDetail.previewImageURI !== "") {
-                setIsGlbFile(true);
-                console.log("In the condition ");
+            if(props.nftDetail.nftFormat === "glb") {
+               
+                    setIsGlbFile(true);
+                    console.log("In the condition ");
+                
+            }
+            else if(props.nftDetail.nftFormat === "mp3") {
+                    setIsMp3File(true);
             }
         }
 
@@ -44,6 +53,8 @@ const NFTEditModal = (props) => {
         let data = {...nftDetail};
         setIsUploadingIPFS(true);
         setIsGlbFile(false);
+        setIsMp3File(false);
+
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
         let typeImage;
@@ -51,6 +62,13 @@ const NFTEditModal = (props) => {
         if(e.target.files[0].name.includes(".glb")) {
             typeImage = "glb";
             setImageType("glb");
+        }
+        else if(e.target.files[0].type.split("/")[1] === "mp3" || e.target.files[0].name.includes(".mp3")) {
+            typeImage = "mp3"
+            setIsMp3File(true);
+            setImageType("mp3");
+
+            // setImageType(e.target.files[0].type.split("/")[1]);
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
@@ -197,20 +215,38 @@ const NFTEditModal = (props) => {
                 <form>
                     <div className="form-group" >
                         <label>Select Artwork</label>
-                        {!isGlbFile ? (
-                            <div className="filter-widget">
-                                <div className="form-group">
-                                    <div className="change-avatar">
-                                        <div className="profile-img">
-                                            <div
-                                                style={{
-                                                    background: "#E9ECEF",
-                                                    width: "100px",
-                                                    height: "100px",
-                                                }}
-                                            >
-                                                <img src={nftDetail.nftURI} alt="Selfie" />
-                                            </div>
+                        { isGlbFile ? (
+                                    <div>
+                                        <div>
+                                            <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                {/* <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} /> */}
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 100, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 50, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 0, z: 0 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 100, z: 200 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: -100, y: 200, z: -100}}
+                                                />
+                                            </GLTFModel>
                                         </div>
                                         <div className="upload-img">
                                             <div
@@ -234,7 +270,7 @@ const NFTEditModal = (props) => {
                                                     name="sampleFile"
                                                     type="file"
                                                     className="upload"
-                                                    accept=".png,.jpg,.jpeg,.gif,.glb"
+                                                    accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
                                                     onChange={onChangeFile}
                                                 />
                                             </div>
@@ -242,124 +278,204 @@ const NFTEditModal = (props) => {
                                                 Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
                                             </small>
                                         </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ): (
-                            <div>
-                                <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}} >
-                                    <Paper elevation={2} >
-                                        <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
-                                            <AmbientLight color={0xffffff} />
-                                            <AmbientLight color={0xffffff} />
-                                            <AmbientLight color={0xffffff} />
-                                            <AmbientLight color={0xffffff} />
-                                            {/* <AmbientLight color={0xffffff} />
-                                            <AmbientLight color={0xffffff} />
-                                            <AmbientLight color={0xffffff} /> */}
-                                            <DirectionLight
-                                                color={0xffffff}
-                                                position={{ x: 100, y: 200, z: 100 }}
-                                            />
-                                            <DirectionLight
-                                                color={0xffffff}
-                                                position={{ x: 50, y: 200, z: 100 }}
-                                            />
-                                            <DirectionLight
-                                                color={0xffffff}
-                                                position={{ x: 0, y: 0, z: 0 }}
-                                            />
-                                            <DirectionLight
-                                                color={0xffffff}
-                                                position={{ x: 0, y: 100, z: 200 }}
-                                            />
-                                            <DirectionLight
-                                                color={0xffffff}
-                                                position={{ x: -100, y: 200, z: -100}}
-                                            />
-                                        </GLTFModel>
-                                    </Paper>
-                                </div>
-                                <div className="upload-img">
-                                    <div
-                                        className="change-photo-btn"
-                                        style={{ backgroundColor: "rgb(167,0,0)" }}
-                                    >
-                                        {isUploadingIPFS ? (
-                                            <div className="text-center">
-                                                <Spinner
-                                                    animation="border"
-                                                    role="status"
-                                                    style={{ color: "#fff" }}
-                                                >
-                                                </Spinner>
-                                            </div>
-                                        ) : (
-                                            <span><i className="fa fa-upload"></i>Upload photo</span>
-                                        )}
-
-                                        <input
-                                            name="sampleFile"
-                                            type="file"
-                                            className="upload"
-                                            accept=".png,.jpg,.jpeg,.gif,.glb"
-                                            onChange={onChangeFile}
-                                        />
-                                    </div>
-                                    <small className="form-text text-muted">
-                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                    </small>
-                                </div>
-                                <label style={{margin: "10px"}}>Select Preview Image</label>
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar">
-                                            <div className="profile-img">
-                                                <div
-                                                    style={{
-                                                        background: "#E9ECEF",
-                                                        width: "100px",
-                                                        height: "100px",
-                                                    }}
-                                                >
-                                                    <img src={nftDetail.previewImageURI} alt="Selfie" />
-                                                </div>
-                                            </div>
-                                            <div className="upload-img">
-                                                <div
-                                                    className="change-photo-btn"
-                                                    style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                >
-                                                    {isUploadingPreview ? (
-                                                        <div className="text-center">
-                                                            <Spinner
-                                                                animation="border"
-                                                                role="status"
-                                                                style={{ color: "#fff" }}
-                                                            >
-                                                            </Spinner>
+                                        <label>Select Preview Image</label>
+                                        <div className="filter-widget">
+                                            <div className="form-group">
+                                                <div className="change-avatar">
+                                                    <div className="profile-img">
+                                                        <div
+                                                            style={{
+                                                                background: "#E9ECEF",
+                                                                width: "100px",
+                                                                height: "100px",
+                                                            }}
+                                                        >
+                                                            <img src={nftDetail.previewImageURI} alt="Selfie" />
                                                         </div>
-                                                    ) : (
-                                                        <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                    )}
+                                                    </div>
+                                                    <div className="upload-img">
+                                                        <div
+                                                            className="change-photo-btn"
+                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                        >
+                                                            {isUploadingPreview ? (
+                                                                <div className="text-center">
+                                                                    <Spinner
+                                                                        animation="border"
+                                                                        role="status"
+                                                                        style={{ color: "#fff" }}
+                                                                    >
+                                                                    </Spinner>
+                                                                </div>
+                                                            ) : (
+                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                            )}
 
-                                                    <input
-                                                        name="sampleFile"
-                                                        type="file"
-                                                        className="upload"
-                                                        accept=".png,.jpg,.jpeg"
-                                                        onChange={onChangePreviewImage}
-                                                    />
+                                                            <input
+                                                                name="sampleFile"
+                                                                type="file"
+                                                                className="upload"
+                                                                accept=".png,.jpg,.jpeg"
+                                                                onChange={onChangePreviewImage}
+                                                            />
+                                                        </div>
+                                                        <small className="form-text text-muted">
+                                                            Allowed JPG, JPEG. Max size of 5MB
+                                                        </small>
+                                                    </div>
                                                 </div>
-                                                <small className="form-text text-muted">
-                                                    Allowed JPG, JPEG. Max size of 5MB
-                                                </small>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
-                        )}
+                                ):  isMp3File ? (
+                                    <div>
+                                        <div>
+                                            <AudioPlayer
+                                                // style={{ width: "300px" }}
+                                                style={{ borderRadius: "1rem" }}
+                                                autoPlay = {false}
+                                                layout="horizontal"
+                                                src={nftDetail.nftURI}
+                                                onPlay={(e) =>
+                                                console.log("nft uri ", nftDetail.nftURI) }
+                                                showSkipControls={false}
+                                                showJumpControls={false}
+                                                header={`Now playing: ${nftDetail.title}`}
+                                                showDownloadProgress
+                                                // onClickPrevious={handleClickPrevious}
+                                                // onClickNext={handleClickNext}
+                                                // onEnded={handleClickNext}
+                                                // other props here
+                                            />
+                                        </div>
+                                        <div className="upload-img">
+                                            <div
+                                                className="change-photo-btn"
+                                                style={{ backgroundColor: "rgb(167,0,0)" }}
+                                            >
+                                                {isUploadingIPFS ? (
+                                                    <div className="text-center">
+                                                        <Spinner
+                                                            animation="border"
+                                                            role="status"
+                                                            style={{ color: "#fff" }}
+                                                        >
+                                                        </Spinner>
+                                                    </div>
+                                                ) : (
+                                                    <span><i className="fa fa-upload"></i>Upload MP3</span>
+                                                )}
+
+                                                <input
+                                                    name="sampleFile"
+                                                    type="file"
+                                                    className="upload"
+                                                    accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                                                    onChange={onChangeFile}
+                                                />
+                                            </div>
+                                            <small className="form-text text-muted">
+                                                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                            </small>
+                                        </div>
+                                        <label>Select Preview Image</label>
+                                        <div className="filter-widget">
+                                            <div className="form-group">
+                                                <div className="change-avatar">
+                                                    <div className="profile-img">
+                                                        <div
+                                                            style={{
+                                                                background: "#E9ECEF",
+                                                                width: "100px",
+                                                                height: "100px",
+                                                            }}
+                                                        >
+                                                            <img src={nftDetail.previewImageURI} alt="Selfie" />
+                                                        </div>
+                                                    </div>
+                                                    <div className="upload-img">
+                                                        <div
+                                                            className="change-photo-btn"
+                                                            style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                        >
+                                                            {isUploadingPreview ? (
+                                                                <div className="text-center">
+                                                                    <Spinner
+                                                                        animation="border"
+                                                                        role="status"
+                                                                        style={{ color: "#fff" }}
+                                                                    >
+                                                                    </Spinner>
+                                                                </div>
+                                                            ) : (
+                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                            )}
+
+                                                            <input
+                                                                name="sampleFile"
+                                                                type="file"
+                                                                className="upload"
+                                                                accept=".png,.jpg,.jpeg"
+                                                                onChange={onChangePreviewImage}
+                                                            />
+                                                        </div>
+                                                        <small className="form-text text-muted">
+                                                            Allowed JPG, JPEG. Max size of 5MB
+                                                        </small>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ): (
+                                    <div className="filter-widget">
+                                        <div className="form-group">
+                                            <div className="change-avatar">
+                                                <div className="profile-img">
+                                                    <div
+                                                        style={{
+                                                            background: "#E9ECEF",
+                                                            width: "100px",
+                                                            height: "100px",
+                                                        }}
+                                                    >
+                                                        <img src={nftDetail.image} alt="Selfie" />
+                                                    </div>
+                                                </div>
+                                                <div className="upload-img">
+                                                    <div
+                                                        className="change-photo-btn"
+                                                        style={{ backgroundColor: "rgb(167,0,0)" }}
+                                                    >
+                                                        {isUploadingIPFS ? (
+                                                            <div className="text-center">
+                                                                <Spinner
+                                                                    animation="border"
+                                                                    role="status"
+                                                                    style={{ color: "#fff" }}
+                                                                >
+                                                                </Spinner>
+                                                            </div>
+                                                        ) : (
+                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                        )}
+
+                                                        <input
+                                                            name="sampleFile"
+                                                            type="file"
+                                                            className="upload"
+                                                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                                                            onChange={onChangeFile}
+                                                        />
+                                                    </div>
+                                                    <small className="form-text text-muted">
+                                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                    </small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
                         <div className="form-group">
                             <label>NFT Title</label>
                             <div className="form-group">
