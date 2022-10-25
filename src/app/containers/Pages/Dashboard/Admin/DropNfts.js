@@ -283,7 +283,60 @@ function MyNFTs(props) {
                             >
                                 {tokenList.map((i, index) => (
                                      <Grid item xs={12} sm={6} md={3} key={index}>
-                                        <Link to={{pathname :`${path}/buy`, state : {nftDetail : i, startTime : location.state.startTime, endTime : location.state.endTime}}} >
+                                        {(location.state.saleType === "fixed-price") ? (
+                                             <Link to={{pathname :`${path}/buy`, state : {nftDetail : i, startTime : location.state.startTime, endTime : location.state.endTime}}} >
+                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
+                                                 {/* <CardActionArea onClick={() => {
+                                                         console.log("nftDetailObject: ", i);
+                                                         handleOpenNFTDetailModal(i);
+                                                         console.log("Open Dialog Value: ", openDialog); 
+                                                 }}> */}
+                                                     <div style={{ position: "relative" }}>
+ 
+                                                         <CardHeader className="text-center"
+                                                         title={i.title.length > 7 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
+ 
+                                                         />
+ 
+                                                         {(i.currentMarketplaceId.isSold === true) ? (
+                                                         <CornerRibbon
+                                                                 position="top-right" 
+                                                                 fontColor="#f0f0f0" 
+                                                                 backgroundColor="#f44336"
+                                                                 style={{fontWeight : 'bold'}} 
+                                                                 >
+                                                                 SOLD
+                                                         </CornerRibbon>
+                                                         ) : (null) }
+                                                         
+                                                     </div>
+                                                     
+                                                         <CardMedia
+                                                             variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                             className={classes.media}
+                                                             image={i.nftURI}
+                                                             title="NFT Image"
+                                                         />
+                                                        
+                                                 
+                                                 
+                                                     <CardContent>
+                                                    
+                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                         <strong>Token Rarity: </strong>{i.type}
+                                                     </Typography>
+                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                         <strong>Token Supply: </strong>{i.tokenSupply}
+                                                     </Typography>
+                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                         <strong>Artwork Description: </strong>{i.description}
+                                                     </Typography>
+                                                     </CardContent>
+                                                 {/* </CardActionArea> */}
+                                             </Card>
+                                         </Link>
+                                        ) : (
+                                            <Link to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
@@ -334,6 +387,8 @@ function MyNFTs(props) {
                                                 {/* </CardActionArea> */}
                                             </Card>
                                         </Link>
+                                        )}
+                                       
                                  </Grid>
                                 ))}
                             </Grid>
