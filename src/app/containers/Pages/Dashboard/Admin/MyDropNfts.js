@@ -14,9 +14,8 @@ import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
-import crypto from 'crypto';
-import {Chip} from '@material-ui/core/';
-import { green  } from '@material-ui/core/colors/';
+import CornerRibbon from "react-corner-ribbon";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -58,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 function MyDropNFTs(props) {
     let location = useLocation();
     const classes = useStyles();
-    const successColor = green[500];
 
     let { path } = useRouteMatch();
     const [rowsPerPage, setRowsPerPage] = React.useState(8);
@@ -207,29 +205,32 @@ function MyDropNFTs(props) {
                                                         handleOpenNFTDetailModal(i);
                                                         console.log("Open Dialog Value: ", openDialog); 
                                                 }}> */}
-                                                    <CardHeader className="text-center"
-                                                        title={i.title}/>
                                                     <div style={{ position: "relative" }}>
-                                                        <CardMedia
-                                                            variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                            className={classes.media}
-                                                            image={i.nftURI}
-                                                            title="NFT Image"
-                                                        />
-                                                        <div style={{position: "absolute", top: 10,textAlign : 'left' , marginLeft : '8px',}}> 
-                                                            
-                                                            {(i.currentMarketplaceId.isSold === true) ? (
-                                                                
-                                                                    <Chip color={successColor} size="small" label = "SOLD" />
-                                                                
-                                                        
-                                                                
-                                                            ) : (null) }
-                                                            
 
-                                                        </div>
+                                                        <CardHeader className="text-center"
+                                                            title={i.title.length > 12 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
 
+                                                            />
+
+                                                        {(i.currentMarketplaceId.isSold === true) ? (
+                                                        <CornerRibbon
+                                                                position="top-right" 
+                                                                fontColor="#f0f0f0" 
+                                                                backgroundColor="#4caf50"
+                                                                style={{fontWeight : 'bold'}} 
+                                                                >
+                                                                SOLD
+                                                        </CornerRibbon>
+                                                        ) : (null) }
                                                     </div>
+                                                    <CardMedia
+                                                        variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                        className={classes.media}
+                                                        image={i.nftURI}
+                                                        title="NFT Image"
+                                                    />
+                                                    
+
                                                     
                                                     <CardContent>
                                                     

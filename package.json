@@ -32,6 +32,7 @@
     "react-animated-slider": "^2.0.0",
     "react-bootstrap": "^1.0.0",
     "react-circular-progressbar": "^2.0.3",
+    "react-corner-ribbon": "0.0.5",
     "react-countdown": "^2.3.1",
     "react-country-region-selector": "^2.1.0",
     "react-custom-scrollbars": "^4.2.1",
