@@ -10,7 +10,6 @@ import Web3 from 'web3';
 import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { useSnackbar } from 'notistack';
-import AcceptBidModal from '../../../../components/Modals/AcceptBidModal';
 import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
 import { ExpandMore } from '@material-ui/icons';
 import ListIcon from "@material-ui/icons/List";
@@ -441,13 +440,6 @@ const DropSingleNFT = (props) => {
                     </div>
                 </div>
             </div>
-            {/* <AcceptBidModal
-                show={show}
-                handleClose={handleCloseModal}
-                acceptBid={handleAcceptBid}
-                bidDetails={bidDetail}
-            >
-            </AcceptBidModal> */}
         </div >
         
     );
