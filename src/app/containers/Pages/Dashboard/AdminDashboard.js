@@ -35,6 +35,8 @@ import SingleNftDetail from "./Admin/singleNftDetail";
 import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";
 import AuctionNFT from "./Admin/AuctionNFT";
+import MyDropNFTs from "./Admin/MyDropNfts";
+import DropSingleNFT from "./Admin/DropSingleNFT";
 
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
@@ -229,6 +231,13 @@ function AdminDashboard(props) {
               <MyDrops setActiveTab={setActiveTab} />
             </Route>
 
+            <Route exact path={`${path}/myDrops/nfts`}>
+              <MyDropNFTs setActiveTab={setActiveTab} />
+            </Route>
+
+            <Route exact path={`${path}/myDrops/nfts/singleNft`}>
+              <DropSingleNFT  setActiveTab={setActiveTab} />
+            </Route>
            
 
             <Route exact path={`${path}/myDrops/cubes/:dropId`}>
