@@ -115,7 +115,7 @@ const MyDrops = (props) => {
                     <DropsPage status = "active" />
                 </TabPanel>
                 <TabPanel value={value} index={3}>
-                    <DropsPage status = "close" />
+                    <DropsPage status = "closed" />
                 </TabPanel>
 
             </div>
