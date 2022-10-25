@@ -181,7 +181,7 @@ const DropSingleNFT = (props) => {
             orders: "",
             myNFTs: "",
             myCubes: "",
-            myDrops: "",
+            myDrops: "active",
             settings: "",
             mySeason: "",
             privacyPolicy: "",
@@ -191,7 +191,7 @@ const DropSingleNFT = (props) => {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
-            marketPlace: "active"
+            marketPlace: ""
         });
     }, []);
     
@@ -201,7 +201,7 @@ const DropSingleNFT = (props) => {
                 <li className="breadcrumb-item">
                     <a href="/">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item active">Market Palce</li>
+                <li className="breadcrumb-item active">NFT</li>
             </ul>
             <div className="card-body" >
                 <div className="row">

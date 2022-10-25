@@ -135,7 +135,7 @@ function MyDropNFTs(props) {
             orders: "",
             myNFTs: "",
             myCubes: "",
-            myDrops: "",
+            myDrops: "active",
             settings: "",
             mySeason: "",
             privacyPolicy: "",
