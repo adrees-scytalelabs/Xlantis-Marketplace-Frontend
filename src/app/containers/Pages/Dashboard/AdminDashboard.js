@@ -34,6 +34,7 @@ import NewCollection from "./Admin/NewCollection";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";
+import AuctionNFT from "./Admin/AuctionNFT";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 
@@ -268,6 +269,10 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/marketPlace/drops/nfts`}>
               <DropNfts setActiveTab={setActiveTab} />
+            </Route>
+
+            <Route exact path={`${path}/marketPlace/:dropId/:nftId`}>
+              <AuctionNFT setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/profilesettings`}>
               <ProfileSetting

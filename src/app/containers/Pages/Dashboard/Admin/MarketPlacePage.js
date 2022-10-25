@@ -156,7 +156,7 @@ function MarketPlacePage(props) {
                         >
                             {tokenList.map((i, index) => (
                                 <Grid item xs={12} sm={6} md={3} key={index}>
-                                    <Link to={{pathname :`${path}/drops/nfts`, state : {nftId : i.NFTIds, dropId : i._id}}}>
+                                    <Link to={{pathname :`${path}/drops/nfts`, state : {nftId : i.NFTIds, dropId : i._id, endTime: i.endTime}}}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
                                                 <CardHeader className="text-center"
