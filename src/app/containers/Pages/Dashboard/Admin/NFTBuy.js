@@ -13,6 +13,8 @@ import { useSnackbar } from 'notistack';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
+import ReactTooltip from "react-tooltip";
+
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -74,6 +76,7 @@ const NFTBuy = (props) => {
     let [isSaving, setIsSaving] = useState(false);
     const [network, setNetwork] = useState("");
     const [showNetworkModal, setShowNetworkModal] = useState(false);
+   
 
 
     const handleCloseBackdrop = () => {
@@ -106,6 +109,8 @@ const NFTBuy = (props) => {
 
     }
 
+    
+    
     let handleBuy= async() => {
         // setNftDetail(nftObject);
         console.log("Nft detail: ", nftDetail);
@@ -115,6 +120,7 @@ const NFTBuy = (props) => {
         console.log(dropIdHex);
         setOpenDialog(false);
         setIsSaving(true);
+        handleShowBackdrop();
         await loadWeb3();
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
@@ -180,6 +186,10 @@ const NFTBuy = (props) => {
                     })
                     .on('receipt', (receipt) => {
                         console.log("receipt", receipt);
+                        let variant = "success";
+                        enqueueSnackbar('NFT Bought Successfully', { variant });
+                        handleCloseBackdrop();
+                        setIsSaving(false);
                         
                     })
                         
@@ -391,9 +401,26 @@ const NFTBuy = (props) => {
                                         <Col style={{
                                             textAlign:"center"
                                         }}>
-                                        <button type="button" disabled onClick={(e) => handleBuy(e)} className="btn submit-btn ">
-                                            Buy
-                                        </button>
+                                                <div data-tip data-for="registerTip">
+                                                    <button type="button" data-tip data-for="registerTip" disabled   onClick={(e) => handleBuy(e) }  className="btn submit-btn ">
+                                                        Buy
+                                                    </button>
+                                                    {(location.state.nftDetail.currentMarketplaceId.isSold === true) ? (
+                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                            NFT Is Sold
+                                                        </ReactTooltip>
+                                                    ) : (new Date() < new Date(location.state.startTime)) ? (
+                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                            Sale Has Not Started Yet
+                                                        </ReactTooltip>
+                                                    ) : ( new Date() > new Date(location.state.endTime)) ? (
+                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                            Sale Has Ended
+                                                        </ReactTooltip>
+                                                        
+                                                    ) : (null) }
+                                                   
+                                                </div>
 
                                         </Col>
                                     </Row>

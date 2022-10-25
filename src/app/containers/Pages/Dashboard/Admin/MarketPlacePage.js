@@ -90,6 +90,7 @@ function MarketPlacePage(props) {
 
     useEffect(() => {
         getMyDrops(props.saleType, 0, rowsPerPage);
+        // getCollections();?
 
         // props.setActiveTab({
         //     dashboard: "",
@@ -156,7 +157,7 @@ function MarketPlacePage(props) {
                         >
                             {tokenList.map((i, index) => (
                                 <Grid item xs={12} sm={6} md={3} key={index}>
-                                    <Link to={{pathname :`${path}/drops/nfts`, state : {nftId : i.NFTIds, dropId : i._id}}}>
+                                    <Link to={{pathname :`${path}/drops/nfts`, state : {nftId : i.NFTIds, dropId : i._id, startTime : i.startTime, endTime : i.endTime}}}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
                                                 <CardHeader className="text-center"
