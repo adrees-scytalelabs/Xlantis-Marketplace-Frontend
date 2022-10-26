@@ -439,7 +439,7 @@ const NFTEditModal = (props) => {
                                                             height: "100px",
                                                         }}
                                                     >
-                                                        <img src={nftDetail.image} alt="Selfie" />
+                                                        <img src={nftDetail.nftURI} alt="Selfie" />
                                                     </div>
                                                 </div>
                                                 <div className="upload-img">

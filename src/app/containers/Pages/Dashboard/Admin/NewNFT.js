@@ -650,12 +650,13 @@ function NewNFT(props) {
                     setSupplyType("Single");
                     setIpfsHash("");
                     setIsGlbFile(false);
-
+                    setIsMp3File(false);
                     let variant = "success";
                     enqueueSnackbar('Meta Data Uploaded to IPFS ', { variant });
 
                     console.log("Token list length: ", tokenList.length);
                     setIsUploadingData(false);
+                    
                     handleCloseBackdrop();
                 })
             }
@@ -667,6 +668,8 @@ function NewNFT(props) {
     let onChangeFile = (e) => {
         setIsUploadingIPFS(true);
         setIsGlbFile(false);
+        setIsMp3File(false);
+
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
         let typeImage;
