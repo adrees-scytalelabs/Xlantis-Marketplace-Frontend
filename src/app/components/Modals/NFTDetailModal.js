@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { useEffect } from 'react';
 import { Card, Col, Modal, Row, Table } from 'react-bootstrap';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 const useStyles = makeStyles(() => ({
     media: {
@@ -36,6 +38,26 @@ const NFTDetailModal = (props) => {
                 <Card>
                     <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}} >
                         {props.nftDetail.previewImageURI !== "" ? (
+                            (props.nftDetail.nftFormat === "mp3" ) ? (
+                            <div>
+                                <AudioPlayer
+                                    style={{ width: "420px",  borderRadius: "1rem" }}
+                                    // style={{ borderRadius: "1rem" }}
+                                    autoPlay = {false}
+                                    layout="horizontal"
+                                    src={props.nftDetail.nftURI}
+                                    onPlay={(e) =>
+                                    console.log("nft uri ", props.nftDetail.nftURI) }
+                                    showSkipControls={false}
+                                    showJumpControls={false}
+                                    header={`Now playing: ${props.nftDetail.title}`}
+                                    showDownloadProgress
+                                    // onClickPrevious={handleClickPrevious}
+                                    // onClickNext={handleClickNext}
+                                    // onEnded={handleClickNext}
+                                    // other props here
+                                />
+                            </div>) : (
                             
                             <GLTFModel src={props.nftDetail.nftURI} width={250} height={250} >
                                 <AmbientLight color={0xffffff} />
@@ -66,7 +88,7 @@ const NFTDetailModal = (props) => {
                                     position={{ x: -100, y: 200, z: -100}}
                                 />
                             </GLTFModel>
-                        ) : null}
+                        )) : (null)}
                     </div>
                     <Row>
                         <Col>
