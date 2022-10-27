@@ -7,7 +7,9 @@ export const Collectible1155Address = "0x4205df64B357AA2f139C56D2D74bb6f5887ad6B
 export const Factory1155Address = "0x3669aFdA9B50e69D8a495A3B3Fa91B25eF4C9843";
 export const Collectible721Address = "0xa89468f2dc966C997d9bFE974568eC9F34766211";
 export const Factory721Address = "0x769a0C6B02529Fb6CCC57bfAe1d30272bFc6AD57";
-export const FactoryDrop = "0x59B34A2964450eEC9F44EC128B76304f1797Dd4f";
+export const FactoryDrop = "0x8E03d4Ba1B16788207C016b4f1aa37eC1D702092";
 export const AuctionDropFactory = "0x97890b48AF1e633990E82cF2A16deF9C04015605";
+export const ERC20SaleDrop = "0x600e65dF9eEb7045AE337ce462D6Ac1b0f2EC968";
 export const AuctionERC20 = "0x600e65dF9eEb7045AE337ce462D6Ac1b0f2EC968";
+
 
