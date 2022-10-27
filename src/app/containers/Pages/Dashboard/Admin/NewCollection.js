@@ -355,8 +355,28 @@ function NewCollection(props) {
         )
             .on('receipt', (receipt) => {
                 console.log("receipt", receipt);
-                setIsFixedPriceApproved(true);
-                setApprovingFixedPrice(false);
+
+                //sending call on backend
+
+                let approvalData = {
+                    "collectionId": collectionId,
+                    "factoryType": "fixed-price"
+                }
+
+                axios.put("/collection/approve", approvalData).then(
+                    (response) => {
+                        console.log("Response from approval of Fixed Price: ", response);
+                        setIsFixedPriceApproved(true);
+                        setApprovingFixedPrice(false);
+                    },
+                    (err) => {
+                        console.log("Err from approval Fixed-price: ", err);
+                        console.log("Err response from approval Fixed-price: ", err.response);
+                        setApprovingFixedPrice(false);
+                    }
+                );
+
+                
             })
         }
     }
@@ -400,8 +420,27 @@ function NewCollection(props) {
         )
             .on('receipt', (receipt) => {
                 console.log("receipt", receipt);
-                setIsAuctionApproved(true);
-                setApprovingAuction(false);
+
+                //sending call on backend
+
+                let approvalData = {
+                    "collectionId": collectionId,
+                    "factoryType": "auction"
+                }
+
+                axios.put("/collection/approve", approvalData).then(
+                    (response) => {
+                        console.log("Response from Auction approval: ", response);
+                        setIsAuctionApproved(true);
+                        setApprovingAuction(false);
+                    },
+                    (err) => {
+                        console.log("Err from auction approval: ", err);
+                        console.log("Err response from auction approval: ", err.response);
+                        setApprovingAuction(false);
+                    }
+                )
+                
             })
         }
     }
@@ -417,20 +456,20 @@ function NewCollection(props) {
         } 
         if(isAuctionApproved === true && isFixedPriceApproved === true){
             setDoneLoader(true);
-            axios.put(`/collection/approve/${collectionId}`).then(
-                (response) => {
-                    console.log("Response from collection approval: ", response);
-                    let variant = "success";
-                    enqueueSnackbar("Collection Approval Successful", { variant });
-                    setDoneLoader(false);
-                },
-                (error) => {
-                    console.log("Error from collection approval: ", error);
-                    let variant = "error";
-                    enqueueSnackbar("Collection Approval Unsuccessful", { variant });
-                    setDoneLoader(false);
-                }
-            );
+            // axios.put(`/collection/approve/${collectionId}`).then(
+            //     (response) => {
+            //         console.log("Response from collection approval: ", response);
+            //         let variant = "success";
+            //         enqueueSnackbar("Collection Approval Successful", { variant });
+            //         setDoneLoader(false);
+            //     },
+            //     (error) => {
+            //         console.log("Error from collection approval: ", error);
+            //         let variant = "error";
+            //         enqueueSnackbar("Collection Approval Unsuccessful", { variant });
+            //         setDoneLoader(false);
+            //     }
+            // );
             
             handleApprovalModalClose();
         }

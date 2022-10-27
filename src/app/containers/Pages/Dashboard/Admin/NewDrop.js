@@ -245,7 +245,7 @@ function NewDrop(props) {
                 enqueueSnackbar("Auction End time must be greater than Start time.", { variant });
                 setIsSaving(false);
                 handleCloseBackdrop();
-            } else if (currentTimeStamp === startTimeStamp ) {
+            } else if (currentTimeStamp >= startTimeStamp || new Date(Date.now()) >= new Date(startTime)  ) {
                 let variant = "error";
                 enqueueSnackbar("Auction Start time must be greater than Current time.", { variant });
                 setIsSaving(false);
@@ -556,12 +556,12 @@ function NewDrop(props) {
                                             className="form-control"
                                             onChange={(e) => {
                                                 console.log(e);
-                                                console.log("START", Math.round(e.getTime()));
-                                                console.log("NOW", Math.round(Date.now()));
+                                                console.log("START", Math.round(e.getTime()/1000));
+                                                console.log("NOW", Math.round(Date.now()/1000));
                                                 
 
-                                                setCurrentTimeStamp(Number(Math.round(Date.now())));
-                                                setStartTimeStamp(Number(Math.round(e.getTime())));
+                                                setCurrentTimeStamp(Number(Math.round(Date.now())/1000));
+                                                setStartTimeStamp(Number(Math.round(e.getTime())/1000));
 
                                                 setStartTime(e)
                                             }}
@@ -574,8 +574,8 @@ function NewDrop(props) {
                                             className="form-control"
                                             onChange={(e) => {
                                                 console.log(e);
-                                                console.log("e.getTime()", Math.round(e.getTime() ));
-                                                setEndTimeStamp(Math.round(e.getTime()));
+                                                console.log("e.getTime()", Math.round(e.getTime()/1000 ));
+                                                setEndTimeStamp(Math.round(e.getTime()/1000));
                                                 setEndTime(e)
                                             }}
                                             value={endTime}
