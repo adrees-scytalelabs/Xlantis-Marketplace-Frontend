@@ -11,7 +11,7 @@ import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { useSnackbar } from 'notistack';
 import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
-import { ExpandMore } from '@material-ui/icons';
+import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import ListIcon from "@material-ui/icons/List";
 import Countdown from 'react-countdown';
 
@@ -356,16 +356,18 @@ const DropSingleNFT = (props) => {
                                         {nftDetail.tokenSupply}
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <Typography color="textSecondary" component="p">
-                                            <strong>Properties:</strong>
-                                        </Typography>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                    <Table striped bordered hover >
+                            </CardContent>
+                        </Card>
+                        <Row style={{marginTop: '5px'}}>
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color:'#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped bordered hover responsive >
                                             <thead>
                                                 <tr>
                                                     <th>Key</th>
@@ -382,10 +384,10 @@ const DropSingleNFT = (props) => {
                                                 }   
                                             </tbody>
                                         </Table>
-                                    </Col>
-                                </Row>
-                            </CardContent>
-                        </Card>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
                         <Row style={{marginTop: '5px'}}>
                             <Col>
                                 <Accordion>
