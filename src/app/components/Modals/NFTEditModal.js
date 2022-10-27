@@ -275,7 +275,7 @@ const NFTEditModal = (props) => {
                                                 />
                                             </div>
                                             <small className="form-text text-muted">
-                                                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                                Allowed JPG, JPEG, PNG, GIF. GLB. MP3 Max size of 5MB
                                             </small>
                                         </div>
                                         <label>Select Preview Image</label>

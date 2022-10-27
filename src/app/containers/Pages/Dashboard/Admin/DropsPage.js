@@ -55,6 +55,8 @@ function DropsPage(props) {
     const [totalDrops, setTotalDrops] = React.useState(0);
     const [page, setPage] = React.useState(0);
     const [open, setOpen] = useState(false);
+    
+
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -63,7 +65,7 @@ function DropsPage(props) {
     };
     let getMyDrops = (status,start, end) => {
         handleShowBackdrop();
-        axios.get(`/drop/${status}/${start}/${end}`).then(
+        axios.get(`drop/myDrops/${status}/${start}/${end}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.data);
@@ -88,6 +90,7 @@ function DropsPage(props) {
 
     useEffect(() => {
         getMyDrops(props.status,0, rowsPerPage);
+        
         // getCollections();?
 
         // props.setActiveTab({
@@ -156,7 +159,12 @@ function DropsPage(props) {
                             {tokenList.map((i, index) => (
 
                                 <Grid item xs={12} sm={6} md={3} key={index}>
-                                    <Link to={"myDrops/cubes/" + i._id}>
+                                    {(props.status === "draft") ? (
+                                    
+                                       
+                                        <Link to={{pathname :`/dashboard/newDrop/addNft`, state : {dropId : i._id, saleType : i.saleType, startTime : i.startTime, endTime : i.endTime } }}>
+                      
+
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
                                                 <CardHeader className="text-center"
@@ -273,6 +281,126 @@ function DropsPage(props) {
                                             </CardActions>
                                         </Card>
                                     </Link>
+                                    ) : (
+                                        <Link to={{pathname :`/dashboard/myDrops/nfts`, state : {nftId : i.NFTIds, dropId : i._id, saleType : i.saleType, status: i.status}}}>
+
+                                        <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
+                                            <CardActionArea>
+                                                <CardHeader className="text-center"
+                                                    title={i.title}
+                                                />
+                                                <CardMedia
+                                                    className={classes.media}
+                                                    image={i.image}
+                                                    title="Drop Image"
+                                                >
+                                                </CardMedia>
+                                                <CardContent>
+                                                    
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>No Of Nfts: </strong>{i.totalNFTs}
+                                                    </Typography>
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Description: </strong>{i.description}
+                                                    </Typography>
+                                                    <br></br>
+                                                    {/* {(i.saleType === "auction") ? 
+                                                    (<Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Minimum Bid: </strong>{i.price} WETH
+                                                    </Typography>
+                                                    ) : (
+                                                        <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Price: </strong>{i.price} WETH
+                                                        </Typography>
+                                                    )} */}
+
+                                                    {(i.saleType === "auction") ? (
+                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                        {new Date() < new Date(i.startTime) ? (
+                                                            <div style={{ color: "#00FF00" }} >
+
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Auction Starts At:</strong>
+                                                                </Typography>
+                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
+                                                                <Countdown daysInHours date={new Date(i.startTime)}>
+                                                                </Countdown>
+                                                            </div>
+                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
+                                                            <div style={{ color: "#FF0000" }}>
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Auction Ends At:</strong>
+                                                                </Typography>
+                                                                <Countdown daysInHours date={new Date(i.endTime)}>
+                                                                </Countdown>
+                                                            </div>) : (
+                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                                                <strong>Auction Ended</strong>
+                                                            </Typography>
+                                                        )}
+                                                        </Typography>
+                                                    ) : (
+                                                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                        {new Date() < new Date(i.startTime) ? (
+                                                            <div style={{ color: "#00FF00" }} >
+
+                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                                <strong>Sale Starts At:</strong>
+                                                            </Typography>
+                                                            {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
+                                                            <Countdown daysInHours date={new Date(i.startTime)}>
+                                                            </Countdown>
+                                                            </div>
+                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
+                                                            <div style={{ color: "#FF0000" }}>
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Sale Ends At:</strong>
+                                                                </Typography>
+                                                                <Countdown daysInHours date={new Date(i.endTime)}>
+                                                                </Countdown>
+                                                            </div>) : (
+                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                                                <strong>Sale Ended</strong>
+                                                            </Typography>
+                                                        )}
+                                                        </Typography>
+                                                    )}
+                                                    
+                                                    {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                        {new Date() < new Date(i.startTime) ? (
+                                                            <div style={{ color: "#00FF00" }} >
+
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Auction Starts At:</strong>
+                                                                </Typography>
+                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
+                                                                <Countdown daysInHours date={new Date(i.startTime)}>
+                                                                </Countdown>
+                                                            </div>
+                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
+                                                            <div style={{ color: "#FF0000" }}>
+                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Auction Ends At:</strong>
+                                                                </Typography>
+                                                                <Countdown daysInHours date={new Date(i.endTime)}>
+                                                                </Countdown>
+                                                            </div>) : (
+                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                                                <strong>Auction Ended</strong>
+                                                            </Typography>
+                                                        )}
+                                                    </Typography> */}
+                                                </CardContent>
+                                            </CardActionArea>
+                                            <CardActions>
+
+                                            </CardActions>
+                                        </Card>
+                                        </Link>
+                                    )}
                                 </Grid >
                             ))}
                         </Grid>
