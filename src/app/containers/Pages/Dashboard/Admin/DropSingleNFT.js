@@ -11,7 +11,7 @@ import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { useSnackbar } from 'notistack';
 import abiAuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
-import { ExpandMore } from '@material-ui/icons';
+import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import ListIcon from "@material-ui/icons/List";
 import Countdown from 'react-countdown';
 
@@ -286,7 +286,7 @@ const DropSingleNFT = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -303,13 +303,13 @@ const DropSingleNFT = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Title: </strong>
+                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                            <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -318,8 +318,8 @@ const DropSingleNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Description: </strong>
+                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                            <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -328,8 +328,8 @@ const DropSingleNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Rarity: </strong>
+                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                            <strong>Rarity </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -338,8 +338,8 @@ const DropSingleNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Supply Type: </strong>
+                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                            <strong>Supply Type </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -348,24 +348,26 @@ const DropSingleNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Token Supply: </strong>
+                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                            <strong>Token Supply </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
                                         {nftDetail.tokenSupply}
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <Typography color="textSecondary" component="p">
-                                            <strong>Properties:</strong>
-                                        </Typography>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                    <Table striped bordered hover >
+                            </CardContent>
+                        </Card>
+                        <Row style={{marginTop: '5px'}}>
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color:'#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped bordered hover responsive >
                                             <thead>
                                                 <tr>
                                                     <th>Key</th>
@@ -382,10 +384,10 @@ const DropSingleNFT = (props) => {
                                                 }   
                                             </tbody>
                                         </Table>
-                                    </Col>
-                                </Row>
-                            </CardContent>
-                        </Card>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
                         <Row style={{marginTop: '5px'}}>
                             <Col>
                                 <Accordion>
