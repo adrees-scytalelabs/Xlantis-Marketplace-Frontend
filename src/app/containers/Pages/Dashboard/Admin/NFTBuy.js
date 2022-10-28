@@ -14,6 +14,9 @@ import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import ReactTooltip from "react-tooltip";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -282,13 +285,37 @@ const NFTBuy = (props) => {
                                     className="text-center"
                                     title={nftDetail.title}
                                 /> */}
-                                <CardMedia
-                                    className={classes.media}
-                                    title="NFT Artwork"
-                                    image={nftDetail.nftURI}
-                                >
+                                
+                                    <CardMedia
+                                        className={classes.media}
+                                        title="NFT Artwork"
+                                        image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
+                                    >
 
-                                </CardMedia>
+                                    </CardMedia>
+                                    {nftDetail.nftFormat === "mp3"  ? (
+                                    <div>
+                                        <AudioPlayer
+                                            // style={{ width: "300px" }}
+                                            style={{ borderRadius: "1rem" }}
+                                            autoPlay = {false}
+                                            layout="horizontal"
+                                            src={nftDetail.nftURI}
+                                            onPlay={(e) => console.log("onPlay")}
+                                            showSkipControls={false}
+                                            showJumpControls={false}
+                                            // header={`Now playing: ${name}`}
+                                            showDownloadProgress
+                                            // onClickPrevious={handleClickPrevious}
+                                            // onClickNext={handleClickNext}
+                                            // onEnded={handleClickNext}
+                                            // other props here
+                                        />
+                                    </div>) : (null) }
+                                        
+                                   
+                                    
+                                
                             </Card>
                         </Paper>
                     </div>
@@ -338,7 +365,7 @@ const NFTBuy = (props) => {
                                 <Row>
                                     <Col>
                                         <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Token Supply: </strong>
+                                            <strong >Token Supply: </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
