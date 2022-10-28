@@ -162,6 +162,7 @@ function NewNFT(props) {
     let [previewImageURI, setPreviewImageURI] = useState(r1);
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
     let [isMp3File, setIsMp3File] = useState(false);
+    let [contractType, setContractType] = useState("");
 
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -1378,55 +1379,7 @@ function NewNFT(props) {
                                             )}
                                         />
                                     </div>
-                                    <FormControl component="fieldset">
-                                        <lable component="legend">Select Supply Type</lable>
-                                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                                            <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
-                                                setSupplyType("Single");
-                                                setTokenSupply(1);
-                                            }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label="Single" />
-                                            <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
-                                                setSupplyType("Variable")
-                                                setTokenSupply(1);
-                                            }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
-
-                                        </RadioGroup>
-                                    </FormControl>
-                                    {supplyType === 'Single' ? (
-                                        <div className="form-group">
-                                            <label>Token Supply</label>
-                                            <div className="filter-widget">
-                                                <input
-                                                    type="number"
-                                                    required
-                                                    value={tokenSupply}
-                                                    className="form-control"
-                                                    disabled
-                                                />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="form-group">
-                                            <label>Token Supply</label>
-                                            <div className="filter-widget">
-                                                <input
-                                                    type="number"
-                                                    placeholder="Enter Token price(USD)"
-                                                    required
-                                                    value={tokenSupply}
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        if (e.target.value > 0)
-                                                            setTokenSupply(e.target.value);
-                                                        else {
-                                                            setTokenSupply(1);
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
+                                    
                                     <div>
                                         <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
                                     </div>
@@ -1583,6 +1536,7 @@ function NewNFT(props) {
                                                                     setCollection(value.name)
                                                                     setCollectionId(value._id)
                                                                     setNftContractAddress(value.nftContractAddress);
+                                                                    setContractType(value.contractType);
                                                                     console.log("Value: ", value);
                                                                 }
                                                             }
@@ -1601,31 +1555,82 @@ function NewNFT(props) {
                                         )
                                         
                                     }
+                                    {(contractType === "1155") ? (
+                                        <div>
+                                            <FormControl component="fieldset">
+                                                <lable component="legend">Select Supply Type</lable>
+                                                <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                                    <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
+                                                        setSupplyType("Single");
+                                                        setTokenSupply(1);
+                                                    }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label="Single" />
+                                                    <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
+                                                        setSupplyType("Variable")
+                                                        setTokenSupply(1);
+                                                    }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
+        
+                                                </RadioGroup>
+                                            </FormControl>
                                         
-
-                                    {/* )} */}
-
-
+                                            {supplyType === 'Single' ? (
+                                            <div className="form-group">
+                                                <label>Token Supply</label>
+                                                <div className="filter-widget">
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        value={tokenSupply}
+                                                        className="form-control"
+                                                        disabled
+                                                    />
+                                                </div>
+                                            </div>
+                                            ) : (
+                                                <div className="form-group">
+                                                    <label>Token Supply</label>
+                                                    <div className="filter-widget">
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Enter Token price(USD)"
+                                                            required
+                                                            value={tokenSupply}
+                                                            className="form-control"
+                                                            onChange={(e) => {
+                                                                if (e.target.value > 0)
+                                                                    setTokenSupply(e.target.value);
+                                                                else {
+                                                                    setTokenSupply(1);
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                    
+                                        </div>
+                                    ) : (null)}
 
                                 </div>
-
-                                {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
+                                {(contractType === "1155") ? ( 
+                                <div>           
+                                    {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
+                                        <button
+                                            className="btn"
+                                            type="submit"
+                                            disabled
+                                        >
+                                            <i className="fa fa-plus"></i> Add NFT to queue
+                                        </button>
+                                    ) : (
                                     <button
                                         className="btn"
-                                        type="submit"
-                                        disabled
+                                        type="button"
+                                        onClick={(e) => handleAddClick(e)}
                                     >
                                         <i className="fa fa-plus"></i> Add NFT to queue
                                     </button>
-                                ) : (
-                                <button
-                                    className="btn"
-                                    type="button"
-                                    onClick={(e) => handleAddClick(e)}
-                                >
-                                    <i className="fa fa-plus"></i> Add NFT to queue
-                                </button>
-                                )}
+                                    )}
+                                </div> ) : (null)}
                             </div>
                         </form>
 
@@ -1800,15 +1805,28 @@ function NewNFT(props) {
                     ) : (
                         tokenList.length === 0 ? (
                             <div className="submit-section">
-                                <button type="button" disabled className="btn submit-btn">
-                                    Batch create NFTs
-                        </button>
+                                {contractType === "1155" ? (
+                                    <button type="button" disabled className="btn submit-btn">
+                                        Batch create NFTs 
+                                    </button>
+                                ) : (
+                                    <button type="button" disabled className="btn submit-btn">
+                                        Free Mint
+                                    </button>
+                                )}
+                                
                             </div>
                         ) : (
                         <div className="submit-section">
+                            {contractType === "1155" ? (
                             <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
                                 Batch create NFTs
                             </button>
+                            ) : (
+                            <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
+                                Free Mint
+                            </button>
+                            )}
                         </div>
                         // )
 
