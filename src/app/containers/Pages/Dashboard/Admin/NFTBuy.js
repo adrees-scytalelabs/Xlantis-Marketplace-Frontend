@@ -275,7 +275,7 @@ const NFTBuy = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -292,13 +292,13 @@ const NFTBuy = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Title: </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -307,8 +307,8 @@ const NFTBuy = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Description: </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -317,8 +317,8 @@ const NFTBuy = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Rarity: </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Rarity </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -327,8 +327,8 @@ const NFTBuy = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Supply Type: </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Supply Type </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -337,8 +337,8 @@ const NFTBuy = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Token Supply: </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Token Supply </strong>
                                         </Typography>
                                     </Col>
                                     <Col>

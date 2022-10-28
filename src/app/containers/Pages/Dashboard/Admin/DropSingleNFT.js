@@ -286,7 +286,7 @@ const DropSingleNFT = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -303,13 +303,13 @@ const DropSingleNFT = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Nft Title: </strong>
+                                            <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -319,7 +319,7 @@ const DropSingleNFT = (props) => {
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Nft Description: </strong>
+                                            <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -329,7 +329,7 @@ const DropSingleNFT = (props) => {
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Rarity: </strong>
+                                            <strong>Rarity </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -339,7 +339,7 @@ const DropSingleNFT = (props) => {
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Supply Type: </strong>
+                                            <strong>Supply Type </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -349,7 +349,7 @@ const DropSingleNFT = (props) => {
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Token Supply: </strong>
+                                            <strong>Token Supply </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
