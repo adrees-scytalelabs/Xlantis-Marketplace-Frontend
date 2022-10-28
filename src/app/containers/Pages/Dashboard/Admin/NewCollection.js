@@ -25,6 +25,10 @@ import * as Addresses from '../../../../components/blockchain/Addresses/Addresse
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import RequestApprovalModal from '../../../../components/Modals/RequestApprovalModal';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json'
+import FormControl from '@material-ui/core/FormControl';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -109,6 +113,7 @@ function NewCollection(props) {
     let [isAuctionApproved, setIsAuctionApproved] = useState(false);
     let [approvingAuction, setApprovingAuction] = useState(false);
     let [doneLoader, setDoneLoader] = useState(false);
+    let [nftType, setNftType] = useState("ERC721");
 
 
     useEffect(() => {
@@ -585,6 +590,20 @@ function NewCollection(props) {
                                             }}
                                         />
                                     </div>
+
+                                    <FormControl component="fieldset">
+                                    <lable component="legend">Select NFT Type</lable>
+                                    <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                        <FormControlLabel style={{ color: 'black' }} value="ERC721" onChange={() => {
+                                            setNftType("ERC721");
+                                            // checked={saleType === 'auction'}
+                                        }}  checked={nftType === 'ERC721'} control={<Radio color="secondary" />} label="ERC721" />
+                                        <FormControlLabel style={{ color: 'black' }} value="ERC1155" onChange={() => {
+                                            setNftType("ERC1155")
+                                        }}  checked={nftType === 'ERC1155'} control={<Radio color="secondary" />} label="ERC1155" />
+
+                                    </RadioGroup>
+                                </FormControl>
                                     {/* <div>
                                         <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
                                     </div>
