@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Card, CardContent, CardHeader, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
 import { Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Web3 from 'web3';
@@ -14,6 +14,7 @@ import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Backdrop from '@material-ui/core/Backdrop';
 import ReactTooltip from "react-tooltip";
+import { BlurLinear, ExpandMore } from '@material-ui/icons';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -345,27 +346,18 @@ const NFTBuy = (props) => {
                                         {nftDetail.tokenSupply}
                                     </Col>
                                 </Row>
-                                {/* <Row>
-                                    <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>MARKET PLACE: </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.currentMarketplaceId._id}
-                                    </Col>
-                                </Row> */}
-                                <Row>
-                                    <Col>
-                                        <Typography color="textSecondary" component="p">
-                                            <strong>Properties:</strong>
-                                        </Typography>
-                                    </Col>
-                                </Row>
-                                
-                                <Row>
-                                    <Col>
-                                    <Table striped bordered hover >
+                            </CardContent>
+                        </Card>
+                        <Row style={{marginTop: '5px', marginBottom: '5px'}} >
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color: '#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped bordered hover >
                                             <thead>
                                                 <tr>
                                                     <th>Key</th>
@@ -382,53 +374,51 @@ const NFTBuy = (props) => {
                                                 }   
                                             </tbody>
                                         </Table>
-                                    </Col>
-                                </Row>
-                                <br></br>
-                                {((location.state.nftDetail.currentMarketplaceId.isSold === false)  && (new Date() >= new Date(location.state.startTime) && new Date() < new Date(location.state.endTime))) ? (
-                                     <Row>
-                                        <Col style={{
-                                            textAlign:"center"
-                                        }}>
-                                        <button type="button" onClick={(e) => handleBuy(e)} className="btn submit-btn ">
-                                            Buy
-                                        </button>
- 
-                                     </Col>
-                                 </Row>
-                                ) : (
-                                    <Row>
-                                        <Col style={{
-                                            textAlign:"center"
-                                        }}>
-                                                <div data-tip data-for="registerTip">
-                                                    <button type="button" data-tip data-for="registerTip" disabled   onClick={(e) => handleBuy(e) }  className="btn submit-btn ">
-                                                        Buy
-                                                    </button>
-                                                    {(location.state.nftDetail.currentMarketplaceId.isSold === true) ? (
-                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
-                                                            NFT Is Sold
-                                                        </ReactTooltip>
-                                                    ) : (new Date() < new Date(location.state.startTime)) ? (
-                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
-                                                            Sale Has Not Started Yet
-                                                        </ReactTooltip>
-                                                    ) : ( new Date() > new Date(location.state.endTime)) ? (
-                                                        <ReactTooltip id="registerTip" place="top" effect="solid">
-                                                            Sale Has Ended
-                                                        </ReactTooltip>
-                                                        
-                                                    ) : (null) }
-                                                   
-                                                </div>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
+                        <br></br>
+                        {((location.state.nftDetail.currentMarketplaceId.isSold === false)  && (new Date() >= new Date(location.state.startTime) && new Date() < new Date(location.state.endTime))) ? (
+                                <Row>
+                                <Col style={{
+                                    textAlign:"center"
+                                }}>
+                                <button type="button" onClick={(e) => handleBuy(e)} className="btn submit-btn ">
+                                    Buy
+                                </button>
 
-                                        </Col>
-                                    </Row>
-                                )}
-                               
-                                
-                            </CardContent>
-                        </Card>
+                                </Col>
+                            </Row>
+                        ) : (
+                            <Row>
+                                <Col style={{
+                                    textAlign:"center"
+                                }}>
+                                        <div data-tip data-for="registerTip">
+                                            <button type="button" data-tip data-for="registerTip" disabled   onClick={(e) => handleBuy(e) }  className="btn submit-btn ">
+                                                Buy
+                                            </button>
+                                            {(location.state.nftDetail.currentMarketplaceId.isSold === true) ? (
+                                                <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                    NFT Is Sold
+                                                </ReactTooltip>
+                                            ) : (new Date() < new Date(location.state.startTime)) ? (
+                                                <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                    Sale Has Not Started Yet
+                                                </ReactTooltip>
+                                            ) : ( new Date() > new Date(location.state.endTime)) ? (
+                                                <ReactTooltip id="registerTip" place="top" effect="solid">
+                                                    Sale Has Ended
+                                                </ReactTooltip>
+                                                
+                                            ) : (null) }
+                                            
+                                        </div>
+
+                                </Col>
+                            </Row>
+                        )}
                     </div>
                 </div>
             </div>
