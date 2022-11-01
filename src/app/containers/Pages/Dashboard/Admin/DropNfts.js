@@ -356,9 +356,9 @@ function MyNFTs(props) {
                     
                                                                
                                                                 (isPlaying === false ) ? (
-                                                                     <button class="btn" style={{borderRadius: "60%"}} onClick={(e) => handlePlay(e,i.nftURI)}><PlayArrow /></button>
+                                                                     <button class="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePlay(e,i.nftURI)}><PlayArrow /></button>
                                                                 ) : (
-                                                                    <button class="btn" style={{borderRadius: "60%"}} onClick={(e) => handlePause(e)}><Pause /></button>
+                                                                    <button class="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePause(e)}><Pause /></button>
                                                                 )}
                                                                
                                                             </div>
