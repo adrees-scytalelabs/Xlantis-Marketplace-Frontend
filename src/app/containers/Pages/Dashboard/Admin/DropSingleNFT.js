@@ -238,31 +238,44 @@ const DropSingleNFT = (props) => {
         }
         else {
 
-            //sending call on blockchain
-            let abiAuctionFactory = abiAuctionDropFactory;
-            let addressAuctionFactory = Addresses.AuctionDropFactory;
+            if (contractType === "1155"){
+                //sending call on blockchain
+                let abiAuctionFactory = abiAuctionDropFactory;
+                let addressAuctionFactory = Addresses.AuctionDropFactory;
 
-            //getting data to send call
-            let dropIdHash = getHash(nftDetail.dropId);
-            let nftAddress = nftDetail.collectionId.nftContractAddress //to be confirmed to send request
-            let tokenId = nftDetail.nftId;
-            let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
+                //getting data to send call
+                let dropIdHash = getHash(nftDetail.dropId);
+                let nftAddress = nftDetail.collectionId.nftContractAddress //to be confirmed to send request
+                let tokenId = nftDetail.nftId;
+                let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
 
-            let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
-            console.log("My auction drop factory instance: ", myContractInstance);
+                let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
+                console.log("My auction drop factory instance: ", myContractInstance);
 
-            await myContractInstance.methods.acceptBid(dropIdHash, nftAddress, tokenId, bidIdHash).send({ from: accounts[0] }, (err, response) => {
-                console.log("get Transaction: ", err, response);
+                await myContractInstance.methods.acceptBid(dropIdHash, nftAddress, tokenId, bidIdHash).send({ from: accounts[0] }, (err, response) => {
+                    console.log("get Transaction: ", err, response);
 
-                if(err !== null) {
-                    console.log("Err: ", err);
-                }
+                    if(err !== null) {
+                        console.log("Err: ", err);
+                    }
 
 
-            }).
-            on('receipt', (receipt) => {
-                console.log("receipt: ", receipt);
+                }).
+                on('receipt', (receipt) => {
+                    console.log("receipt: ", receipt);
 
+                    //sending call on backend to update data
+                    axios.post("/auction/bid/accept").then(
+                        (response) => {
+                            console.log("response", response);
+                        },
+                        (error) => {
+                            console.log("Error: ", error);
+                        }
+                    )
+                });
+            } 
+            else if (contractType === "721") {
                 //sending call on backend to update data
                 axios.post("/auction/bid/accept").then(
                     (response) => {
@@ -272,7 +285,8 @@ const DropSingleNFT = (props) => {
                         console.log("Error: ", error);
                     }
                 )
-            });
+            }
+            
         }   
     }
     
