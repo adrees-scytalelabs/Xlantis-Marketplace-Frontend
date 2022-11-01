@@ -164,6 +164,7 @@ function NewNFT(props) {
     let [isMp3File, setIsMp3File] = useState(false);
     let [contractType, setContractType] = useState("");
 
+    let [previewImage, setPreviewImage] = useState(r1);
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
     
@@ -678,20 +679,24 @@ function NewNFT(props) {
         if(e.target.files[0].name.includes(".glb")) {
             typeImage = "glb";
             setImageType("glb");
+            setImage(e.target.files[0]);
         }
         else if(e.target.files[0].type.split("/")[1] === "mp3" || e.target.files[0].name.includes(".mp3")) {
             typeImage = "mp3"
             setIsMp3File(true);
             setImageType("mp3");
+            setImage(e.target.files[0]);
 
             // setImageType(e.target.files[0].type.split("/")[1]);
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
             typeImage = e.target.files[0].type.split("/")[1];
+            setImage(e.target.files[0]);
             
             if(previewImageURI !== "") {
                 setPreviewImageURI("");
+                setPreviewImage(r1);
             }
             // setIsGlbFile(false);
         }
@@ -729,7 +734,7 @@ function NewNFT(props) {
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
-                setImage(response.data.url);
+                // setImage(response.data.url);
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
@@ -1018,6 +1023,7 @@ function NewNFT(props) {
         setIsUploadingPreview(true);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
+        setPreviewImage(e.target.files[0]);
         let typeImage;
 
         console.log("Image Type: ", typeImage);
@@ -1043,6 +1049,128 @@ function NewNFT(props) {
                 setIsUploadingPreview(false);
                 // 
             })
+        }
+    }
+
+    let handleFreeMint = async (e) => {
+        e.preventDefault();
+        if (image === r1) {
+            let variant = "error";
+            enqueueSnackbar('Please Upload Artwork Photo', { variant });
+        } else if (name === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Artwork Name', { variant });
+        } else if (description === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Artwork Description', { variant });
+        } else if (rarity === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Select Artwork Rarity', { variant });
+        } else if (collection === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Collection Name', { variant });
+        } else if (image !== r1 && (imageType === "glb" || imageType === "mp3")) {
+            if (previewImage === r1) {
+                let variant = 'error';
+                enqueueSnackbar("Please Upload Preview Image", { variant });
+            }
+        } else {
+            handleShowBackdrop();
+            await loadWeb3();
+
+            const web3 = window.web3
+            const accounts = await web3.eth.getAccounts();
+            const network = await web3.eth.net.getNetworkType()
+            if (network !== 'goerli') {
+                setNetwork(network);
+                setIsSaving(false);
+                handleShow();
+            }
+            else {
+
+                let lazyMintId;
+                let nftIdHex;
+                let propertiesObject = {};
+                properties.map((property) => {
+                    propertiesObject[property.key] = property.value;
+                });
+                console.log("Properties are: ", propertiesObject);
+
+                let nftData = new FormData();
+                nftData.append("NFT", image);
+                
+                if (imageType === "glb" || imageType === "mp3") {
+                    nftData.append("previewImage", image);
+                }
+
+                nftData.append("title", name);
+                nftData.append("collectionId", collectionId);
+                nftData.append("description", description);
+                nftData.append("type", rarity);
+                nftData.append("properties", propertiesObject);
+
+                console.log("NFT Data form data: ", nftData);
+                await axios.post("lazy-mint/NFT", nftData).then(
+                    async (response) => {
+                        console.log("Response from backend on free mint: ", response);
+                        lazyMintId = response.data.lazyMintId;
+                        nftIdHex = response.data.nftId
+                    },
+                    (err) => {
+                        console.log('Err from backend on free mint: ', err);
+                        console.log('Err response from backend on free mint: ', err.response);
+                    }
+                )
+
+                
+                //signing tokenId
+                // const messageHash = await web3.eth.accounts.hashMessage(web3.utils.utf8ToHex("Hello World"));
+                const messageData = {
+                    "tokenId": nftIdHex
+                }
+
+                const signature = await web3.eth.personal.sign(web3.utils.toHex(JSON.stringify(messageData)), accounts[0], (err, signature) => {
+                    console.log("Sinature: ", signature);
+                });
+                // console.log("Signature: ", signature);
+                
+
+                //sending call on backend to update voucher sign
+                let voucherData = {
+                    "lazyMintId": lazyMintId,
+                    "signature": signature
+                }
+
+                await axios.patch("/lazy-mint/voucher", voucherData).then(
+                    (response) => {
+                        console.log("Response from sending voucher sign: ", response);
+                    },
+                    (err) => {
+                        console.log("Err from sending voucher sign: ", err);
+                        console.log("Err response from sending voucher sign: ", err.response);
+                    }
+                )
+
+                //resetting the values
+                setProperties([
+                    { key: "", value: ""}
+                ]);
+                setNftId("");
+                setNftURI("");
+                setPreviewImageURI("");
+                setIpfsHash("");
+                setImage(r1);
+                setName("");
+                setDescription("");
+                setRarity("");
+                setTokenSupply(1);
+                setSupplyType("Single");
+                setIpfsHash("");
+                setIsGlbFile(false);
+                setIsMp3File(false);
+                handleCloseBackdrop();
+                
+            }
         }
     }
 
@@ -1823,7 +1951,7 @@ function NewNFT(props) {
                                 Batch create NFTs
                             </button>
                             ) : (
-                            <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
+                            <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
                                 Free Mint
                             </button>
                             )}
@@ -1832,6 +1960,9 @@ function NewNFT(props) {
 
                     )
                 )}
+                {/* <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
+                    Free Mint
+                </button> */}
             </div >
             <NetworkErrorModal
                 show={show}
