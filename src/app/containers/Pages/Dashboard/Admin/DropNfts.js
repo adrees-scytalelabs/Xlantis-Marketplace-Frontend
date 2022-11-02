@@ -69,9 +69,9 @@ function MyNFTs(props) {
     const { enqueueSnackbar } = useSnackbar();
     let [openDialog, setOpenDialog] = useState(false);
     let [openEditModal, setOpenEditModal] = useState(false);
-    let [isPlaying, setIsPlaying] = useState(false);
+    // let [isPlaying, setIsPlaying] = useState(false);
     let [nftDetail, setNftDetail] = useState({});
-    let [audio, setAudio] = useState();
+    // let [audio, setAudio] = useState();
     let handleOpenNFTDetailModal = (nftObject) => {
         setNftDetail(nftObject);
         setOpenDialog(true);
@@ -179,30 +179,30 @@ function MyNFTs(props) {
     const handleShowBackdrop = () => {
         setOpen(true);
     };
-    let handlePlay= async(e, src) => {
-        e.preventDefault();
-        let audioPlay = new Audio(src);
-        console.log("src", src);
-        console.log("audi play", audioPlay);
+    // let handlePlay= async(e, src) => {
+    //     e.preventDefault();
+    //     let audioPlay = new Audio(src);
+    //     console.log("src", src);
+    //     console.log("audi play", audioPlay);
         
-        console.log("playing?",isPlaying);
-        console.log("audio", audio);
-        setIsPlaying(true);
-        audioPlay.play();
-        setAudio(audioPlay);
-        console.log("Audio",audio);
+    //     console.log("playing?",isPlaying);
+    //     console.log("audio", audio);
+    //     setIsPlaying(true);
+    //     audioPlay.play();
+    //     setAudio(audioPlay);
+    //     console.log("Audio",audio);
 
      
-    }
-    let handlePause= async(e, src) => {
-        e.preventDefault();
-        console.log("Audio",audio);
-        setIsPlaying(false);
-        audio.pause();
+    // }
+    // let handlePause= async(e, src) => {
+    //     e.preventDefault();
+    //     console.log("Audio",audio);
+    //     setIsPlaying(false);
+    //     audio.pause();
 
         
      
-    }
+    // }
     let getNFTs = (start, end) => {
         handleShowBackdrop();
         console.log("nftids", location.state.nftId);
@@ -349,7 +349,7 @@ function MyNFTs(props) {
                                                         />
                                                          
                                                          
-                                                        {i.nftFormat === "mp3" ? (
+                                                        {/* {i.nftFormat === "mp3" ? (
                                                             
                                                             <div style={{ position: "absolute", top: "80%", left: "75%" , }}>
                                                                 {
@@ -362,7 +362,7 @@ function MyNFTs(props) {
                                                                 )}
                                                                
                                                             </div>
-                                                        ) : (null)}
+                                                        ) : (null)} */}
                                                         
                                                     </div>
                                                         
