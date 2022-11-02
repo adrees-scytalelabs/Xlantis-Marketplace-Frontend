@@ -162,7 +162,9 @@ function NewNFT(props) {
     let [previewImageURI, setPreviewImageURI] = useState(r1);
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
     let [isMp3File, setIsMp3File] = useState(false);
+    let [contractType, setContractType] = useState("");
 
+    let [previewImage, setPreviewImage] = useState(r1);
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
     // let [executiveProducer, setExecutiveProducer] = useState('');
     
@@ -677,20 +679,24 @@ function NewNFT(props) {
         if(e.target.files[0].name.includes(".glb")) {
             typeImage = "glb";
             setImageType("glb");
+            setImage(e.target.files[0]);
         }
         else if(e.target.files[0].type.split("/")[1] === "mp3" || e.target.files[0].name.includes(".mp3")) {
             typeImage = "mp3"
             setIsMp3File(true);
             setImageType("mp3");
+            setImage(e.target.files[0]);
 
             // setImageType(e.target.files[0].type.split("/")[1]);
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
             typeImage = e.target.files[0].type.split("/")[1];
+            setImage(e.target.files[0]);
             
             if(previewImageURI !== "") {
                 setPreviewImageURI("");
+                setPreviewImage(r1);
             }
             // setIsGlbFile(false);
         }
@@ -728,7 +734,7 @@ function NewNFT(props) {
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
-                setImage(response.data.url);
+                // setImage(response.data.url);
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
@@ -1017,6 +1023,7 @@ function NewNFT(props) {
         setIsUploadingPreview(true);
         const reader = new window.FileReader();
         let imageNFT = e.target.files[0];
+        setPreviewImage(e.target.files[0]);
         let typeImage;
 
         console.log("Image Type: ", typeImage);
@@ -1042,6 +1049,128 @@ function NewNFT(props) {
                 setIsUploadingPreview(false);
                 // 
             })
+        }
+    }
+
+    let handleFreeMint = async (e) => {
+        e.preventDefault();
+        if (image === r1) {
+            let variant = "error";
+            enqueueSnackbar('Please Upload Artwork Photo', { variant });
+        } else if (name === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Artwork Name', { variant });
+        } else if (description === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Artwork Description', { variant });
+        } else if (rarity === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Select Artwork Rarity', { variant });
+        } else if (collection === "") {
+            let variant = "error";
+            enqueueSnackbar('Please Enter Collection Name', { variant });
+        } else if (image !== r1 && (imageType === "glb" || imageType === "mp3")) {
+            if (previewImage === r1) {
+                let variant = 'error';
+                enqueueSnackbar("Please Upload Preview Image", { variant });
+            }
+        } else {
+            handleShowBackdrop();
+            await loadWeb3();
+
+            const web3 = window.web3
+            const accounts = await web3.eth.getAccounts();
+            const network = await web3.eth.net.getNetworkType()
+            if (network !== 'goerli') {
+                setNetwork(network);
+                setIsSaving(false);
+                handleShow();
+            }
+            else {
+
+                let lazyMintId;
+                let nftIdHex;
+                let propertiesObject = {};
+                properties.map((property) => {
+                    propertiesObject[property.key] = property.value;
+                });
+                console.log("Properties are: ", propertiesObject);
+
+                let nftData = new FormData();
+                nftData.append("NFT", image);
+                
+                if (imageType === "glb" || imageType === "mp3") {
+                    nftData.append("previewImage", image);
+                }
+
+                nftData.append("title", name);
+                nftData.append("collectionId", collectionId);
+                nftData.append("description", description);
+                nftData.append("type", rarity);
+                nftData.append("properties", propertiesObject);
+
+                console.log("NFT Data form data: ", nftData);
+                await axios.post("lazy-mint/NFT", nftData).then(
+                    async (response) => {
+                        console.log("Response from backend on free mint: ", response);
+                        lazyMintId = response.data.lazyMintId;
+                        nftIdHex = response.data.nftId
+                    },
+                    (err) => {
+                        console.log('Err from backend on free mint: ', err);
+                        console.log('Err response from backend on free mint: ', err.response);
+                    }
+                )
+
+                
+                //signing tokenId
+                // const messageHash = await web3.eth.accounts.hashMessage(web3.utils.utf8ToHex("Hello World"));
+                const messageData = {
+                    "tokenId": nftIdHex
+                }
+
+                const signature = await web3.eth.personal.sign(web3.utils.toHex(JSON.stringify(messageData)), accounts[0], (err, signature) => {
+                    console.log("Sinature: ", signature);
+                });
+                // console.log("Signature: ", signature);
+                
+
+                //sending call on backend to update voucher sign
+                let voucherData = {
+                    "lazyMintId": lazyMintId,
+                    "signature": signature
+                }
+
+                await axios.patch("/lazy-mint/voucher", voucherData).then(
+                    (response) => {
+                        console.log("Response from sending voucher sign: ", response);
+                    },
+                    (err) => {
+                        console.log("Err from sending voucher sign: ", err);
+                        console.log("Err response from sending voucher sign: ", err.response);
+                    }
+                )
+
+                //resetting the values
+                setProperties([
+                    { key: "", value: ""}
+                ]);
+                setNftId("");
+                setNftURI("");
+                setPreviewImageURI("");
+                setIpfsHash("");
+                setImage(r1);
+                setName("");
+                setDescription("");
+                setRarity("");
+                setTokenSupply(1);
+                setSupplyType("Single");
+                setIpfsHash("");
+                setIsGlbFile(false);
+                setIsMp3File(false);
+                handleCloseBackdrop();
+                
+            }
         }
     }
 
@@ -1378,55 +1507,7 @@ function NewNFT(props) {
                                             )}
                                         />
                                     </div>
-                                    <FormControl component="fieldset">
-                                        <lable component="legend">Select Supply Type</lable>
-                                        <RadioGroup row aria-label="position" name="position" defaultValue="top">
-                                            <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
-                                                setSupplyType("Single");
-                                                setTokenSupply(1);
-                                            }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label="Single" />
-                                            <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
-                                                setSupplyType("Variable")
-                                                setTokenSupply(1);
-                                            }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
-
-                                        </RadioGroup>
-                                    </FormControl>
-                                    {supplyType === 'Single' ? (
-                                        <div className="form-group">
-                                            <label>Token Supply</label>
-                                            <div className="filter-widget">
-                                                <input
-                                                    type="number"
-                                                    required
-                                                    value={tokenSupply}
-                                                    className="form-control"
-                                                    disabled
-                                                />
-                                            </div>
-                                        </div>
-                                    ) : (
-                                        <div className="form-group">
-                                            <label>Token Supply</label>
-                                            <div className="filter-widget">
-                                                <input
-                                                    type="number"
-                                                    placeholder="Enter Token price(USD)"
-                                                    required
-                                                    value={tokenSupply}
-                                                    className="form-control"
-                                                    onChange={(e) => {
-                                                        if (e.target.value > 0)
-                                                            setTokenSupply(e.target.value);
-                                                        else {
-                                                            setTokenSupply(1);
-                                                        }
-                                                    }}
-                                                />
-                                            </div>
-                                        </div>
-                                    )}
-
+                                    
                                     <div>
                                         <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
                                     </div>
@@ -1583,6 +1664,7 @@ function NewNFT(props) {
                                                                     setCollection(value.name)
                                                                     setCollectionId(value._id)
                                                                     setNftContractAddress(value.nftContractAddress);
+                                                                    setContractType(value.contractType);
                                                                     console.log("Value: ", value);
                                                                 }
                                                             }
@@ -1601,31 +1683,82 @@ function NewNFT(props) {
                                         )
                                         
                                     }
+                                    {(contractType === "1155") ? (
+                                        <div>
+                                            <FormControl component="fieldset">
+                                                <lable component="legend">Select Supply Type</lable>
+                                                <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                                    <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
+                                                        setSupplyType("Single");
+                                                        setTokenSupply(1);
+                                                    }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label="Single" />
+                                                    <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
+                                                        setSupplyType("Variable")
+                                                        setTokenSupply(1);
+                                                    }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
+        
+                                                </RadioGroup>
+                                            </FormControl>
                                         
-
-                                    {/* )} */}
-
-
+                                            {supplyType === 'Single' ? (
+                                            <div className="form-group">
+                                                <label>Token Supply</label>
+                                                <div className="filter-widget">
+                                                    <input
+                                                        type="number"
+                                                        required
+                                                        value={tokenSupply}
+                                                        className="form-control"
+                                                        disabled
+                                                    />
+                                                </div>
+                                            </div>
+                                            ) : (
+                                                <div className="form-group">
+                                                    <label>Token Supply</label>
+                                                    <div className="filter-widget">
+                                                        <input
+                                                            type="number"
+                                                            placeholder="Enter Token price(USD)"
+                                                            required
+                                                            value={tokenSupply}
+                                                            className="form-control"
+                                                            onChange={(e) => {
+                                                                if (e.target.value > 0)
+                                                                    setTokenSupply(e.target.value);
+                                                                else {
+                                                                    setTokenSupply(1);
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                            )}
+                                    
+                                        </div>
+                                    ) : (null)}
 
                                 </div>
-
-                                {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
+                                {(contractType === "1155") ? ( 
+                                <div>           
+                                    {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
+                                        <button
+                                            className="btn"
+                                            type="submit"
+                                            disabled
+                                        >
+                                            <i className="fa fa-plus"></i> Add NFT to queue
+                                        </button>
+                                    ) : (
                                     <button
                                         className="btn"
-                                        type="submit"
-                                        disabled
+                                        type="button"
+                                        onClick={(e) => handleAddClick(e)}
                                     >
                                         <i className="fa fa-plus"></i> Add NFT to queue
                                     </button>
-                                ) : (
-                                <button
-                                    className="btn"
-                                    type="button"
-                                    onClick={(e) => handleAddClick(e)}
-                                >
-                                    <i className="fa fa-plus"></i> Add NFT to queue
-                                </button>
-                                )}
+                                    )}
+                                </div> ) : (null)}
                             </div>
                         </form>
 
@@ -1800,20 +1933,36 @@ function NewNFT(props) {
                     ) : (
                         tokenList.length === 0 ? (
                             <div className="submit-section">
-                                <button type="button" disabled className="btn submit-btn">
-                                    Batch create NFTs
-                        </button>
+                                {contractType === "1155" ? (
+                                    <button type="button" disabled className="btn submit-btn">
+                                        Batch create NFTs 
+                                    </button>
+                                ) : (
+                                    <button type="button" disabled className="btn submit-btn">
+                                        Free Mint
+                                    </button>
+                                )}
+                                
                             </div>
                         ) : (
                         <div className="submit-section">
+                            {contractType === "1155" ? (
                             <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
                                 Batch create NFTs
                             </button>
+                            ) : (
+                            <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
+                                Free Mint
+                            </button>
+                            )}
                         </div>
                         // )
 
                     )
                 )}
+                {/* <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
+                    Free Mint
+                </button> */}
             </div >
             <NetworkErrorModal
                 show={show}

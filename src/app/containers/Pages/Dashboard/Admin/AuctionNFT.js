@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Backdrop, Card, CardContent, CardHeader, CardMedia, CircularProgress, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Backdrop, Card, CardContent, CardHeader, CardMedia, CircularProgress, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
 import { Col, Row, Table } from 'react-bootstrap';
 import Web3 from 'web3';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
@@ -14,6 +14,7 @@ import { now } from 'lodash';
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { BlurLinear, ExpandMore } from '@material-ui/icons';
 
 
 
@@ -347,7 +348,7 @@ const AuctionNFT = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
                                 {/* <CardHeader 
@@ -383,13 +384,13 @@ const AuctionNFT = (props) => {
                             </Card>
                         </Paper>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Title: </strong>
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                            <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -398,8 +399,8 @@ const AuctionNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Nft Description: </strong>
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                            <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -408,8 +409,8 @@ const AuctionNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Rarity: </strong>
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                            <strong>Rarity </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -418,8 +419,8 @@ const AuctionNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Supply Type: </strong>
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                            <strong>Supply Type </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
@@ -428,24 +429,26 @@ const AuctionNFT = (props) => {
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Token Supply: </strong>
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                            <strong>Token Supply </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
                                         {nftDetail.tokenSupply}
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <Typography color="textSecondary" component="p">
-                                            <strong>Properties:</strong>
-                                        </Typography>
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                    <Table striped bordered hover >
+                            </CardContent>
+                        </Card>
+                        <Row style={{marginTop: '5px'}}>
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color: '#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped bordered hover >
                                             <thead>
                                                 <tr>
                                                     <th>Key</th>
@@ -462,11 +465,11 @@ const AuctionNFT = (props) => {
                                                 }   
                                             </tbody>
                                         </Table>
-                                    </Col>
-                                </Row>
-                            </CardContent>
-                        </Card>
-                        <Row>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
+                        <Row style={{marginTop: '5px'}} >
                             <Col>
                                 <form>
                                     <label style={{color:"#a70000", marginTop: "10px"}}>Set Bid Expiry Time</label>
