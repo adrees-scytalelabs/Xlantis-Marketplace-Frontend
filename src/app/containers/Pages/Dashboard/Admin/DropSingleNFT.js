@@ -80,6 +80,7 @@ const DropSingleNFT = (props) => {
     let [show, setShow] = useState(false);
     let [bidDetail, setBidDetail] = useState([]);
     let [isHovering, setIsHovering] = useState(false);
+    let [contractType, setContractType] = useState("");
 
 
     const handleCloseBackdrop = () => {
