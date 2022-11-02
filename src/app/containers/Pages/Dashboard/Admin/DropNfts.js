@@ -356,9 +356,9 @@ function MyNFTs(props) {
                     
                                                                
                                                                 (isPlaying === false ) ? (
-                                                                     <button class="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePlay(e,i.nftURI)}><PlayArrow /></button>
+                                                                     <button className="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePlay(e,i.nftURI)}><PlayArrow /></button>
                                                                 ) : (
-                                                                    <button class="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePause(e)}><Pause /></button>
+                                                                    <button className="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePause(e)}><Pause /></button>
                                                                 )}
                                                                
                                                             </div>
@@ -414,7 +414,7 @@ function MyNFTs(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
-                                                            image={i.nftURI}
+                                                            image={i.previewImageURI ? i.previewImageURI : i.nftURI}
                                                             title="NFT Image"
                                                         />
                                                        
