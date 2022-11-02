@@ -14,7 +14,8 @@ import abiAuctionDropFactory from '../../../../components/blockchain/Abis/Auctio
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import ListIcon from "@material-ui/icons/List";
 import Countdown from 'react-countdown';
-
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -296,10 +297,29 @@ const DropSingleNFT = (props) => {
                                 <CardMedia
                                     className={classes.media}
                                     title="NFT Artwork"
-                                    image={nftDetail.nftURI}
+                                    image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
                                 >
 
                                 </CardMedia>
+                                {nftDetail.nftFormat === "mp3"  ? (
+                                    <div>
+                                        <AudioPlayer
+                                            // style={{ width: "300px" }}
+                                            style={{ borderRadius: "1rem" }}
+                                            autoPlay = {false}
+                                            layout="horizontal"
+                                            src={nftDetail.nftURI}
+                                            onPlay={(e) => console.log("onPlay")}
+                                            showSkipControls={false}
+                                            showJumpControls={false}
+                                            // header={`Now playing: ${name}`}
+                                            showDownloadProgress
+                                            // onClickPrevious={handleClickPrevious}
+                                            // onClickNext={handleClickNext}
+                                            // onEnded={handleClickNext}
+                                            // other props here
+                                        />
+                                    </div>) : (null) }
                             </Card>
                         </Paper>
                     </div>
