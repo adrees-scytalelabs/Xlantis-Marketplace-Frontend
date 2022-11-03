@@ -597,10 +597,10 @@ function NewCollection(props) {
                                         <FormControlLabel style={{ color: 'black' }} value="ERC721" onChange={() => {
                                             setNftType("ERC721");
                                             // checked={saleType === 'auction'}
-                                        }}  checked={nftType === 'ERC721'} control={<Radio color="secondary" />} label="ERC721" />
+                                        }}  checked={nftType === 'ERC721'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC721</span>} />
                                         <FormControlLabel style={{ color: 'black' }} value="ERC1155" onChange={() => {
                                             setNftType("ERC1155")
-                                        }}  checked={nftType === 'ERC1155'} control={<Radio color="secondary" />} label="ERC1155" />
+                                        }}  checked={nftType === 'ERC1155'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC1155</span>} />
 
                                     </RadioGroup>
                                 </FormControl>
