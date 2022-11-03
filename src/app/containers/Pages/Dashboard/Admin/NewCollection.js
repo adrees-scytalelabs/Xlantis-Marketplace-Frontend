@@ -209,7 +209,7 @@ function NewCollection(props) {
                         var cloneContractAddress;
                         var myContractInstance = await new web3.eth.Contract(abi, address);
                         console.log("ERC1155 Contract" , myContractInstance);
-                        await myContractInstance.methods.createNFT1155(CloneId,false).send({ from: accounts[0] }, (err, response) => {
+                        await myContractInstance.methods.createNFT1155(CloneId,true).send({ from: accounts[0] }, (err, response) => {
                             console.log("Get transaction ", err, response);
                             console.log(typeof(response));
                             // console.log("Collection ID: ", collectionId);
@@ -400,14 +400,14 @@ function NewCollection(props) {
             const addressNft = nftContractAddress;
             const addressDropFactory = Addresses.FactoryDrop;
             let abiNft;
-            if(nftType === "ERC721")
-            {
-                abiNft = CreateNFTContract721;
-            }           
-            else if (nftType === "ERC1155")
+            if(nftType === "ERC1155")
             {
                 abiNft =  CreateNFTContract1155;
-            }
+            }           
+            // else if (nftType === "ERC721")
+            // {
+            //     abiNft = CreateNFTContract721;
+            // }
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
@@ -473,14 +473,14 @@ function NewCollection(props) {
             const addressNft = nftContractAddress;
             const addressDropFactory = Addresses.AuctionDropFactory;
             let abiNft;
-            if(nftType === "ERC721")
-            {
-                abiNft = CreateNFTContract721;
-            }           
-            else if (nftType === "ERC1155")
+            if(nftType === "ERC1155")
             {
                 abiNft =  CreateNFTContract1155;
             }           
+            // else if (nftType === "ERC721")
+            // {
+            //     abiNft = CreateNFTContract721;
+            // }        
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
