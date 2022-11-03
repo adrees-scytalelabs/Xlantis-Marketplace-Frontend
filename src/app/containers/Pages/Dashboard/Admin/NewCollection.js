@@ -21,10 +21,12 @@ import { Spinner } from "react-bootstrap";
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
 import Factory1155Contract from '../../../../components/blockchain/Abis/Factory1155.json';
+import Factory721Contract from '../../../../components/blockchain/Abis/Factory721.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import RequestApprovalModal from '../../../../components/Modals/RequestApprovalModal';
-import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json'
+import CreateNFTContract1155 from '../../../../components/blockchain/Abis/Collectible1155.json'
+import CreateNFTContract721 from '../../../../components/blockchain/Abis/Collectible721.json'
 import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Radio from '@material-ui/core/Radio';
@@ -151,6 +153,14 @@ function NewCollection(props) {
         }
     }
 
+    const getHash = (id) => {
+     
+        const hex = Web3.utils.toHex(id);
+        console.log('conversion to hex: ', hex);
+        return hex;
+
+    }
+
     const handleSubmitEvent = async (event) => {
         event.preventDefault();
         setIsSaving(true);
@@ -179,10 +189,11 @@ function NewCollection(props) {
             // console.log("File data while creating collection on backend: ", fileData);
 
             axios.post("/collection/", fileData).then(
-                (response) => {
+                async(response) => {
                     console.log("collection creation response", response);
                     setCollectionId(response.data.collection._id);
                     collectionID = response.data.collection._id;
+
                     // let variant = "success";
                     // enqueueSnackbar('New Collection Created Successfully.', { variant });
                     // setCollectionName("");
@@ -190,6 +201,92 @@ function NewCollection(props) {
                     // setCollectionDescription("");
                     // handleCloseBackdrop();
                     setIsSaving(false)
+                    let CloneId = getHash(collectionID);
+                    if(nftType === "ERC1155") {
+                        console.log("ERC1155 COLLECTION CREATION");
+                        const abi = Factory1155Contract;
+                        const address = Addresses.Factory1155Address;
+                        var cloneContractAddress;
+                        var myContractInstance = await new web3.eth.Contract(abi, address);
+                        console.log("ERC1155 Contract" , myContractInstance);
+                        await myContractInstance.methods.createNFT1155(CloneId,true).send({ from: accounts[0] }, (err, response) => {
+                            console.log("Get transaction ", err, response);
+                            console.log(typeof(response));
+                            // console.log("Collection ID: ", collectionId);
+                            axios.put(`/collection/txHash/${collectionID}`, {"txHash": response}).then(
+                                (response) => {
+                                    console.log("Transaction Hash sending on backend response: ", response);
+                                },
+                                (error) => {
+                                    console.log("Transaction hash on backend error: ", error);
+                                }
+                            )
+                            if(err !== null) {
+                                console.log("err", err);
+                                let variant = "error";
+                                enqueueSnackbar('User Canceled Transaction', { variant });
+                                handleCloseBackdrop();
+                                setIsSaving(false);
+                            }
+                        })
+                            .on('receipt', (receipt) => {
+                                console.log("receipt", receipt);
+                                cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                                let variant = "success";
+                                enqueueSnackbar('New Collection Created Successfully.', { variant });
+                                setApprovalModalShow(true);
+                                setNftContractAddress(cloneContractAddress);
+                                setCollectionName("");
+                                setCollectionSymbol("");
+                                setCollectionDescription("");
+                                setFileURL(r1);
+                                handleCloseBackdrop();
+                            }
+                        )
+                    }
+                    else if(nftType === "ERC721") {
+                        console.log("ERC721 COLLECTION CREATION");
+                        const abi = Factory721Contract;
+                        const address = Addresses.Factory721Address;
+                        var cloneContractAddress;
+                        var myContractInstance = await new web3.eth.Contract(abi, address);
+                        console.log("ERC721 Contract" , myContractInstance);
+                        await myContractInstance.methods.createNFT721(CloneId).send({ from: accounts[0] }, (err, response) => {
+                            console.log("Get transaction ", err, response);
+                            console.log(typeof(response));
+                            // console.log("Collection ID: ", collectionId);
+                            axios.put(`/collection/txHash/${collectionID}`, {"txHash": response}).then(
+                                (response) => {
+                                    console.log("Transaction Hash sending on backend response: ", response);
+                                },
+                                (error) => {
+                                    console.log("Transaction hash on backend error: ", error);
+                                }
+                            )
+                            if(err !== null) {
+                                console.log("err", err);
+                                let variant = "error";
+                                enqueueSnackbar('User Canceled Transaction', { variant });
+                                handleCloseBackdrop();
+                                setIsSaving(false);
+                            }
+                        })
+                            .on('receipt', (receipt) => {
+                                console.log("receipt", receipt);
+                                cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
+                                let variant = "success";
+                                enqueueSnackbar('New Collection Created Successfully.', { variant });
+                                // setApprovalModalShow(true);
+                                setNftContractAddress(cloneContractAddress);
+                                setCollectionName("");
+                                setCollectionSymbol("");
+                                setCollectionDescription("");
+                                setFileURL(r1);
+                                handleCloseBackdrop();
+                            }
+                        )
+        
+                    }
                 },
                 (error) => {
                     if (process.env.NODE_ENV === "development") {
@@ -203,45 +300,11 @@ function NewCollection(props) {
                     setIsSaving(false)
                 })
 
-            const abi = Factory1155Contract;
-            const address = Addresses.Factory1155Address;
-            var cloneContractAddress;
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            await myContractInstance.methods.createNFT1155(true).send({ from: accounts[0] }, (err, response) => {
-                console.log("Get transaction ", err, response);
-                console.log(typeof(response));
-                // console.log("Collection ID: ", collectionId);
-                axios.put(`/collection/txHash/${collectionID}`, {"txHash": response}).then(
-                    (response) => {
-                        console.log("Transaction Hash sending on backend response: ", response);
-                    },
-                    (error) => {
-                        console.log("Transaction hash on backend error: ", error);
-                    }
-                )
-                if(err !== null) {
-                    console.log("err", err);
-                    let variant = "error";
-                    enqueueSnackbar('User Canceled Transaction', { variant });
-                    handleCloseBackdrop();
-                    setIsSaving(false);
-                }
-            })
-                .on('receipt', (receipt) => {
-                    console.log("receipt", receipt);
-                    cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
-                    let variant = "success";
-                    enqueueSnackbar('New Collection Created Successfully.', { variant });
-                    setApprovalModalShow(true);
-                    setNftContractAddress(cloneContractAddress);
-                    setCollectionName("");
-                    setCollectionSymbol("");
-                    setCollectionDescription("");
-                    setFileURL(r1);
-                    handleCloseBackdrop();
-                }
-            )
-
+           
+         
+            
+            
+            
             
             // const address = Addresses.CreateNftAddress;
             // const abi = CreateNFTContract;
@@ -336,7 +399,15 @@ function NewCollection(props) {
 
             const addressNft = nftContractAddress;
             const addressDropFactory = Addresses.FactoryDrop;
-            const abiNft = CreateNFTContract;            
+            let abiNft;
+            if(nftType === "ERC1155")
+            {
+                abiNft =  CreateNFTContract1155;
+            }           
+            // else if (nftType === "ERC721")
+            // {
+            //     abiNft = CreateNFTContract721;
+            // }
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
@@ -401,7 +472,15 @@ function NewCollection(props) {
 
             const addressNft = nftContractAddress;
             const addressDropFactory = Addresses.AuctionDropFactory;
-            const abiNft = CreateNFTContract;            
+            let abiNft;
+            if(nftType === "ERC1155")
+            {
+                abiNft =  CreateNFTContract1155;
+            }           
+            // else if (nftType === "ERC721")
+            // {
+            //     abiNft = CreateNFTContract721;
+            // }        
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
