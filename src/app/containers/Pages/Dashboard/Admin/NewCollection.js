@@ -276,7 +276,7 @@ function NewCollection(props) {
                                 cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
                                 let variant = "success";
                                 enqueueSnackbar('New Collection Created Successfully.', { variant });
-                                setApprovalModalShow(true);
+                                // setApprovalModalShow(true);
                                 setNftContractAddress(cloneContractAddress);
                                 setCollectionName("");
                                 setCollectionSymbol("");
