@@ -1691,11 +1691,11 @@ function NewNFT(props) {
                                                     <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
                                                         setSupplyType("Single");
                                                         setTokenSupply(1);
-                                                    }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label="Single" />
+                                                    }} checked={supplyType === 'Single'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>Single</span>} />
                                                     <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
                                                         setSupplyType("Variable")
                                                         setTokenSupply(1);
-                                                    }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
+                                                    }} checked={supplyType === 'Variable'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>Variable Supply</span>} />
         
                                                 </RadioGroup>
                                             </FormControl>
