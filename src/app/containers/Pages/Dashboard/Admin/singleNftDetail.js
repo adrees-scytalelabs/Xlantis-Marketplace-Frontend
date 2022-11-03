@@ -5,6 +5,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { Col, Row, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
+import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -121,13 +122,70 @@ const SingleNftDetail = (props) => {
                 <div className="row">
                     <div className="col-md-12 col-lg-4">
                         <Card className={classes.root}>
-                            <CardMedia
+                            {/* <CardMedia
                                 className={classes.media}
                                 title="NFT Artwork"
                                 image={nftDetail.nftURI}
                             >
 
-                            </CardMedia>
+                            </CardMedia> */}
+                            <div>
+                                {nftDetail.nftFormat === "glb" || nftDetail.nftFormat === "gltf" ? (
+                                    <div>
+                                        <div>
+                                            <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                {/* <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} />
+                                                <AmbientLight color={0xffffff} /> */}
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 100, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 50, y: 200, z: 100 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 0, z: 0 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: 0, y: 100, z: 200 }}
+                                                />
+                                                <DirectionLight
+                                                    color={0xffffff}
+                                                    position={{ x: -100, y: 200, z: -100}}
+                                                />
+                                            </GLTFModel>
+                                        </div>
+                                        <div>
+                                            <CardMedia
+                                            className={classes.media}
+                                            title="NFT Artwork"
+                                            image={nftDetail.previewImageURI}
+                                            >
+
+                                            </CardMedia>
+                                        </div>
+                                    </div>
+                                ): nftDetail.nftFormat === "mp3" ? (
+                                    <div></div>
+                                ) : (
+                                    <CardMedia
+                                        className={classes.media}
+                                        title="NFT Artwork"
+                                        image={nftDetail.nftURI}
+                                    >
+
+                                    </CardMedia>
+                                )}
+                                
+                            </div>
                         </Card>
                     </div>
                     <div className="col-md-12 col-lg-8">
