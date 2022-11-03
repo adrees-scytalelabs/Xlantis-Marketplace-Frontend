@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NFTCard(props) {
-    console.log("props",props)
+    // console.log("props",props)
     const classes = useStyles();
     return (
         <Grid item xs={12} sm={6} md={6} lg={3} >

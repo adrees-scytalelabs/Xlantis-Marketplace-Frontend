@@ -1,7 +1,9 @@
-import { Card, CardContent, CardHeader, CardMedia, makeStyles, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardHeader, CardMedia, makeStyles, Typography } from '@material-ui/core';
+import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import axios from 'axios';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
+import { Col, Row, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
@@ -53,6 +55,9 @@ const SingleNftDetail = (props) => {
     const { nftId } = useParams();
     const [open, setOpen] = useState(false);
     const [nftDetail, setNftDetail] = useState({});
+    const [keys, setKeys] = useState([]);
+    const [properties, setProperties] = useState({});
+
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -66,11 +71,19 @@ const SingleNftDetail = (props) => {
             (response) => {
                 console.log("Response: ", response);
                 setNftDetail(response.data.data[0]);
+                setProperties(response.data.data[0].properties);
+                const keys = Object.keys(response.data.data[0].properties);
+                console.log("Keys: ", keys);
+                setKeys(keys);
+            },
+            (error) => {
+                console.log("Error: ", error);
+                console.log("Error response: ", error.response);
             }
         )
-        .catch((error) => {
-            console.log("Error: ", error.response.data);
-        })
+        // .catch((error) => {
+        //     console.log("Error: ", error.response.data);
+        // })
 
     }
 
@@ -106,12 +119,8 @@ const SingleNftDetail = (props) => {
             </ul>
             <div className="card-body" >
                 <div className="row">
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-4">
                         <Card className={classes.root}>
-                            <CardHeader 
-                                className="text-center"
-                                title={nftDetail.title}
-                            />
                             <CardMedia
                                 className={classes.media}
                                 title="NFT Artwork"
@@ -121,33 +130,91 @@ const SingleNftDetail = (props) => {
                             </CardMedia>
                         </Card>
                     </div>
-                    <div className="col-md-12 col-lg-6">
+                    <div className="col-md-12 col-lg-8">
                         <Card>
                             <CardContent>
-                                <CardHeader className="text-center" title="Nft Details" />
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Nft Title: </strong>{nftDetail.title}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Nft Description: </strong>{nftDetail.description}
-                                </Typography>
-                                <CardHeader className="text-center" title="Nft Rarity" />
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Rarity: </strong>{nftDetail.type}
-                                </Typography>
-                                <CardHeader className="text-center" title="Nft Supply Details" />
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Supply Type: </strong>{nftDetail.supplyType}
-                                </Typography>
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Token Supply: </strong>{nftDetail.tokenSupply}
-                                </Typography>
-                                <CardHeader className="text-center" title="Created By" />
-                                <Typography variant="body2" color="textSecondary" component="p">
-                                    <strong>Created By: </strong>{nftDetail.userAddress}
-                                </Typography>
+                                <Row>
+                                    <Col>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>NFT Title </strong>
+                                        </Typography>
+                                    </Col>
+                                    <Col>
+                                        {nftDetail.title}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>NFT Description </strong>
+                                        </Typography>
+                                    </Col>
+                                    <Col>
+                                        {nftDetail.description}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Rarity </strong>
+                                        </Typography>
+                                    </Col>
+                                    <Col>
+                                        {nftDetail.type}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Supply Type </strong>
+                                        </Typography>
+                                    </Col>
+                                    <Col>
+                                        {nftDetail.supplyType}
+                                    </Col>
+                                </Row>
+                                <Row>
+                                    <Col>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Token Supply </strong>
+                                        </Typography>
+                                    </Col>
+                                    <Col>
+                                        {nftDetail.tokenSupply}
+                                    </Col>
+                                </Row>
                             </CardContent>
                         </Card>
+                        <Row style={{marginTop: '5px', marginBottom: '5px'}} >
+                            <Col>
+                                <Accordion>
+                                    <AccordionSummary
+                                        expandIcon={<ExpandMore />}
+                                    >
+                                        <Typography variant="body1" style={{color: '#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                    </AccordionSummary>
+                                    <AccordionDetails>
+                                        <Table striped bordered hover >
+                                            <thead>
+                                                <tr>
+                                                    <th>Key</th>
+                                                    <th>Value</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {keys?.map((j, index) => (
+                                                    <tr key={index}>
+                                                        <td>{j}</td>
+                                                        <td>{properties[j]}</td>
+                                                    </tr>
+                                                ))
+                                                }   
+                                            </tbody>
+                                        </Table>
+                                    </AccordionDetails>
+                                </Accordion>
+                            </Col>
+                        </Row>
                     </div>
                 </div>
             </div>
