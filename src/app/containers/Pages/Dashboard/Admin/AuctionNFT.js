@@ -83,6 +83,7 @@ const AuctionNFT = (props) => {
     const [dropExpiryTime, setDropExpiryTime] = useState(new Date());
     const [dropExpiryTimeStamp, setDropExpiryTimeStamp] = useState(Math.round(dropExpiryTime.getTime()/1000));
     const [dropCloneAddress, setDropCloneAddress] = useState('');
+    const [contractType, setContractType] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -255,7 +256,9 @@ const AuctionNFT = (props) => {
             }
             else {
                 handleShowBackdrop();
-                await giveAuctionErc20Approval();
+                if (contractType === "1155") {
+                    await giveAuctionErc20Approval();
+                }
                 //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
                 let bidData = {
                     nftId: nftDetail._id,
@@ -296,17 +299,17 @@ const AuctionNFT = (props) => {
                         console.log("nft id: ", nftId);
                         console.log("bid Value: ", bidValue);
                         
-
-                        myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-                            console.log('get transaction: ', err, response);
-                            if (err !== null) {
-                                console.log('err: ', err);
-                                handleCloseBackdrop();
-                            }
-                            trxHash = response;
-                            
-
-                        })
+                        if (contractType === "1155") {
+                            myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                                console.log('get transaction: ', err, response);
+                                if (err !== null) {
+                                    console.log('err: ', err);
+                                    handleCloseBackdrop();
+                                }
+                                trxHash = response;
+                                
+    
+                            })
                             .on('receipt', (receipt) => {
                                 console.log('receipt: ', receipt);
 
@@ -327,6 +330,7 @@ const AuctionNFT = (props) => {
                                 )
                                 handleCloseBackdrop();
                             });
+                        }
 
                     },
                     (error) => {
