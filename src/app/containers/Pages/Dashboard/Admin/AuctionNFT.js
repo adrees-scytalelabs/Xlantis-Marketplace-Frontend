@@ -12,6 +12,8 @@ import CreateNFTContract from '../../../../components/blockchain/Abis/AuctionDro
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { now } from 'lodash';
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
 
 
@@ -81,6 +83,7 @@ const AuctionNFT = (props) => {
     const [dropExpiryTime, setDropExpiryTime] = useState(new Date());
     const [dropExpiryTimeStamp, setDropExpiryTimeStamp] = useState(Math.round(dropExpiryTime.getTime()/1000));
     const [dropCloneAddress, setDropCloneAddress] = useState('');
+    const [contractType, setContractType] = useState("");
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -253,7 +256,9 @@ const AuctionNFT = (props) => {
             }
             else {
                 handleShowBackdrop();
-                await giveAuctionErc20Approval();
+                if (contractType === "1155") {
+                    await giveAuctionErc20Approval();
+                }
                 //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
                 let bidData = {
                     nftId: nftDetail._id,
@@ -294,17 +299,17 @@ const AuctionNFT = (props) => {
                         console.log("nft id: ", nftId);
                         console.log("bid Value: ", bidValue);
                         
-
-                        myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-                            console.log('get transaction: ', err, response);
-                            if (err !== null) {
-                                console.log('err: ', err);
-                                handleCloseBackdrop();
-                            }
-                            trxHash = response;
-                            
-
-                        })
+                        if (contractType === "1155") {
+                            myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                                console.log('get transaction: ', err, response);
+                                if (err !== null) {
+                                    console.log('err: ', err);
+                                    handleCloseBackdrop();
+                                }
+                                trxHash = response;
+                                
+    
+                            })
                             .on('receipt', (receipt) => {
                                 console.log('receipt: ', receipt);
 
@@ -325,6 +330,7 @@ const AuctionNFT = (props) => {
                                 )
                                 handleCloseBackdrop();
                             });
+                        }
 
                     },
                     (error) => {
@@ -356,10 +362,29 @@ const AuctionNFT = (props) => {
                                 <CardMedia
                                     className={classes.media}
                                     title="NFT Artwork"
-                                    image={nftDetail.nftURI}
+                                    image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
                                 >
 
                                 </CardMedia>
+                                {nftDetail.nftFormat === "mp3"  ? (
+                                    <div>
+                                        <AudioPlayer
+                                            // style={{ width: "300px" }}
+                                            style={{ borderRadius: "1rem" }}
+                                            autoPlay = {false}
+                                            layout="horizontal"
+                                            src={nftDetail.nftURI}
+                                            onPlay={(e) => console.log("onPlay")}
+                                            showSkipControls={false}
+                                            showJumpControls={false}
+                                            // header={`Now playing: ${name}`}
+                                            showDownloadProgress
+                                            // onClickPrevious={handleClickPrevious}
+                                            // onClickNext={handleClickNext}
+                                            // onEnded={handleClickNext}
+                                            // other props here
+                                        />
+                                    </div>) : (null) }
                             </Card>
                         </Paper>
                     </div>
