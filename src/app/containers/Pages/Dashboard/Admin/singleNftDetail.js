@@ -215,6 +215,24 @@ const SingleNftDetail = (props) => {
                                 </Accordion>
                             </Col>
                         </Row>
+                        <div 
+                            style={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                // marginTop: '5px'
+                            }}
+                        >
+                            <button 
+                                type="button"
+                                className="btn"
+                                style={{
+                                    marginTop: '10px'
+                                }}
+                            >
+                                Claim NFT
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
