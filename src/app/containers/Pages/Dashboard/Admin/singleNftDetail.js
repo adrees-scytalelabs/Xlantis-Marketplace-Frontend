@@ -281,15 +281,18 @@ const SingleNftDetail = (props) => {
                                 // marginTop: '5px'
                             }}
                         >
-                            <button 
-                                type="button"
-                                className="btn"
-                                style={{
-                                    marginTop: '10px'
-                                }}
-                            >
-                                Claim NFT
-                            </button>
+                            {false ? (
+                                <button 
+                                    type="button"
+                                    className="btn"
+                                    style={{
+                                        marginTop: '10px'
+                                    }}
+                                >
+                                    Claim NFT
+                                </button>
+                            ): null}
+                            
                         </div>
                     </div>
                 </div>
