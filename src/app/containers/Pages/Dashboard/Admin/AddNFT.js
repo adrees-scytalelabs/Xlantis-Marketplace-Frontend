@@ -16,8 +16,10 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { useHistory, useLocation } from 'react-router-dom';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
-import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
-import AuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import DropFactory721 from '../../../../components/blockchain/Abis/DropFactory721.json';
+import AuctionDropFactory721 from '../../../../components/blockchain/Abis/AuctionDropFactory721.json';
+import DropFactory1155 from '../../../../components/blockchain/Abis/DropFactory1155.json';
+import AuctionDropFactory1155 from '../../../../components/blockchain/Abis/AuctionDropFactory1155.json';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
@@ -106,11 +108,14 @@ function AddNFT(props) {
     let [price, setPrice] = useState(0);
     let [supply, setSupply] = useState(0);
     let [saleType, setSaleType] = useState('');
+    let [nftType, setNftType] = useState('');
 
     let [dropInfo, setDropInfo] = useState([]);
 
     let getCollections = () => {
-        axios.get("/collection/collections").then(
+        console.log("NFT TYPE", location.state.nftType);
+        
+        axios.get(`/collection/collections/${location.state.nftType}`).then(
             (response) => {
                 console.log("response", response);
                 setChangeCollectionList(response.data.collectionData);
@@ -178,6 +183,8 @@ function AddNFT(props) {
     setStartTime(location.state.startTime);
     setEndTime(location.state.endTime);
     setSaleType(location.state.saleType);
+    let type = location.state.nftType;
+    setNftType(type);
     console.log("dropid",dropId);
     
     getCollections();
@@ -258,8 +265,11 @@ function AddNFT(props) {
             
             let dropCloneId = getHash(dropId);
             if (saleType === "fixed-price") {
-                const address = Addresses.FactoryDrop;
-                const abi = DropFactory;            
+                if (nftType === "721") {
+
+                }
+                const address = Addresses.FactoryDrop721;
+                const abi = DropFactory721;            
 
                 console.log("Contract Address: ", address);
                 var myContractInstance = await new web3.eth.Contract(abi, address);
@@ -307,8 +317,8 @@ function AddNFT(props) {
             }
 
             else if (saleType === "auction") {
-                const address = Addresses.AuctionDropFactory;
-                const abi = AuctionDropFactory;            
+                const address = Addresses.AuctionDropFactory721;
+                const abi = AuctionDropFactory721;            
 
                 console.log("Contract Address: ", address);
                 var myContractInstance = await new web3.eth.Contract(abi, address);
