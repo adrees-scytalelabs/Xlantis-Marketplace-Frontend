@@ -195,7 +195,7 @@ const DropSingleNFT = (props) => {
 
     useEffect(() => {
         // getNftDetail();
-        console.log("hehe",location.state.nftDetail);
+        // console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);
         console.log("NFT detail: ", location.state.nftDetail);
         setKeys(Object.keys(location.state.nftDetail.properties));
@@ -475,7 +475,7 @@ const DropSingleNFT = (props) => {
                                                                     <button className="btn" disabled>
                                                                         Accept
                                                                     </button>
-                                                                ): bid.isAccepted ? (
+                                                                ): bid.isAccepted || location.nftDetail.currentMarkteplaceId.isSold ? (
                                                                     <button className="btn" disabled>
                                                                         Accept
                                                                     </button>
