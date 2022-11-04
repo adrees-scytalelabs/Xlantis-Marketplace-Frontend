@@ -200,7 +200,9 @@ const DropSingleNFT = (props) => {
         console.log("NFT detail: ", location.state.nftDetail);
         setKeys(Object.keys(location.state.nftDetail.properties));
         setProperties(location.state.nftDetail.properties);
-        getBidList(location.state.nftDetail._id);
+        if (location.state.saleType === "auction") {
+            getBidList(location.state.nftDetail._id);
+        }
         console.log("saleType", location.state.saleType);
 
         props.setActiveTab({
@@ -423,57 +425,76 @@ const DropSingleNFT = (props) => {
                                 </Accordion>
                             </Col>
                         </Row>
-                        <Row style={{marginTop: '5px'}}>
-                            <Col>
-                                <Accordion>
-                                    <AccordionSummary
-                                        expandIcon={<ExpandMore />}
-                                    >
-                                        <Typography variant="body1" style={{color: '#a70000'}}><ListIcon /><strong> Offers</strong></Typography>
-                                    </AccordionSummary>
-                                    <AccordionDetails>
-                                        <Table striped hover bordered size="sm" responsive>
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>Bidder</th>
-                                                    <th>Bid</th>
-                                                    <th>Expiration</th>
-                                                    <th colSpan={2}></th>
-                                                    {/* <th>
-                                                        <button className="btn" onClick={props.acceptBid}>
-                                                            Accept
-                                                        </button>
-                                                    </th> */}
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {bidDetail?.map((bid, index) => (
-                                                    <tr key={index}>
-                                                        <td>{index+1}</td>
-                                                        <td>
-                                                            <Tooltip title={bid.bidderAddress}>
-                                                                <span>{bid.bidderAddress.slice(0,6)}...</span>
-                                                            </Tooltip>
-                                                        </td>
-                                                        <td>{bid.bidAmount}</td>
-                                                        <td>
-                                                            <Countdown daysInHour date={new Date(bid.expiryTime)}>
-                                                            </Countdown>
-                                                        </td>
-                                                        <td>
-                                                            <button className="btn" onClick={(e) => handleAcceptBid(e, bid._id)}>
+                        {location.state.saleType === "auction" ? (
+                            <Row style={{marginTop: '5px'}}>
+                                <Col>
+                                    <Accordion>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMore />}
+                                        >
+                                            <Typography variant="body1" style={{color: '#a70000'}}><ListIcon /><strong> Offers</strong></Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Table striped hover bordered size="sm" responsive>
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Bidder</th>
+                                                        <th>Bid</th>
+                                                        <th>Expiration</th>
+                                                        <th colSpan={2}></th>
+                                                        {/* <th>
+                                                            <button className="btn" onClick={props.acceptBid}>
                                                                 Accept
                                                             </button>
-                                                        </td>
+                                                        </th> */}
                                                     </tr>
-                                                ))}
-                                            </tbody>
-                                        </Table>
-                                    </AccordionDetails>
-                                </Accordion>
-                            </Col>
-                        </Row>
+                                                </thead>
+                                                <tbody>
+                                                    {bidDetail?.map((bid, index) => (
+                                                        <tr key={index}>
+                                                            <td>{index+1}</td>
+                                                            <td>
+                                                                <Tooltip title={bid.bidderAddress}>
+                                                                    <span>{bid.bidderAddress.slice(0,6)}...</span>
+                                                                </Tooltip>
+                                                            </td>
+                                                            <td>{bid.bidAmount}</td>
+                                                            <td>
+                                                                {bid.isAccepted ? (
+                                                                    <span>Accepted</span>
+                                                                ) : new Date() > new Date(bid.expiryTime) ? (
+                                                                    <span>Expired</span>
+                                                                ) : (
+                                                                <Countdown daysInHour date={new Date(bid.expiryTime)}>
+                                                                </Countdown>
+                                                            )}
+                                                            </td>
+                                                            <td>
+                                                                {new Date() > new Date(bid.expiryTime) ? (
+                                                                    <button className="btn" disabled>
+                                                                        Accept
+                                                                    </button>
+                                                                ): bid.isAccepted ? (
+                                                                    <button className="btn" disabled>
+                                                                        Accept
+                                                                    </button>
+                                                                ) : (
+                                                                    <button className="btn" onClick={(e) => handleAcceptBid(e, bid._id)}>
+                                                                        Accept
+                                                                    </button>
+                                                                )}
+                                                            </td>
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </Table>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Col>
+                            </Row>
+                        ) : null}
+                        
                     </div>
                 </div>
             </div>
