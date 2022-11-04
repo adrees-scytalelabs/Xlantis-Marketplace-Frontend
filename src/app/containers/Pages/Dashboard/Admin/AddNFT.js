@@ -180,7 +180,10 @@ function AddNFT(props) {
     
 
     setDropId(location.state.dropId);
-    setStartTime(location.state.startTime);
+    setStartTime(Math.round( location.state.startTime));
+    console.log("START TIME COMING", Math.round( location.state.startTime));
+    console.log("End TIME COMING", location.state.endTime);
+
     setEndTime(location.state.endTime);
     setSaleType(location.state.saleType);
     let type = location.state.nftType;
@@ -396,7 +399,7 @@ function AddNFT(props) {
     //     else{
 
     //     const addressNft = nftContractAddresses;
-    //     const addressDropFactory = Addresses.FactoryDrop;
+    //     const addressDropFactory = Addresses.FactoryDrop721;
     //     const addressAuctionFactory = Addresses.AuctionDropFactory;
     //     const abiNft = CreateNFTContract;            
 
@@ -405,7 +408,7 @@ function AddNFT(props) {
     //     console.log("myContractInstance", myContractInstance)
         
 
-    //     await myContractInstance.methods.setApprovalForAll(addressAuctionFactory, true).send({from : accounts[0]}, (err, response) => {
+    //     await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
     //         console.log('get transaction', err, response);
             
     //         if (err !== null) {
