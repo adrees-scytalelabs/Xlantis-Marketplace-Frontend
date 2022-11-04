@@ -15,6 +15,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useRouteMatch } from 'react-router-dom';
 import { useSnackbar } from 'notistack';
 import CornerRibbon from "react-corner-ribbon";
+import PlayArrow from '@material-ui/icons/PlayArrow';
+import Pause from '@material-ui/icons/Pause';
 
 
 
@@ -71,6 +73,7 @@ function MyDropNFTs(props) {
     const { enqueueSnackbar } = useSnackbar();
     let [openDialog, setOpenDialog] = useState(false);
     let [openEditModal, setOpenEditModal] = useState(false);
+    let [audio, setAudio] = useState();
     let [nftDetail, setNftDetail] = useState({});
     let handleOpenNFTDetailModal = (nftObject) => {
         setNftDetail(nftObject);
@@ -102,7 +105,13 @@ function MyDropNFTs(props) {
         axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
             (response) => {
                 console.log("response", response);
-                setTokenList(response.data.data);
+                let  nfts = response.data.data;
+                let newState = nfts.map(obj => {
+                      return {...obj, isPlaying: false};
+                });
+                console.log("NFTS", nfts);
+                console.log("Updated", newState);
+                setTokenList(newState);
                 setTotalNfts(response.data.data.length);
 
                 handleCloseBackdrop();
@@ -161,6 +170,61 @@ function MyDropNFTs(props) {
         setPage(0);
     };
 
+    let handlePlay= async(e, token) => {
+        e.preventDefault();
+        let audioPlay = new Audio(token.nftURI);
+        // console.log("src", src);
+        // console.log("audi play", audioPlay);
+        
+        console.log("playing?",token.isPlaying);
+        console.log("audio", audio);
+        let updateState = tokenList.map(obj => {
+           
+            if (obj._id !== token._id) {
+              return {...obj, isPlaying: false};
+            }
+            else if(obj._id === token._id) {
+              return {...obj, isPlaying: true};
+            }
+      
+            return obj;
+        });
+        setTokenList(updateState);
+        // setIsPlaying({myArray[i] : true});
+        if(audio !== undefined) {
+            audio.pause();
+        }
+        audioPlay.play();
+        setAudio(audioPlay);
+        console.log("Audio",audio);
+
+     
+    }
+
+    let handlePause= async(e, token) => {
+        e.preventDefault();
+        let updateState = tokenList.map(obj => {
+           
+           
+            if(obj._id === token._id) {
+              return {...obj, isPlaying: false};
+            }
+      
+            return obj;
+        });
+        setTokenList(updateState);
+
+        console.log("Audio",audio);
+        audio.pause();
+    }
+
+    let handleStop = async(e) => {
+        if(audio !== undefined){
+        
+            audio.pause();
+        }
+        
+    }
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -198,7 +262,7 @@ function MyDropNFTs(props) {
                             >
                                 {tokenList.map((i, index) => (
                                      <Grid item xs={12} sm={6} md={3} key={index}>
-                                        <Link to={{pathname :`${path}/singleNft`, state : {nftDetail : i, saleType : location.state.saleType, status: location.state.status}}} >
+                                        <Link onClick= {(e) => handleStop(e)} to={{pathname :`${path}/singleNft`, state : {nftDetail : i, saleType : location.state.saleType, status: location.state.status}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
@@ -223,13 +287,31 @@ function MyDropNFTs(props) {
                                                         </CornerRibbon>
                                                         ) : (null) }
                                                     </div>
-                                                    <CardMedia
-                                                        variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
-                                                        className={classes.media}
-                                                        image={i.previewImageURI ? i.previewImageURI : i.nftURI}
+                                                    <div style = {{position : 'relative' }} >
+                                                        <CardMedia
+                                                            variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
+                                                            className={classes.media}
+                                                            image={i.previewImageURI ? i.previewImageURI : i.nftURI}
+                                                            title="NFT Image"
+                                                        />
+                                                         
+                                                         
+                                                        {i.nftFormat === "mp3" ? (
+                                                            // style={{ position: "absolute", top: "80%", left: "75%"  }}
+                                                            <div style = {{ position: "absolute", left : "75%" , bottom : "5%"  }} >
+                                                                {
+                    
+                                                               
+                                                                (i.isPlaying === false ) ? (
+                                                                    <button className='btn' style={{borderRadius: "80%", backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePlay(e,i)}><PlayArrow /></button>
+                                                                ) : (
+                                                                    <button className='btn' style={{borderRadius: "80%" , backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePause(e,i)}><Pause /></button>
+                                                                )}
+                                                               
+                                                            </div>
+                                                        ) : (null)}
                                                         
-                                                        title="NFT Image"
-                                                    />
+                                                    </div>
                                                     
 
                                                     
