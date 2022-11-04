@@ -1931,30 +1931,24 @@ function NewNFT(props) {
                             </Spinner>
                         </div>
                     ) : (
-                        tokenList.length === 0 ? (
+                        contractType === "1155" ? (
                             <div className="submit-section">
-                                {contractType === "1155" ? (
+                                {tokenList.length === 0 ? (
                                     <button type="button" disabled className="btn submit-btn">
                                         Batch create NFTs 
                                     </button>
                                 ) : (
-                                    <button type="button" disabled className="btn submit-btn">
-                                        Free Mint
+                                    <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
+                                        Batch create NFTs
                                     </button>
                                 )}
                                 
                             </div>
                         ) : (
                         <div className="submit-section">
-                            {contractType === "1155" ? (
-                            <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
-                                Batch create NFTs
-                            </button>
-                            ) : (
                             <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
                                 Free Mint
                             </button>
-                            )}
                         </div>
                         // )
 
