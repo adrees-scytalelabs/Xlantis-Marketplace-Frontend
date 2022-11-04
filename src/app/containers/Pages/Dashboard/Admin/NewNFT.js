@@ -734,7 +734,7 @@ function NewNFT(props) {
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
-                // setImage(response.data.url);
+                setImage(response.data.url);
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
@@ -1096,20 +1096,23 @@ function NewNFT(props) {
                 });
                 console.log("Properties are: ", propertiesObject);
 
-                let nftData = new FormData();
-                nftData.append("NFT", image);
-                
-                if (imageType === "glb" || imageType === "mp3") {
-                    nftData.append("previewImage", image);
+                let nftData = {
+                    "title": name,
+                    "description": description,
+                    "collectionId": collectionId,
+                    "nftURI": nftURI,
+                    "metadataURI": nftURI,
+                    "nftFormat": imageType,
+                    "type": rarity,
+                    "properties": propertiesObject
+                };
+
+                if (imageType === "glb" || imageType === "gltf" || imageType === "mp3") {
+                    nftData["previewImageURI"] = previewImageURI;
                 }
+                
 
-                nftData.append("title", name);
-                nftData.append("collectionId", collectionId);
-                nftData.append("description", description);
-                nftData.append("type", rarity);
-                nftData.append("properties", propertiesObject);
-
-                console.log("NFT Data form data: ", nftData);
+                console.log("NFT Data: ", nftData);
                 await axios.post("lazy-mint/NFT", nftData).then(
                     async (response) => {
                         console.log("Response from backend on free mint: ", response);
