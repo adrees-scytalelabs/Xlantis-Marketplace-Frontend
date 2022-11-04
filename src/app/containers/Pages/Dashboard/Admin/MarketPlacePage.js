@@ -1,4 +1,4 @@
-import { CardHeader, Grid } from '@material-ui/core/';
+import { CardHeader, Grid, Tooltip } from '@material-ui/core/';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -44,6 +44,12 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
+    overflowWithDots: {
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap',
+        overflow: 'hidden',
+        width: "80%"
+    }
 }));
 
 
@@ -160,8 +166,15 @@ function MarketPlacePage(props) {
                                     <Link to={{pathname :`${path}/drops/nfts`, state : {nftId : i.NFTIds, dropId : i._id, startTime : i.startTime, endTime : i.endTime, saleType : i.saleType}}}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                             <CardActionArea>
-                                                <CardHeader className="text-center"
-                                                    title={i.title}
+                                                <CardHeader 
+                                                    className="text-center"
+                                                    title={
+                                                        <Tooltip title={i.title}>
+                                                            <Typography gutterBottom variant="h5" component="h4" className={classes.overflowWithDots}>
+                                                                {i.title}
+                                                            </Typography>
+                                                        </Tooltip>
+                                                    }
                                                 />
                                                 <CardMedia
                                                     className={classes.media}
@@ -173,9 +186,9 @@ function MarketPlacePage(props) {
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>No Of Nfts: </strong>{i.totalNFTs}
                                                     </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Description: </strong>{i.description}
-                                                    </Typography>
+                                                    </Typography> */}
 
                                                     <br></br>
                                                     {/* {(i.saleType === "auction") ? 
