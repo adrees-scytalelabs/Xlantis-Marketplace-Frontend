@@ -251,6 +251,7 @@ const DropSingleNFT = (props) => {
                 let nftAddress = nftDetail.collectionId.nftContractAddress //to be confirmed to send request
                 let tokenId = nftDetail.nftId;
                 let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
+                let trxHash;
 
                 let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
                 console.log("My auction drop factory instance: ", myContractInstance);
@@ -261,6 +262,7 @@ const DropSingleNFT = (props) => {
                     if(err !== null) {
                         console.log("Err: ", err);
                     }
+                    trxHash = response;
 
 
                 }).
@@ -268,7 +270,13 @@ const DropSingleNFT = (props) => {
                     console.log("receipt: ", receipt);
 
                     //sending call on backend to update data
-                    axios.post("/auction/bid/accept").then(
+
+                    let data = {
+                        "bidId": bidId,
+                        "txHash": trxHash 
+                    }
+
+                    axios.post("/auction/bid/accept", data).then(
                         (response) => {
                             console.log("response", response);
                         },
@@ -280,7 +288,12 @@ const DropSingleNFT = (props) => {
             } 
             else if (contractType === "721") {
                 //sending call on backend to update data
-                axios.post("/auction/bid/accept").then(
+
+                let data = {
+                    "bidId": bidId
+                }
+
+                axios.post("/auction/bid/accept", data).then(
                     (response) => {
                         console.log("response", response);
                     },
