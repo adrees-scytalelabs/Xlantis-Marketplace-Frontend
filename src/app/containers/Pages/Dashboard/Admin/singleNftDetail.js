@@ -58,6 +58,7 @@ const SingleNftDetail = (props) => {
     const [nftDetail, setNftDetail] = useState({});
     const [keys, setKeys] = useState([]);
     const [properties, setProperties] = useState({});
+    const [isClaimable, setIsClaimable] = useState(false);
 
     const handleCloseBackdrop = () => {
         setOpen(false);
@@ -73,6 +74,7 @@ const SingleNftDetail = (props) => {
                 console.log("Response: ", response);
                 setNftDetail(response.data.data[0]);
                 setProperties(response.data.data[0].properties);
+                setIsClaimable(response.data.data[0].isClaimable);
                 const keys = Object.keys(response.data.data[0].properties);
                 console.log("Keys: ", keys);
                 setKeys(keys);
@@ -109,6 +111,25 @@ const SingleNftDetail = (props) => {
             newRandomDrop: ""
         });// eslint-disable-next-line
     }, []);
+
+    let handleClaimNFT = (e) => {
+        e.preventDefault();
+        handleShowBackdrop();
+
+        let data = {
+            "nftId": nftId
+        }
+
+        axios.patch("/lazy-mint/claim", data).then(
+            (response) => {
+                console.log("Response from claiming NFT: ", response);
+            },
+            (err) => {
+                console.log("Err from claiming NFT: ", err);
+                console.log("Err response from claiming NFT: ", err.response);
+            }
+        );
+    }
 
     return (
         <div className="card">
@@ -281,13 +302,14 @@ const SingleNftDetail = (props) => {
                                 // marginTop: '5px'
                             }}
                         >
-                            {false ? (
+                            {isClaimable ? (
                                 <button 
                                     type="button"
                                     className="btn"
                                     style={{
                                         marginTop: '10px'
                                     }}
+                                    onClick = {(e) => handleClaimNFT(e)}
                                 >
                                     Claim NFT
                                 </button>
