@@ -298,7 +298,7 @@ function NewDrop(props) {
                     startTime: startTime,
                     endTime: endTime,
                     saleType : saleType,
-                    collectionType : nftType
+                    dropType : nftType
 
                 }
                 console.log("Drop Data", DropData);
