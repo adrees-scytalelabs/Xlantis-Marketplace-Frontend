@@ -123,10 +123,12 @@ const SingleNftDetail = (props) => {
         axios.patch("/lazy-mint/claim", data).then(
             (response) => {
                 console.log("Response from claiming NFT: ", response);
+                handleCloseBackdrop();
             },
             (err) => {
                 console.log("Err from claiming NFT: ", err);
                 console.log("Err response from claiming NFT: ", err.response);
+                handleCloseBackdrop();
             }
         );
     }
