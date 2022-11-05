@@ -21,7 +21,75 @@
           "type": "address"
         }
       ],
-      "name": "DropCreated",
+      "name": "AuctionDropCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_nftAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_bidId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "BidAccepted",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_dropId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "bytes32",
+          "name": "_bidId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "_nftAddress",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "_bidValue",
+          "type": "uint256"
+        }
+      ],
+      "name": "BidSubmitted",
       "type": "event"
     },
     {
@@ -35,62 +103,6 @@
         }
       ],
       "name": "Initialized",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "_dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_nftAddress",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_tokenId",
-          "type": "uint256"
-        }
-      ],
-      "name": "OrderCancelled",
-      "type": "event"
-    },
-    {
-      "anonymous": false,
-      "inputs": [
-        {
-          "indexed": false,
-          "internalType": "bytes32",
-          "name": "_dropId",
-          "type": "bytes32"
-        },
-        {
-          "indexed": false,
-          "internalType": "address",
-          "name": "_nftAddress",
-          "type": "address"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_tokenId",
-          "type": "uint256"
-        },
-        {
-          "indexed": false,
-          "internalType": "uint256",
-          "name": "_price",
-          "type": "uint256"
-        }
-      ],
-      "name": "OrderExecuted",
       "type": "event"
     },
     {
@@ -120,7 +132,35 @@
           "type": "address"
         }
       ],
-      "name": "__DropFactory721_init",
+      "name": "__AuctionDropFactory_init",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_dropId",
+          "type": "bytes32"
+        },
+        {
+          "internalType": "address",
+          "name": "_nftAddress",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bytes32",
+          "name": "_bidId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "acceptBid",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -146,6 +186,11 @@
           "type": "bytes32"
         },
         {
+          "internalType": "bytes32",
+          "name": "_bidId",
+          "type": "bytes32"
+        },
+        {
           "internalType": "address",
           "name": "_nftAddress",
           "type": "address"
@@ -154,9 +199,14 @@
           "internalType": "uint256",
           "name": "_tokenId",
           "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_bidValue",
+          "type": "uint256"
         }
       ],
-      "name": "cancelOrder",
+      "name": "bid",
       "outputs": [],
       "stateMutability": "nonpayable",
       "type": "function"
@@ -189,12 +239,12 @@
         },
         {
           "internalType": "uint256",
-          "name": "_dropStartTime",
+          "name": "_auctionStartTime",
           "type": "uint256"
         },
         {
           "internalType": "uint256",
-          "name": "_dropEndTime",
+          "name": "_auctionEndTime",
           "type": "uint256"
         },
         {
@@ -211,16 +261,21 @@
             },
             {
               "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "uint256[]",
               "name": "prices",
               "type": "uint256[]"
             }
           ],
           "internalType": "struct DropData.Data[]",
-          "name": "_orders",
+          "name": "_data",
           "type": "tuple[]"
         }
       ],
-      "name": "createDrop",
+      "name": "createAuctionDrop",
       "outputs": [
         {
           "internalType": "address",
@@ -244,53 +299,6 @@
         {
           "internalType": "address",
           "name": "",
-          "type": "address"
-        }
-      ],
-      "stateMutability": "view",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_dropId",
-          "type": "bytes32"
-        },
-        {
-          "internalType": "address",
-          "name": "_nftAddress",
-          "type": "address"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_tokenId",
-          "type": "uint256"
-        },
-        {
-          "internalType": "uint256",
-          "name": "_price",
-          "type": "uint256"
-        }
-      ],
-      "name": "executeOrder",
-      "outputs": [],
-      "stateMutability": "nonpayable",
-      "type": "function"
-    },
-    {
-      "inputs": [
-        {
-          "internalType": "bytes32",
-          "name": "_id",
-          "type": "bytes32"
-        }
-      ],
-      "name": "getCloneAddress",
-      "outputs": [
-        {
-          "internalType": "address",
-          "name": "cloneAddress",
           "type": "address"
         }
       ],
@@ -328,7 +336,7 @@
       "name": "paymentToken",
       "outputs": [
         {
-          "internalType": "contract IERC20",
+          "internalType": "address",
           "name": "",
           "type": "address"
         }
@@ -382,4 +390,4 @@
       "stateMutability": "nonpayable",
       "type": "function"
     }
-  ]
+] 

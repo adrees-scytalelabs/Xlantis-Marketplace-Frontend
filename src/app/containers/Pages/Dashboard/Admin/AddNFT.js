@@ -16,8 +16,10 @@ import { Col, Row, Spinner } from "react-bootstrap";
 import { useHistory, useLocation } from 'react-router-dom';
 import Web3 from 'web3';
 import r1 from '../../../../assets/img/patients/patient.jpg';
-import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
-import AuctionDropFactory from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import DropFactory721 from '../../../../components/blockchain/Abis/DropFactory721.json';
+import AuctionDropFactory721 from '../../../../components/blockchain/Abis/AuctionDropFactory721.json';
+import DropFactory1155 from '../../../../components/blockchain/Abis/DropFactory1155.json';
+import AuctionDropFactory1155 from '../../../../components/blockchain/Abis/AuctionDropFactory1155.json';
 import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
@@ -106,11 +108,14 @@ function AddNFT(props) {
     let [price, setPrice] = useState(0);
     let [supply, setSupply] = useState(0);
     let [saleType, setSaleType] = useState('');
+    let [nftType, setNftType] = useState('');
 
     let [dropInfo, setDropInfo] = useState([]);
 
     let getCollections = () => {
-        axios.get("/collection/collections").then(
+        console.log("NFT TYPE", location.state.nftType);
+        
+        axios.get(`/collection/collections/${location.state.nftType}`).then(
             (response) => {
                 console.log("response", response);
                 setChangeCollectionList(response.data.collectionData);
@@ -175,9 +180,14 @@ function AddNFT(props) {
     
 
     setDropId(location.state.dropId);
-    setStartTime(location.state.startTime);
+    setStartTime(Math.round( location.state.startTime));
+    console.log("START TIME COMING", Math.round( location.state.startTime));
+    console.log("End TIME COMING", location.state.endTime);
+
     setEndTime(location.state.endTime);
     setSaleType(location.state.saleType);
+    let type = location.state.nftType;
+    setNftType(type);
     console.log("dropid",dropId);
     
     getCollections();
@@ -257,9 +267,18 @@ function AddNFT(props) {
             )
             
             let dropCloneId = getHash(dropId);
+            let address;
+            let abi;
             if (saleType === "fixed-price") {
-                const address = Addresses.FactoryDrop;
-                const abi = DropFactory;            
+                if (nftType === "721") {
+                    address = Addresses.FactoryDrop721;
+                    abi = DropFactory721; 
+                }
+                else if (nftType === "1155") {
+                    address = Addresses.FactoryDrop1155;
+                    abi = DropFactory1155;
+                }
+                           
 
                 console.log("Contract Address: ", address);
                 var myContractInstance = await new web3.eth.Contract(abi, address);
@@ -307,8 +326,14 @@ function AddNFT(props) {
             }
 
             else if (saleType === "auction") {
-                const address = Addresses.AuctionDropFactory;
-                const abi = AuctionDropFactory;            
+                if (nftType === "721") {
+                    address = Addresses.AuctionDropFactory721;
+                    abi = AuctionDropFactory721; 
+                }
+                else if (nftType === "1155") {
+                    address = Addresses.AuctionDropFactory1155;
+                    abi = AuctionDropFactory1155;
+                }            
 
                 console.log("Contract Address: ", address);
                 var myContractInstance = await new web3.eth.Contract(abi, address);
@@ -374,7 +399,7 @@ function AddNFT(props) {
     //     else{
 
     //     const addressNft = nftContractAddresses;
-    //     const addressDropFactory = Addresses.FactoryDrop;
+    //     const addressDropFactory = Addresses.FactoryDrop721;
     //     const addressAuctionFactory = Addresses.AuctionDropFactory;
     //     const abiNft = CreateNFTContract;            
 
@@ -383,7 +408,7 @@ function AddNFT(props) {
     //     console.log("myContractInstance", myContractInstance)
         
 
-    //     await myContractInstance.methods.setApprovalForAll(addressAuctionFactory, true).send({from : accounts[0]}, (err, response) => {
+    //     await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
     //         console.log('get transaction', err, response);
             
     //         if (err !== null) {
@@ -436,20 +461,44 @@ function AddNFT(props) {
 
                     let weiPrice = Web3.utils.toWei(price);
                     //sending data to backend
-                    let data ={
-                        // "collectionId": collectionId,
-                        "nftId" : nftId,
-                        "dropId" : dropId,
-                        "price" : weiPrice,
-                        "supply": parseInt(supply)
+                    let data;
+                    let newObject;
+                    if (nftType === "1155") {
+                        console.log("ERC1155 DATA");
+                        data ={
+                            // "collectionId": collectionId,
+                            "nftId" : nftId,
+                            "dropId" : dropId,
+                            "price" : weiPrice,
+                            "supply": parseInt(supply)
+                        }
+                        
+                        newObject = {
+                            "nftContractAddress" : nftContractAddresses,
+                            "tokenIds" : [tokenId],
+                            "amounts" : [parseInt(supply)],
+                            "prices" : [weiPrice]
+                        }
                     }
-                    
-                    let newObject = {
-                        "nftContractAddress" : nftContractAddresses,
-                        "tokenIds" : [tokenId],
-                        "amounts" : [parseInt(supply)],
-                        "prices" : [weiPrice]
+                    else if(nftType === "721") {
+                        console.log("ERC721 DATA");
+
+                        data ={
+                            // "collectionId": collectionId,
+                            "nftId" : nftId,
+                            "dropId" : dropId,
+                            "price" : weiPrice,
+                            // "supply": parseInt(supply)
+                        }
+                        
+                        newObject = {
+                            "nftContractAddress" : nftContractAddresses,
+                            "tokenIds" : [tokenId],
+                            // "amounts" : [parseInt(supply)],
+                            "prices" : [weiPrice]
+                        }
                     }
+                   
 
                     console.log("data", data);
 
@@ -461,37 +510,77 @@ function AddNFT(props) {
                             console.log("time",startTime, endTime);
                             setIsAdded(true);
                             let found = false;
-                            setDropInfo(current => 
-                                current.map(obj => {
-                                    
-                                    if (obj.nftContractAddress === nftContractAddresses ) {
-                                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
-                                        let amount = obj.amounts.concat(newObject.amounts);
-                                        let price = obj.prices.concat(newObject.prices);
-                                        found = true
+                            if(nftType === "1155") {
+                                console.log("SET ERC1155 DATA");
 
-                                        return {
-                                            ...obj,
-                                            tokenIds : tokens,
-                                            amounts : amount,
-                                            prices : price
-
+                                setDropInfo(current => 
+                                    current.map(obj => {
+                                        
+                                        if (obj.nftContractAddress === nftContractAddresses ) {
+                                            let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                                            let amount = obj.amounts.concat(newObject.amounts);
+                                            let price = obj.prices.concat(newObject.prices);
+                                            found = true
+    
+                                            return {
+                                                ...obj,
+                                                tokenIds : tokens,
+                                                amounts : amount,
+                                                prices : price
+    
+                                            }
+                                        
                                         }
-                                    
-                                    }
-
-                                    return obj;
-                                }),
-                            );
-
-                            
-                            if (found === false) {
-                                const dropp = [...dropInfo, newObject];
-                                // giveApproval();
-                                console.log("drop", dropp);
-                                console.log("here");
-                                setDropInfo(dropp);
+    
+                                        return obj;
+                                    }),
+                                );
+    
+                                
+                                if (found === false) {
+                                    const dropp = [...dropInfo, newObject];
+                                    // giveApproval();
+                                    console.log("drop", dropp);
+                                    console.log("here");
+                                    setDropInfo(dropp);
+                                }
                             }
+                            else if (nftType === "721") {
+                                console.log("SET ERC1155 DATA");
+
+                                setDropInfo(current => 
+                                    current.map(obj => {
+                                        
+                                        if (obj.nftContractAddress === nftContractAddresses ) {
+                                            let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                                            // let amount = obj.amounts.concat(newObject.amounts);
+                                            let price = obj.prices.concat(newObject.prices);
+                                            found = true
+    
+                                            return {
+                                                ...obj,
+                                                tokenIds : tokens,
+                                                // amounts : amount,
+                                                prices : price
+    
+                                            }
+                                        
+                                        }
+    
+                                        return obj;
+                                    }),
+                                );
+    
+                                
+                                if (found === false) {
+                                    const dropp = [...dropInfo, newObject];
+                                    // giveApproval();
+                                    console.log("drop", dropp);
+                                    console.log("here");
+                                    setDropInfo(dropp);
+                                }
+                            }
+                            
 
                             console.log(dropInfo);
                             
@@ -695,25 +784,30 @@ function AddNFT(props) {
                                                     />
                                                 </div>
                                             </div>
-
-                                            <label>Supply</label>
-                                            <div className="form-group">
-                                                <div className="filter-widget">
-                                                    <input
-                                                        type="number"
-                                                        required
-                                                        value={supply}
-                                                        className="form-control"
-                                                        onChange={(e) => {
-                                                            if (e.target.value > 0) {
-                                                                setSupply(e.target.value);
-                                                            } else {
-                                                                setSupply(0);
-                                                            }
-                                                        }}
-                                                    />
+                                            {nftType === "1155" ? (
+                                                <div>
+                                                <label>Supply</label>
+                                                <div className="form-group">
+                                                    <div className="filter-widget">
+                                                        <input
+                                                            type="number"
+                                                            required
+                                                            value={supply}
+                                                            className="form-control"
+                                                            onChange={(e) => {
+                                                                if (e.target.value > 0) {
+                                                                    setSupply(e.target.value);
+                                                                } else {
+                                                                    setSupply(0);
+                                                                }
+                                                            }}
+                                                        />
+                                                    </div>
                                                 </div>
-                                            </div>
+                                                </div>
+                                            ) : (null)}
+
+                                            
 
                                             
                                         
