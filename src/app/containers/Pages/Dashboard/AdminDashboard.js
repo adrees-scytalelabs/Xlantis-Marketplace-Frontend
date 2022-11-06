@@ -38,6 +38,7 @@ import NFTBuy from "./Admin/NFTBuy";
 import AuctionNFT from "./Admin/AuctionNFT";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
+import MyNFTsTabs from "./Admin/MyNFTsTabs";
 
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
@@ -194,7 +195,7 @@ function AdminDashboard(props) {
               <NewNFT setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/myNFTs`}>
-              <MyNFTs setActiveTab={setActiveTab} />
+              <MyNFTsTabs setActiveTab={setActiveTab} />
             </Route>
             {/* myNFTs:"", */}
             <Route exact path={`${path}/myCubes`}>

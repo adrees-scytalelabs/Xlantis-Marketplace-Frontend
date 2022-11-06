@@ -101,7 +101,7 @@ function NewDrop(props) {
     let [imageType, setImageType] = useState("");
     let [ipfsURI, setIpfsURI] = useState("");
     let [ipfsHash, setIpfsHash] = useState(null);
-    let [nftType, setNftType] = useState("ERC721");
+    let [nftType, setNftType] = useState("721");
 
 
     const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -297,7 +297,8 @@ function NewDrop(props) {
                     description: description,
                     startTime: startTime,
                     endTime: endTime,
-                    saleType : saleType
+                    saleType : saleType,
+                    dropType : nftType
 
                 }
                 console.log("Drop Data", DropData);
@@ -321,7 +322,7 @@ function NewDrop(props) {
                         // setImage(r1);
                         handleCloseBackdrop();
                         // history.push(`${path}/addNft`);
-                        history.push({pathname :`${path}/addNft`, state : {dropId : dropID, saleType : saleType, startTime : startTimeStamp, endTime : endTimeStamp },});
+                        history.push({pathname :`${path}/addNft`, state : {dropId : dropID, saleType : saleType, startTime : startTimeStamp, endTime : endTimeStamp, nftType : nftType },});
 
 
                         // let variant = "success";
@@ -635,12 +636,12 @@ function NewDrop(props) {
                                     <lable component="legend">Select Drop Type</lable>
                                     <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                         <FormControlLabel style={{ color: 'black' }} value="ERC721" onChange={() => {
-                                            setNftType("ERC721");
+                                            setNftType("721");
                                             // checked={saleType === 'auction'}
-                                        }}  checked={nftType === 'ERC721'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC721</span>} />
+                                        }}  checked={nftType === '721'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC721</span>} />
                                         <FormControlLabel style={{ color: 'black' }} value="ERC1155" onChange={() => {
-                                            setNftType("ERC1155")
-                                        }}  checked={nftType === 'ERC1155'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC1155</span>} />
+                                            setNftType("1155")
+                                        }}  checked={nftType === '1155'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC1155</span>} />
 
                                     </RadioGroup>
                                 </FormControl>
