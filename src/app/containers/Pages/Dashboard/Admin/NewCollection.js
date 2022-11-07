@@ -276,7 +276,7 @@ function NewCollection(props) {
                                 cloneContractAddress = receipt.events.CloneCreated.returnValues.cloneAddress;
                                 let variant = "success";
                                 enqueueSnackbar('New Collection Created Successfully.', { variant });
-                                // setApprovalModalShow(true);
+                                setApprovalModalShow(true);
                                 setNftContractAddress(cloneContractAddress);
                                 setCollectionName("");
                                 setCollectionSymbol("");
@@ -398,16 +398,20 @@ function NewCollection(props) {
             setApprovingFixedPrice(true);
 
             const addressNft = nftContractAddress;
-            const addressDropFactory = Addresses.FactoryDrop;
+            let addressDropFactory ;
             let abiNft;
             if(nftType === "ERC1155")
             {
                 abiNft =  CreateNFTContract1155;
+                addressDropFactory = Addresses.FactoryDrop1155;
+
             }           
-            // else if (nftType === "ERC721")
-            // {
-            //     abiNft = CreateNFTContract721;
-            // }
+            else if (nftType === "ERC721")
+            {
+                abiNft = CreateNFTContract721;
+                addressDropFactory = Addresses.FactoryDrop721;
+
+            }
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
@@ -471,16 +475,18 @@ function NewCollection(props) {
             setApprovingAuction(true);
 
             const addressNft = nftContractAddress;
-            const addressDropFactory = Addresses.AuctionDropFactory;
+            let addressDropFactory;
             let abiNft;
             if(nftType === "ERC1155")
             {
                 abiNft =  CreateNFTContract1155;
+                addressDropFactory = Addresses.AuctionDropFactory1155;
             }           
-            // else if (nftType === "ERC721")
-            // {
-            //     abiNft = CreateNFTContract721;
-            // }        
+            else if (nftType === "ERC721")
+            {
+                abiNft = CreateNFTContract721;
+                addressDropFactory = Addresses.AuctionDropFactory721;
+            }        
 
             console.log("Contract Address: ", nftContractAddress);
             var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
