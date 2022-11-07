@@ -8,7 +8,7 @@ import Web3 from 'web3';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import { useSnackbar } from 'notistack';
 import DateTimePicker from 'react-datetime-picker';
-import AuctionDropFactoryABI from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import AuctionDropFactory1155ABI from '../../../../components/blockchain/Abis/AuctionDropFactory1155.json';
 import AuctionDropFactory721ABI from '../../../../components/blockchain/Abis/AuctionDropFactory721.json'
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { now } from 'lodash';
@@ -287,7 +287,7 @@ const AuctionNFT = (props) => {
                 
                 if (contractType === '1155') {
                     contractAddress = Addresses.AuctionDropFactory;
-                    contractAbi = AuctionDropFactoryABI;
+                    contractAbi = AuctionDropFactory1155ABI;
                 }
                 else if (contractType === '721') {
                     contractAddress = Addresses.AuctionDropFactory721;
