@@ -163,6 +163,7 @@ function NewNFT(props) {
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
     let [isMp3File, setIsMp3File] = useState(false);
     let [contractType, setContractType] = useState("");
+    let [NFTType, setNFTType] = useState("721");
 
     let [previewImage, setPreviewImage] = useState(r1);
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
@@ -193,16 +194,22 @@ function NewNFT(props) {
     //             }
     //         })
     // }
-    let getCollections = () => {
-        axios.get("/collection/collections").then(
+    let getCollections = (collectionType) => {
+        setCollection("");
+        // setCollectionTypes([]);
+        axios.get(`/collection/collections/${collectionType}`).then(
             (response) => {
                 console.log("response", response);
-                setChangeCollectionList(response.data.collectionData);
+
+                if(collectionType === "1155") {
+                    setChangeCollectionList(response.data.collectionData);
+                }
+                
                 response.data.collectionData = [{
                     name: "+ Create new Collection"
                 }, ...response.data.collectionData]
                 console.log("response.data.collectionData", response.data.collectionData[1].nftContractAddress);
-                setCollectionTypes(...collectionTypes, response.data.collectionData)
+                setCollectionTypes(response.data.collectionData)
             },
             (error) => {
                 if (process.env.NODE_ENV === "development") {
@@ -232,6 +239,7 @@ function NewNFT(props) {
             setBatchId(batchMintId);
             setCollection(JSON.parse(data)[0].collectiontitle);
             setCollectionId(JSON.parse(data)[0].collectionId);
+            setNFTType("1155");
         } else {
             console.log("No data in cookies");
         }
@@ -239,7 +247,7 @@ function NewNFT(props) {
 
     useEffect(() => {
         // getProfileData();
-        getCollections();
+        getCollections(NFTType);
         // setTokenList(Cookies.get("NFT-Detail"));
        getDataFromCookies();
 
@@ -734,7 +742,7 @@ function NewNFT(props) {
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
-                // setImage(response.data.url);
+                setImage(response.data.url);
                 setIsUploadingIPFS(false);
                 let variant = "success";
                 enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
@@ -1096,20 +1104,23 @@ function NewNFT(props) {
                 });
                 console.log("Properties are: ", propertiesObject);
 
-                let nftData = new FormData();
-                nftData.append("NFT", image);
-                
-                if (imageType === "glb" || imageType === "mp3") {
-                    nftData.append("previewImage", image);
+                let nftData = {
+                    "title": name,
+                    "description": description,
+                    "collectionId": collectionId,
+                    "nftURI": nftURI,
+                    "metadataURI": nftURI,
+                    "nftFormat": imageType,
+                    "type": rarity,
+                    "properties": propertiesObject
+                };
+
+                if (imageType === "glb" || imageType === "gltf" || imageType === "mp3") {
+                    nftData["previewImageURI"] = previewImageURI;
                 }
+                
 
-                nftData.append("title", name);
-                nftData.append("collectionId", collectionId);
-                nftData.append("description", description);
-                nftData.append("type", rarity);
-                nftData.append("properties", propertiesObject);
-
-                console.log("NFT Data form data: ", nftData);
+                console.log("NFT Data: ", nftData);
                 await axios.post("lazy-mint/NFT", nftData).then(
                     async (response) => {
                         console.log("Response from backend on free mint: ", response);
@@ -1173,6 +1184,7 @@ function NewNFT(props) {
             }
         }
     }
+
 
     return (
         <div className="card">
@@ -1605,6 +1617,41 @@ function NewNFT(props) {
                                     
                                     </div>
 
+                                    {(tokenList.length > 0) ? (
+                                        <FormControl component="fieldset">
+                                            <lable component="legend">Select NFT Type</lable>
+                                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                                <FormControlLabel style={{ color: 'black' }} disabled value="ERC721" onChange={() => {
+                                                    setNFTType("721");
+                                                    getCollections("721");
+                                                    // checked={saleType === 'auction'}
+                                                }}  checked={NFTType === '721'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC721</span>} />
+                                                <FormControlLabel style={{ color: 'black' }} disabled value="ERC1155" onChange={() => {
+                                                    setNFTType("1155");
+                                                    getCollections("1155");
+                                                }}  checked={NFTType === '1155'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC1155</span>} />
+
+                                            </RadioGroup>
+                                        </FormControl>
+                                    ) : (
+                                        <FormControl component="fieldset">
+                                            <lable component="legend">Select NFT Type</lable>
+                                            <RadioGroup row aria-label="position" name="position" defaultValue="top">
+                                                <FormControlLabel style={{ color: 'black' }} value="ERC721" onChange={() => {
+                                                    setNFTType("721");
+                                                    getCollections("721");
+                                                    // checked={saleType === 'auction'}
+                                                }}  checked={NFTType === '721'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC721</span>} />
+                                                <FormControlLabel style={{ color: 'black' }} value="ERC1155" onChange={() => {
+                                                    setNFTType("1155");
+                                                    getCollections("1155");
+                                                }}  checked={NFTType === '1155'} control={<Radio color="secondary" />} label={<span style={{fontSize: "0.9rem"}}>ERC1155</span>} />
+
+                                            </RadioGroup>
+                                        </FormControl>
+                                    )}
+                                    
+
                                         {(tokenList.length > 0) ? (
                                             <div className="form-group">
                                                 <label>Select Collection</label>
@@ -1683,7 +1730,7 @@ function NewNFT(props) {
                                         )
                                         
                                     }
-                                    {(contractType === "1155") ? (
+                                    {(NFTType === "1155") ? (
                                         <div>
                                             <FormControl component="fieldset">
                                                 <lable component="legend">Select Supply Type</lable>
@@ -1739,7 +1786,7 @@ function NewNFT(props) {
                                     ) : (null)}
 
                                 </div>
-                                {(contractType === "1155") ? ( 
+                                {(NFTType === "1155") ? ( 
                                 <div>           
                                     {image === "" || name === "" || description === "" || tokenSupply === "" || collection === "" || isUploadingData === true ? (
                                         <button
@@ -1931,30 +1978,24 @@ function NewNFT(props) {
                             </Spinner>
                         </div>
                     ) : (
-                        tokenList.length === 0 ? (
+                        NFTType === "1155" ? (
                             <div className="submit-section">
-                                {contractType === "1155" ? (
+                                {tokenList.length === 0 ? (
                                     <button type="button" disabled className="btn submit-btn">
                                         Batch create NFTs 
                                     </button>
                                 ) : (
-                                    <button type="button" disabled className="btn submit-btn">
-                                        Free Mint
+                                    <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
+                                        Batch create NFTs
                                     </button>
                                 )}
                                 
                             </div>
                         ) : (
                         <div className="submit-section">
-                            {contractType === "1155" ? (
-                            <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
-                                Batch create NFTs
-                            </button>
-                            ) : (
                             <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
                                 Free Mint
                             </button>
-                            )}
                         </div>
                         // )
 

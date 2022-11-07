@@ -69,9 +69,8 @@ function MyNFTs(props) {
     const { enqueueSnackbar } = useSnackbar();
     let [openDialog, setOpenDialog] = useState(false);
     let [openEditModal, setOpenEditModal] = useState(false);
-    // let [isPlaying, setIsPlaying] = useState(false);
     let [nftDetail, setNftDetail] = useState({});
-    // let [audio, setAudio] = useState();
+    let [audio, setAudio] = useState();
     let handleOpenNFTDetailModal = (nftObject) => {
         setNftDetail(nftObject);
         setOpenDialog(true);
@@ -81,6 +80,7 @@ function MyNFTs(props) {
     const handleCloseNetworkModal = () => setShowNetworkModal(false);
     const handleShowNetworkModal = () => setShowNetworkModal(true);
     const myRef = useRef();
+    let [windowSize, setWindowSize] = useState(window.innerWidth);
 
     // let loadWeb3 = async () => {
     //     if (window.ethereum) {
@@ -179,42 +179,86 @@ function MyNFTs(props) {
     const handleShowBackdrop = () => {
         setOpen(true);
     };
-    // let handlePlay= async(e, src) => {
-    //     e.preventDefault();
-    //     let audioPlay = new Audio(src);
-    //     console.log("src", src);
-    //     console.log("audi play", audioPlay);
+    let handlePlay= async(e, token) => {
+        e.preventDefault();
+        let audioPlay = new Audio(token.nftURI);
+        // console.log("src", src);
+        // console.log("audi play", audioPlay);
         
-    //     console.log("playing?",isPlaying);
-    //     console.log("audio", audio);
-    //     setIsPlaying(true);
-    //     audioPlay.play();
-    //     setAudio(audioPlay);
-    //     console.log("Audio",audio);
+        console.log("playing?",token.isPlaying);
+        console.log("audio", audio);
+        let updateState = tokenList.map(obj => {
+           
+            if (obj._id !== token._id) {
+              return {...obj, isPlaying: false};
+            }
+            else if(obj._id === token._id) {
+              return {...obj, isPlaying: true};
+            }
+      
+            return obj;
+        });
+        setTokenList(updateState);
+        // setIsPlaying({myArray[i] : true});
+        if(audio !== undefined) {
+            audio.pause();
+        }
+        audioPlay.play();
+        setAudio(audioPlay);
+        console.log("Audio",audio);
 
      
-    // }
-    // let handlePause= async(e, src) => {
-    //     e.preventDefault();
-    //     console.log("Audio",audio);
-    //     setIsPlaying(false);
-    //     audio.pause();
+    }
 
+    let handlePause= async(e, token) => {
+        e.preventDefault();
+        let updateState = tokenList.map(obj => {
+           
+           
+            if(obj._id === token._id) {
+              return {...obj, isPlaying: false};
+            }
+      
+            return obj;
+        });
+        setTokenList(updateState);
+
+        console.log("Audio",audio);
+        audio.pause();
+    }
+
+    let handleStop = async(e) => {
+        if(audio !== undefined){
         
-     
-    // }
+            audio.pause();
+        }
+        
+    }
+
     let getNFTs = (start, end) => {
         handleShowBackdrop();
         console.log("nftids", location.state.nftId);
         console.log("dropId", location.state.dropId);
+
+        console.log("len", location.state.nftId.length)
+
 
         let data = {
             nftIds : location.state.nftId
         }
         axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
             (response) => {
-                console.log("response", response);
-                setTokenList(response.data.data);
+                console.log("response", response.data.data);
+                
+                let  nfts = response.data.data;
+                let newState = nfts.map(obj => {
+                      return {...obj, isPlaying: false};
+                });
+                console.log("NFTS", nfts);
+                console.log("Updated", newState);
+                setTokenList(newState);
+                // setTokenList(tokenList.map())
+                // setTokenList(...tokenList, isPlaying : false);
                 setTotalNfts(response.data.data.length);
 
                 handleCloseBackdrop();
@@ -239,6 +283,8 @@ function MyNFTs(props) {
 
         setNftIds(location.state.nftId);
         getNFTs(0, rowsPerPage);
+        setWindowSize(window.innerWidth);
+        console.log("width" , window.innerWidth);
         // getCollections();?
 
         props.setActiveTab({
@@ -313,7 +359,7 @@ function MyNFTs(props) {
                                      
                                      <Grid item xs={12} sm={6} md={3} key={index}>
                                         {(location.state.saleType === "fixed-price") ? (
-                                             <Link to={{pathname :`${path}/buy`, state : {nftDetail : i, startTime : location.state.startTime, endTime : location.state.endTime}}} >
+                                             <Link onClick= {(e) => handleStop(e)} to={{pathname :`${path}/buy`, state : {nftDetail : i, startTime : location.state.startTime, endTime : location.state.endTime}}} >
                                              <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                  {/* <CardActionArea onClick={() => {
                                                          console.log("nftDetailObject: ", i);
@@ -323,7 +369,7 @@ function MyNFTs(props) {
                                                      <div style={{ position: "relative" }}>
  
                                                          <CardHeader className="text-center"
-                                                         title={i.title.length > 7 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
+                                                         title={i.title.length > 12 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
  
                                                          />
  
@@ -340,7 +386,7 @@ function MyNFTs(props) {
                                                          
                                                      </div>
                                                      
-                                                    <div style={{ position: "relative" }}>
+                                                    <div style = {{position : 'relative' }} >
                                                         <CardMedia
                                                             variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
@@ -349,20 +395,20 @@ function MyNFTs(props) {
                                                         />
                                                          
                                                          
-                                                        {/* {i.nftFormat === "mp3" ? (
-                                                            
-                                                            <div style={{ position: "absolute", top: "80%", left: "75%" , }}>
+                                                        {i.nftFormat === "mp3" ? (
+                                                            // style={{ position: "absolute", top: "80%", left: "75%"  }}
+                                                            <div style = {{ position: "absolute", left : "75%" , bottom : "5%"  }} >
                                                                 {
                     
                                                                
-                                                                (isPlaying === false ) ? (
-                                                                     <button className="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePlay(e,i.nftURI)}><PlayArrow /></button>
+                                                                (i.isPlaying === false ) ? (
+                                                                    <button className='btn' style={{borderRadius: "80%", backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePlay(e,i)}><PlayArrow /></button>
                                                                 ) : (
-                                                                    <button className="btn" style={{borderRadius: "80%" }} onClick={(e) => handlePause(e)}><Pause /></button>
+                                                                    <button className='btn' style={{borderRadius: "80%" , backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePause(e,i)}><Pause /></button>
                                                                 )}
                                                                
                                                             </div>
-                                                        ) : (null)} */}
+                                                        ) : (null)}
                                                         
                                                     </div>
                                                         
@@ -384,7 +430,7 @@ function MyNFTs(props) {
                                              </Card>
                                          </Link>
                                         ) : (
-                                            <Link to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType}}} >
+                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
@@ -394,7 +440,7 @@ function MyNFTs(props) {
                                                     <div style={{ position: "relative" }}>
 
                                                         <CardHeader className="text-center"
-                                                        title={i.title.length > 7 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
+                                                        title={i.title.length > 12 ? (<span>{i.title.slice(0,7)}...</span>) : (i.title)}
 
                                                         />
 
@@ -411,13 +457,31 @@ function MyNFTs(props) {
                                                         
                                                     </div>
                                                     
+                                                    <div style = {{position : 'relative' }} >
                                                         <CardMedia
                                                             variant="outlined" style={{ border: i.type === "Mastercraft" ? '4px solid #ff0000' : i.type === "Legendary" ? '4px solid #FFD700' : i.type === "Epic" ? '4px solid #9400D3' : i.type === "Rare" ? '4px solid #0000FF' : i.type === "Uncommon" ? '4px solid #008000' : i.type === "Common" ? '4px solid #FFFFFF' : 'none' }}
                                                             className={classes.media}
                                                             image={i.previewImageURI ? i.previewImageURI : i.nftURI}
                                                             title="NFT Image"
                                                         />
-                                                       
+                                                         
+                                                         
+                                                        {i.nftFormat === "mp3" ? (
+                                                            // style={{ position: "absolute", top: "80%", left: "75%"  }}
+                                                            <div style = {{ position: "absolute", left : "75%" , bottom : "5%"  }} >
+                                                                {
+                    
+                                                               
+                                                                (i.isPlaying === false ) ? (
+                                                                    <button className='btn' style={{borderRadius: "80%", backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePlay(e,i)}><PlayArrow /></button>
+                                                                ) : (
+                                                                    <button className='btn' style={{borderRadius: "80%" , backgroundColor : "rgba(0,0,0,.5)", border : "#9f9f9f" }} onClick={(e) => handlePause(e,i)}><Pause /></button>
+                                                                )}
+                                                               
+                                                            </div>
+                                                        ) : (null)}
+                                                        
+                                                    </div>
                                                 
                                                 
                                                     <CardContent>
