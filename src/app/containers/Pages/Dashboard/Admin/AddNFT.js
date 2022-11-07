@@ -436,21 +436,28 @@ function AddNFT(props) {
         } else if (nftName === "") {
             let variant = "error";
             enqueueSnackbar('Please Select Nft', { variant });
-        } else if (supply === 0 || supply === undefined || supply === null) {
-            let variant = "error";
-            enqueueSnackbar('Token Supply cannot be 0 or empty', { variant });
-        } else if (supply < 0) {
-            let variant = "error";
-            enqueueSnackbar('Token Supply cannot be Negative', { variant });
         } else if (price === 0 || price === undefined || price === null) {
             let variant = "error";
             enqueueSnackbar('Price cannot be 0 or empty', { variant });
         } else if (price < 0) {
             let variant = "error";
             enqueueSnackbar('Price cannot be Negative', { variant });
-        } else if (supply > nftTokenSupply) {
-            let variant = "error";
-            enqueueSnackbar('Supply cannot be greater than NFT token supply', { variant });
+        } 
+        else if (nftType === "1155") {
+            if (supply < 0) {
+                let variant = "error";
+                enqueueSnackbar('Token Supply cannot be Negative', { variant });
+            }
+
+            else if (supply === 0 || supply === undefined || supply === null) {
+                let variant = "error";
+                enqueueSnackbar('Token Supply cannot be 0 or empty', { variant });
+            }
+
+            else if (supply > nftTokenSupply) {
+                let variant = "error";
+                enqueueSnackbar('Supply cannot be greater than NFT token supply', { variant });
+            }
         }
         else {
             handleShowBackdrop();
@@ -818,7 +825,7 @@ function AddNFT(props) {
 
                                 </div>
 
-                                { collection === "" || nftName === 0 || supply === 0 || price === "" ? (
+                                { collection === "" || nftName === 0  || price === "" ? (
                                     <button
                                         className="btn"
                                         type="submit"
