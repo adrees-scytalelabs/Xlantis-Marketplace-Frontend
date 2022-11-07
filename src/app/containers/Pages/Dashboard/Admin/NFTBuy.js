@@ -6,8 +6,12 @@ import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardH
 import { Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Web3 from 'web3';
-import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
+import DropFactory721 from '../../../../components/blockchain/Abis/DropFactory721.json';
+import DropFactory1155 from '../../../../components/blockchain/Abis/DropFactory1155.json';
+
 import ERC20SaleDrop from '../../../../components/blockchain/Abis/ERC20SaleDrop.json';
+import Collectible721 from '../../../../components/blockchain/Abis/Collectible721.json';
+
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { useSnackbar } from 'notistack';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
@@ -136,10 +140,22 @@ const NFTBuy = (props) => {
         }
         else {
             handleShowBackdrop();
-            const addressDropFactory = Addresses.FactoryDrop;
-            const abiDropFactory = DropFactory;            
+            
+            const addressDropFactory721 = Addresses.FactoryDrop721;
+            const abiDropFactory721 = DropFactory721;  
+            const addressDropFactory1155 = Addresses.FactoryDrop1155;
+            const abiDropFactory1155 = DropFactory1155;                      
             const addressERC20 = Addresses.ERC20SaleDrop;
             const abiERC20 = ERC20SaleDrop;
+            let addressApprove ;
+            if (nftDetail.collectionId.contractType === "1155") {
+                console.log("IN 1155");
+                addressApprove = addressDropFactory1155;
+            }
+            else if(nftDetail.collectionId.contractType === "721") {
+                console.log("IN 721");
+                addressApprove = addressDropFactory721;
+            }
 
             var erc20Instance = await new web3.eth.Contract(abiERC20, addressERC20);
             let userBalance = await erc20Instance.methods.balanceOf(accounts[0]).call();
@@ -152,11 +168,12 @@ const NFTBuy = (props) => {
             }
             else {
 
-                erc20Instance.methods.approve(addressDropFactory, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
+                erc20Instance.methods.approve(addressApprove, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
                     console.log('get transaction', err, response); 
                 }).on('receipt', async(receipt) => {
                         console.log("approval receipt", receipt);
-                        var myContractInstance = await new web3.eth.Contract(abiDropFactory, addressDropFactory);
+                        if (nftDetail.collectionId.contractType === "1155") {
+                        var myContractInstance = await new web3.eth.Contract(abiDropFactory1155, addressDropFactory1155);
                         console.log("myContractInstance", myContractInstance)
                         await myContractInstance.methods.executeOrder(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.tokenSupply, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
                         console.log('get transaction', err, response);
@@ -177,6 +194,7 @@ const NFTBuy = (props) => {
                             }
                         )
                         
+                        
     
                         if (err !== null) {
                             console.log("err", err);
@@ -196,7 +214,59 @@ const NFTBuy = (props) => {
                         setIsSaving(false);
                         
                     })
+                 
+                }
+                else if (nftDetail.collectionId.contractType === "721") {
+                    console.log("LAZY MINTING");
+                    var myContractInstance = await new web3.eth.Contract(abiDropFactory721, addressDropFactory721);
+                    console.log("myContractInstance Drop 721", myContractInstance)     
+                    // let nftVoucher = {
+                    //     "tokenId" : nftDetail.nftId,
+                    //     "price" : nftDetail.currentMarketplaceId.price,
+                    //     "uri" : nftDetail.nftURI,
+                    //     "signature" : "signature"
+                    // }  
+                    await myContractInstance.methods.executeOrderLazyMint(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.nftURI, 
+                        nftDetail.currentMarketplaceId.price, nftDetail.voucherSignature).send({from : accounts[0]}, (err, response) => {
+                        console.log('get transaction', err, response);
+                        let data = {
+                            dropId : nftDetail.dropId,
+                            nftId : nftDetail._id,
+                            txHash : response
+    
+                        }
+    
+                        console.log("data",data);
+                        axios.post(`/marketplace/buy`, data).then(
+                            (response) => {
+                                console.log("Transaction Hash sending on backend response: ", response);
+                            },
+                            (error) => {
+                                console.log("Transaction hash on backend error: ", error.response);
+                            }
+                        )
                         
+                        
+    
+                        if (err !== null) {
+                            console.log("err", err);
+                            let variant = "error";
+                            enqueueSnackbar('User Canceled Transaction', { variant });
+                            handleCloseBackdrop();
+                            setIsSaving(false);
+    
+                        }
+                        
+                    })
+                    .on('receipt', (receipt) => {
+                        console.log("receipt lazy mint", receipt);
+                        let variant = "success";
+                        enqueueSnackbar('NFT Bought Successfully', { variant });
+                        handleCloseBackdrop();
+                        setIsSaving(false);
+                        
+                    })
+                }
                 })
                 
             

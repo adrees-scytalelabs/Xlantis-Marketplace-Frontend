@@ -57,13 +57,7 @@
     "type": "event"
   },
   {
-    "inputs": [
-      {
-        "internalType": "address",
-        "name": "_paymentToken",
-        "type": "address"
-      }
-    ],
+    "inputs": [],
     "name": "__Factory721_init",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -167,19 +161,6 @@
   },
   {
     "inputs": [],
-    "name": "paymentToken",
-    "outputs": [
-      {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [],
     "name": "renounceOwnership",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -212,3 +193,5 @@
     "type": "function"
   }
 ]
+
+
