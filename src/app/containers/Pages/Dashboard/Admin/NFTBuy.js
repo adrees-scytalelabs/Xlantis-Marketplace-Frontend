@@ -6,7 +6,9 @@ import { Accordion, AccordionDetails, AccordionSummary, Card, CardContent, CardH
 import { Col, Row, Table } from 'react-bootstrap';
 import { useLocation } from 'react-router-dom';
 import Web3 from 'web3';
-import DropFactory from '../../../../components/blockchain/Abis/DropFactory.json';
+import DropFactory721 from '../../../../components/blockchain/Abis/DropFactory721.json';
+import DropFactory1155 from '../../../../components/blockchain/Abis/DropFactory1155.json';
+
 import ERC20SaleDrop from '../../../../components/blockchain/Abis/ERC20SaleDrop.json';
 import Collectible721 from '../../../../components/blockchain/Abis/Collectible721.json';
 
@@ -138,12 +140,22 @@ const NFTBuy = (props) => {
         }
         else {
             handleShowBackdrop();
-            const addressDropFactory = Addresses.FactoryDrop;
-            const abiDropFactory = DropFactory;            
+            
+            const addressDropFactory721 = Addresses.FactoryDrop721;
+            const abiDropFactory721 = DropFactory721;  
+            const addressDropFactory1155 = Addresses.FactoryDrop1155;
+            const abiDropFactory1155 = DropFactory1155;                      
             const addressERC20 = Addresses.ERC20SaleDrop;
             const abiERC20 = ERC20SaleDrop;
-            const ERC721CollectibleAddress = Addresses.Collectible721Address;
-            const abiERC721Collectible = Collectible721;
+            let addressApprove ;
+            if (nftDetail.collectionId.contractType === "1155") {
+                console.log("IN 1155");
+                addressApprove = addressDropFactory1155;
+            }
+            else if(nftDetail.collectionId.contractType === "721") {
+                console.log("IN 721");
+                addressApprove = addressDropFactory721;
+            }
 
             var erc20Instance = await new web3.eth.Contract(abiERC20, addressERC20);
             let userBalance = await erc20Instance.methods.balanceOf(accounts[0]).call();
@@ -156,12 +168,12 @@ const NFTBuy = (props) => {
             }
             else {
 
-                erc20Instance.methods.approve(addressDropFactory, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
+                erc20Instance.methods.approve(addressApprove, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
                     console.log('get transaction', err, response); 
                 }).on('receipt', async(receipt) => {
                         console.log("approval receipt", receipt);
-                        if (nftDetail.collectionId.ContractType === "1155") {
-                        var myContractInstance = await new web3.eth.Contract(abiDropFactory, addressDropFactory);
+                        if (nftDetail.collectionId.contractType === "1155") {
+                        var myContractInstance = await new web3.eth.Contract(abiDropFactory1155, addressDropFactory1155);
                         console.log("myContractInstance", myContractInstance)
                         await myContractInstance.methods.executeOrder(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.tokenSupply, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
                         console.log('get transaction', err, response);
@@ -204,17 +216,18 @@ const NFTBuy = (props) => {
                     })
                  
                 }
-                else if (nftDetail.collectionId.ContractType === "721") {
+                else if (nftDetail.collectionId.contractType === "721") {
                     console.log("LAZY MINTING");
-                    var myContractInstance = await new web3.eth.Contract(abiERC721Collectible, ERC721CollectibleAddress);
-                    console.log("myContractInstance ERC721 COLLECTIBLE", myContractInstance)     
-                    let nftVoucher = {
-                        "tokenId" : nftDetail.nftId,
-                        "price" : nftDetail.currentMarketplaceId.price,
-                        "uri" : nftDetail.nftURI,
-                        "signature" : "signature"
-                    }  
-                    await myContractInstance.methods.lazyMint(nftVoucher).send({from : accounts[0]}, (err, response) => {
+                    var myContractInstance = await new web3.eth.Contract(abiDropFactory721, addressDropFactory721);
+                    console.log("myContractInstance Drop 721", myContractInstance)     
+                    // let nftVoucher = {
+                    //     "tokenId" : nftDetail.nftId,
+                    //     "price" : nftDetail.currentMarketplaceId.price,
+                    //     "uri" : nftDetail.nftURI,
+                    //     "signature" : "signature"
+                    // }  
+                    await myContractInstance.methods.executeOrderLazyMint(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.nftURI, 
+                        nftDetail.currentMarketplaceId.price, nftDetail.voucherSignature).send({from : accounts[0]}, (err, response) => {
                         console.log('get transaction', err, response);
                         let data = {
                             dropId : nftDetail.dropId,
