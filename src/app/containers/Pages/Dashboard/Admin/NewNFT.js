@@ -195,6 +195,7 @@ function NewNFT(props) {
     //         })
     // }
     let getCollections = (collectionType) => {
+        setCollection("");
         // setCollectionTypes([]);
         axios.get(`/collection/collections/${collectionType}`).then(
             (response) => {
