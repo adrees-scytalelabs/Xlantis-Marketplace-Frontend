@@ -121,6 +121,7 @@ const AuctionNFT = (props) => {
             (response) => {
                 console.log("Response from getting drop details: ", response);
                 console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
+                //set contract type when its done at backend
                 setDropCloneAddress(response.data.dropData.dropCloneAddress);
             },
             (err) => {
@@ -134,6 +135,7 @@ const AuctionNFT = (props) => {
         console.log("Auction contract address: ", location);
         setDropExpiryTime(new Date(location.state.endTime));
         setDropExpiryTimeStamp(Math.round(new Date(location.state.endTime).getTime()));
+        setContractType(location.state.contractType);
         getNftDetail();
         getDropCloneAddress();
 
@@ -330,6 +332,9 @@ const AuctionNFT = (props) => {
                                 )
                                 handleCloseBackdrop();
                             });
+                        }
+                        else if (contractType === '721') {
+
                         }
 
                     },

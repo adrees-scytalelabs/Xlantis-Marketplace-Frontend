@@ -430,7 +430,7 @@ function MyNFTs(props) {
                                              </Card>
                                          </Link>
                                         ) : (
-                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime}}} >
+                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
