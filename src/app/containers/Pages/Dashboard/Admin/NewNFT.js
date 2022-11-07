@@ -1124,7 +1124,7 @@ function NewNFT(props) {
                 await axios.post("lazy-mint/NFT", nftData).then(
                     async (response) => {
                         console.log("Response from backend on free mint: ", response);
-                        lazyMintId = response.data.lazyMintId;
+                        lazyMintId = response.data.nftObjectId;
                         nftIdHex = response.data.nftId
                     },
                     (err) => {
@@ -1148,7 +1148,7 @@ function NewNFT(props) {
 
                 //sending call on backend to update voucher sign
                 let voucherData = {
-                    "lazyMintId": lazyMintId,
+                    "nftId": lazyMintId,
                     "signature": signature
                 }
 
