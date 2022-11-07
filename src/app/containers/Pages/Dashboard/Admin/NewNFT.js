@@ -1582,7 +1582,10 @@ function NewNFT(props) {
                                         }
                                         <button
                                             className="btn btn-submit"
-                                            color="primary"
+                                            color="secondary"
+                                            style={{
+                                                backgroundColor: "#f00000"
+                                            }}
                                         // className="btn submit-btn"
                                             onClick={(e) => handleAddProperty(e)}
                                         >
