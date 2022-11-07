@@ -50,23 +50,23 @@ function MyNFTs(props) {
         getMyNFTs(0, rowsPerPage);
         // getCollections();?
 
-        // props.setActiveTab({
-        //     dashboard: "",
-        //     newNFT: "",
-        //     orders: "",
-        //     myNFTs: "active",
-        //     myCubes: "",
-        //     myDrops: "",
-        //     settings: "",
-        //     mySeason: "",
-        //     privacyPolicy: "",
-        //     termsandconditions: "",
-        //     changePassword: "",
-        //     newDrop: "",
-        //     newCube: "",
-        //     newCollection: "",
-        //     newRandomDrop: "",
-        // });// eslint-disable-next-line
+        props.setActiveTab({
+            dashboard: "",
+            newNFT: "",
+            orders: "",
+            myNFTs: "active",
+            myCubes: "",
+            myDrops: "",
+            settings: "",
+            mySeason: "",
+            privacyPolicy: "",
+            termsandconditions: "",
+            changePassword: "",
+            newDrop: "",
+            newCube: "",
+            newCollection: "",
+            newRandomDrop: "",
+        });// eslint-disable-next-line
     }, []);
     const handleChangePage = (event, newPage) => {
         console.log("newPage", newPage);
@@ -84,12 +84,12 @@ function MyNFTs(props) {
 
     return (
         <div className="card">
-            {/* <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
+            <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
                 <li className="breadcrumb-item">
                     <a href="/">Dashboard</a>
                 </li>
                 <li className="breadcrumb-item active">My NFTs</li>
-            </ul> */}
+            </ul>
             <div className="card-body">
                 <form >
                     <div className="form-group">
