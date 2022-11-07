@@ -44,12 +44,12 @@ const useStyles = makeStyles((theme) => ({
     pos: {
         marginBottom: 12,
     },
-    overflowWithDots: {
-        textOverflow: 'ellipsis',
-        whiteSpace: 'nowrap',
-        overflow: 'hidden',
-        width: "80%"
-    }
+    // overflowWithDots: {
+    //     textOverflow: 'ellipsis',
+    //     whiteSpace: 'nowrap',
+    //     overflow: 'hidden',
+    //     width: "80%"
+    // }
 }));
 
 
@@ -168,13 +168,14 @@ function MarketPlacePage(props) {
                                             <CardActionArea>
                                                 <CardHeader 
                                                     className="text-center"
-                                                    title={
-                                                        <Tooltip title={i.title}>
-                                                            <Typography gutterBottom variant="h5" component="h4" className={classes.overflowWithDots}>
-                                                                {i.title}
-                                                            </Typography>
-                                                        </Tooltip>
-                                                    }
+                                                    title={i.title}
+                                                    // {
+                                                    //     <Tooltip title={i.title}>
+                                                    //         <Typography gutterBottom variant="h5" component="h4" className={classes.overflowWithDots}>
+                                                    //             {i.title}
+                                                    //         </Typography>
+                                                    //     </Tooltip>
+                                                    // }
                                                 />
                                                 <CardMedia
                                                     className={classes.media}
