@@ -8,7 +8,8 @@ import Web3 from 'web3';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
 import { useSnackbar } from 'notistack';
 import DateTimePicker from 'react-datetime-picker';
-import CreateNFTContract from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import AuctionDropFactoryABI from '../../../../components/blockchain/Abis/AuctionDropFactory.json';
+import AuctionDropFactory721ABI from '../../../../components/blockchain/Abis/AuctionDropFactory721.json'
 import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 import { now } from 'lodash';
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
@@ -258,9 +259,8 @@ const AuctionNFT = (props) => {
             }
             else {
                 handleShowBackdrop();
-                if (contractType === "1155") {
-                    await giveAuctionErc20Approval();
-                }
+                await giveAuctionErc20Approval();
+
                 //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
                 let bidData = {
                     nftId: nftDetail._id,
@@ -281,8 +281,19 @@ const AuctionNFT = (props) => {
                 console.log("Bid Value type: ", typeof(bidValue), bidValue);
                 console.log("Drop Id Hash: ", dropIdHash);
 
-                let contractAddress = Addresses.AuctionDropFactory;
-                let contractAbi = CreateNFTContract;
+
+                let contractAddress;
+                let contractAbi;
+                
+                if (contractType === '1155') {
+                    contractAddress = Addresses.AuctionDropFactory;
+                    contractAbi = AuctionDropFactoryABI;
+                }
+                else if (contractType === '721') {
+                    contractAddress = Addresses.AuctionDropFactory721;
+                    contractAbi = AuctionDropFactory721ABI;
+                }
+
                 let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
                 let trxHash;
 
@@ -301,42 +312,37 @@ const AuctionNFT = (props) => {
                         console.log("nft id: ", nftId);
                         console.log("bid Value: ", bidValue);
                         
-                        if (contractType === "1155") {
-                            myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-                                console.log('get transaction: ', err, response);
-                                if (err !== null) {
-                                    console.log('err: ', err);
-                                    handleCloseBackdrop();
-                                }
-                                trxHash = response;
-                                
-    
-                            })
-                            .on('receipt', (receipt) => {
-                                console.log('receipt: ', receipt);
-
-                                //sending finalize call on backend
-                                let finalizeBidData = {
-                                    "bidId": bidId,
-                                    "txHash": trxHash 
-                                }
-
-                                axios.put('/auction/bid/finalize', finalizeBidData).then(
-                                    (response) => {
-                                        console.log("Response from finalize bid: ", response);
-                                    },
-                                    (err) => {
-                                        console.log("Err from finalize bid: ", err);
-                                        console.log("Err response from finalize bid: ", err);
-                                    }
-                                )
+                      
+                        myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+                            console.log('get transaction: ', err, response);
+                            if (err !== null) {
+                                console.log('err: ', err);
                                 handleCloseBackdrop();
-                            });
-                        }
-                        else if (contractType === '721') {
+                            }
+                            trxHash = response;
+                            
 
-                        }
+                        })
+                        .on('receipt', (receipt) => {
+                            console.log('receipt: ', receipt);
 
+                            //sending finalize call on backend
+                            let finalizeBidData = {
+                                "bidId": bidId,
+                                "txHash": trxHash 
+                            }
+
+                            axios.put('/auction/bid/finalize', finalizeBidData).then(
+                                (response) => {
+                                    console.log("Response from finalize bid: ", response);
+                                },
+                                (err) => {
+                                    console.log("Err from finalize bid: ", err);
+                                    console.log("Err response from finalize bid: ", err);
+                                }
+                            )
+                            handleCloseBackdrop();
+                        });
                     },
                     (error) => {
                         console.log("Error from sending bid data to backend: ", error);
