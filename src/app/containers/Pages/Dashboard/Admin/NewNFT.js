@@ -36,6 +36,7 @@ import NFTEditModal from '../../../../components/Modals/NFTEditModal';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { ethers } from "ethers";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -1134,15 +1135,17 @@ function NewNFT(props) {
                 )
 
                 
+                let signature = await signTypedData(nftIdHex, nftURI);
+
                 //signing tokenId
                 // const messageHash = await web3.eth.accounts.hashMessage(web3.utils.utf8ToHex("Hello World"));
-                const messageData = {
-                    "tokenId": nftIdHex
-                }
+                // const messageData = {
+                //     "tokenId": nftIdHex
+                // }
 
-                const signature = await web3.eth.personal.sign(web3.utils.toHex(JSON.stringify(messageData)), accounts[0], (err, signature) => {
-                    console.log("Sinature: ", signature);
-                });
+                // const signature = await web3.eth.personal.sign(web3.utils.toHex(JSON.stringify(messageData)), accounts[0], (err, signature) => {
+                //     console.log("Sinature: ", signature);
+                // });
                 // console.log("Signature: ", signature);
                 
 
@@ -1179,10 +1182,75 @@ function NewNFT(props) {
                 setIpfsHash("");
                 setIsGlbFile(false);
                 setIsMp3File(false);
+                setCollection("");
+                setCollectionId("");
                 handleCloseBackdrop();
+                let variant = "success";
+                enqueueSnackbar("NFT free minted successfully", { variant });
+                
                 
             }
         }
+    }
+
+    let signTypedData = async (tokenId, tokenURI) => {
+
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
+        console.log("In the starting");
+
+        // const provider = new ethers.providers.Web3Provider(window.ethereum);
+
+        console.log("Provider: ", provider);
+
+        await provider.send("eth_requestAccounts", []);
+        const signer = provider.getSigner();
+        console.log("Address: ", await signer.getAddress());
+
+        console.log("Signer: ", signer);
+
+        const SIGNING_DOMAIN_NAME = "RobotDrop";
+        const SIGNING_DOMAIN_VERSION = "1";
+        
+        const domain = {
+            name: SIGNING_DOMAIN_NAME,
+            version: SIGNING_DOMAIN_VERSION,
+            verifyingContract: nftContractAddress,
+            chainId: 5,
+        };
+
+        const voucher = { 
+            tokenId: tokenId,
+            URI: tokenURI
+        };
+        const types = {
+            NftVoucher: [
+                { name: "tokenId", type: "uint256"},
+                { name: "URI", type: "string" }
+            ]
+        }
+
+        let signature;
+
+        await signer._signTypedData(domain, types, voucher).then(
+            (value) => {
+                console.log("Value: ", value);
+                signature = value;
+            }
+        ).
+        catch(
+            (error) => {
+                console.log("Error: ", error);
+                let variant = "error";
+                enqueueSnackbar("Error signing", { variant });
+            }
+        );
+        console.log("Signature: ", signature);
+        
+        if(signature) {
+            return signature;
+        }
+
     }
 
 
@@ -2004,7 +2072,7 @@ function NewNFT(props) {
 
                     )
                 )}
-                {/* <button type="button" onClick={(e) => handleFreeMint(e)} className="btn submit-btn">
+                {/* <button type="button" onClick={(e) => signTypedData(e)} className="btn submit-btn">
                     Free Mint
                 </button> */}
             </div >
