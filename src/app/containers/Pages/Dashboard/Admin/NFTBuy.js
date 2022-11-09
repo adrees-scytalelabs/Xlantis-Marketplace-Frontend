@@ -20,6 +20,8 @@ import Backdrop from '@material-ui/core/Backdrop';
 import ReactTooltip from "react-tooltip";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+
 
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
 
@@ -364,25 +366,59 @@ const NFTBuy = (props) => {
                                     >
 
                                     </CardMedia>
-                                    {nftDetail.nftFormat === "mp3"  ? (
+                                    {nftDetail.previewImageURI ? (
                                     <div>
-                                        <AudioPlayer
-                                            // style={{ width: "300px" }}
-                                            style={{ borderRadius: "1rem" }}
-                                            autoPlay = {false}
-                                            layout="horizontal"
-                                            src={nftDetail.nftURI}
-                                            onPlay={(e) => console.log("onPlay")}
-                                            showSkipControls={false}
-                                            showJumpControls={false}
-                                            // header={`Now playing: ${name}`}
-                                            showDownloadProgress
-                                            // onClickPrevious={handleClickPrevious}
-                                            // onClickNext={handleClickNext}
-                                            // onEnded={handleClickNext}
-                                            // other props here
+                                    {nftDetail.nftFormat === "mp3"  ? (
+                                        <div>
+                                            <AudioPlayer
+                                                // style={{ width: "300px" }}
+                                                style={{ borderRadius: "1rem" }}
+                                                autoPlay = {false}
+                                                layout="horizontal"
+                                                src={nftDetail.nftURI}
+                                                onPlay={(e) => console.log("onPlay")}
+                                                showSkipControls={false}
+                                                showJumpControls={false}
+                                                // header={`Now playing: ${name}`}
+                                                showDownloadProgress
+                                                // onClickPrevious={handleClickPrevious}
+                                                // onClickNext={handleClickNext}
+                                                // onEnded={handleClickNext}
+                                                // other props here
+                                            />
+                                        </div>) : ( 
+                                        <GLTFModel src={props.nftDetail.nftURI} width={250} height={250} >
+                                        <AmbientLight color={0xffffff} />
+                                        <AmbientLight color={0xffffff} />
+                                        <AmbientLight color={0xffffff} />
+                                        <AmbientLight color={0xffffff} />
+                                        {/* <AmbientLight color={0xffffff} />
+                                        <AmbientLight color={0xffffff} />
+                                        <AmbientLight color={0xffffff} /> */}
+                                        <DirectionLight
+                                            color={0xffffff}
+                                            position={{ x: 100, y: 200, z: 100 }}
                                         />
-                                    </div>) : (null) }
+                                        <DirectionLight
+                                            color={0xffffff}
+                                            position={{ x: 50, y: 200, z: 100 }}
+                                        />
+                                        <DirectionLight
+                                            color={0xffffff}
+                                            position={{ x: 0, y: 0, z: 0 }}
+                                        />
+                                        <DirectionLight
+                                            color={0xffffff}
+                                            position={{ x: 0, y: 100, z: 200 }}
+                                        />
+                                        <DirectionLight
+                                            color={0xffffff}
+                                            position={{ x: -100, y: 200, z: -100}}
+                                        />
+                                        </GLTFModel>
+                                    )}
+                                    </div>
+                                    ) : (null)}
                                         
                                    
                                     
