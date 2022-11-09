@@ -414,7 +414,32 @@ const AuctionNFT = (props) => {
                                             </div>
                                         </div>
                                     ): nftDetail.nftFormat === "mp3" ? (
-                                        <div></div>
+                                        <div>
+                                            <CardMedia
+                                                className={classes.media}
+                                                title="NFT Artwork"
+                                                image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
+                                            >
+                                            </CardMedia>
+                                            <div>
+                                                <AudioPlayer
+                                                    // style={{ width: "300px" }}
+                                                    style={{ borderRadius: "1rem" }}
+                                                    autoPlay = {false}
+                                                    layout="horizontal"
+                                                    src={nftDetail.nftURI}
+                                                    onPlay={(e) => console.log("onPlay")}
+                                                    showSkipControls={false}
+                                                    showJumpControls={false}
+                                                    // header={`Now playing: ${name}`}
+                                                    showDownloadProgress
+                                                    // onClickPrevious={handleClickPrevious}
+                                                    // onClickNext={handleClickNext}
+                                                    // onEnded={handleClickNext}
+                                                    // other props here
+                                                />
+                                            </div>
+                                        </div>
                                     ) : (
                                         <CardMedia
                                             className={classes.media}
