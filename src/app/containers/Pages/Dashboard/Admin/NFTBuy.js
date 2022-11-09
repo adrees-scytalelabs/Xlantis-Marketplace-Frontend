@@ -357,7 +357,7 @@ const NFTBuy = (props) => {
                                 <div>
                                     {nftDetail.nftFormat === "glb" || nftDetail.nftFormat === "gltf" ? (
                                         <div>
-                                            <div>
+                                            <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}}>
                                                 <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
                                                     <AmbientLight color={0xffffff} />
                                                     <AmbientLight color={0xffffff} />
@@ -388,7 +388,7 @@ const NFTBuy = (props) => {
                                                     />
                                                 </GLTFModel>
                                             </div>
-                                            <div>
+                                            <div style={{marginTop: "20px"}}>
                                                 <CardMedia
                                                 className={classes.media}
                                                 title="NFT Artwork"
