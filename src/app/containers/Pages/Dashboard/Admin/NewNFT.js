@@ -1220,9 +1220,10 @@ function NewNFT(props) {
         };
 
         const voucher = { 
-            tokenId: tokenId,
+            tokenId: parseInt(tokenId),
             URI: tokenURI
         };
+        console.log("tokenId",tokenId);
         const types = {
             NftVoucher: [
                 { name: "tokenId", type: "uint256"},
