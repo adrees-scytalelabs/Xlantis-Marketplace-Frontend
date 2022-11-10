@@ -1221,13 +1221,13 @@ function NewNFT(props) {
 
         const voucher = { 
             tokenId: parseInt(tokenId),
-            URI: tokenURI
+            uri: tokenURI
         };
         console.log("tokenId",tokenId);
         const types = {
             NftVoucher: [
                 { name: "tokenId", type: "uint256"},
-                { name: "URI", type: "string" }
+                { name: "uri", type: "string" }
             ]
         }
 
