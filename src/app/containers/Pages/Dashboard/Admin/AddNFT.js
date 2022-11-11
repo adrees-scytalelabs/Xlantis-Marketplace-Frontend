@@ -430,185 +430,237 @@ function AddNFT(props) {
     // handle click event of the Add button
     const handleAddClick = async(e) => {
         e.preventDefault();
-        if (collection === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Select Collection', { variant });
-        } else if (nftName === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Select Nft', { variant });
-        } else if (price === 0 || price === undefined || price === null) {
-            let variant = "error";
-            enqueueSnackbar('Price cannot be 0 or empty', { variant });
-        } else if (price < 0) {
-            let variant = "error";
-            enqueueSnackbar('Price cannot be Negative', { variant });
-        } 
-        else if (nftType === "1155") {
-            if (supply < 0) {
+        console.log("HANDLE ADD");
+        if(nftType === "1155") {
+            if (collection === "") {
                 let variant = "error";
-                enqueueSnackbar('Token Supply cannot be Negative', { variant });
-            }
-
-            else if (supply === 0 || supply === undefined || supply === null) {
+                enqueueSnackbar('Please Select Collection', { variant });
+            } else if (nftName === "") {
+                let variant = "error";
+                enqueueSnackbar('Please Select Nft', { variant });
+            } else if (supply === 0 || supply === undefined || supply === null) {
                 let variant = "error";
                 enqueueSnackbar('Token Supply cannot be 0 or empty', { variant });
+            } else if (supply < 0) {
+                let variant = "error";
+                enqueueSnackbar('Token Supply cannot be Negative', { variant });
+            } else if (price === 0 || price === undefined || price === null) {
+                let variant = "error";
+                enqueueSnackbar('Price cannot be 0 or empty', { variant });
             }
-
             else if (supply > nftTokenSupply) {
                 let variant = "error";
                 enqueueSnackbar('Supply cannot be greater than NFT token supply', { variant });
+            } else if (price < 0) {
+                let variant = "error";
+                enqueueSnackbar('Price cannot be Negative', { variant });
+            }
+            else {
+                console.log("AFTER CHECKS");
+                handleShowBackdrop();
+                setIsUploadingData(true);
+
+                let weiPrice = Web3.utils.toWei(price);
+                //sending data to backend
+                let data;
+                let newObject;
+                console.log("before check");
+                if (nftType === "1155") {
+                    console.log("ERC1155 DATA");
+                    data ={
+                        // "collectionId": collectionId,
+                        "nftId" : nftId,
+                        "dropId" : dropId,
+                        "price" : weiPrice,
+                        "supply": parseInt(supply)
+                    }
+                    
+                    newObject = {
+                        "nftContractAddress" : nftContractAddresses,
+                        "tokenIds" : [tokenId],
+                        "amounts" : [parseInt(supply)],
+                        "prices" : [weiPrice]
+                    }
+                }
+                
+                console.log("data", data);
+
+                console.log("new obj", newObject);
+
+                axios.put("/drop/nft", data).then(
+                    (response) => {
+                        console.log("nft drop add response: ", response);
+                        console.log("time",startTime, endTime);
+                        setIsAdded(true);
+                        let found = false;
+                        if(nftType === "1155") {
+                            console.log("SET ERC1155 DATA");
+
+                            setDropInfo(current => 
+                                current.map(obj => {
+                                    
+                                    if (obj.nftContractAddress === nftContractAddresses ) {
+                                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                                        let amount = obj.amounts.concat(newObject.amounts);
+                                        let price = obj.prices.concat(newObject.prices);
+                                        found = true
+
+                                        return {
+                                            ...obj,
+                                            tokenIds : tokens,
+                                            amounts : amount,
+                                            prices : price
+
+                                        }
+                                    
+                                    }
+
+                                    return obj;
+                                }),
+                            );
+
+                            
+                            if (found === false) {
+                                const dropp = [...dropInfo, newObject];
+                                // giveApproval();
+                                console.log("drop", dropp);
+                                console.log("here");
+                                setDropInfo(dropp);
+                            }
+                        }
+                        
+                        console.log(dropInfo);
+                        
+                        setIsUploadingData(false);
+                        handleCloseBackdrop();
+
+                    },
+                    (error) => {
+                        console.log("Error on drop add nft: ", error);      
+                        console.log("Error on drop add nft: ", error.response);                            
+
+                        setIsUploadingData(false);
+
+                        handleCloseBackdrop();
+
+                        let variant = "error";
+                        enqueueSnackbar('Unable to Add Nft To Drop.', { variant });
+                    }
+                )
+                
             }
         }
-        else {
-            handleShowBackdrop();
-            setIsUploadingData(true);
+        else if (nftType === "721") {
+            if (collection === "") {
+                let variant = "error";
+                enqueueSnackbar('Please Select Collection', { variant });
+            } else if (nftName === "") {
+                let variant = "error";
+                enqueueSnackbar('Please Select Nft', { variant });
+            } else if (price === 0 || price === undefined || price === null) {
+                let variant = "error";
+                enqueueSnackbar('Price cannot be 0 or empty', { variant });
+            } else if (price < 0) {
+                let variant = "error";
+                enqueueSnackbar('Price cannot be Negative', { variant });
+            }   
+            else {
+                console.log("AFTER CHECKS");
+                handleShowBackdrop();
+                setIsUploadingData(true);
 
-            
-            
+                let weiPrice = Web3.utils.toWei(price);
+                //sending data to backend
+                let data;
+                let newObject;
+                console.log("before check");
+                if (nftType === "721") {
+                    console.log("ERC721 DATA");
+    
+                    data ={
+                        // "collectionId": collectionId,
+                        "nftId" : nftId,
+                        "dropId" : dropId,
+                        "price" : weiPrice,
+                        // "supply": parseInt(supply)
+                    }
+                    
+                    newObject = {
+                        "nftContractAddress" : nftContractAddresses,
+                        "tokenIds" : [tokenId],
+                        // "amounts" : [parseInt(supply)],
+                        "prices" : [weiPrice]
+                    }
+                }
+                console.log("data", data);
 
-                    let weiPrice = Web3.utils.toWei(price);
-                    //sending data to backend
-                    let data;
-                    let newObject;
-                    if (nftType === "1155") {
-                        console.log("ERC1155 DATA");
-                        data ={
-                            // "collectionId": collectionId,
-                            "nftId" : nftId,
-                            "dropId" : dropId,
-                            "price" : weiPrice,
-                            "supply": parseInt(supply)
+                console.log("new obj", newObject);
+
+                axios.put("/drop/nft", data).then(
+                    (response) => {
+                        console.log("nft drop add response: ", response);
+                        console.log("time",startTime, endTime);
+                        setIsAdded(true);
+                        let found = false;
+                        
+                        if (nftType === "721") {
+                            console.log("SET 721 DATA");
+
+                            setDropInfo(current => 
+                                current.map(obj => {
+                                    
+                                    if (obj.nftContractAddress === nftContractAddresses ) {
+                                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                                        // let amount = obj.amounts.concat(newObject.amounts);
+                                        let price = obj.prices.concat(newObject.prices);
+                                        found = true
+
+                                        return {
+                                            ...obj,
+                                            tokenIds : tokens,
+                                            // amounts : amount,
+                                            prices : price
+
+                                        }
+                                    
+                                    }
+
+                                    return obj;
+                                }),
+                            );
+
+                            
+                            if (found === false) {
+                                const dropp = [...dropInfo, newObject];
+                                // giveApproval();
+                                console.log("drop", dropp);
+                                console.log("here");
+                                setDropInfo(dropp);
+                            }
                         }
                         
-                        newObject = {
-                            "nftContractAddress" : nftContractAddresses,
-                            "tokenIds" : [tokenId],
-                            "amounts" : [parseInt(supply)],
-                            "prices" : [weiPrice]
-                        }
-                    }
-                    else if(nftType === "721") {
-                        console.log("ERC721 DATA");
 
-                        data ={
-                            // "collectionId": collectionId,
-                            "nftId" : nftId,
-                            "dropId" : dropId,
-                            "price" : weiPrice,
-                            // "supply": parseInt(supply)
-                        }
+                        console.log(dropInfo);
                         
-                        newObject = {
-                            "nftContractAddress" : nftContractAddresses,
-                            "tokenIds" : [tokenId],
-                            // "amounts" : [parseInt(supply)],
-                            "prices" : [weiPrice]
-                        }
+                        setIsUploadingData(false);
+                        handleCloseBackdrop();
+
+                    },
+                    (error) => {
+                        console.log("Error on drop add nft: ", error);      
+                        console.log("Error on drop add nft: ", error.response);                            
+
+                        setIsUploadingData(false);
+
+                        handleCloseBackdrop();
+
+                        let variant = "error";
+                        enqueueSnackbar('Unable to Add Nft To Drop.', { variant });
                     }
-                   
-
-                    console.log("data", data);
-
-                    console.log("new obj", newObject);
-
-                    axios.put("/drop/nft", data).then(
-                        (response) => {
-                            console.log("nft drop add response: ", response);
-                            console.log("time",startTime, endTime);
-                            setIsAdded(true);
-                            let found = false;
-                            if(nftType === "1155") {
-                                console.log("SET ERC1155 DATA");
-
-                                setDropInfo(current => 
-                                    current.map(obj => {
-                                        
-                                        if (obj.nftContractAddress === nftContractAddresses ) {
-                                            let tokens = obj.tokenIds.concat(newObject.tokenIds);
-                                            let amount = obj.amounts.concat(newObject.amounts);
-                                            let price = obj.prices.concat(newObject.prices);
-                                            found = true
-    
-                                            return {
-                                                ...obj,
-                                                tokenIds : tokens,
-                                                amounts : amount,
-                                                prices : price
-    
-                                            }
-                                        
-                                        }
-    
-                                        return obj;
-                                    }),
-                                );
-    
-                                
-                                if (found === false) {
-                                    const dropp = [...dropInfo, newObject];
-                                    // giveApproval();
-                                    console.log("drop", dropp);
-                                    console.log("here");
-                                    setDropInfo(dropp);
-                                }
-                            }
-                            else if (nftType === "721") {
-                                console.log("SET ERC1155 DATA");
-
-                                setDropInfo(current => 
-                                    current.map(obj => {
-                                        
-                                        if (obj.nftContractAddress === nftContractAddresses ) {
-                                            let tokens = obj.tokenIds.concat(newObject.tokenIds);
-                                            // let amount = obj.amounts.concat(newObject.amounts);
-                                            let price = obj.prices.concat(newObject.prices);
-                                            found = true
-    
-                                            return {
-                                                ...obj,
-                                                tokenIds : tokens,
-                                                // amounts : amount,
-                                                prices : price
-    
-                                            }
-                                        
-                                        }
-    
-                                        return obj;
-                                    }),
-                                );
-    
-                                
-                                if (found === false) {
-                                    const dropp = [...dropInfo, newObject];
-                                    // giveApproval();
-                                    console.log("drop", dropp);
-                                    console.log("here");
-                                    setDropInfo(dropp);
-                                }
-                            }
-                            
-
-                            console.log(dropInfo);
-                            
-                            setIsUploadingData(false);
-                            handleCloseBackdrop();
-
-                        },
-                        (error) => {
-                            console.log("Error on drop add nft: ", error);      
-                            console.log("Error on drop add nft: ", error.response);                            
-
-                            setIsUploadingData(false);
-
-                            handleCloseBackdrop();
-
-                            let variant = "error";
-                            enqueueSnackbar('Unable to Add Nft To Drop.', { variant });
-                        }
-                    )
-            
+                )
+            }
         }
+        
     };
 
     let handleOpenNFTDetailModal = (nftObject) => {
@@ -768,10 +820,35 @@ function AddNFT(props) {
                                                 
                                             </div>
 
+                                            {(nftType === "1155") ? (
+                                                <span>
+                                                    <label>Supply</label>
+                                                    <div className="form-group">
+                                                        <div className="filter-widget">
+                                                        <input
+                                                            type="number"
+                                                            required
+                                                            value={supply}
+                                                            className="form-control"
+                                                            onChange={(e) => {
+                                                                if (e.target.value > 0) {
+                                                                    setSupply(e.target.value);
+                                                                } else {
+                                                                    setSupply(0);
+                                                                }
+                                                                // setSupply(e.target.value);
+                                                            }}
+                                                        />
+                                                        </div>
+                                                    </div>
+                                                </span>
+                                            ) : (null)}
+
+
                                             {(location.state.saleType === "auction") ? (
                                                  <label>Floor Price</label>
                                             ) : (
-                                                    <label>Price</label>
+                                                  <label>Price</label>
                                             )} 
 
                                             <div className="form-group">
@@ -791,41 +868,13 @@ function AddNFT(props) {
                                                     />
                                                 </div>
                                             </div>
-                                            {nftType === "1155" ? (
-                                                <div>
-                                                <label>Supply</label>
-                                                <div className="form-group">
-                                                    <div className="filter-widget">
-                                                        <input
-                                                            type="number"
-                                                            required
-                                                            value={supply}
-                                                            className="form-control"
-                                                            onChange={(e) => {
-                                                                if (e.target.value > 0) {
-                                                                    setSupply(e.target.value);
-                                                                } else {
-                                                                    setSupply(0);
-                                                                }
-                                                            }}
-                                                        />
-                                                    </div>
-                                                </div>
-                                                </div>
-                                            ) : (null)}
-
+                                            
+                                            
                                             
 
-                                            
-                                        
+                                    </div>
 
-                                    {/* )} */}
-
-
-
-                                </div>
-
-                                { collection === "" || nftName === 0  || price === "" ? (
+                                { collection === "" || nftName === 0  || price === "" || supply === "" ? (
                                     <button
                                         className="btn"
                                         type="submit"
@@ -834,14 +883,14 @@ function AddNFT(props) {
                                         <i className="fa fa-plus"></i> Add NFT To Drop
                                     </button>
                                 ) : (
-                                <button
-                                    className="btn"
-                                    type="button"
-                                    onClick={(e) => handleAddClick(e)}
-                                >
-                                    <i className="fa fa-plus"></i> Add NFT To Drop
-                                </button>
-                               )} 
+                                    <button
+                                        className="btn"
+                                        type="button"
+                                        onClick={(e) => handleAddClick(e)}
+                                    >
+                                        <i className="fa fa-plus"></i> Add NFT To Drop
+                                    </button>
+                                )} 
                             
                         </form>
 
