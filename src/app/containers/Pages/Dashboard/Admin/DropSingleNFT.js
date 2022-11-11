@@ -244,7 +244,7 @@ const DropSingleNFT = (props) => {
         }
         else {
 
-            if (contractType === "1155"){
+            // if (contractType === "1155"){
                 //sending call on blockchain
                 let abiAuctionFactory;
                 let addressAuctionFactory;
@@ -262,6 +262,8 @@ const DropSingleNFT = (props) => {
                 let dropIdHash = getHash(nftDetail.dropId);
                 let nftAddress = nftDetail.collectionId.nftContractAddress //to be confirmed to send request
                 let tokenId = nftDetail.nftId;
+                let uri = nftDetail.nftURI;
+                let signature = nftDetail.voucherSignature;
                 let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
                 let trxHash;
 
@@ -290,7 +292,7 @@ const DropSingleNFT = (props) => {
                     //Call for auction drop factory 721
                 else if (contractType === '721') {
 
-                    await myContractInstance.methods.acceptBidLazyMint(dropIdHash, nftAddress, tokenId, bidIdHash).send({ from: accounts[0] }, (err, response) => {
+                    await myContractInstance.methods.acceptBidLazyMint(dropIdHash, nftAddress, tokenId,uri, bidIdHash, signature).send({ from: accounts[0] }, (err, response) => {
                         console.log("get Transaction: ", err, response);
     
                         if(err !== null) {
@@ -325,7 +327,7 @@ const DropSingleNFT = (props) => {
                 )
 
                 
-            } 
+            // } 
             // else if (contractType === "721") {
             //     //sending call on backend to update data
 
@@ -527,7 +529,7 @@ const DropSingleNFT = (props) => {
                                                                     <button className="btn" disabled>
                                                                         Accept
                                                                     </button>
-                                                                ): bid.isAccepted || location.nftDetail.currentMarkteplaceId.isSold ? (
+                                                                ): bid.isAccepted || location.state.nftDetail.currentMarketplaceId.isSold ? (
                                                                     <button className="btn" disabled>
                                                                         Accept
                                                                     </button>
