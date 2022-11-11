@@ -6,6 +6,9 @@ import { useEffect } from 'react';
 import { Col, Row, Table } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import AudioPlayer from "react-h5-audio-player";
+
+import "react-h5-audio-player/lib/styles.css";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -174,7 +177,32 @@ const SingleNftDetail = (props) => {
                                         </div>
                                     </div>
                                 ): nftDetail.nftFormat === "mp3" ? (
-                                    <div></div>
+                                    <div>
+                                            <CardMedia
+                                                className={classes.media}
+                                                title="NFT Artwork"
+                                                image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
+                                            >
+                                            </CardMedia>
+                                            <div>
+                                                <AudioPlayer
+                                                    // style={{ width: "300px" }}
+                                                    style={{ borderRadius: "1rem" }}
+                                                    autoPlay = {false}
+                                                    layout="horizontal"
+                                                    src={nftDetail.nftURI}
+                                                    onPlay={(e) => console.log("onPlay")}
+                                                    showSkipControls={false}
+                                                    showJumpControls={false}
+                                                    // header={`Now playing: ${name}`}
+                                                    showDownloadProgress
+                                                    // onClickPrevious={handleClickPrevious}
+                                                    // onClickNext={handleClickNext}
+                                                    // onEnded={handleClickNext}
+                                                    // other props here
+                                                />
+                                            </div>
+                                        </div>
                                 ) : (
                                     <CardMedia
                                         className={classes.media}

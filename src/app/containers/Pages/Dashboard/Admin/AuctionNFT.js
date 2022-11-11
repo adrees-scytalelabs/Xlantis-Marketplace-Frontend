@@ -16,6 +16,8 @@ import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
+import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+
 
 
 
@@ -366,36 +368,89 @@ const AuctionNFT = (props) => {
                     <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
                             <Card className={classes.root}>
-                                {/* <CardHeader 
-                                    className="text-center"
-                                    title={nftDetail.title}
-                                /> */}
-                                <CardMedia
-                                    className={classes.media}
-                                    title="NFT Artwork"
-                                    image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
-                                >
 
-                                </CardMedia>
-                                {nftDetail.nftFormat === "mp3"  ? (
-                                    <div>
-                                        <AudioPlayer
-                                            // style={{ width: "300px" }}
-                                            style={{ borderRadius: "1rem" }}
-                                            autoPlay = {false}
-                                            layout="horizontal"
-                                            src={nftDetail.nftURI}
-                                            onPlay={(e) => console.log("onPlay")}
-                                            showSkipControls={false}
-                                            showJumpControls={false}
-                                            // header={`Now playing: ${name}`}
-                                            showDownloadProgress
-                                            // onClickPrevious={handleClickPrevious}
-                                            // onClickNext={handleClickNext}
-                                            // onEnded={handleClickNext}
-                                            // other props here
-                                        />
-                                    </div>) : (null) }
+                                <div>
+                                    {nftDetail.nftFormat === "glb" || nftDetail.nftFormat === "gltf" ? (
+                                        <div>
+                                            <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}}>
+                                                <GLTFModel src={nftDetail.nftURI} width={250} height={250} >
+                                                    <AmbientLight color={0xffffff} />
+                                                    <AmbientLight color={0xffffff} />
+                                                    <AmbientLight color={0xffffff} />
+                                                    <AmbientLight color={0xffffff} />
+                                                    {/* <AmbientLight color={0xffffff} />
+                                                    <AmbientLight color={0xffffff} />
+                                                    <AmbientLight color={0xffffff} /> */}
+                                                    <DirectionLight
+                                                        color={0xffffff}
+                                                        position={{ x: 100, y: 200, z: 100 }}
+                                                    />
+                                                    <DirectionLight
+                                                        color={0xffffff}
+                                                        position={{ x: 50, y: 200, z: 100 }}
+                                                    />
+                                                    <DirectionLight
+                                                        color={0xffffff}
+                                                        position={{ x: 0, y: 0, z: 0 }}
+                                                    />
+                                                    <DirectionLight
+                                                        color={0xffffff}
+                                                        position={{ x: 0, y: 100, z: 200 }}
+                                                    />
+                                                    <DirectionLight
+                                                        color={0xffffff}
+                                                        position={{ x: -100, y: 200, z: -100}}
+                                                    />
+                                                </GLTFModel>
+                                            </div>
+                                            <div style={{marginTop: "20px"}}>
+                                                <CardMedia
+                                                className={classes.media}
+                                                title="NFT Artwork"
+                                                image={nftDetail.previewImageURI}
+                                                >
+
+                                                </CardMedia>
+                                            </div>
+                                        </div>
+                                    ): nftDetail.nftFormat === "mp3" ? (
+                                        <div>
+                                            <CardMedia
+                                                className={classes.media}
+                                                title="NFT Artwork"
+                                                image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
+                                            >
+                                            </CardMedia>
+                                            <div>
+                                                <AudioPlayer
+                                                    // style={{ width: "300px" }}
+                                                    style={{ borderRadius: "1rem" }}
+                                                    autoPlay = {false}
+                                                    layout="horizontal"
+                                                    src={nftDetail.nftURI}
+                                                    onPlay={(e) => console.log("onPlay")}
+                                                    showSkipControls={false}
+                                                    showJumpControls={false}
+                                                    // header={`Now playing: ${name}`}
+                                                    showDownloadProgress
+                                                    // onClickPrevious={handleClickPrevious}
+                                                    // onClickNext={handleClickNext}
+                                                    // onEnded={handleClickNext}
+                                                    // other props here
+                                                />
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <CardMedia
+                                            className={classes.media}
+                                            title="NFT Artwork"
+                                            image={nftDetail.nftURI}
+                                        >
+
+                                        </CardMedia>
+                                    )}
+
+                                </div>
                             </Card>
                         </Paper>
                     </div>
