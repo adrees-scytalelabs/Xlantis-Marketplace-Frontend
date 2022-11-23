@@ -17,7 +17,7 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        axios.get(`/collection/${collectionId}`).then(
+        axios.get(`/myCollection/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.nftsdata);

@@ -164,7 +164,7 @@ function NewNFT(props) {
     let [isUploadingPreview, setIsUploadingPreview] = useState(false);
     let [isMp3File, setIsMp3File] = useState(false);
     let [contractType, setContractType] = useState("");
-    let [NFTType, setNFTType] = useState("721");
+    let [NFTType, setNFTType] = useState("1155");
 
     let [previewImage, setPreviewImage] = useState(r1);
     // let [executiveProducerId, setExecutiveProducerId] = useState('');
@@ -206,10 +206,10 @@ function NewNFT(props) {
                     setChangeCollectionList(response.data.collectionData);
                 }
                 
-                response.data.collectionData = [{
-                    name: "+ Create new Collection"
-                }, ...response.data.collectionData]
-                console.log("response.data.collectionData", response.data.collectionData[1].nftContractAddress);
+                // response.data.collectionData = [{
+                //     name: "+ Create new Collection"
+                // }, ...response.data.collectionData]
+                // console.log("response.data.collectionData", response.data.collectionData[1].nftContractAddress);
                 setCollectionTypes(response.data.collectionData)
             },
             (error) => {
@@ -473,10 +473,12 @@ function NewNFT(props) {
         } else if (description === "") {
             let variant = "error";
             enqueueSnackbar('Please Enter Artwork Description', { variant });
-        } else if (rarity === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Select Artwork Rarity', { variant });
-        } else if (tokenSupply === "" || tokenSupply === undefined || tokenSupply === null) {
+        } 
+        // else if (rarity === "") {
+        //     let variant = "error";
+        //     enqueueSnackbar('Please Select Artwork Rarity', { variant });
+        // } 
+        else if (tokenSupply === "" || tokenSupply === undefined || tokenSupply === null) {
             let variant = "error";
             enqueueSnackbar('Token Supply cannot be Empty', { variant });
         } else if (tokenSupply < 0) {
@@ -535,7 +537,7 @@ function NewNFT(props) {
                         "nftURI": nftURI,
                         "metadataURI": nftURI,
                         "nftFormat": imageType,
-                        "type": rarity,
+                        // "type": rarity,
                         "tokenSupply": tokenSupply,
                         "supplyType": supplyType,
                         "properties": propertiesObject
@@ -1063,6 +1065,7 @@ function NewNFT(props) {
 
     let handleFreeMint = async (e) => {
         e.preventDefault();
+        console.log("we here");
         if (image === r1) {
             let variant = "error";
             enqueueSnackbar('Please Upload Artwork Photo', { variant });
@@ -1072,17 +1075,19 @@ function NewNFT(props) {
         } else if (description === "") {
             let variant = "error";
             enqueueSnackbar('Please Enter Artwork Description', { variant });
-        } else if (rarity === "") {
-            let variant = "error";
-            enqueueSnackbar('Please Select Artwork Rarity', { variant });
-        } else if (collection === "") {
+        }
+        //  else if (rarity === "") {
+        //     let variant = "error";
+        //     enqueueSnackbar('Please Select Artwork Rarity', { variant });
+        // } 
+        else if (collection === "") {
             let variant = "error";
             enqueueSnackbar('Please Enter Collection Name', { variant });
-        } else if (image !== r1 && (imageType === "glb" || imageType === "mp3")) {
-            if (previewImage === r1) {
-                let variant = 'error';
-                enqueueSnackbar("Please Upload Preview Image", { variant });
-            }
+        } else if (image !== r1 && (imageType === "glb" || imageType === "mp3") && previewImage === r1) {
+            
+            let variant = 'error';
+            enqueueSnackbar("Please Upload Preview Image", { variant });
+            
         } else {
             handleShowBackdrop();
             await loadWeb3();
@@ -1112,7 +1117,7 @@ function NewNFT(props) {
                     "nftURI": nftURI,
                     "metadataURI": nftURI,
                     "nftFormat": imageType,
-                    "type": rarity,
+                    // "type": rarity,
                     "properties": propertiesObject
                 };
 
@@ -1317,7 +1322,7 @@ function NewNFT(props) {
                                                         </Spinner>
                                                     </div>
                                                 ) : (
-                                                    <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                    <span><i className="fa fa-upload"></i>Upload Artwork</span>
                                                 )}
 
                                                 <input
@@ -1362,7 +1367,7 @@ function NewNFT(props) {
                                                                     </Spinner>
                                                                 </div>
                                                             ) : (
-                                                                <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                                <span><i className="fa fa-upload"></i>Upload Artwork</span>
                                                             )}
 
                                                             <input
@@ -1401,7 +1406,7 @@ function NewNFT(props) {
                                                 // other props here
                                             />
                                         </div>
-                                        <div className="upload-img">
+                                        {/* <div className="upload-img">
                                             <div
                                                 className="change-photo-btn"
                                                 style={{ backgroundColor: "rgb(167,0,0)" }}
@@ -1416,7 +1421,7 @@ function NewNFT(props) {
                                                         </Spinner>
                                                     </div>
                                                 ) : (
-                                                    <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                    <span><i className="fa fa-upload"></i>Upload Artwork</span>
                                                 )}
 
                                                 <input
@@ -1430,7 +1435,8 @@ function NewNFT(props) {
                                             <small className="form-text text-muted">
                                                 Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
                                             </small>
-                                        </div>
+                                        </div> */}
+                                        <br></br>
                                         <label>Select Preview Image</label>
                                         <div className="filter-widget">
                                             <div className="form-group">
@@ -1510,7 +1516,7 @@ function NewNFT(props) {
                                                                 </Spinner>
                                                             </div>
                                                         ) : (
-                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                                                            <span><i className="fa fa-upload"></i>Upload Artwork</span>
                                                         )}
 
                                                         <input
@@ -1561,7 +1567,7 @@ function NewNFT(props) {
                                             }}
                                         />
                                     </div>
-                                    <label>Select Rarity</label>
+                                    {/* <label>Select Rarity</label>
                                     <div className="filter-widget">
                                         <Autocomplete
                                             id="combo-dox-demo"
@@ -1587,7 +1593,7 @@ function NewNFT(props) {
                                                 />
                                             )}
                                         />
-                                    </div>
+                                    </div> */}
                                     
                                     <div>
                                         <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
@@ -1688,6 +1694,7 @@ function NewNFT(props) {
                                         </Dialog> */}
                                     
                                     </div>
+                                    <br></br>
 
                                     {(tokenList.length > 0) ? (
                                         <FormControl component="fieldset">

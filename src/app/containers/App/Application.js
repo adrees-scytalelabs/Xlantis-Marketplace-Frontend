@@ -22,6 +22,7 @@ import RegisterScreen from "../Pages/Users/RegisterScreen";
 import TermsAndConditions from "../Pages/Users/TermsAndConditions";
 import UserLoginScreen from "../Pages/Users/UserLoginScreen";
 import UserProfileScreen from "../Pages/Users/UserProfileScreen";
+import UserSettings from "../Pages/Users/UserSettings";
 
 function App() {
   let isLoggedIn;
@@ -35,6 +36,7 @@ function App() {
       jwtDecoded = jwtDecode(jwt);
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
+      console.log("isLoggedIn",isLoggedIn);
       // setIsLoggedIn(true);
     } else {
       // setIsLoggedIn(false);
@@ -50,7 +52,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
-      if (jwtDecoded.roles === "admin") {
+      if (jwtDecoded.roles.includes( "admin")) {
         return (
           <Route
             {...rest}
@@ -64,7 +66,7 @@ function App() {
           />
         );
       }
-      else if (jwtDecoded.roles === "user") {
+      else if (jwtDecoded.roles.includes( "user" )) {
         return (
           <Route
             {...rest}
@@ -87,7 +89,7 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded && isLoggedIn && jwtDecoded.roles === "admin") {
+    if (jwtDecoded && isLoggedIn && jwtDecoded.roles.includes("admin")) {
       return <Redirect to="/dashboard" />;
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;
@@ -144,8 +146,14 @@ function App() {
               <UserProfileScreen {...routeProps} />
             )}
           />
+          {/* <Route path="/user/settings" >
+            <UserSettings></UserSettings>
+          </Route> */}
+
+          
 
           <PrivateRoute path="/dashboard" />
+          <PrivateRoute path="/user/settings"><UserSettings></UserSettings></PrivateRoute>
         </Switch>
       </BrowserRouter>
     </SnackbarProvider>

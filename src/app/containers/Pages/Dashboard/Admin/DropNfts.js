@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useRef } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
-
+import Web3 from 'web3';
 import CornerRibbon from "react-corner-ribbon";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
@@ -416,12 +416,15 @@ function MyNFTs(props) {
                                                  
                                                      <CardContent>
                                                     
-                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                     {/* <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Token Rarity: </strong>{i.type}
                                                      </Typography>
                                                      <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Token Supply: </strong>{i.tokenSupply}
-                                                     </Typography>
+                                                     </Typography> */}
+                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price)} RTK
+                                                    </Typography>
                                                      <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Artwork Description: </strong>{i.description}
                                                      </Typography>
@@ -430,7 +433,7 @@ function MyNFTs(props) {
                                              </Card>
                                          </Link>
                                         ) : (
-                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType}}} >
+                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType, price: i.currentMarketplaceId.price}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
@@ -486,11 +489,14 @@ function MyNFTs(props) {
                                                 
                                                     <CardContent>
                                                    
-                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Rarity: </strong>{i.type}
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
+                                                    </Typography> */}
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Floor Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} RTK
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}

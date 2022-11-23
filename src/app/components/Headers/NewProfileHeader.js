@@ -79,6 +79,8 @@ export default function HeaderMenuAppBar(props) {
 
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
+    web3Modal.clearCachedProvider();
+
     history.push("/");
   };
 

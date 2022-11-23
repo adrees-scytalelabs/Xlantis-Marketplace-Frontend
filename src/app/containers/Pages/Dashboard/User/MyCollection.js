@@ -66,7 +66,7 @@ function MyCollection(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/collection/collections/${start}/${end}`)
+            .get(`/collection/myCollections/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setCollections(response.data.Collectiondata);

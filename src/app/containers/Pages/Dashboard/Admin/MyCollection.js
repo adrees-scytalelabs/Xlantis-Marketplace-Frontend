@@ -58,7 +58,7 @@ function MyCollection(props) {// eslint-disable-next-line
         // )}`;
         setOpen(true);
         axios
-            .get(`/collection/${start}/${end}`)
+            .get(`/collection/myCollections/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setCollections(response.data.collectionData);

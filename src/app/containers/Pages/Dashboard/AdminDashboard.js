@@ -13,6 +13,7 @@ import Logo from "../../../assets/img/logo.png"
 
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
+import UserSettings from "../Users/UserSettings";
 import DropCubes from "./Admin/DropsCubes";
 import MyCubes from "./Admin/MyCubes";
 import MyDrops from "./Admin/MyDrops";
@@ -158,6 +159,8 @@ function AdminDashboard(props) {
                     onClick={() => {
                       Cookies.remove("Authorization");
                       localStorage.removeItem("Address")
+                      // web3Modal.clearCachedProvider();
+
                       Cookies.remove("PNT");
                     }}
                     to="/"
@@ -286,6 +289,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>
+            
             <Route path={`${path}`}>
               <AdminDashboardDefaultScreen
                 match={props.match}

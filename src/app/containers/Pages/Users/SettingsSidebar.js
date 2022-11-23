@@ -3,20 +3,12 @@ import React from "react";
 import { Link } from "react-router-dom";
 import StorageIcon from '@material-ui/icons/Storage';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import BusinessIcon from '@material-ui/icons/Business';
+import AccountCircle from '@material-ui/icons/AccountCircle';
+import LocalOffer from '@material-ui/icons/LocalOffer';
 
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-function AdminSidebar(props) {
-  console.log(props);
-  let handleLogout = (e) => {
-    localStorage.removeItem("Address");
-    Cookies.remove("Authorization");
-    // web3Modal.clearCachedProvider();
+function SettingsSidebar(props) {
 
-    
-    // setTimeout(() => { }, 1);
-  };
-
+    console.log("props", props);
   return (
     <div
       className="sidebar"
@@ -27,30 +19,25 @@ function AdminSidebar(props) {
         <div id="sidebar-menu" className="sidebar-menu">
           <ul>
             <li className="menu-title">
-              <span>Main</span>
+              <span>Settings</span>
             </li>
-            <li className={props.activeTab.dashboard}>
-              <Link to={`${props.match.url}`}>
-                <i className="fa fa-home"></i> <span>Dashboard</span>
+            <li className={props.activeTab.profile}>
+              <Link to={`/user/settings`}>
+                <AccountCircle /> <span>Profile</span>
               </Link>
             </li>
-            {/* <li className={props.activeTab.newNFT}>
-              <Link to={`${props.match.url}/newNFT`}>
-                <i className="fa fa-file-medical"></i> <span>New NFT</span>
-              </Link>
+            {/* <li className={props.activeTab.offer}>
+              <Link to={'/dashboard'}>
+                <LocalOffer /> <span>Offers</span>
+              </Link> 
             </li> */}
-            <li className={props.activeTab.myNFTs}>
+            {/* <li className={props.activeTab.myNFTs}>
               <Link to={`${props.match.url}/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
 
-            <li className={props.activeTab.marketPlace}>
-              <Link to={`${props.match.url}/marketPlace`}>
-                <BusinessIcon /> <span>MarketPlace</span>
-              </Link>
-            </li>
-            {/* <li className={props.activeTab.newCube}>
+            <li className={props.activeTab.newCube}>
               <Link to={`${props.match.url}/newCube`}>
                 <i className="fas fa-cube"></i> <span>New Cube</span>
               </Link>
@@ -59,8 +46,8 @@ function AdminSidebar(props) {
               <Link to={`${props.match.url}/myCubes`}>
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
-            </li> */}
-{/* 
+            </li>
+
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
@@ -154,17 +141,17 @@ function AdminSidebar(props) {
               <Link to={`${props.match.url}/profilesettings`}>
                 <i className="fa fa-cog"></i> <span>Profile Settings</span>
               </Link>
-            </li> */}
+            </li>
             {/* <li className={props.activeTab.changePassword}>
               <Link to={`${props.match.url}/changepassword`}>
                 <i className="fa fa-key"></i> <span>Change Password</span>
               </Link>
             </li> */}
-            <li>
+            {/* <li>
               <Link to={"/"} onClick={handleLogout}>
                 <i className="fa fa-sign-out-alt"></i> <span>Logout</span>
               </Link>
-            </li>
+            </li>  */}
           </ul>
         </div>
       </div>
@@ -172,4 +159,4 @@ function AdminSidebar(props) {
   );
 }
 
-export default AdminSidebar;
+export default SettingsSidebar;

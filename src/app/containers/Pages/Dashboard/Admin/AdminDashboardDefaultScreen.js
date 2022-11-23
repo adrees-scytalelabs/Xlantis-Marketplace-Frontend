@@ -21,7 +21,7 @@ function AdminDashboardDefaultScreen(props) {
       "Authorization"
     ] = `Bearer ${Cookies.get("Authorization")}`;
     axios
-      .get("users/getcounts")
+      .get("user/getcounts")
       .then((response) => {
         console.log(response);
         setTotalCubes(response.data.Cubescount);

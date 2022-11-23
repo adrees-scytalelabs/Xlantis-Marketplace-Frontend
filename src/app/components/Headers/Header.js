@@ -1,3 +1,4 @@
+import Person from '@material-ui/icons/Person';
 import Avatar from '@material-ui/core/Avatar';
 import Cookies from "js-cookie";
 import React, { useState } from "react";
@@ -9,18 +10,135 @@ import Logo from "../../assets/img/logo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
+import Popper from '@material-ui/core/Popper';
+import Typography from '@material-ui/core/Typography';
+import Grow from '@material-ui/core/Grow';
+import Paper from '@material-ui/core/Paper';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Menu from '@material-ui/core/Menu';
+import Settings from '@material-ui/icons/Settings';
+import { useHistory, useRouteMatch } from 'react-router-dom';
+import {Button} from 'react-bootstrap';
+import Web3 from 'web3';
+import { providers } from 'ethers'
+import money from "../../assets/img/wallet.png";
+import man from "../../assets/img/man.png";
+
+
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletLink from "walletlink";
+import axios from "axios";
+
 
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   let [isLoading] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  let { path } = useRouteMatch();
+  let history = useHistory();
 
 
   let [network] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
- 
+  function handleListKeyDown(event) {
+    if (event.key === 'Tab') {
+      event.preventDefault();
+      setOpen(false);
+    } else if (event.key === 'Escape') {
+      setOpen(false);
+    }
+  }
+
+  const providerOptions = {
+    binancechainwallet: {
+      package: true
+      },
+    walletconnect: {
+      package: WalletConnectProvider,
+      options: {
+        infuraId: "2b677656bad14a3db4592ffdb69e7805"
+      }
+      },
+      walletlink: {
+      package: WalletLink, 
+      options: {
+        appName: "RINKEBY API", 
+        infuraId: "2b677656bad14a3db4592ffdb69e7805", 
+        rpc: "", 
+        chainId: 5, 
+        appLogoUrl: null, 
+        darkMode: true 
+      }
+      },
+  };
+
+  const web3Modal = new Web3Modal({
+    network: "goerli",
+    theme: "dark",
+    cacheProvider: true,
+    providerOptions 
+  });
+  async function handleLogin() { 
+    var provider = await web3Modal.connect();
+    var web3 = new Web3(provider); 
+    const newProvider = new providers.Web3Provider(provider)
+    await newProvider.send('eth_requestAccounts'); 
+    var accounts = await web3.eth.getAccounts(); 
+    let account = accounts[0]; 
+    console.log("account", account);
+    const signer = newProvider.getSigner();
+    const address = await signer.getAddress();
+    const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
+    console.log("Address: ", await signer.getAddress());
+    let signatureHash = await web3.eth.personal.sign(message,address)
+    console.log("Signature hash " ,signatureHash);
+    let ethBalance = await web3.eth.getBalance(account);
+    
+    let loginData = {
+      walletAddress: address,
+      signature: signatureHash,
+    }
+    axios.post("/user/login", loginData).then(
+      (response) => {
+        console.log("response", response);
+        Cookies.set("Authorization", response.data.token, {
+        });
+        if (response.data.roles.includes("user")) {
+          console.log("we here");
+          localStorage.setItem("Address", accounts[0]);
+        }
+        // setIsLoading(false);
+        history.push("/");
+        // window.location.reload();
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      })
+    
+
+
+      // contract = new web3.eth.Contract(ABI, ADDRESS); 
+  }
   const selectedStyling = {
     border: "2px solid 'rgb(167,0,0)'",
     padding: "10px 20px",
@@ -49,11 +167,26 @@ function HeaderHome(props) {
     console.log("akjdf");
     Cookies.remove("Authorization");
     localStorage.removeItem("Address")
+    // web3Modal.clearCachedProvider();
     window.location.reload();
 
 
     // setTimeout(() => { }, 1);
   };
+
+  
+  
+
+  function handleClick(event) {
+    if (anchorEl !== event.currentTarget) {
+      setAnchorEl(event.currentTarget);
+    }
+    history.push('/user/settings');
+  }
+
+  function handleMenuClose() {
+    setAnchorEl(null);
+  }
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -134,11 +267,15 @@ function HeaderHome(props) {
                   </a>
                 ) : (
                   <>
-                    <Link to="/login" style={{ color: 'rgb(167,0,0)' }} >
+                    <Button style={{ color: 'rgb(167,0,0)' }}> 
+                    <span style={selectedNavStyle.Community} >
+                        Login/Signup
+                    </span></Button>
+                    {/* <Link to="/login" style={{ color: 'rgb(167,0,0)' }} >
                       <span style={selectedNavStyle.Community} >
                         Login/Signup
               </span>
-                    </Link>
+                    </Link> */}
                   </>
 
                 )}
@@ -151,7 +288,7 @@ function HeaderHome(props) {
                   </span>
               </a>
             </li>
-            <li>
+            {/* <li>
               <Link to="/marketPlace" style={{ color: 'rgb(167,0,0)' }} >
                 <span style={selectedNavStyle.Market}>
                   Market
@@ -164,12 +301,60 @@ function HeaderHome(props) {
                   Drops
                   </span>
               </Link>
-            </li>
+            </li> */}
 
           </ul>
         </div>
         <ul className="nav header-navbar-rht">
-          <li >{isLoading ? (
+          <li >
+         
+          {/* <Popper
+            
+            id="simple-menu"
+            anchorEl={anchorEl}
+            open={Boolean(anchorEl)}
+            onClose={handleMenuClose}
+            placement="bottom-start"
+            transition
+            
+          >
+            {({ TransitionProps, placement }) => (
+              <Grow
+                {...TransitionProps}
+                style={{
+                  transformOrigin:
+                    placement === 'bottom-start' ? 'left top' : 'left bottom',
+                }}
+              >
+                <Paper
+                  onMouseLeave={handleMenuClose}
+                >
+                  
+                    <MenuList
+                      autoFocusItem={open}
+                      id="simple-menu"
+                      aria-labelledby="composition-button"
+                      onKeyDown={handleListKeyDown}
+                    >
+                      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+                      <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+                    </MenuList>
+                  </ClickAwayListener>
+                </Paper>
+              </Grow>
+            )}
+          </Popper> */}
+          {/* <MenuList
+            
+            MenuListProps={{ onMouseLeave: handleMenuClose }}
+          >
+            <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+            <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+            <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+          </MenuList> */}
+            {
+          isLoading ? (
             <div className="text-center">
               <Spinner
                 animation="border"
@@ -181,21 +366,59 @@ function HeaderHome(props) {
             </div>
           ) : (
             localStorage.getItem("Address") ? (
-              <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
-                <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
-              </a>
-            ) : (
-              <>
-                <Link to="/login" style={{ color: 'rgb(167,0,0)' }} >
-                  <span style={{ cursor: 'pointer' }}>
-                    Login/Signup
-            </span>
-                </Link>
-              </>
+              <div>
+                  <Avatar
+                  aria-owns={anchorEl ? "simple-menu" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  // onMouseOver={handleClick}
+                  alt="Remy Sharp"
+                  src={man}
+                  sx={{ width: 24, height: 24 }}
+                />
+                {/* <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  MenuListProps={{ onMouseLeave: handleMenuClose }}
+                >
+                  <MenuItem>
+                    <div>
+                      <Link to = "/profilesettings"></Link><Person /><span>Profile</span>
+                    </div>
+                  </MenuItem>
+                  <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
+                  <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+                </Menu> */}
+             </div>
+              // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
+              //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
+              // </a>
+            ) : (null
+            //   <>
+            //     <div>
+            //       <Avatar
+            //       aria-owns={anchorEl ? "simple-menu" : undefined}
+            //       aria-haspopup="true"
+            //       onClick={handleLogin}
+            //       // onMouseOver={handleClick}
+            //       alt="Remy Sharp"
+            //       src="/static/images/avatar/1.jpg"
+            //       sx={{ width: 24, height: 24 }}
+            //     />
+            //     </div>
+            //     <span  style={{ color: 'rgb(167,0,0)' }} onClick = {handleLogin} >
+            //       <span style={{ cursor: 'pointer' }}>
+            //         Login/Signup
+            // </span>
+            //     </span>
+            //     </>
             )
           )}
 
           </li>
+          
           <li >
             {localStorage.getItem("Address") ? (
               <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} >
@@ -203,7 +426,25 @@ function HeaderHome(props) {
               </Link>
 
             ) : (
-              <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+              <>
+                {/* <div>
+                  <Avatar
+                  aria-owns={anchorEl ? "simple-menu" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleLogin}
+                  // onMouseOver={handleClick}
+                  alt="Remy Sharp"
+                  src={money}
+                  sx={{ width: 24, height: 24 }}
+                />
+                </div> */}
+                <span  style={{ color: 'rgb(167,0,0)' }} onClick = {handleLogin} >
+                  <span style={{ cursor: 'pointer' }}>
+                    Connect Wallet
+            </span>
+                </span>
+                </>
+              // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             )}
           </li>
           <li>

@@ -12,6 +12,14 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Countdown from 'react-countdown';
 import { Link } from 'react-router-dom';
+import Web3Modal from "web3modal";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import WalletLink from "walletlink"
+import Web3 from 'web3';
+import { providers } from 'ethers'
+import Cookies from "js-cookie";
+
+import { useHistory, useRouteMatch } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -51,6 +59,8 @@ function MarketPlace(props) {
     const [userAuctionData, setUserAuctiondata] = useState([]);
     const [cubeAuctionData, setCubeAuctionData] = useState([]);
     const [open, setOpen] = React.useState(false);
+    let { path } = useRouteMatch();
+    let history = useHistory();
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -59,13 +69,13 @@ function MarketPlace(props) {
     };
     let getCubes = (start, end) => {
         handleShowBackdrop();
-        axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
+        axios.get(`/drop/saleType/fixed-price/${start}/${end}`).then(
             (response) => {
                 console.log("responseeeee", response);
-                setCubeData(response.data.Saletokendata);
-                setUserSaledata(response.data.Usersaledata)
-                setCubeAuctionData(response.data.Auctiontokendata)
-                setUserAuctiondata(response.data.Userauctiondata)
+                setCubeData(response.data.data);
+                setUserSaledata(response.data.data)
+                setCubeAuctionData(response.data.data)
+                setUserAuctiondata(response.data.data)
                 handleCloseBackdrop();
             },
             (error) => {
@@ -81,6 +91,86 @@ function MarketPlace(props) {
         getCubes(0, 4);// eslint-disable-next-line
     }, []);
 
+    const providerOptions = {
+        binancechainwallet: {
+          package: true
+          },
+        walletconnect: {
+          package: WalletConnectProvider,
+          options: {
+            infuraId: "2b677656bad14a3db4592ffdb69e7805"
+          }
+          },
+          walletlink: {
+          package: WalletLink, 
+          options: {
+            appName: "RINKEBY API", 
+            infuraId: "2b677656bad14a3db4592ffdb69e7805", 
+            rpc: "", 
+            chainId: 5, 
+            appLogoUrl: null, 
+            darkMode: true 
+          }
+          },
+      };
+    
+      const web3Modal = new Web3Modal({
+        network: "goerli",
+        theme: "dark",
+        cacheProvider: true,
+        providerOptions 
+      });
+      async function handleLogin() { 
+        var provider = await web3Modal.connect();
+        var web3 = new Web3(provider); 
+        const newProvider = new providers.Web3Provider(provider)
+        await newProvider.send('eth_requestAccounts'); 
+        var accounts = await web3.eth.getAccounts(); 
+        let account = accounts[0]; 
+        console.log("account", account);
+        const signer = newProvider.getSigner();
+        const address = await signer.getAddress();
+        const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
+        console.log("Address: ", await signer.getAddress());
+        let signatureHash = await web3.eth.personal.sign(message,address)
+        console.log("Signature hash " ,signatureHash);
+        let ethBalance = await web3.eth.getBalance(account);
+        
+        let loginData = {
+          walletAddress: address,
+          signature: signatureHash,
+        }
+        axios.post("/user/login", loginData).then(
+          (response) => {
+            console.log("response", response);
+            Cookies.set("Authorization", response.data.token, {
+            });
+            if (response.data.roles.includes("user")) {
+              console.log("we here");
+              localStorage.setItem("Address", accounts[0]);
+            }
+            // setIsLoading(false);
+            history.push("/dashboard/marketplace");
+            // window.location.reload();
+    
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+            if (error.response !== undefined) {
+              if (error.response.status === 400) {
+                // setMsg(error.response.data.message);
+              } else {
+                // setMsg("Unknown Error Occured, try again.");
+              }
+            } else {
+              // setMsg("Unknown Error Occured, try again.");
+            }
+            // setIsLoading(false);
+          })
+    }    
     return (
         <div className="container-fluid">
             {/* <!-- Page Header --> */}
@@ -88,7 +178,15 @@ function MarketPlace(props) {
                 {/* <Container> */}
 
                 <div className="card-body">
-                    <h3><pre>Market Place <Link to="/marketPlace" style={{ float: 'right', color: "#ff0000" }}>View All </Link></pre></h3>
+                {localStorage.getItem("Address") ? (
+                     <h3><pre>Fixed-Price Drops<Link to="/dashboard/marketPlace" style={{ float: 'right', color: "#ff0000" }}>View All </Link></pre></h3>
+                    ): (
+                    
+                        <h3><pre>Fixed-Price Drops
+                            <span style={{ float: 'right', color: "#ff0000" , cursor : "pointer" }} onClick={handleLogin}> View All </span>
+                        </pre></h3>
+                    )}
+                    
                     <hr></hr>
                     <div className="form-group" >
                         {open ? (
@@ -109,12 +207,12 @@ function MarketPlace(props) {
                             </Card>
                         ) : (
                             <>
-                                {cubeData.length !== 0 ? (
-                                    <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
+                                {/* {cubeData.length !== 0 ? ( */}
+                                    {/* <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
                                         <strong>On Sale </strong>
                                     </Typography>) : (
-                                    null
-                                )}
+                                    null */}
+                                {/* )} */}
 
                                 <Grid
                                     container
@@ -126,68 +224,148 @@ function MarketPlace(props) {
 
                                     {cubeData.map((i, index) => (
                                         <Grid item xs={12} sm={6} md={3} key={index}>
-                                            <Link to={"/marketPlace/Cubes/Nfts/notdrop/" + userSaleData[index].expiresAt + "/" + i._id + "/" + userSaleData[index]._id}>
+                                            {localStorage.getItem("Address") ? (
+                                            <Link to={"/dashboard/marketPlace" }>
                                                 <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
                                                     {/* style={{ height: "100%" }} variant="outlined" */}
                                                     <CardActionArea>
                                                         <CardMedia
                                                             className={classes.media}
-                                                            // image={img}
+                                                            image={i.image}
                                                             title=""
                                                         >
-                                                            <div className="mainDiv">
+                                                            {/* <div className="mainDiv">
 
                                                                 <div className="square"></div>
                                                                 <div className="square2"></div>
                                                                 <div className="square3"></div>
-                                                            </div>
+                                                            </div> */}
 
                                                         </CardMedia>
                                                         <CardContent>
                                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Cube Title: </strong>{i.title}
+                                                                <strong>Title: </strong>{i.title}
                                                             </Typography>
                                                             <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Cube Description: </strong>{i.description}
+                                                                <strong>Description: </strong>{i.description}
                                                             </Typography>
 
-                                                            <Typography variant="body2" color="textSecondary" component="p">
+                                                            {/* <Typography variant="body2" color="textSecondary" component="p">
                                                                 <strong>Sale Price: </strong>{i.SalePrice / 10 ** 18} ETH
-                                                            </Typography>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
+                                                            </Typography> */}
+                                                            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
                                                             <Link to={"/User/Profile/Detail/musicArtist/" + i.MusicArtistId + "/null"} style={{ color: '#000' }}>
                                                                 <CardHeader
                                                                     avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
                                                                     title={i.MusicArtistName}
                                                                     subheader={i.MusicArtistAbout}
                                                                 />
-                                                            </Link>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                                {new Date() < new Date(userSaleData[index].expiresAt) ? (
-                                                                    <div style={{ color: "#FF0000" }}>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
-                                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                                            <strong>Sale Ends At:</strong>
-                                                                        </Typography>
-                                                                        <Countdown daysInHours date={new Date(userSaleData[index].expiresAt)}>
-                                                                        </Countdown>
-                                                                    </div>) : (
-                                                                    <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                        <strong>Sale Ended</strong>
-                                                                    </Typography>
-                                                                )}
+                                                            </Link> */}
+                                                             <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                        {new Date() < new Date(i.startTime) ? (
+                                                            <div style={{ color: "#00FF00" }} >
+
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Sale Starts At:</strong>
+                                                                </Typography>
+                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
+                                                                <Countdown daysInHours date={new Date(i.startTime)}>
+                                                                </Countdown>
+                                                            </div>
+                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
+                                                            <div style={{ color: "#FF0000" }}>
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Sale Ends At:</strong>
+                                                                </Typography>
+                                                                <Countdown daysInHours date={new Date(i.endTime)}>
+                                                                </Countdown>
+                                                            </div>) : (
+                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                                                <strong>Sale Ended</strong>
                                                             </Typography>
+                                                        )}
+                                                        </Typography>
                                                         </CardContent>
                                                     </CardActionArea>
                                                     <CardActions>
 
                                                     </CardActions>
                                                 </Card>
-                                            </Link>
+                                            </Link>) : ( 
+                                                 <span onClick={handleLogin}>
+                                                 <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
+                                                     {/* style={{ height: "100%" }} variant="outlined" */}
+                                                     <CardActionArea>
+                                                         <CardMedia
+                                                             className={classes.media}
+                                                             image={i.image}
+                                                             title=""
+                                                         >
+                                                             {/* <div className="mainDiv">
+ 
+                                                                 <div className="square"></div>
+                                                                 <div className="square2"></div>
+                                                                 <div className="square3"></div>
+                                                             </div> */}
+ 
+                                                         </CardMedia>
+                                                         <CardContent>
+                                                             <Typography variant="body2" color="textSecondary" component="p">
+                                                                 <strong>Title: </strong>{i.title}
+                                                             </Typography>
+                                                             <Typography variant="body2" color="textSecondary" component="p">
+                                                                 <strong>Description: </strong>{i.description}
+                                                             </Typography>
+ 
+                                                             {/* <Typography variant="body2" color="textSecondary" component="p">
+                                                                 <strong>Sale Price: </strong>{i.SalePrice / 10 ** 18} ETH
+                                                             </Typography> */}
+                                                             {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
+                                                             <Link to={"/User/Profile/Detail/musicArtist/" + i.MusicArtistId + "/null"} style={{ color: '#000' }}>
+                                                                 <CardHeader
+                                                                     avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                                     title={i.MusicArtistName}
+                                                                     subheader={i.MusicArtistAbout}
+                                                                 />
+                                                             </Link> */}
+                                                             <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                            {new Date() < new Date(i.startTime) ? (
+                                                            <div style={{ color: "#00FF00" }} >
+
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Sale Starts At:</strong>
+                                                                </Typography>
+                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
+                                                                <Countdown daysInHours date={new Date(i.startTime)}>
+                                                                </Countdown>
+                                                            </div>
+                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
+                                                            <div style={{ color: "#FF0000" }}>
+                                                                {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                                                                <Typography variant="body2" color="textSecondary" component="p">
+                                                                    <strong>Sale Ends At:</strong>
+                                                                </Typography>
+                                                                <Countdown daysInHours date={new Date(i.endTime)}>
+                                                                </Countdown>
+                                                            </div>) : (
+                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                                                <strong>Sale Ended</strong>
+                                                            </Typography>
+                                                        )}
+                                                        </Typography>
+                                                         </CardContent>
+                                                     </CardActionArea>
+                                                     <CardActions>
+ 
+                                                     </CardActions>
+                                                 </Card>
+                                             </span>
+                                            )}
                                         </Grid >
                                     ))}
                                 </Grid>
-                                {cubeAuctionData.length !== 0 ? (
+                                {/* {cubeAuctionData.length !== 0 ? (
                                     <Typography variant="h6" style={{ marginTop: '20px', marginBottom: '20px' }} >
                                         <strong >On Auction </strong>
                                     </Typography>) : (
@@ -246,13 +424,13 @@ function MarketPlace(props) {
                                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                                             <strong>Auction Starts At:</strong>
                                                                         </Typography>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))} */}
+                                                                        {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))}
                                                                         <Countdown daysInHours date={new Date(userAuctionData[index].auctionStartsAt)}>
                                                                         </Countdown>
                                                                     </div>
                                                                 ) : new Date() > new Date(userAuctionData[index].auctionStartsAt) && new Date() < new Date(userAuctionData[index].auctionEndsAt) ? (
                                                                     <div style={{ color: "#FF0000" }}>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                                                                        {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
                                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                                             <strong>Auction Ends At:</strong>
                                                                         </Typography>
@@ -272,8 +450,8 @@ function MarketPlace(props) {
                                                 </Card>
                                             </Link>
                                         </Grid >
-                                    ))}
-                                </Grid>
+                                    ))} */}
+                                {/* </Grid> */}
                             </>
                         )}
                     </div>

@@ -239,7 +239,7 @@ const SingleNftDetail = (props) => {
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color: '#a70000'}}>
                                             <strong>Rarity </strong>
@@ -248,8 +248,8 @@ const SingleNftDetail = (props) => {
                                     <Col>
                                         {nftDetail.type}
                                     </Col>
-                                </Row>
-                                <Row>
+                                </Row> */}
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color: '#a70000'}}>
                                             <strong>Supply Type </strong>
@@ -268,7 +268,7 @@ const SingleNftDetail = (props) => {
                                     <Col>
                                         {nftDetail.tokenSupply}
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px', marginBottom: '5px'}} >

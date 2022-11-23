@@ -25,7 +25,7 @@ function MyNFTs(props) {
         axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
             "Authorization"
         )}`;
-        axios.get(`/nft/createnft/${start}/${end}`).then(
+        axios.get(`/nft/myNFTs/${start}/${end}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.NFTdata);

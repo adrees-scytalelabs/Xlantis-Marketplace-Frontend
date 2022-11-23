@@ -8,12 +8,14 @@ import { Spinner } from "react-bootstrap";
 import NFTCard from '../../../../components/Cards/NFTCard';
 import Card from '@material-ui/core/Card';
 
+
 function MyNFTs(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(8);
     const [totalNfts, setTotalNfts] = React.useState(0);
     const [page, setPage] = React.useState(0);
     const [tokenList, setTokenList] = useState([]);
     const [open, setOpen] = React.useState(false);
+
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -22,10 +24,16 @@ function MyNFTs(props) {
     };
     let getMyNFTs = (start, end) => {
         handleShowBackdrop();
-        axios.get(`/nft/createnft/${start}/${end}`).then(
+        axios.get(`/nft/myNFTs/${start}/${end}`).then(
             (response) => {
                 console.log("response", response);
-                setTokenList(response.data.NFTdata);
+                let  nfts = response.data.NFTdata;
+                let newState = nfts.map(obj => {
+                      return {...obj, isPlaying: false};
+                });
+                console.log("NFTS", nfts);
+                console.log("Updated", newState);
+                setTokenList(newState);
                 setTotalNfts(response.data.Nftcount);
 
                 handleCloseBackdrop();
@@ -82,6 +90,7 @@ function MyNFTs(props) {
         setPage(0);
     };
 
+    
     return (
         <div className="card">
             <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>

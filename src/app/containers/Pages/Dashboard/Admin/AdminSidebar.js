@@ -10,6 +10,8 @@ function AdminSidebar(props) {
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address")
+    // web3Modal.clearCachedProvider();
+
     // setTimeout(() => { }, 1);
   };
 
@@ -52,7 +54,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.marketPlace}>
               <Link to={`${props.match.url}/marketPlace`}>
-                <BusinessIcon /> <span>Market Place</span>
+                <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
 
