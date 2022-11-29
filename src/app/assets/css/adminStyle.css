@@ -1421,15 +1421,18 @@ button.bg-danger:hover {
 -----------------------*/
 
 .admin-header {
-  background: #fff;
-  border-bottom: 1px solid #f0f0f0;
+  /* background: #fff; */
+  /* border-bottom: 1px solid #f0f0f0; */
   left: 0;
   position: fixed;
   right: 0;
   top: 0;
   z-index: 1001;
   height: 70px;
-}
+    width: 100%;
+    background-color: #fbfeff;
+    box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+  }
 .admin-header .header-left {
   float: left;
   height: 60px;

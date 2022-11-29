@@ -72,17 +72,18 @@ const OnSaleCard = (props) => {
               "/" +
               props.userSaleData[props.index]._id
             }
+            style={{ width: "100%" }}
           >
             <CardMedia
             //   className={classes.media}
             // image={img}
             >
               {/* NFT Image */}
-              <div style={{ position: "relative" }}>
+              <div className="nftImgWrapper">
                 <img
-                  src={nft}
+                  src={props.image.url}
                   alt="a sample nft"
-                  style={{ width: "100%", borderRadius: "12px 12px 0px 0px" }}
+                  className="myNFTImg"
                 />
                 <div
                   style={{

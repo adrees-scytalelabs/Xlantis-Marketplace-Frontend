@@ -78,7 +78,91 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+/* HEADER */
+
+.header .mainNav {
+  width: 100%;
+  background-color: #fbfeff;
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+}
+
+.footer.foot {
+  background-color: unset !important;
+  background-image: var(--linearGradient);
+}
+
 /* NEW NFT */
+
+.datePicker .form-control {
+  font-family: "Poppins";
+  border-radius: 12px;
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+  /* overflow: hidden; */
+  transition: all 0.3s ease;
+}
+
+.react-datetime-picker__wrapper {
+  border: none !important;
+}
+
+.newNftFields label {
+  font-weight: bold;
+  font-family: "Poppins";
+}
+
+.propsActionBtn {
+  background-image: var(--linearGradient);
+  color:#fbfeff;
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.newNftWrapper .newNftInput, .newNftProps {
+  font-family: "Poppins";
+  border-radius: 12px;
+  color: #333;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.newNftProps {
+  padding: 0.75rem 1.25rem; 
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+}
+
+.newNftProps:focus, .propsActionBtn:hover {
+  box-shadow: 0 10px 6px -6px #777;
+  border:none;
+}
+
+select:focus-visible {
+  outline: none;
+}
+
+select.newNftInput {
+  background-color: white;
+  padding: 6px 15px;
+  font-size: 15px;
+  min-height: 46px;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  /* box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%); */
+}
+
+.newNftWrapper .newNftInput:focus {
+  box-shadow: 0 10px 6px -6px #777;
+  border: none;
+}
+
+.newNftWrapper .newNftInput::-webkit-scrollbar {
+  display: none;
+}
 
 .uploadLabel {
   display: inline-block;
@@ -193,7 +277,7 @@ input[type='file'] {
 }
 
 .paginationBg {
-  background-color:#ccc;
+  /* background-color:#ccc; */
   border-radius: 12px;
   /* position: fixed; */
   bottom: 0;
@@ -368,7 +452,7 @@ div#sidebar::-webkit-scrollbar {
   background-repeat: no-repeat;
   background-position: left;
   background-size: cover;
-  padding: 120px 0 60px 0;
+  padding: 145px 0 60px 0;
 }
 
 .featuredContainer {
@@ -457,6 +541,10 @@ button.featuredExploreBtn:hover {
   overflow-x: scroll;
   scrollbar-width: none;
   scroll-behavior: smooth;
+}
+
+.row .marketTabs {
+
 }
 
 .row .saleCardSlider::-webkit-scrollbar{
@@ -2554,11 +2642,11 @@ html.menu-opened body {
   margin-right: 15px;
 }
 .footer .footer-bottom .copyright {
-  border-top: 1px solid rgb(167,0,0);
+  /* border-top: 1px solid rgb(167,0,0); */
   padding: 30px 0;
 }
 .footer .footer-bottom .copyright-text p {
-  color: #fff;
+  color: #fbfeff;
   font-size: 15px;
 }
 .footer .footer-bottom .copyright-text p a {
@@ -2568,7 +2656,7 @@ html.menu-opened body {
   transition: all 0.4s ease 0s;
 }
 .footer .footer-bottom .copyright-text p a:hover {
-  color: #fff;
+  color: #fbfeff;
 }
 .footer .footer-bottom .copyright-text p.title {
   font-weight: 400;

@@ -22,6 +22,8 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
+import Tooltip from "@material-ui/core/Tooltip";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
@@ -45,6 +47,48 @@ import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { ethers } from "ethers";
+
+// STYLES
+
+const makeTheme = createMuiTheme({
+  overrides: {
+    MuiOutlinedInput: {
+      root: {
+        borderRadius: "12px !important",
+        fontFamily: "poppins",
+        color: "#333",
+        border: "1px solid rgba(0, 0, 0, 0.05)",
+        boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%)",
+        "&$focused": {
+          border: "none",
+        },
+      },
+    },
+    MuiInput: {
+      root: {
+        borderRadius: "12px !important",
+        fontFamily: "poppins",
+        color: "#333",
+        border: "1px solid rgba(0, 0, 0, 0.05)",
+        boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%)",
+        padding: "0.75rem 1.25rem !important",
+        "&$focused": {
+          border: "none",
+        },
+      },
+      underline: {
+        "&$before": {
+          border: "none",
+        },
+      },
+    },
+    MuiAutocomplete: {
+      inputRoot: {
+        borderRadius: "12px",
+      },
+    },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,6 +123,11 @@ const useStyles = makeStyles((theme) => ({
   },
   pos: {
     marginBottom: 12,
+  },
+  nftInput: {
+    borderRadius: "12px",
+    fontFamily: "poppins",
+    boxShadow: "3px 1px -1px rgb(0 0 0 / 10%)",
   },
 }));
 
@@ -1307,111 +1356,102 @@ function NewNFT(props) {
                 <label className="mb-0 p-1">Select Artwork</label>
                 {isGlbFile ? (
                   <div>
-                    <div>
-                      <GLTFModel src={nftURI} width={250} height={250}>
-                        <AmbientLight color={0xffffff} />
-                        <AmbientLight color={0xffffff} />
-                        <AmbientLight color={0xffffff} />
-                        <AmbientLight color={0xffffff} />
-                        {/* <AmbientLight color={0xffffff} />
+                    <div className="form-group">
+                      <div className="row no-gutters align-items-end justify-content-start">
+                        <div className="co-12 col-md-auto profile-img mr-3">
+                          <GLTFModel src={nftURI} width={250} height={250}>
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            {/* <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} /> */}
-                        <DirectionLight
-                          color={0xffffff}
-                          position={{ x: 100, y: 200, z: 100 }}
-                        />
-                        <DirectionLight
-                          color={0xffffff}
-                          position={{ x: 50, y: 200, z: 100 }}
-                        />
-                        <DirectionLight
-                          color={0xffffff}
-                          position={{ x: 0, y: 0, z: 0 }}
-                        />
-                        <DirectionLight
-                          color={0xffffff}
-                          position={{ x: 0, y: 100, z: 200 }}
-                        />
-                        <DirectionLight
-                          color={0xffffff}
-                          position={{ x: -100, y: 200, z: -100 }}
-                        />
-                      </GLTFModel>
-                    </div>
-                    <div className="upload-img">
-                      <div className="change-photo-btn">
-                        {isUploadingIPFS ? (
-                          <div className="text-center">
-                            <Spinner
-                              animation="border"
-                              role="status"
-                              style={{ color: "#FD4B30" }}
-                            ></Spinner>
-                          </div>
-                        ) : (
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 100, y: 200, z: 100 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 50, y: 200, z: 100 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 0, y: 0, z: 0 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 0, y: 100, z: 200 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: -100, y: 200, z: -100 }}
+                            />
+                          </GLTFModel>
+                        </div>
+                        <div className="co-12 col-md-auto">
+                          <label for="uploadGlbFile" className="uploadLabel">
+                            {isUploadingIPFS ? (
+                              <div className="text-center">
+                                <Spinner
+                                  animation="border"
+                                  role="status"
+                                  style={{ color: "#fbfeff" }}
+                                ></Spinner>
+                              </div>
+                            ) : (
+                              "Choose File"
+                            )}
+                          </label>
                           <input
                             name="sampleFile"
                             type="file"
-                            className="upload"
+                            id="uploadGlbFile"
                             accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
                             onChange={onChangeFile}
+                            hidden
                           />
-                        )}
-                        {/* <span>
-                            <i className="fa fa-upload"></i>Upload photo
-                          </span> 
-                        )}
-*/}
+                          <small className="form-text text-muted">
+                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                          </small>
+                        </div>
                       </div>
-                      <small className="form-text text-muted">
-                        Allowed JPG, JPEG, PNG, GIF. GLB. MP3 Max size of 5MB
-                      </small>
                     </div>
                     <label>Select Preview Image</label>
                     <div className="form-group">
-                      <div className="change-avatar">
-                        {/* <div className="profile-img"> */}
-                        <div
-                          style={{
-                            borderRadius: "12px",
-                          }}
-                        >
+                      <div className="row no-gutters align-items-end justify-content-start">
+                        <div className="co-12 col-md-auto profile-img mr-3">
                           <img src={previewImageURI} alt="Selfie" />
                         </div>
-                        {/* </div> */}
-                        {/* <div className="upload-img"> */}
-                        {/* <div
-                              className="change-photo-btn uploadBtnBg"
-                              style={{
-                                borderRadius: 12,
-                              }}
-                            > */}
-                        {isUploadingPreview ? (
-                          <div className="text-center">
-                            <Spinner
-                              animation="border"
-                              role="status"
-                              style={{ color: "#FD4B30" }}
-                            ></Spinner>
-                          </div>
-                        ) : (
-                          <span>
-                            <i className="fa fa-upload"></i>Upload photo
-                          </span>
-                        )}
-
-                        <input
-                          name="sampleFile"
-                          type="file"
-                          // className="upload"
-                          accept=".png,.jpg,.jpeg"
-                          onChange={onChangePreviewImage}
-                        />
-                        {/* </div> */}
-                        <small className="form-text text-muted">
-                          Allowed JPG, JPEG. Max size of 5MB
-                        </small>
-                        {/* </div> */}
+                        <div className="co-12 col-md-auto">
+                          <label
+                            for="uploadPreviewImg1"
+                            className="uploadLabel"
+                          >
+                            {isUploadingPreview ? (
+                              <div className="text-center">
+                                <Spinner
+                                  animation="border"
+                                  role="status"
+                                  style={{ color: "#fbfeff" }}
+                                ></Spinner>
+                              </div>
+                            ) : (
+                              "Choose File"
+                            )}
+                          </label>
+                          <input
+                            name="sampleFile"
+                            type="file"
+                            id="uploadPreviewImg1"
+                            accept=".png,.jpg,.jpeg"
+                            onChange={onChangePreviewImage}
+                            hidden
+                          />
+                          <small className="form-text text-muted">
+                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                          </small>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -1455,7 +1495,7 @@ function NewNFT(props) {
                             name="sampleFile"
                             type="file"
                             id="uploadMp3"
-                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                            accept=".mp3"
                             onChange={onChangeFile}
                             hidden
                           />
@@ -1544,23 +1584,23 @@ function NewNFT(props) {
                 )}
 
                 {/* Fields */}
-                <div className="form-group">
-                  <label>NFT Title</label>
-                  <div className="form-group">
+                <div className="form-group newNftFields">
+                  <label>Title</label>
+                  <div className="form-group newNftWrapper">
                     <input
                       type="text"
                       required
                       value={name}
                       placeholder="Enter Name of NFT"
-                      className="form-control"
+                      className="form-control newNftInput"
                       onChange={(e) => {
                         setName(e.target.value);
                       }}
                     />
                   </div>
 
-                  <label>NFT Description</label>
-                  <div className="form-group">
+                  <label>Description</label>
+                  <div className="form-group newNftWrapper">
                     {/* <label>About the Art</label> */}
                     <textarea
                       type="text"
@@ -1568,14 +1608,14 @@ function NewNFT(props) {
                       rows="4"
                       value={description}
                       placeholder="Enter Description of NFT"
-                      className="form-control"
+                      className="form-control newNftInput"
                       onChange={(e) => {
                         setDescription(e.target.value);
                       }}
                     />
                   </div>
-                  <label>Select Rarity</label>
-                  <div className="filter-widget">
+                  <label for="rarity-select">Rarity</label>
+                  <div className="filter-widget newNftWrapper">
                     <Autocomplete
                       id="combo-dox-demo"
                       required
@@ -1591,17 +1631,42 @@ function NewNFT(props) {
                       }}
                       inputValue={rarity}
                       renderInput={(params) => (
-                        <TextField
-                          {...params}
-                          label="Rarity"
-                          variant="outlined"
-                        />
+                        <div>
+                          {/* <select
+                        name="rarity"
+                        id="rarity-select"
+                        autocomplete="on"
+                        className="newNftInput"
+                        required
+                      >
+                        <option value="" disabled selected>
+                          Choose your pet
+                        </option>
+                        <option value="goldfish">Goldfish</option>
+                        <option value="cat">Cat</option>
+                        <option value="dog">Dog</option>
+                        <option value="parrot">Parrot</option>
+                      </select> */}
+                          <ThemeProvider theme={makeTheme}>
+                            <TextField
+                              {...params}
+                              // label="Rarity"
+                              // variant="outlined"
+                              placeholder="Rarity"
+                              style={{ borderRadius: 12 }}
+                              // InputProps={{
+                              //   className: classes.nftInput,
+                              // }}
+                              // className={classes.nftInput}
+                            />
+                          </ThemeProvider>
+                        </div>
                       )}
                     />
                   </div>
 
                   <div>
-                    <label>Add Properties</label>
+                    <label>Properties</label>
                     <small style={{ marginLeft: "5px" }}>(optional)</small>
                   </div>
                   <div>
@@ -1619,7 +1684,7 @@ function NewNFT(props) {
                                     placeholder="Enter key of the property"
                                     required
                                     value={property.key}
-                                    className="form-control"
+                                    className="newNftProps"
                                     onChange={(e) =>
                                       handlePropertyChange(index, e)
                                     }
@@ -1637,7 +1702,7 @@ function NewNFT(props) {
                                     placeholder="Enter Value of the property"
                                     required
                                     value={property.value}
-                                    className="form-control"
+                                    className="newNftProps"
                                     onChange={(e) =>
                                       handlePropertyChange(index, e)
                                     }
@@ -1649,16 +1714,19 @@ function NewNFT(props) {
                               <div className="form-group">
                                 <label>Action</label>
                                 <div className="filter-widget">
-                                  <button
-                                    className="btn btn-submit btn-lg"
-                                    color="primary"
-                                    // className="btn submit-btn"
-                                    onClick={(e) =>
-                                      handleRemoveProperty(e, index)
-                                    }
+                                  <Tooltip
+                                    title="Remove a property"
+                                    placement="bottom"
                                   >
-                                    -
-                                  </button>
+                                    <button
+                                      className="btn btn-submit btn-lg propsActionBtn"
+                                      onClick={(e) =>
+                                        handleRemoveProperty(e, index)
+                                      }
+                                    >
+                                      -
+                                    </button>
+                                  </Tooltip>
                                 </div>
                               </div>
                             </Col>
@@ -1666,17 +1734,15 @@ function NewNFT(props) {
                         </div>
                       );
                     })}
-                    <button
-                      className="btn btn-submit"
-                      color="secondary"
-                      style={{
-                        backgroundColor: "#f00000",
-                      }}
-                      // className="btn submit-btn"
-                      onClick={(e) => handleAddProperty(e)}
-                    >
-                      +
-                    </button>
+                    <Tooltip title="Add a property" placement="right">
+                      <button
+                        className="btn btn-submit btn-lg propsActionBtn mb-4"
+                        // className="btn submit-btn"
+                        onClick={(e) => handleAddProperty(e)}
+                      >
+                        +
+                      </button>
+                    </Tooltip>
                     {/* <Dialog
                                             fullWidth={true}
                                             maxWidth={true}
@@ -1706,8 +1772,20 @@ function NewNFT(props) {
                   </div>
 
                   {tokenList.length > 0 ? (
-                    <FormControl component="fieldset">
-                      <lable component="legend">Select NFT Type</lable>
+                    <FormControl
+                      component="fieldset"
+                      style={{
+                        color: "#04111D",
+                        fontFamily: "poppins",
+                        fontWeight: "bold",
+                      }}
+                    >
+                      <label
+                        component="legend"
+                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                      >
+                        Select NFT Type
+                      </label>
                       <RadioGroup
                         row
                         aria-label="position"
@@ -1747,7 +1825,12 @@ function NewNFT(props) {
                     </FormControl>
                   ) : (
                     <FormControl component="fieldset">
-                      <lable component="legend">Select NFT Type</lable>
+                      <lable
+                        component="legend"
+                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                      >
+                        Select NFT Type
+                      </lable>
                       <RadioGroup
                         row
                         aria-label="position"
@@ -1787,7 +1870,11 @@ function NewNFT(props) {
 
                   {tokenList.length > 0 ? (
                     <div className="form-group">
-                      <label>Select Collection</label>
+                      <label
+                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                      >
+                        Select Collection
+                      </label>
                       <div className="filter-widget">
                         <Autocomplete
                           id="combo-dox-demo"
@@ -1811,18 +1898,25 @@ function NewNFT(props) {
                           }}
                           inputValue={collection}
                           renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Collections"
-                              variant="outlined"
-                            />
+                            <ThemeProvider theme={makeTheme}>
+                              <TextField
+                                {...params}
+                                placeholder="Collections"
+                                // label="Collections"
+                                // variant="outlined"
+                              />
+                            </ThemeProvider>
                           )}
                         />
                       </div>
                     </div>
                   ) : (
                     <div className="form-group">
-                      <label>Select Collection</label>
+                      <label
+                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                      >
+                        Select Collection
+                      </label>
                       <div className="filter-widget">
                         <Autocomplete
                           id="combo-dox-demo"
@@ -1847,11 +1941,14 @@ function NewNFT(props) {
                           }}
                           inputValue={collection}
                           renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Collections"
-                              variant="outlined"
-                            />
+                            <ThemeProvider theme={makeTheme}>
+                              <TextField
+                                {...params}
+                                // label="Collections"
+                                placeholder="Collections"
+                                // variant="outlined"
+                              />
+                            </ThemeProvider>
                           )}
                         />
                       </div>
@@ -1860,7 +1957,12 @@ function NewNFT(props) {
                   {NFTType === "1155" ? (
                     <div>
                       <FormControl component="fieldset">
-                        <lable component="legend">Select Supply Type</lable>
+                        <label
+                          component="legend"
+                          style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                        >
+                          Select Supply Type
+                        </label>
                         <RadioGroup
                           row
                           aria-label="position"
@@ -1877,7 +1979,14 @@ function NewNFT(props) {
                             checked={supplyType === "Single"}
                             control={<Radio color="secondary" />}
                             label={
-                              <span style={{ fontSize: "0.9rem" }}>Single</span>
+                              <span
+                                style={{
+                                  fontWeight: "bold",
+                                  fontFamily: "poppins",
+                                }}
+                              >
+                                Single
+                              </span>
                             }
                           />
                           <FormControlLabel
@@ -1890,7 +1999,12 @@ function NewNFT(props) {
                             checked={supplyType === "Variable"}
                             control={<Radio color="secondary" />}
                             label={
-                              <span style={{ fontSize: "0.9rem" }}>
+                              <span
+                                style={{
+                                  fontWeight: "bold",
+                                  fontFamily: "poppins",
+                                }}
+                              >
                                 Variable Supply
                               </span>
                             }
@@ -1900,7 +2014,14 @@ function NewNFT(props) {
 
                       {supplyType === "Single" ? (
                         <div className="form-group">
-                          <label>Token Supply</label>
+                          <label
+                            style={{
+                              fontWeight: "bold",
+                              fontFamily: "poppins",
+                            }}
+                          >
+                            Token Supply
+                          </label>
                           <div className="filter-widget">
                             <input
                               type="number"
@@ -1913,7 +2034,14 @@ function NewNFT(props) {
                         </div>
                       ) : (
                         <div className="form-group">
-                          <label>Token Supply</label>
+                          <label
+                            style={{
+                              fontWeight: "bold",
+                              fontFamily: "poppins",
+                            }}
+                          >
+                            Token Supply
+                          </label>
                           <div className="filter-widget">
                             <input
                               type="number"
@@ -1943,12 +2071,16 @@ function NewNFT(props) {
                     tokenSupply === "" ||
                     collection === "" ||
                     isUploadingData === true ? (
-                      <button className="btn" type="submit" disabled>
+                      <button
+                        className="btn propsActionBtn"
+                        type="submit"
+                        disabled
+                      >
                         <i className="fa fa-plus"></i> Add NFT to queue
                       </button>
                     ) : (
                       <button
-                        className="btn"
+                        className="btn propsActionBtn"
                         type="button"
                         onClick={(e) => handleAddClick(e)}
                       >
@@ -1966,6 +2098,7 @@ function NewNFT(props) {
               <form>
                 {/* <Scrollbars style={{ height: 1500 }}> */}
 
+                {/* CARD */}
                 <div className="form-group">
                   <div>
                     <Grid
@@ -1985,38 +2118,40 @@ function NewNFT(props) {
                               console.log("Open Dialog Value: ", openDialog);
                             }}
                           >
-                            <Card>
-                              <CardHeader
+                            <Card id="nftCardProps">
+                              {/* <CardHeader
                                 className="text-center"
                                 title={i.title}
-                              />
-                              <CardMedia
-                                variant="outlined"
-                                style={{
-                                  height: "100%",
-                                  border:
-                                    i.rarity === "Mastercraft"
-                                      ? "4px solid #ff0000"
-                                      : i.rarity === "Legendary"
-                                      ? "4px solid #FFD700"
-                                      : i.rarity === "Epic"
-                                      ? "4px solid #9400D3"
-                                      : i.rarity === "Rare"
-                                      ? "4px solid #0000FF"
-                                      : i.rarity === "Uncommon"
-                                      ? "4px solid #008000"
-                                      : i.rarity === "Common"
-                                      ? "4px solid #FFFFFF"
-                                      : "none",
-                                }}
-                                className={classes.media}
+                              /> */}
+                              <CardMedia>
+                                {/* // variant="outlined" // style= */}
+                                {/* {{ */}
+                                {/* // height: "100%", // border: // i.rarity ===
+                                "Mastercraft" // ? "4px solid #ff0000" // :
+                                i.rarity === "Legendary" // ? "4px solid
+                                #FFD700" // : i.rarity === "Epic" // ? "4px
+                                solid #9400D3" // : i.rarity === "Rare" // ?
+                                "4px solid #0000FF" // : i.rarity === "Uncommon" */}
+                                {/* // ? "4px solid #008000" // : i.rarity === */}
+                                {/* "Common" // ? "4px solid #FFFFFF" // : "none", */}
+                                {/* // */}
+                                {/* }} */}
+                                <div className="nftImgWrapper">
+                                  <img
+                                    className="myNFTImg"
+                                    src={i.previewImageURI}
+                                    alt="a sample nft"
+                                  />
+                                </div>
+                                {/* className={classes.media}
                                 image={
                                   i.previewImageURI === ""
                                     ? i.nftURI
                                     : i.previewImageURI
                                 }
-                                title="NFT Image"
-                              />
+                                title="NFT Image" */}
+                                {/* /> */}
+                              </CardMedia>
                               <CardContent>
                                 <Typography
                                   variant="body2"
@@ -2127,7 +2262,7 @@ function NewNFT(props) {
                                 e.preventDefault();
                                 handleRemoveClick(index);
                               }}
-                              className="btn btn-sm bg-danger-light btn-block"
+                              className="btn btn-sm btn-block propsActionBtn"
                             >
                               Remove NFT
                             </Button>
@@ -2152,6 +2287,7 @@ function NewNFT(props) {
                     </Grid>
                   </div>
                 </div>
+
                 {/* </Scrollbars> */}
               </form>
             </div>
@@ -2170,14 +2306,18 @@ function NewNFT(props) {
         ) : NFTType === "1155" ? (
           <div className="submit-section">
             {tokenList.length === 0 ? (
-              <button type="button" disabled className="btn submit-btn">
+              <button
+                type="button"
+                disabled
+                className="btn submit-btn propsActionBtn"
+              >
                 Batch create NFTs
               </button>
             ) : (
               <button
                 type="button"
                 onClick={(e) => handleSubmitEvent(e)}
-                className="btn submit-btn"
+                className="btn submit-btn propsActionBtn"
               >
                 Batch create NFTs
               </button>
@@ -2188,7 +2328,7 @@ function NewNFT(props) {
             <button
               type="button"
               onClick={(e) => handleFreeMint(e)}
-              className="btn submit-btn"
+              className="btn submit-btn propsActionBtn"
             >
               Free Mint
             </button>

@@ -8,10 +8,7 @@ import { Link } from "react-router-dom";
 
 function Footer(props) {
   return (
-    <footer
-      className="footer"
-      style={{ position: props.position, backgroundColor: "#fbfeff" }}
-    >
+    <footer className="footer foot" style={{ position: props.position }}>
       {/* <!-- Footer Bottom --> */}
       <div className="footer-bottom">
         <div className="container-fluid">

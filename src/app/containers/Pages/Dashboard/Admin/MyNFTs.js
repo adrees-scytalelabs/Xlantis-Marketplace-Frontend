@@ -8,6 +8,7 @@ import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 // Images
 import { nftImage } from "../../../../assets/js/images";
 
@@ -27,6 +28,19 @@ const useStyles = makeStyles({
   body2: {
     fontWeight: "bold",
     fontFamily: "poppins",
+  },
+});
+
+const makeTheme = createMuiTheme({
+  overrides: {
+    MuiTablePagination: {
+      caption: {
+        fontWeight: "bold",
+      },
+      input: {
+        fontWeight: "bold",
+      },
+    },
   },
 });
 
@@ -179,23 +193,25 @@ function MyNFTs(props) {
 
         {/* </form> */}
       </div>
-      <div className="border row no-gutters justify-content-center paginationBg">
-        <TablePagination
-          rowsPerPageOptions={[4, 8, 12, 24]}
-          component="div"
-          count={totalNfts}
-          rowsPerPage={rowsPerPage}
-          labelRowsPerPage={"Items per page"}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-          classes={{
-            root: classes.root,
-            label: classes.label,
-            body2: classes.body2,
-          }}
-        />
-      </div>
+      <ThemeProvider theme={makeTheme}>
+        <div className="row no-gutters justify-content-center paginationBg">
+          <TablePagination
+            rowsPerPageOptions={[4, 8, 12, 24]}
+            component="div"
+            count={totalNfts}
+            rowsPerPage={rowsPerPage}
+            labelRowsPerPage={"Items per page"}
+            page={page}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            classes={{
+              root: classes.root,
+              label: classes.label,
+              body2: classes.body2,
+            }}
+          />
+        </div>
+      </ThemeProvider>
       {/* <Backdrop className={classes.backdrop} open={open} >
                 <CircularProgress color="inherit" />
             </Backdrop> */}

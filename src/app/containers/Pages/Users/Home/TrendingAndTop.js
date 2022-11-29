@@ -22,6 +22,7 @@ import { Spinner } from "react-bootstrap";
 import Carousel from "react-multi-carousel";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
+import { nftImage, auctionImg } from "../../../../assets/js/images";
 
 // CONTENT
 function TabPanel(props) {
@@ -214,6 +215,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userSaleData={props.userSaleData}
+                              image={nftImage[index]}
                             />
                           </div>
                         ))}
@@ -263,6 +265,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userAuctionData={props.userAuctionData}
+                              image={auctionImg[index + 1]}
                             />
                           </div>
                         ))}
@@ -344,6 +347,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userSaleData={props.userSaleData}
+                              image={nftImage[index + 5]}
                             />
                           </div>
                         ))}
@@ -393,6 +397,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userAuctionData={props.userAuctionData}
+                              image={auctionImg[index + 7]}
                             />
                           </div>
                         ))}
@@ -474,6 +479,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userSaleData={props.userSaleData}
+                              image={nftImage[index + 7]}
                             />
                           </div>
                         ))}
@@ -523,6 +529,7 @@ const TrendingAndTop = (props) => {
                               i={i}
                               index={index}
                               userAuctionData={props.userAuctionData}
+                              image={auctionImg[index + 4]}
                             />
                           </div>
                         ))}

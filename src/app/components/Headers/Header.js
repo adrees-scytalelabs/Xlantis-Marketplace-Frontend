@@ -33,7 +33,7 @@ function HeaderHome(props) {
   const defaultStyling = {
     padding: "10px 20px",
     borderRadius: "12px",
-    color: "#fbfeff",
+    color: "#04111D",
     fontSize: "18px",
     fontWeight: "bold",
   };
@@ -68,14 +68,14 @@ function HeaderHome(props) {
   return (
     <header className={`header ${menuOpenedClass}`}>
       <nav
-        className="navbar navbar-expand-lg header-nav px-5"
+        className="navbar navbar-expand-lg header-nav px-5 mainNav"
         style={{ width: "100%" }}
       >
         <div className="navbar-header">
           <a
             id="mobile_btn"
             href="/"
-            style={{ color: "#fbfeff" }}
+            style={{ color: "#04111D" }}
             onClick={(e) => {
               e.preventDefault();
               setMenuOpenedClass("menu-opened");
@@ -89,7 +89,7 @@ function HeaderHome(props) {
           </a>
 
           <Link
-            style={{ color: "#fbfeff" }}
+            style={{ color: "#04111D" }}
             to="/"
             className="navbar-brand logo"
           >
@@ -110,7 +110,7 @@ function HeaderHome(props) {
             <a
               id="menu_close"
               className="menu-close"
-              style={{ color: "#fbfeff" }}
+              style={{ color: "#04111D" }}
               href="/"
               onClick={(e) => {
                 e.preventDefault();
@@ -149,7 +149,7 @@ function HeaderHome(props) {
                   }
                   target="_blank"
                   rel="noopener noreferrer"
-                  style={{ color: "#fbfeff" }}
+                  style={{ color: "#04111D" }}
                 >
                   <span style={{ cursor: "pointer" }}>
                     {localStorage.getItem("Address").substr(0, 10)}. . .
@@ -160,7 +160,7 @@ function HeaderHome(props) {
                   <Link
                     to="/login"
                     style={{
-                      color: "#fbfeff",
+                      color: "#04111D",
                       fontSize: "18px",
                       fontWeight: "bold",
                     }}
@@ -228,7 +228,7 @@ function HeaderHome(props) {
                 }
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: "#fbfeff" }}
+                style={{ color: "#04111D" }}
               >
                 <span style={{ cursor: "pointer" }} className="headerNavLinks">
                   {localStorage.getItem("Address").substr(0, 10)}. . .
@@ -239,7 +239,7 @@ function HeaderHome(props) {
                 <Link
                   to="/login"
                   style={{
-                    color: "#fbfeff",
+                    color: "#04111D",
                     fontSize: "18px",
                     fontWeight: "bold",
                   }}
