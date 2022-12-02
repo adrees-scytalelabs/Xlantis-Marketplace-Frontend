@@ -298,7 +298,7 @@ function NewNFT(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -1095,7 +1095,7 @@ function NewNFT(props) {
             const web3 = window.web3
             const accounts = await web3.eth.getAccounts();
             const network = await web3.eth.net.getNetworkType()
-            if (network !== 'goerli') {
+            if (network !== 'private') {
                 setNetwork(network);
                 setIsSaving(false);
                 handleShow();
@@ -1221,7 +1221,7 @@ function NewNFT(props) {
             name: SIGNING_DOMAIN_NAME,
             version: SIGNING_DOMAIN_VERSION,
             verifyingContract: nftContractAddress,
-            chainId: 5,
+            chainId: 80001,
         };
 
         const voucher = { 

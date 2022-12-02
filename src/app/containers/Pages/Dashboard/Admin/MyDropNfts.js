@@ -324,7 +324,7 @@ function MyDropNFTs(props) {
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
                                                     </Typography> */}
                                                     <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} RTK
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} WMATIC
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}

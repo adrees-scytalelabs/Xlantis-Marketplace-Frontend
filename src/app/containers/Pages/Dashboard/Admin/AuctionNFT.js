@@ -201,7 +201,7 @@ const AuctionNFT = (props) => {
         const accounts = await web3.eth.getAccounts();
         console.log("Account 0: ", accounts[0]);
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             handleShow();
         }
@@ -261,7 +261,7 @@ const AuctionNFT = (props) => {
             const accounts = await web3.eth.getAccounts();
             console.log("Accounts[0]: ", accounts[[0]]);
             const network = await web3.eth.net.getNetworkType()
-            if (network !== 'goerli') {
+            if (network !== 'private') {
                 setNetwork(network);
                 handleShow();
             }
@@ -294,8 +294,9 @@ const AuctionNFT = (props) => {
                 let contractAbi;
                 
                 if (contractType === '1155') {
-                    contractAddress = Addresses.AuctionDropFactory;
+                    contractAddress = Addresses.AuctionDropFactory1155;
                     contractAbi = AuctionDropFactory1155ABI;
+                    console.log("hello", contractAddress, contractType);
                 }
                 else if (contractType === '721') {
                     contractAddress = Addresses.AuctionDropFactory721;
@@ -500,7 +501,7 @@ const AuctionNFT = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col>
-                                        {price} RTK
+                                        {price} WMATIC
                                     </Col>
                                 </Row>
                                 {nftDetail.nftType === "1155" ? (

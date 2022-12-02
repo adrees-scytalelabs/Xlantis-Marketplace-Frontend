@@ -17,7 +17,7 @@ import { Spinner } from 'react-bootstrap';
 import Countdown from 'react-countdown';
 import { Link } from 'react-router-dom';
 import Web3 from 'web3';
-import { providers } from 'ethers'
+import { providers, ethers } from 'ethers'
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -59,6 +59,13 @@ function Drops() {
     const [rowsPerPage] = useState(4);
     const [open, setOpen] = useState(false);
     const classes = useStyles();
+    const [network, setNetwork] = useState("");
+    const [show, setShow] = useState(false);
+  
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+    let [isLoading, setIsLoading] = useState(false);
+
     let { path } = useRouteMatch();
     let history = useHistory();
     let getMyDrops = (start, end) => {
@@ -104,20 +111,102 @@ function Drops() {
       };
     
       const web3Modal = new Web3Modal({
-        network: "goerli",
+        network: "private",
         theme: "dark",
         cacheProvider: true,
         providerOptions 
       });
-      async function handleLogin() { 
-        var provider = await web3Modal.connect();
-        var web3 = new Web3(provider); 
-        const newProvider = new providers.Web3Provider(provider)
-        await newProvider.send('eth_requestAccounts'); 
-        var accounts = await web3.eth.getAccounts(); 
+    //   async function handleLogin() { 
+    //     var provider = await web3Modal.connect();
+    //     var web3 = new Web3(provider); 
+    //     const newProvider = new providers.Web3Provider(provider)
+    //     await newProvider.send('eth_requestAccounts'); 
+    //     var accounts = await web3.eth.getAccounts(); 
+    //     let account = accounts[0]; 
+    //     console.log("account", account);
+    //     const signer = newProvider.getSigner();
+    //     const address = await signer.getAddress();
+    //     const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
+    //     console.log("Address: ", await signer.getAddress());
+    //     let signatureHash = await web3.eth.personal.sign(message,address)
+    //     console.log("Signature hash " ,signatureHash);
+    //     let ethBalance = await web3.eth.getBalance(account);
+        
+    //     let loginData = {
+    //       walletAddress: address,
+    //       signature: signatureHash,
+    //     }
+    //     axios.post("/user/login", loginData).then(
+    //       (response) => {
+    //         console.log("response", response);
+    //         Cookies.set("Authorization", response.data.token, {
+    //         });
+    //         // if (response.data.roles.includes("user")) {
+    //         //   console.log("we here");
+    //         //   localStorage.setItem("Address", accounts[0]);
+    //         // }
+    //         localStorage.setItem("Address", accounts[0]);
+    //         // setIsLoading(false);
+    //         history.push("/dashboard/marketplace");
+    //         // window.location.reload();
+    
+    //       },
+    //       (error) => {
+    //         if (process.env.NODE_ENV === "development") {
+    //           console.log(error);
+    //           console.log(error.response);
+    //         }
+    //         if (error.response !== undefined) {
+    //           if (error.response.status === 400) {
+    //             // setMsg(error.response.data.message);
+    //           } else {
+    //             // setMsg("Unknown Error Occured, try again.");
+    //           }
+    //         } else {
+    //           // setMsg("Unknown Error Occured, try again.");
+    //         }
+    //         // setIsLoading(false);
+    //       })
+    //     }    
+    async function handleLogin() { 
+        if (window.ethereum) {
+          window.web3 = new Web3(window.ethereum)
+          await window.ethereum.enable()
+        }
+        else if (window.web3) {
+          window.web3 = new Web3(window.web3.currentProvider)
+        }
+        else {
+          window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+        }
+        const web3 = window.web3
+        const accounts = await web3.eth.getAccounts();
+        const network = await web3.eth.net.getNetworkType()
+        console.log(network);
+        console.log("Account test: ", accounts[0], network);
+        if (network !== 'private') {
+          setNetwork(network);
+          setIsLoading(false);
+          handleShow();
+        }
+        else{
+        // var provider = await web3Modal.connect();
+        // var web3 = new Web3(provider); 
+        // const newProvider = new providers.Web3Provider(provider)
+        // await newProvider.send('eth_requestAccounts'); 
+        // var accounts = await web3.eth.getAccounts(); 
         let account = accounts[0]; 
+        const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+    
+        console.log("In the starting");
+    
+            
+    
+        console.log("Provider: ", provider);
+    
+        await provider.send("eth_requestAccounts", []);
+        let signer = provider.getSigner();
         console.log("account", account);
-        const signer = newProvider.getSigner();
         const address = await signer.getAddress();
         const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
         console.log("Address: ", await signer.getAddress());
@@ -134,12 +223,13 @@ function Drops() {
             console.log("response", response);
             Cookies.set("Authorization", response.data.token, {
             });
-            if (response.data.roles.includes("user")) {
-              console.log("we here");
-              localStorage.setItem("Address", accounts[0]);
-            }
+            // if (response.data.roles.includes("user")) {
+            //   console.log("we here");
+            //   localStorage.setItem("Address", accounts[0]);
+            // }
             // setIsLoading(false);
-            history.push("/dashboard/marketplace");
+            localStorage.setItem("Address", accounts[0]);
+            history.push("/");
             // window.location.reload();
     
           },
@@ -159,7 +249,12 @@ function Drops() {
             }
             // setIsLoading(false);
           })
-        }    
+        }
+        
+    
+    
+          // contract = new web3.eth.Contract(ABI, ADDRESS); 
+      }
     return (
         // <>
         //     <div className="container-fluid">

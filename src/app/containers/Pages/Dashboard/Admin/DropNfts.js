@@ -423,7 +423,7 @@ function MyNFTs(props) {
                                                          <strong>Token Supply: </strong>{i.tokenSupply}
                                                      </Typography> */}
                                                      <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price)} RTK
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price)} WMATIC
                                                     </Typography>
                                                      <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Artwork Description: </strong>{i.description}
@@ -496,7 +496,7 @@ function MyNFTs(props) {
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
                                                     </Typography> */}
                                                     <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Floor Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} RTK
+                                                        <strong>Floor Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} WMATIC
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}

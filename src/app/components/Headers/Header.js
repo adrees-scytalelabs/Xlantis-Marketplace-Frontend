@@ -30,7 +30,7 @@ import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
 import axios from "axios";
-
+import transakSDK from "@transak/transak-sdk";
 
 
 function HeaderHome(props) {
@@ -39,6 +39,16 @@ function HeaderHome(props) {
   const [open, setOpen] = React.useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
+
+  const settings = {
+    apiKey: 'cf5868eb-a8bb-45c8-a2db-4309e5f8b412',  // Your API Key
+    environment: 'STAGING', // STAGING/PRODUCTION
+    defaultCryptoCurrency: 'ETH',
+    themeColor: '000000', // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
+  }
 
 
   
@@ -83,11 +93,36 @@ function HeaderHome(props) {
   };
 
   const web3Modal = new Web3Modal({
-    network: "goerli",
+    network: "private",
     theme: "dark",
     cacheProvider: true,
     providerOptions 
   });
+
+  function openTransak() {
+    const transak = new transakSDK(settings);
+
+    transak.init();
+
+    // To get all the events
+    transak.on(transak.ALL_EVENTS, (data) => {
+        console.log(data)
+    });
+
+    // This will trigger when the user closed the widget
+    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+        console.log(eventData);
+        transak.close();
+    });
+
+    // This will trigger when the user marks payment is made.
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+        console.log(orderData);
+        window.alert("Payment Success")
+        transak.close();
+    });
+  }
+
   async function handleLogin() { 
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
@@ -102,8 +137,9 @@ function HeaderHome(props) {
     const web3 = window.web3
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType()
+    console.log(network);
     console.log("Account test: ", accounts[0], network);
-    if (network !== 'goerli') {
+    if (network !== 'private') {
       setNetwork(network);
       setIsLoading(false);
       handleShow();
@@ -142,11 +178,12 @@ function HeaderHome(props) {
         console.log("response", response);
         Cookies.set("Authorization", response.data.token, {
         });
-        if (response.data.roles.includes("user")) {
-          console.log("we here");
-          localStorage.setItem("Address", accounts[0]);
-        }
+        // if (response.data.roles.includes("user")) {
+        //   console.log("we here");
+        //   localStorage.setItem("Address", accounts[0]);
+        // }
         // setIsLoading(false);
+        localStorage.setItem("Address", accounts[0]);
         history.push("/");
         // window.location.reload();
 
@@ -480,6 +517,18 @@ function HeaderHome(props) {
                 </>
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             )}
+          </li>
+
+          <li >
+            
+             
+            <span  style={{ color: 'rgb(167,0,0)' }} onClick = {openTransak} >
+                <span style={{ cursor: 'pointer' }}>
+                    Buy Crypto
+                </span>
+            </span>
+
+          
           </li>
           <li>
             {localStorage.getItem("Address") ? (

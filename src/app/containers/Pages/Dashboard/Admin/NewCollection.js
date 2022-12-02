@@ -169,7 +169,7 @@ function NewCollection(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -209,7 +209,7 @@ function NewCollection(props) {
                         var cloneContractAddress;
                         var myContractInstance = await new web3.eth.Contract(abi, address);
                         console.log("ERC1155 Contract" , myContractInstance);
-                        await myContractInstance.methods.createNFT1155(CloneId,true).send({ from: accounts[0] }, (err, response) => {
+                        await myContractInstance.methods.createNFT1155(CloneId,true,250000).send({ from: accounts[0] }, (err, response) => {
                             console.log("Get transaction ", err, response);
                             console.log(typeof(response));
                             // console.log("Collection ID: ", collectionId);
@@ -251,7 +251,7 @@ function NewCollection(props) {
                         var cloneContractAddress;
                         var myContractInstance = await new web3.eth.Contract(abi, address);
                         console.log("ERC721 Contract" , myContractInstance);
-                        await myContractInstance.methods.createNFT721(CloneId).send({ from: accounts[0] }, (err, response) => {
+                        await myContractInstance.methods.createNFT721(CloneId, 250000).send({ from: accounts[0] }, (err, response) => {
                             console.log("Get transaction ", err, response);
                             console.log(typeof(response));
                             // console.log("Collection ID: ", collectionId);
@@ -389,7 +389,7 @@ function NewCollection(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !=='private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -466,7 +466,7 @@ function NewCollection(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();

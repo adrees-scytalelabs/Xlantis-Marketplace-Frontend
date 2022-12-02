@@ -101,6 +101,11 @@
         "internalType": "bytes32",
         "name": "_cloneId",
         "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_royalityBasisPoints",
+        "type": "uint256"
       }
     ],
     "name": "createNFT721",
@@ -111,6 +116,32 @@
         "type": "address"
       }
     ],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "disableRoyalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_id",
+        "type": "bytes32"
+      }
+    ],
+    "name": "enableRoyalty",
+    "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
   },
@@ -167,6 +198,24 @@
     "type": "function"
   },
   {
+    "inputs": [
+      {
+        "internalType": "bytes32",
+        "name": "_id",
+        "type": "bytes32"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_royalty",
+        "type": "uint256"
+      }
+    ],
+    "name": "setCollectibleRoyalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
     "inputs": [],
     "name": "tokenBeacon",
     "outputs": [
@@ -193,5 +242,3 @@
     "type": "function"
   }
 ]
-
-

@@ -52,7 +52,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
-      if (jwtDecoded.roles.includes( "admin")) {
+      if (jwtDecoded.role === "admin" ) {
         return (
           <Route
             {...rest}
@@ -66,7 +66,7 @@ function App() {
           />
         );
       }
-      else if (jwtDecoded.roles.includes( "user" )) {
+      else if (jwtDecoded.role === "user") {
         return (
           <Route
             {...rest}
@@ -89,7 +89,7 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded && isLoggedIn && jwtDecoded.roles.includes("admin")) {
+    if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
       return <Redirect to="/dashboard" />;
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;

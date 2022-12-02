@@ -200,7 +200,7 @@ function NewDrop(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();

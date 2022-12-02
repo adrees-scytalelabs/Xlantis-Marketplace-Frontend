@@ -45,7 +45,7 @@ function UserLoginScreen(props) {
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType()
     console.log("Account test: ", accounts[0], network);
-    if (network !== 'goerli') {
+    if (network !== 'private') {
       setNetwork(network);
       setIsLoading(false);
       handleShow();
