@@ -21,7 +21,7 @@ import Settings from '@material-ui/icons/Settings';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 import Web3 from 'web3';
-import { providers } from 'ethers'
+import { providers, ethers } from 'ethers'
 import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 
@@ -35,17 +35,21 @@ import axios from "axios";
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [isLoading] = useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [open, setOpen] = React.useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
 
 
-  let [network] = useState(false);
+  
+  let [isLoading, setIsLoading] = useState(false);
+
+  let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -85,14 +89,43 @@ function HeaderHome(props) {
     providerOptions 
   });
   async function handleLogin() { 
-    var provider = await web3Modal.connect();
-    var web3 = new Web3(provider); 
-    const newProvider = new providers.Web3Provider(provider)
-    await newProvider.send('eth_requestAccounts'); 
-    var accounts = await web3.eth.getAccounts(); 
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+    }
+    else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    }
+    else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
+    const web3 = window.web3
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType()
+    console.log("Account test: ", accounts[0], network);
+    if (network !== 'goerli') {
+      setNetwork(network);
+      setIsLoading(false);
+      handleShow();
+    }
+    else{
+    // var provider = await web3Modal.connect();
+    // var web3 = new Web3(provider); 
+    // const newProvider = new providers.Web3Provider(provider)
+    // await newProvider.send('eth_requestAccounts'); 
+    // var accounts = await web3.eth.getAccounts(); 
     let account = accounts[0]; 
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
+    console.log("In the starting");
+
+        
+
+    console.log("Provider: ", provider);
+
+    await provider.send("eth_requestAccounts", []);
+    let signer = provider.getSigner();
     console.log("account", account);
-    const signer = newProvider.getSigner();
     const address = await signer.getAddress();
     const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
     console.log("Address: ", await signer.getAddress());
@@ -134,6 +167,7 @@ function HeaderHome(props) {
         }
         // setIsLoading(false);
       })
+    }
     
 
 
@@ -461,6 +495,7 @@ function HeaderHome(props) {
           network={network}
         >
         </NetworkErrorModal>
+        
       </nav>
     </header >
   );
