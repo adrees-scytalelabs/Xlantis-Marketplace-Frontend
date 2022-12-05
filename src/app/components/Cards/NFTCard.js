@@ -12,6 +12,7 @@ import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { truncate } from "../../assets/js/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -186,7 +187,8 @@ function NFTCard(props) {
                   style={{ minHeight: "2.5rem" }}
                 >
                   {/* <strong>Artwork Description: </strong> */}
-                  {props.data.description}
+                  {truncate(props.data.description, 35)}
+                  {/* {props.data.description} */}
                 </Typography>
               </div>
               {/* Rarity */}

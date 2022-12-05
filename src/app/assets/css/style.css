@@ -78,6 +78,42 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+/* GRADIENT TEXT */
+
+.gradient-text {
+  background-image: var(--linearGradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* SINGLE NFT */
+
+.singleNftDetailBtn {
+  width: 100%;
+  border: none;
+  background-image: var(--linearGradient);
+  color: var(--btnHoverTextColor);
+  font-family: "Poppins";
+  font-weight: bold;
+  font-size: 1rem;
+  padding:  0.75rem 1.25rem; 
+  border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.singleNftDetailBtn:hover {
+  box-shadow: 0 10px 6px -6px #777;
+}
+
+.btnIcon {
+  transition: all 0.3s ease;
+  color: transparent;
+}
+
+.singleNftDetailBtn:hover > .btnIcon {
+  color: inherit;
+}
+
 /* HEADER */
 
 .header .mainNav {
@@ -241,7 +277,11 @@ input[type='file'] {
 
 /* MY NFTS */
 
-.myNFTImg {
+.nftSaleDetail {
+  height: 50vh !important;
+}
+
+.myNFTImg, nftSaleDetail {
   width: 100%;
   height: 15.3125rem;
   border-radius: 12px 12px 0 0;
@@ -443,8 +483,9 @@ div#sidebar::-webkit-scrollbar {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-family: "Poppins";
-  font-size: 1.25rem;
-  font-weight: bold;
+  font-size: 2.25rem;
+  font-weight: 600;
+  line-height: 1;
 }
 
 .sectionHomeBanner {
@@ -549,6 +590,12 @@ button.featuredExploreBtn:hover {
 
 .row .saleCardSlider::-webkit-scrollbar{
   display: none;
+}
+
+#singleNftPriceAndTime {
+  border-radius: 12px;
+  box-shadow: 3px 1px -1px 0 rgb(0 0 0 / 10%);
+  margin-bottom: 1.5rem;
 }
 
 #marketCardProps {

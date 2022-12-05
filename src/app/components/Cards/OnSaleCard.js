@@ -64,14 +64,15 @@ const OnSaleCard = (props) => {
       <Card id="marketCardProps" style={{ height: "480px" }}>
         <div className="row no-gutters mb-3">
           <Link
-            to={
-              "/marketPlace/Cubes/Nfts/notdrop/" +
-              props.userSaleData[props.index].expiresAt +
-              "/" +
-              props.i._id +
-              "/" +
-              props.userSaleData[props.index]._id
-            }
+            // to={
+            //   "/marketPlace/Cubes/Nfts/notdrop/" +
+            //   props.userSaleData[props.index].expiresAt +
+            //   "/" +
+            //   props.i._id +
+            //   "/" +
+            //   props.userSaleData[props.index]._id
+            // }
+            to="/fixdropnft"
             style={{ width: "100%" }}
           >
             <CardMedia
