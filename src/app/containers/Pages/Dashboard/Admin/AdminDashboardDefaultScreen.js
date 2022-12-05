@@ -23,7 +23,7 @@ function AdminDashboardDefaultScreen(props) {
       "Authorization"
     )}`;
     axios
-      .get("users/getcounts")
+      .get("user/getcounts")
       .then((response) => {
         console.log(response);
         setTotalCubes(response.data.Cubescount);

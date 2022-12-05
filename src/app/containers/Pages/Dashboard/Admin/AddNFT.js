@@ -846,9 +846,9 @@ function AddNFT(props) {
 
 
                                             {(location.state.saleType === "auction") ? (
-                                                 <label>Floor Price</label>
+                                                 <label>Floor Price (RTK)</label>
                                             ) : (
-                                                  <label>Price</label>
+                                                  <label>Price (RTK)</label>
                                             )} 
 
                                             <div className="form-group">
@@ -925,7 +925,7 @@ function AddNFT(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ height: "100%", border: '4px solid #ff0000' }}
                                                             className={classes.media}
-                                                            image={nftDetail.nftURI}
+                                                            image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
 
                                                             title="NFT Image"
                                                         />

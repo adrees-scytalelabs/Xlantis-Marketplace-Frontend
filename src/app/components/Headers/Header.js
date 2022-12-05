@@ -36,8 +36,8 @@ import axios from "axios";
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   let [isLoading] = useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [open, setOpen] = useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
 

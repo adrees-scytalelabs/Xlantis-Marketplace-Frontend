@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StorageIcon from '@material-ui/icons/Storage';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import BusinessIcon from '@material-ui/icons/Business';
 function AdminSidebar(props) {
   let handleLogout = (e) => {
     localStorage.removeItem("Address");
@@ -29,18 +30,23 @@ function AdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.newNFT}>
+            {/* <li className={props.activeTab.newNFT}>
               <Link to={`${props.match.url}/newNFT`}>
                 <i className="fa fa-file-medical"></i> <span>New NFT</span>
               </Link>
-            </li>
+            </li> */}
             <li className={props.activeTab.myNFTs}>
               <Link to={`${props.match.url}/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
+            <li className={props.activeTab.marketPlace}>
+              <Link to={`${props.match.url}/marketPlace`}>
+                <BusinessIcon /> <span>MarketPlace</span>
+              </Link>
+            </li>
 
-            <li className={props.activeTab.newCube}>
+            {/* <li className={props.activeTab.newCube}>
               <Link to={`${props.match.url}/newCube`}>
                 <i className="fas fa-cube"></i> <span>New Cube</span>
               </Link>
@@ -80,7 +86,7 @@ function AdminSidebar(props) {
               <Link to={`${props.match.url}/newCollection`}>
                 <i className="fas fa-layer-group"></i><span>Collection</span>
               </Link>
-            </li>
+            </li> */}
             {/* <li className={props.activeTab.myCubes}>
               <Link to={`${props.match.url}/myCubes`}>
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
@@ -137,14 +143,14 @@ function AdminSidebar(props) {
             </li> */}
 
 
-            <li className="menu-title">
+            {/* <li className="menu-title">
               <span>Settings</span>
             </li>
             <li className={props.activeTab.settings}>
               <Link to={`${props.match.url}/profilesettings`}>
                 <i className="fa fa-cog"></i> <span>Profile Settings</span>
               </Link>
-            </li>
+            </li> */}
             {/* <li className={props.activeTab.changePassword}>
               <Link to={`${props.match.url}/changepassword`}>
                 <i className="fa fa-key"></i> <span>Change Password</span>

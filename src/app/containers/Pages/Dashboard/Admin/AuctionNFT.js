@@ -87,7 +87,7 @@ const AuctionNFT = (props) => {
     const [dropExpiryTimeStamp, setDropExpiryTimeStamp] = useState(Math.round(dropExpiryTime.getTime()/1000));
     const [dropCloneAddress, setDropCloneAddress] = useState('');
     const [contractType, setContractType] = useState("");
-
+    let [price, setPrice] = useState();
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -141,6 +141,9 @@ const AuctionNFT = (props) => {
         setContractType(location.state.contractType);
         getNftDetail();
         getDropCloneAddress();
+        let priceCal = Web3.utils.fromWei(location.state.price, 'ether');
+        console.log("price is", priceCal);
+        setPrice(priceCal);
 
         props.setActiveTab({
             dashboard: "",
@@ -361,7 +364,7 @@ const AuctionNFT = (props) => {
                 <li className="breadcrumb-item">
                     <a href="/">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item active">Market Palce</li>
+                <li className="breadcrumb-item active">MarketPlace</li>
             </ul>
             <div className="card-body" >
                 <div className="row">
@@ -487,7 +490,7 @@ const AuctionNFT = (props) => {
                                         {nftDetail.type}
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
                                             <strong>Supply Type </strong>
@@ -496,17 +499,42 @@ const AuctionNFT = (props) => {
                                     <Col>
                                         {nftDetail.supplyType}
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
-                                            <strong>Token Supply </strong>
+                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                            <strong>Floor Price </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
-                                        {nftDetail.tokenSupply}
+                                        {price} RTK
                                     </Col>
                                 </Row>
+                                {nftDetail.nftType === "1155" ? (
+                                        <span>
+
+                                            <Row>
+                                                <Col>
+                                                    <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                        <strong>Supply Type </strong>
+                                                    </Typography>
+                                                </Col>
+                                                <Col>
+                                                    {nftDetail.supplyType}
+                                                </Col>
+                                            </Row>
+                                            <Row>
+                                                <Col>
+                                                    <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                        <strong>Token Supply </strong>
+                                                    </Typography>
+                                                </Col>
+                                                <Col>
+                                                    {nftDetail.tokenSupply}
+                                                </Col>
+                                            </Row>
+                                        </span>
+                                ) : (null)}
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px'}}>

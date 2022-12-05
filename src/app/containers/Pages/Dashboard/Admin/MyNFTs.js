@@ -61,10 +61,16 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/nft/createnft/${start}/${end}`).then(
+    axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
-        setTokenList(response.data.NFTdata);
+        let  nfts = response.data.NFTdata;
+        let newState = nfts.map(obj => {
+              return {...obj, isPlaying: false};
+        });
+        console.log("NFTS", nfts);
+        console.log("Updated", newState);
+        setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
         handleCloseBackdrop();

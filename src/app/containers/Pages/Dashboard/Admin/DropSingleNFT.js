@@ -469,7 +469,7 @@ const DropSingleNFT = (props) => {
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
                                             <strong>Rarity </strong>
@@ -478,7 +478,7 @@ const DropSingleNFT = (props) => {
                                     <Col>
                                         {nftDetail.type}
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >

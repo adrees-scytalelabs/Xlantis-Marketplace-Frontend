@@ -59,7 +59,7 @@ function AdminSidebar(props) {
                 to={`${props.match.url}/marketPlace`}
                 className="sidebarLink"
               >
-                <BusinessIcon /> <span>Market Place</span>
+                <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
 

@@ -43,7 +43,7 @@ function UserNfts(props) {
             "Authorization"
         )}`;
         // nft/getnft/{userId}/{start}/{end} 
-        axios.get(`/nft/getnft/${props.userId}/${start}/${end}`).then(
+        axios.get(`/nft/myNFTs/${props.userId}/${start}/${end}`).then(
             (response) => {
                 console.log("response", response);
                 setData(response.data.NFTdata);

@@ -317,11 +317,14 @@ function MyDropNFTs(props) {
                                                     
                                                     <CardContent>
                                                     
-                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Rarity: </strong>{i.type}
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
+                                                    </Typography> */}
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} RTK
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}
