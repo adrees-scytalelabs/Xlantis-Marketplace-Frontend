@@ -1,15 +1,17 @@
 import Cookies from "js-cookie";
 import React from "react";
 import { Link } from "react-router-dom";
-import StorageIcon from "@material-ui/icons/Storage";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
-import BusinessIcon from "@material-ui/icons/Business";
+import StorageIcon from '@material-ui/icons/Storage';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import BusinessIcon from '@material-ui/icons/Business';
 
 function AdminSidebar(props) {
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    localStorage.removeItem("Address")
+    // web3Modal.clearCachedProvider();
+
     // setTimeout(() => { }, 1);
   };
 
@@ -73,17 +75,24 @@ function AdminSidebar(props) {
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li>  */}
+            
+            <li className={props.activeTab.newDrop}>
+              <Link to={`${props.match.url}/dropApproval`}>
+                <i className="fas fa-check-circle"></i> <span>Drop Approval</span>
+              </Link>
+            </li>
 
             <li className={props.activeTab.newDrop}>
-              <Link to={`${props.match.url}/newDrop`} className="sidebarLink">
+              <Link to={`${props.match.url}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
             <li className={props.activeTab.myDrops}>
-              <Link to={`${props.match.url}/myDrops`} className="sidebarLink">
+              <Link to={`${props.match.url}/myDrops`}>
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
+
             {/* <li className={props.activeTab.newRandomDrop}>
               <Link to={`${props.match.url}/newRandomDrop`}>
                 <i className="fas fa-random"></i> <span>New Random Drop</span>

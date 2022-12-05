@@ -230,7 +230,7 @@ function AddNFT(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -846,9 +846,9 @@ function AddNFT(props) {
 
 
                                             {(location.state.saleType === "auction") ? (
-                                                 <label>Floor Price (RTK)</label>
+                                                 <label>Floor Price (WMATIC)</label>
                                             ) : (
-                                                  <label>Price (RTK)</label>
+                                                  <label>Price (WMATIC)</label>
                                             )} 
 
                                             <div className="form-group">

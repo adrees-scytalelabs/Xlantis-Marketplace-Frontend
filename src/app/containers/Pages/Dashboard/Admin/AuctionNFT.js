@@ -108,8 +108,10 @@ const AuctionNFT = (props) => {
                 setNftBlockChainId(response.data.data[0].nftId);
                 const keys = Object.keys(response.data.data[0].properties);
                 console.log("Keys: ", keys);
+               
                 setKeys(keys);
                 setProperties(response.data.data[0].properties);
+                
             }
         )
         .catch((error) => {
@@ -198,7 +200,7 @@ const AuctionNFT = (props) => {
         const accounts = await web3.eth.getAccounts();
         console.log("Account 0: ", accounts[0]);
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             handleShow();
         }
@@ -258,7 +260,7 @@ const AuctionNFT = (props) => {
             const accounts = await web3.eth.getAccounts();
             console.log("Accounts[0]: ", accounts[[0]]);
             const network = await web3.eth.net.getNetworkType()
-            if (network !== 'goerli') {
+            if (network !== 'private') {
                 setNetwork(network);
                 handleShow();
             }
@@ -291,8 +293,9 @@ const AuctionNFT = (props) => {
                 let contractAbi;
                 
                 if (contractType === '1155') {
-                    contractAddress = Addresses.AuctionDropFactory;
+                    contractAddress = Addresses.AuctionDropFactory1155;
                     contractAbi = AuctionDropFactory1155ABI;
+                    console.log("hello", contractAddress, contractType);
                 }
                 else if (contractType === '721') {
                     contractAddress = Addresses.AuctionDropFactory721;
@@ -480,7 +483,7 @@ const AuctionNFT = (props) => {
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
                                             <strong>Rarity </strong>
@@ -488,16 +491,6 @@ const AuctionNFT = (props) => {
                                     </Col>
                                     <Col>
                                         {nftDetail.type}
-                                    </Col>
-                                </Row>
-                                {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
-                                            <strong>Supply Type </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.supplyType}
                                     </Col>
                                 </Row> */}
                                 <Row>
@@ -507,12 +500,12 @@ const AuctionNFT = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col>
-                                        {price} RTK
+                                        {price} WMATIC
                                     </Col>
                                 </Row>
                                 {nftDetail.nftType === "1155" ? (
                                         <span>
-
+                                            
                                             <Row>
                                                 <Col>
                                                     <Typography variant="body1" component="p" style={{color: '#a70000'}}>
@@ -535,6 +528,7 @@ const AuctionNFT = (props) => {
                                             </Row>
                                         </span>
                                 ) : (null)}
+                               
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px'}}>
@@ -551,6 +545,7 @@ const AuctionNFT = (props) => {
                                                 <tr>
                                                     <th>Key</th>
                                                     <th>Value</th>
+                                                    <th>Rarity</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -558,6 +553,7 @@ const AuctionNFT = (props) => {
                                                     <tr key={index}>
                                                         <td>{j}</td>
                                                         <td>{properties[j]}</td>
+                                                        <td></td>
                                                     </tr>
                                                 ))
                                                 }   

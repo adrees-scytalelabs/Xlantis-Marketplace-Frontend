@@ -125,6 +125,7 @@ const NFTBuy = (props) => {
     let handleBuy= async() => {
         // setNftDetail(nftObject);
         console.log("Nft detail: ", nftDetail);
+        console.log("Price", nftDetail);
         // setNftDetail(nftDetail);
         // console.log("Nft detail id: ", nftDetail.collectionId._id);
         let dropIdHex = getHash(nftDetail.dropId);
@@ -136,7 +137,7 @@ const NFTBuy = (props) => {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();
@@ -476,7 +477,6 @@ const NFTBuy = (props) => {
                                         {nftDetail.type}
                                     </Col>
                                 </Row> */}
-                               
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color: '#a70000'}}>
@@ -484,12 +484,13 @@ const NFTBuy = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col>
-                                        {price} RTK
+                                        {price} WMATIC
                                     </Col>
                                 </Row>
+                               
                                 {nftDetail.nftType === "1155" ? (
                                 <span>
-
+                                    
                                     <Row>
                                         <Col>
                                             <Typography variant="body1" component="p" style={{color: '#a70000'}}>
@@ -512,6 +513,7 @@ const NFTBuy = (props) => {
                                     </Row>
                                 </span>
                                 ) : (null)}
+                               
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px', marginBottom: '5px'}} >

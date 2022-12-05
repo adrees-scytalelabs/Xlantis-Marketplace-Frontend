@@ -3,12 +3,16 @@ import React from "react";
 import { Link } from "react-router-dom";
 import StorageIcon from '@material-ui/icons/Storage';
 import ListAltIcon from '@material-ui/icons/ListAlt';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import BusinessIcon from '@material-ui/icons/Business';
+
+import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 function AdminSidebar(props) {
+  console.log(props);
   let handleLogout = (e) => {
     localStorage.removeItem("Address");
     Cookies.remove("Authorization");
+    // web3Modal.clearCachedProvider();
+
     
     // setTimeout(() => { }, 1);
   };
@@ -45,7 +49,6 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
-
             {/* <li className={props.activeTab.newCube}>
               <Link to={`${props.match.url}/newCube`}>
                 <i className="fas fa-cube"></i> <span>New Cube</span>
@@ -55,8 +58,8 @@ function AdminSidebar(props) {
               <Link to={`${props.match.url}/myCubes`}>
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
-            </li>
-
+            </li> */}
+{/* 
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>

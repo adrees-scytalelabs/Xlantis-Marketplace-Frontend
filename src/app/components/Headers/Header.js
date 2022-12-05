@@ -21,31 +21,45 @@ import Settings from '@material-ui/icons/Settings';
 import { useHistory, useRouteMatch } from 'react-router-dom';
 import {Button} from 'react-bootstrap';
 import Web3 from 'web3';
-import { providers } from 'ethers'
-// import money from "../../assets/img/wallet.png";
-// import man from "../../assets/img/man.png";
+import { providers, ethers } from 'ethers'
+import money from "../../assets/img/wallet.png";
+import man from "../../assets/img/man.png";
 
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
 import axios from "axios";
-
+import transakSDK from "@transak/transak-sdk";
 
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [isLoading] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
 
+  const settings = {
+    apiKey: 'cf5868eb-a8bb-45c8-a2db-4309e5f8b412',  // Your API Key
+    environment: 'STAGING', // STAGING/PRODUCTION
+    defaultCryptoCurrency: 'ETH',
+    themeColor: '000000', // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
+  }
 
-  let [network] = useState(false);
+
+  
+  let [isLoading, setIsLoading] = useState(false);
+
+  let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
   function handleListKeyDown(event) {
     if (event.key === 'Tab') {
       event.preventDefault();
@@ -79,20 +93,75 @@ function HeaderHome(props) {
   };
 
   const web3Modal = new Web3Modal({
-    network: "goerli",
+    network: "private",
     theme: "dark",
     cacheProvider: true,
     providerOptions 
   });
+
+  function openTransak() {
+    const transak = new transakSDK(settings);
+
+    transak.init();
+
+    // To get all the events
+    transak.on(transak.ALL_EVENTS, (data) => {
+        console.log(data)
+    });
+
+    // This will trigger when the user closed the widget
+    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+        console.log(eventData);
+        transak.close();
+    });
+
+    // This will trigger when the user marks payment is made.
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+        console.log(orderData);
+        window.alert("Payment Success")
+        transak.close();
+    });
+  }
+
   async function handleLogin() { 
-    var provider = await web3Modal.connect();
-    var web3 = new Web3(provider); 
-    const newProvider = new providers.Web3Provider(provider)
-    await newProvider.send('eth_requestAccounts'); 
-    var accounts = await web3.eth.getAccounts(); 
+    if (window.ethereum) {
+      window.web3 = new Web3(window.ethereum)
+      await window.ethereum.enable()
+    }
+    else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider)
+    }
+    else {
+      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    }
+    const web3 = window.web3
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType()
+    console.log(network);
+    console.log("Account test: ", accounts[0], network);
+    if (network !== 'private') {
+      setNetwork(network);
+      setIsLoading(false);
+      handleShow();
+    }
+    else{
+    // var provider = await web3Modal.connect();
+    // var web3 = new Web3(provider); 
+    // const newProvider = new providers.Web3Provider(provider)
+    // await newProvider.send('eth_requestAccounts'); 
+    // var accounts = await web3.eth.getAccounts(); 
     let account = accounts[0]; 
+    const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
+
+    console.log("In the starting");
+
+        
+
+    console.log("Provider: ", provider);
+
+    await provider.send("eth_requestAccounts", []);
+    let signer = provider.getSigner();
     console.log("account", account);
-    const signer = newProvider.getSigner();
     const address = await signer.getAddress();
     const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
     console.log("Address: ", await signer.getAddress());
@@ -109,11 +178,12 @@ function HeaderHome(props) {
         console.log("response", response);
         Cookies.set("Authorization", response.data.token, {
         });
-        if (response.data.roles.includes("user")) {
-          console.log("we here");
-          localStorage.setItem("Address", accounts[0]);
-        }
+        // if (response.data.roles.includes("user")) {
+        //   console.log("we here");
+        //   localStorage.setItem("Address", accounts[0]);
+        // }
         // setIsLoading(false);
+        localStorage.setItem("Address", accounts[0]);
         history.push("/");
         // window.location.reload();
 
@@ -134,6 +204,7 @@ function HeaderHome(props) {
         }
         // setIsLoading(false);
       })
+    }
     
 
 
@@ -179,7 +250,8 @@ function HeaderHome(props) {
   let Logout = (e) => {
     console.log("akjdf");
     Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    localStorage.removeItem("Address")
+    // web3Modal.clearCachedProvider();
     window.location.reload();
 
 
@@ -357,74 +429,118 @@ function HeaderHome(props) {
                 <span className="sr-only">Loading...</span>
               </Spinner>
             </div>
-            ) : localStorage.getItem("Address") ? (
-              <a
-                href={
-                  "https://ropsten.etherscan.io/address/" +
-                  localStorage.getItem("Address")
-                }
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{ color: "#04111D" }}
-              >
-                <span style={{ cursor: "pointer" }} className="headerNavLinks">
-                  {localStorage.getItem("Address").substr(0, 10)}. . .
-                </span>
-              </a>
           ) : (
-              <>
-                {/* <Link
-                  to="/login"
-                  style={{
-                    color: "#04111D",
-                    fontSize: "18px",
-                    fontWeight: "bold",
-                  }}
+            localStorage.getItem("Address") ? (
+              <div>
+                  <Avatar
+                  aria-owns={anchorEl ? "simple-menu" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleClick}
+                  // onMouseOver={handleClick}
+                  alt="Remy Sharp"
+                  src={man}
+                  sx={{ width: 24, height: 24 }}
+                />
+                {/* <Menu
+                  id="simple-menu"
+                  anchorEl={anchorEl}
+                  open={Boolean(anchorEl)}
+                  onClose={handleMenuClose}
+                  MenuListProps={{ onMouseLeave: handleMenuClose }}
                 >
-                  <span
-                    className="headerNavLinks"
-                    style={{ cursor: "pointer" }}
-                >
-                    Login/Signup
-                  </span>
-                </Link> */}
-              </>
+                  <MenuItem>
+                    <div>
+                      <Link to = "/profilesettings"></Link><Person /><span>Profile</span>
+                    </div>
+                  </MenuItem>
+                  <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
+                  <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
+                </Menu> */}
+             </div>
+              // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
+              //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
+              // </a>
+            ) : (null
+            //   <>
+            //     <div>
+            //       <Avatar
+            //       aria-owns={anchorEl ? "simple-menu" : undefined}
+            //       aria-haspopup="true"
+            //       onClick={handleLogin}
+            //       // onMouseOver={handleClick}
+            //       alt="Remy Sharp"
+            //       src="/static/images/avatar/1.jpg"
+            //       sx={{ width: 24, height: 24 }}
+            //     />
+            //     </div>
+            //     <span  style={{ color: 'rgb(167,0,0)' }} onClick = {handleLogin} >
+            //       <span style={{ cursor: 'pointer' }}>
+            //         Login/Signup
+            // </span>
+            //     </span>
+            //     </>
+            )
           )}
+
           </li>
-          <li>
+          
+          <li >
             {localStorage.getItem("Address") ? (
-              <Link to="/dashboard" style={{ color: "rgb(167,0,0)" }}>
+              <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} >
                 Dashboard
               </Link>
+
             ) : (
+              <>
+                {/* <div>
+                  <Avatar
+                  aria-owns={anchorEl ? "simple-menu" : undefined}
+                  aria-haspopup="true"
+                  onClick={handleLogin}
+                  // onMouseOver={handleClick}
+                  alt="Remy Sharp"
+                  src={money}
+                  sx={{ width: 24, height: 24 }}
+                />
+                </div> */}
+                <span  style={{ color: 'rgb(167,0,0)' }} onClick = {handleLogin} >
+                  <span style={{ cursor: 'pointer' }}>
+                    Connect Wallet
+            </span>
+                </span>
+                </>
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              <span   style={{
-                color: "#04111D",
-                fontSize: "18px",
-                fontWeight: "bold",
-              }} onClick = {handleLogin} >
-              <span className="headerNavLinks"
-                    style={{ cursor: "pointer" }}>
-                Connect Wallet
-              </span>
-             </span>
             )}
+          </li>
+
+          <li >
+            
+             
+            <span  style={{ color: 'rgb(167,0,0)' }} onClick = {openTransak} >
+                <span style={{ cursor: 'pointer' }}>
+                    Buy Crypto
+                </span>
+            </span>
+
+          
           </li>
           <li>
             {localStorage.getItem("Address") ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+              <span style={{ cursor: 'pointer' }} onClick={() => Logout()}>
                 Logout
               </span>
-            ) : null}
+            ) : (null)}
           </li>
         </ul>
         <NetworkErrorModal
           show={show}
           handleClose={handleClose}
           network={network}
-        ></NetworkErrorModal>
+        >
+        </NetworkErrorModal>
+        
       </nav>
-    </header>
+    </header >
   );
 }
 

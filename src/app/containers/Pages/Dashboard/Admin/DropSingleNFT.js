@@ -128,7 +128,7 @@ const DropSingleNFT = (props) => {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();
@@ -237,7 +237,7 @@ const DropSingleNFT = (props) => {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();
@@ -479,7 +479,7 @@ const DropSingleNFT = (props) => {
                                         {nftDetail.type}
                                     </Col>
                                 </Row> */}
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color:"#a70000"}} >
                                             <strong>Supply Type </strong>
@@ -498,7 +498,7 @@ const DropSingleNFT = (props) => {
                                     <Col>
                                         {nftDetail.tokenSupply}
                                     </Col>
-                                </Row>
+                                </Row> */}
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px'}}>
