@@ -45,6 +45,7 @@ function AdminDashboardDefaultScreen(props) {
       myCubes: "",
       myDrops: "",
       mySeason: "",
+      dropApproval : "",
       settings: "",
       privacyPolicy: "",
       termsandconditions: "",

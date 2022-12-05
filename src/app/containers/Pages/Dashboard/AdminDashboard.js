@@ -10,7 +10,7 @@ import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Logo from "../../../assets/img/logo.png"
-
+import DropApproval from "./Admin/DropApproval";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
 import UserSettings from "../Users/UserSettings";
@@ -84,6 +84,7 @@ function AdminDashboard(props) {
     settings: "",
     changePassword: "",
     newNFT: "",
+    dropApproval : "",
     newCube: "",
     myDrops: "",
     newDrop: "",
@@ -271,6 +272,10 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/mySeason/drops/:seasonId`}>
               <SeasonDrops setActiveTab={setActiveTab} />
+            </Route>
+
+            <Route exact path={`${path}/dropApproval`}>
+              <DropApproval setActiveTab={setActiveTab} />
             </Route>
 
             <Route exact path={`${path}/newDrop`}>

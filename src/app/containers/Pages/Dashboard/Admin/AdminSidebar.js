@@ -68,6 +68,12 @@ function AdminSidebar(props) {
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li>  */}
+            
+            <li className={props.activeTab.newDrop}>
+              <Link to={`${props.match.url}/dropApproval`}>
+                <i className="fas fa-check-circle"></i> <span>Drop Approval</span>
+              </Link>
+            </li>
 
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>
@@ -79,6 +85,7 @@ function AdminSidebar(props) {
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
+
             {/* <li className={props.activeTab.newRandomDrop}>
               <Link to={`${props.match.url}/newRandomDrop`}>
                 <i className="fas fa-random"></i> <span>New Random Drop</span>
