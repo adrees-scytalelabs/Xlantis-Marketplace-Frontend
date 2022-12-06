@@ -46,7 +46,7 @@ function ProfileSetting(props) {
 
   let [isUploadingArtist, setIsUploadingArtist] = useState(false);
 
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     console.log("newValue", newValue);

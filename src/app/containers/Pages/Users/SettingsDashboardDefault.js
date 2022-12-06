@@ -87,7 +87,7 @@ function SettingDashboardDefault(props) {
   let [editProfile, setEditProfile]= useState(false);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   let [isSaving, setIsSaving] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
   const classes = useStyles();

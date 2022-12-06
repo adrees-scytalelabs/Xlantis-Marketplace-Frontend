@@ -9,11 +9,11 @@ import NFTCard from '../../../../components/Cards/NFTCard';
 import Card from '@material-ui/core/Card';
 
 function MyNFTs(props) {
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [totalNfts, setTotalNfts] = React.useState(0);
-    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [totalNfts, setTotalNfts] = useState(0);
+    const [page, setPage] = useState(0);
     const [tokenList, setTokenList] = useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };

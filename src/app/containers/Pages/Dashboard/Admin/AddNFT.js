@@ -77,7 +77,7 @@ function AddNFT(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };

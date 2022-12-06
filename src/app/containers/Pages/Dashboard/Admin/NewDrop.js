@@ -106,7 +106,7 @@ function NewDrop(props) {
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

@@ -84,8 +84,8 @@ function DropApproval(props) {
     let [isSaving, setIsSaving] = useState(false);
 
     let [collectionCount, setCollectionCount] = useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [page, setPage] = React.useState(0);// eslint-disable-next-line
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [page, setPage] = useState(0);// eslint-disable-next-line
     const [showNetworkModal, setShowNetworkModal] = useState(false);
     let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
     let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
@@ -98,7 +98,7 @@ function DropApproval(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };

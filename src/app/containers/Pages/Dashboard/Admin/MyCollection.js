@@ -44,8 +44,8 @@ function MyCollection(props) {// eslint-disable-next-line
     const { enqueueSnackbar } = useSnackbar();
     let [collections, setCollections] = useState([]);// eslint-disable-next-line
     let [collection, setCollection] = useState("");
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [page, setPage] = React.useState(0);// eslint-disable-next-line
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [page, setPage] = useState(0);// eslint-disable-next-line
     let [isCreating, setIsCreating] = useState(false);
     let [open, setOpen] = useState(false);
 
