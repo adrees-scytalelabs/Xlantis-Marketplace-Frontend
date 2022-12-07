@@ -77,7 +77,7 @@ function AddNFT(props) {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -230,7 +230,7 @@ function AddNFT(props) {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShow();
@@ -846,9 +846,9 @@ function AddNFT(props) {
 
 
                                             {(location.state.saleType === "auction") ? (
-                                                 <label>Floor Price</label>
+                                                 <label>Floor Price (WMATIC)</label>
                                             ) : (
-                                                  <label>Price</label>
+                                                  <label>Price (WMATIC)</label>
                                             )} 
 
                                             <div className="form-group">
@@ -925,7 +925,7 @@ function AddNFT(props) {
                                                         <CardMedia
                                                             variant="outlined" style={{ height: "100%", border: '4px solid #ff0000' }}
                                                             className={classes.media}
-                                                            image={nftDetail.nftURI}
+                                                            image={nftDetail.previewImageURI ? nftDetail.previewImageURI : nftDetail.nftURI}
 
                                                             title="NFT Image"
                                                         />

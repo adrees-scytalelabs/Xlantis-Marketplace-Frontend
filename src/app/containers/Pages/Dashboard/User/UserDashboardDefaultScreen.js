@@ -20,13 +20,13 @@ function UserDashboardDefaultScreen(props) {
       "Authorization"
     ] = `Bearer ${Cookies.get("Authorization")}`;
     axios
-      .get("users/getcounts")
+      .get("user/getcounts")
       .then((response) => {
         console.log(response);
-        setTotalCubes(response.data.Cubescount);
+        // setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
-        setTotalDrops(response.data.Dropscount);
-        setTotalSeasons(response.data.Seasonscount);
+        // setTotalDrops(response.data.Dropscount);
+        // setTotalSeasons(response.data.Seasonscount);
         setTotalCollections(response.data.Collectionscount);
       })
       .catch((error) => {
@@ -100,7 +100,7 @@ function UserDashboardDefaultScreen(props) {
             </div>
           </Link>
         </div>
-        <div className="col-12 col-sm-3">
+        {/* <div className="col-12 col-sm-3">
           <Link to={`${props.match.url}/myCubes`}>
             <div className="card">
               <div className="card-body">
@@ -189,7 +189,7 @@ function UserDashboardDefaultScreen(props) {
               </div>
             </div>
           </Link>
-        </div>
+        </div> */}
       </div>
 
     </>

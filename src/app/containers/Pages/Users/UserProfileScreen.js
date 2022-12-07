@@ -228,6 +228,8 @@ function UserProfileScreen(props) {
                                                         Cookies.remove("Authorization");
                                                         localStorage.removeItem("Address")
                                                         Cookies.remove("PNT");
+                                                        // web3Modal.clearCachedProvider();
+
                                                     }}
                                                     to="/"
                                                     style={{ width: "100%" }}

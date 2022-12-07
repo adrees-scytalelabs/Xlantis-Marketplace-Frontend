@@ -192,27 +192,27 @@ function NFTCard(props) {
                 </Typography>
               </div>
               {/* Rarity */}
-              <div className="row no-gutters justify-content-start align-items-center">
+              {/* <div className="row no-gutters justify-content-start align-items-center">
                 <Typography
                   variant="body2"
                   component="p"
                   // className={classes.commonRarity}
                   style={selectedRarity.style}
                 >
-                  {/* <strong>Token Rarity: </strong> */}
+                  <strong>Token Rarity: </strong>
                   {props.data.type}
                 </Typography>
-              </div>
+              </div> */}
 
-              <Typography
+              {/* <Typography
                 variant="body2"
                 component="p"
                 className={classes.cardDescriptions}
               >
                 <strong>Token Supply: </strong>
-                {/* {props.data.tokenSupply} */}
+                {props.data.tokenSupply}
                 150
-              </Typography>
+              </Typography> */}
               {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
                         <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
                             <CardHeader

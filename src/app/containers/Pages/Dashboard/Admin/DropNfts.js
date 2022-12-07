@@ -10,7 +10,7 @@ import { useSnackbar } from 'notistack';
 import React, { useEffect, useState, useRef } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from 'react-router-dom';
-
+import Web3 from 'web3';
 import CornerRibbon from "react-corner-ribbon";
 import PlayArrow from '@material-ui/icons/PlayArrow';
 import Pause from '@material-ui/icons/Pause';
@@ -57,11 +57,11 @@ function MyNFTs(props) {
     let location = useLocation();
     const classes = useStyles();
     let { path } = useRouteMatch();
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [totalNfts, setTotalNfts] = React.useState(0);
-    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [totalNfts, setTotalNfts] = useState(0);
+    const [page, setPage] = useState(0);
     const [tokenList, setTokenList] = useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [nftIds, setNftIds] = useState([]);
     let [isSaving, setIsSaving] = useState(false);
     const [network, setNetwork] = useState("");
@@ -416,12 +416,15 @@ function MyNFTs(props) {
                                                  
                                                      <CardContent>
                                                     
-                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                     {/* <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Token Rarity: </strong>{i.type}
                                                      </Typography>
                                                      <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Token Supply: </strong>{i.tokenSupply}
-                                                     </Typography>
+                                                     </Typography> */}
+                                                     <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price)} WMATIC
+                                                    </Typography>
                                                      <Typography variant="body2" color="textSecondary" component="p">
                                                          <strong>Artwork Description: </strong>{i.description}
                                                      </Typography>
@@ -430,7 +433,7 @@ function MyNFTs(props) {
                                              </Card>
                                          </Link>
                                         ) : (
-                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType}}} >
+                                            <Link onClick= {(e) => handleStop(e)} to={{pathname:`/dashboard/marketPlace/${i.dropId}/${i._id}`, state: {nftContractAddress: i.collectionId.nftContractAddress, endTime: location.state.endTime, contractType: i.collectionId.contractType, price: i.currentMarketplaceId.price}}} >
                                             <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
                                                 {/* <CardActionArea onClick={() => {
                                                         console.log("nftDetailObject: ", i);
@@ -486,11 +489,14 @@ function MyNFTs(props) {
                                                 
                                                     <CardContent>
                                                    
-                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Rarity: </strong>{i.type}
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
+                                                    </Typography> */}
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Floor Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} WMATIC
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}

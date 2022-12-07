@@ -27,7 +27,17 @@ import ProfileSetting from "./User/ProfileSetting";
 import RandomDrop from "./User/RandomDrop";
 import SeasonDrops from "./User/SeasonDrops";
 import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
-import UserSidebar from "./User/UserSidebar";
+import UserSettings from "../Users/UserSettings";
+import UserSidebar from "./User/UserSidebar";import DropNfts from "./Admin/DropNfts";
+import MarketPlace from "./Admin/MarketPlace";
+import NFTBuy from "./Admin/NFTBuy";
+import AuctionNFT from "./Admin/AuctionNFT";
+import HeaderHome from "../../../components/Headers/Header";
+import SingleNftDetail from "./Admin/singleNftDetail";
+
+
+
+
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
@@ -67,58 +77,58 @@ function UserDashboard(props) {
     newCollection: "",
     myNFTs: "",
     myCubes: "",
-    newRandomDrop: "",
+    newRandomDrop: ""
   });
 
   return (
-    <div
-      className={`main-wrapper ${slideNavClass}`}
-      style={{ backgroundColor: "#fbfeff" }}
-    >
+    <div className={`main-wrapper ${slideNavClass}`}>
       {/* <!-- Header --> */}
-      <div className={`admin-header ${menuOpenedClass}`}>
-        {/* <!-- Logo --> */}
+      {/* <div className={`admin-header ${menuOpenedClass}`}>
+        <!-- Logo -->
         <div className="header-left">
           <a
             href="/"
             className="logo"
             onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
+            style={{ color: 'rgb(167,0,0)' }}
           >
             <img src={Logo} alt="Logo" width="100" height="100" />
-            {/* Robot Drop */}
+            Robot Drop
           </a>
           <a
             href="/"
             className="logo logo-small"
             onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
+            style={{ color: 'rgb(167,0,0)' }}
           >
             <img src={Logo} alt="Logo" width="100" height="100" />
-            {/* Robot Drop */}
+            Robot Drop
           </a>
         </div>
-        {/* <!-- /Logo --> */}
+        <!-- /Logo --> */}
+        <HeaderHome  
+                
+                />
         {/* 
         <a href="" id="toggle_btn">
           <i className="fa fa-align-left"></i>
         </a> */}
 
         {/* <!-- Mobile Menu Toggle --> */}
-        <a
+        {/* <a
           href="/"
           className="mobile_btn"
           id="mobile_btn"
           onClick={handleSlideNav}
         >
           <i className="fa fa-bars"></i>
-        </a>
+        </a> */}
         {/* <!-- /Mobile Menu Toggle --> */}
 
         {/* <!-- Header Right Menu --> */}
-        <ul className="nav user-menu">
+        {/* <ul className="nav user-menu"> */}
           {/* <!-- User Menu --> */}
-          <li className="nav-item dropdown has-arrow">
+          {/* <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
                 style={{
@@ -137,10 +147,7 @@ function UserDashboard(props) {
                 </span>
               </Dropdown.Toggle>
 
-              <Dropdown.Menu
-                alignRight="true"
-                style={{ backgroundColor: "rgb(167, 0, 0)" }}
-              >
+              <Dropdown.Menu alignRight="true" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
                 <Dropdown.Item>
                   <Link to="/dashboard" style={{ width: "100%" }}>
                     Dashboard
@@ -150,7 +157,7 @@ function UserDashboard(props) {
                   <Link
                     onClick={() => {
                       Cookies.remove("Authorization");
-                      localStorage.removeItem("Address");
+                      localStorage.removeItem("Address")
                       Cookies.remove("PNT");
                     }}
                     to="/"
@@ -161,11 +168,11 @@ function UserDashboard(props) {
                 </Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
-          </li>
+          </li> */}
           {/* <!-- /User Menu --> */}
-        </ul>
+        {/* </ul> */}
         {/* <!-- /Header Right Menu --> */}
-      </div>
+      {/* </div> */}
       {/* <!-- /Header --> */}
 
       <UserSidebar
@@ -176,7 +183,7 @@ function UserDashboard(props) {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <Switch>
-            <Route exact path={`${path}`}>
+            <Route exact path={`${path}/dashboard`}>
               <UserDashboardDefaultScreen
                 match={props.match}
                 setActiveTab={setActiveTab}
@@ -190,6 +197,9 @@ function UserDashboard(props) {
             </Route>
             <Route exact path={`${path}/myNFTs`}>
               <MyNFTs setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/nftDetail/:nftId`}>
+              <SingleNftDetail setActiveTab={setActiveTab} />
             </Route>
             {/* myNFTs:"", */}
             <Route exact path={`${path}/newDrop`}>
@@ -232,12 +242,30 @@ function UserDashboard(props) {
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 
+            <Route exact path={`${path}/marketPlace`}>
+              <MarketPlace setActiveTab={setActiveTab} />
+            </Route>
+
+            <Route exact path={`${path}/marketPlace/drops/nfts`}>
+              <DropNfts setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/marketPlace/drops/nfts/buy`}>
+              <NFTBuy setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/marketPlace/:dropId/:nftId`}>
+              <AuctionNFT setActiveTab={setActiveTab} />
+            </Route>
+
+
             <Route exact path={`${path}/collection/nfts/:collectionId`}>
               <CollectionNfts setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/profilesettings`}>
-              <ProfileSetting setActiveTab={setActiveTab} />
+              <ProfileSetting
+                setActiveTab={setActiveTab}
+              />
             </Route>
+            
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>

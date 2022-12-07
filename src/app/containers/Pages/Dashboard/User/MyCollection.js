@@ -45,8 +45,8 @@ const useStyles = makeStyles({
 function MyCollection(props) {
     const { enqueueSnackbar } = useSnackbar();
     let [collections, setCollections] = useState([]);
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [page, setPage] = useState(0);
     let [isCreating, setIsCreating] = useState(false);
     let [open, setOpen] = useState(false);
 
@@ -66,7 +66,7 @@ function MyCollection(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/collection/collections/${start}/${end}`)
+            .get(`/collection/myCollections/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setCollections(response.data.Collectiondata);

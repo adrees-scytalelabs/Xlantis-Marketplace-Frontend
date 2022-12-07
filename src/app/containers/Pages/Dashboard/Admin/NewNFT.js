@@ -141,7 +141,7 @@ function NewNFT(props) {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -264,12 +264,12 @@ function NewNFT(props) {
           setChangeCollectionList(response.data.collectionData);
         }
 
-        response.data.collectionData = [
-          {
-            name: "+ Create new Collection",
-          },
-          ...response.data.collectionData,
-        ];
+        // response.data.collectionData = [
+        //   {
+        //     name: "+ Create new Collection",
+        //   },
+        //   ...response.data.collectionData,
+        // ];
         console.log(
           "response.data.collectionData",
           response.data.collectionData[1].nftContractAddress
@@ -545,10 +545,12 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    } else if (rarity === "") {
-      let variant = "error";
-      enqueueSnackbar("Please Select Artwork Rarity", { variant });
-    } else if (
+    } 
+    // else if (rarity === "") {
+    //   let variant = "error";
+    //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
+    // } 
+    else if (
       tokenSupply === "" ||
       tokenSupply === undefined ||
       tokenSupply === null
@@ -610,7 +612,7 @@ function NewNFT(props) {
             nftURI: nftURI,
             metadataURI: nftURI,
             nftFormat: imageType,
-            type: rarity,
+            // type: rarity,
             tokenSupply: tokenSupply,
             supplyType: supplyType,
             properties: propertiesObject,
@@ -1151,17 +1153,19 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    } else if (rarity === "") {
-      let variant = "error";
-      enqueueSnackbar("Please Select Artwork Rarity", { variant });
-    } else if (collection === "") {
+    } 
+    // else if (rarity === "") {
+    //   let variant = "error";
+    //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
+    // } 
+    else if (collection === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Collection Name", { variant });
-    } else if (image !== r1 && (imageType === "glb" || imageType === "mp3")) {
-      if (previewImage === r1) {
-        let variant = "error";
+    } else if (image !== r1 && (imageType === "glb" || imageType === "mp3") && previewImage === r1) {
+
+        let variant = 'error';
         enqueueSnackbar("Please Upload Preview Image", { variant });
-      }
+
     } else {
       handleShowBackdrop();
       await loadWeb3();
@@ -1189,7 +1193,7 @@ function NewNFT(props) {
           nftURI: nftURI,
           metadataURI: nftURI,
           nftFormat: imageType,
-          type: rarity,
+        //   type: rarity,
           properties: propertiesObject,
         };
 

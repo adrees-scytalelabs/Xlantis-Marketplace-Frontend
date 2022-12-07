@@ -47,11 +47,11 @@ const makeTheme = createMuiTheme({
 console.log("nft images: ", nftImage);
 
 function MyNFTs(props) {
-  const [rowsPerPage, setRowsPerPage] = React.useState(8);
-  const [totalNfts, setTotalNfts] = React.useState(0);
-  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [totalNfts, setTotalNfts] = useState(0);
+  const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const classes = useStyles();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -61,10 +61,16 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/nft/createnft/${start}/${end}`).then(
+    axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
-        setTokenList(response.data.NFTdata);
+        let  nfts = response.data.NFTdata;
+        let newState = nfts.map(obj => {
+              return {...obj, isPlaying: false};
+        });
+        console.log("NFTS", nfts);
+        console.log("Updated", newState);
+        setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
         handleCloseBackdrop();

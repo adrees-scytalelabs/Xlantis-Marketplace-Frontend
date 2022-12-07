@@ -216,6 +216,19 @@
   },
   {
     "inputs": [],
+    "name": "FACTORY_ROLE",
+    "outputs": [
+      {
+        "internalType": "bytes32",
+        "name": "",
+        "type": "bytes32"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
     "name": "MINTER_ROLE",
     "outputs": [
       {
@@ -261,9 +274,9 @@
         "type": "address"
       },
       {
-        "internalType": "address",
-        "name": "_paymentToken",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_royaltyPoints",
+        "type": "uint256"
       }
     ],
     "name": "__Collectible721_init",
@@ -322,6 +335,39 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "disableRoyalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "enableRoyalty",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "tokenId",
+        "type": "uint256"
+      }
+    ],
+    "name": "exists",
+    "outputs": [
+      {
+        "internalType": "bool",
+        "name": "",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "uint256",
@@ -334,6 +380,19 @@
       {
         "internalType": "address",
         "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getCreator",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "creator",
         "type": "address"
       }
     ],
@@ -373,6 +432,24 @@
     "type": "function"
   },
   {
+    "inputs": [],
+    "name": "getRoyalty",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "royalty",
+        "type": "uint256"
+      },
+      {
+        "internalType": "bool",
+        "name": "enabled",
+        "type": "bool"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -399,6 +476,19 @@
       }
     ],
     "name": "grantRoleBurner",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      }
+    ],
+    "name": "grantRoleFactory",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"
@@ -512,25 +602,6 @@
   {
     "inputs": [
       {
-        "internalType": "uint256",
-        "name": "_tokenId",
-        "type": "uint256"
-      }
-    ],
-    "name": "isTokenAvailable",
-    "outputs": [
-      {
-        "internalType": "bool",
-        "name": "isAvailable",
-        "type": "bool"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "inputs": [
-      {
         "internalType": "string",
         "name": "_tokenURI",
         "type": "string"
@@ -550,31 +621,19 @@
   {
     "inputs": [
       {
-        "components": [
-          {
-            "internalType": "uint256",
-            "name": "tokenId",
-            "type": "uint256"
-          },
-          {
-            "internalType": "uint256",
-            "name": "price",
-            "type": "uint256"
-          },
-          {
-            "internalType": "string",
-            "name": "uri",
-            "type": "string"
-          },
-          {
-            "internalType": "bytes",
-            "name": "signature",
-            "type": "bytes"
-          }
-        ],
-        "internalType": "struct Collectible721.NftVoucher",
-        "name": "nftVoucher",
-        "type": "tuple"
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "string",
+        "name": "_uri",
+        "type": "string"
+      },
+      {
+        "internalType": "bytes",
+        "name": "_signature",
+        "type": "bytes"
       }
     ],
     "name": "lazyMint",
@@ -659,19 +718,6 @@
     "type": "function"
   },
   {
-    "inputs": [],
-    "name": "paymentToken",
-    "outputs": [
-      {
-        "internalType": "contract IERC20",
-        "name": "",
-        "type": "address"
-      }
-    ],
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
     "inputs": [
       {
         "internalType": "bytes32",
@@ -741,6 +787,19 @@
         "type": "address"
       }
     ],
+    "name": "revokeRoleFactory",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      }
+    ],
     "name": "revokeRoleMinter",
     "outputs": [],
     "stateMutability": "nonpayable",
@@ -774,6 +833,11 @@
   },
   {
     "inputs": [
+      {
+        "internalType": "address",
+        "name": "_to",
+        "type": "address"
+      },
       {
         "internalType": "string",
         "name": "_tokenURI",
@@ -868,12 +932,12 @@
   {
     "inputs": [
       {
-        "internalType": "address",
-        "name": "_paymentToken",
-        "type": "address"
+        "internalType": "uint256",
+        "name": "_royalty",
+        "type": "uint256"
       }
     ],
-    "name": "setPaymentToken",
+    "name": "setRoyalty",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -51,9 +51,9 @@ function DropsPage(props) {
     const classes = useStyles();
     const [tokenList, setTokenList] = useState([]);
 
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [totalDrops, setTotalDrops] = React.useState(0);
-    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [totalDrops, setTotalDrops] = useState(0);
+    const [page, setPage] = useState(0);
     const [open, setOpen] = useState(false);
     
 

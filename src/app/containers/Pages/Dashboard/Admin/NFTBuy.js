@@ -85,6 +85,7 @@ const NFTBuy = (props) => {
 
     let [isSaving, setIsSaving] = useState(false);
     const [network, setNetwork] = useState("");
+    let [price, setPrice] = useState();
     const [showNetworkModal, setShowNetworkModal] = useState(false);
    
 
@@ -124,6 +125,7 @@ const NFTBuy = (props) => {
     let handleBuy= async() => {
         // setNftDetail(nftObject);
         console.log("Nft detail: ", nftDetail);
+        console.log("Price", nftDetail);
         // setNftDetail(nftDetail);
         // console.log("Nft detail id: ", nftDetail.collectionId._id);
         let dropIdHex = getHash(nftDetail.dropId);
@@ -135,7 +137,7 @@ const NFTBuy = (props) => {
         const web3 = window.web3
         const accounts = await web3.eth.getAccounts();
         const network = await web3.eth.net.getNetworkType()
-        if (network !== 'goerli') {
+        if (network !== 'private') {
             setNetwork(network);
             setIsSaving(false);
             handleShowNetworkModal();
@@ -320,6 +322,9 @@ const NFTBuy = (props) => {
         setNftDetail(location.state.nftDetail);
         console.log(location.state.nftDetail.currentMarketplaceId.isSold);
         console.log("states",location.state);
+        let priceCal = Web3.utils.fromWei(location.state.nftDetail.currentMarketplaceId.price, 'ether');
+        console.log("price is", priceCal);
+        setPrice(priceCal);
 
         props.setActiveTab({
             dashboard: "",
@@ -347,7 +352,7 @@ const NFTBuy = (props) => {
                 <li className="breadcrumb-item">
                     <a href="/">Dashboard</a>
                 </li>
-                <li className="breadcrumb-item active">Market Palce</li>
+                <li className="breadcrumb-item active">MarketPlace</li>
             </ul>
             <div className="card-body" >
                 <div className="row">
@@ -462,7 +467,7 @@ const NFTBuy = (props) => {
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
-                                <Row>
+                                {/* <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color: '#a70000'}}>
                                             <strong>Rarity </strong>
@@ -471,27 +476,44 @@ const NFTBuy = (props) => {
                                     <Col>
                                         {nftDetail.type}
                                     </Col>
-                                </Row>
+                                </Row> */}
                                 <Row>
                                     <Col>
                                         <Typography variant="body1" component="p" style={{color: '#a70000'}}>
-                                            <strong>Supply Type </strong>
+                                            <strong>Price </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
-                                        {nftDetail.supplyType}
+                                        {price} WMATIC
                                     </Col>
                                 </Row>
-                                <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
-                                            <strong>Token Supply </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.tokenSupply}
-                                    </Col>
-                                </Row>
+                               
+                                {nftDetail.nftType === "1155" ? (
+                                <span>
+                                    
+                                    <Row>
+                                        <Col>
+                                            <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                <strong>Supply Type </strong>
+                                            </Typography>
+                                        </Col>
+                                        <Col>
+                                            {nftDetail.supplyType}
+                                        </Col>
+                                    </Row>
+                                    <Row>
+                                        <Col>
+                                            <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                <strong>Token Supply </strong>
+                                            </Typography>
+                                        </Col>
+                                        <Col>
+                                            {nftDetail.tokenSupply}
+                                        </Col>
+                                    </Row>
+                                </span>
+                                ) : (null)}
+                               
                             </CardContent>
                         </Card>
                         <Row style={{marginTop: '5px', marginBottom: '5px'}} >

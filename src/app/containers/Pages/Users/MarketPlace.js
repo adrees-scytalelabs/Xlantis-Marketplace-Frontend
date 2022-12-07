@@ -53,11 +53,11 @@ function MarketPlace(props) {
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
 
-  const [rowsPerPage, setRowsPerPage] = React.useState(4);
-  const [totalSaleCube, setTotalSaleCube] = React.useState(0);
-  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
+  const [totalSaleCube, setTotalSaleCube] = useState(0);
+  const [page, setPage] = useState(0);
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

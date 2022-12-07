@@ -8,7 +8,7 @@ import NFTCard from '../../../../components/Cards/NFTCard';
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -17,7 +17,7 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        axios.get(`/collection/${collectionId}`).then(
+        axios.get(`/myCollection/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.nftsdata);

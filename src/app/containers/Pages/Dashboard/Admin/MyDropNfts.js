@@ -61,11 +61,11 @@ function MyDropNFTs(props) {
     const classes = useStyles();
 
     let { path } = useRouteMatch();
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [totalNfts, setTotalNfts] = React.useState(0);
-    const [page, setPage] = React.useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [totalNfts, setTotalNfts] = useState(0);
+    const [page, setPage] = useState(0);
     const [tokenList, setTokenList] = useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [nftIds, setNftIds] = useState([]);
     let [isSaving, setIsSaving] = useState(false);
     const [network, setNetwork] = useState("");
@@ -317,11 +317,14 @@ function MyDropNFTs(props) {
                                                     
                                                     <CardContent>
                                                     
-                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                    {/* <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Rarity: </strong>{i.type}
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
+                                                    </Typography> */}
+                                                    <Typography variant="body2" color="textSecondary" component="p">
+                                                        <strong>Price : </strong>{Web3.utils.fromWei(i.currentMarketplaceId.price, 'ether')} WMATIC
                                                     </Typography>
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Artwork Description: </strong>{i.description}

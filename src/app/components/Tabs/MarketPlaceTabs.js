@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, {useState} from "react";
 // MUI
 import PropTypes from "prop-types";
 import {
@@ -136,7 +136,7 @@ const MarketPlaceTabs = (props) => {
   const classes = useStyles();
   const paginationClasses = paginationStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   //   Handlers
   const handleChange = (event, newValue) => {

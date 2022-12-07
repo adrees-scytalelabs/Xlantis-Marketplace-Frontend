@@ -48,9 +48,9 @@ function MyCubes(props) {
     const [cubeCount, setCubeCount] = useState(0);
     const [tokenList, setTokenList] = useState([]);
     const [imageData, setImageData] = useState([]);
-    const [rowsPerPage, setRowsPerPage] = React.useState(8);
-    const [page, setPage] = React.useState(0);
-    const [open, setOpen] = React.useState(false);
+    const [rowsPerPage, setRowsPerPage] = useState(8);
+    const [page, setPage] = useState(0);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };

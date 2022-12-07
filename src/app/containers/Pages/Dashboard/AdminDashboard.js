@@ -9,10 +9,11 @@ import "../../../assets/css/style.css";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../../assets/img/logo.png";
-
+import Logo from "../../../assets/img/logo.png"
+import DropApproval from "./Admin/DropApproval";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
+import UserSettings from "../Users/UserSettings";
 import DropCubes from "./Admin/DropsCubes";
 import MyCubes from "./Admin/MyCubes";
 import MyDrops from "./Admin/MyDrops";
@@ -38,6 +39,9 @@ import NFTBuy from "./Admin/NFTBuy";
 import AuctionNFT from "./Admin/AuctionNFT";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
+import transakSDK from "@transak/transak-sdk";
+
+
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
@@ -59,6 +63,16 @@ function AdminDashboard(props) {
     }
   };
 
+  const settings = {
+    apiKey: 'cf5868eb-a8bb-45c8-a2db-4309e5f8b412',  // Your API Key
+    environment: 'STAGING', // STAGING/PRODUCTION
+    defaultCryptoCurrency: 'ETH',
+    themeColor: '000000', // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
+  }
+
   let [activeTab, setActiveTab] = useState({
     dashboard: "active",
     totalUserAccount: "",
@@ -70,6 +84,7 @@ function AdminDashboard(props) {
     settings: "",
     changePassword: "",
     newNFT: "",
+    dropApproval : "",
     newCube: "",
     myDrops: "",
     newDrop: "",
@@ -79,11 +94,36 @@ function AdminDashboard(props) {
     myNFTs: "",
     myCubes: "",
     newRandomDrop: "",
-    marketPlace: "",
+    marketPlace: ""
   });
 
+  function openTransak() {
+    const transak = new transakSDK(settings);
+
+    transak.init();
+
+    // To get all the events
+    transak.on(transak.ALL_EVENTS, (data) => {
+        console.log(data)
+    });
+
+    // This will trigger when the user closed the widget
+    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+        console.log(eventData);
+        transak.close();
+    });
+
+    // This will trigger when the user marks payment is made.
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+        console.log(orderData);
+        window.alert("Payment Success")
+        transak.close();
+    });
+  }
+
+
   return (
-    <div className={`main-wrapper backgroundDefault ${slideNavClass}`}>
+    <div className={`main-wrapper ${slideNavClass}`}>
       {/* <!-- Header --> */}
       <div className={`admin-header ${menuOpenedClass}`}>
         {/* <!-- Logo --> */}
@@ -127,6 +167,9 @@ function AdminDashboard(props) {
         {/* <!-- Header Right Menu --> */}
         <ul className="nav user-menu">
           {/* <!-- User Menu --> */}
+        
+          
+          
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
@@ -156,10 +199,19 @@ function AdminDashboard(props) {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
+                  <span  style= {{color : 'white'}}onClick = {openTransak} >
+                
+                      Buy Crypto
+                  </span>
+                 
+                </Dropdown.Item>
+                <Dropdown.Item >
                   <Link
                     onClick={() => {
                       Cookies.remove("Authorization");
-                      localStorage.removeItem("Address");
+                      localStorage.removeItem("Address")
+                      // web3Modal.clearCachedProvider();
+
                       Cookies.remove("PNT");
                     }}
                     to="/"
@@ -219,6 +271,10 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/mySeason/drops/:seasonId`}>
               <SeasonDrops setActiveTab={setActiveTab} />
+            </Route>
+
+            <Route exact path={`${path}/dropApproval`}>
+              <DropApproval setActiveTab={setActiveTab} />
             </Route>
 
             <Route exact path={`${path}/newDrop`}>
@@ -284,6 +340,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>
+            
             <Route path={`${path}`}>
               <AdminDashboardDefaultScreen
                 match={props.match}

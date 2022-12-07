@@ -8,7 +8,7 @@ import NFTCard from '../../../../components/Cards/NFTCard';
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
