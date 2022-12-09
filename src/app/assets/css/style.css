@@ -327,11 +327,11 @@ input[type='file'] {
 
 
 .profile-img {
-  border-radius: 12px;
+  /* border-radius: 12px; */
 }
 
 .profile-img img {
-  border-radius: 12px;
+  /* border-radius: 12px; */
   height: 250px;
   width: 220px;
   object-fit: cover;
@@ -358,20 +358,21 @@ input[type='file'] {
 
 .nftImgWrapper {
   position: relative;
-  overflow: hidden;
+  /* overflow: hidden; */
   transition: transform 0.4s ease 0;
 }
 
 #nftCardProps {
-  border-radius: 12px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 3px 1px -1px rgb(0 0 0 / 10%);
+  border-radius: 0px;
+  border: 1px solid var(--border);
+  /* box-shadow: 3px 1px -1px rgb(0 0 0 / 10%); */
   transition: transform 0.4s ease 0;
+  background-color: var(--bg);
   padding-bottom: 1.5rem;
 }
 
 #nftCardProps:hover {
-  box-shadow: 0 10px 6px -6px #777;
+  /* box-shadow: 0 10px 6px -6px #777; */
 }
 
 .backgroundDefault {

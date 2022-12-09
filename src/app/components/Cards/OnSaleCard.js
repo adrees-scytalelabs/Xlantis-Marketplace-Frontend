@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardDescriptions: {
     color: "#999",
-    fontFamily: "orbitron",
+    fontFamily: "inter",
     fontSize: "1rem",
     // marginTop: "0.15rem",
   },

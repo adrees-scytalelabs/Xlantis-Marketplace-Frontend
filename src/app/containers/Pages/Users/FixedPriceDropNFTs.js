@@ -40,15 +40,33 @@ const FixedPriceDropNFTs = () => {
         </div>
         {/* NFTs */}
         <div className="container-fluid mt-5">
-          <div className="row no-gutters">
-            <Grid
-              container
-              spacing={2}
-              direction="row"
-              justify="flex-start"
-              item
-            >
-              <FixedDropNFTCard image={nftImage[0]} type={"Epic"} />
+          {/* Heading */}
+          <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
+            {/* On Sale */}
+            <div className="col-12">
+              <h1 className="marketCatHeadings">NFTs inside Sample Drop </h1>
+            </div>
+            <div className="col-12">
+              <h3 style={{ fontFamily: "inter" }}>Fixed Price Drop</h3>
+            </div>
+          </div>
+          {/* NFT Cards */}
+          <div className="row no-gutters w-100">
+            <Grid container spacing={3}>
+              {nftImage.map((i, index) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={3}
+                  lg={2}
+                  spacing={1}
+                  direction="row"
+                  key={index}
+                >
+                  <FixedDropNFTCard image={nftImage[index]} type={"Epic"} />
+                </Grid>
+              ))}
             </Grid>
           </div>
         </div>

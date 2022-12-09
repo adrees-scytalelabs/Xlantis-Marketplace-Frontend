@@ -366,7 +366,7 @@ function NewNFT(props) {
       const web3 = window.web3;
       const accounts = await web3.eth.getAccounts();
       const network = await web3.eth.net.getNetworkType();
-      if (network !== "goerli") {
+      if (network !== "private") {
         setNetwork(network);
         setIsSaving(false);
         handleShow();
@@ -545,11 +545,11 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    } 
+    }
     // else if (rarity === "") {
     //   let variant = "error";
     //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
-    // } 
+    // }
     else if (
       tokenSupply === "" ||
       tokenSupply === undefined ||
@@ -1153,19 +1153,21 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    } 
+    }
     // else if (rarity === "") {
     //   let variant = "error";
     //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
-    // } 
+    // }
     else if (collection === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Collection Name", { variant });
-    } else if (image !== r1 && (imageType === "glb" || imageType === "mp3") && previewImage === r1) {
-
-        let variant = 'error';
-        enqueueSnackbar("Please Upload Preview Image", { variant });
-
+    } else if (
+      image !== r1 &&
+      (imageType === "glb" || imageType === "mp3") &&
+      previewImage === r1
+    ) {
+      let variant = "error";
+      enqueueSnackbar("Please Upload Preview Image", { variant });
     } else {
       handleShowBackdrop();
       await loadWeb3();
@@ -1173,7 +1175,7 @@ function NewNFT(props) {
       const web3 = window.web3;
       const accounts = await web3.eth.getAccounts();
       const network = await web3.eth.net.getNetworkType();
-      if (network !== "goerli") {
+      if (network !== "private") {
         setNetwork(network);
         setIsSaving(false);
         handleShow();
@@ -1193,7 +1195,7 @@ function NewNFT(props) {
           nftURI: nftURI,
           metadataURI: nftURI,
           nftFormat: imageType,
-        //   type: rarity,
+          //   type: rarity,
           properties: propertiesObject,
         };
 

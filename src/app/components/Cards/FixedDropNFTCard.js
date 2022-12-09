@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
   badge: {
     "& > *": {
@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   cardTitle: {
-    color: "#04111D",
-    fontFamily: "poppins",
+    color: "#fff",
+    fontFamily: "orbitron",
     fontWeight: "bold",
     textTransform: "capitalize",
     margin: "0.625rem 0rem 0.25rem 0rem",
@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
   },
   cardDescriptions: {
-    color: "#444",
-    fontFamily: "poppins",
+    color: "#999",
+    fontFamily: "inter",
     fontSize: "0.875rem",
     // marginTop: "0.15rem",
   },
@@ -71,33 +71,33 @@ const useStyles = makeStyles((theme) => ({
 // CONDITIONAL STYLES
 
 const unCommon = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#007f5f",
   fontWeight: "bold",
 };
 const rare = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#3f37c9",
   fontWeight: "bold",
 };
 const epic = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#fb5607",
   fontWeight: "bold",
 };
 const legendary = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#7400b8",
   fontWeight: "bold",
 };
 const mastercraft = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#ffb600",
   fontWeight: "bold",
 };
 
 const defaultStyles = {
-  fontFamily: "poppins",
+  fontFamily: "orbitron",
   color: "#04111D",
   fontWeight: "bold",
 };
@@ -129,55 +129,54 @@ function FixedDropNFTCard(props) {
   };
 
   return (
-    <Grid item xs={12} sm={6} md={6} lg={3} xl={2}>
+    <Card style={{ height: "100%" }} id="nftCardProps">
       {/* <Link to={"/dashboard/nftDetail/" + props.data._id}> */}
-      <Card style={{ height: "100%" }} id="nftCardProps">
-        <div className="row no-gutters mb-3">
-          {/* NFT Image */}
-          <CardMedia
-            className={classes.cardMediaImg}
-            // variant="outlined"
-            // style={{
-            //   border:
-            //     rarity === "Mastercraft"
-            //       ? "4px solid #ff0000"
-            //       : rarity === "Legendary"
-            //       ? "4px solid #FFD700"
-            //       : rarity === "Epic"
-            //       ? "4px solid #9400D3"
-            //       : rarity === "Rare"
-            //       ? "4px solid #0000FF"
-            //       : rarity === "Uncommon"
-            //       ? "4px solid #008000"
-            //       : rarity === "Common"
-            //       ? "4px solid #FFFFFF"
-            //       : "none",
-            // }}
-            // className={classes.media}
-            //   image={
-            //     props.data.previewImageURI
-            //       ? props.data.previewImageURI
-            //       : props.data.nftURI
-            //   }
-            //   title="NFT Image"
+      <div className="row no-gutters mb-3">
+        {/* NFT Image */}
+        <CardMedia
+          className={classes.cardMediaImg}
+          // variant="outlined"
+          // style={{
+          //   border:
+          //     rarity === "Mastercraft"
+          //       ? "4px solid #ff0000"
+          //       : rarity === "Legendary"
+          //       ? "4px solid #FFD700"
+          //       : rarity === "Epic"
+          //       ? "4px solid #9400D3"
+          //       : rarity === "Rare"
+          //       ? "4px solid #0000FF"
+          //       : rarity === "Uncommon"
+          //       ? "4px solid #008000"
+          //       : rarity === "Common"
+          //       ? "4px solid #FFFFFF"
+          //       : "none",
+          // }}
+          // className={classes.media}
+          //   image={
+          //     props.data.previewImageURI
+          //       ? props.data.previewImageURI
+          //       : props.data.nftURI
+          //   }
+          //   title="NFT Image"
+        >
+          <div className="nftImgWrapper">
+            <img
+              className="myNFTImg"
+              src={props.image.url}
+              alt="a sample nft"
+            />
+          </div>
+        </CardMedia>
+        <CardContent style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}>
+          {/* <CardHeader className="text-center" title={props.data.title} /> */}
+          {/* Title & Rarity */}
+          <div
+            className="row no-gutters justify-content-between align-items-center"
+            // style={{ minHeight: "60px" }}
           >
-            <div className="nftImgWrapper">
-              <img
-                className="myNFTImg"
-                src={props.image.url}
-                alt="a sample nft"
-              />
-            </div>
-          </CardMedia>
-          <CardContent
-            style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
-          >
-            {/* <CardHeader className="text-center" title={props.data.title} /> */}
-            {/* Title */}
-            <div
-              className="row no-gutters justify-content-start align-items-center"
-              // style={{ minHeight: "60px" }}
-            >
+            {/* title */}
+            <div className="col-auto">
               <Typography
                 variant="h6"
                 component="p"
@@ -187,22 +186,8 @@ function FixedDropNFTCard(props) {
                 Card Title
               </Typography>
             </div>
-            {/* Descriptions */}
-            <div className="row no-gutters justify-content-start align-items-center">
-              <Typography
-                variant="body2"
-                className={classes.cardDescriptions}
-                component="p"
-                style={{ minHeight: "2.5rem" }}
-              >
-                {/* <strong>Artwork Description: </strong> */}
-                {/* {props.data.description} */}
-                {truncate(description, 35)}
-                {/* {description} */}
-              </Typography>
-            </div>
-            {/* Rarity */}
-            <div className="row no-gutters justify-content-start align-items-center">
+            {/* rarity */}
+            <div className="col-auto">
               <Typography
                 variant="body2"
                 component="p"
@@ -213,20 +198,33 @@ function FixedDropNFTCard(props) {
                 {rarity}
               </Typography>
             </div>
+          </div>
+          {/* Descriptions */}
+          <div className="row no-gutters justify-content-start align-items-center pb-2">
             <Typography
               variant="body2"
-              component="p"
               className={classes.cardDescriptions}
+              component="p"
             >
-              <strong>Token Supply: </strong>
-              {/* {props.data.tokenSupply} */}
-              150
+              {/* <strong>Artwork Description: </strong> */}
+              {/* {props.data.description} */}
+              {truncate(description, 35)}
+              {/* {description} */}
             </Typography>
-          </CardContent>
-        </div>
-      </Card>
+          </div>
+          <Typography
+            variant="body2"
+            component="p"
+            className={classes.cardDescriptions}
+          >
+            <strong>Token Supply: </strong>
+            {/* {props.data.tokenSupply} */}
+            150
+          </Typography>
+        </CardContent>
+      </div>
       {/* </Link> */}
-    </Grid>
+    </Card>
   );
 }
 

@@ -37,7 +37,7 @@ function App() {
       jwtDecoded = jwtDecode(jwt);
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
-      console.log("isLoggedIn",isLoggedIn);
+      console.log("isLoggedIn", isLoggedIn);
       // setIsLoggedIn(true);
     } else {
       // setIsLoggedIn(false);
@@ -52,7 +52,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
-      if (jwtDecoded.role === "admin" ) {
+      if (jwtDecoded.role === "admin") {
         return (
           <Route
             {...rest}
@@ -65,8 +65,7 @@ function App() {
             }
           />
         );
-      }
-      else if (jwtDecoded.role === "user") {
+      } else if (jwtDecoded.role === "user") {
         return (
           <Route
             {...rest}
@@ -194,10 +193,10 @@ function App() {
             <UserSettings></UserSettings>
           </Route> */}
 
-          
-
           <PrivateRoute path="/dashboard" />
-          <PrivateRoute path="/user/settings"><UserSettings></UserSettings></PrivateRoute>
+          <PrivateRoute path="/user/settings">
+            <UserSettings></UserSettings>
+          </PrivateRoute>
         </Switch>
       </BrowserRouter>
     </SnackbarProvider>
