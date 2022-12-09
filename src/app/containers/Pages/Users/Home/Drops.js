@@ -66,7 +66,7 @@ function Drops() {
   }, []);
   return (
     <>
-      <div className="container-fluid" style={{ backgroundColor: "#fbfeff" }}>
+      <div className="container-fluid">
         <div className="page-header">
           <div className="card-body">
             <h3>
@@ -105,7 +105,7 @@ function Drops() {
                   <Typography
                     variant="body2"
                     className="text-center"
-                    color="textSecondary"
+                    color="white"
                     component="p"
                   >
                     <strong>No items to display </strong>

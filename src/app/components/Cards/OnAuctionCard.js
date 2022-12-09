@@ -10,27 +10,30 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Countdown from "react-countdown";
-import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
 import { Alert } from "@material-ui/lab";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+// IMAGES
+import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
+// COMPONENTS
+import Countdown from "react-countdown";
+import XamButton from "../buttons/XamButton";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
-    borderRadius: "12px",
+    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
-    color: "#04111D",
-    fontFamily: "poppins",
+    color: "#fff",
+    fontFamily: "orbitron",
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0.5rem",
   },
   cardDescriptions: {
-    color: "#444",
-    fontFamily: "poppins",
+    color: "#999",
+    fontFamily: "orbitron",
     fontSize: "1rem",
     // marginTop: "0.15rem",
   },
@@ -41,13 +44,13 @@ const useStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    borderRadius: "12px",
+    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    borderRadius: "12px",
+    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
@@ -97,19 +100,19 @@ const OnAuctionCard = (props) => {
                       <Link to="/">
                         <div
                           style={{
-                            borderRadius: 12,
-                            backgroundColor: "#fff",
-                            height: 80,
+                            // borderRadius: 12,
+                            backgroundColor: "#000",
+                            // height: 80,
                           }}
                         >
                           <img
                             src={kangaroo}
                             alt="a sample nft"
                             style={{
-                              width: "100%",
-                              height: "100%",
+                              width: "85px",
+                              height: "85px",
                               objectFit: "cover",
-                              borderRadius: "12px",
+                              // borderRadius: "12px",
                             }}
                           />
                         </div>
@@ -125,6 +128,7 @@ const OnAuctionCard = (props) => {
                           justifyContent: "end",
                         }}
                       > */}
+
                       <Link
                         to={
                           "/marketPlace/Cubes/Nfts/userauction/" +
@@ -177,8 +181,8 @@ const OnAuctionCard = (props) => {
                 <p
                   style={{
                     marginBottom: "0",
-                    color: "#444",
-                    fontFamily: "poppins",
+                    color: "#999",
+                    fontFamily: "inter",
                     fontSize: "1rem",
                     lineHeight: "0.75",
                   }}

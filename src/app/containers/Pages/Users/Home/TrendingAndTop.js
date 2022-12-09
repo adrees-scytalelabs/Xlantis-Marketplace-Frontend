@@ -60,25 +60,23 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     // width: 500,
   },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1rem",
-    fontWeight: "bold",
-    backgroundColor: "#fbfeff",
   },
 }));
 
 const customTheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#04111D",
+      main: "#fff",
     },
   },
   typography: {
-    fontFamily: "poppins",
+    fontFamily: "orbitron",
   },
 });
 
@@ -116,36 +114,40 @@ const TrendingAndTop = (props) => {
   };
 
   return (
-    <div className="w-100" style={{ backgroundColor: "#fbfeff" }}>
+    <div className="w-100">
       <ThemeProvider theme={customTheme}>
         <div className={classes.root}>
-          <div
-            className="row no-gutters align-items-center justify-content-center"
-            style={{
-              backgroundColor: "#fbfeff",
-              borderBottom: "1px solid rgb(251, 254, 255)",
-            }}
-          >
+          <div className="row no-gutters align-items-center justify-content-center tabsBorder">
             <div className="col-12">
               <Tabs
                 value={value}
                 onChange={handleChange}
                 indicatorColor="primary"
-                textColor="primary"
+                textColor="white"
                 aria-label="trending and top collections"
               >
                 <Tab
-                  label="On Sale"
+                  label={
+                    props.type === "fixedPriceDrops" ? "On Sale" : "On Auction"
+                  }
                   {...a11yProps(0)}
                   className={classes.tabsProps}
                 />
                 <Tab
-                  label="Top Sold Outs"
+                  label={
+                    props.type === "fixedPriceDrops"
+                      ? "Top Sold Out"
+                      : "Top Auctions"
+                  }
                   {...a11yProps(1)}
                   className={classes.tabsProps}
                 />
                 <Tab
-                  label="Sale Starting Soon"
+                  label={
+                    props.type === "fixedPriceDrops"
+                      ? "Sale Starting Soon"
+                      : "Auction Starting Soon"
+                  }
                   {...a11yProps(2)}
                   className={classes.tabsProps}
                 />
@@ -167,7 +169,6 @@ const TrendingAndTop = (props) => {
             index={0}
             dir={theme.direction}
             // style={{ paddingLeft: "0px", paddingRight: "0px" }}
-            style={{ backgroundColor: "#fbfeff" }}
           >
             <div className="row no-gutters">
               <div className="col-12">
@@ -180,9 +181,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -230,9 +229,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -295,12 +292,7 @@ const TrendingAndTop = (props) => {
               {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
-          <TabPanel
-            value={value}
-            index={1}
-            dir={theme.direction}
-            style={{ backgroundColor: "#fbfeff" }}
-          >
+          <TabPanel value={value} index={1} dir={theme.direction}>
             <div className="row no-gutters">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
@@ -312,9 +304,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -362,9 +352,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -427,12 +415,7 @@ const TrendingAndTop = (props) => {
               {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
-          <TabPanel
-            value={value}
-            index={2}
-            dir={theme.direction}
-            style={{ backgroundColor: "#fbfeff" }}
-          >
+          <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="row no-gutters">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
@@ -444,9 +427,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -494,9 +475,7 @@ const TrendingAndTop = (props) => {
                         role="status"
                         style={{ color: "#ff0000" }}
                       ></Spinner>
-                      <span style={{ color: "#ff0000" }} className="sr-only">
-                        Loading...
-                      </span>
+                      <span className="sr-only spinnerWhite">Loading...</span>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (

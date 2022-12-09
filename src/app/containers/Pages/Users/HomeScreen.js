@@ -23,7 +23,7 @@ import UAParser from "ua-parser-js";
 
 function HomeScreen({ deviceType }) {
   return (
-    <div className="main-wrapper" style={{ backgroundColor: "#fbfeff" }}>
+    <div className="main-wrapper">
       <div className="home-section home-full-height">
         <HeaderHome selectedNav={"Home"} />
         <div id="hBanner">
@@ -39,7 +39,7 @@ function HomeScreen({ deviceType }) {
         <div className="row no-gutters mt-5">
           <Market deviceType={deviceType} />
         </div>
-        <Drops />
+        {/* <Drops /> */}
       </div>
       <Footer position={"relative"} />
     </div>

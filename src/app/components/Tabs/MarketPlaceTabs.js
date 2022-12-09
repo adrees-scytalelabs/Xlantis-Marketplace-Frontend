@@ -1,5 +1,5 @@
 // REACT
-import React, {useState} from "react";
+import React, { useState } from "react";
 // MUI
 import PropTypes from "prop-types";
 import {
@@ -59,19 +59,19 @@ function a11yProps(index) {
 
 const paginationStyles = makeStyles({
   base: {
-    borderRadius: 12,
+    // borderRadius: 12,
     border: 0,
-    color: "#04111D",
+    color: "#fff",
     padding: "0 30px",
     fontWeight: "bold",
-    fontFamily: "poppins",
+    fontFamily: "orbitron",
   },
   label: {
     textTransform: "capitalize",
   },
   body2: {
     fontWeight: "bold",
-    fontFamily: "poppins",
+    fontFamily: "orbitron",
   },
 });
 
@@ -84,22 +84,25 @@ const useStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontSize: "1.5rem",
     fontWeight: "bold",
-    color: "#04111D",
+    color: "#fff",
     // backgroundImage:
     //   "linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
     // WebkitBackgroundClip: "text",
     // WebkitTextFillColor: "transparent",
+  },
+  tabPanelProps: {
+    backgroundColor: "#000",
   },
 }));
 
 const customTheme = createMuiTheme({
   palette: {
     primary: {
-      main: "#04111D",
+      main: "#fff",
     },
   },
   typography: {
-    fontFamily: "poppins",
+    fontFamily: "orbitron",
   },
   overrides: {
     MuiTablePagination: {
@@ -148,15 +151,15 @@ const MarketPlaceTabs = (props) => {
   };
 
   return (
-    <div className="w-100" style={{ backgroundColor: "#fbfeff" }}>
+    <div className="w-100">
       <ThemeProvider theme={customTheme}>
         <div className={classes.root}>
           {/* Tabs */}
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{
-              backgroundColor: "#fbfeff",
-              borderBottom: "1px solid rgb(251, 254, 255)",
+              // borderBottom: "1px solid rgb(251, 254, 255)",
+              backgroundColor: "#000",
             }}
           >
             <div className="col-12">
@@ -188,20 +191,20 @@ const MarketPlaceTabs = (props) => {
             index={0}
             dir={theme.direction}
             // style={{ paddingLeft: "0px", paddingRight: "0px" }}
-            style={{ backgroundColor: "#fbfeff" }}
+            className={classes.tabPanelProps}
           >
             <div className="row no-gutters">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "fixedPriceDrops" ? ( */}
                 {props.open ? (
-                  <div align="center" className="text-center">
+                  <div className="row no-gutters justify-content-center align-items-center">
                     <Spinner
                       animation="border"
                       role="status"
-                      style={{ color: "#ff0000" }}
+                      style={{ color: "#fff" }}
                     ></Spinner>
-                    <span style={{ color: "#ff0000" }} className="sr-only">
+                    <span style={{ color: "#fff" }} className="sr-only">
                       Loading...
                     </span>
                   </div>
@@ -213,6 +216,7 @@ const MarketPlaceTabs = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "#000",
                     }}
                   >
                     <Typography
@@ -250,6 +254,7 @@ const MarketPlaceTabs = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "#000",
                     }}
                   >
                     <Typography
@@ -288,7 +293,7 @@ const MarketPlaceTabs = (props) => {
             value={value}
             index={1}
             dir={theme.direction}
-            style={{ backgroundColor: "#fbfeff" }}
+            className={classes.tabPanelProps}
           >
             <div className="row no-gutters">
               <div className="col-12">
@@ -299,9 +304,9 @@ const MarketPlaceTabs = (props) => {
                     <Spinner
                       animation="border"
                       role="status"
-                      style={{ color: "#ff0000" }}
+                      style={{ color: "#fff" }}
                     ></Spinner>
-                    <span style={{ color: "#ff0000" }} className="sr-only">
+                    <span style={{ color: "#fff" }} className="sr-only">
                       Loading...
                     </span>
                   </div>
@@ -313,6 +318,7 @@ const MarketPlaceTabs = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "#000",
                     }}
                   >
                     <Typography
@@ -351,6 +357,7 @@ const MarketPlaceTabs = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "#000",
                     }}
                   >
                     <Typography

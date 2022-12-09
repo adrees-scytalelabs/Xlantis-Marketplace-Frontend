@@ -110,13 +110,13 @@ function MarketPlace(props) {
         <div className="row no-gutters mt-5">
           <div className="container-fluid">
             <div
-              className="row no-gutters bg-secondary w-100"
+              className="row no-gutters w-100"
               // style={{ minHeight: "100vh" }}
             >
               <div className="w-100">
                 <div
-                  className="row no-gutters justify-content-center align-items-center w-100 border"
-                  // style={{ minHeight: "100vh" }}
+                  className="row no-gutters justify-content-center w-100"
+                  style={{ minHeight: "75vh" }}
                 >
                   <Grid
                     container

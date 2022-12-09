@@ -22,19 +22,19 @@ import { AlertTitle } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
-    borderRadius: "12px",
+    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
-    color: "#04111D",
-    fontFamily: "poppins",
+    color: "#fff",
+    fontFamily: "orbitron",
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
   },
   cardDescriptions: {
-    color: "#444",
-    fontFamily: "poppins",
+    color: "#999",
+    fontFamily: "orbitron",
     fontSize: "1rem",
     // marginTop: "0.15rem",
   },
@@ -45,13 +45,13 @@ const useStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    borderRadius: "12px",
+    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    borderRadius: "12px",
+    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
@@ -105,19 +105,18 @@ const OnSaleCard = (props) => {
                       <Link to="/">
                         <div
                           style={{
-                            borderRadius: 12,
-                            backgroundColor: "#fff",
-                            height: 80,
+                            // borderRadius: 12,
+                            backgroundColor: "#000",
                           }}
                         >
                           <img
                             src={kangaroo}
                             alt="a sample nft"
                             style={{
-                              width: "100%",
-                              height: "100%",
+                              width: "85px",
+                              height: "85px",
                               objectFit: "cover",
-                              borderRadius: "12px",
+                              // borderRadius: "12px",
                             }}
                           />
                         </div>

@@ -60,13 +60,13 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
+    axios.get(`/drop/saleType/fixed-price/${start}/${end}`).then(
       (response) => {
         console.log("responseeeee", response);
-        setCubeData(response.data.Saletokendata);
-        setUserSaledata(response.data.Usersaledata);
-        setCubeAuctionData(response.data.Auctiontokendata);
-        setUserAuctiondata(response.data.Userauctiondata);
+        setCubeData(response.data.data);
+        setUserSaledata(response.data.data);
+        setCubeAuctionData(response.data.data);
+        setUserAuctiondata(response.data.data);
         handleCloseBackdrop();
       },
       (error) => {
@@ -79,12 +79,16 @@ function MarketPlace(props) {
     );
   };
 
+  if (cubeData) {
+    console.log("this is cube data hahaha: ", cubeData);
+  }
+
   useEffect(() => {
     getCubes(0, 4); // eslint-disable-next-line
   }, []);
 
   return (
-    <div className="container-fluid" style={{ backgroundColor: "#fbfeff" }}>
+    <div className="container-fluid">
       {/* <!-- Page Header --> */}
       <div className="page-header">
         {/* Section 1 - ON SALE */}
@@ -98,15 +102,17 @@ function MarketPlace(props) {
         </div>
         <hr className="m-0"></hr>
         <div className="row no-gutters w-100">
-          <TrendingAndTop
-            open={open}
-            cubeData={cubeData}
-            cubeDataLength={cubeData.length}
-            cubeAuctionDataLength={cubeAuctionData.length}
-            userSaleData={userSaleData}
-            userAuctionData={userAuctionData}
-            type={"fixedPriceDrops"}
-          />
+          {cubeData ? (
+            <TrendingAndTop
+              open={open}
+              cubeData={cubeData}
+              cubeDataLength={cubeData.length}
+              cubeAuctionDataLength={cubeAuctionData.length}
+              userSaleData={userSaleData}
+              userAuctionData={userAuctionData}
+              type={"fixedPriceDrops"}
+            />
+          ) : null}
           {/* {open ? (
             <div align="center" className="text-center">
               <Spinner
@@ -158,16 +164,18 @@ function MarketPlace(props) {
         <hr className="m-0"></hr>
         {/* On Auction */}
         <div className="row no-gutters w-100">
-          <TrendingAndTop
-            open={open}
-            cubeData={cubeData}
-            cubeAuctionData={cubeAuctionData}
-            cubeDataLength={cubeData.length}
-            cubeAuctionDataLength={cubeAuctionData.length}
-            userSaleData={userSaleData}
-            userAuctionData={userAuctionData}
-            type={"bidableDrops"}
-          />
+          {cubeData ? (
+            <TrendingAndTop
+              open={open}
+              cubeData={cubeData}
+              cubeAuctionData={cubeAuctionData}
+              cubeDataLength={cubeData.length}
+              cubeAuctionDataLength={cubeAuctionData.length}
+              userSaleData={userSaleData}
+              userAuctionData={userAuctionData}
+              type={"bidableDrops"}
+            />
+          ) : null}
           {/* {open ? (
             <div align="center" className="text-center">
               <Spinner

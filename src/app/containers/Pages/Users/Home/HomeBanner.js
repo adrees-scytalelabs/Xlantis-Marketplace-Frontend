@@ -18,19 +18,19 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
-    borderRadius: "12px",
-    maxWidth: "150px",
-    background: "#fbfeff",
+    // borderRadius: "12px",
+    maxWidth: "170px",
+    background: "#000",
   },
   cardMediaProps: {
-    width: 150,
-    height: 150,
+    width: 170,
+    height: 170,
     objectFit: "contain",
-    borderRadius: "12px 12px 0 0",
+    // borderRadius: "12px 12px 0 0",
   },
   cardTitle: {
     // color: "#04111D",
-    fontFamily: "poppins",
+    fontFamily: "orbitron",
     fontWeight: "bold",
     textTransform: "uppercase",
     textAlign: "center",
@@ -40,16 +40,16 @@ const useStyles = makeStyles((theme) => ({
     WebkitTextFillColor: "transparent",
   },
   creatorTitle: {
-    fontFamily: "poppins",
-    fontWeight: "bold",
-    color: "#fbfeff",
+    fontFamily: "orbitron",
+    fontWeight: "700",
+    color: "#fff",
     letterSpacing: "2px",
     wordSpacing: "8px",
   },
   dropPrice: {
-    fontWeight: "400",
-    fontFamily: "poppins",
-    color: "#fbfeff",
+    fontWeight: "600",
+    fontFamily: "orbitron",
+    color: "#fff",
     // backgroundImage:
     //   "linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
     // WebkitBackgroundClip: "text",
