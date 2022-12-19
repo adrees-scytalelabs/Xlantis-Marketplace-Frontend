@@ -63,6 +63,8 @@ Version      : 1.2
 :root {
   --bg: #000;
   --border: #fff;
+  --borderOrange: #F64D04;
+  --orangeBoxShadow: 0px 0px 20px 5px rgba(255, 156, 65, 0.504);
   --text: #fff;
   --orbitron: 'Orbitron', sans-serif;
   --inter: 'Inter', sans-serif;
@@ -112,6 +114,24 @@ color: var(--text);
   position: absolute;
   z-index: 2050;
 }
+
+.modal-header {
+  color: white !important;
+  align-items: center !important;
+  justify-content: center !important;
+  background-color: var(--bg);
+  border-radius: 0px;
+  border: 1px solid var(--border);
+}
+
+.page-height {
+  min-height: 70vh;
+}
+
+.mobile_btn {
+  color: var(--text) !important;
+}
+
 
 /*-----------------
 	1. General
@@ -192,13 +212,12 @@ color: var(--text);
 /* NEW NFT */
 
 .datePicker .form-control {
-  font-family: "Poppins";
-  border-radius: 12px;
+  font-family: var(--orbitron);
+  border-radius: 0px;
   color: #333;
   border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
   /* overflow: hidden; */
-  transition: all 0.3s ease;
+  transition: all 0.5s ease;
 }
 
 .react-datetime-picker__wrapper {
@@ -207,35 +226,54 @@ color: var(--text);
 
 .newNftFields label {
   font-weight: bold;
-  font-family: "Poppins";
+  font-family: var(--orbitron);
 }
 
-.propsActionBtn {
-  background-image: var(--linearGradient);
-  color:#fbfeff;
-  border-radius: 12px;
-  transition: all 0.3s ease;
+.btn.propsActionBtn {
+  background-color: var(--bg);
+  border-radius: 0px;
+  border: 1px solid var(--border);
+  color:#fff;
+  transition: all 0.5s ease;
+}
+
+.btn.propsActionBtn:hover {
+  /* background-color: var(--text); */
+  /* color: var(--bg); */
+  /* border: 1px solid var(--border); */
+  box-shadow: var(--orangeBoxShadow);
+}
+
+.submit-section button.propsActionBtn {
+  /* background-image: var(--linearGradient); */
+  background-color: var(--bg);
+  border-radius: 0px;
+  border: 1px solid var(--borderOrange);
+  border-radius: 0px 10px;
+  color:#fff;
+  transition: all 0.5s ease;
 }
 
 .newNftWrapper .newNftInput, .newNftProps {
-  font-family: "Poppins";
-  border-radius: 12px;
-  color: #333;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+  font-family: var(--inter);
+  border-radius: 0px;
+  background-color: var(--bg);
+  border: 1px solid var(--borderOrange);
+  border-radius: 0px 10px;
+  color: var(--text);
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: all ease-in-out 0.5s;
 }
 
 .newNftProps {
   padding: 0.75rem 1.25rem; 
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0px 2px 1px -1px rgb(0 0 0 / 20%);
+  border: 1px solid var(--border);
 }
 
-.newNftProps:focus, .propsActionBtn:hover {
-  box-shadow: 0 10px 6px -6px #777;
-  border:none;
+.newNftProps:focus, .submit-section button.propsActionBtn:hover {
+  /* background-color: var(--text); */
+  /* color: #000; */
+  box-shadow: var(--orangeBoxShadow);
 }
 
 select:focus-visible {
@@ -254,9 +292,12 @@ select.newNftInput {
 }
 
 .newNftWrapper .newNftInput:focus {
-  box-shadow: 0 10px 6px -6px #777;
-  border: none;
+  /* background-color: #fff; */
+  /* color: #000; */
+  /* box-shadow: var(--orangeBoxShadow); */
 }
+
+/* input::placeholder */
 
 .newNftWrapper .newNftInput::-webkit-scrollbar {
   display: none;
@@ -264,22 +305,26 @@ select.newNftInput {
 
 .uploadLabel {
   display: inline-block;
-  background-image: var(--linearGradient);
-  color: #fbfeff;
+  /* background-image: var(--linearGradient); */
+  color: #fff;
   padding: 0.75rem 1.25rem;
   font-size: 1rem;
-  font-family: "Poppins";
+  font-family: var(--orbitron);
   font-weight: bold;
   text-align: center;
   width: 220px;
-  border-radius: 12px;
+  border: 1px solid var(--borderOrange);
+  border-radius: 0px 10px;
+  background-color: var(--bg);
   cursor: pointer;
   margin-top: 1rem;
-  transition: all 0.15s ease;
+  transition: all 0.2s ease;
 }
 
 .uploadLabel:hover {
-  box-shadow: 0 10px 6px -6px #777;
+  box-shadow: 0px 0px 20px 5px rgba(255, 156, 65, 0.504);
+  /* background-color: #fff; */
+  /* color: #000; */
 }
 
 input::file-selector-button {
@@ -345,7 +390,7 @@ input[type='file'] {
 
 .myNFTImg, nftSaleDetail {
   width: 100%;
-  height: 15.3125rem;
+  height: 37.5vh;
   /* border-radius: 12px 12px 0 0; */
   object-fit: cover;
   overflow: hidden;
@@ -375,13 +420,22 @@ input[type='file'] {
   /* box-shadow: 0 10px 6px -6px #777; */
 }
 
+#collectionCardProps {
+  border-radius: 0px;
+  border: 1px solid var(--border);
+  /* box-shadow: 3px 1px -1px rgb(0 0 0 / 10%); */
+  transition: transform 0.4s ease 0;
+  background-color: var(--bg);
+  /* padding-bottom: 1.5rem; */
+}
+
 .backgroundDefault {
-  background-image: var(--mainBackground);
+  background-image: var(--bg);
+  min-height: 70vh;
 }
 
 .paginationBg {
   /* background-color:#ccc; */
-  border-radius: 12px;
   /* position: fixed; */
   bottom: 0;
   width: 100%;
@@ -399,33 +453,35 @@ li.slash::after {
 }
 
 .breadcrumb-item.active {
-  background-image: var(--linearGradient);
+  /* background-image: var(--linearGradient);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
+  color: var(--text) !important;
 }
 
 .totalNftsAdminDash, .totalCollectionsAdminDash {
-  border-radius: 12px;
+  /* border-radius: 12px; */
   /* background-color: #fbfeff; */
 }
 
 #totalNftsAdminDash, #totalCollectionsAdminDash {
   padding: 1rem;
-  border-radius: 12px;
-  background-color: #fbfeff;
+  /* border-radius: 12px; */
+  background-color: var(--bg);
+  border: 1px solid var(--border);
   transition: all 0.02s ease-in-out 0s;
 }
 
 #totalNftsAdminDash:hover, #totalCollectionsAdminDash:hover {
-  box-shadow: 0 10px 6px -6px #777;
-  background-color: unset;
-  background-image: var(--linearGradient);
+  /* box-shadow: 0 10px 6px -6px #777; */
+  /* background-color: unset;
+  background-image: var(--linearGradient); */
 }
 
 .totalNftsAdminDashCountHover, .totalCollectionsAdminDashCountHover {
   /* background-image: var(--linearGradientForDashCount); */
   font-size: 4.5rem;
-font-family: "Poppins";
+font-family: var(--orbitron);
 letter-spacing: 0.625rem;
 margin-bottom: 0;
 text-align: center;
@@ -438,27 +494,29 @@ text-align: center;
 }
 
 .totalNftsAdminDashHeading, .totalCollectionsAdminDashHeading {
-  color: #04111D;
+  color: var(--text);
   font-weight: bold;
-  font-family: "Poppins";
+  font-family: var(--orbitron);
   text-align: center;
 }
 
 .totalNftsAdminDashCount, .totalCollectionsAdminDashCount {
   font-size: 4.5rem;
-font-family: "Poppins";
+font-family: var(--orbitron);
 letter-spacing: 0.625rem;
 margin-bottom: 0;
 text-align: center;
-background-image: var(--linearGradient);
+color: var(--text);
+/* background-image: var(--linearGradient);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
 }
 
 h3.page-title {
   font-weight: bold;
-  font-family: "Poppins";
+  font-family: var(--inter);
   font-size: 1.25rem;
+  color: var(--text);
 }
 
 li.menu-title {
@@ -468,20 +526,25 @@ li.menu-title {
 }
 
 .sidebar-menu ul li a {
-  border-radius:  12px;
+  /* border-radius:  12px; */
   padding: 0.75rem 1.5rem;
   color: rgb(251, 254, 255);
-  transition: all 0.02s ease-in-out 0s;
+  border: 1px solid #000;
+  border-right: 0px;
+  transition: all 0.2s ease-in-out 0s;
 }
 
 .sidebar-menu li.active a {
-  background-image: var(--linearGradient);
-  color: rgb(251, 254, 255);
-  box-shadow: 0 10px 6px -6px #777;
+  /* background-image: var(--linearGradient); */
+  color: #000;
+  background-color: var(--border);
+  border: 1px solid var(--border) !important;
+  /* box-shadow: 0 10px 6px -6px #777; */
 }
 
 .sidebar-menu li.active a.sidebarLink {
-  color: rgb(251, 254, 255);
+  color: #000;
+  border-radius: 0px;
 }
 
 
@@ -490,21 +553,27 @@ li.menu-title {
 }
 
 .sidebar-menu ul li a.sidebarLink {
-  color: var(--textColor);
+  color: var(--text);
   font-weight: bold;
   font-size: 0.875rem;
-  font-family: 'Poppins';
+  font-family: var(--orbitron);
   margin-top: 0.75rem;
   margin-bottom: 0;
 }
 
+.sidebar-menu ul li.active a:hover {
+  color: #000;
+  background-color: var(--border);
+  border: 1px solid var(--border) !important;
+  border-radius: 0px;
+}
+
 .sidebar-menu ul li a:hover {
-  background-image: var(--linearGradient);
-  background-color: transparent;
-  color: var(--btnHoverTextColor);
-  border-radius: 12px;
-  box-shadow: 0 10px 6px -6px #777;
+  border-radius: 0px;
+  /* box-shadow: 0 10px 6px -6px #777; */
   color: rgb(251, 254, 255);
+  border: 1px solid var(--border);
+  border-right: 0px;
 }
 
 div#sidebar::-webkit-scrollbar {
@@ -518,20 +587,21 @@ div#sidebar::-webkit-scrollbar {
 }
 
 .gradientColor, li.menu-title {
-  background-image: var(--linearGradient);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-family: "Poppins";
+  /* background-image: var(--linearGradient); */
+  /* -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent; */
+  font-family: "inter";
+  color: var(--text);
 }
 
 .exploreBtn {
   padding: 0.75rem 1.5rem;
   /* border: none; */
-  /* border-radius: 12px; */
+  border-radius: 0px 10px;
   font-size: 0.875rem;
   color:#fff;
-  border: 1px solid #fff;
-  background-color: transparent;
+  border: 2px solid #F64D04;
+  background-color: var(--bg);
   font-family: var(--inter);
   font-weight: bold;
   transition: all 200ms ease-in;
@@ -540,15 +610,19 @@ div#sidebar::-webkit-scrollbar {
 }
 
 .exploreBtn:hover {
-  font-size: 1rem;
-  background-image: linear-gradient(to right, #F83F5E, #FD4B30);
+  /* color: #fff; */
+  /* background-image: linear-gradient(to right, #F83F5E, #FD4B30); */
+  /* background-color: #F64D04; */
+  box-shadow: 0px 0px 10px 10px rgba(255, 156, 65, 0.504);
+  /* background-image: linear-gradient(to right, #F83F5E, #FD4B30); */
   /* box-shadow: 0 10px 6px -6px #777; */
 }
 
 .nftPrice {
-  background-image: var(--linearGradient);
+  /* background-image: var(--linearGradient);
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  -webkit-text-fill-color: transparent; */
+  color: var(--borderOrange);
   font-family: var(--orbitron);
   font-size: 1rem;
   font-weight: 600;
@@ -606,26 +680,28 @@ section.creatorName {
 
 button.featuredExploreBtn {
   padding: 1rem;
-  font-family: var(--orbitron);
+  font-family: var(--inter);
   font-size: 1rem;
   color: #fff;
   font-weight: bold;
-  border: 1px solid #fff;
-  /* border-radius: 12px; */
-  background-color: transparent;
+  border: 2px solid #F64D04;
+  border-radius: 0px 10px;
+  background-color: var(--bg);
 }
 
 button.featuredExploreBtn:hover {
-  color: #fff;
-  background-image: linear-gradient(to right, #F83F5E, #FD4B30);
-  /* box-shadow: 0 10px 6px -6px rgba(255, 255, 255, 0.504); */
+  /* color: #fff; */
+  /* background-image: linear-gradient(to right, #F83F5E, #FD4B30); */
+  /* background-color: #F64D04; */
+  box-shadow: 0px 0px 10px 10px rgba(255, 156, 65, 0.504);
 }
 
 .marketCatHeadings {
   font-size: 2.2rem;
-  background-image: linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  /* background-image: linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%); */
+  /* -webkit-background-clip: text; */
+  /* -webkit-text-fill-color: transparent; */
+  color: var(--text);
   font-family: var(--orbitron);
   font-weight: bold;
 }
@@ -665,10 +741,11 @@ button.featuredExploreBtn:hover {
   margin-bottom: 1.5rem;
 }
 
-#marketCardProps {
-  /* border-radius: 12px; */
-  border: 1px solid #555;
+#marketCardProps, #myDropsPending {
+  border-radius: 0px;
+  border: 1px solid #fff;
   background-color: #000;
+  /* padding-bottom: 1rem; */
   /* box-shadow: 3px 1px -1px rgb(0 0 0 / 10%); */
 }
 
@@ -1556,7 +1633,7 @@ button.bg-danger:hover {
   font-size: 1.5rem !important;
 }
 .form-control:focus {
-  border-color: #bbb;
+  /* border-color: #bbb; */
   box-shadow: none;
   outline: 0 none;
 }
@@ -1963,8 +2040,9 @@ button.bg-danger:hover {
   max-width: 600px;
 }
 .custom-modal .modal-content {
-  border: 0;
-  border-radius: 10px;
+  border: 1px solid white;
+  border-radius: 0px !important;
+  color: #000 !important;
 }
 .custom-modal .modal-header {
   padding: 1.25rem;
@@ -6530,8 +6608,9 @@ html.menu-opened body {
   padding: 40px;
 }
 .call-modal .modal-content {
-  border: 0;
-  border-radius: 10px;
+  border: 1px solid white;
+  border-radius: 0px;
+  color: #000 !important;
 }
 .call-box .call-wrapper .call-user h4 {
   font-size: 24px;

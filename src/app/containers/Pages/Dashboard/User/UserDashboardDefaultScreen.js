@@ -1,24 +1,26 @@
 // eslint-disable-next-line
-import axios from "axios";// eslint-disable-next-line
+import axios from "axios"; // eslint-disable-next-line
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 // import React, { useEffect } from "react";
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import StorageIcon from '@material-ui/icons/Storage';
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import StorageIcon from "@material-ui/icons/Storage";
 import Cookies from "js-cookie";
-function UserDashboardDefaultScreen(props) {
+import { Card } from "@material-ui/core";
 
+// COMPONENT FUNCTION
+function UserDashboardDefaultScreen(props) {
   let [totalCubes, setTotalCubes] = useState(0);
   let [totalNFTs, setTotalNFTs] = useState(0);
   let [totalDrops, setTotalDrops] = useState(0);
   let [totalSeasons, setTotalSeasons] = useState(0);
   let [totalCollections, setTotalCollections] = useState(0);
+  let [hover, setHover] = useState(false);
 
   let getCounts = () => {
-
-    axios.defaults.headers.common[
+    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
       "Authorization"
-    ] = `Bearer ${Cookies.get("Authorization")}`;
+    )}`;
     axios
       .get("user/getcounts")
       .then((response) => {
@@ -60,15 +62,12 @@ function UserDashboardDefaultScreen(props) {
   return (
     <>
       {/* <!-- Page Header --> */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">Welcome User!</h3>
             <ul className="breadcrumb">
-              <li
-                className="breadcrumb-item active"
-                style={{ color: "rgb(167, 0, 0)" }}
-              >
+              <li className="breadcrumb-item active" style={{ color: "#999" }}>
                 Dashboard
               </li>
             </ul>
@@ -77,28 +76,49 @@ function UserDashboardDefaultScreen(props) {
       </div>
       {/* <!-- /Page Header --> */}
 
-      <div className="row">
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/myNFTs`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-warning border-warning">
-                    <ListAltIcon />
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalNFTs}</h3>
-                  </div>
+      <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
+        <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
+          <Card
+            style={{
+              padding: "1rem",
+              borderRadius: 0,
+            }}
+            id="totalNftsAdminDash"
+            onMouseEnter={() => setHover(true)}
+            onMouseLeave={() => setHover(false)}
+          >
+            <Link to={`${props.match.url}/myNFTs`}>
+              <div className="row no-gutters justify-content-between">
+                <div className="col align-self-end">
+                  <section>
+                    <h4
+                      className={
+                        hover
+                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                          : "totalNftsAdminDashHeading"
+                      }
+                    >
+                      <span>
+                        <ListAltIcon />{" "}
+                      </span>
+                      Total NFTs
+                    </h4>
+                  </section>
                 </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total NFTs</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-warning w-100"></div>
-                  </div>
+                <div className="col">
+                  <h1
+                    className={
+                      hover
+                        ? "totalNftsAdminDashCountHover"
+                        : "totalNftsAdminDashCount"
+                    }
+                  >
+                    {totalNFTs}
+                  </h1>
                 </div>
               </div>
-            </div>
-          </Link>
+            </Link>
+          </Card>
         </div>
         {/* <div className="col-12 col-sm-3">
           <Link to={`${props.match.url}/myCubes`}>
@@ -191,7 +211,6 @@ function UserDashboardDefaultScreen(props) {
           </Link>
         </div> */}
       </div>
-
     </>
   );
 }

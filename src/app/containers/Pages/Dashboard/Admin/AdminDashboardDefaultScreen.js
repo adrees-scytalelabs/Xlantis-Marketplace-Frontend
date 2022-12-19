@@ -62,12 +62,12 @@ function AdminDashboardDefaultScreen(props) {
   return (
     <>
       {/* <!-- Page Header --> */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">Welcome Admin!</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item active" style={{ color: "#777" }}>
+              <li className="breadcrumb-item active" style={{ color: "#999" }}>
                 Dashboard
               </li>
             </ul>
@@ -76,16 +76,13 @@ function AdminDashboardDefaultScreen(props) {
       </div>
       {/* <!-- /Page Header --> */}
       {/* Cards */}
-      <div className="row no-gtuuters align-items-center mt-5 mb-5">
+      <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         {/* Total NFTs */}
-        <div className="col-3 totalNftsAdminDash">
+        <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
           <Card
             style={{
-              borderRadius: 12,
-              // backgroundImage:
-              //   "linear-gradient(90deg, hsla(225, 78%, 59%, 1) 0%, hsla(197, 85%, 51%, 1) 100%)",
               padding: "1rem",
-              // textAlign: "center",
+              borderRadius: 0,
             }}
             id="totalNftsAdminDash"
             onMouseEnter={() => setHover(true)}
@@ -125,14 +122,11 @@ function AdminDashboardDefaultScreen(props) {
           </Card>
         </div>
         {/* Total Collections */}
-        <div className="col-3 totalCollectionsAdminDash">
+        <div className="col-12 col-sm-5 col-xl-4 ml-sm-2 mt-2 mt-sm-0 totalCollectionsAdminDash">
           <Card
             style={{
-              borderRadius: 12,
-              // backgroundImage:
-              //   "linear-gradient(90deg, hsla(225, 78%, 59%, 1) 0%, hsla(197, 85%, 51%, 1) 100%)",
               padding: "1rem",
-              // textAlign: "center",
+              borderRadius: 0,
             }}
             id="totalCollectionsAdminDash"
             onMouseEnter={() => setHoverCollections(true)}

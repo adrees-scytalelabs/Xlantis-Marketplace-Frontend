@@ -15,6 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -62,6 +63,22 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
 }));
+
+const makeTheme = createMuiTheme({
+  overrides: {
+    MuiFormControlLabel: {
+      label: {
+        color: "white",
+        fontFamily: "inter",
+      },
+    },
+    MuiRadio: {
+      root: {
+        color: "white",
+      },
+    },
+  },
+});
 
 function NewDrop(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -447,7 +464,7 @@ function NewDrop(props) {
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">New Drop</h3>
@@ -655,87 +672,89 @@ function NewDrop(props) {
                                         </div>
                                     </div> */}
                   </div>
-                  <FormControl component="fieldset">
-                    <lable
-                      component="legend"
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Select Sale Type
-                    </lable>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
-                    >
-                      <FormControlLabel
-                        style={{ color: "black" }}
-                        value="auction"
-                        onChange={() => {
-                          setSaleType("auction");
-                        }}
-                        checked={saleType === "auction"}
-                        control={<Radio color="secondary" />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>Auction</span>
-                        }
-                      />
-                      <FormControlLabel
-                        style={{ color: "black" }}
-                        value="fixed-price"
-                        onChange={() => {
-                          setSaleType("fixed-price");
-                        }}
-                        checked={saleType === "fixed-price"}
-                        control={<Radio color="secondary" />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>
-                            Fixed-Price
-                          </span>
-                        }
-                      />
-                    </RadioGroup>
-                    {/* </FormControl>
+                  <ThemeProvider theme={makeTheme}>
+                    <FormControl component="fieldset">
+                      <lable
+                        component="legend"
+                        style={{ fontWeight: "bold", fontFamily: "orbitron" }}
+                      >
+                        Select Sale Type
+                      </lable>
+                      <RadioGroup
+                        row
+                        aria-label="position"
+                        name="position"
+                        defaultValue="top"
+                      >
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="auction"
+                          onChange={() => {
+                            setSaleType("auction");
+                          }}
+                          checked={saleType === "auction"}
+                          control={<Radio />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>Auction</span>
+                          }
+                        />
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="fixed-price"
+                          onChange={() => {
+                            setSaleType("fixed-price");
+                          }}
+                          checked={saleType === "fixed-price"}
+                          control={<Radio />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>
+                              Fixed-Price
+                            </span>
+                          }
+                        />
+                      </RadioGroup>
+                      {/* </FormControl>
                                 <FormControl component="fieldset"> */}
-                    <lable
-                      component="legend"
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Select Drop Type
-                    </lable>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
-                    >
-                      <FormControlLabel
-                        style={{ color: "black" }}
-                        value="ERC721"
-                        onChange={() => {
-                          setNftType("721");
-                          // checked={saleType === 'auction'}
-                        }}
-                        checked={nftType === "721"}
-                        control={<Radio color="secondary" />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                        }
-                      />
-                      <FormControlLabel
-                        style={{ color: "black" }}
-                        value="ERC1155"
-                        onChange={() => {
-                          setNftType("1155");
-                        }}
-                        checked={nftType === "1155"}
-                        control={<Radio color="secondary" />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
-                        }
-                      />
-                    </RadioGroup>
-                  </FormControl>
+                      <lable
+                        component="legend"
+                        style={{ fontWeight: "bold", fontFamily: "orbitron" }}
+                      >
+                        Select Drop Type
+                      </lable>
+                      <RadioGroup
+                        row
+                        aria-label="position"
+                        name="position"
+                        defaultValue="top"
+                      >
+                        <FormControlLabel
+                          style={{ color: "black" }}
+                          value="ERC721"
+                          onChange={() => {
+                            setNftType("721");
+                            // checked={saleType === 'auction'}
+                          }}
+                          checked={nftType === "721"}
+                          control={<Radio />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>ERC721</span>
+                          }
+                        />
+                        <FormControlLabel
+                          style={{ color: "black" }}
+                          value="ERC1155"
+                          onChange={() => {
+                            setNftType("1155");
+                          }}
+                          checked={nftType === "1155"}
+                          control={<Radio />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
+                          }
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </ThemeProvider>
                 </div>
               </div>
             </form>

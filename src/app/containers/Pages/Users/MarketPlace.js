@@ -54,7 +54,7 @@ function MarketPlace(props) {
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [totalSaleCube, setTotalSaleCube] = useState(0);
+  const [totalNFTSale, setTotalNFTSale] = useState(0);
   const [page, setPage] = useState(0);
 
   const [open, setOpen] = useState(false);
@@ -64,16 +64,16 @@ function MarketPlace(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
+    axios.get(`/drop/saleType/fixed-price/${start}/${end}`).then(
       (response) => {
         console.log("responseeeee", response);
-        setCubeData(response.data.Saletokendata);
-        setUserSaledata(response.data.Usersaledata);
-        setTotalSaleCube(response.data.Salecount);
-        setCubeAuctionData(response.data.Auctiontokendata);
-        setUserAuctiondata(response.data.Userauctiondata);
+        setCubeData(response.data.data);
+        setUserSaledata(response.data.data);
+        setCubeAuctionData(response.data.data);
+        setUserAuctiondata(response.data.data);
         handleCloseBackdrop();
       },
       (error) => {
@@ -85,6 +85,27 @@ function MarketPlace(props) {
       }
     );
   };
+  // let getCubes2 = (start, end) => {
+  //   handleShowBackdrop();
+  //   axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
+  //     (response) => {
+  //       console.log("responseeeee", response);
+  //       setCubeData(response.data.data);
+  //       setUserSaledata(response.data.data);
+  //       setTotalSaleCube(response.data.Salecount);
+  //       setCubeAuctionData(response.data.data);
+  //       setUserAuctiondata(response.data.data);
+  //       handleCloseBackdrop();
+  //     },
+  //     (error) => {
+  //       if (process.env.NODE_ENV === "development") {
+  //         console.log(error);
+  //         console.log(error.response);
+  //       }
+  //       handleCloseBackdrop();
+  //     }
+  //   );
+  // };
 
   useEffect(() => {
     getCubes(0, 12); // eslint-disable-next-line
@@ -133,7 +154,7 @@ function MarketPlace(props) {
                       userSaleData={userSaleData}
                       cubeAuctionData={cubeAuctionData}
                       userAuctionData={userAuctionData}
-                      totalSaleCube={totalSaleCube}
+                      totalSaleCube={2}
                       handleChangeRowsPerPage={handleChangeRowsPerPage}
                       handleChangePage={handleChangePage}
                       rowsPerPage={rowsPerPage}

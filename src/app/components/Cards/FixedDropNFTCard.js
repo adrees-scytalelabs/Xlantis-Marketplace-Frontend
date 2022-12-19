@@ -34,7 +34,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    height: 0,
+    // height: 0,
+    width: "100%",
     paddingTop: "100%", // 16:9
   },
   bullet: {
@@ -134,40 +135,18 @@ function FixedDropNFTCard(props) {
       <div className="row no-gutters mb-3">
         {/* NFT Image */}
         <CardMedia
-          className={classes.cardMediaImg}
-          // variant="outlined"
-          // style={{
-          //   border:
-          //     rarity === "Mastercraft"
-          //       ? "4px solid #ff0000"
-          //       : rarity === "Legendary"
-          //       ? "4px solid #FFD700"
-          //       : rarity === "Epic"
-          //       ? "4px solid #9400D3"
-          //       : rarity === "Rare"
-          //       ? "4px solid #0000FF"
-          //       : rarity === "Uncommon"
-          //       ? "4px solid #008000"
-          //       : rarity === "Common"
-          //       ? "4px solid #FFFFFF"
-          //       : "none",
-          // }}
-          // className={classes.media}
-          //   image={
-          //     props.data.previewImageURI
-          //       ? props.data.previewImageURI
-          //       : props.data.nftURI
-          //   }
-          //   title="NFT Image"
-        >
-          <div className="nftImgWrapper">
+          className={classes.media}
+          image={props.data.nftURI}
+          title="NFT Image"
+        />
+        {/* <div className="nftImgWrapper">
             <img
               className="myNFTImg"
               src={props.image.url}
               alt="a sample nft"
             />
-          </div>
-        </CardMedia>
+          </div> */}
+        {/* </CardMedia> */}
         <CardContent style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}>
           {/* <CardHeader className="text-center" title={props.data.title} /> */}
           {/* Title & Rarity */}
@@ -179,11 +158,10 @@ function FixedDropNFTCard(props) {
             <div className="col-auto">
               <Typography
                 variant="h6"
-                component="p"
+                component="div"
                 className={classes.cardTitle}
               >
-                {/* {props.data.title} */}
-                Card Title
+                {props.data.title}
               </Typography>
             </div>
             {/* rarity */}
@@ -208,7 +186,7 @@ function FixedDropNFTCard(props) {
             >
               {/* <strong>Artwork Description: </strong> */}
               {/* {props.data.description} */}
-              {truncate(description, 35)}
+              {truncate(props.data.description, 35)}
               {/* {description} */}
             </Typography>
           </div>
@@ -218,8 +196,7 @@ function FixedDropNFTCard(props) {
             className={classes.cardDescriptions}
           >
             <strong>Token Supply: </strong>
-            {/* {props.data.tokenSupply} */}
-            150
+            {props.data.tokenSupply}
           </Typography>
         </CardContent>
       </div>

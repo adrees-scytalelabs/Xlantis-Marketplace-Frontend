@@ -2,12 +2,10 @@ import React from "react";
 
 function PricingBanner() {
   return (
-
     <>
-
       <div className="container-fluid">
         {/* <!-- Page Header --> */}
-        <div className="page-header">
+        <div className="page-header mt-4 mt-lg-2 pt-lg-2">
           <div className="row" style={{ justifyContent: "center" }}>
             <div className="col-12 col-md-3" style={{ paddingTop: "190px" }}>
               <div className="card" style={{ paddingBottom: "18px" }}>
@@ -23,8 +21,7 @@ function PricingBanner() {
                     <div>
                       {" "}
                       <p>
-                        For teams learning or developing small
-                        applications.
+                        For teams learning or developing small applications.
                       </p>
                     </div>
                     <div style={{ paddingTop: "15px" }}>
@@ -92,8 +89,7 @@ function PricingBanner() {
                     <div>
                       {" "}
                       <p>
-                        For teams learning or developing small
-                        applications.
+                        For teams learning or developing small applications.
                       </p>
                     </div>
                     <div style={{ paddingTop: "15px" }}>
@@ -122,10 +118,10 @@ function PricingBanner() {
                     <div style={{ paddingTop: "80px" }}>
                       <button
                         className="btn btn-block btn-lg login-btn"
-                      // style={{
-                      //     borderColor: "rgb(167,0,0)", color: "rgb(167,0,0)",
-                      //     backgroundColor: "#ffffff"
-                      // }}
+                        // style={{
+                        //     borderColor: "rgb(167,0,0)", color: "rgb(167,0,0)",
+                        //     backgroundColor: "#ffffff"
+                        // }}
                       >
                         Create a Cluster
                       </button>
@@ -159,8 +155,7 @@ function PricingBanner() {
                     <div>
                       {" "}
                       <p>
-                        For teams learning or developing small
-                        applications.
+                        For teams learning or developing small applications.
                       </p>
                     </div>
                     <div style={{ paddingTop: "15px" }}>

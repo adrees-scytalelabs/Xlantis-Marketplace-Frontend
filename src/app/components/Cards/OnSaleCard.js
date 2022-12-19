@@ -19,11 +19,17 @@ import Countdown from "react-countdown";
 import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 import { AlertTitle } from "@material-ui/lab";
+import { truncate } from "../../assets/js/utils";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
     // borderRadius: "12px",
     boxShadow: "none",
+  },
+  media: {
+    // height: 0,
+    width: "100%",
+    paddingTop: "100%", // 16:9
   },
   cardTitle: {
     color: "#fff",
@@ -57,12 +63,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OnSaleCard = (props) => {
+  console.log("the props in OnSaleCard: ", props);
+
   const styles = useStyles();
   return (
     <div className="col-12 p-2" key={props.index}>
       {/* <Paper> */}
-      <Card id="marketCardProps" style={{ height: "480px" }}>
-        <div className="row no-gutters mb-3">
+      <Card id="marketCardProps">
+        <div className="row no-gutters">
           <Link
             // to={
             //   "/marketPlace/Cubes/Nfts/notdrop/" +
@@ -75,91 +83,86 @@ const OnSaleCard = (props) => {
             to="/fixdropnft"
             style={{ width: "100%" }}
           >
-            <CardMedia
-            //   className={classes.media}
-            // image={img}
-            >
-              {/* NFT Image */}
-              <div className="nftImgWrapper">
-                <img
-                  src={props.image.url}
-                  alt="a sample nft"
-                  className="myNFTImg"
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    zIndex: "1000",
-                    // height: 100,
-                    width: "100%",
-                    // border: "1px solid orange",
-                  }}
-                  className="p-3"
-                >
-                  {/* Creator Details and  Explore Button */}
-                  <div className="row no-gutters justify-content-between align-itmes-end">
-                    {/* Creator Image */}
-                    <div className="col-2 w-100">
-                      <Link to="/">
-                        <div
+            <div className="nftImgWrapper">
+              <CardMedia
+                className={styles.media}
+                image={props.i.image}
+                title="Drop Image"
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  zIndex: "1000",
+                  // height: 100,
+                  width: "100%",
+                  // border: "1px solid orange",
+                }}
+                className="p-3"
+              >
+                {/* Creator Details and  Explore Button */}
+                <div className="row no-gutters justify-content-between align-itmes-end">
+                  {/* Creator Image */}
+                  <div className="col-2 w-100">
+                    <Link to="/">
+                      <div
+                        style={{
+                          // borderRadius: 12,
+                          backgroundColor: "#000",
+                        }}
+                      >
+                        <img
+                          src={kangaroo}
+                          alt="a sample nft"
                           style={{
-                            // borderRadius: 12,
-                            backgroundColor: "#000",
+                            width: "85px",
+                            height: "85px",
+                            objectFit: "cover",
+                            // borderRadius: "12px",
                           }}
-                        >
-                          <img
-                            src={kangaroo}
-                            alt="a sample nft"
-                            style={{
-                              width: "85px",
-                              height: "85px",
-                              objectFit: "cover",
-                              // borderRadius: "12px",
-                            }}
-                          />
-                        </div>
-                        {/* Creator Name */}
-                      </Link>
-                    </div>
-                    {/* Explore Button */}
-                    <div className="col w-100 text-right align-self-end">
-                      {/* <CardActions
+                        />
+                      </div>
+                      {/* Creator Name */}
+                    </Link>
+                  </div>
+                  {/* Explore Button */}
+                  <div className="col w-100 text-right align-self-end">
+                    {/* <CardActions
                         style={{
                           marginTop: "5px",
                           // padding: "12px 0px",
                           justifyContent: "end",
                         }}
                       > */}
-                      <Link
-                        to={
-                          "/marketPlace/Cubes/Nfts/notdrop/" +
-                          props.userSaleData[props.index].expiresAt +
-                          "/" +
-                          props.i._id +
-                          "/" +
-                          props.userSaleData[props.index]._id
-                        }
-                      >
-                        <button className="exploreBtn">
-                          Explore{" "}
-                          <span>
-                            <OpenInNewIcon />
-                          </span>
-                        </button>
-                      </Link>
-                      {/* </CardActions> */}
-                    </div>
+                    <Link
+                      // to={
+                      //   "/marketPlace/Cubes/Nfts/notdrop/" +
+                      //   props.userSaleData[props.index].expiresAt +
+                      //   "/" +
+                      //   props.i._id +
+                      //   "/" +
+                      //   props.userSaleData[props.index]._id
+                      // }
+                      to="/fixdropnft"
+                    >
+                      <button className="exploreBtn">
+                        Explore{" "}
+                        <span>
+                          <OpenInNewIcon />
+                        </span>
+                      </button>
+                    </Link>
+                    {/* </CardActions> */}
                   </div>
                 </div>
               </div>
-              {/* <div className="mainDiv">
+            </div>
+            {/* <div className="mainDiv">
               <div className="square"></div>
               <div className="square2"></div>
               <div className="square3"></div>
             </div> */}
-            </CardMedia>
           </Link>
           <CardContent style={{ paddingBottom: 0, width: "100%" }}>
             {/* Title, Description and Price */}
@@ -180,7 +183,7 @@ const OnSaleCard = (props) => {
                   component="p"
                   className={styles.cardDescriptions}
                 >
-                  {props.i.description}
+                  {truncate(props.i.description, 35)}
                 </Typography>
               </div>
               <div className="col-4 align-self-end text-right p-0">
@@ -232,24 +235,44 @@ const OnSaleCard = (props) => {
               className="text-center"
             >
               {/* Sale Ends and Sale Ended */}
-              {new Date() <
-              new Date(props.userSaleData[props.index].expiresAt) ? (
+
+              {new Date() < new Date(props.i.startTime) ? (
+                <div style={{ marginTop: "1rem" }}>
+                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
+                  <Alert severity="info" className={styles.textAlert}>
+                    <span
+                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                    >
+                      Sale Starts At:{" "}
+                    </span>
+                    <span>
+                      <Countdown
+                        daysInHours
+                        date={new Date(props.i.startTime)}
+                        style={{ fontFamily: "orbitron" }}
+                      ></Countdown>
+                    </span>
+                  </Alert>
+                </div>
+              ) : new Date() > new Date(props.i.startTime) &&
+                new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
                   {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert severity="warning" className={styles.textAlert}>
-                    <span style={{ fontFamily: "poppins", fontWeight: "bold" }}>
+                    <span
+                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                    >
                       Sale Ends At:{" "}
                     </span>
                     <span>
                       <Countdown
                         daysInHours
-                        date={
-                          new Date(props.userSaleData[props.index].expiresAt)
-                        }
-                        style={{ fontFamily: "poppins" }}
+                        date={new Date(props.i.endTime)}
+                        style={{ fontFamily: "orbitron" }}
                       ></Countdown>
                     </span>
                   </Alert>
+                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                 </div>
               ) : (
                 <Typography
@@ -272,36 +295,6 @@ const OnSaleCard = (props) => {
               )}
             </Typography>
           </CardContent>
-          {/* Explore Button */}
-          {/* <div className="row no-gutters px-3 w-100">
-            <div className="col-12">
-              <CardActions
-                style={{
-                  marginTop: "5px",
-                  padding: "12px 0px",
-                  justifyContent: "end",
-                }}
-              >
-                <Link
-                  to={
-                    "/marketPlace/Cubes/Nfts/notdrop/" +
-                    props.userSaleData[props.index].expiresAt +
-                    "/" +
-                    props.i._id +
-                    "/" +
-                    props.userSaleData[props.index]._id
-                  }
-                >
-                  <button className="exploreBtn">
-                    Explore{" "}
-                    <span>
-                      <OpenInNewIcon />
-                    </span>
-                  </button>
-                </Link>
-              </CardActions>
-            </div>
-          </div> */}
         </div>
       </Card>
       {/* </Paper> */}

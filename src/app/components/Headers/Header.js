@@ -204,13 +204,13 @@ function HeaderHome(props) {
     // contract = new web3.eth.Contract(ABI, ADDRESS);
   }
   const selectedStyling = {
-    border: "1px solid white",
+    border: "1px solid #F64D04",
     padding: "10px 20px",
-    // borderRadius: "12px",
+    borderRadius: "0px 10px",
     color: "#fff",
     fontSize: "18px",
     fontWeight: "bold",
-    // backgroundColor: "white",
+    backgroundColor: "#F64D04",
     // backgroundImage:
     //   "linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
     // boxShadow: "0 10px 6px -6px #777",
@@ -286,7 +286,7 @@ function HeaderHome(props) {
           </a>
 
           <Link style={{ color: "#fff" }} to="/" className="navbar-brand logo">
-            <img src={Logo} alt="Logo" width="130" />
+            <img src={Logo} alt="Logo" width="90" />
             {/* Robot Drop */}
           </Link>
 
@@ -389,7 +389,7 @@ function HeaderHome(props) {
                 </span>
               </Link>
             </li>
-            <li>
+            {/* <li>
               <Link to="/auctionDrops" style={{ color: "#fff" }}>
                 <span
                   className={hoverClassStyle.Drops}
@@ -398,7 +398,7 @@ function HeaderHome(props) {
                   Drops
                 </span>
               </Link>
-            </li>
+            </li> */}
           </ul>
         </div>
         <ul className="nav header-navbar-rht">

@@ -1,15 +1,15 @@
 import Cookies from "js-cookie";
 import React from "react";
 import { Link } from "react-router-dom";
-import StorageIcon from '@material-ui/icons/Storage';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
-import BusinessIcon from '@material-ui/icons/Business';
+import StorageIcon from "@material-ui/icons/Storage";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
+import BusinessIcon from "@material-ui/icons/Business";
 
 function AdminSidebar(props) {
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
-    localStorage.removeItem("Address")
+    localStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
@@ -43,7 +43,7 @@ function AdminSidebar(props) {
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
-                <span>Collection</span>
+                <span>Collections</span>
               </Link>
             </li>
             <li className={props.activeTab.newNFT}>
@@ -75,10 +75,11 @@ function AdminSidebar(props) {
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li>  */}
-            
-            <li className={props.activeTab.newDrop}>
+
+            <li className={props.activeTab.dropApproval}>
               <Link to={`${props.match.url}/dropApproval`}>
-                <i className="fas fa-check-circle"></i> <span>Drop Approval</span>
+                <i className="fas fa-check-circle"></i>{" "}
+                <span>Drop Approval</span>
               </Link>
             </li>
 

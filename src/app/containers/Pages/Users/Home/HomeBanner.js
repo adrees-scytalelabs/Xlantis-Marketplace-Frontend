@@ -34,10 +34,11 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "uppercase",
     textAlign: "center",
-    backgroundImage:
-      "linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
-    WebkitBackgroundClip: "text",
-    WebkitTextFillColor: "transparent",
+    color: "#fff",
+    // backgroundImage:
+    //   "linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
+    // WebkitBackgroundClip: "text",
+    // WebkitTextFillColor: "transparent",
   },
   creatorTitle: {
     fontFamily: "orbitron",
@@ -62,7 +63,7 @@ function HomeBanner() {
   const styles = useStyles();
   // Jsx
   return (
-    <Link to={"/"}>
+    <Link to={"/fixdropnft"}>
       <section className="section sectionHomeBanner">
         <div className="container-fluid">
           <div className="row no-gutters justify-content-center align-items-center">
@@ -131,7 +132,11 @@ function HomeBanner() {
                     </div>
                     {/* View Button */}
                     <div className="col-6 text-right py-2">
-                      <button className="featuredExploreBtn">View Drop</button>
+                      <Link to="/fixdropnft">
+                        <button className="featuredExploreBtn">
+                          View Drop
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 </div>

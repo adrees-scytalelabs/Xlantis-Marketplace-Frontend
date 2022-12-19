@@ -31,6 +31,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -560,7 +561,7 @@ function NewCollection(props) {
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">New Collection</h3>
@@ -573,7 +574,7 @@ function NewCollection(props) {
           </div>
         </div>
       </div>
-      <div className="card-body px-0">
+      <div className="card-body page-height px-0">
         <div className="row no-gutters">
           <div className="col-md-12 col-lg-6">
             <form>
@@ -584,21 +585,11 @@ function NewCollection(props) {
                   <div className="form-group">
                     <div className="row no-gutters align-items-end justify-content-start">
                       <div className="co-12 col-md-auto profile-img mr-3">
-                        <img src={fileURL} alt="Selfie" />
+                        <img src={fileURL} alt="Collection Thumb" />
                       </div>
                       <div className="co-12 col-md-auto">
                         <label for="uploadPreviewImg" className="uploadLabel">
-                          {isUploadingIPFS ? (
-                            <div className="text-center">
-                              <Spinner
-                                animation="border"
-                                role="status"
-                                style={{ color: "#fbfeff" }}
-                              ></Spinner>
-                            </div>
-                          ) : (
-                            "Choose File"
-                          )}
+                          {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
                         </label>
                         <input
                           name="sampleFile"
@@ -667,7 +658,7 @@ function NewCollection(props) {
                   <FormControl component="fieldset">
                     <lable
                       component="legend"
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                      style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                     >
                       Select NFT Type
                     </lable>
@@ -678,26 +669,26 @@ function NewCollection(props) {
                       defaultValue="top"
                     >
                       <FormControlLabel
-                        style={{ color: "black" }}
+                        style={{ color: "white" }}
                         value="ERC721"
                         onChange={() => {
                           setNftType("ERC721");
                           // checked={saleType === 'auction'}
                         }}
                         checked={nftType === "ERC721"}
-                        control={<Radio color="secondary" />}
+                        control={<Radio style={{ color: "#f50057" }} />}
                         label={
                           <span style={{ fontSize: "0.9rem" }}>ERC721</span>
                         }
                       />
                       <FormControlLabel
-                        style={{ color: "black" }}
+                        style={{ color: "white" }}
                         value="ERC1155"
                         onChange={() => {
                           setNftType("ERC1155");
                         }}
                         checked={nftType === "ERC1155"}
-                        control={<Radio color="secondary" />}
+                        control={<Radio style={{ color: "#f50057" }} />}
                         label={
                           <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
                         }
@@ -822,15 +813,7 @@ function NewCollection(props) {
           </div>
         </div>
         {isSaving ? (
-          <div className="text-center">
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#ff0000" }}
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
+          <WhiteSpinner />
         ) : (
           <div className="submit-section">
             <button

@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useState, useEffect } from "react";
 // MUI
 import { Grid } from "@material-ui/core/";
 // COMPONENTS
@@ -7,9 +7,58 @@ import HeaderHome from "../../../components/Headers/Header";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 // UTILS
 import { nftImage } from "../../../assets/js/images";
+// AXIOS
+import axios from "axios";
 
 // COMPONENT FUNCTION
 const FixedPriceDropNFTs = () => {
+  // States
+  const [userSaleData, setUserSaledata] = useState([]);
+  const [cubeData, setCubeData] = useState([]);
+  const [userAuctionData, setUserAuctiondata] = useState([]);
+  const [cubeAuctionData, setCubeAuctionData] = useState([]);
+  const [dropData, setDropData] = useState();
+  const [open, setOpen] = useState(false);
+
+  // Handlers
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+
+  // Queries
+  let getNFTs = (dropId, start, end) => {
+    handleShowBackdrop();
+    axios.get(`/drop/nfts/${dropId}/${start}/${end}`).then(
+      (response) => {
+        console.log("getting a drop", response);
+        setDropData(response.data.data);
+        // setCubeData(response.data.data);
+        // setUserSaledata(response.data.data);
+        // setCubeAuctionData(response.data.data);
+        // setUserAuctiondata(response.data.data);
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        handleCloseBackdrop();
+      }
+    );
+  };
+
+  // Side Effects
+  useEffect(() => {
+    getNFTs("639348c0d9cb9fe5ceee1225", 0, 4); // eslint-disable-next-line
+  }, []);
+
+  if (dropData)
+    dropData.map((i, index) => console.log(`drop at ${index}: `, i));
+
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -53,20 +102,25 @@ const FixedPriceDropNFTs = () => {
           {/* NFT Cards */}
           <div className="row no-gutters w-100">
             <Grid container spacing={3}>
-              {nftImage.map((i, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={3}
-                  lg={2}
-                  spacing={1}
-                  direction="row"
-                  key={index}
-                >
-                  <FixedDropNFTCard image={nftImage[index]} type={"Epic"} />
-                </Grid>
-              ))}
+              {dropData &&
+                dropData.map((i, index) => (
+                  <Grid
+                    item
+                    xs={12}
+                    sm={6}
+                    md={3}
+                    lg={2}
+                    spacing={1}
+                    direction="row"
+                    key={index}
+                  >
+                    <FixedDropNFTCard
+                      data={i}
+                      image={nftImage[index]}
+                      type={"Epic"}
+                    />
+                  </Grid>
+                ))}
             </Grid>
           </div>
         </div>

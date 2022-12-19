@@ -1,17 +1,17 @@
-import { Grid } from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
-import React from 'react';
-import { Container } from 'react-bootstrap';
-import CollectionCard from '../../../../components/Cards/CollectionCard';
+import { Grid } from "@material-ui/core/";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
+import { Container } from "react-bootstrap";
+import CollectionCard from "../../../../components/Cards/CollectionCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
-    width: '100%',
+    width: "100%",
     backgroundColor: theme.palette.background.paper,
   },
   badge: {
-    '& > *': {
+    "& > *": {
       margin: theme.spacing(1),
     },
   },
@@ -19,9 +19,9 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -35,14 +35,14 @@ function TrendingCollections() {
   const classes = useStyles();
 
   return (
-
     <>
-
-      <div className="container-fluid" style={{ marginTop: '20px' }}>
+      <div className="container-fluid" style={{ marginTop: "20px" }}>
         {/* <!-- Page Header --> */}
-        <div className="page-header">
+        <div className="page-header mt-4 mt-lg-2 pt-lg-2">
           <Container>
-            <h3><pre>TRENDING COLLECTIONS</pre></h3>
+            <h3>
+              <pre>TRENDING COLLECTIONS</pre>
+            </h3>
             <hr></hr>
             <div className={classes.card}>
               <Grid
@@ -50,22 +50,19 @@ function TrendingCollections() {
                 spacing={2}
                 direction="row"
                 justify="flex-start"
-              // alignItems="flex-start"
+                // alignItems="flex-start"
               >
                 <CollectionCard />
                 <CollectionCard />
                 <CollectionCard />
                 <CollectionCard />
-
               </Grid>
 
               {/* </Grid> */}
             </div>
           </Container>
-
         </div>
-      </div >
-
+      </div>
     </>
   );
 }

@@ -13,7 +13,7 @@ import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
-import { Card } from "@material-ui/core";
+import { Card, Grid } from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
 // COMPONENTS
 // import SwipeableViews from "react-swipeable-views";
@@ -22,6 +22,7 @@ import Carousel from "react-multi-carousel";
 import OnSaleCard from "../Cards/OnSaleCard";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import { nftImage, auctionImg } from "../../assets/js/images.js";
+import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 // CONTENT
 function TabPanel(props) {
@@ -68,16 +69,18 @@ const paginationStyles = makeStyles({
   },
   label: {
     textTransform: "capitalize",
+    color: "#fff",
   },
   body2: {
     fontWeight: "bold",
+    color: "#fff",
     fontFamily: "orbitron",
   },
 });
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
     // width: 500,
   },
   tabsProps: {
@@ -85,10 +88,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#fff",
-    // backgroundImage:
-    //   "linear-gradient(180deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
-    // WebkitBackgroundClip: "text",
-    // WebkitTextFillColor: "transparent",
   },
   tabPanelProps: {
     backgroundColor: "#000",
@@ -103,36 +102,40 @@ const customTheme = createMuiTheme({
   },
   typography: {
     fontFamily: "orbitron",
+    color: "#fff",
   },
   overrides: {
     MuiTablePagination: {
       caption: {
         fontWeight: "bold",
+        color: "#fff",
       },
       input: {
         fontWeight: "bold",
+        color: "#fff",
+      },
+      selectIcon: {
+        color: "#fff",
+      },
+      actions: {
+        color: "#fff",
+      },
+    },
+    MuiIconButton: {
+      root: {
+        color: "#fff",
+      },
+      "&$disabled": {
+        color: "#fff",
+      },
+    },
+    Mui: {
+      "&$disabled": {
+        color: "#fff",
       },
     },
   },
 });
-
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 3,
-    paritialVisibilityGutter: 60,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    paritialVisibilityGutter: 50,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    paritialVisibilityGutter: 30,
-  },
-};
 
 // COMPONENT FUNCTION
 const MarketPlaceTabs = (props) => {
@@ -140,6 +143,8 @@ const MarketPlaceTabs = (props) => {
   const paginationClasses = paginationStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
+  const [page, setPage] = useState(2);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   //   Handlers
   const handleChange = (event, newValue) => {
@@ -198,15 +203,10 @@ const MarketPlaceTabs = (props) => {
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "fixedPriceDrops" ? ( */}
                 {props.open ? (
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    <Spinner
-                      animation="border"
-                      role="status"
-                      style={{ color: "#fff" }}
-                    ></Spinner>
-                    <span style={{ color: "#fff" }} className="sr-only">
-                      Loading...
-                    </span>
+                  <div className="row no-gutters">
+                    <div className="col-12">
+                      <WhiteSpinner />
+                    </div>
                   </div>
                 ) : props.cubeDataLength === 0 &&
                   props.cubeAuctionDataLength === 0 ? (
@@ -222,30 +222,28 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
                   </Card>
                 ) : props.cubeDataLength !== 0 &&
                   props.cubeData !== "undefined" ? (
-                  <div className="row no-gutters w-100 align-items-center position-relative">
-                    <div className="my-3">
-                      {props.cubeData.map((i, index) => (
-                        <div
-                          className="col-12 col-sm-6 col-lg-3 d-inline-block my-3"
-                          key={index}
-                        >
-                          <OnSaleCard
-                            i={i}
-                            index={index}
-                            userSaleData={props.userSaleData}
-                            image={nftImage[index]}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                  <div className="row no-gutters w-100 align-items-center position-relative ">
+                    {props.cubeData.map((i, index) => (
+                      <div
+                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block "
+                        key={index}
+                      >
+                        <OnSaleCard
+                          i={i}
+                          index={index}
+                          userSaleData={props.userSaleData}
+                        />
+                      </div>
+                    ))}
                   </div>
                 ) : (
                   <Card
@@ -260,8 +258,9 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
@@ -300,15 +299,10 @@ const MarketPlaceTabs = (props) => {
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "bidableDrops" ? ( */}
                 {props.open ? (
-                  <div align="center" className="text-center">
-                    <Spinner
-                      animation="border"
-                      role="status"
-                      style={{ color: "#fff" }}
-                    ></Spinner>
-                    <span style={{ color: "#fff" }} className="sr-only">
-                      Loading...
-                    </span>
+                  <div className="row no-gutters">
+                    <div className="col-12">
+                      <WhiteSpinner />
+                    </div>
                   </div>
                 ) : props.cubeDataLength === 0 &&
                   props.cubeAuctionDataLength === 0 ? (
@@ -324,31 +318,29 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
                   </Card>
                 ) : props.cubeAuctionDataLength !== 0 &&
                   props.cubeAuctionData !== "undefined" ? (
-                  <div className="row no-gutters w-100 align-items-center position-relative">
-                    <div className="my-3">
-                      {props.cubeAuctionData.map((i, index) => (
-                        <div
-                          className="col-12 col-sm-6 col-lg-3 d-inline-block my-3"
-                          key={index}
-                        >
-                          <OnAuctionCard
-                            i={i}
-                            index={index}
-                            userAuctionData={props.userAuctionData}
-                            image={auctionImg[index]}
-                            marketTabs={true}
-                          />
-                        </div>
-                      ))}
-                    </div>
+                  <div className="row no-gutters w-100 align-items-center position-relative ">
+                    {props.cubeAuctionData.map((i, index) => (
+                      <div
+                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block "
+                        key={index}
+                      >
+                        <OnAuctionCard
+                          i={i}
+                          index={index}
+                          userAuctionData={props.userAuctionData}
+                          marketTabs={true}
+                        />
+                      </div>
+                    ))}
                   </div>
                 ) : (
                   <Card
@@ -363,8 +355,9 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>

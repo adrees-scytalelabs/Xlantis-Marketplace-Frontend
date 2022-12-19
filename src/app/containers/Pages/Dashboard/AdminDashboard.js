@@ -9,7 +9,7 @@ import "../../../assets/css/style.css";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../../assets/img/logo.png"
+import Logo from "../../../assets/img/logo.png";
 import DropApproval from "./Admin/DropApproval";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
@@ -41,8 +41,6 @@ import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import transakSDK from "@transak/transak-sdk";
 
-
-
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
   "Authorization"
 )}`;
@@ -64,14 +62,14 @@ function AdminDashboard(props) {
   };
 
   const settings = {
-    apiKey: 'cf5868eb-a8bb-45c8-a2db-4309e5f8b412',  // Your API Key
-    environment: 'STAGING', // STAGING/PRODUCTION
-    defaultCryptoCurrency: 'ETH',
-    themeColor: '000000', // App theme color
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
+    environment: "STAGING", // STAGING/PRODUCTION
+    defaultCryptoCurrency: "ETH",
+    themeColor: "000000", // App theme color
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
-  }
+  };
 
   let [activeTab, setActiveTab] = useState({
     dashboard: "active",
@@ -84,7 +82,7 @@ function AdminDashboard(props) {
     settings: "",
     changePassword: "",
     newNFT: "",
-    dropApproval : "",
+    dropApproval: "",
     newCube: "",
     myDrops: "",
     newDrop: "",
@@ -94,7 +92,7 @@ function AdminDashboard(props) {
     myNFTs: "",
     myCubes: "",
     newRandomDrop: "",
-    marketPlace: ""
+    marketPlace: "",
   });
 
   function openTransak() {
@@ -104,23 +102,22 @@ function AdminDashboard(props) {
 
     // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
-        console.log(data)
+      console.log(data);
     });
 
     // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
-        console.log(eventData);
-        transak.close();
+      console.log(eventData);
+      transak.close();
     });
 
     // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-        console.log(orderData);
-        window.alert("Payment Success")
-        transak.close();
+      console.log(orderData);
+      window.alert("Payment Success");
+      transak.close();
     });
   }
-
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
@@ -134,7 +131,7 @@ function AdminDashboard(props) {
             // onClick={(e) => e.preventDefault()}
             style={{ color: "rgb(167,0,0)" }}
           >
-            <img src={Logo} alt="Logo" width="100" height="100" />
+            <img src={Logo} alt="Logo" width="90" />
             {/* Robot Drop */}
           </a>
           <a
@@ -143,7 +140,7 @@ function AdminDashboard(props) {
             // onClick={(e) => e.preventDefault()}
             style={{ color: "rgb(167,0,0)" }}
           >
-            <img src={Logo} alt="Logo" width="100" height="100" />
+            <img src={Logo} alt="Logo" width="90" />
             {/* Robot Drop */}
           </a>
         </div>
@@ -167,9 +164,7 @@ function AdminDashboard(props) {
         {/* <!-- Header Right Menu --> */}
         <ul className="nav user-menu">
           {/* <!-- User Menu --> */}
-        
-          
-          
+
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
@@ -199,17 +194,15 @@ function AdminDashboard(props) {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <span  style= {{color : 'white'}}onClick = {openTransak} >
-                
-                      Buy Crypto
+                  <span style={{ color: "white" }} onClick={openTransak}>
+                    Buy Crypto
                   </span>
-                 
                 </Dropdown.Item>
-                <Dropdown.Item >
+                <Dropdown.Item>
                   <Link
                     onClick={() => {
                       Cookies.remove("Authorization");
-                      localStorage.removeItem("Address")
+                      localStorage.removeItem("Address");
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");
@@ -340,7 +333,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>
-            
+
             <Route path={`${path}`}>
               <AdminDashboardDefaultScreen
                 match={props.match}

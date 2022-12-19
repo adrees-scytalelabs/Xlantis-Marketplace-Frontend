@@ -52,39 +52,46 @@ import { ethers } from "ethers";
 
 const makeTheme = createMuiTheme({
   overrides: {
+    MuiTextField: {
+      root: {
+        border: "1px solid #fff",
+      },
+    },
     MuiOutlinedInput: {
       root: {
-        borderRadius: "12px !important",
-        fontFamily: "poppins",
-        color: "#333",
-        border: "1px solid rgba(0, 0, 0, 0.05)",
-        boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%)",
-        "&$focused": {
-          border: "none",
-        },
+        fontFamily: "orbitron",
+        color: "#999",
+        border: "1px solid #fff",
+        "&$focused": {},
       },
     },
     MuiInput: {
       root: {
-        borderRadius: "12px !important",
-        fontFamily: "poppins",
-        color: "#333",
-        border: "1px solid rgba(0, 0, 0, 0.05)",
-        boxShadow: "0px 2px 1px -1px rgb(0 0 0 / 20%)",
-        padding: "0.75rem 1.25rem !important",
-        "&$focused": {
-          border: "none",
-        },
+        fontFamily: "orbitron",
+        color: "#999",
+        border: "1px solid #fff)",
+        padding: "6px 15px !important",
+        "&$focused": {},
       },
       underline: {
-        "&$before": {
-          border: "none",
+        "&$before": {},
+        "&::after": {
+          border: "none !important",
         },
       },
     },
     MuiAutocomplete: {
-      inputRoot: {
-        borderRadius: "12px",
+      inputRoot: {},
+    },
+    MuiIconButton: {
+      root: {
+        color: "#999 !important",
+      },
+    },
+    MuiFormControlLabel: {
+      label: {
+        color: "white",
+        fontFamily: "inter",
       },
     },
   },
@@ -125,9 +132,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   nftInput: {
-    borderRadius: "12px",
-    fontFamily: "poppins",
-    boxShadow: "3px 1px -1px rgb(0 0 0 / 10%)",
+    fontFamily: "orbitron",
   },
 }));
 
@@ -272,7 +277,7 @@ function NewNFT(props) {
         // ];
         console.log(
           "response.data.collectionData",
-          response.data.collectionData[1].nftContractAddress
+          response.data.collectionData[0].nftContractAddress
         );
         setCollectionTypes(response.data.collectionData);
       },
@@ -1339,7 +1344,7 @@ function NewNFT(props) {
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
@@ -1659,7 +1664,7 @@ function NewNFT(props) {
                               // label="Rarity"
                               // variant="outlined"
                               placeholder="Rarity"
-                              style={{ borderRadius: 12 }}
+                              // style={{ borderRadius: 12 }}
                               // InputProps={{
                               //   className: classes.nftInput,
                               // }}
@@ -1777,102 +1782,114 @@ function NewNFT(props) {
                                         </Dialog> */}
                   </div>
 
-                  {tokenList.length > 0 ? (
-                    <FormControl
-                      component="fieldset"
-                      style={{
-                        color: "#04111D",
-                        fontFamily: "poppins",
-                        fontWeight: "bold",
-                      }}
-                    >
-                      <label
-                        component="legend"
-                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                  <ThemeProvider theme={makeTheme}>
+                    {tokenList.length > 0 ? (
+                      <FormControl
+                        component="fieldset"
+                        style={{
+                          color: "#fff",
+                          fontFamily: "orbitron",
+                          fontWeight: "bold",
+                        }}
                       >
-                        Select NFT Type
-                      </label>
-                      <RadioGroup
-                        row
-                        aria-label="position"
-                        name="position"
-                        defaultValue="top"
-                      >
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          disabled
-                          value="ERC721"
-                          onChange={() => {
-                            setNFTType("721");
-                            getCollections("721");
-                            // checked={saleType === 'auction'}
-                          }}
-                          checked={NFTType === "721"}
-                          control={<Radio color="secondary" />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                          }
-                        />
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          disabled
-                          value="ERC1155"
-                          onChange={() => {
-                            setNFTType("1155");
-                            getCollections("1155");
-                          }}
-                          checked={NFTType === "1155"}
-                          control={<Radio color="secondary" />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
-                          }
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  ) : (
-                    <FormControl component="fieldset">
-                      <lable
-                        component="legend"
-                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                      >
-                        Select NFT Type
-                      </lable>
-                      <RadioGroup
-                        row
-                        aria-label="position"
-                        name="position"
-                        defaultValue="top"
-                      >
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          value="ERC721"
-                          onChange={() => {
-                            setNFTType("721");
-                            getCollections("721");
-                            // checked={saleType === 'auction'}
-                          }}
-                          checked={NFTType === "721"}
-                          control={<Radio color="secondary" />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                          }
-                        />
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          value="ERC1155"
-                          onChange={() => {
-                            setNFTType("1155");
-                            getCollections("1155");
-                          }}
-                          checked={NFTType === "1155"}
-                          control={<Radio color="secondary" />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
-                          }
-                        />
-                      </RadioGroup>
-                    </FormControl>
-                  )}
+                        <label
+                          component="legend"
+                          style={{ fontWeight: "bold", fontFamily: "orbitron" }}
+                        >
+                          Select NFT Type
+                        </label>
+                        <RadioGroup
+                          row
+                          aria-label="position"
+                          name="position"
+                          defaultValue="top"
+                        >
+                          <FormControlLabel
+                            style={{ color: "white" }}
+                            disabled
+                            value="ERC721"
+                            onChange={() => {
+                              setNFTType("721");
+                              getCollections("721");
+                              // checked={saleType === 'auction'}
+                            }}
+                            checked={NFTType === "721"}
+                            control={<Radio />}
+                            label={
+                              <span
+                                style={{ fontSize: "0.9rem", color: "white" }}
+                              >
+                                ERC721
+                              </span>
+                            }
+                          />
+                          <FormControlLabel
+                            style={{ color: "white" }}
+                            disabled
+                            value="ERC1155"
+                            onChange={() => {
+                              setNFTType("1155");
+                              getCollections("1155");
+                            }}
+                            checked={NFTType === "1155"}
+                            control={<Radio color="secondary" />}
+                            label={
+                              <span
+                                style={{ fontSize: "0.9rem", color: "white" }}
+                              >
+                                ERC1155
+                              </span>
+                            }
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    ) : (
+                      <FormControl component="fieldset">
+                        <lable
+                          component="legend"
+                          style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                        >
+                          Select NFT Type
+                        </lable>
+                        <RadioGroup
+                          row
+                          aria-label="position"
+                          name="position"
+                          defaultValue="top"
+                        >
+                          <FormControlLabel
+                            style={{ color: "black" }}
+                            value="ERC721"
+                            onChange={() => {
+                              setNFTType("721");
+                              getCollections("721");
+                              // checked={saleType === 'auction'}
+                            }}
+                            checked={NFTType === "721"}
+                            control={<Radio color="secondary" />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>ERC721</span>
+                            }
+                          />
+                          <FormControlLabel
+                            style={{ color: "black" }}
+                            value="ERC1155"
+                            onChange={() => {
+                              setNFTType("1155");
+                              getCollections("1155");
+                            }}
+                            checked={NFTType === "1155"}
+                            control={<Radio color="secondary" />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>
+                                ERC1155
+                              </span>
+                            }
+                          />
+                        </RadioGroup>
+                      </FormControl>
+                    )}
+                  </ThemeProvider>
 
                   {tokenList.length > 0 ? (
                     <div className="form-group">
@@ -2098,7 +2115,7 @@ function NewNFT(props) {
               </div>
             </form>
           </div>
-          <div className="row no-gutters">
+          <div className="row no-gutters w-100">
             <div className="col-md-12 col-lg-6">
               {/* <!-- Change Password Form --> */}
               <form>

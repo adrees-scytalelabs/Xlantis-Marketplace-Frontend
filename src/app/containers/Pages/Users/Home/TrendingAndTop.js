@@ -16,6 +16,7 @@ import Box from "@material-ui/core/Box";
 import { Card } from "@material-ui/core";
 // COMPONENTS
 import FixedPriceDrops from "./FixedPriceDrops";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 // import SwipeableViews from "react-swipeable-views";
 import TrendingCollectionsHome from "../../../../components/tables/TrendingCollectionsHome";
 import { Spinner } from "react-bootstrap";
@@ -175,13 +176,10 @@ const TrendingAndTop = (props) => {
                 {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -196,25 +194,25 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
                             key={index}
                           >
                             <OnSaleCard
                               i={i}
                               index={index}
                               userSaleData={props.userSaleData}
-                              image={nftImage[index]}
                             />
                           </div>
                         ))}
@@ -223,13 +221,10 @@ const TrendingAndTop = (props) => {
                   )
                 ) : props.type === "bidableDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -244,25 +239,25 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeAuctionData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 my-3 d-inline-block"
                             key={index}
                           >
                             <OnAuctionCard
                               i={i}
                               index={index}
                               userAuctionData={props.userAuctionData}
-                              image={auctionImg[index + 1]}
                             />
                           </div>
                         ))}
@@ -281,8 +276,9 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
@@ -298,13 +294,10 @@ const TrendingAndTop = (props) => {
                 {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -319,18 +312,19 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 my-3 d-inline-block"
                             key={index}
                           >
                             <OnSaleCard
@@ -346,13 +340,10 @@ const TrendingAndTop = (props) => {
                   )
                 ) : props.type === "bidableDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -367,18 +358,19 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeAuctionData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
                             key={index}
                           >
                             <OnAuctionCard
@@ -404,8 +396,9 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
@@ -416,18 +409,15 @@ const TrendingAndTop = (props) => {
             </div>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <div className="row no-gutters">
+            <div className="row no-gutters w-100">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -442,18 +432,19 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 d-inline-block my-3"
                             key={index}
                           >
                             <OnSaleCard
@@ -469,13 +460,10 @@ const TrendingAndTop = (props) => {
                   )
                 ) : props.type === "bidableDrops" ? (
                   props.open ? (
-                    <div align="center" className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#ff0000" }}
-                      ></Spinner>
-                      <span className="sr-only spinnerWhite">Loading...</span>
+                    <div className="row no-gutters">
+                      <div className="col-12">
+                        <WhiteSpinner />
+                      </div>
                     </div>
                   ) : props.cubeDataLength === 0 &&
                     props.cubeAuctionDataLength === 0 ? (
@@ -490,18 +478,19 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        color="textSecondary"
+                        // color="textSecondary"
                         component="p"
+                        style={{ color: "#fff" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative">
+                    <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
                         {props.cubeAuctionData.map((i, index) => (
                           <div
-                            className="col-sm-6 col-lg-4 d-inline-block"
+                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
                             key={index}
                           >
                             <OnAuctionCard
@@ -527,8 +516,9 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      color="textSecondary"
+                      // color="textSecondary"
                       component="p"
+                      style={{ color: "#fff" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>

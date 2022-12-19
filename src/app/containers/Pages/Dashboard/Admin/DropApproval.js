@@ -66,6 +66,15 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  tableHeader: {
+    color: "#000",
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
+  collectionTitle: {
+    color: "#fff",
+    fontSize: "1rem",
+  },
 }));
 
 function DropApproval(props) {
@@ -249,55 +258,102 @@ function DropApproval(props) {
   };
 
   return (
-    <div className="card">
-      <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
-        <li className="breadcrumb-item">
-          <a href="/">Dashboard</a>
-        </li>
-        <li className="breadcrumb-item active">Drop Approval</li>
-      </ul>
+    <div className="backgroundDefault">
+      {/* Page Header */}
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">Drop Approval</h3>
+            <ul className="breadcrumb">
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item active">Drop Approval</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {/* Page Content */}
       <div className="card-body">
         <div className="row">
           {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
               <tr>
-                <th>Collection</th>
-                <th>Auction</th>
-                <th>Fixed Price</th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Collection
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-center align-items-center">
+                    Auction
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-center align-items-center">
+                    Fixed Price
+                  </div>
+                </th>
               </tr>
             </thead>
             {collections.map((i, index) => (
               <tbody>
                 <tr>
-                  <td>{i.name}</td>
+                  <td className={classes.collectionTitle}>{i.name}</td>
                   <td>
-                    {/* <div style={{backgroundColor : "#4caf50"}}> */}
+                    {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isAuctionDropVerified ? (
-                      <Button style={{ color: "#4caf50" }} disabled>
-                        <span>Approved</span> <i className="fas fa-check"></i>{" "}
-                      </Button>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button disabled>
+                          <span className="text-white">Approved </span>
+                          <i
+                            className="fas fa-check ml-2"
+                            style={{ color: "#28a760" }}
+                          ></i>{" "}
+                        </Button>
+                      </div>
                     ) : (
-                      <Button
-                        style={{ backgroundColor: "#4caf50" }}
-                        onClick={(e) => {
-                          giveAuctionApproval(i);
-                        }}
-                      >
-                        Approve
-                      </Button>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          style={{
+                            backgroundColor: "#28a760",
+                            color: "#fff",
+                            padding: "6px 24px",
+                          }}
+                          onClick={(e) => {
+                            giveAuctionApproval(i);
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
                     )}
                     {/* </div> */}
                   </td>
                   <td>
                     {i.isFixedPriceDropVerified ? (
-                      <Button style={{ color: "#4caf50" }} disabled>
-                        <span>Approved</span> <i className="fas fa-check"></i>{" "}
-                      </Button>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button disabled>
+                          <span style={{ color: "#fff" }}>Approved</span>{" "}
+                          <i
+                            className="fas fa-check ml-2"
+                            style={{ color: "#28a760" }}
+                          ></i>{" "}
+                        </Button>
+                      </div>
                     ) : (
-                      <Button style={{ backgroundColor: "#4caf50" }}>
-                        Approve
-                      </Button>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          style={{
+                            backgroundColor: "#28a760",
+                            padding: "6px 24px",
+                            color: "#fff",
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
                     )}
                   </td>
                 </tr>

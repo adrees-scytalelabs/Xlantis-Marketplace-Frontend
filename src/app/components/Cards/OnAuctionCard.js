@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "12px",
     boxShadow: "none",
   },
+  media: {
+    // height: 0,
+    width: "100%",
+    paddingTop: "100%", // 16:9
+  },
   cardTitle: {
     color: "#fff",
     fontFamily: "orbitron",
@@ -60,68 +65,70 @@ const OnAuctionCard = (props) => {
   return (
     <div className="col-12 p-2" key={props.index}>
       {/* <Paper elevation={1}> */}
-      <Card id="marketCardProps" style={{ height: "480px" }}>
-        <div className="row no-gutters mb-3">
+      <Card id="marketCardProps">
+        <div className="row no-gutters">
           <Link
-            to={
-              "/marketPlace/Cubes/Nfts/userauction/" +
-              props.i._id +
-              "/" +
-              props.userAuctionData[props.index]._id
-            }
+            // to={
+            //   "/marketPlace/Cubes/Nfts/userauction/" +
+            //   props.i._id +
+            //   "/" +
+            //   props.userAuctionData[props.index]._id
+            // }
+            to="/fixdropnft"
             style={{ width: "100%" }}
           >
-            <CardMedia
-            //   className={classes.media}
-            // image={img}
-            >
-              <div className="nftImgWrapper">
-                <img
-                  src={props.image.url}
+            <div className="nftImgWrapper">
+              <CardMedia
+                className={styles.media}
+                image={props.i.image}
+                title="Drop Image"
+              />
+              {/* <img
+                  src={props.i.image}
                   alt="a sample nft"
                   className="myNFTImg"
-                />
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    zIndex: "1000",
-                    // height: 100,
-                    width: "100%",
-                    // border: "1px solid orange",
-                  }}
-                  className="p-3"
-                >
-                  <div className="row no-gutters justify-content-between align-itmes-end">
-                    {/* Creator Details */}
-                    <div className="col-2 w-100">
-                      {/* Creator Image */}
-                      <Link to="/">
-                        <div
+                /> */}
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: 0,
+                  left: 0,
+                  zIndex: "1000",
+                  // height: 100,
+                  width: "100%",
+                  // border: "1px solid orange",
+                }}
+                className="p-3"
+              >
+                <div className="row no-gutters justify-content-between align-itmes-end">
+                  {/* Creator Details */}
+                  <div className="col-2 w-100">
+                    {/* Creator Image */}
+                    <Link to="/">
+                      <div
+                        style={{
+                          // borderRadius: 12,
+                          backgroundColor: "#000",
+                          // height: 80,
+                        }}
+                      >
+                        <img
+                          src={kangaroo}
+                          alt="a sample nft"
                           style={{
-                            // borderRadius: 12,
-                            backgroundColor: "#000",
-                            // height: 80,
+                            width: "85px",
+                            height: "85px",
+                            objectFit: "cover",
+                            // borderRadius: "12px",
                           }}
-                        >
-                          <img
-                            src={kangaroo}
-                            alt="a sample nft"
-                            style={{
-                              width: "85px",
-                              height: "85px",
-                              objectFit: "cover",
-                              // borderRadius: "12px",
-                            }}
-                          />
-                        </div>
-                        {/* Creator Name */}
-                      </Link>
-                    </div>
-                    {/* Explore Button */}
-                    <div className="col w-100 text-right align-self-end">
-                      {/* <CardActions
+                        />
+                      </div>
+                      {/* Creator Name */}
+                    </Link>
+                  </div>
+                  {/* Explore Button */}
+                  <div className="col w-100 text-right align-self-end">
+                    {/* <CardActions
                         style={{
                           marginTop: "5px",
                           // padding: "12px 0px",
@@ -129,32 +136,32 @@ const OnAuctionCard = (props) => {
                         }}
                       > */}
 
-                      <Link
-                        to={
-                          "/marketPlace/Cubes/Nfts/userauction/" +
-                          props.i._id +
-                          "/" +
-                          props.userAuctionData[props.index]._id
-                        }
-                      >
-                        <button className="exploreBtn">
-                          Explore{" "}
-                          <span>
-                            <OpenInNewIcon />
-                          </span>
-                        </button>
-                      </Link>
-                      {/* </CardActions> */}
-                    </div>
+                    <Link
+                      // to={
+                      //   "/marketPlace/Cubes/Nfts/userauction/" +
+                      //   props.i._id +
+                      //   "/" +
+                      //   props.userAuctionData[props.index]._id
+                      // }
+                      to="/fixdropnft"
+                    >
+                      <button className="exploreBtn">
+                        Explore{" "}
+                        <span>
+                          <OpenInNewIcon />
+                        </span>
+                      </button>
+                    </Link>
+                    {/* </CardActions> */}
                   </div>
                 </div>
               </div>
-              {/* <div className="mainDiv">
+            </div>
+            {/* <div className="mainDiv">
                   <div className="square"></div>
                   <div className="square2"></div>
                   <div className="square3"></div>
                 </div> */}
-            </CardMedia>
           </Link>
           <CardContent style={{ paddingBottom: 0, width: "100%" }}>
             <div
@@ -210,7 +217,7 @@ const OnAuctionCard = (props) => {
                   padding: "5px",
                   border: "1px solid #ccc",
                   marginTop: "0.75rem",
-                  fontFamily: "poppins",
+                  fontFamily: "orbitron",
                 }}
               >
                 <CardHeader
@@ -221,7 +228,7 @@ const OnAuctionCard = (props) => {
                       style={{
                         borderRadius: "12px",
                         border: "1px solid #777",
-                        fontFamily: "poppins",
+                        fontFamily: "orbitron",
                       }}
                     />
                   }
@@ -243,7 +250,9 @@ const OnAuctionCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))} */}
                   <Alert severity="warning" className={styles.textAlert}>
-                    <span style={{ fontFamily: "poppins", fontWeight: "bold" }}>
+                    <span
+                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                    >
                       Auction Starts At:{" "}
                     </span>
                     <span>
@@ -254,7 +263,7 @@ const OnAuctionCard = (props) => {
                             props.userAuctionData[props.index].auctionStartsAt
                           )
                         }
-                        style={{ fontFamily: "poppins" }}
+                        style={{ fontFamily: "orbitron" }}
                       ></Countdown>
                     </span>
                   </Alert>
@@ -268,7 +277,9 @@ const OnAuctionCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert severity="warning" className={styles.textAlert}>
-                    <span style={{ fontFamily: "poppins", fontWeight: "bold" }}>
+                    <span
+                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                    >
                       Auction Ends At:{" "}
                     </span>
                     <span>
@@ -279,7 +290,7 @@ const OnAuctionCard = (props) => {
                             props.userAuctionData[props.index].auctionEndsAt
                           )
                         }
-                        style={{ fontFamily: "poppins" }}
+                        style={{ fontFamily: "orbitron" }}
                       ></Countdown>
                     </span>
                   </Alert>

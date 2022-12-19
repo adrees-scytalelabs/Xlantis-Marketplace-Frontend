@@ -11,6 +11,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 // Images
 import { nftImage } from "../../../../assets/js/images";
+// COMPONENTS
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 // CUSTOM STYLES
 const useStyles = makeStyles({
@@ -36,9 +38,30 @@ const makeTheme = createMuiTheme({
     MuiTablePagination: {
       caption: {
         fontWeight: "bold",
+        color: "#fff",
+      },
+      base: {
+        border: 0,
+        color: "#fff",
+        padding: "0 30px",
+        fontWeight: "bold",
+        fontFamily: "orbitron",
+      },
+      label: {
+        textTransform: "capitalize",
+        color: "#fff",
       },
       input: {
         fontWeight: "bold",
+        color: "#fff",
+      },
+      body2: {
+        fontWeight: "bold",
+        color: "#fff",
+        fontFamily: "orbitron",
+      },
+      selectIcon: {
+        color: "#fff",
       },
     },
   },
@@ -64,9 +87,9 @@ function MyNFTs(props) {
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
-        let  nfts = response.data.NFTdata;
-        let newState = nfts.map(obj => {
-              return {...obj, isPlaying: false};
+        let nfts = response.data.NFTdata;
+        let newState = nfts.map((obj) => {
+          return { ...obj, isPlaying: false };
         });
         console.log("NFTS", nfts);
         console.log("Updated", newState);
@@ -130,13 +153,13 @@ function MyNFTs(props) {
     setPage(0);
   };
 
+  console.log("the tokenList length: ", tokenList.length);
+  console.log(tokenList.length !== 0 && "page-height");
+
   return (
-    <div
-      className="backgroundDefault position-relative"
-      style={{ minHeight: "100vh" }}
-    >
+    <div className="backgroundDefault position-relative">
       {/* Page Header */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
@@ -150,19 +173,14 @@ function MyNFTs(props) {
         </div>
       </div>
       {/* Page Content */}
-      <div className="card-body px-0">
+      <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         {/* <form> */}
         <div className="form-group">
           {open ? (
-            <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              ></Spinner>
-              <span style={{ color: "#ff0000" }} className="sr-only">
-                Loading...
-              </span>
+            <div className="row no-gutters justify-content-center align-items-center">
+              <div className="col-12">
+                <WhiteSpinner />
+              </div>
             </div>
           ) : tokenList.length === 0 ? (
             <Card
@@ -171,28 +189,26 @@ function MyNFTs(props) {
                 padding: "40px",
                 marginTop: "20px",
                 marginBottom: "20px",
+                backgroundColor: "#000",
               }}
             >
               <Typography
                 variant="body2"
                 className="text-center"
-                color="textSecondary"
+                // color="textSecondary"
                 component="p"
+                style={{ color: "#fff" }}
               >
                 <strong>No items to display </strong>
               </Typography>
             </Card>
           ) : (
-            <Grid
-              container
-              spacing={2}
-              direction="row"
-              justify="flex-start"
-              item
-            >
-              {tokenList.map((i, index) => {
-                return <NFTCard data={i} key={index} image={nftImage[index]} />;
-              })}
+            <Grid container spacing={2} direction="row" justify="flex-start">
+              {tokenList.map((i, index) => (
+                <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
+                  <NFTCard data={i} image={nftImage[index]} />
+                </Grid>
+              ))}
             </Grid>
           )}
         </div>

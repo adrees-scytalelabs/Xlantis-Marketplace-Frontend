@@ -1,10 +1,13 @@
 import React from "react";
 
-
 function Contact() {
   return (
-    <div className="container-fluid" style={{ paddingTop: "170px" }} position="absolute">
-      <div className="page-header">
+    <div
+      className="container-fluid"
+      style={{ paddingTop: "170px" }}
+      position="absolute"
+    >
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row" style={{ justifyContent: "center" }}>
           <div className="col-12 col-md-7">
             {/* <!-- Contact Form --> */}

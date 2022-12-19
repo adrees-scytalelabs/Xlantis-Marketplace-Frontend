@@ -90,15 +90,19 @@ function MarketPlace(props) {
   return (
     <div className="container-fluid">
       {/* <!-- Page Header --> */}
-      <div className="page-header">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         {/* Section 1 - ON SALE */}
         <div className="row no-gutters justify-content-between align-items-end mt-4 pt-3">
           {/* On Sale */}
-          <h1 className="marketCatHeadings">Fixed Price Drops</h1>
+          <div className="col-12 col-md-6">
+            <h1 className="marketCatHeadings">Fixed Price Drops</h1>
+          </div>
           {/* View Market Place */}
-          <Link to="/marketPlace">
-            <h4 className="marketLinkLeads">View All</h4>
-          </Link>
+          <div className="col-12 col-md-6 text-md-right">
+            <Link to="/marketPlace">
+              <h4 className="marketLinkLeads">View All</h4>
+            </Link>
+          </div>
         </div>
         <hr className="m-0"></hr>
         <div className="row no-gutters w-100">
@@ -155,11 +159,15 @@ function MarketPlace(props) {
         {/* Section 2 ON AUCTION */}
         <div className="row no-gutters justify-content-between align-items-end mt-4 pt-3">
           {/* On Auction */}
-          <h1 className="marketCatHeadings">Bidable Drops</h1>
+          <div className="col-12 col-md-6">
+            <h1 className="marketCatHeadings">Bidable Drops</h1>
+          </div>
           {/* View Market Place */}
-          <Link to="/marketPlace">
-            <h4 className="marketLinkLeads">View All</h4>
-          </Link>
+          <div className="col-12 col-md-6 text-md-right">
+            <Link to="/marketPlace">
+              <h4 className="marketLinkLeads">View All</h4>
+            </Link>
+          </div>
         </div>
         <hr className="m-0"></hr>
         {/* On Auction */}

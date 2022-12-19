@@ -67,7 +67,7 @@ function Drops() {
   return (
     <>
       <div className="container-fluid">
-        <div className="page-header">
+        <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
           <div className="card-body">
             <h3>
               <pre>
