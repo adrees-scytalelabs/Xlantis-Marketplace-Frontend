@@ -208,33 +208,11 @@ function NewDrop(props) {
   };
 
   const handleSubmitEvent = async (e) => {
-    e.preventDefault();
-
-    setIsSaving(true);
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShowNetworkModal();
-    } else {
+    if (nftType === "1155") {
+       
+      e.preventDefault();
+      setIsSaving(true);
       handleShowBackdrop();
-      // const address = Addresses.AuctionAddress;
-      // const abi = CreateAuctionContract;
-      // let tokensId = [];
-      // handleCloseBackdrop();
-      // for (let i = 0; i < types.length; i++) {
-      //     tokensId.push(types[i]._id);
-      // }
-      // if (tokensId.length === 0) {
-      //     let variant = "error";
-      //     enqueueSnackbar('Please Select Cubes to create drop', { variant });
-      //     setIsSaving(false);
-      //     handleCloseBackdrop();
-      // } else
-
       if (name === "") {
         let variant = "error";
         enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
@@ -285,42 +263,8 @@ function NewDrop(props) {
         );
         setIsSaving(false);
         handleCloseBackdrop();
-        // } else if (minimumBid === undefined || minimumBid === null) {
-        //     let variant = "error";
-        //     enqueueSnackbar("Please Enter minimum bid.", { variant });
-        //     setIsSaving(false);
-        //     handleCloseBackdrop();
-        // } else if (bidDelta === undefined || bidDelta === null) {
-        //     let variant = "error";
-        //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
-        //     setIsSaving(false);
-        //     handleCloseBackdrop();
       } else {
         let dropID;
-        // let tokenId = [];
-        // for (let i = 0; i < types.length; i++) {
-        //     tokenId.push(types[i].tokenId);
-        // }
-        // console.log("startTimeStamp", Math.round(startTimeStamp));
-        // console.log("endTimeStamp", endTimeStamp);
-        // console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
-        // var myContractInstance = await new web3.eth.Contract(abi, address);
-        // var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
-        //     console.log('get transaction', err, response);
-        //     if (err !== null) {
-        //         console.log("err", err);
-        //         let variant = "error";
-        //         enqueueSnackbar('User Canceled Transaction', { variant });
-        //         handleCloseBackdrop();
-        //         setIsSaving(false);
-        //         return;
-        //     }
-        // })
-        // .on('receipt', (receipt) => {
-        // console.log("receipt", receipt);
-        // console.log("receipt.events.Transfer.returnValues.tokenId", receipt.events.New_Auction.returnValues.dropId);
-        // let dropId = receipt.events.New_Auction.returnValues.dropId;
-
         let DropData = {
           // tokenId: tokensId,
           // dropId: dropId,
@@ -341,18 +285,6 @@ function NewDrop(props) {
             setDropId(response.data.dropId);
             dropID = response.data.dropId;
             setIsSaving(false);
-
-            // setStartTime(new Date());
-            // setEndTime(new Date());
-            // setName("");
-            // setMinimumBid();
-            // setDescription("");
-            // setTypes([]);
-            // setTypesImages([])
-            // setType("");
-            // setMinimumBid(0);
-            // setBidDelta(0);
-            // setImage(r1);
             handleCloseBackdrop();
             // history.push(`${path}/addNft`);
             history.push({
@@ -383,6 +315,189 @@ function NewDrop(props) {
         );
 
         // })
+      }
+
+
+    }
+    else if (nftType === "721") {
+
+      
+      e.preventDefault();
+
+      setIsSaving(true);
+      await loadWeb3();
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      const network = await web3.eth.net.getNetworkType();
+      if (network !== "private") {
+        setNetwork(network);
+        setIsSaving(false);
+        handleShowNetworkModal();
+      } else {
+        handleShowBackdrop();
+        // const address = Addresses.AuctionAddress;
+        // const abi = CreateAuctionContract;
+        // let tokensId = [];
+        // handleCloseBackdrop();
+        // for (let i = 0; i < types.length; i++) {
+        //     tokensId.push(types[i]._id);
+        // }
+        // if (tokensId.length === 0) {
+        //     let variant = "error";
+        //     enqueueSnackbar('Please Select Cubes to create drop', { variant });
+        //     setIsSaving(false);
+        //     handleCloseBackdrop();
+        // } else
+
+        if (name === "") {
+          let variant = "error";
+          enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+          setIsSaving(false);
+          handleCloseBackdrop();
+        } else if (description === "") {
+          let variant = "error";
+          enqueueSnackbar("Description of the Drop Cannot be Empty.", {
+            variant,
+          });
+          setIsSaving(false);
+          handleCloseBackdrop();
+        } else if (image === r1) {
+          let variant = "error";
+          enqueueSnackbar("Please Select title image for Drop to continue.", {
+            variant,
+          });
+          setIsSaving(false);
+          handleCloseBackdrop();
+        } else if (
+          startTimeStamp === endTimeStamp ||
+          new Date(startTime) === new Date(endTime)
+        ) {
+          let variant = "error";
+          enqueueSnackbar("Auction cannot be Start and End on same time.", {
+            variant,
+          });
+          setIsSaving(false);
+          handleCloseBackdrop();
+        } else if (
+          startTimeStamp > endTimeStamp ||
+          new Date(startTime) > new Date(endTime)
+        ) {
+          let variant = "error";
+          enqueueSnackbar("Auction End time must be greater than Start time.", {
+            variant,
+          });
+          setIsSaving(false);
+          handleCloseBackdrop();
+        } else if (
+          currentTimeStamp >= startTimeStamp ||
+          new Date(Date.now()) >= new Date(startTime)
+        ) {
+          let variant = "error";
+          enqueueSnackbar(
+            "Auction Start time must be greater than Current time.",
+            { variant }
+          );
+          setIsSaving(false);
+          handleCloseBackdrop();
+          // } else if (minimumBid === undefined || minimumBid === null) {
+          //     let variant = "error";
+          //     enqueueSnackbar("Please Enter minimum bid.", { variant });
+          //     setIsSaving(false);
+          //     handleCloseBackdrop();
+          // } else if (bidDelta === undefined || bidDelta === null) {
+          //     let variant = "error";
+          //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
+          //     setIsSaving(false);
+          //     handleCloseBackdrop();
+        } else {
+          let dropID;
+          // let tokenId = [];
+          // for (let i = 0; i < types.length; i++) {
+          //     tokenId.push(types[i].tokenId);
+          // }
+          // console.log("startTimeStamp", Math.round(startTimeStamp));
+          // console.log("endTimeStamp", endTimeStamp);
+          // console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
+          // var myContractInstance = await new web3.eth.Contract(abi, address);
+          // var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
+          //     console.log('get transaction', err, response);
+          //     if (err !== null) {
+          //         console.log("err", err);
+          //         let variant = "error";
+          //         enqueueSnackbar('User Canceled Transaction', { variant });
+          //         handleCloseBackdrop();
+          //         setIsSaving(false);
+          //         return;
+          //     }
+          // })
+          // .on('receipt', (receipt) => {
+          // console.log("receipt", receipt);
+          // console.log("receipt.events.Transfer.returnValues.tokenId", receipt.events.New_Auction.returnValues.dropId);
+          // let dropId = receipt.events.New_Auction.returnValues.dropId;
+
+          let DropData = {
+            // tokenId: tokensId,
+            // dropId: dropId,
+            // MinimumBid: minimumBid * 10 ** 18,
+            // bidDelta: bidDelta * 10 ** 18,
+            title: name,
+            image: image,
+            description: description,
+            startTime: startTime,
+            endTime: endTime,
+            saleType: saleType,
+            dropType: nftType,
+          };
+          console.log("Drop Data", DropData);
+          axios.post("/drop/", DropData).then(
+            (response) => {
+              console.log("drop creation response", response);
+              setDropId(response.data.dropId);
+              dropID = response.data.dropId;
+              setIsSaving(false);
+
+              // setStartTime(new Date());
+              // setEndTime(new Date());
+              // setName("");
+              // setMinimumBid();
+              // setDescription("");
+              // setTypes([]);
+              // setTypesImages([])
+              // setType("");
+              // setMinimumBid(0);
+              // setBidDelta(0);
+              // setImage(r1);
+              handleCloseBackdrop();
+              // history.push(`${path}/addNft`);
+              history.push({
+                pathname: `${path}/addNft`,
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  startTime: startTimeStamp,
+                  endTime: endTimeStamp,
+                  nftType: nftType,
+                },
+              });
+
+              // let variant = "success";
+              // enqueueSnackbar('Drop Created Successfully.', { variant });
+            },
+            (error) => {
+              if (process.env.NODE_ENV === "development") {
+                console.log(error);
+                console.log(error.response);
+              }
+              handleCloseBackdrop();
+
+              setIsSaving(false);
+              let variant = "error";
+              enqueueSnackbar("Unable to Create Drop.", { variant });
+            }
+          );
+
+          // })
+        }
       }
     }
   };
