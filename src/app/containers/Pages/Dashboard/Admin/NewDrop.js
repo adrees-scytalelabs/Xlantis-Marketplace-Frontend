@@ -477,7 +477,7 @@ function NewDrop(props) {
           </div>
         </div>
       </div>
-      <div className="card-body px-0">
+      <div className="card-body p-0">
         <div className="row no-gutters">
           <div className="col-md-12 col-lg-6">
             <form onSubmit={handleSubmitEvent}>
@@ -693,7 +693,7 @@ function NewDrop(props) {
                             setSaleType("auction");
                           }}
                           checked={saleType === "auction"}
-                          control={<Radio />}
+                          control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>Auction</span>
                           }
@@ -705,7 +705,7 @@ function NewDrop(props) {
                             setSaleType("fixed-price");
                           }}
                           checked={saleType === "fixed-price"}
-                          control={<Radio />}
+                          control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>
                               Fixed-Price
@@ -735,7 +735,7 @@ function NewDrop(props) {
                             // checked={saleType === 'auction'}
                           }}
                           checked={nftType === "721"}
-                          control={<Radio />}
+                          control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>ERC721</span>
                           }
@@ -747,7 +747,7 @@ function NewDrop(props) {
                             setNftType("1155");
                           }}
                           checked={nftType === "1155"}
-                          control={<Radio />}
+                          control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
                           }
@@ -866,11 +866,7 @@ function NewDrop(props) {
         </div>
         {isSaving ? (
           <div className="text-center">
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#ff0000" }}
-            >
+            <Spinner animation="border" role="status" style={{ color: "#fff" }}>
               <span className="sr-only">Loading...</span>
             </Spinner>
           </div>

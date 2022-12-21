@@ -15,6 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -75,7 +76,34 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     fontSize: "1rem",
   },
+  approveBtn: {
+    backgroundColor: "#F64D04",
+    color: "#fff",
+    padding: "6px 24px",
+    border: "1px solid #F64D04",
+    borderRadius: "0px 15px",
+    "&$hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
 }));
+
+const makeTheme = createMuiTheme({
+  overrides: {
+    MuiButton: {
+      root: {
+        backgroundColor: "#000",
+        color: "#fff",
+        padding: "10px 30px",
+        border: "1px solid #F64D04",
+        borderRadius: "0px 15px",
+        "&$hover": {
+          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+        },
+      },
+    },
+  },
+});
 
 function DropApproval(props) {
   const classes = useStyles();
@@ -309,18 +337,21 @@ function DropApproval(props) {
                           <span className="text-white">Approved </span>
                           <i
                             className="fas fa-check ml-2"
-                            style={{ color: "#28a760" }}
+                            style={{ color: "#F64D04" }}
                           ></i>{" "}
                         </Button>
                       </div>
                     ) : (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
-                          style={{
-                            backgroundColor: "#28a760",
-                            color: "#fff",
-                            padding: "6px 24px",
-                          }}
+                          className={classes.approveBtn}
+                          // style={{
+                          //   backgroundColor: "#000",
+                          //   color: "#fff",
+                          //   padding: "10px 30px",
+                          //   border: "1px solid #F64D04",
+                          //   borderRadius: "0px 15px",
+                          // }}
                           onClick={(e) => {
                             giveAuctionApproval(i);
                           }}
@@ -338,21 +369,13 @@ function DropApproval(props) {
                           <span style={{ color: "#fff" }}>Approved</span>{" "}
                           <i
                             className="fas fa-check ml-2"
-                            style={{ color: "#28a760" }}
+                            style={{ color: "#F64D04" }}
                           ></i>{" "}
                         </Button>
                       </div>
                     ) : (
                       <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          style={{
-                            backgroundColor: "#28a760",
-                            padding: "6px 24px",
-                            color: "#fff",
-                          }}
-                        >
-                          Approve
-                        </Button>
+                        <Button className={classes.approveBtn}>Approve</Button>
                       </div>
                     )}
                   </td>

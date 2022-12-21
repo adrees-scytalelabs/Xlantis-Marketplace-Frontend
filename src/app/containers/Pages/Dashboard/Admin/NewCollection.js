@@ -676,7 +676,7 @@ function NewCollection(props) {
                           // checked={saleType === 'auction'}
                         }}
                         checked={nftType === "ERC721"}
-                        control={<Radio style={{ color: "#f50057" }} />}
+                        control={<Radio style={{ color: "#fff" }} />}
                         label={
                           <span style={{ fontSize: "0.9rem" }}>ERC721</span>
                         }
@@ -688,7 +688,7 @@ function NewCollection(props) {
                           setNftType("ERC1155");
                         }}
                         checked={nftType === "ERC1155"}
-                        control={<Radio style={{ color: "#f50057" }} />}
+                        control={<Radio style={{ color: "#fff" }} />}
                         label={
                           <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
                         }

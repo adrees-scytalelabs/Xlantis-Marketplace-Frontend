@@ -55,12 +55,13 @@ const makeTheme = createMuiTheme({
     MuiTextField: {
       root: {
         border: "1px solid #fff",
+        borderRadius: 5,
       },
     },
     MuiOutlinedInput: {
       root: {
         fontFamily: "orbitron",
-        color: "#999",
+        color: "#fff",
         border: "1px solid #fff",
         "&$focused": {},
       },
@@ -68,8 +69,9 @@ const makeTheme = createMuiTheme({
     MuiInput: {
       root: {
         fontFamily: "orbitron",
-        color: "#999",
-        border: "1px solid #fff)",
+        color: "#fff",
+        border: "none",
+        borderRadius: 5,
         padding: "6px 15px !important",
         "&$focused": {},
       },
@@ -85,7 +87,7 @@ const makeTheme = createMuiTheme({
     },
     MuiIconButton: {
       root: {
-        color: "#999 !important",
+        color: "#fff !important",
       },
     },
     MuiFormControlLabel: {
@@ -1684,9 +1686,9 @@ function NewNFT(props) {
                     {properties.map((property, index) => {
                       return (
                         <div key={index}>
-                          <Row>
-                            <Col>
-                              <div className="form-group">
+                          <div className="row no-gutters justify-content-md-between align-items-center">
+                            <div className="col-12 col-md-5">
+                              <div className="form-group w-100">
                                 <label>Key</label>
                                 <div className="filter-widget">
                                   <input
@@ -1702,9 +1704,9 @@ function NewNFT(props) {
                                   />
                                 </div>
                               </div>
-                            </Col>
-                            <Col>
-                              <div className="form-group">
+                            </div>
+                            <div className="col-12 col-md-5">
+                              <div className="form-group w-100">
                                 <label>Value</label>
                                 <div className="filter-widget">
                                   <input
@@ -1720,8 +1722,8 @@ function NewNFT(props) {
                                   />
                                 </div>
                               </div>
-                            </Col>
-                            <Col>
+                            </div>
+                            <div className="col-12 col-md-auto text-right">
                               <div className="form-group">
                                 <label>Action</label>
                                 <div className="filter-widget">
@@ -1740,20 +1742,24 @@ function NewNFT(props) {
                                   </Tooltip>
                                 </div>
                               </div>
-                            </Col>
-                          </Row>
+                            </div>
+                          </div>
                         </div>
                       );
                     })}
-                    <Tooltip title="Add a property" placement="right">
-                      <button
-                        className="btn btn-submit btn-lg propsActionBtn mb-4"
-                        // className="btn submit-btn"
-                        onClick={(e) => handleAddProperty(e)}
-                      >
-                        +
-                      </button>
-                    </Tooltip>
+                    <div className="row no-gutters align-items-center justify-content-end">
+                      <div className="col-auto">
+                        <Tooltip title="Add a property" placement="right">
+                          <button
+                            className="btn btn-submit btn-lg propsActionBtn mb-4"
+                            // className="btn submit-btn"
+                            onClick={(e) => handleAddProperty(e)}
+                          >
+                            +
+                          </button>
+                        </Tooltip>
+                      </div>
+                    </div>
                     {/* <Dialog
                                             fullWidth={true}
                                             maxWidth={true}

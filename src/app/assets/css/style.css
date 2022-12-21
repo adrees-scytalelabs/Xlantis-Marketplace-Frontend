@@ -64,7 +64,7 @@ Version      : 1.2
   --bg: #000;
   --border: #fff;
   --borderOrange: #F64D04;
-  --orangeBoxShadow: 0px 0px 20px 5px rgba(255, 156, 65, 0.504);
+  --orangeBoxShadow: 0px 0px 20px 5px rgb(246 77 4 / 35%);
   --text: #fff;
   --orbitron: 'Orbitron', sans-serif;
   --inter: 'Inter', sans-serif;
@@ -130,6 +130,43 @@ color: var(--text);
 
 .mobile_btn {
   color: var(--text) !important;
+}
+
+button.bttn {
+  font-family: var(--orbitron);
+  background-color: #000;
+  color: #fff;
+  border:1px solid var(--borderOrange);
+  padding: 10px 30px;
+  border-radius: 0px 15px;
+  cursor: pointer;
+  transition: all 0.2s ease-in;
+}
+
+button.bttn:hover {
+  box-shadow: var(--orangeBoxShadow);
+}
+
+.table-striped thead tr {
+  background-color: var(--borderOrange);
+  color: var(--text);
+
+}
+
+.table-striped tbody tr {
+  color: var(--text);
+}
+
+.table-hover tbody tr:hover {
+  color: var(--text) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(38, 38, 38, 0.6) !important;
+}
+
+.table-striped tbody tr:nth-of-type(even) {
+  background-color: rgba(0, 0, 0, 0.05) !important;
 }
 
 
@@ -231,46 +268,53 @@ color: var(--text);
 
 .btn.propsActionBtn {
   background-color: var(--bg);
-  border-radius: 0px;
-  border: 1px solid var(--border);
+  border-radius: 0px 15px;
+  border: 1px solid var(--borderOrange);
   color:#fff;
   transition: all 0.5s ease;
 }
 
 .btn.propsActionBtn:hover {
-  /* background-color: var(--text); */
-  /* color: var(--bg); */
+  background-color: var(--bg);
+  color: var(--text);
   /* border: 1px solid var(--border); */
   box-shadow: var(--orangeBoxShadow);
+  border: 1px solid var(--borderOrange);
+
 }
 
 .submit-section button.propsActionBtn {
   /* background-image: var(--linearGradient); */
   background-color: var(--bg);
-  border-radius: 0px;
   border: 1px solid var(--borderOrange);
-  border-radius: 0px 10px;
+  border-radius: 0px 15px;
   color:#fff;
   transition: all 0.5s ease;
+  padding: 10px 30px;
 }
 
 .newNftWrapper .newNftInput, .newNftProps {
   font-family: var(--inter);
   border-radius: 0px;
   background-color: var(--bg);
-  border: 1px solid var(--borderOrange);
-  border-radius: 0px 10px;
+  border: 1px solid var(--border);
+  border-radius: 5px;
   color: var(--text);
   overflow: hidden;
   transition: all ease-in-out 0.5s;
 }
 
 .newNftProps {
+  width: 100%;
   padding: 0.75rem 1.25rem; 
   border: 1px solid var(--border);
 }
 
-.newNftProps:focus, .submit-section button.propsActionBtn:hover {
+.newNftProps:focus {
+
+}
+
+.submit-section button.propsActionBtn:hover {
   /* background-color: var(--text); */
   /* color: #000; */
   box-shadow: var(--orangeBoxShadow);
@@ -307,14 +351,14 @@ select.newNftInput {
   display: inline-block;
   /* background-image: var(--linearGradient); */
   color: #fff;
-  padding: 0.75rem 1.25rem;
+  padding: 10px 30px;
   font-size: 1rem;
   font-family: var(--orbitron);
   font-weight: bold;
   text-align: center;
   width: 220px;
   border: 1px solid var(--borderOrange);
-  border-radius: 0px 10px;
+  border-radius: 0px 15px;
   background-color: var(--bg);
   cursor: pointer;
   margin-top: 1rem;
@@ -322,7 +366,8 @@ select.newNftInput {
 }
 
 .uploadLabel:hover {
-  box-shadow: 0px 0px 20px 5px rgba(255, 156, 65, 0.504);
+  /* box-shadow: 0px 0px 10px 5px rgba(255, 156, 65, 0.504); */
+  box-shadow:  0px 0px 20px 5px rgb(246 77 4 / 35%);
   /* background-color: #fff; */
   /* color: #000; */
 }
@@ -376,7 +421,7 @@ input[type='file'] {
 }
 
 .profile-img img {
-  /* border-radius: 12px; */
+  border-radius: 5px;
   height: 250px;
   width: 220px;
   object-fit: cover;
@@ -991,7 +1036,7 @@ table.table td h2 span {
   background-color: #f7f7f7;
 }
 .table-hover tbody tr:hover td {
-  color: #474648;
+  color: #fff;
 }
 .table-striped thead tr {
   border-color: transparent;
