@@ -7,6 +7,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import StorageIcon from "@material-ui/icons/Storage";
 import Card from "@material-ui/core/Card";
 import Cookies from "js-cookie";
+import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 
 // COMPONENT FUNCTION
 function AdminDashboardDefaultScreen(props) {
@@ -17,6 +18,15 @@ function AdminDashboardDefaultScreen(props) {
   let [totalCollections, setTotalCollections] = useState(0);
   let [hover, setHover] = useState(false);
   let [hoverCollections, setHoverCollections] = useState(false);
+  const [modalOpen, setMOdalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setMOdalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+  };
 
   let getCounts = () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
@@ -166,6 +176,11 @@ function AdminDashboardDefaultScreen(props) {
           </Card>
         </div>
       </div>
+      <div>
+        <button onClick={handleOpenModal} style={{ padding: "1rem" }}>
+          Open Modal
+        </button>
+      </div>
 
       {/* <div className="row mt-5">
         <div className="col-12 col-sm-3">
@@ -235,6 +250,7 @@ function AdminDashboardDefaultScreen(props) {
           </Link>
         </div>
       </div> */}
+      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} />
     </>
   );
 }

@@ -37,6 +37,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import { Web } from "@material-ui/icons";
 import crypto from "crypto";
+import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -198,6 +199,15 @@ function AddNFT(props) {
   let [nftType, setNftType] = useState("");
 
   let [dropInfo, setDropInfo] = useState([]);
+  const [modalOpen, setMOdalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setMOdalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+  };
 
   let getCollections = () => {
     console.log("NFT TYPE", location.state.nftType);
@@ -1168,7 +1178,8 @@ function AddNFT(props) {
           <div className="submit-section">
             <button
               type="button"
-              onClick={(e) => handleSubmitEvent(e)}
+              // onClick={(e) => handleSubmitEvent(e)}
+              onClick={handleOpenModal}
               className="bttn"
             >
               Update Drop
@@ -1193,6 +1204,7 @@ function AddNFT(props) {
         nftDetail={nftDetail}
         handleEdit={handleEdit}
       ></NFTDetailModal>
+      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} />
       {/* <NFTEditModal
                 show={openEditModal}
                 handleClose={handleEditClose}
