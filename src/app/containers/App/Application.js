@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
 import AuctionDrops from "../Pages/Users/AuctionDrops";
 import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
 import DropCubes from "../Pages/Users/Drops/DropCubes";
@@ -65,7 +66,22 @@ function App() {
             }
           />
         );
-      } else if (jwtDecoded.role === "user") {
+      } 
+      else if (jwtDecoded.role === "super-admin") {
+        return (
+          <Route
+            {...rest}
+            render={(props) =>
+              isLoggedIn ? (
+                <SuperAdminDashboard {...props} jwtDecoded={jwtDecoded} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+        );
+      }
+      else if (jwtDecoded.role === "user") {
         return (
           <Route
             {...rest}
@@ -88,6 +104,8 @@ function App() {
     checkLoginStatus();
     if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
       return <Redirect to="/dashboard" />;
+    } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
+      return <Redirect to="/superAdminDashboard" />; 
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;
     } else if (path === "/login") {
@@ -194,6 +212,7 @@ function App() {
           </Route> */}
 
           <PrivateRoute path="/dashboard" />
+          <PrivateRoute path="/superAdminDashboard" />
           <PrivateRoute path="/user/settings">
             <UserSettings></UserSettings>
           </PrivateRoute>
