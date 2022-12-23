@@ -362,7 +362,8 @@ function HeaderHome(props) {
                       className={hoverClassStyle.Community}
                       style={selectedNavStyle.Community}
                     >
-                      Connect Wallet
+                      Login/SignUp
+                      {/* Connect Wallet */}
                     </span>
                   </Link>
                 </>
@@ -484,9 +485,14 @@ function HeaderHome(props) {
                   sx={{ width: 24, height: 24 }}
                 />
                 </div> */}
-                <span style={{ color: "#fff" }} onClick={handleLogin}>
-                  <span style={{ cursor: "pointer" }}>Connect Wallet</span>
-                </span>
+                {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
+                <Link to="/login" style={{ color: "#fff" }}>
+                  <span style={{ cursor: "pointer" }}>
+                    Login/SignUp
+                    {/* Connect Wallet */}
+                    </span>
+                </Link>
+                {/* </span> */}
               </>
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             )}

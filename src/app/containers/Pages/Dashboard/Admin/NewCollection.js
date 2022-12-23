@@ -181,73 +181,57 @@ function NewCollection(props) {
       // console.log("NFT Clone Address: ", cloneContractAddress);
       // console.log("File data while creating collection on backend: ", fileData);
 
-      axios.post("/collection/", fileData).then(
-        async (response) => {
-          console.log("collection creation response", response);
-          setCollectionId(response.data.collection._id);
-          collectionID = response.data.collection._id;
-
-          // let variant = "success";
-          // enqueueSnackbar('New Collection Created Successfully.', { variant });
-          // setCollectionName("");
-          // setCollectionSymbol("");
-          // setCollectionDescription("");
-          // handleCloseBackdrop();
-          setIsSaving(false);
-          let CloneId = getHash(collectionID);
-          if (nftType === "ERC1155") {
-            console.log("ERC1155 COLLECTION CREATION");
-            const abi = Factory1155Contract;
-            const address = Addresses.Factory1155Address;
-            var cloneContractAddress;
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            console.log("ERC1155 Contract", myContractInstance);
-            await myContractInstance.methods
-              .createNFT1155(CloneId, true, 250000)
-              .send({ from: accounts[0] }, (err, response) => {
-                console.log("Get transaction ", err, response);
-                console.log(typeof response);
-                // console.log("Collection ID: ", collectionId);
-                axios
-                  .put(`/collection/txHash/${collectionID}`, {
-                    txHash: response,
-                  })
-                  .then(
-                    (response) => {
-                      console.log(
-                        "Transaction Hash sending on backend response: ",
-                        response
-                      );
-                    },
-                    (error) => {
-                      console.log("Transaction hash on backend error: ", error);
-                    }
-                  );
-                if (err !== null) {
-                  console.log("err", err);
-                  let variant = "error";
-                  enqueueSnackbar("User Canceled Transaction", { variant });
-                  handleCloseBackdrop();
-                  setIsSaving(false);
-                }
-              })
-              .on("receipt", (receipt) => {
-                console.log("receipt", receipt);
-                cloneContractAddress =
-                  receipt.events.CloneCreated.returnValues.cloneAddress;
-                let variant = "success";
-                enqueueSnackbar("New Collection Created Successfully.", {
-                  variant,
-                });
-                setApprovalModalShow(true);
-                setNftContractAddress(cloneContractAddress);
-                setCollectionName("");
-                setCollectionSymbol("");
-                setCollectionDescription("");
-                setFileURL(r1);
-                handleCloseBackdrop();
-              });
-          } else if (nftType === "ERC721") {
+      if (nftType === "ERC1155") {
+        axios.post("/collection/", fileData).then(
+          async (response) => {
+            console.log("collection creation response", response);
+            setCollectionId(response.data.collection._id);
+            collectionID = response.data.collection._id;
+  
+            let variant = "success";
+            enqueueSnackbar('New Collection Created Successfully.', { variant });
+            handleCloseBackdrop();
+            setCollectionName("");
+            setCollectionSymbol("");
+            setCollectionDescription("");
+            setFileURL(r1);
+            setIsSaving(false);
+            // setCollectionName("");
+            // setCollectionSymbol("");
+            // setCollectionDescription("");
+            // handleCloseBackdrop();
+            setIsSaving(false);
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+  
+            let variant = "error";
+            enqueueSnackbar("Unable to Create New Collection.", { variant });
+            handleCloseBackdrop();
+            setCollectionName("");
+            setCollectionSymbol("");
+            setCollectionDescription("");
+            setFileURL(r1);
+            setIsSaving(false);
+          })
+      }
+      else if(nftType === "ERC721") {
+        axios.post("/collection/", fileData).then(
+          async (response) => {
+            console.log("collection creation response", response);
+            setCollectionId(response.data.collection._id);
+            collectionID = response.data.collection._id;
+            let CloneId = getHash(collectionID);
+            // let variant = "success";
+            // enqueueSnackbar('New Collection Created Successfully.', { variant });
+            // setCollectionName("");
+            // setCollectionSymbol("");
+            // setCollectionDescription("");
+            // handleCloseBackdrop();
+            setIsSaving(false);
             console.log("ERC721 COLLECTION CREATION");
             const abi = Factory721Contract;
             const address = Addresses.Factory721Address;
@@ -299,20 +283,151 @@ function NewCollection(props) {
                 setFileURL(r1);
                 handleCloseBackdrop();
               });
-          }
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+  
+            let variant = "error";
+            enqueueSnackbar("Unable to Create New Collection.", { variant });
+            handleCloseBackdrop();
+            setIsSaving(false);
+          })
+      }
+      // axios.post("/collection/", fileData).then(
+      //   async (response) => {
+      //     console.log("collection creation response", response);
+      //     setCollectionId(response.data.collection._id);
+      //     collectionID = response.data.collection._id;
 
-          let variant = "error";
-          enqueueSnackbar("Unable to Create New Collection.", { variant });
-          handleCloseBackdrop();
-          setIsSaving(false);
-        }
-      );
+      //     // let variant = "success";
+      //     // enqueueSnackbar('New Collection Created Successfully.', { variant });
+      //     // setCollectionName("");
+      //     // setCollectionSymbol("");
+      //     // setCollectionDescription("");
+      //     // handleCloseBackdrop();
+      //     setIsSaving(false);
+      //     let CloneId = getHash(collectionID);
+      //     if (nftType === "ERC1155") {
+      //       console.log("ERC1155 COLLECTION CREATION");
+      //       const abi = Factory1155Contract;
+      //       const address = Addresses.Factory1155Address;
+      //       var cloneContractAddress;
+      //       var myContractInstance = await new web3.eth.Contract(abi, address);
+      //       console.log("ERC1155 Contract", myContractInstance);
+      //       await myContractInstance.methods
+      //         .createNFT1155(CloneId, true, 250000)
+      //         .send({ from: accounts[0] }, (err, response) => {
+      //           console.log("Get transaction ", err, response);
+      //           console.log(typeof response);
+      //           // console.log("Collection ID: ", collectionId);
+      //           axios
+      //             .put(`/collection/txHash/${collectionID}`, {
+      //               txHash: response,
+      //             })
+      //             .then(
+      //               (response) => {
+      //                 console.log(
+      //                   "Transaction Hash sending on backend response: ",
+      //                   response
+      //                 );
+      //               },
+      //               (error) => {
+      //                 console.log("Transaction hash on backend error: ", error);
+      //               }
+      //             );
+      //           if (err !== null) {
+      //             console.log("err", err);
+      //             let variant = "error";
+      //             enqueueSnackbar("User Canceled Transaction", { variant });
+      //             handleCloseBackdrop();
+      //             setIsSaving(false);
+      //           }
+      //         })
+      //         .on("receipt", (receipt) => {
+      //           console.log("receipt", receipt);
+      //           cloneContractAddress =
+      //             receipt.events.CloneCreated.returnValues.cloneAddress;
+      //           let variant = "success";
+      //           enqueueSnackbar("New Collection Created Successfully.", {
+      //             variant,
+      //           });
+      //           setApprovalModalShow(true);
+      //           setNftContractAddress(cloneContractAddress);
+      //           setCollectionName("");
+      //           setCollectionSymbol("");
+      //           setCollectionDescription("");
+      //           setFileURL(r1);
+      //           handleCloseBackdrop();
+      //         });
+      //     } else if (nftType === "ERC721") {
+      //       console.log("ERC721 COLLECTION CREATION");
+      //       const abi = Factory721Contract;
+      //       const address = Addresses.Factory721Address;
+      //       var cloneContractAddress;
+      //       var myContractInstance = await new web3.eth.Contract(abi, address);
+      //       console.log("ERC721 Contract", myContractInstance);
+      //       await myContractInstance.methods
+      //         .createNFT721(CloneId, 250000)
+      //         .send({ from: accounts[0] }, (err, response) => {
+      //           console.log("Get transaction ", err, response);
+      //           console.log(typeof response);
+      //           // console.log("Collection ID: ", collectionId);
+      //           axios
+      //             .put(`/collection/txHash/${collectionID}`, {
+      //               txHash: response,
+      //             })
+      //             .then(
+      //               (response) => {
+      //                 console.log(
+      //                   "Transaction Hash sending on backend response: ",
+      //                   response
+      //                 );
+      //               },
+      //               (error) => {
+      //                 console.log("Transaction hash on backend error: ", error);
+      //               }
+      //             );
+      //           if (err !== null) {
+      //             console.log("err", err);
+      //             let variant = "error";
+      //             enqueueSnackbar("User Canceled Transaction", { variant });
+      //             handleCloseBackdrop();
+      //             setIsSaving(false);
+      //           }
+      //         })
+      //         .on("receipt", (receipt) => {
+      //           console.log("receipt", receipt);
+      //           cloneContractAddress =
+      //             receipt.events.CloneCreated.returnValues.cloneAddress;
+      //           let variant = "success";
+      //           enqueueSnackbar("New Collection Created Successfully.", {
+      //             variant,
+      //           });
+      //           setApprovalModalShow(true);
+      //           setNftContractAddress(cloneContractAddress);
+      //           setCollectionName("");
+      //           setCollectionSymbol("");
+      //           setCollectionDescription("");
+      //           setFileURL(r1);
+      //           handleCloseBackdrop();
+      //         });
+      //     }
+      //   },
+      //   (error) => {
+      //     if (process.env.NODE_ENV === "development") {
+      //       console.log(error);
+      //       console.log(error.response);
+      //     }
+
+      //     let variant = "error";
+      //     enqueueSnackbar("Unable to Create New Collection.", { variant });
+      //     handleCloseBackdrop();
+      //     setIsSaving(false);
+      //   }
+      // );
 
       // const address = Addresses.CreateNftAddress;
       // const abi = CreateNFTContract;
