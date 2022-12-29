@@ -496,6 +496,232 @@ function NewCollection(props) {
     }
   };
 
+  const handleSubmitEventMetamask = async (event) => {
+    event.preventDefault();
+    setIsSaving(true);
+
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+      setIsSaving(false);
+      handleShow();
+    } else {
+      handleShowBackdrop();
+      let collectionID;
+
+      let fileData = new FormData();
+      fileData.append("thumbnail", imageFile);
+      fileData.append("name", collectionName);
+      fileData.append("symbol", collectionSymbol);
+      fileData.append("description", collectionDescription);
+
+      // fileData.append("nftContractAddress", cloneContractAddress);
+      // console.log("NFT Clone Address: ", cloneContractAddress);
+      // console.log("File data while creating collection on backend: ", fileData);
+
+      axios.post("/collection/", fileData).then(
+        async (response) => {
+          console.log("collection creation response", response);
+          setCollectionId(response.data.collection._id);
+          collectionID = response.data.collection._id;
+
+          // let variant = "success";
+          // enqueueSnackbar('New Collection Created Successfully.', { variant });
+          // setCollectionName("");
+          // setCollectionSymbol("");
+          // setCollectionDescription("");
+          // handleCloseBackdrop();
+          setIsSaving(false);
+          let CloneId = getHash(collectionID);
+          if (nftType === "ERC1155") {
+            console.log("ERC1155 COLLECTION CREATION");
+            const abi = Factory1155Contract;
+            const address = Addresses.Factory1155Address;
+            var cloneContractAddress;
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            console.log("ERC1155 Contract", myContractInstance);
+            await myContractInstance.methods
+              .createNFT1155(CloneId, true, 250000)
+              .send({ from: accounts[0] }, (err, response) => {
+                console.log("Get transaction ", err, response);
+                console.log(typeof response);
+                // console.log("Collection ID: ", collectionId);
+                axios
+                  .put(`/collection/txHash/${collectionID}`, {
+                    txHash: response,
+                  })
+                  .then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
+                if (err !== null) {
+                  console.log("err", err);
+                  let variant = "error";
+                  enqueueSnackbar("User Canceled Transaction", { variant });
+                  handleCloseBackdrop();
+                  setIsSaving(false);
+                }
+              })
+              .on("receipt", (receipt) => {
+                console.log("receipt", receipt);
+                cloneContractAddress =
+                  receipt.events.CloneCreated.returnValues.cloneAddress;
+                let variant = "success";
+                enqueueSnackbar("New Collection Created Successfully.", {
+                  variant,
+                });
+                setApprovalModalShow(true);
+                setNftContractAddress(cloneContractAddress);
+                setCollectionName("");
+                setCollectionSymbol("");
+                setCollectionDescription("");
+                setFileURL(r1);
+                handleCloseBackdrop();
+              });
+          } else if (nftType === "ERC721") {
+            console.log("ERC721 COLLECTION CREATION");
+            const abi = Factory721Contract;
+            const address = Addresses.Factory721Address;
+            var cloneContractAddress;
+            var myContractInstance = await new web3.eth.Contract(abi, address);
+            console.log("ERC721 Contract", myContractInstance);
+            await myContractInstance.methods
+              .createNFT721(CloneId, 250000)
+              .send({ from: accounts[0] }, (err, response) => {
+                console.log("Get transaction ", err, response);
+                console.log(typeof response);
+                // console.log("Collection ID: ", collectionId);
+                axios
+                  .put(`/collection/txHash/${collectionID}`, {
+                    txHash: response,
+                  })
+                  .then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
+                if (err !== null) {
+                  console.log("err", err);
+                  let variant = "error";
+                  enqueueSnackbar("User Canceled Transaction", { variant });
+                  handleCloseBackdrop();
+                  setIsSaving(false);
+                }
+              })
+              .on("receipt", (receipt) => {
+                console.log("receipt", receipt);
+                cloneContractAddress =
+                  receipt.events.CloneCreated.returnValues.cloneAddress;
+                let variant = "success";
+                enqueueSnackbar("New Collection Created Successfully.", {
+                  variant,
+                });
+                setApprovalModalShow(true);
+                setNftContractAddress(cloneContractAddress);
+                setCollectionName("");
+                setCollectionSymbol("");
+                setCollectionDescription("");
+                setFileURL(r1);
+                handleCloseBackdrop();
+              });
+          }
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+
+          let variant = "error";
+          enqueueSnackbar("Unable to Create New Collection.", { variant });
+          handleCloseBackdrop();
+          setIsSaving(false);
+        }
+      );
+
+      // const address = Addresses.CreateNftAddress;
+      // const abi = CreateNFTContract;
+      // let totalImages = tokenList.length;
+      // let AmountofNFTs = [];
+      // let IPFsHashes = [];
+      // for (let i = 0; i < tokenList.length; i++) {
+      //     AmountofNFTs.push(tokenList[i].tokensupply);
+      //     IPFsHashes.push(tokenList[i].ipfsHash);
+      // }
+      // console.log("AmountofNFTs", AmountofNFTs);
+      // console.log("IPFsHashes", IPFsHashes);
+
+      // var myContractInstance = await new web3.eth.Contract(abi, address);
+      // console.log("myContractInstance", myContractInstance);
+      // await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
+      //     console.log('get transaction', err, response);
+      //     if (err !== null) {
+      //         console.log("err", err);
+      //         let variant = "error";
+      //         enqueueSnackbar('User Canceled Transaction', { variant });
+      //         handleCloseBackdrop();
+      //         setIsSaving(false);
+      //     }
+      // })
+      //     .on('receipt', (receipt) => {
+      //         console.log("receipt", receipt);
+      //         console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
+      //         let ids = receipt.events.TransferBatch.returnValues.ids;
+      //         for (let i = 0; i < tokenList.length; i++) {
+      //             tokenList[i].nftId = ids[i];
+      //         }
+
+      //         let Data = {
+      //             nftdata: tokenList
+      //         }
+      //         console.log("Data", Data);
+      //         axios.post("/nft/createnft", Data).then(
+      //             (response) => {
+      //                 console.log("response", response);
+      //                 let variant = "success";
+      //                 enqueueSnackbar('Nfts Created Successfully.', { variant });
+      //                 setTokenList([]);
+      //                 setIpfsHash("");
+      //                 setImage(r1);
+      //                 setCollectionName("");
+      //                 setCollectionDescription("");
+      //                 setAboutTheArt("");
+      //                 setWebsite("");
+      //                 handleCloseBackdrop();
+      //                 setIsSaving(false);
+      //             },
+      //             (error) => {
+      //                 if (process.env.NODE_ENV === "development") {
+      //                     console.log(error);
+      //                     console.log(error.response);
+      //                 }
+
+      //                 let variant = "error";
+      //                 enqueueSnackbar('Unable to Create Nfts.', { variant });
+
+      //                 handleCloseBackdrop();
+      //                 setIsSaving(false);
+      //             })
+      //     })
+    }
+  };
+
   let onChangeFile = (e) => {
     setImageFile(e.target.files[0]);
     setFileURL(URL.createObjectURL(e.target.files[0]));

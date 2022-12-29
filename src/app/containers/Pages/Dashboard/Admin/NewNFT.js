@@ -549,6 +549,156 @@ function NewNFT(props) {
       // }
     }
   };
+
+  const handleSubmitEventMetamask = async (event) => {
+    event.preventDefault();
+    setIsSaving(true);
+
+    if (tokenList.length === 0) {
+      let variant = "error";
+      enqueueSnackbar("Add Nfts to Queue before Creation.", { variant });
+      setIsSaving(false);
+    } else {
+      await loadWeb3();
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      const network = await web3.eth.net.getNetworkType();
+      if (network !== "private") {
+        setNetwork(network);
+        setIsSaving(false);
+        handleShow();
+      } else {
+        handleShowBackdrop();
+        const address = nftContractAddress;
+        const abi = CreateNFTContract;
+        let totalImages = tokenList.length;
+        let AmountofNFTs = [];
+        let IPFsURIs = [];
+        for (let i = 0; i < tokenList.length; i++) {
+          AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
+          IPFsURIs.push(tokenList[i].nftURI);
+        }
+        console.log("AmountofNFTs", AmountofNFTs);
+        console.log("IPFsHashes", IPFsURIs);
+
+        console.log("Contract Address: ", address);
+        var myContractInstance = await new web3.eth.Contract(abi, address);
+        console.log("myContractInstance", myContractInstance);
+        console.log("Name: ", name);
+        console.log("Description: ", description);
+        console.log("nftURI: ", nftURI);
+        console.log("tokenSupply: ", tokenSupply);
+        console.log("Account address: ", accounts[0]);
+        console.log("Image Type: ", imageType);
+        await myContractInstance.methods
+          .mintBatch(accounts[0], AmountofNFTs, IPFsURIs)
+          .send({ from: accounts[0] }, (err, response) => {
+            console.log("get transaction", err, response);
+            if (err !== null) {
+              console.log("err", err);
+              let variant = "error";
+              enqueueSnackbar("User Canceled Transaction", { variant });
+              handleCloseBackdrop();
+              setIsSaving(false);
+            }
+          })
+          .on("receipt", (receipt) => {
+            console.log("receipt", receipt);
+            Cookies.remove("NFT-Detail");
+            console.log(
+              "receipt",
+              receipt.events.TransferBatch.returnValues.ids
+            );
+            let ids = receipt.events.TransferBatch.returnValues.ids;
+            // for (let i = 0; i < tokenList.length; i++) {
+            //     tokenList[i].nftId = ids[i];
+            // }
+
+            let data = {
+              blockchainIds: ids,
+            };
+            // let Data = {
+            //     "collectionId": collectionId,
+            //     "data": [
+            //         {
+            //             "title": name,
+            //             "description": description,
+            //             "collectionId": collectionId,
+            //             "nftURI": ipfsURI,
+            //             "metadataURI": ipfsURI,
+            //             "tokenSupply": tokenSupply,
+            //             "nftFormat": imageType,
+            //             "type": rarity,
+            //             "supplyType": supplyType,
+            //             // "properties": properties
+            //             "userAddress": accounts[0]
+            //         }
+            //     ]
+            // }
+
+            // let Data = new FormData();
+            // console.log("Data", Data);
+            axios.put(`/batch-mint/minted/${batchId}`, data).then(
+              (response) => {
+                console.log("response", response);
+                let variant = "success";
+                enqueueSnackbar("Nfts Created Successfully.", { variant });
+                Cookies.remove("Batch-ID");
+                Cookies.remove("NFT-Detail");
+                setTokenList([]);
+                setImageType("");
+                setIpfsHash("");
+                setImage(r1);
+                setName("");
+                setDescription("");
+                setRarity("");
+                setTokenSupply(1);
+                // setImageArtist("");
+                // setImageArtistId("");
+                // setAboutTheArt("");
+                // setWebsite("");
+                // setArtistImage(r1);
+                // setProducer("");
+                // setProducerId("");
+                // setInspirationForThePiece("");
+                // setProducerImage(r1);
+                // setExecutiveProducer("");
+                // setExecutiveProducerId("");
+                // setExecutiveInspirationForThePiece("");
+                // setExecutiveProducerImage(r1);
+                // setFan("");
+                // setFanId("");
+                // setFanInspirationForThePiece("");
+                // setFanImage(r1);
+                // setOther("");
+                setCollection("");
+                // setCollectionType("New");
+                // setImageArtistType("New");
+                // setProducerType("New");
+                // setExecutiveProducerType("New");
+                // setFanType("New");
+                setSupplyType("Single");
+                setCollectionId("");
+                handleCloseBackdrop();
+                setIsSaving(false);
+              },
+              (error) => {
+                if (process.env.NODE_ENV === "development") {
+                  console.log(error);
+                  console.log(error.response);
+                }
+
+                let variant = "error";
+                enqueueSnackbar("Unable to Create Nfts.", { variant });
+
+                handleCloseBackdrop();
+                setIsSaving(false);
+              }
+            );
+          });
+      }
+    }
+  };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
       axios.delete(`/batch-mint/${batchId}`).then(
