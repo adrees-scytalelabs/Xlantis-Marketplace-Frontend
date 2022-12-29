@@ -184,7 +184,6 @@ const PublishDropModal = (props) => {
 
   return (
     <div>
-      .
       <ThemeProvider theme={makeTheme}>
         <Modal
           aria-labelledby="transition-modal-title"
