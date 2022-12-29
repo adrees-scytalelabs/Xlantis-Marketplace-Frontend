@@ -41,7 +41,7 @@ function HeaderHome(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
 
   const handleOpenModal = () => {
-    setMOdalOpen(true);
+    setMOdalOpen(!modalOpen);
   };
 
   const handleCloseModal = () => {
