@@ -74,10 +74,29 @@ Version      : 1.2
   --mainBackground: linear-gradient(#fbfeff, #fff);
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
+
+form.checkoutForm label {
+  font-family: inter;
+
+}
+
+.checkoutAcceptedTermsCheckbox {
+  font-size: 14px;
+  font-family: inter;
+}
+
+.checkoutAcceptedTermsCheckbox input[type=checkbox] {
+  background-color: #000;
+  accent-color: var(--borderOrange);
+  margin-right: 5px
+}
+
 .checkoutCountryWrapper select {
   width: 100%;
   background-color: var(--bg);
   color:var(--text);
+  border: 1px solid var(--text);
+  border-radius: 5px;
 }
 
 .spinnerWhite {
