@@ -74,6 +74,11 @@ Version      : 1.2
   --mainBackground: linear-gradient(#fbfeff, #fff);
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
+.checkoutCountryWrapper select {
+  width: 100%;
+  background-color: var(--bg);
+  color:var(--text);
+}
 
 .spinnerWhite {
 color: var(--text);

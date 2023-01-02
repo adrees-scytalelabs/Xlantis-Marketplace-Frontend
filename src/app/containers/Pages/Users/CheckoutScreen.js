@@ -9,6 +9,11 @@ import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 // COMPONENTS
 import HeaderHome from "../../../components/Headers/Header";
+import {
+  CountryDropdown,
+  RegionDropdown,
+  CountryRegionData,
+} from "react-country-region-selector";
 
 // CUSTOM STYLES
 const useStyles = makeStyles((theme) => ({
@@ -41,7 +46,14 @@ const makeTheme = createMuiTheme({
 // COMPONENT FUNCTION
 const CheckoutScreen = () => {
   // states
+  const [country, setCountry] = useState("");
   const classes = useStyles();
+
+  //   Handlers
+  const selectCountry = (val) => {
+    setCountry(val);
+  };
+
   // content
   return (
     <>
@@ -53,43 +65,178 @@ const CheckoutScreen = () => {
           </div>
 
           {/* Heading */}
-          <div className="row no-gutters justify-content-center align-items-center w-100 mt-5">
-            <div className="col-12 text-center">
-              <Typography variant="h5" className={classes.mainHeading}>
-                CHECKOUT
-              </Typography>
-              <Divider className={classes.divider} />
+          <div className="container pt-4">
+            <div className="row no-gutters justify-content-center align-items-center w-100 mt-5">
+              <div className="col-12 text-center mb-5">
+                <Typography variant="h5" className={classes.mainHeading}>
+                  CHECKOUT
+                </Typography>
+                {/* <Divider className={classes.divider} /> */}
+              </div>
             </div>
-          </div>
-          <div className="container">
+
             {/* Content */}
-            <div className="row no-gutters justify-content-center">
-              <Grid container spacing={2}>
+            <div className="row no-gutters justify-content-center mb-5">
+              <Grid container spacing={3} style={{ paddingtop: "16px" }}>
                 <Grid item xs={12} md={8}>
-                  <Grid container spacing={1}>
-                    <Grid item xs={12} md={6}>
-                      <label>First Name</label>
-                      <input type="text" placeholder="First Name" />
+                  <form action="" autoComplete="off">
+                    <h2>Billing Details</h2>
+                    <Grid container spacing={1}>
+                      <Grid item xs={12} md={6}>
+                        {/* 
+                          <div className="form-group"> */}
+                        <label>First Name</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12} md={6}>
+                        <label>First Name</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Country</label>
+                        <div className="form-group newNftWrapper checkoutCountryWrapper">
+                          <CountryDropdown
+                            value={country}
+                            onChange={(val) => selectCountry(val)}
+                          />
+                          {/* <input
+                            type="text"
+                            required
+                            // value={name}
+                            placeholder="First Name"
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          /> */}
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Street Address</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Town/City</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>State/County</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            // required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Zip/Postcode</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="number"
+                            required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Company Name</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            // required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
+                      <Grid item xs={12}>
+                        <label>Appartment Address</label>
+                        <div className="form-group newNftWrapper">
+                          <input
+                            type="text"
+                            // required
+                            // value={name}
+                            placeholder=""
+                            className="form-control-login -login newNftInput w-100"
+                            onChange={(e) => {
+                              // setName(e.target.value);
+                            }}
+                          />
+                        </div>
+                      </Grid>
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                      <label>Last Name</label>
-                      <input type="text" placeholder="Last Name" />
-                    </Grid>
-                  </Grid>
+                  </form>
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Grid container spacing={2}>
                     <Grid item>
-                      <div className="row no-gutters">
-                        <h4>Product</h4>
-                        <h4>Details</h4>
-                      </div>
+                      <h2>You Order</h2>
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
             </div>
           </div>
+          <Divider className={classes.divider} />
         </div>
       </ThemeProvider>
     </>
