@@ -25,6 +25,7 @@ import UserLoginScreen from "../Pages/Users/UserLoginScreen";
 import UserProfileScreen from "../Pages/Users/UserProfileScreen";
 import UserSettings from "../Pages/Users/UserSettings";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
+import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 
 function App() {
   let isLoggedIn;
@@ -66,8 +67,7 @@ function App() {
             }
           />
         );
-      } 
-      else if (jwtDecoded.role === "super-admin") {
+      } else if (jwtDecoded.role === "super-admin") {
         return (
           <Route
             {...rest}
@@ -80,8 +80,7 @@ function App() {
             }
           />
         );
-      }
-      else if (jwtDecoded.role === "user") {
+      } else if (jwtDecoded.role === "user") {
         return (
           <Route
             {...rest}
@@ -105,11 +104,13 @@ function App() {
     if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
-      return <Redirect to="/superAdminDashboard" />; 
+      return <Redirect to="/superAdminDashboard" />;
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;
     } else if (path === "/login") {
       return <Route component={UserLoginScreen} />;
+    } else if (path === "/checkout") {
+      return <Route component={CheckoutScreen} />;
     } else if (path === "/register") {
       return <Route component={RegisterScreen} />;
     } else if (path === "/marketPlace") {
@@ -170,6 +171,7 @@ function App() {
           <LoginRegisterRedirectCheck exact path="/marketPlace" />
           <LoginRegisterRedirectCheck exact path="/admin-login" />
           <LoginRegisterRedirectCheck exact path="/login" />
+          <LoginRegisterRedirectCheck exact path="/checkout" />
           {/* <LoginRegisterRedirectCheck exact path="/" /> */}
           <LoginRegisterRedirectCheck exact path="/auctionDrops" />
           <LoginRegisterRedirectCheck
