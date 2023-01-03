@@ -24,6 +24,7 @@ import Web3 from "web3";
 import { providers, ethers } from "ethers";
 import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
+import SSOWalletModal from "../Modals/SSOWalletModal";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -37,6 +38,15 @@ function HeaderHome(props) {
   const [open, setOpen] = useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
+  const [modalOpen, setMOdalOpen] = useState(false);
+
+  const handleOpenModal = () => {
+    setMOdalOpen(!modalOpen);
+  };
+
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+  };
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -350,22 +360,23 @@ function HeaderHome(props) {
                 </a>
               ) : (
                 <>
-                  <Link
+                  {/* <Link
                     to="/login"
                     style={{
                       color: "#fff",
                       fontSize: "18px",
                       fontWeight: "bold",
                     }}
+                  > */}
+                  <span
+                    className={hoverClassStyle.Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleOpenModal}
                   >
-                    <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                    >
-                      Login/SignUp
-                      {/* Connect Wallet */}
-                    </span>
-                  </Link>
+                    Login/SignUp
+                    {/* Connect Wallet */}
+                  </span>
+                  {/* </Link> */}
                 </>
               )}
               {/* </Link> */}
@@ -486,12 +497,15 @@ function HeaderHome(props) {
                 />
                 </div> */}
                 {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                <Link to="/login" style={{ color: "#fff" }}>
-                  <span style={{ cursor: "pointer" }}>
-                    Login/SignUp
-                    {/* Connect Wallet */}
-                    </span>
-                </Link>
+                {/* <Link to="/login" style={{ color: "#fff" }}> */}
+                <span
+                  style={{ cursor: "pointer", color: "#fff" }}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                  {/* Connect Wallet */}
+                </span>
+                {/* </Link> */}
                 {/* </span> */}
               </>
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
@@ -517,6 +531,7 @@ function HeaderHome(props) {
           network={network}
         ></NetworkErrorModal>
       </nav>
+      <SSOWalletModal handleClose={handleCloseModal} open={modalOpen} />
     </header>
   );
 }
