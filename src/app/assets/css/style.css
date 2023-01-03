@@ -75,6 +75,32 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+.SSOModalbg {
+  background-color: var(--bg);
+  /* background-image: url(../img/hexagons-transparent.png);
+  background-repeat: no-repeat;
+  background-size: cover; */
+  padding: 40px;
+  /* padding-top: 0; */
+}
+
+.ssoModalCard {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 24px 32px;
+  color: var(--text);
+  background-color: var(--bg);
+}
+
+button.ssoModalCard:hover {
+  background-color: var(--borderOrange);
+  color: var(--text);
+}
+
+ssoModalwrapper:focus:not(:focus-visible) { 
+  outline: none
+}
 form.checkoutForm label {
   font-family: inter;
 
