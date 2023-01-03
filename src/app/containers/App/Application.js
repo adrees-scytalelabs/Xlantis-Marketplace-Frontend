@@ -5,6 +5,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
 import AuctionDrops from "../Pages/Users/AuctionDrops";
 import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
 import DropCubes from "../Pages/Users/Drops/DropCubes";
@@ -24,6 +25,7 @@ import UserLoginScreen from "../Pages/Users/UserLoginScreen";
 import UserProfileScreen from "../Pages/Users/UserProfileScreen";
 import UserSettings from "../Pages/Users/UserSettings";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
+import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 import UserLoginSignup from "../Pages/Users/UserProfile/UserLoginSignup";
 import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
 
@@ -67,6 +69,19 @@ function App() {
             }
           />
         );
+      } else if (jwtDecoded.role === "super-admin") {
+        return (
+          <Route
+            {...rest}
+            render={(props) =>
+              isLoggedIn ? (
+                <SuperAdminDashboard {...props} jwtDecoded={jwtDecoded} />
+              ) : (
+                <Redirect to="/" />
+              )
+            }
+          />
+        );
       } else if (jwtDecoded.role === "user") {
         return (
           <Route
@@ -90,10 +105,14 @@ function App() {
     checkLoginStatus();
     if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
       return <Redirect to="/dashboard" />;
+    } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
+      return <Redirect to="/superAdminDashboard" />;
     } else if (path === "/admin-login") {
       return <Route component={LoginScreen} />;
     } else if (path === "/login") {
       return <Route component={UserLoginScreen} />;
+    } else if (path === "/checkout") {
+      return <Route component={CheckoutScreen} />;
     } else if (path === "/user-account") {
       return <Route component={UserLoginSignup} />;
     } else if (path === "/admin-account") {
@@ -160,6 +179,7 @@ function App() {
           <LoginRegisterRedirectCheck exact path="/user-account" />
           <LoginRegisterRedirectCheck exact path="/admin-account" />
           <LoginRegisterRedirectCheck exact path="/login" />
+          <LoginRegisterRedirectCheck exact path="/checkout" />
           {/* <LoginRegisterRedirectCheck exact path="/" /> */}
           <LoginRegisterRedirectCheck exact path="/auctionDrops" />
           <LoginRegisterRedirectCheck
@@ -202,6 +222,7 @@ function App() {
           </Route> */}
 
           <PrivateRoute path="/dashboard" />
+          <PrivateRoute path="/superAdminDashboard" />
           <PrivateRoute path="/user/settings">
             <UserSettings></UserSettings>
           </PrivateRoute>
