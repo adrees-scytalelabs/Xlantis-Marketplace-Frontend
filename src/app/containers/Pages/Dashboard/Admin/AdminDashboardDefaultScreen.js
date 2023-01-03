@@ -7,7 +7,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import StorageIcon from "@material-ui/icons/Storage";
 import Card from "@material-ui/core/Card";
 import Cookies from "js-cookie";
-import PublishDropModal from "../../../../components/Modals/PublishDropModal";
+import CartModal from "../../../../components/Modals/CartModal";
 
 // COMPONENT FUNCTION
 function AdminDashboardDefaultScreen(props) {
@@ -18,14 +18,10 @@ function AdminDashboardDefaultScreen(props) {
   let [totalCollections, setTotalCollections] = useState(0);
   let [hover, setHover] = useState(false);
   let [hoverCollections, setHoverCollections] = useState(false);
-  const [modalOpen, setMOdalOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
 
-  const handleOpenModal = () => {
-    setMOdalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setMOdalOpen(false);
+  const handleOpenCart = () => {
+    setCartOpen(!cartOpen);
   };
 
   let getCounts = () => {
@@ -177,8 +173,8 @@ function AdminDashboardDefaultScreen(props) {
         </div>
       </div>
       <div>
-        <button onClick={handleOpenModal} style={{ padding: "1rem" }}>
-          Open Modal
+        <button onClick={handleOpenCart} style={{ padding: "1rem" }}>
+          Open Cart
         </button>
       </div>
 
@@ -250,7 +246,7 @@ function AdminDashboardDefaultScreen(props) {
           </Link>
         </div>
       </div> */}
-      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} />
+      <CartModal handleClose={handleOpenCart} open={cartOpen} />
     </>
   );
 }

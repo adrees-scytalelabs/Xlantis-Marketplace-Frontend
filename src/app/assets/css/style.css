@@ -101,6 +101,29 @@ button.ssoModalCard:hover {
 ssoModalwrapper:focus:not(:focus-visible) { 
   outline: none
 }
+form.checkoutForm label {
+  font-family: inter;
+
+}
+
+.checkoutAcceptedTermsCheckbox {
+  font-size: 14px;
+  font-family: inter;
+}
+
+.checkoutAcceptedTermsCheckbox input[type=checkbox] {
+  background-color: #000;
+  accent-color: var(--borderOrange);
+  margin-right: 5px
+}
+
+.checkoutCountryWrapper select {
+  width: 100%;
+  background-color: var(--bg);
+  color:var(--text);
+  border: 1px solid var(--text);
+  border-radius: 5px;
+}
 
 .spinnerWhite {
 color: var(--text);
