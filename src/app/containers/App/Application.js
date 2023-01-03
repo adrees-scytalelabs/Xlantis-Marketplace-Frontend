@@ -26,6 +26,8 @@ import UserProfileScreen from "../Pages/Users/UserProfileScreen";
 import UserSettings from "../Pages/Users/UserSettings";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import CheckoutScreen from "../Pages/Users/CheckoutScreen";
+import UserLoginSignup from "../Pages/Users/UserProfile/UserLoginSignup";
+import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
 
 function App() {
   let isLoggedIn;
@@ -111,6 +113,10 @@ function App() {
       return <Route component={UserLoginScreen} />;
     } else if (path === "/checkout") {
       return <Route component={CheckoutScreen} />;
+    } else if (path === "/user-account") {
+      return <Route component={UserLoginSignup} />;
+    } else if (path === "/admin-account") {
+      return <Route component={AdminLoginSignup} />;
     } else if (path === "/register") {
       return <Route component={RegisterScreen} />;
     } else if (path === "/marketPlace") {
@@ -170,6 +176,8 @@ function App() {
           <LoginRegisterRedirectCheck exact path="/fixdropnft" />
           <LoginRegisterRedirectCheck exact path="/marketPlace" />
           <LoginRegisterRedirectCheck exact path="/admin-login" />
+          <LoginRegisterRedirectCheck exact path="/user-account" />
+          <LoginRegisterRedirectCheck exact path="/admin-account" />
           <LoginRegisterRedirectCheck exact path="/login" />
           <LoginRegisterRedirectCheck exact path="/checkout" />
           {/* <LoginRegisterRedirectCheck exact path="/" /> */}

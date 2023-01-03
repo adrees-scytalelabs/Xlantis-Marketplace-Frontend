@@ -66,6 +66,12 @@ const makeTheme = createMuiTheme({
         "&$focused": {},
       },
     },
+    MuiInputBase: {
+      input: {
+        color: "#777",
+        fontFamily: "inter",
+      },
+    },
     MuiInput: {
       root: {
         fontFamily: "orbitron",
@@ -278,7 +284,7 @@ function NewNFT(props) {
         //   ...response.data.collectionData,
         // ];
         console.log(
-          "response.data.collectionData",
+          "response.data.collectionData"
           // response.data.collectionData[0].nftContractAddress
         );
         setCollectionTypes(response.data.collectionData);

@@ -98,6 +98,223 @@ form.checkoutForm label {
   border: 1px solid var(--text);
   border-radius: 5px;
 }
+/* -------------ADMIN SIGN IN AND SIGN UP-------------- */
+
+.adminCredWrapper {
+  height: 550px;
+  position: relative;
+  width: 100%;
+  /* height: 100%; */
+  overflow: hidden;
+  transition: 0.5s ease-in-out;
+}
+
+.adminCredWrapper.formActive.userSignIn {
+  transform: scale(0) translate(-500px);
+}
+
+.adminCredWrapper.userSignUp {
+  position: absolute;
+  top: 0px;
+  /* transition: display 0.5s ease-in-out; */
+  transform: scale(1);
+}
+
+.adminCredWrapper.formActive.userSignUp {
+  transform: scale(0) translate(500px);
+}
+
+.adminLoginContainer, .adminSignupContainer {
+  padding: 20px;  
+}
+
+.intl-tel-input.allow-dropdown input {
+  background-color: black;
+  color: white;
+  border: 1px solid white;
+}
+
+.adminInputFormGroup {
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  padding: 20px;
+  margin: 0 10px;
+}
+
+.adminInputFormGroup h2 {
+  font-family: var(--orbitron);
+  color: var(--border);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 32px;
+}
+
+.adminInputFormGroup input {
+  height: 40px;
+  padding: 5px 8px;
+  width: 258px;
+}
+
+.adminInputFormGroup button {
+  width: 100%;
+  border: 1px solid var(--borderOrange);
+  border-radius: 0px 15px;
+  background-color: var(--bg);
+  color: var(--text);
+  padding: 5px 0;
+  margin-top: 1.5rem;
+}
+
+.adminInputFormGroup button:hover {
+  box-shadow: var(--orangeBoxShadow);
+}
+
+.adminInputFormGroup input:-webkit-autofill,
+.adminInputFormGroup input:-webkit-autofill:hover, 
+.adminInputFormGroup input:-webkit-autofill:focus, 
+.adminInputFormGroup input:-webkit-autofill:active {
+  background-color: #000 !important;
+  -webkit-box-shadow:0 0 0 30px #000 inset !important;
+  -webkit-text-fill-color: white;
+}
+
+
+/* -------------USER SIGN IN AND SIGN UP-------------- */
+
+
+.userPhone .intl-tel-input .country-list {
+  width: 320px;
+  background-color: var(--bg);
+  overflow-x: hidden;
+  border-radius: 5px;
+}
+
+.userLoginWrapper {
+  height: 650px;
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 40px;
+  overflow: hidden;
+  position: relative;
+}
+
+.userFormWrapper {
+  transition: 0.5s ease-in-out;
+}
+
+.userFormWrapper.formActive.userSignIn {
+  transform:  translate(-500px);
+}
+
+.userFormWrapper.userSignUp {
+  position: absolute;
+  top: 0px;
+  /* transition: display 0.5s ease-in-out; */
+  /* transform: scale(1); */
+}
+
+.userFormWrapper.formActive.userSignUp {
+  transform:  translate(500px);
+}
+
+.userLoginWrapper h2 {
+  font-family: var(--orbitron);
+  color: var(--border);
+  text-align: center;
+  font-weight: bold;
+}
+
+.userLoginInput-group {
+  margin: 30px 0;
+  /* border-bottom: 2px solid var(--border); */
+}
+
+.userLoginInput-group label {
+color: var(--text);
+pointer-events: none;
+transition: 0.2s;
+}
+
+.userLoginInput-group input {
+  width: 320px;
+  height: 40px;
+  font-size: 1rem;
+  color: var(--text) !important;
+  padding: 0 5px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 5px;
+  font-family: var(--inter);
+}
+
+.userLoginInput-group input:focus~label,
+.userLoginInput-group input:valid~label {
+  /* top: -5px; */
+}
+
+.userLoginInput-group input:-webkit-autofill {
+  background-color: #000 !important;
+}
+
+.userLoginInput-group input:-webkit-autofill,
+.userLoginInput-group input:-webkit-autofill:hover, 
+.userLoginInput-group input:-webkit-autofill:focus, 
+.userLoginInput-group input:-webkit-autofill:active {
+  background-color: #000 !important;
+  -webkit-box-shadow:0 0 0 30px #000 inset !important;
+  -webkit-text-fill-color: white;
+}
+
+.userLoginWrapper button {
+  position: relative;
+  width: 100%;
+  height: 40px;
+  margin-top: 25px;
+  border-radius: 0px 15px;
+  background-color: transparent;
+  border: 1px solid var(--borderOrange);
+  color: var(--text);
+  outline: none;
+}
+
+.userLoginWrapper button:hover {
+  box-shadow: var(--orangeBoxShadow);
+}
+
+.signUp-link {
+  font-size: 14px;
+  text-align: center;
+  margin: 1.25rem 0;
+}
+
+.signUp-link button.signUpBtn-link {
+  border: none;
+  width: auto;
+  margin-top: 0;
+  color: var(--borderOrange);
+}
+
+.signUp-link button.signUpBtn-link:hover {
+  box-shadow: none;
+}
+
+.signUp-link p {
+  color: var(--text);
+}
+
+.signUp-link p a {
+  color: var(--borderOrange);
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.signUp-link p a:hover {
+  text-decoration: underline;
+}
+
+.PersonalDetailsWrapper {
+  background-color: var(--borderOrange);
+}
 
 .spinnerWhite {
 color: var(--text);
@@ -192,6 +409,8 @@ button.bttn:hover {
 .table-striped tbody tr:nth-of-type(even) {
   background-color: rgba(0, 0, 0, 0.05) !important;
 }
+
+
 
 
 /*-----------------
@@ -319,7 +538,6 @@ button.bttn:hover {
 
 .newNftWrapper .newNftInput, .newNftProps {
   font-family: var(--inter);
-  border-radius: 0px;
   background-color: var(--bg);
   border: 1px solid var(--border);
   border-radius: 5px;
@@ -2997,7 +3215,7 @@ html.menu-opened body {
 }
 
 .account-page {
-  background-color: #fff;
+  /* background-color: #fff; */
 }
 .account-page .content {
   padding: 50px 0;

@@ -8,25 +8,41 @@ import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
 import MainForm from "./MainForm";
 import loginBanner from "../../../assets/img/Login.png";
-
-
+import PersonalDetails from "./PersonalDetails";
 
 function RegisterScreen(props) {
-
   return (
     <div className="main-wrapper">
       <div className="account-page">
         <Header />
-        <div className="content"
-          style={{ paddingTop: "150px",paddingBottom:'150px' }}
+
+        <div className="container-fluid" style={{ paddingTop: "150px" }}>
+          <div
+            className="row no-gutters justify-content-center align-items-center"
+            style={{ height: "72vh" }}
+          >
+            <div className="col-6">
+              <div className="row no-gutters w-100">
+                <div className=" mx-auto">
+                  <PersonalDetails />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* <div
+          className="content"
+          // style={{ paddingTop: "150px",paddingBottom:'150px' }}
           position="absolute"
         >
           <div className="container-fluid">
             <div
-              className="row"
+              className="row no-gutters"
               style={{
-                height: `${props.windowHeight}`,
-                marginRight: "5px"
+                // height: `${props.windowHeight}`,
+                height: "65vh",
+                marginRight: "5px",
               }}
             >
               <div className="col-md-8 offset-md-2">
@@ -44,7 +60,6 @@ function RegisterScreen(props) {
                       />
                     </div>
                     <div className="col-md-11 col-lg-5 login-right">
-
                       <div className="login-header">
                         <h3 style={{ textAlign: "center" }}>Sign Up</h3>
                       </div>
@@ -56,7 +71,7 @@ function RegisterScreen(props) {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         <Footer
           style={{
