@@ -13,6 +13,7 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
+import Badge from "@material-ui/core/Badge";
 
 // CUSTOM MATERIAL UI STYLING
 const useStyles = makeStyles((theme) => ({
@@ -85,6 +86,20 @@ const useStyles = makeStyles((theme) => ({
 
 const makeTheme = createMuiTheme({
   overrides: {
+    MuiBadge: {
+      anchorOriginTopRightRectangle: {
+        transform: "none",
+        transformOrigin: "unset",
+      },
+      colorPrimary: {
+        color: "#000",
+        backgroundColor: "#fff",
+      },
+      badge: {
+        position: "unset",
+        marginLeft: "8px",
+      },
+    },
     MuiAccordion: {
       root: {
         minWidth: "350px",
@@ -184,7 +199,6 @@ const PublishDropModal = (props) => {
 
   return (
     <div>
-      .
       <ThemeProvider theme={makeTheme}>
         <Modal
           aria-labelledby="transition-modal-title"
@@ -207,12 +221,12 @@ const PublishDropModal = (props) => {
                     //   component="h6"
                     className={classes.cardHeading}
                   >
-                    Transaction Summary
+                    Purchase Summary
                   </Typography>
                 </div>
               </div>
               {/* Gas Price */}
-              <div
+              {/* <div
                 className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
               >
                 <div className="col-8 align-self-center">
@@ -232,56 +246,10 @@ const PublishDropModal = (props) => {
                     {response.gasPriceInGwei}
                   </p>
                 </div>
-              </div>
-              <Divider />
-              {/* Total Cost */}
-              <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    total cost in wei:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.totalCostInWei}
-                  </p>
-                </div>
-              </div>
-              <Divider />
-              {/* Estimated Time in Sec */}
-              <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    Estimated Time in Sec:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.estimatedTimeInSec}
-                  </p>
-                </div>
-              </div>
-              <Divider />
+              </div> */}
+              {/* <Divider /> */}
               {/* Slippage */}
-              <div
+              {/* <div
                 className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
               >
                 <div className="col-8 align-self-center">
@@ -302,7 +270,7 @@ const PublishDropModal = (props) => {
                   </p>
                 </div>
               </div>
-              <Divider />
+              <Divider /> */}
               {/* COLLECTIONS */}
               <Accordion
                 expanded={expanded === "panel1"}
@@ -315,6 +283,8 @@ const PublishDropModal = (props) => {
                 >
                   <Typography className={classes.heading}>
                     Collections
+                    <Badge badgeContent={4} color="primary" />
+                    {/* </Badge> */}
                   </Typography>
                 </AccordionSummary>
                 {/* Number of Tx */}
@@ -326,7 +296,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        Number of Transactions:
+                        Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -339,7 +309,7 @@ const PublishDropModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
                 {/* Total Collections to Create */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
@@ -349,7 +319,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        Total Collection To Create:
+                        Total Collection(s) To Create
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -362,9 +332,9 @@ const PublishDropModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
                 {/* Gas Used */}
-                <AccordionDetails>
+                {/* <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
@@ -384,8 +354,8 @@ const PublishDropModal = (props) => {
                       </p>
                     </div>
                   </div>
-                </AccordionDetails>
-                <Divider />
+                </AccordionDetails> */}
+                {/* <Divider /> */}
                 {/* Total Cost in Wei */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
@@ -395,7 +365,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        total cost in wei:
+                        total cost
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -403,13 +373,13 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.totalCostInWei}
+                        ${response.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
               </Accordion>
+              <Divider />
               {/* NFTs */}
               <Accordion
                 expanded={expanded === "panel2"}
@@ -420,7 +390,9 @@ const PublishDropModal = (props) => {
                   aria-controls="panel1a-content"
                   id="panel1a-header"
                 >
-                  <Typography className={classes.heading}>NFTs</Typography>
+                  <Typography className={classes.heading}>
+                    NFTs <Badge badgeContent={4} color="primary" />
+                  </Typography>
                 </AccordionSummary>
                 {/* Number of Tx */}
                 <AccordionDetails>
@@ -431,7 +403,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        Number of Transactions:
+                        Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -444,7 +416,7 @@ const PublishDropModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
                 {/* Total NFTs to Mint */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
@@ -454,7 +426,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        Total NFTs To Mint:
+                        Total NFTs To Mint
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -462,14 +434,14 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.totalNftsToMint}
+                        {response.nfts.totalNftsToMint}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
                 {/* Gas Used */}
-                <AccordionDetails>
+                {/* <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
@@ -489,8 +461,8 @@ const PublishDropModal = (props) => {
                       </p>
                     </div>
                   </div>
-                </AccordionDetails>
-                <Divider />
+                </AccordionDetails> */}
+                {/* <Divider /> */}
                 {/* Total Cost in Wei */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
@@ -500,7 +472,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        total cost in wei:
+                        total cost
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -508,15 +480,15 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.totalCostInWei}
+                        ${response.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
               </Accordion>
+              <Divider />
               {/* APPROVAL */}
-              <Accordion
+              {/* <Accordion
                 expanded={expanded === "panel3"}
                 onChange={handleChange("panel3")}
               >
@@ -527,13 +499,11 @@ const PublishDropModal = (props) => {
                 >
                   <Typography className={classes.heading}>Approval</Typography>
                 </AccordionSummary>
-                {/* Number of Tx */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
                         variant="h6"
-                        //   component="h6"
                         className={classes.cardTitle}
                       >
                         Number of Transactions:
@@ -542,7 +512,6 @@ const PublishDropModal = (props) => {
                     <div className="col-4 align-self-center text-right p-0">
                       <p
                         className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
                       >
                         {response.collections.noOfTxs}
                       </p>
@@ -550,13 +519,11 @@ const PublishDropModal = (props) => {
                   </div>
                 </AccordionDetails>
                 <Divider />
-                {/* Gas Used */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
                         variant="h6"
-                        //   component="h6"
                         className={classes.cardTitle}
                       >
                         gas used:
@@ -565,7 +532,6 @@ const PublishDropModal = (props) => {
                     <div className="col-4 align-self-center text-right p-0">
                       <p
                         className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
                       >
                         {response.collections.gasUsed}
                       </p>
@@ -573,13 +539,11 @@ const PublishDropModal = (props) => {
                   </div>
                 </AccordionDetails>
                 <Divider />
-                {/* Total Cost in Wei */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
                         variant="h6"
-                        //   component="h6"
                         className={classes.cardTitle}
                       >
                         total cost in wei:
@@ -588,7 +552,6 @@ const PublishDropModal = (props) => {
                     <div className="col-4 align-self-center text-right p-0">
                       <p
                         className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
                       >
                         {response.collections.totalCostInWei}
                       </p>
@@ -596,7 +559,7 @@ const PublishDropModal = (props) => {
                   </div>
                 </AccordionDetails>
                 <Divider />
-              </Accordion>
+              </Accordion> */}
               {/* DROP */}
               <Accordion
                 expanded={expanded === "panel4"}
@@ -618,7 +581,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        Number of Transactions:
+                        Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -631,9 +594,9 @@ const PublishDropModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
                 {/* Gas Used */}
-                <AccordionDetails>
+                {/* <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
@@ -653,8 +616,8 @@ const PublishDropModal = (props) => {
                       </p>
                     </div>
                   </div>
-                </AccordionDetails>
-                <Divider />
+                </AccordionDetails> */}
+                {/* <Divider /> */}
                 {/* Total Cost in Wei */}
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
@@ -664,7 +627,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        total cost in wei:
+                        total cost
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -672,17 +635,68 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.totalCostInWei}
+                        ${response.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
-                <Divider />
+                {/* <Divider /> */}
               </Accordion>
-              <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-4">
+              <Divider />
+              <div className="mt-5">
+                {/* Total Cost */}
+                <div
+                  className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
+                >
+                  <div className="col-8 align-self-center">
+                    <Typography
+                      variant="h6"
+                      //   component="h6"
+                      className={classes.cardTitle}
+                    >
+                      total cost
+                    </Typography>
+                  </div>
+                  <div className="col-4 align-self-center text-right p-0">
+                    <p
+                      className={classes.cardTitle}
+                      //   style={{ lineHeight: "1.6" }}
+                    >
+                      $115,780.00
+                      {/* {response.totalCostInWei} */}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Estimated Time in Sec */}
+                <div
+                  className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
+                >
+                  <div className="col-8 align-self-center">
+                    <Typography
+                      variant="h6"
+                      //   component="h6"
+                      className={classes.cardTitle}
+                    >
+                      Estimated Time
+                    </Typography>
+                  </div>
+                  <div className="col-4 align-self-center text-right p-0">
+                    <p
+                      className={classes.cardTitle}
+                      //   style={{ lineHeight: "1.6" }}
+                    >
+                      1min 30sec
+                      {/* {response.estimatedTimeInSec} */}
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <Divider />
+              <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
                 <div className="col-12 col-sm-6 pr-sm-2">
                   <button className={classes.buttons} onClick={handleBuyCrypto}>
-                    Buy Crypto
+                    Pay
                   </button>
                 </div>
                 <div className="col-12 col-sm-6 pl-sm-2">
@@ -703,8 +717,8 @@ const PublishDropModal = (props) => {
                     </button>
                   )}
                 </div>
-                {disabled && (
-                  <div className="col-12 mt-2 text-center">
+                <div className="col-12 mt-2 text-center">
+                  {disabled && (
                     <Alert
                       variant="outlined"
                       severity="warning"
@@ -712,8 +726,8 @@ const PublishDropModal = (props) => {
                     >
                       You do not have enough Crypto!
                     </Alert>
-                  </div>
-                )}
+                  )}
+                </div>
               </div>
             </div>
           </Fade>
