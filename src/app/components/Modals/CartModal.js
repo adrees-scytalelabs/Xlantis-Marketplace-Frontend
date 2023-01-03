@@ -1,5 +1,6 @@
 // REACT
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
@@ -259,6 +260,7 @@ const CartModal = (props) => {
                           <img
                             src={data.NFTurl}
                             className={classes.cartNftThumb}
+                            alt="NFT cart thumbnail"
                           />
                         </TableCell>
                         <TableCell align="right">{data.title}</TableCell>
@@ -288,9 +290,11 @@ const CartModal = (props) => {
                         </strong>
                       </TableCell>
                       <TableCell align="right">
-                        <button className={classes.CheckoutBtn}>
-                          Proceed To Checkout
-                        </button>
+                        <Link to="/dashboard/checkout">
+                          <button className={classes.CheckoutBtn}>
+                            Proceed To Checkout
+                          </button>
+                        </Link>
                       </TableCell>
                     </TableRow>
                   </TableBody>
