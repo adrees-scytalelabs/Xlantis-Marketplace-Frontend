@@ -5,8 +5,11 @@ import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import BusinessIcon from "@material-ui/icons/Business";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function AdminSidebar(props) {
+  let [versionB , setVersionB] = useState("");
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address");
@@ -14,6 +17,18 @@ function AdminSidebar(props) {
 
     // setTimeout(() => { }, 1);
   };
+
+  useEffect(() => {
+  
+    setVersionB(Cookies.get("Version"));
+
+    
+  
+  }, []);
+
+  
+  
+
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -76,12 +91,16 @@ function AdminSidebar(props) {
               </Link>
             </li>  */}
 
-            <li className={props.activeTab.dropApproval}>
-              <Link to={`${props.match.url}/dropApproval`}>
-                <i className="fas fa-check-circle"></i>{" "}
-                <span>Drop Approval</span>
-              </Link>
-            </li>
+
+            {versionB !== "v1-sso" ? (
+              <li className={props.activeTab.dropApproval}>
+                <Link to={`${props.match.url}/dropApproval`}>
+                  <i className="fas fa-check-circle"></i>{" "}
+                  <span>Drop Approval</span>
+                </Link>
+              </li>
+            ) : (null)}
+            
 
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>

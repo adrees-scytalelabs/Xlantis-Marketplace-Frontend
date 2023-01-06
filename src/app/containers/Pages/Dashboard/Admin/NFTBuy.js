@@ -24,6 +24,7 @@ import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 
 
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
+import Cookies from 'js-cookie';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -87,7 +88,7 @@ const NFTBuy = (props) => {
     const [network, setNetwork] = useState("");
     let [price, setPrice] = useState();
     const [showNetworkModal, setShowNetworkModal] = useState(false);
-   
+    let [versionB, setVersionB] = useState("");
 
 
     const handleCloseBackdrop = () => {
@@ -189,7 +190,7 @@ const NFTBuy = (props) => {
                         }
     
                         console.log("data",data);
-                        axios.post(`/marketplace/buy`, data).then(
+                        axios.post(`/${versionB}/marketplace/buy`, data).then(
                             (response) => {
                                 console.log("Transaction Hash sending on backend response: ", response);
                             },
@@ -241,7 +242,7 @@ const NFTBuy = (props) => {
                         }
     
                         console.log("data",data);
-                        axios.post(`/marketplace/buy`, data).then(
+                        axios.post(`/${versionB}/marketplace/buy`, data).then(
                             (response) => {
                                 console.log("Transaction Hash sending on backend response: ", response);
                             },
@@ -317,6 +318,9 @@ const NFTBuy = (props) => {
     }
 
     useEffect(() => {
+        
+        setVersionB(Cookies.get("Version"));
+
         // getNftDetail();
         console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);

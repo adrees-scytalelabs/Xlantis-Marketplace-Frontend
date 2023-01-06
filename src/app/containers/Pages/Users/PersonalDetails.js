@@ -116,7 +116,7 @@ class PersonalDetails extends Component {
       console.log(userData);
 
       axios
-        .post("/user/auth/signup", userData)
+        .post("/v1-sso/user/auth/adminSignup", userData)
         .then((response) => {
           console.log("response", response);
           if (response.status === 200)

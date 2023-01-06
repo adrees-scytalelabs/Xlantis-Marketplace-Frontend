@@ -118,7 +118,7 @@ function NewDrop(props) {
   let [ipfsURI, setIpfsURI] = useState("");
   let [ipfsHash, setIpfsHash] = useState(null);
   let [nftType, setNftType] = useState("721");
-
+  let [versionB, setVersionB] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
@@ -155,6 +155,8 @@ function NewDrop(props) {
   //         })
   // }
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -279,7 +281,7 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post("/drop/", DropData).then(
+        axios.post(`/${versionB}/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -449,7 +451,7 @@ function NewDrop(props) {
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post("/drop/", DropData).then(
+          axios.post(`/${versionB}/drop/`, DropData).then(
             (response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
@@ -584,7 +586,7 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post("/drop/", DropData).then(
+        axios.post(`/${versionB}/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -656,7 +658,7 @@ function NewDrop(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post("upload/uploadtos3", fileData).then(
+    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);
@@ -1112,7 +1114,7 @@ function NewDrop(props) {
           <div className="submit-section">
             <button
               type="button"
-              onClick={handleSubmitEvent}
+              onClick={(e) => {versionB === "v1-sso" ? (handleSubmitEvent(e)) : (handleSubmitEventMetamask(e))} }
               className="btn submit-btn propsActionBtn"
             >
               Create Drop

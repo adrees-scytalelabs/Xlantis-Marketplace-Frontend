@@ -18,11 +18,13 @@ function SuperAdminDashboardDefaultScreen(props) {
   let [hover, setHover] = useState(false);
 
   let getCounts = () => {
+    let version = Cookies.get("Version");
+
     axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
       "Authorization"
     )}`;
     axios
-      .get("user/getcounts")
+      .get(`user/getcounts`)
       .then((response) => {
         console.log(response);
         // setTotalCubes(response.data.Cubescount);

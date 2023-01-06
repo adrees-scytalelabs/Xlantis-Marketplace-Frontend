@@ -165,7 +165,7 @@ function AccountApproval(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/super-admin/admins/unverified/${start}/${end}`)
+            .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setAdmins(response.data.unverifiedAdmins);
@@ -199,7 +199,7 @@ function AccountApproval(props) {
 
       console.log("data", data);
 
-      axios.patch(`super-admin/admin/verify`, data).then(
+      axios.patch(`/v1-sso/super-admin/admin/verify`, data).then(
           (response) => {
               console.log("admin verify response: ", response);
               let variant = "success";

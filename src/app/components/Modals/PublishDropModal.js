@@ -176,7 +176,7 @@ console.log("json: ", response);
 const PublishDropModal = (props) => {
   // States
   const [expanded, setExpanded] = useState("panel1");
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const classes = useStyles();
 
   // Handlers
@@ -695,7 +695,7 @@ const PublishDropModal = (props) => {
               <Divider />
               <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
                 <div className="col-12 col-sm-6 pr-sm-2">
-                  <button className={classes.buttons} onClick={handleBuyCrypto}>
+                  <button className={classes.buttons} onClick={props.handlePay}>
                     Pay
                   </button>
                 </div>
@@ -711,7 +711,7 @@ const PublishDropModal = (props) => {
                   ) : (
                     <button
                       className={classes.buttons}
-                      onClick={() => console.log("Active!")}
+                      onClick={(e) => {props.handlePublish(e)}}
                     >
                       Publish Drop
                     </button>
