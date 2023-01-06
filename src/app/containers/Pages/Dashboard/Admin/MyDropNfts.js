@@ -75,6 +75,7 @@ function MyDropNFTs(props) {
     let [openEditModal, setOpenEditModal] = useState(false);
     let [audio, setAudio] = useState();
     let [nftDetail, setNftDetail] = useState({});
+    let [versionB, setVersionB] = useState("");
     let handleOpenNFTDetailModal = (nftObject) => {
         setNftDetail(nftObject);
         setOpenDialog(true);
@@ -95,6 +96,7 @@ function MyDropNFTs(props) {
     };
     let getNFTs = (start, end) => {
         handleShowBackdrop();
+        let version = Cookies.get("Version");
         console.log("nftids", location.state.nftId);
         console.log("dropId", location.state.dropId);
         console.log("saleType", location.state.saleType);
@@ -102,7 +104,7 @@ function MyDropNFTs(props) {
         let data = {
             nftIds : location.state.nftId
         }
-        axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
+        axios.get(`/${version}/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
             (response) => {
                 console.log("response", response);
                 let  nfts = response.data.data;
@@ -133,6 +135,8 @@ function MyDropNFTs(props) {
     }
 
     useEffect(() => {
+        setVersionB(Cookies.get("Version"));
+
         console.log("Location state: ", location);
         setNftIds(location.state.nftId);
         getNFTs(0, rowsPerPage);

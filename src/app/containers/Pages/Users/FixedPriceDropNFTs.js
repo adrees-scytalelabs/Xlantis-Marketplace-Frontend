@@ -9,6 +9,7 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import { nftImage } from "../../../assets/js/images";
 // AXIOS
 import axios from "axios";
+import Cookies from "js-cookie";
 
 // COMPONENT FUNCTION
 const FixedPriceDropNFTs = () => {
@@ -31,7 +32,10 @@ const FixedPriceDropNFTs = () => {
   // Queries
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/nfts/${dropId}/${start}/${end}`).then(
+    
+    const version = Cookies.get("Version");
+    console.log("version", version);
+    axios.get(`${version}/drop/nfts/${dropId}/${start}/${end}`).then(
       (response) => {
         console.log("getting a drop", response);
         setDropData(response.data.data);

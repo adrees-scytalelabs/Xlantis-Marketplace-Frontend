@@ -165,7 +165,7 @@ function Accounts(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/super-admin/admins/${start}/${end}`)
+            .get(`/v1-sso/super-admin/admins/${start}/${end}`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setAdmins(response.data.Admins);
@@ -198,7 +198,7 @@ function Accounts(props) {
 
       console.log("data", data);
 
-      axios.put(`super-admin/admin/verify/${verifyAdminId}}`, data).then(
+      axios.put(`/v1-sso/super-admin/admin/verify/${verifyAdminId}}`, data).then(
           (response) => {
               console.log("admin verify response: ", response);
               let variant = "success";

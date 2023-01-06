@@ -17,6 +17,7 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import Cookies from 'js-cookie';
 
 
 
@@ -88,6 +89,7 @@ const AuctionNFT = (props) => {
     const [dropCloneAddress, setDropCloneAddress] = useState('');
     const [contractType, setContractType] = useState("");
     let [price, setPrice] = useState();
+    let [versionB, setVersionB] = useState("");
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
@@ -100,7 +102,9 @@ const AuctionNFT = (props) => {
 
     let getNftDetail = () => {
         // handleShowBackdrop();
-        axios.get(`drop/nft/${nftId}`).then(
+        let version = Cookies.get("Version");
+
+        axios.get(`/${version}/drop/nft/${nftId}`).then(
             (response) => {
                 console.log("Response getting NFT Detail: ", response);
                 setNftDetail(response.data.data[0]);
@@ -122,7 +126,8 @@ const AuctionNFT = (props) => {
 
     let getDropCloneAddress = () => {
         console.log("Drop ID: ", dropId);
-        axios.get(`/drop/${dropId}`).then(
+        let version = Cookies.get("Version");
+        axios.get(`/${version}/drop/${dropId}`).then(
             (response) => {
                 console.log("Response from getting drop details: ", response);
                 console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
@@ -137,6 +142,9 @@ const AuctionNFT = (props) => {
     }
 
     useEffect(() => {
+        
+        setVersionB(Cookies.get("Version"));
+
         console.log("Auction contract address: ", location);
         setDropExpiryTime(new Date(location.state.endTime));
         setDropExpiryTimeStamp(Math.round(new Date(location.state.endTime).getTime()));
@@ -212,6 +220,7 @@ const AuctionNFT = (props) => {
 
             let bidValue = web3.utils.toWei(biddingValue, 'ether');
 
+            
 
             console.log("Contract Address: ", addressErc20Auction);
             var myContractInstance = await new web3.eth.Contract(abiERC20, addressErc20Auction);
@@ -305,7 +314,7 @@ const AuctionNFT = (props) => {
                 let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
                 let trxHash;
 
-                axios.post("/auction/bid", bidData).then(
+                axios.post(`/${versionB}/auction/bid`, bidData).then(
                     (response) => {
                         console.log("Response from sending bid data to backend: ", response);
                         let bidIdHash = getHash(response.data.bidId);
@@ -340,7 +349,7 @@ const AuctionNFT = (props) => {
                                 "txHash": trxHash 
                             }
 
-                            axios.put('/auction/bid/finalize', finalizeBidData).then(
+                            axios.put(`/${versionB}/auction/bid/finalize`, finalizeBidData).then(
                                 (response) => {
                                     console.log("Response from finalize bid: ", response);
                                 },

@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import TrendingAndTop from "./TrendingAndTop";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -60,7 +61,9 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/saleType/fixed-price/${start}/${end}`).then(
+    
+    let version = Cookies.get("Version");
+    axios.get(`/${version}/drop/saleType/fixed-price/${start}/${end}`).then(
       (response) => {
         console.log("responseeeee", response);
         setCubeData(response.data.data);

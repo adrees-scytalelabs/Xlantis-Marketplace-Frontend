@@ -118,7 +118,7 @@ function NewDrop(props) {
   let [ipfsURI, setIpfsURI] = useState("");
   let [ipfsHash, setIpfsHash] = useState(null);
   let [nftType, setNftType] = useState("721");
-
+  let [versionB, setVersionB] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
@@ -155,6 +155,8 @@ function NewDrop(props) {
   //         })
   // }
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -279,7 +281,7 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post("/drop/", DropData).then(
+        axios.post(`/${versionB}/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -449,7 +451,7 @@ function NewDrop(props) {
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post("/drop/", DropData).then(
+          axios.post(`/${versionB}/drop/`, DropData).then(
             (response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
@@ -496,11 +498,134 @@ function NewDrop(props) {
             }
           );
 
-          // })
         }
       }
     }
   };
+
+
+  const handleSubmitEventMetamask = async (e) => {
+    e.preventDefault();
+
+    setIsSaving(true);
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+      setIsSaving(false);
+      handleShowNetworkModal();
+    } else {
+      handleShowBackdrop();
+      
+
+      if (name === "") {
+        let variant = "error";
+        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (description === "") {
+        let variant = "error";
+        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (image === r1) {
+        let variant = "error";
+        enqueueSnackbar("Please Select title image for Drop to continue.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (
+        startTimeStamp === endTimeStamp ||
+        new Date(startTime) === new Date(endTime)
+      ) {
+        let variant = "error";
+        enqueueSnackbar("Auction cannot be Start and End on same time.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (
+        startTimeStamp > endTimeStamp ||
+        new Date(startTime) > new Date(endTime)
+      ) {
+        let variant = "error";
+        enqueueSnackbar("Auction End time must be greater than Start time.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (
+        currentTimeStamp >= startTimeStamp ||
+        new Date(Date.now()) >= new Date(startTime)
+      ) {
+        let variant = "error";
+        enqueueSnackbar(
+          "Auction Start time must be greater than Current time.",
+          { variant }
+        );
+        setIsSaving(false);
+        handleCloseBackdrop();
+        
+      } else {
+        let dropID;
+    
+
+        let DropData = {
+         
+          title: name,
+          image: image,
+          description: description,
+          startTime: startTime,
+          endTime: endTime,
+          saleType: saleType,
+          dropType: nftType,
+        };
+        console.log("Drop Data", DropData);
+        axios.post(`/${versionB}/drop/`, DropData).then(
+          (response) => {
+            console.log("drop creation response", response);
+            setDropId(response.data.dropId);
+            dropID = response.data.dropId;
+            setIsSaving(false);
+
+           
+            handleCloseBackdrop();
+            history.push({
+              pathname: `${path}/addNft`,
+              state: {
+                dropId: dropID,
+                saleType: saleType,
+                startTime: startTimeStamp,
+                endTime: endTimeStamp,
+                nftType: nftType,
+              },
+            });
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+            handleCloseBackdrop();
+
+            setIsSaving(false);
+            let variant = "error";
+            enqueueSnackbar("Unable to Create Drop.", { variant });
+          }
+        );
+
+      }
+    }
+  };
+
+
+  
+
 
   let onChangeFile = (e) => {
     setIsUploadingIPFS(true);
@@ -533,7 +658,7 @@ function NewDrop(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post("upload/uploadtos3", fileData).then(
+    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);
@@ -989,7 +1114,7 @@ function NewDrop(props) {
           <div className="submit-section">
             <button
               type="button"
-              onClick={handleSubmitEvent}
+              onClick={(e) => {versionB === "v1-sso" ? (handleSubmitEvent(e)) : (handleSubmitEventMetamask(e))} }
               className="btn submit-btn propsActionBtn"
             >
               Create Drop

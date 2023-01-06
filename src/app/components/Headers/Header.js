@@ -129,7 +129,7 @@ function HeaderHome(props) {
     });
   }
 
-  async function handleLogin() {
+  let loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
       await window.ethereum.enable();
@@ -140,6 +140,11 @@ function HeaderHome(props) {
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
     }
+  };
+
+  async function handleLogin() {
+   
+    await loadWeb3();
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
@@ -179,10 +184,11 @@ function HeaderHome(props) {
         walletAddress: address,
         signature: signatureHash,
       };
-      axios.post("/user/login", loginData).then(
+      axios.post("v2-wallet-login/user/auth/login", loginData).then(
         (response) => {
           console.log("response", response);
           Cookies.set("Authorization", response.data.token, {});
+          Cookies.set("Version", "v2-wallet-login", {});
           // if (response.data.roles.includes("user")) {
           //   console.log("we here");
           //   localStorage.setItem("Address", accounts[0]);
@@ -531,7 +537,11 @@ function HeaderHome(props) {
           network={network}
         ></NetworkErrorModal>
       </nav>
-      <SSOWalletModal handleClose={handleCloseModal} open={modalOpen} />
+      <SSOWalletModal 
+      handleClose={handleCloseModal} 
+      open={modalOpen} 
+      metamaskLogin = {handleLogin}
+      />
     </header>
   );
 }

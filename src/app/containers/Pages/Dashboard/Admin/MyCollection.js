@@ -54,15 +54,20 @@ function MyCollection(props) {
   let [open, setOpen] = useState(false);
 
   let [collectionCount, setCollectionCount] = useState(0);
+  let [versionB, setVersionB] = useState("");
 
   const classes = useStyles();
   let getCollections = (start, end) => {
+    const version = Cookies.get("Version");
+    console.log("version", version);
+
     // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
     //     "Authorization"
     // )}`;
     setOpen(true);
+    const url = `/${version}/collection/myCollections/${start}/${end}`;
     axios
-      .get(`/collection/myCollections/${start}/${end}`)
+      .get(url)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.collectionData);
@@ -122,6 +127,8 @@ function MyCollection(props) {
   };
 
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     console.log("Entered in my collection tab");
     getCollections(0, rowsPerPage);
     props.setActiveTab({
