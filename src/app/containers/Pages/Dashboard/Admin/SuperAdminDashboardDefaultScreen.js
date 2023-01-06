@@ -10,11 +10,11 @@ import { Card } from "@material-ui/core";
 
 // COMPONENT FUNCTION
 function SuperAdminDashboardDefaultScreen(props) {
-  let [totalCubes, setTotalCubes] = useState(0);
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalDrops, setTotalDrops] = useState(0);
-  let [totalSeasons, setTotalSeasons] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
+  let [totalAdmins, setTotalAdmins] = useState(0);
+  let [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
+  let [totalUnverifiedAdmins, setTotalUnverifiedAdmins] = useState(0);
+  let [totalEnabled, setTotalEnabled] = useState(0);
+  let [totalDisabled, setTotalDisabled] = useState(0);
   let [hover, setHover] = useState(false);
 
   let getCounts = () => {
@@ -24,14 +24,16 @@ function SuperAdminDashboardDefaultScreen(props) {
       "Authorization"
     )}`;
     axios
-      .get(`user/getcounts`)
+
+
+      .get(`/v1-sso/super-admin/admins/counts`)
       .then((response) => {
         console.log(response);
-        // setTotalCubes(response.data.Cubescount);
-        setTotalNFTs(response.data.NFTscount);
-        // setTotalDrops(response.data.Dropscount);
-        // setTotalSeasons(response.data.Seasonscount);
-        setTotalCollections(response.data.Collectionscount);
+        setTotalAdmins(response.data.counts.totalAdmins);
+        setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
+        setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
+        setTotalEnabled(response.data.counts.totalEnabledAdmins);
+        setTotalDisabled(response.data.counts. totalDisabledAdmins);
       })
       .catch((error) => {
         console.log(error);
@@ -104,7 +106,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                         : "totalNftsAdminDashCount"
                     }
                   >
-                    {totalNFTs}
+                    {totalAdmins}
                   </h1>
                 </div>
               </div>
@@ -147,7 +149,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                         : "totalNftsAdminDashCount"
                     }
                   >
-                    {totalNFTs}
+                    {totalEnabled}
                   </h1>
                 </div>
               </div>
@@ -190,7 +192,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                         : "totalNftsAdminDashCount"
                     }
                   >
-                    {totalNFTs}
+                    {totalDisabled}
                   </h1>
                 </div>
               </div>
@@ -233,7 +235,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                         : "totalNftsAdminDashCount"
                     }
                   >
-                    {totalNFTs}
+                    {totalVerifiedAdmins}
                   </h1>
                 </div>
               </div>
@@ -276,7 +278,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                         : "totalNftsAdminDashCount"
                     }
                   >
-                    {totalNFTs}
+                    {totalUnverifiedAdmins}
                   </h1>
                 </div>
               </div>

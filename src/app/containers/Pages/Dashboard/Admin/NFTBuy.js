@@ -551,12 +551,14 @@ const NFTBuy = (props) => {
                             </Col>
                         </Row>
                         <br></br>
-                        {((location.state.nftDetail.currentMarketplaceId.isSold === false)  && (new Date() >= new Date(location.state.startTime) && new Date() < new Date(location.state.endTime))) ? (
+                        {((location.state.nftDetail.currentMarketplaceId.isSold === false)  && (new Date() >= new Date(location.state.startTime) && new Date() < new Date(location.state.endTime) && versionB !== "v1-sso")) ? (
                                 <Row>
                                 <Col style={{
                                     textAlign:"center"
                                 }}>
-                                <button type="button" onClick={(e) => handleBuy(e)} className="btn submit-btn ">
+                                <button type="button" 
+                                onClick={(e) => handleBuy(e)} 
+                                className="btn submit-btn ">
                                     Buy
                                 </button>
 
@@ -568,7 +570,7 @@ const NFTBuy = (props) => {
                                     textAlign:"center"
                                 }}>
                                         <div data-tip data-for="registerTip">
-                                            <button type="button" data-tip data-for="registerTip" disabled   onClick={(e) => handleBuy(e) }  className="btn submit-btn ">
+                                            <button type="button" data-tip data-for="registerTip" disabled   onClick={(e) => handleBuy(e)}  className="btn submit-btn ">
                                                 Buy
                                             </button>
                                             {(location.state.nftDetail.currentMarketplaceId.isSold === true) ? (
