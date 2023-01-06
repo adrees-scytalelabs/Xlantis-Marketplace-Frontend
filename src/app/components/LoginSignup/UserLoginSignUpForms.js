@@ -2,14 +2,30 @@
 import React, { useState } from "react";
 // COMPONENTS
 import IntlTelInput from "react-intl-tel-input";
+import GoogleButton from "react-google-button";
 // STYLESHEETS
 import "react-intl-tel-input/dist/main.css";
+import { Typography } from "@material-ui/core";
+// MATERIAL UI
+import { makeStyles } from "@material-ui/core/styles";
+
+// CUSTOM STYLING
+const useStyles = makeStyles((theme) => ({
+  signInWithGoogle: {
+    margin: "24px auto",
+    textAlign: "center",
+    fontFamily: "inter",
+    color: "#aaa",
+    "&::before": {},
+  },
+}));
 
 // COMPONENT FUNCTION
 const UserLoginSignUpForms = () => {
   // States
   const [phoneNum, setPhoneNum] = useState();
   const [isActive, setIsActive] = useState(false);
+  const classes = useStyles();
 
   // Hanlders
   const handleSetSignUp = () => {
@@ -67,6 +83,14 @@ const UserLoginSignUpForms = () => {
             </div>
           </div>
           <button type="submit">Sign In</button>
+          <div>
+            <Typography variant="body2" className={classes.signInWithGoogle}>
+              Or
+            </Typography>
+          </div>
+          <div className="signInGoogleBtn">
+            <GoogleButton />
+          </div>
           <div className="signUp-link">
             <p>
               Don’t have an account?{" "}
