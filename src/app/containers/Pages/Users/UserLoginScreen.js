@@ -14,7 +14,6 @@ import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
 import NetworkErrorModal from "../../../components/Modals/NetworkErrorModal";
 
-
 function UserLoginScreen(props) {
   let history = useHistory();
   const [email, setEmail] = useState();
@@ -31,43 +30,40 @@ function UserLoginScreen(props) {
     e.preventDefault();
     setIsLoading(true);
     if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable()
-    }
-    else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider)
-    }
-    else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      window.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable();
+    } else if (window.web3) {
+      window.web3 = new Web3(window.web3.currentProvider);
+    } else {
+      window.alert(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
     }
 
-    const web3 = window.web3
+    const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType()
+    const network = await web3.eth.net.getNetworkType();
     console.log("Account test: ", accounts[0], network);
-    if (network !== 'private') {
+    if (network !== "private") {
       setNetwork(network);
       setIsLoading(false);
       handleShow();
-    }
-    else {
+    } else {
       let loginData = {
         email: email.toLowerCase(),
         password: password,
         // roles: 'admin'
-      }
+      };
       axios.post("user/auth/login", loginData).then(
         (response) => {
           console.log("response", response);
-          Cookies.set("Authorization", response.data.token, {
-          });
+          Cookies.set("Authorization", response.data.token, {});
           if (response.data.roles === "user") {
             localStorage.setItem("Address", accounts[0]);
           }
           setIsLoading(false);
           history.push("/");
           // window.location.reload();
-
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -84,24 +80,38 @@ function UserLoginScreen(props) {
             setMsg("Unknown Error Occured, try again.");
           }
           setIsLoading(false);
-        })
+        }
+      );
     }
-
-  }
+  };
   return (
-
     <div className="account-page">
       <div className="main-wrapper">
         <div className="home-section home-full-height">
           <Header />
-          <div className="content" style={{ paddingTop: "180px", height: "100vh" }} position="absolute">
+          <div
+            className="content"
+            style={{ paddingTop: "180px", height: "100vh" }}
+            position="absolute"
+          >
             <div className="container-fluid">
-              <div className="row" style={{ height: `${props.windowHeight}`, marginRight: "px" }} >
+              <div
+                className="row"
+                style={{ height: `${props.windowHeight}`, marginRight: "px" }}
+              >
                 <div className="col-md-8 offset-md-2">
                   <div className="account-content">
                     <div className="row align-items-center justify-content-center">
-                      <div className="col-md-8 col-lg-7 login-left" style={{ textAlign: "center" }}>
-                        <img src={loginBanner} className="img-fluid" alt="Doccure Login" style={{ height: "400px", paddingTop: "20px" }} />
+                      <div
+                        className="col-md-8 col-lg-7 login-left"
+                        style={{ textAlign: "center" }}
+                      >
+                        <img
+                          src={loginBanner}
+                          className="img-fluid"
+                          alt="Doccure Login"
+                          style={{ height: "400px", paddingTop: "20px" }}
+                        />
                       </div>
                       <div className="col-md-11 col-lg-5 login-right">
                         <div className="login-header">
@@ -140,7 +150,7 @@ function UserLoginScreen(props) {
                               style={{ color: "#000" }}
                             >
                               Forgot Password ?
-                                </Link>
+                            </Link>
                           </div>
 
                           {isLoading ? (
@@ -167,7 +177,6 @@ function UserLoginScreen(props) {
                             <Link to="/register">Register</Link>
                           </div>
                         </form>
-
                       </div>
                     </div>
                   </div>
@@ -182,8 +191,7 @@ function UserLoginScreen(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      >
-      </NetworkErrorModal>
+      ></NetworkErrorModal>
     </div>
   );
 }

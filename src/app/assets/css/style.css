@@ -204,6 +204,50 @@ form.checkoutForm label {
   -webkit-text-fill-color: white;
 }
 
+.detailRedirectWrapper {
+  /* height: 650px; */
+  border: 1px solid white;
+  border-radius: 5px;
+  padding: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.detailRedirectWrapper h2 {
+  font-family: var(--orbitron);
+  color: var(--text);
+  text-align: center;
+  font-weight: bold;
+  margin-bottom: 24px;
+}
+
+.detailRedirectWrapper .newNftWrapper select.newNftInput {
+  /* max-height: 40px !important; */
+  min-height:unset;
+  height: 40px;
+}
+
+.detailRedirectWrapper textarea {
+  width: 100%;
+}
+
+.sso-redirect-wrapper {
+  background-image: url(../img/hexagons-transparent.png);
+  background-color: var(--bg);
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.sso-redirect-wrapper .container {
+  background-color: var(--bg);
+}
+
+.redirectInfoBoxWrapper {
+  width: 100%;
+  border: 1px solid var(--border);
+  padding: 40px;
+}
+
 
 /* -------------USER SIGN IN AND SIGN UP-------------- */
 
@@ -255,13 +299,13 @@ form.checkoutForm label {
   /* border-bottom: 2px solid var(--border); */
 }
 
-.userLoginInput-group label {
+.userLoginInput-group label, .ssoDetailsInput-group label {
 color: var(--text);
 pointer-events: none;
 transition: 0.2s;
 }
 
-.userLoginInput-group input {
+.userLoginInput-group input, .ssoDetailsInput-group input{
   width: 320px;
   height: 40px;
   font-size: 1rem;
@@ -273,25 +317,34 @@ transition: 0.2s;
   font-family: var(--inter);
 }
 
+.ssoDetailsInput-group input {
+  width: 100% !important;
+  padding: 6px 15px;
+}
+
 .userLoginInput-group input:focus~label,
-.userLoginInput-group input:valid~label {
+.userLoginInput-group input:valid~label, .ssoDetailsInput-group input:focus~label,
+.ssoDetailsInput-group input:valid~label {
   /* top: -5px; */
 }
 
-.userLoginInput-group input:-webkit-autofill {
+.userLoginInput-group input:-webkit-autofill, .ssoDetailsInput-group input:-webkit-autofill {
   background-color: #000 !important;
 }
 
 .userLoginInput-group input:-webkit-autofill,
 .userLoginInput-group input:-webkit-autofill:hover, 
 .userLoginInput-group input:-webkit-autofill:focus, 
-.userLoginInput-group input:-webkit-autofill:active {
+.userLoginInput-group input:-webkit-autofill:active , .ssoDetailsInput-group input:-webkit-autofill,
+.ssoDetailsInput-group input:-webkit-autofill:hover, 
+.ssoDetailsInput-group input:-webkit-autofill:focus, 
+.ssoDetailsInput-group input:-webkit-autofill:active {
   background-color: #000 !important;
   -webkit-box-shadow:0 0 0 30px #000 inset !important;
   -webkit-text-fill-color: white;
 }
 
-.userLoginWrapper button {
+.userLoginWrapper button, .detailRedirectWrapper button {
   position: relative;
   width: 100%;
   height: 40px;
@@ -303,7 +356,7 @@ transition: 0.2s;
   outline: none;
 }
 
-.userLoginWrapper button:hover {
+.userLoginWrapper button:hover, .detailRedirectWrapper button:hover {
   box-shadow: var(--orangeBoxShadow);
 }
 

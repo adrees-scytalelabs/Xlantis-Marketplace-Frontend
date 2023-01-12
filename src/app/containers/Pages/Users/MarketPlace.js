@@ -15,6 +15,7 @@ import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
+import PublishDropModal from "../../../components/Modals/PublishDropModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -84,6 +85,12 @@ function MarketPlace(props) {
         handleCloseBackdrop();
       }
     );
+  };
+
+  const [cartOpen, setCartOpen] = useState(false);
+
+  const handleOpenCart = () => {
+    setCartOpen(!cartOpen);
   };
   // let getCubes2 = (start, end) => {
   //   handleShowBackdrop();
@@ -160,6 +167,12 @@ function MarketPlace(props) {
                       rowsPerPage={rowsPerPage}
                       page={page}
                     />
+                    <button
+                      onClick={handleOpenCart}
+                      style={{ padding: "1rem" }}
+                    >
+                      Open Cart
+                    </button>
                   </Grid>
                 </div>
               </div>
@@ -169,6 +182,7 @@ function MarketPlace(props) {
       </div>
 
       <Footer position={"relative"} />
+      <PublishDropModal handleClose={handleOpenCart} open={cartOpen} />
     </div>
   );
 }

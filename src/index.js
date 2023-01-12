@@ -4,6 +4,7 @@ import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/containers/App/Application";
 import axios from "axios";
+import { CookiesProvider } from "react-cookie";
 
 // axios.defaults.withCredentials = true;
 
@@ -12,7 +13,12 @@ if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
 else axios.defaults.baseURL = `http://localhost:3000`;
 // else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <CookiesProvider>
+    <App />
+  </CookiesProvider>,
+  document.getElementById("root")
+);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

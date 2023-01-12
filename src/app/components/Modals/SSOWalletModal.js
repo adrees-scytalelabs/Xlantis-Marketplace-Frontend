@@ -199,7 +199,7 @@ const SSOWalletModal = (props) => {
                   </button>
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                  <Link to="/login">
+                  <Link to="/user-account">
                     <button className="ssoModalCard">
                       <div className="row no-gutters justify-content-center align-items-center w-100">
                         <div className="col-12 text-center">

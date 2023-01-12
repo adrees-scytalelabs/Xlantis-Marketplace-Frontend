@@ -1,9 +1,9 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
@@ -31,14 +31,17 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import WalletLink from "walletlink";
 import axios from "axios";
 import transakSDK from "@transak/transak-sdk";
+import { UserAuth } from "../context/AuthContext";
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [userSignOut, setUserSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
   let { path } = useRouteMatch();
   let history = useHistory();
   const [modalOpen, setMOdalOpen] = useState(false);
+  const { user, logOut } = UserAuth();
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -221,6 +224,7 @@ function HeaderHome(props) {
     fontSize: "18px",
     fontWeight: "bold",
     backgroundColor: "#F64D04",
+    cursor: "pointer",
     // backgroundImage:
     //   "linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
     // boxShadow: "0 10px 6px -6px #777",
@@ -230,6 +234,7 @@ function HeaderHome(props) {
     borderRadius: "12px",
     color: "#fff",
     fontSize: "18px",
+    cursor: "pointer",
     fontWeight: "bold",
   };
   const selectedNavStyle = {
@@ -271,6 +276,18 @@ function HeaderHome(props) {
   function handleMenuClose() {
     setAnchorEl(null);
   }
+
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      console.log("clicked logout");
+      setUserSignOut(!userSignOut);
+    } catch (e) {
+      console.log("signout Error: ", e.message);
+    }
+  };
+
+  useEffect(() => {}, []);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -368,14 +385,29 @@ function HeaderHome(props) {
                       fontWeight: "bold",
                     }}
                   > */}
-                  <span
-                    className={hoverClassStyle.Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                    {/* Connect Wallet */}
-                  </span>
+                  {user ? (
+                    <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleSignOut}
+                    >
+                      Logout
+                    </span>
+                  ) : (
+                    <>
+                      <span
+                        className={hoverClassStyle.Community}
+                        style={selectedNavStyle.Community}
+                        onClick={handleOpenModal}
+                      >
+                        Login/SignUp
+                        {/* Connect Wallet */}
+                      </span>
+                      {userSignOut && <Redirect to="/" />}
+                    </>
+                  )}
+                  {/* {userSignOut && } */}
+
                   {/* </Link> */}
                 </>
               )}
@@ -498,13 +530,45 @@ function HeaderHome(props) {
                 </div> */}
                 {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
                 {/* <Link to="/login" style={{ color: "#fff" }}> */}
-                <span
+                {user ? (
+                  <span
+                    className={hoverClassStyle.Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleSignOut}
+                  >
+                    Logout
+                  </span>
+                ) : (
+                  <>
+                    <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleOpenModal}
+                    >
+                      Login/SignUp
+                      {/* Connect Wallet */}
+                    </span>
+                    {userSignOut && <Redirect to="/" />}
+                  </>
+                )}
+
+                {/* (
+                  <span
+                    className={hoverClassStyle.Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleOpenModal}
+                  >
+                    Login/SignUp
+                    Connect Wallet
+                  </span>
+                )} */}
+                {/* <span
                   style={{ cursor: "pointer", color: "#fff" }}
                   onClick={handleOpenModal}
                 >
-                  Login/SignUp
-                  {/* Connect Wallet */}
-                </span>
+                  Login/SignUp */}
+                {/* Connect Wallet */}
+                {/* </span> */}
                 {/* </Link> */}
                 {/* </span> */}
               </>
