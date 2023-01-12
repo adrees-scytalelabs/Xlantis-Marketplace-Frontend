@@ -9,6 +9,7 @@ import axios from "axios";
 import { Grid } from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 const indsutries = [
   { industry: "IT" },
@@ -29,10 +30,10 @@ const AdminSSORedirect = () => {
   const [success, setSucess] = useState();
   const [cookies, setCookie] = useCookies(["user"]);
 
-  console.log("this is cookie token: ", cookies.RDToken);
-  console.log("admin verified: ", cookies.Verified);
-  console.log("admin Info Added: ", cookies.InfoAdded);
-  console.log("the auth: ", cookies.auth);
+  // console.log("this is cookie token: ", cookies.Authorization);
+  // console.log("admin verified: ", cookies.Verified);
+  // console.log("admin Info Added: ", cookies.InfoAdded);
+  // console.log("the auth: ", cookies.auth);
 
   // Handlers
   const handleChangeValues = (event) => {
@@ -64,7 +65,7 @@ const AdminSSORedirect = () => {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${cookies.RDToken}`,
+      Authorization: `Bearer ${Cookies.get("Authorization")}`,
     },
   };
 

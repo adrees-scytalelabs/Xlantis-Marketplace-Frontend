@@ -34,21 +34,17 @@ import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
 import { AuthContextProvider } from "../../components/context/AuthContext";
 
 function App() {
-  const [cookies, setCookie] = useCookies(["user"]);
   let isLoggedIn;
   let jwtDecoded;
-  let jwtDecoded2;
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
     let jwt = Cookies.get("Authorization");
-    let newJwt = cookies.RDToken;
-    console.log("jwt in application: ", jwt);
-    console.log("New jwt in application: ", newJwt);
+    jwt && console.log("jwt in application: ", jwt);
     if (jwt) {
       console.log(jwtDecode(jwt));
       // setjwtDecoded(jwtDecode(jwt));
       jwtDecoded = jwtDecode(jwt);
-      jwtDecoded2 = jwtDecode(newJwt);
+      // jwtDecoded2 = jwtDecode(newJwt);
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
       console.log("isLoggedIn", isLoggedIn);
@@ -66,7 +62,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
-      if (jwtDecoded2.role === "admin") {
+      if (jwtDecoded.role === "admin") {
         return (
           <Route
             {...rest}
@@ -113,8 +109,9 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded2 && isLoggedIn && jwtDecoded2.role === "admin") {
+    if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
       // if (cookies.Verified && cookies.InfoAdded) {
+      console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
       return <Redirect to="/superAdminDashboard" />;

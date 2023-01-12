@@ -28,6 +28,7 @@ import { auth } from "../../../assets/js/firebase";
 import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
 import { useCookies } from "react-cookie";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   signInOptionLabel: {
@@ -117,8 +118,8 @@ const AdminLoginSignupForms = () => {
   function handleCredentialResponse(response) {
     console.log("idToken: ", response.credential);
     setAccount(response.credential);
-    response.credential &&
-      setCookie("auth", response.credential, { path: "/" });
+    // response.credential &&
+    // setCookie("auth", response.credential, { path: "/" });
     // document.getElementById("signInDiv").hidden = true;
   }
 
@@ -159,16 +160,21 @@ const AdminLoginSignupForms = () => {
             // if (response.data.isInfoAdded && response.data.isVerified) {
             console.log("1");
             response.data.isInfoAdded === true &&
-              setCookie("InfoAdded", response.data.isInfoAdded, {
-                path: "/",
-              });
+              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+            // setCookie("InfoAdded", response.data.isInfoAdded, {
+            //   path: "/",
+            // });
             console.log("2");
             response.data.isVerified === true &&
-              setCookie("Verified", response.data.isVerified, { path: "/" });
+              Cookies.set("Verified", response.data.isVerified, {});
+            // setCookie("Verified", response.data.isVerified, { path: "/" });
             // } else if
             console.log("3");
             response.data.raindropToken &&
-              setCookie("RDToken", response.data.raindropToken, { path: "/" });
+              Cookies.set("Authorization", response.data.raindropToken, {});
+            // setCookie("Authorization", response.data.raindropToken, {
+            //   path: "/",
+            // });
           }
         })
         .catch((error) => {
