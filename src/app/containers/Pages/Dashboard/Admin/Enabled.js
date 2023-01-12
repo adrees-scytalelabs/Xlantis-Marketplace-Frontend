@@ -165,7 +165,7 @@ function Enabled(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/super-admin/admins/enabled`)
+            .get(`/v1-sso/super-admin/admins/enabled`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setAdmins(response.data.admins);
@@ -198,7 +198,7 @@ function Enabled(props) {
 
       console.log("data", data);
 
-      axios.patch("/super-admin/disable", data).then(
+      axios.patch("/v1-sso/super-admin/disable", data).then(
           (response) => {
               console.log("admin verify response: ", response);
               let variant = "success";

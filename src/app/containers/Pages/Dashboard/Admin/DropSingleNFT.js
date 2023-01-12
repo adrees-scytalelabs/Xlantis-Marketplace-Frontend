@@ -18,6 +18,7 @@ import Countdown from 'react-countdown';
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import Cookies from 'js-cookie';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -83,6 +84,7 @@ const DropSingleNFT = (props) => {
     let [bidDetail, setBidDetail] = useState([]);
     let [isHovering, setIsHovering] = useState(false);
     let [contractType, setContractType] = useState("");
+    let [versionB, setVersionB] = useState("");
 
 
     const handleCloseBackdrop = () => {
@@ -151,7 +153,7 @@ const DropSingleNFT = (props) => {
                 }
 
                 console.log("data",data);
-                axios.post(`/marketplace/buy`, data).then(
+                axios.post(`/${versionB}/marketplace/buy`, data).then(
                     (response) => {
                         console.log("Transaction Hash sending on backend response: ", response);
                     },
@@ -180,7 +182,8 @@ const DropSingleNFT = (props) => {
     }
 
     let getBidList = (nftId) => {
-        axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
+        let version = Cookies.get("Version");
+        axios.get(`/${version}/auction/bids/${nftId}/${0}/${1000}`).then(
             (response) => {
                 console.log("Response from getting bid: ", response);
                 console.log("Bid array: ", response.data.data);
@@ -195,6 +198,9 @@ const DropSingleNFT = (props) => {
     }
 
     useEffect(() => {
+        
+        setVersionB(Cookies.get("Version"));
+
         // getNftDetail();
         // console.log("hehe",location.state.nftDetail);
         setNftDetail(location.state.nftDetail);
@@ -317,7 +323,7 @@ const DropSingleNFT = (props) => {
                     "txHash": trxHash 
                 }
 
-                axios.post("/auction/bid/accept", data).then(
+                axios.post(`${versionB}/auction/bid/accept`, data).then(
                     (response) => {
                         console.log("response", response);
                     },

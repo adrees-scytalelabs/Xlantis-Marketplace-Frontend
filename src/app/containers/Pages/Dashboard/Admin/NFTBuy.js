@@ -34,6 +34,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -93,6 +94,7 @@ const NFTBuy = (props) => {
   const [network, setNetwork] = useState("");
   let [price, setPrice] = useState();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
+  let [versionB, setVersionB] = useState("");
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -201,7 +203,7 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/marketplace/buy`, data).then(
+                  axios.post(`/${versionB}/marketplace/buy`, data).then(
                     (response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
@@ -262,7 +264,7 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/marketplace/buy`, data).then(
+                  axios.post(`/${versionB}/marketplace/buy`, data).then(
                     (response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
@@ -332,35 +334,40 @@ const NFTBuy = (props) => {
     }
   };
 
-  // useEffect(() => {
-  //     // getNftDetail();
-  //     console.log("hehe",location.state.nftDetail);
-  //     setNftDetail(location.state.nftDetail);
-  //     console.log(location.state.nftDetail.currentMarketplaceId.isSold);
-  //     console.log("states",location.state);
-  //     let priceCal = Web3.utils.fromWei(location.state.nftDetail.currentMarketplaceId.price, 'ether');
-  //     console.log("price is", priceCal);
-  //     setPrice(priceCal);
+  useEffect(() => {
+    setVersionB(Cookies.get("Version"));
 
-  //     props.setActiveTab({
-  //         dashboard: "",
-  //         newNFT: "",
-  //         orders: "",
-  //         myNFTs: "",
-  //         myCubes: "",
-  //         myDrops: "",
-  //         settings: "",
-  //         mySeason: "",
-  //         privacyPolicy: "",
-  //         termsandconditions: "",
-  //         changePassword: "",
-  //         newDrop: "",
-  //         newCube: "",
-  //         newCollection: "",
-  //         newRandomDrop: "",
-  //         marketPlace: "active"
-  //     });
-  // }, []);
+    // getNftDetail();
+    console.log("hehe", location.state.nftDetail);
+    setNftDetail(location.state.nftDetail);
+    console.log(location.state.nftDetail.currentMarketplaceId.isSold);
+    console.log("states", location.state);
+    let priceCal = Web3.utils.fromWei(
+      location.state.nftDetail.currentMarketplaceId.price,
+      "ether"
+    );
+    console.log("price is", priceCal);
+    setPrice(priceCal);
+
+    props.setActiveTab({
+      dashboard: "",
+      newNFT: "",
+      orders: "",
+      myNFTs: "",
+      myCubes: "",
+      myDrops: "",
+      settings: "",
+      mySeason: "",
+      privacyPolicy: "",
+      termsandconditions: "",
+      changePassword: "",
+      newDrop: "",
+      newCube: "",
+      newCollection: "",
+      newRandomDrop: "",
+      marketPlace: "active",
+    });
+  }, []);
 
   return (
     <div className="card">
@@ -583,7 +590,8 @@ const NFTBuy = (props) => {
             <br></br>
             {location.state.nftDetail.currentMarketplaceId.isSold === false &&
             new Date() >= new Date(location.state.startTime) &&
-            new Date() < new Date(location.state.endTime) ? (
+            new Date() < new Date(location.state.endTime) &&
+            versionB !== "v1-sso" ? (
               <Row>
                 <Col
                   style={{

@@ -5,10 +5,10 @@ export const WethAddress = "0xe46Ad90011Ea093C63F72Ae3d0BE24415BCE529F";
 export const MarketPlaceAddress = "0x89c91582cD0098449E066eB5A31fC10986eACBB1";
 
 export const Collectible1155Address = "0x4205df64B357AA2f139C56D2D74bb6f5887ad6BD";
-export const Factory1155Address = "0xa1727EaFac837D8a2a8bcA71215C8bD90359e1bf";
+export const Factory1155Address = "0x8814048228AEbec25e6Edbe354D60c5a7C985731";
 
 export const Collectible721Address = "0xa89468f2dc966C997d9bFE974568eC9F34766211";
-export const Factory721Address = "0x935Df35e84Dd0D212186C8b749145e9B204025D0";
+export const Factory721Address = "0xFC61034C76aF487AeAe1D43a580Ca5DBBA748288";
 
 export const FactoryDrop1155 = "0xBed90D8Ac20201E1DBa8cDEbd3565a6f443663d7";
 export const AuctionDropFactory1155 = "0x78AeF4edFA8aCaa4A71DAE687233Adb4655ee90C";
@@ -19,5 +19,6 @@ export const ERC20SaleDrop = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889";
 export const AuctionERC20 = "0x9c3C9283D3e44854697Cd22D3Faa240Cfb032889";
 export const AuctionDropFactory = "0x1a4531d273FF5e53394378d9ecf3Cb493b40c1E9";
 export const FactoryDrop = "0xFfb2c5b02268cEE7558C832B44f96feb840a52BE";
+
 
 

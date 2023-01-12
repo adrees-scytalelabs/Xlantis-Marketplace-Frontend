@@ -75,6 +75,7 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
+  let [versionB, setVersionB] = useState("");
   const classes = useStyles();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -84,7 +85,9 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/nft/myNFTs/${start}/${end}`).then(
+    const version = Cookies.get("Version");
+    console.log("version", version);
+    axios.get(`/${version}/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         let nfts = response.data.NFTdata;
@@ -118,6 +121,8 @@ function MyNFTs(props) {
   };
 
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     getMyNFTs(0, rowsPerPage);
     // getCollections();?
 

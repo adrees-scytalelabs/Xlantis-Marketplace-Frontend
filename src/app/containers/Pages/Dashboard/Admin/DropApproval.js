@@ -114,6 +114,7 @@ function DropApproval(props) {
   let [collections, setCollections] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
+
   let [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -125,6 +126,7 @@ function DropApproval(props) {
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
   const [show, setShow] = useState(false);
+  let [versionB, setVersionB] = useState("");
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -140,6 +142,8 @@ function DropApproval(props) {
   const history = useHistory();
 
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     getCollections(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
@@ -241,7 +245,7 @@ function DropApproval(props) {
             factoryType: "auction",
           };
 
-          axios.put("/collection/approve", approvalData).then(
+          axios.put(`/${versionB}/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from Auction approval: ", response);
               setIsAuctionApproved(true);
@@ -258,12 +262,14 @@ function DropApproval(props) {
   };
 
   let getCollections = (start, end) => {
+    const version = Cookies.get("Version");
+    console.log("version", version);
     // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
     //     "Authorization"
     // )}`;
     setOpen(true);
     axios
-      .get(`/collection/myCollections/${start}/${end}`)
+      .get(`/${version}/collection/myCollections/${start}/${end}`)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.collectionData);

@@ -1,5 +1,6 @@
 import { Grid } from '@material-ui/core/';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
@@ -9,6 +10,7 @@ function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
     const [open, setOpen] = useState(false);
+    let [versionB, setVersionB] = useState("");
     const handleCloseBackdrop = () => {
         setOpen(false);
     };
@@ -17,7 +19,7 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        axios.get(`/myCollection/${collectionId}`).then(
+        axios.get(`/${versionB}/myCollection/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.nftsdata);
@@ -33,6 +35,9 @@ function CollectionNfts(props) {
     }
 
     useEffect(() => {
+        
+        setVersionB(Cookies.get("Version"));
+
         getCollectionNfts();
         // getCollections();?
 

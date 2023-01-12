@@ -38,6 +38,8 @@ import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import { Web } from "@material-ui/icons";
 import crypto from "crypto";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
+import transakSDK from "@transak/transak-sdk";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -197,6 +199,7 @@ function AddNFT(props) {
   let [supply, setSupply] = useState(0);
   let [saleType, setSaleType] = useState("");
   let [nftType, setNftType] = useState("");
+  let [versionB, setVersionB] = useState("");
 
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
@@ -210,9 +213,11 @@ function AddNFT(props) {
   };
 
   let getCollections = () => {
+    const version = Cookies.get("Version");
+    console.log("version", version);
     console.log("NFT TYPE", location.state.nftType);
 
-    axios.get(`/collection/collections/${location.state.nftType}`).then(
+    axios.get(`/${version}/collection/collections/${location.state.nftType}`).then(
       (response) => {
         console.log("response", response);
         setChangeCollectionList(response.data.collectionData);
@@ -238,6 +243,16 @@ function AddNFT(props) {
     );
   };
 
+  const settings = {
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
+    environment: "STAGING", // STAGING/PRODUCTION
+    defaultCryptoCurrency: "ETH",
+    themeColor: "000000", // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
+  };
+
   const getHash = (id) => {
     const hex = Web3.utils.toHex(id);
     console.log("conversion to hex: ", hex);
@@ -245,7 +260,7 @@ function AddNFT(props) {
   };
 
   let getNfts = (id) => {
-    axios.get(`/nft/${id}`).then(
+    axios.get(`/${versionB}/nft/${id}`).then(
       (response) => {
         const nft = response.data.data;
         console.log("nft response", nft);
@@ -271,8 +286,73 @@ function AddNFT(props) {
     );
   };
 
+  let handlePublish = () => {
+    let dropData = {
+      dropId
+    }
+    axios.post(`/${versionB}/drop/finalize`, dropData).then(
+      (response) => {
+        
+        console.log("nft title response", response.data);
+        let variant = "success";
+        enqueueSnackbar("Drop Is Being Finalized. Transactions Are In Process", { variant });
+        handleCloseModal();
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar("Unable To Publish Drop.", { variant });
+          handleCloseModal();
+        }
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload();
+          }
+        }
+      }
+    );
+  }
+
+  function openTransak() {
+    handleCloseModal();
+    const transak = new transakSDK(settings);
+
+    transak.init();
+
+    // To get all the events
+    transak.on(transak.ALL_EVENTS, (data) => {
+      console.log(data);
+
+    });
+
+    // This will trigger when the user closed the widget
+    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+      console.log(eventData);
+      transak.close();
+      handleOpenModal();
+
+    });
+
+    // This will trigger when the user marks payment is made.
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+      console.log(orderData);
+      window.alert("Payment Success");
+      transak.close();
+      handleOpenModal();
+
+    });
+  }
+
   useEffect(() => {
     // getProfileData();
+    setVersionB(Cookies.get("Version"));
 
     setDropId(location.state.dropId);
     setStartTime(Math.round(location.state.startTime));
@@ -340,7 +420,7 @@ function AddNFT(props) {
 
       console.log("data", data);
 
-      axios.put("drop/status/pending", data).then(
+      axios.put(`/${versionB}/drop/status/pending`, data).then(
         (response) => {
           console.log("drop status pending response: ", response);
           setIsUploadingData(false);
@@ -388,7 +468,7 @@ function AddNFT(props) {
               txHash: response,
             };
             console.log("data", data);
-            axios.put(`/drop/txHash`, data).then(
+            axios.put(`/${versionB}/drop/txHash`, data).then(
               (response) => {
                 console.log(
                   "Transaction Hash sending on backend response: ",
@@ -445,7 +525,7 @@ function AddNFT(props) {
               txHash: response,
             };
             console.log("data", data);
-            axios.put(`/drop/txHash`, data).then(
+            axios.put(`/${versionB}/drop/txHash`, data).then(
               (response) => {
                 console.log(
                   "Transaction Hash sending on backend response: ",
@@ -581,7 +661,7 @@ function AddNFT(props) {
 
         console.log("new obj", newObject);
 
-        axios.put("/drop/nft", data).then(
+        axios.put(`${versionB}/drop/nft`, data).then(
           (response) => {
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
@@ -617,6 +697,8 @@ function AddNFT(props) {
                 console.log("here");
                 setDropInfo(dropp);
               }
+
+              
             }
 
             console.log(dropInfo);
@@ -682,7 +764,7 @@ function AddNFT(props) {
 
         console.log("new obj", newObject);
 
-        axios.put("/drop/nft", data).then(
+        axios.put(`${versionB}/drop/nft`, data).then(
           (response) => {
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
@@ -1179,7 +1261,8 @@ function AddNFT(props) {
             <button
               type="button"
               // onClick={(e) => handleSubmitEvent(e)}
-              onClick={handleOpenModal}
+              onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModal(e)) : (handleSubmitEvent(e))} }
+              // onClick={handleOpenModal}
               className="bttn"
             >
               Update Drop
@@ -1204,7 +1287,7 @@ function AddNFT(props) {
         nftDetail={nftDetail}
         handleEdit={handleEdit}
       ></NFTDetailModal>
-      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} />
+      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} handlePublish={handlePublish} handlePay = {openTransak} />
       {/* <NFTEditModal
                 show={openEditModal}
                 handleClose={handleEditClose}

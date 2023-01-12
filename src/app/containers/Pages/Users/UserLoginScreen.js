@@ -29,60 +29,62 @@ function UserLoginScreen(props) {
   let Login = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (window.ethereum) {
-      window.web3 = new Web3(window.ethereum);
-      await window.ethereum.enable();
-    } else if (window.web3) {
-      window.web3 = new Web3(window.web3.currentProvider);
-    } else {
-      window.alert(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
-    }
+    // if (window.ethereum) {
+    //   window.web3 = new Web3(window.ethereum)
+    //   await window.ethereum.enable()
+    // }
+    // else if (window.web3) {
+    //   window.web3 = new Web3(window.web3.currentProvider)
+    // }
+    // else {
+    //   window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+    // }
 
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    console.log("Account test: ", accounts[0], network);
-    if (network !== "private") {
-      setNetwork(network);
-      setIsLoading(false);
-      handleShow();
-    } else {
-      let loginData = {
-        email: email.toLowerCase(),
-        password: password,
-        // roles: 'admin'
-      };
-      axios.post("user/auth/login", loginData).then(
-        (response) => {
-          console.log("response", response);
-          Cookies.set("Authorization", response.data.token, {});
-          if (response.data.roles === "user") {
-            localStorage.setItem("Address", accounts[0]);
-          }
-          setIsLoading(false);
-          history.push("/");
-          // window.location.reload();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (error.response !== undefined) {
-            if (error.response.status === 400) {
-              setMsg(error.response.data.message);
-            } else {
-              setMsg("Unknown Error Occured, try again.");
-            }
+    // const web3 = window.web3
+    // const accounts = await web3.eth.getAccounts();
+    // const network = await web3.eth.net.getNetworkType()
+    // console.log("Account test: ", accounts[0], network);
+    // if (network !== 'private') {
+    //   setNetwork(network);
+    //   setIsLoading(false);
+    //   handleShow();
+    // }
+    // else {
+    let loginData = {
+      email: email.toLowerCase(),
+      password: password,
+      // roles: 'admin'
+    };
+    axios.post("/v1-sso/user/auth/login", loginData).then(
+      (response) => {
+        console.log("response", response);
+        Cookies.set("Version", "v1-sso", {});
+        Cookies.set("Authorization", response.data.token, {});
+        if (response.data.roles === "user") {
+          // localStorage.setItem("Address", accounts[0]);
+        }
+        setIsLoading(false);
+        history.push("/");
+        // window.location.reload();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            setMsg(error.response.data.message);
           } else {
             setMsg("Unknown Error Occured, try again.");
           }
-          setIsLoading(false);
+        } else {
+          setMsg("Unknown Error Occured, try again.");
         }
-      );
-    }
+        setIsLoading(false);
+      }
+    );
+    // }
   };
   return (
     <div className="account-page">

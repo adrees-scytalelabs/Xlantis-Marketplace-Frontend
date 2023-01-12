@@ -163,6 +163,7 @@ function MyNFTs(props) {
   let [openEditModal, setOpenEditModal] = useState(false);
   let [nftDetail, setNftDetail] = useState({});
   let [audio, setAudio] = useState();
+  let [versionB, setVersionB] = useState("");
   let handleOpenNFTDetailModal = (nftObject) => {
     setNftDetail(nftObject);
     setOpenDialog(true);
@@ -327,7 +328,9 @@ function MyNFTs(props) {
     let data = {
       nftIds: location.state.nftId,
     };
-    axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
+    const version = Cookies.get("Version");
+    console.log("version", version);
+    axios.get(`${version}/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
       (response) => {
         console.log("response", response.data.data);
 
@@ -364,6 +367,8 @@ function MyNFTs(props) {
   };
 
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
@@ -544,7 +549,7 @@ function MyNFTs(props) {
                                 title="NFT Image"
                               />
 
-                              {i.nftFormat !== "mp3" ? (
+                              {i.nftFormat === "mp3" ? (
                                 // style={{ position: "absolute", top: "80%", left: "75%"  }}
                                 <div
                                   style={{
@@ -580,7 +585,7 @@ function MyNFTs(props) {
                                   )}
                                 </div>
                               ) : null}
-                              {i.currentMarketplaceId.isSold !== true ? (
+                              {i.currentMarketplaceId.isSold === true ? (
                                 <CornerRibbon
                                   position="top-right"
                                   fontColor="#f0f0f0"
@@ -699,7 +704,7 @@ function MyNFTs(props) {
                                 title="NFT Image"
                               />
 
-                              {i.nftFormat !== "mp3" ? (
+                              {i.nftFormat === "mp3" ? (
                                 // style={{ position: "absolute", top: "80%", left: "75%"  }}
                                 <div
                                   style={{
@@ -735,7 +740,7 @@ function MyNFTs(props) {
                                   )}
                                 </div>
                               ) : null}
-                              {i.currentMarketplaceId.isSold !== true ? (
+                              {i.currentMarketplaceId.isSold === true ? (
                                 <CornerRibbon
                                   position="top-right"
                                   fontColor="#f0f0f0"

@@ -182,7 +182,7 @@ const SSOWalletModal = (props) => {
               </div>
               <Grid container className={classes.gridRoot} spacing={1}>
                 <Grid item xs={12} sm={6}>
-                  <button className="ssoModalCard">
+                  <button className="ssoModalCard" onClick={props.metamaskLogin}>
                     <div className="row no-gutters justify-content-center align-items-center w-100">
                       <div className="col-12 text-center">
                         <AccountBalanceWalletIcon />

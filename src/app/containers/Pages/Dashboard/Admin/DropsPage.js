@@ -92,6 +92,7 @@ function DropsPage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
+  let [versionB, setVersionB] = useState("");
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -101,7 +102,9 @@ function DropsPage(props) {
   };
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
-    axios.get(`drop/myDrops/${status}/${start}/${end}`).then(
+    const version = Cookies.get("Version");
+    console.log("version", version);
+    axios.get(`/${version}/drop/myDrops/${status}/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.data);
@@ -128,6 +131,8 @@ function DropsPage(props) {
   };
 
   useEffect(() => {
+    setVersionB(Cookies.get("Version"));
+
     getMyDrops(props.status, 0, rowsPerPage);
 
     // getCollections();?

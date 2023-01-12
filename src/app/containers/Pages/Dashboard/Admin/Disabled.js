@@ -165,7 +165,7 @@ function Disabled(props) {
         // )}`;
         setOpen(true);
         axios
-            .get(`/super-admin/admins/disabled`)
+            .get(`/v1-sso/super-admin/admins/disabled`)
             .then((response) => {
                 console.log("response.data", response.data);
                 setAdmins(response.data.admins);
@@ -198,7 +198,7 @@ function Disabled(props) {
 
       console.log("data", data);
 
-      axios.patch(`/super-admin/enable`, data).then(
+      axios.patch(`/v1-sso/super-admin/enable`, data).then(
           (response) => {
               console.log("admin verify response: ", response);
               let variant = "success";
@@ -219,7 +219,7 @@ function Disabled(props) {
               handleCloseBackdrop();
 
               let variant = "error";
-              enqueueSnackbar('Unable to Verify Admin.', { variant });
+              enqueueSnackbar('Unable to Enable Admin.', { variant });
           }
       )
   }
