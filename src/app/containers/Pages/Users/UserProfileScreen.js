@@ -229,6 +229,7 @@ function UserProfileScreen(props) {
                             localStorage.removeItem("Address");
                             Cookies.remove("PNT");
                             // web3Modal.clearCachedProvider();
+                            window.location.reload(false);
                           }}
                           to="/"
                           style={{ width: "100%" }}

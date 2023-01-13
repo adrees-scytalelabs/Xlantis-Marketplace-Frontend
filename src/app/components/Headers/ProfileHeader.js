@@ -2,10 +2,7 @@ import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { connect } from "react-redux";
-import {
-  Link,
-  withRouter
-} from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import "../../assets/css/adminStyle.css";
 // import {  } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
@@ -46,17 +43,16 @@ function ProfileHeader(props) {
             href="/"
             className="logo"
             onClick={(e) => e.preventDefault()}
-            style={{ color: 'rgb(167,0,0)' }}
+            style={{ color: "rgb(167,0,0)" }}
           >
             {/* <img src={logo} alt="Logo" /> */}
-
             Robot Drop
           </a>
           <a
             href="/"
             className="logo logo-small"
             onClick={(e) => e.preventDefault()}
-            style={{ color: 'rgb(167,0,0)' }}
+            style={{ color: "rgb(167,0,0)" }}
           >
             {/* <img src={logoSmall} alt="Logo" width="30" height="30" /> */}
             Robot Drop
@@ -66,7 +62,12 @@ function ProfileHeader(props) {
 
         {/* <!-- Mobile Menu Toggle --> */}
 
-        <a href="/" className="mobile_btn" id="mobile_btn" onClick={handleSlideNav}>
+        <a
+          href="/"
+          className="mobile_btn"
+          id="mobile_btn"
+          onClick={handleSlideNav}
+        >
           <i className="fa fa-bars"></i>
         </a>
         {/* <!-- /Mobile Menu Toggle --> */}
@@ -148,6 +149,7 @@ function ProfileHeader(props) {
                     onClick={() => {
                       Cookies.remove("Authorization");
                       Cookies.remove("PNT");
+                      window.location.reload(false);
                     }}
                     to="/"
                     style={{ width: "100%" }}

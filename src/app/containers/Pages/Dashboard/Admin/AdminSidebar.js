@@ -9,26 +9,19 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 function AdminSidebar(props) {
-  let [versionB , setVersionB] = useState("");
+  let [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
+    window.location.reload(false);
   };
 
   useEffect(() => {
-  
     setVersionB(Cookies.get("Version"));
-
-    
-  
   }, []);
-
-  
-  
-
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -91,7 +84,6 @@ function AdminSidebar(props) {
               </Link>
             </li>  */}
 
-
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match.url}/dropApproval`}>
@@ -99,8 +91,7 @@ function AdminSidebar(props) {
                   <span>Drop Approval</span>
                 </Link>
               </li>
-            ) : (null)}
-            
+            ) : null}
 
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>

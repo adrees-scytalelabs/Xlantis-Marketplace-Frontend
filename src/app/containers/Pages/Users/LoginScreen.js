@@ -17,7 +17,6 @@ function LoginScreen(props) {
   let [isLoading, setIsLoading] = useState(false);
   let [msg, setMsg] = useState("");
 
-
   let handleSubmitEvent = (event) => {
     setMsg("");
     setIsLoading(true);
@@ -30,13 +29,11 @@ function LoginScreen(props) {
       .then((response) => {
         console.log("response", response);
 
-        Cookies.set("Authorization", response.data.token, {
-        });
+        Cookies.set("Authorization", response.data.token, {});
         // setData(response.data.token);
 
         setIsLoading(false);
-        window.location.reload();
-
+        window.location.reload(false);
       })
       .catch((error) => {
         if (error.response !== undefined) {
@@ -54,7 +51,6 @@ function LoginScreen(props) {
   };
 
   return (
-
     <div className="account-page">
       <div className="main-wrapper">
         <div className="home-section home-full-height">
@@ -84,7 +80,6 @@ function LoginScreen(props) {
                         />
                       </div>
                       <div className="col-md-11 col-lg-5 login-right">
-
                         <>
                           <div className="login-header">
                             <h3 style={{ textAlign: "center" }}>Sign In</h3>
@@ -146,8 +141,6 @@ function LoginScreen(props) {
         </div>
         <Footer position={""} />
       </div>
-
-
     </div>
   );
 }

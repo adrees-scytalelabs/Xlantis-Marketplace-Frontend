@@ -112,7 +112,7 @@ function MyNFTs(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload();
+            window.location.reload(false);
           }
         }
         handleCloseBackdrop();

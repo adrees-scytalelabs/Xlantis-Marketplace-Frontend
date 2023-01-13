@@ -65,7 +65,7 @@ function UserLoginScreen(props) {
         }
         setIsLoading(false);
         history.push("/");
-        // window.location.reload();
+        // window.location.reload(false);
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {

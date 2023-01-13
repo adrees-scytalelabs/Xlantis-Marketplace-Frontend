@@ -82,6 +82,7 @@ export default function HeaderMenuAppBar(props) {
     web3Modal.clearCachedProvider();
 
     history.push("/");
+    window.location.reload(false);
   };
 
   // useEffect(() => {
@@ -105,12 +106,7 @@ export default function HeaderMenuAppBar(props) {
 
           <div className={classes.title}>
             <NavLink to={"/"}>
-              <img
-                src={logo}
-                alt={"Robot Drop"}
-                width="80"
-                height="70"
-              />
+              <img src={logo} alt={"Robot Drop"} width="80" height="70" />
               Robot Drop
             </NavLink>
           </div>

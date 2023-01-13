@@ -149,7 +149,7 @@ function NewDrop(props) {
   //                 if (error.response.data === "Unauthorized access (invalid token) !!") {
   //                     Cookies.remove("Authorization");
   //                     localStorage.removeItem("Address")
-  //                     window.location.reload();
+  //                     window.location.reload(false);
   //                 }
   //             }
   //         })
@@ -211,7 +211,6 @@ function NewDrop(props) {
 
   const handleSubmitEvent = async (e) => {
     if (nftType === "1155") {
-       
       e.preventDefault();
       setIsSaving(true);
       handleShowBackdrop();
@@ -318,12 +317,7 @@ function NewDrop(props) {
 
         // })
       }
-
-
-    }
-    else if (nftType === "721") {
-
-      
+    } else if (nftType === "721") {
       e.preventDefault();
 
       setIsSaving(true);
@@ -497,12 +491,10 @@ function NewDrop(props) {
               enqueueSnackbar("Unable to Create Drop.", { variant });
             }
           );
-
         }
       }
     }
   };
-
 
   const handleSubmitEventMetamask = async (e) => {
     e.preventDefault();
@@ -518,7 +510,6 @@ function NewDrop(props) {
       handleShowNetworkModal();
     } else {
       handleShowBackdrop();
-      
 
       if (name === "") {
         let variant = "error";
@@ -570,13 +561,10 @@ function NewDrop(props) {
         );
         setIsSaving(false);
         handleCloseBackdrop();
-        
       } else {
         let dropID;
-    
 
         let DropData = {
-         
           title: name,
           image: image,
           description: description,
@@ -593,7 +581,6 @@ function NewDrop(props) {
             dropID = response.data.dropId;
             setIsSaving(false);
 
-           
             handleCloseBackdrop();
             history.push({
               pathname: `${path}/addNft`,
@@ -618,14 +605,9 @@ function NewDrop(props) {
             enqueueSnackbar("Unable to Create Drop.", { variant });
           }
         );
-
       }
     }
   };
-
-
-  
-
 
   let onChangeFile = (e) => {
     setIsUploadingIPFS(true);
@@ -1114,7 +1096,11 @@ function NewDrop(props) {
           <div className="submit-section">
             <button
               type="button"
-              onClick={(e) => {versionB === "v1-sso" ? (handleSubmitEvent(e)) : (handleSubmitEventMetamask(e))} }
+              onClick={(e) => {
+                versionB === "v1-sso"
+                  ? handleSubmitEvent(e)
+                  : handleSubmitEventMetamask(e);
+              }}
               className="btn submit-btn propsActionBtn"
             >
               Create Drop

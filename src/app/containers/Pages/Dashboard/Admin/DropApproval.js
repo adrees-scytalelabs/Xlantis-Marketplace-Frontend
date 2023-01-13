@@ -114,7 +114,6 @@ function DropApproval(props) {
   let [collections, setCollections] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
-
   let [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -284,7 +283,7 @@ function DropApproval(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload();
+            window.location.reload(false);
           }
         }
         setOpen(false);

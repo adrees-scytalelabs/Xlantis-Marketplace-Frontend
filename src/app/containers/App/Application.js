@@ -36,10 +36,10 @@ import { AuthContextProvider } from "../../components/context/AuthContext";
 function App() {
   let isLoggedIn;
   let jwtDecoded;
+  let jwt = Cookies.get("Authorization");
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
-    let jwt = Cookies.get("Authorization");
-    jwt && console.log("jwt in application: ", jwt);
+    console.log("jwt in application: ", jwt);
     if (jwt) {
       console.log(jwtDecode(jwt));
       // setjwtDecoded(jwtDecode(jwt));

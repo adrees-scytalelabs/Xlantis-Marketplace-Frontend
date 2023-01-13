@@ -16,7 +16,6 @@ import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
 import ManageAccounts from "./Admin/ManageAccounts";
 
-
 import transakSDK from "@transak/transak-sdk";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
@@ -51,8 +50,8 @@ function SuperAdminDashboard(props) {
 
   let [activeTab, setActiveTab] = useState({
     dashboard: "active",
-    manageAccounts : "",
-    accountApproval : "",
+    manageAccounts: "",
+    accountApproval: "",
     accounts: "",
   });
 
@@ -167,6 +166,7 @@ function SuperAdminDashboard(props) {
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");
+                      window.location.reload(false);
                     }}
                     to="/"
                     style={{ width: "100%" }}

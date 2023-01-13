@@ -32,6 +32,8 @@ import WalletLink from "walletlink";
 import axios from "axios";
 import transakSDK from "@transak/transak-sdk";
 import { UserAuth } from "../context/AuthContext";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import CartModal from "../Modals/CartModal";
 
 function HeaderHome(props) {
   let [menuOpenedClass, setMenuOpenedClass] = useState();
@@ -41,6 +43,7 @@ function HeaderHome(props) {
   let { path } = useRouteMatch();
   let history = useHistory();
   const [modalOpen, setMOdalOpen] = useState(false);
+  const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
 
   const handleOpenModal = () => {
@@ -49,6 +52,10 @@ function HeaderHome(props) {
 
   const handleCloseModal = () => {
     setMOdalOpen(false);
+  };
+
+  const handleOpenCart = () => {
+    setCartOpen(!cartOpen);
   };
 
   const settings = {
@@ -146,7 +153,6 @@ function HeaderHome(props) {
   };
 
   async function handleLogin() {
-   
     await loadWeb3();
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -199,7 +205,7 @@ function HeaderHome(props) {
           // setIsLoading(false);
           localStorage.setItem("Address", accounts[0]);
           history.push("/");
-          // window.location.reload();
+          // window.location.reload(false);
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -227,7 +233,7 @@ function HeaderHome(props) {
     padding: "10px 20px",
     borderRadius: "0px 10px",
     color: "#fff",
-    fontSize: "18px",
+    fontSize: "16px",
     fontWeight: "bold",
     backgroundColor: "#F64D04",
     cursor: "pointer",
@@ -239,7 +245,7 @@ function HeaderHome(props) {
     padding: "10px 20px",
     borderRadius: "12px",
     color: "#fff",
-    fontSize: "18px",
+    fontSize: "16px",
     cursor: "pointer",
     fontWeight: "bold",
   };
@@ -267,7 +273,7 @@ function HeaderHome(props) {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
-    window.location.reload();
+    window.location.reload(false);
 
     // setTimeout(() => { }, 1);
   };
@@ -364,7 +370,7 @@ function HeaderHome(props) {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </a>
             </li>
-            <li className="login-link ">
+            <li className="login-link" style={{ padding: "15px 20px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
               {localStorage.getItem("Address") ? (
@@ -449,6 +455,21 @@ function HeaderHome(props) {
                 </span>
               </Link>
             </li> */}
+            <li
+              className="login-link"
+              style={{ padding: "15px 20px" }}
+              onClick={handleOpenCart}
+            >
+              <span
+                style={{
+                  padding: "10px 20px",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+                View Cart
+              </span>
+            </li>
           </ul>
         </div>
         <ul className="nav header-navbar-rht">
@@ -594,6 +615,12 @@ function HeaderHome(props) {
               </span>
             ) : null}
           </li>
+          <li>
+            <ShoppingCartIcon
+              onClick={handleOpenCart}
+              style={{ cursor: "pointer" }}
+            />
+          </li>
         </ul>
         <NetworkErrorModal
           show={show}
@@ -601,11 +628,12 @@ function HeaderHome(props) {
           network={network}
         ></NetworkErrorModal>
       </nav>
-      <SSOWalletModal 
-      handleClose={handleCloseModal} 
-      open={modalOpen} 
-      metamaskLogin = {handleLogin}
+      <SSOWalletModal
+        handleClose={handleCloseModal}
+        open={modalOpen}
+        metamaskLogin={handleLogin}
       />
+      <CartModal handleClose={handleOpenCart} open={cartOpen} />
     </header>
   );
 }
