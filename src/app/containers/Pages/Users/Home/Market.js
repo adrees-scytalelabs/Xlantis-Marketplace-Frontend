@@ -64,7 +64,7 @@ function MarketPlace(props) {
 
     let version = Cookies.get("Version");
     axios
-      .get(`/v1-sso/${version}/drop/saleType/fixed-price/${start}/${end}`)
+      .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
       .then(
         (response) => {
           console.log("responseeeee", response);
