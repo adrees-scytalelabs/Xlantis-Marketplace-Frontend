@@ -86,8 +86,8 @@ function MarketPlace(props) {
             console.log(error.response);
           }
           handleCloseBackdrop();
-        }
-      );
+      }
+    );
   };
   // let getCubes2 = (start, end) => {
   //   handleShowBackdrop();
