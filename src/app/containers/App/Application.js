@@ -32,6 +32,8 @@ import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
 import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
 import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
 import { AuthContextProvider } from "../../components/context/AuthContext";
+import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
+
 
 function App() {
   let isLoggedIn;
@@ -125,6 +127,8 @@ function App() {
       return <Route component={UserLoginSignup} />;
     } else if (path === "/admin-account") {
       return <Route component={AdminLoginSignup} />;
+    } else if (path === "/super-admin-account") {
+      return <Route component={SuperAdminLogin} />;
     } else if (path === "/admin-signup-details") {
       return <Route component={AdminSSORedirect} />;
     } else if (path === "/updatRequestSent") {
@@ -190,6 +194,7 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/marketPlace" />
             <LoginRegisterRedirectCheck exact path="/admin-login" />
             <LoginRegisterRedirectCheck exact path="/user-account" />
+            <LoginRegisterRedirectCheck exact path="/super-admin-account" />
             <LoginRegisterRedirectCheck exact path="/admin-account" />
             <LoginRegisterRedirectCheck exact path="/login" />
             <LoginRegisterRedirectCheck exact path="/checkout" />

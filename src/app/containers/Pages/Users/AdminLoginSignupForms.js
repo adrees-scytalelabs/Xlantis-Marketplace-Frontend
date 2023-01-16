@@ -156,6 +156,8 @@ const AdminLoginSignupForms = () => {
         .then((response) => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
+            Cookies.set("Version", "v1-sso", {});
+
             setAdminSignInData(response.data);
             // if (response.data.isInfoAdded && response.data.isVerified) {
             console.log("1");

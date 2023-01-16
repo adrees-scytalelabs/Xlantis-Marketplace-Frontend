@@ -204,8 +204,8 @@ function HeaderHome(props) {
           // }
           // setIsLoading(false);
           localStorage.setItem("Address", accounts[0]);
-          history.push("/");
-          // window.location.reload(false);
+          // history.push("/");
+          window.location.reload();
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
