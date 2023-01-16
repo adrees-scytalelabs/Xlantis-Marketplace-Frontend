@@ -18,11 +18,6 @@ function AdminDashboardDefaultScreen(props) {
   let [totalCollections, setTotalCollections] = useState(0);
   let [hover, setHover] = useState(false);
   let [hoverCollections, setHoverCollections] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
-
-  const handleOpenCart = () => {
-    setCartOpen(!cartOpen);
-  };
 
   let getCounts = () => {
     let version = Cookies.get("Version");
@@ -173,11 +168,6 @@ function AdminDashboardDefaultScreen(props) {
           </Card>
         </div>
       </div>
-      <div>
-        <button onClick={handleOpenCart} style={{ padding: "1rem" }}>
-          Open Cart
-        </button>
-      </div>
 
       {/* <div className="row mt-5">
         <div className="col-12 col-sm-3">
@@ -247,7 +237,6 @@ function AdminDashboardDefaultScreen(props) {
           </Link>
         </div>
       </div> */}
-      <CartModal handleClose={handleOpenCart} open={cartOpen} />
     </>
   );
 }

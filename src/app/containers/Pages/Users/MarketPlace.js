@@ -88,12 +88,7 @@ function MarketPlace(props) {
       }
     );
   };
-
-  const [cartOpen, setCartOpen] = useState(false);
-
-  const handleOpenCart = () => {
-    setCartOpen(!cartOpen);
-  };
+  
   // let getCubes2 = (start, end) => {
   //   handleShowBackdrop();
   //   axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
@@ -169,12 +164,6 @@ function MarketPlace(props) {
                       rowsPerPage={rowsPerPage}
                       page={page}
                     />
-                    <button
-                      onClick={handleOpenCart}
-                      style={{ padding: "1rem" }}
-                    >
-                      Open Cart
-                    </button>
                   </Grid>
                 </div>
               </div>
@@ -184,7 +173,6 @@ function MarketPlace(props) {
       </div>
 
       <Footer position={"relative"} />
-      <PublishDropModal handleClose={handleOpenCart} open={cartOpen} />
     </div>
   );
 }
