@@ -9,6 +9,7 @@ function SuperAdminSidebar(props) {
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
+    window.location.reload(false);
   };
 
   return (
@@ -47,7 +48,6 @@ function SuperAdminSidebar(props) {
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>
             </li>
-            
 
             <li className="menu-title mt-5">
               <span>Settings</span>

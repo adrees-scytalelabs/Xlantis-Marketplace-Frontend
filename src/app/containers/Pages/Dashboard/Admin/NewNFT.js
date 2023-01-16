@@ -242,8 +242,6 @@ function NewNFT(props) {
   let [previewImage, setPreviewImage] = useState(r1);
   let [versionB, setVersionB] = useState("");
 
- 
-    
   // let [executiveProducerId, setExecutiveProducerId] = useState('');
   // let [executiveProducer, setExecutiveProducer] = useState('');
 
@@ -265,7 +263,7 @@ function NewNFT(props) {
   //                 if (error.response.data === "Unauthorized access (invalid token) !!") {
   //                     Cookies.remove("Authorization");
   //                     localStorage.removeItem("Address")
-  //                     window.location.reload();
+  //                     window.location.reload(false);
   //                 }
   //             }
   //         })
@@ -274,8 +272,8 @@ function NewNFT(props) {
     setCollection("");
     console.log("get collections");
     console.log("collectionType", collectionType);
-    console.log("VERSION" , versionB);
-    const url  = `/${versionB}/collection/collections/${collectionType}`;
+    console.log("VERSION", versionB);
+    const url = `/${versionB}/collection/collections/${collectionType}`;
     console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
@@ -293,7 +291,8 @@ function NewNFT(props) {
         //   ...response.data.collectionData,
         // ];
         console.log(
-          "response.data.collectionData", response
+          "response.data.collectionData",
+          response
           // response.data.collectionData[0].nftContractAddress
         );
         setCollectionTypes(response.data.collectionData);
@@ -310,7 +309,7 @@ function NewNFT(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload();
+            window.location.reload(false);
           }
         }
       }
@@ -320,7 +319,7 @@ function NewNFT(props) {
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
     let batchMintId = Cookies.get("Batch-ID");
-    console.log('data', data);
+    console.log("data", data);
     if (
       (data && batchMintId) !== null &&
       (typeof data || typeof batchMintId) !== "undefined" &&
@@ -342,7 +341,7 @@ function NewNFT(props) {
 
   useEffect(() => {
     // getProfileData();
-    
+
     setVersionB(Cookies.get("Version"));
     console.log("version", Cookies.get("Version"));
     getCollections(NFTType);
@@ -735,19 +734,21 @@ function NewNFT(props) {
         }
       );
     } else {
-      axios.delete(`/${versionB}/batch-mint/nft/${tokenList[index].nftId}`).then(
-        (response) => {
-          console.log("Response for delete nft from batch: ", response);
-          const list = [...tokenList];
-          list.splice(index, 1);
-          Cookies.remove("NFT-Detail");
-          Cookies.set("NFT-Detail", list, {});
-          setTokenList(list);
-        },
-        (error) => {
-          console.log("Error for delete nft from batch: ", error);
-        }
-      );
+      axios
+        .delete(`/${versionB}/batch-mint/nft/${tokenList[index].nftId}`)
+        .then(
+          (response) => {
+            console.log("Response for delete nft from batch: ", response);
+            const list = [...tokenList];
+            list.splice(index, 1);
+            Cookies.remove("NFT-Detail");
+            Cookies.set("NFT-Detail", list, {});
+            setTokenList(list);
+          },
+          (error) => {
+            console.log("Error for delete nft from batch: ", error);
+          }
+        );
     }
   };
 
@@ -1256,14 +1257,16 @@ function NewNFT(props) {
 
         Cookies.set("NFT-Detail", data, {});
 
-        axios.put(`/${versionB}/nft/${data[editObjectIndex].nftId}`, updatedObject).then(
-          (response) => {
-            console.log("Response of updated nft: ", response);
-          },
-          (error) => {
-            console.log("Error of updated nft: ", error);
-          }
-        );
+        axios
+          .put(`/${versionB}/nft/${data[editObjectIndex].nftId}`, updatedObject)
+          .then(
+            (response) => {
+              console.log("Response of updated nft: ", response);
+            },
+            (error) => {
+              console.log("Error of updated nft: ", error);
+            }
+          );
 
         console.log("Data: ", data);
         setTokenList(data);
@@ -1856,7 +1859,7 @@ function NewNFT(props) {
                       inputValue={rarity}
                       renderInput={(params) => (
                         <div> */}
-                          {/* <select
+                  {/* <select
                         name="rarity"
                         id="rarity-select"
                         autocomplete="on"
@@ -1871,7 +1874,7 @@ function NewNFT(props) {
                         <option value="dog">Dog</option>
                         <option value="parrot">Parrot</option>
                       </select> */}
-                          {/* <ThemeProvider theme={makeTheme}>
+                  {/* <ThemeProvider theme={makeTheme}>
                             <TextField
                               {...params}
                               // label="Rarity"
@@ -2556,7 +2559,11 @@ function NewNFT(props) {
             ) : (
               <button
                 type="button"
-                onClick={(e) => {versionB === "v1-sso" ? (handleSubmitEvent(e)) : (handleSubmitEventMetamask(e))}}
+                onClick={(e) => {
+                  versionB === "v1-sso"
+                    ? handleSubmitEvent(e)
+                    : handleSubmitEventMetamask(e);
+                }}
                 className="btn submit-btn propsActionBtn"
               >
                 Batch create NFTs

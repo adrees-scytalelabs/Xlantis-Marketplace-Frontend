@@ -139,8 +139,8 @@ function AccountApproval(props) {
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
-      manageAccounts : "",
-      accountApproval : "active",
+      manageAccounts: "",
+      accountApproval: "active",
       accounts: "",
     }); // eslint-disable-next-line
   }, []);
@@ -159,72 +159,70 @@ function AccountApproval(props) {
     setPage(0);
   };
 
-    let getUnverifiedAdmins = (start, end) => {
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
-        //     "Authorization"
-        // )}`;
-        setOpen(true);
-        axios
-            .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}`)
-            .then((response) => {
-                console.log("response.data", response.data);
-                setAdmins(response.data.unverifiedAdmins);
-                setAdminCount(response.data.unverifiedAdmins.length)
-                setOpen(false);
-              
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-                if (error.response.data !== undefined) {
-                    if (error.response.data === "Unauthorized access (invalid token) !!") {
-                        Cookies.remove("Authorization");
-                        localStorage.removeItem("Address")
-                        window.location.reload();
-                    }
-                }
-                setOpen(false);
-            });
+  let getUnverifiedAdmins = (start, end) => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}`)
+      .then((response) => {
+        console.log("response.data", response.data);
+        setAdmins(response.data.unverifiedAdmins);
+        setAdminCount(response.data.unverifiedAdmins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+
+  let handleVerify = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
     };
 
-    let handleVerify = (e,verifyAdminId ) => { 
-      e.preventDefault();
-      setIsSaving(true);
-      handleShowBackdrop();
-      // setIsUploadingData(true);
+    console.log("data", data);
 
-      //sending data to backend
-      let data ={
-          adminId : verifyAdminId
+    axios.patch(`/v1-sso/super-admin/admin/verify`, data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        getUnverifiedAdmins(0, rowsPerPage);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on verify: ", error);
+        console.log("Error on verify: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
-
-      console.log("data", data);
-
-      axios.patch(`/v1-sso/super-admin/admin/verify`, data).then(
-          (response) => {
-              console.log("admin verify response: ", response);
-              let variant = "success";
-              enqueueSnackbar('Admin Verified Successfully.', { variant });
-              handleCloseBackdrop();
-              setIsSaving(false);
-              getUnverifiedAdmins(0, rowsPerPage);
-              // setIsUploadingData(false);
-
-
-          },
-          (error) => {
-              console.log("Error on verify: ", error);      
-              console.log("Error on verify: ", error.response);                            
-
-              // setIsUploadingData(false);
-
-              handleCloseBackdrop();
-
-              let variant = "error";
-              enqueueSnackbar('Unable to Verify Admin.', { variant });
-          }
-      )
-  }
-    
+    );
+  };
 
   return (
     <div className="backgroundDefault">
@@ -294,7 +292,7 @@ function AccountApproval(props) {
                           //   border: "1px solid #F64D04",
                           //   borderRadius: "0px 15px",
                           // }}
-                          onClick={(e) =>  {
+                          onClick={(e) => {
                             handleVerify(e, i._id);
                           }}
                         >

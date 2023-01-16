@@ -153,7 +153,6 @@ function HeaderHome(props) {
   };
 
   async function handleLogin() {
-   
     await loadWeb3();
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -206,7 +205,7 @@ function HeaderHome(props) {
           // setIsLoading(false);
           localStorage.setItem("Address", accounts[0]);
           history.push("/");
-          // window.location.reload();
+          // window.location.reload(false);
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -274,7 +273,7 @@ function HeaderHome(props) {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
-    window.location.reload();
+    window.location.reload(false);
 
     // setTimeout(() => { }, 1);
   };
@@ -629,10 +628,10 @@ function HeaderHome(props) {
           network={network}
         ></NetworkErrorModal>
       </nav>
-      <SSOWalletModal 
-      handleClose={handleCloseModal} 
-      open={modalOpen} 
-      metamaskLogin = {handleLogin}
+      <SSOWalletModal
+        handleClose={handleCloseModal}
+        open={modalOpen}
+        metamaskLogin={handleLogin}
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
     </header>

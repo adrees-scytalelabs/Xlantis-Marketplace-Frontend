@@ -16,7 +16,6 @@ import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
-import PublishDropModal from "../../../components/Modals/PublishDropModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -70,25 +69,26 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/fixed-price/${start}/${end}`).then(
-      (response) => {
-        console.log("responseeeee", response);
-        setCubeData(response.data.data);
-        setUserSaledata(response.data.data);
-        setCubeAuctionData(response.data.data);
-        setUserAuctiondata(response.data.data);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        handleCloseBackdrop();
+    axios
+      .get(`/v1-sso/${version}/drop/saleType/fixed-price/${start}/${end}`)
+      .then(
+        (response) => {
+          console.log("responseeeee", response);
+          setCubeData(response.data.data);
+          setUserSaledata(response.data.data);
+          setCubeAuctionData(response.data.data);
+          setUserAuctiondata(response.data.data);
+          handleCloseBackdrop();
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          handleCloseBackdrop();
       }
     );
   };
-  
   // let getCubes2 = (start, end) => {
   //   handleShowBackdrop();
   //   axios.get(`/marketplace/tokenIds/${start}/${end}`).then(

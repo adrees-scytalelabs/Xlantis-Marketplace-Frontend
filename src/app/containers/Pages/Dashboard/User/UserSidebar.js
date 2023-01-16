@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 import React from "react";
 import { Link } from "react-router-dom";
-import StorageIcon from '@material-ui/icons/Storage';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import BusinessIcon from '@material-ui/icons/Business';
+import StorageIcon from "@material-ui/icons/Storage";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import BusinessIcon from "@material-ui/icons/Business";
 
-import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 function AdminSidebar(props) {
   console.log(props);
   let handleLogout = (e) => {
@@ -13,8 +13,8 @@ function AdminSidebar(props) {
     Cookies.remove("Authorization");
     // web3Modal.clearCachedProvider();
 
-    
     // setTimeout(() => { }, 1);
+    window.location.reload(false);
   };
 
   return (
@@ -59,7 +59,7 @@ function AdminSidebar(props) {
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li> */}
-{/* 
+            {/* 
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
@@ -95,7 +95,6 @@ function AdminSidebar(props) {
                 <i className="fas fa-cubes"></i><span>My Cubes</span>
               </Link>
             </li> */}
-
 
             {/* <li className={props.activeTab.totalUserAccount}>
               <Link to={`${props.match.url}/totalUserAccount`}>
@@ -144,7 +143,6 @@ function AdminSidebar(props) {
                 <span>Referral Earnings</span>
               </Link>
             </li> */}
-
 
             {/* <li className="menu-title">
               <span>Settings</span>

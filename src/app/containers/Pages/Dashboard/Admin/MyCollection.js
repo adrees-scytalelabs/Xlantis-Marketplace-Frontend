@@ -82,7 +82,7 @@ function MyCollection(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload();
+            window.location.reload(false);
           }
         }
         setOpen(false);

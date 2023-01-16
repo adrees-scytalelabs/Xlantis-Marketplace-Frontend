@@ -206,6 +206,7 @@ function AdminDashboard(props) {
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");
+                      window.location.reload(false);
                     }}
                     to="/"
                     style={{ width: "100%" }}

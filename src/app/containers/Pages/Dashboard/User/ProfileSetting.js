@@ -1,14 +1,14 @@
 import { Container } from "@material-ui/core";
-import Paper from '@material-ui/core/Paper';
-import { makeStyles } from '@material-ui/core/styles';
-import Tab from '@material-ui/core/Tab';
-import Tabs from '@material-ui/core/Tabs';
+import Paper from "@material-ui/core/Paper";
+import { makeStyles } from "@material-ui/core/styles";
+import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import r1 from '../../../../assets/img/patients/patient.jpg';
+import r1 from "../../../../assets/img/patients/patient.jpg";
 const useStyles = makeStyles({
   root: {
     flexGrow: 1,
@@ -18,20 +18,22 @@ const useStyles = makeStyles({
 function ProfileSetting(props) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  let [musicArtist, setMusicArtist] = useState('');
+  let [musicArtist, setMusicArtist] = useState("");
   let [aboutTheTrack, setAboutTheTrack] = useState("");
   let [website, setWebsite] = useState("");
   let [aboutTheArt, setAboutTheArt] = useState("");
   let [inspirationForThePiece, setInspirationForThePiece] = useState("");
-  let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
+  let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] =
+    useState("");
   let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
-  let [imageArtist, setImageArtist] = useState('');
-  let [producer, setProducer] = useState('');
-  let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] = useState(false);
+  let [imageArtist, setImageArtist] = useState("");
+  let [producer, setProducer] = useState("");
+  let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] =
+    useState(false);
   let [isUploadingProducer, setIsUploadingProducer] = useState(false);
   let [isUploadingFan, setIsUploadingFan] = useState(false);
   let [isUploadingImageArtist, setIsUploadingImageArtist] = useState(false);
-  let [fan, setFan] = useState('');
+  let [fan, setFan] = useState("");
   let [artistImage, setArtistImage] = useState(r1);
   let [producerImage, setProducerImage] = useState(r1);
   let [executiveProducerImage, setExecutiveProducerImage] = useState(r1);
@@ -41,7 +43,7 @@ function ProfileSetting(props) {
   let [isProducer, setIsProducer] = useState(null);
   let [isExecutiveProducer, setIsExecutiveProducer] = useState(null);
   let [isFan, setIsFan] = useState(null);
-  let [executiveProducer, setExecutiveProducer] = useState('');
+  let [executiveProducer, setExecutiveProducer] = useState("");
   let [musicArtistImage, setMusicArtistImage] = useState(r1);
 
   let [isUploadingArtist, setIsUploadingArtist] = useState(false);
@@ -55,10 +57,10 @@ function ProfileSetting(props) {
   let [isSavingChanges, setIsSavingChanges] = useState(false);
 
   let enableImageArtist = (e) => {
-    setIsSavingChanges(true)
+    setIsSavingChanges(true);
     if (artistImage === r1) {
       let variant = "error";
-      enqueueSnackbar('Please Upload Image Artist Image', { variant });
+      enqueueSnackbar("Please Upload Image Artist Image", { variant });
       setIsSavingChanges(false);
     } else {
       e.preventDefault();
@@ -67,94 +69,109 @@ function ProfileSetting(props) {
         Profile: artistImage,
         role: "Image Artist",
         Website: website,
-        About: aboutTheArt
-      }
-      
-      axios.post(`/profile/createprofile`, ImageArtistData)
+        About: aboutTheArt,
+      };
+
+      axios
+        .post(`/profile/createprofile`, ImageArtistData)
         .then((response) => {
           console.log("response", response);
           getUserRoles();
           setIsSavingChanges(false);
           let variant = "success";
-          enqueueSnackbar('Image Artist Role has been Assigned to you Successfully', { variant });
+          enqueueSnackbar(
+            "Image Artist Role has been Assigned to you Successfully",
+            { variant }
+          );
         })
         .catch((error) => {
           console.log("error", error);
           setIsSavingChanges(false);
           let variant = "error";
-          enqueueSnackbar('Unable to Assign role of Image Artist to you', { variant });
-
-        })
+          enqueueSnackbar("Unable to Assign role of Image Artist to you", {
+            variant,
+          });
+        });
     }
-  }
+  };
   let enableMusicArtist = (e) => {
     setIsSavingChanges(true);
     e.preventDefault();
     if (musicArtistImage === r1) {
       let variant = "error";
-      enqueueSnackbar('Please Upload Music Artist Image', { variant });
+      enqueueSnackbar("Please Upload Music Artist Image", { variant });
       setIsSavingChanges(false);
     } else {
       let MusicArtistData = {
         Name: musicArtist,
         Profile: musicArtistImage,
         role: "Music Artist",
-        About: aboutTheTrack
-      }
-      axios.post(`/profile/createprofile`, MusicArtistData)
+        About: aboutTheTrack,
+      };
+      axios
+        .post(`/profile/createprofile`, MusicArtistData)
         .then((response) => {
           console.log("response", response);
           getUserRoles();
           setIsSavingChanges(false);
           let variant = "success";
-          enqueueSnackbar('Music Artist Role has been Assigned to you Successfully', { variant });
+          enqueueSnackbar(
+            "Music Artist Role has been Assigned to you Successfully",
+            { variant }
+          );
         })
         .catch((error) => {
           console.log("error", error);
           setIsSavingChanges(false);
           let variant = "error";
-          enqueueSnackbar('Unable to Assign role of Music Artist to you', { variant });
-
-        })
+          enqueueSnackbar("Unable to Assign role of Music Artist to you", {
+            variant,
+          });
+        });
     }
-  }
+  };
   let enableProducer = (e) => {
     setIsSavingChanges(true);
     e.preventDefault();
     if (producerImage === r1) {
       let variant = "error";
-      enqueueSnackbar('Please Upload Producer Image', { variant });
+      enqueueSnackbar("Please Upload Producer Image", { variant });
       setIsSavingChanges(false);
     } else {
       let ProducerData = {
         Name: producer,
         Profile: producerImage,
         role: "Producer",
-        Inspiration: inspirationForThePiece
-      }
-      axios.post(`/profile/createprofile`, ProducerData)
+        Inspiration: inspirationForThePiece,
+      };
+      axios
+        .post(`/profile/createprofile`, ProducerData)
         .then((response) => {
           console.log("response", response);
           getUserRoles();
           setIsSavingChanges(false);
           let variant = "success";
-          enqueueSnackbar('Producer Role has been Assigned to you Successfully', { variant });
+          enqueueSnackbar(
+            "Producer Role has been Assigned to you Successfully",
+            { variant }
+          );
         })
         .catch((error) => {
           console.log("error", error);
           setIsSavingChanges(false);
           let variant = "error";
-          enqueueSnackbar('Unable to Assign role of Producer to you', { variant });
-
-        })
+          enqueueSnackbar("Unable to Assign role of Producer to you", {
+            variant,
+          });
+        });
     }
-  }
+  };
   let enableExecutiveProducer = (e) => {
     setIsSavingChanges(true);
     e.preventDefault();
     if (executiveProducerImage === r1) {
       let variant = "error";
-      enqueueSnackbar('Please Upload Executive Producer Image', { variant });
+      enqueueSnackbar("Please Upload Executive Producer Image", { variant });
       setIsSavingChanges(false);
     } else {
       let ExecutiveProducerData = {
@@ -162,29 +179,36 @@ function ProfileSetting(props) {
         Profile: executiveProducerImage,
         role: "Executive Producer",
         Inspiration: executiveInspirationForThePiece,
-      }
-      axios.post(`/profile/createprofile`, ExecutiveProducerData)
+      };
+      axios
+        .post(`/profile/createprofile`, ExecutiveProducerData)
         .then((response) => {
           console.log("response", response);
           getUserRoles();
           setIsSavingChanges(false);
           let variant = "success";
-          enqueueSnackbar('Executive Producer Role has been Assigned to you Successfully', { variant });
+          enqueueSnackbar(
+            "Executive Producer Role has been Assigned to you Successfully",
+            { variant }
+          );
         })
         .catch((error) => {
           console.log("error", error);
           setIsSavingChanges(false);
           let variant = "error";
-          enqueueSnackbar('Unable to Assign role of Executive Producer to you', { variant });
-        })
+          enqueueSnackbar(
+            "Unable to Assign role of Executive Producer to you",
+            { variant }
+          );
+        });
     }
-  }
+  };
   let enableFan = (e) => {
     setIsSavingChanges(true);
     e.preventDefault();
     if (fanImage === r1) {
       let variant = "error";
-      enqueueSnackbar('Please Upload Fan Image', { variant });
+      enqueueSnackbar("Please Upload Fan Image", { variant });
       setIsSavingChanges(false);
     } else {
       let FanData = {
@@ -192,27 +216,30 @@ function ProfileSetting(props) {
         Profile: fanImage,
         role: "Fan",
         Inspiration: fanInspirationForThePiece,
-      }
-      axios.post(`/profile/createprofile`, FanData)
+      };
+      axios
+        .post(`/profile/createprofile`, FanData)
         .then((response) => {
           console.log("response", response);
           getUserRoles();
           setIsSavingChanges(false);
           let variant = "success";
-          enqueueSnackbar('Fan Role has been Assigned to you Successfully', { variant });
+          enqueueSnackbar("Fan Role has been Assigned to you Successfully", {
+            variant,
+          });
         })
         .catch((error) => {
           console.log("error", error);
           setIsSavingChanges(false);
           let variant = "error";
-          enqueueSnackbar('Unable to Assign role of Fan to you', { variant });
-        })
+          enqueueSnackbar("Unable to Assign role of Fan to you", { variant });
+        });
     }
-  }
+  };
   let getUserRoles = () => {
-    axios.defaults.headers.common[
+    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
       "Authorization"
-    ] = `Bearer ${Cookies.get("Authorization")}`;
+    )}`;
     axios.get("/profile/getuserprofile").then(
       (response) => {
         console.log("response", response);
@@ -228,14 +255,17 @@ function ProfileSetting(props) {
           console.log(error.response);
         }
         if (error.response.data !== undefined) {
-          if (error.response.data === "Unauthorized access (invalid token) !!") {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
             Cookies.remove("Authorization");
-            localStorage.removeItem("Address")
-            window.location.reload();
+            localStorage.removeItem("Address");
+            window.location.reload(false);
           }
         }
-      })
-  }
+      }
+    );
+  };
   useEffect(() => {
     getUserRoles();
     props.setActiveTab({
@@ -249,7 +279,7 @@ function ProfileSetting(props) {
       resolvedDisputedOrders: "",
       settings: "active",
       changePassword: "",
-    });// eslint-disable-next-line
+    }); // eslint-disable-next-line
   }, []);
   let onChangeSelfieHandler = (e) => {
     setIsUploadingImageArtist(true);
@@ -261,7 +291,7 @@ function ProfileSetting(props) {
         setArtistImage(response.data.url);
         setIsUploadingImageArtist(false);
         let variant = "success";
-        enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -270,10 +300,10 @@ function ProfileSetting(props) {
         }
         setIsUploadingImageArtist(false);
         let variant = "error";
-        enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
       }
     );
-  }
+  };
   let onChangeProducerHandler = (e) => {
     setIsUploadingProducer(true);
     let fileData = new FormData();
@@ -284,7 +314,7 @@ function ProfileSetting(props) {
         setProducerImage(response.data.url);
         setIsUploadingProducer(false);
         let variant = "success";
-        enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -293,11 +323,10 @@ function ProfileSetting(props) {
         }
         setIsUploadingProducer(false);
         let variant = "error";
-        enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
       }
     );
-  }
+  };
   let onChangeExecutiveProducerHandler = (e) => {
     setIsUploadingExecutiveProducer(true);
     let fileData = new FormData();
@@ -308,7 +337,7 @@ function ProfileSetting(props) {
         setExecutiveProducerImage(response.data.url);
         setIsUploadingExecutiveProducer(false);
         let variant = "success";
-        enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -317,11 +346,10 @@ function ProfileSetting(props) {
         }
         setIsUploadingExecutiveProducer(false);
         let variant = "error";
-        enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
       }
     );
-  }
+  };
   let onChangeFanHandler = (e) => {
     setIsUploadingFan(true);
     let fileData = new FormData();
@@ -332,7 +360,7 @@ function ProfileSetting(props) {
         setFanImage(response.data.url);
         setIsUploadingFan(false);
         let variant = "success";
-        enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -341,11 +369,10 @@ function ProfileSetting(props) {
         }
         setIsUploadingFan(false);
         let variant = "error";
-        enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
       }
     );
-  }
+  };
   let onChangeArtistHandler = (e) => {
     setIsUploadingArtist(true);
     let fileData = new FormData();
@@ -356,7 +383,7 @@ function ProfileSetting(props) {
         setMusicArtistImage(response.data.url);
         setIsUploadingArtist(false);
         let variant = "success";
-        enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -365,16 +392,18 @@ function ProfileSetting(props) {
         }
         setIsUploadingArtist(false);
         let variant = "error";
-        enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
+        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
       }
     );
-  }
+  };
 
   return (
     <>
       <div className="card">
-        <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
+        <ul
+          className="breadcrumb"
+          style={{ backgroundColor: "rgb(167, 0, 0)" }}
+        >
           <li className="breadcrumb-item">
             <a href="/">Dashboard</a>
           </li>
@@ -399,7 +428,10 @@ function ProfileSetting(props) {
           {value === 0 ? (
             <Container>
               {isImageArtist === null ? (
-                <form onSubmit={(e) => enableImageArtist(e)} style={{ margin: "20px" }}>
+                <form
+                  onSubmit={(e) => enableImageArtist(e)}
+                  style={{ margin: "20px" }}
+                >
                   <div className="form-group">
                     <input
                       type="text"
@@ -408,7 +440,7 @@ function ProfileSetting(props) {
                       placeholder="Enter Image Artist Name"
                       className="form-control"
                       onChange={(e) => {
-                        setImageArtist(e.target.value)
+                        setImageArtist(e.target.value);
                       }}
                     />
                   </div>
@@ -422,7 +454,7 @@ function ProfileSetting(props) {
                       placeholder="About the Art"
                       className="form-control"
                       onChange={(e) => {
-                        setAboutTheArt(e.target.value)
+                        setAboutTheArt(e.target.value);
                       }}
                     />
                   </div>
@@ -451,11 +483,12 @@ function ProfileSetting(props) {
                                 animation="border"
                                 role="status"
                                 style={{ color: "#fff" }}
-                              >
-                              </Spinner>
+                              ></Spinner>
                             </div>
                           ) : (
-                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                            <span>
+                              <i className="fa fa-upload"></i>Upload photo
+                            </span>
                           )}
                           <input
                             name="sampleFile"
@@ -467,7 +500,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -479,7 +512,7 @@ function ProfileSetting(props) {
                       placeholder="Enter Website URL"
                       className="form-control"
                       onChange={(e) => {
-                        setWebsite(e.target.value)
+                        setWebsite(e.target.value);
                       }}
                     />
                   </div>
@@ -502,7 +535,7 @@ function ProfileSetting(props) {
                           className="btn submit-btn"
                         >
                           Save Changes
-                  </button>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -547,7 +580,9 @@ function ProfileSetting(props) {
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
                         >
-                          <span><i className="fa fa-upload"></i>Upload photo</span>
+                          <span>
+                            <i className="fa fa-upload"></i>Upload photo
+                          </span>
                           <input
                             name="sampleFile"
                             type="file"
@@ -558,7 +593,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -573,23 +608,21 @@ function ProfileSetting(props) {
                   </div>
                   <div className="submit-section">
                     <div className="text-center">
-                      <button
-                        type="submit"
-                        disabled
-                        className="btn submit-btn"
-                      >
+                      <button type="submit" disabled className="btn submit-btn">
                         Save Changes
-                  </button>
+                      </button>
                     </div>
                   </div>
                 </form>
               )}
-
             </Container>
           ) : value === 1 ? (
             <Container>
               {isMusicArtist === null ? (
-                <form onSubmit={(e) => enableMusicArtist(e)} style={{ margin: "20px" }}>
+                <form
+                  onSubmit={(e) => enableMusicArtist(e)}
+                  style={{ margin: "20px" }}
+                >
                   <div className="form-group">
                     {/* <label>Artist Name</label> */}
                     <input
@@ -599,7 +632,7 @@ function ProfileSetting(props) {
                       placeholder="Enter Music Artist Name"
                       className="form-control"
                       onChange={(e) => {
-                        setMusicArtist(e.target.value)
+                        setMusicArtist(e.target.value);
                       }}
                     />
                   </div>
@@ -628,11 +661,12 @@ function ProfileSetting(props) {
                                 animation="border"
                                 role="status"
                                 style={{ color: "#fff" }}
-                              >
-                              </Spinner>
+                              ></Spinner>
                             </div>
                           ) : (
-                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                            <span>
+                              <i className="fa fa-upload"></i>Upload photo
+                            </span>
                           )}
                           <input
                             name="sampleFile"
@@ -644,7 +678,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -658,7 +692,7 @@ function ProfileSetting(props) {
                       placeholder="About the Track"
                       className="form-control"
                       onChange={(e) => {
-                        setAboutTheTrack(e.target.value)
+                        setAboutTheTrack(e.target.value);
                       }}
                     />
                   </div>
@@ -681,7 +715,7 @@ function ProfileSetting(props) {
                           className="btn submit-btn"
                         >
                           Save Changes
-                  </button>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -716,7 +750,9 @@ function ProfileSetting(props) {
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
                         >
-                          <span disabled><i className="fa fa-upload"></i>Upload photo</span>
+                          <span disabled>
+                            <i className="fa fa-upload"></i>Upload photo
+                          </span>
                           <input
                             name="sampleFile"
                             type="file"
@@ -727,7 +763,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -743,13 +779,9 @@ function ProfileSetting(props) {
                   </div>
                   <div className="submit-section">
                     <div className="text-center">
-                      <button
-                        type="submit"
-                        disabled
-                        className="btn submit-btn"
-                      >
+                      <button type="submit" disabled className="btn submit-btn">
                         Save Changes
-                  </button>
+                      </button>
                     </div>
                   </div>
                 </form>
@@ -758,7 +790,10 @@ function ProfileSetting(props) {
           ) : value === 2 ? (
             <Container>
               {isProducer === null ? (
-                <form onSubmit={(e) => enableProducer(e)} style={{ margin: "20px" }}>
+                <form
+                  onSubmit={(e) => enableProducer(e)}
+                  style={{ margin: "20px" }}
+                >
                   <div className="form-group">
                     {/* <label>Producer</label> */}
                     <input
@@ -768,7 +803,7 @@ function ProfileSetting(props) {
                       placeholder="Enter Producer Name"
                       className="form-control"
                       onChange={(e) => {
-                        setProducer(e.target.value)
+                        setProducer(e.target.value);
                       }}
                     />
                   </div>
@@ -797,11 +832,12 @@ function ProfileSetting(props) {
                                 animation="border"
                                 role="status"
                                 style={{ color: "#fff" }}
-                              >
-                              </Spinner>
+                              ></Spinner>
                             </div>
                           ) : (
-                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                            <span>
+                              <i className="fa fa-upload"></i>Upload photo
+                            </span>
                           )}
                           <input
                             name="sampleFile"
@@ -813,7 +849,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                       </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -827,7 +863,7 @@ function ProfileSetting(props) {
                       placeholder="Inspiration For the Piece"
                       className="form-control"
                       onChange={(e) => {
-                        setInspirationForThePiece(e.target.value)
+                        setInspirationForThePiece(e.target.value);
                       }}
                     />
                   </div>
@@ -844,12 +880,9 @@ function ProfileSetting(props) {
                       </div>
                     ) : (
                       <div className="text-center">
-                        <button
-                          type="submit"
-                          className="btn submit-btn"
-                        >
+                        <button type="submit" className="btn submit-btn">
                           Save Changes
-                   </button>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -884,7 +917,9 @@ function ProfileSetting(props) {
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
                         >
-                          <span disabled><i className="fa fa-upload"></i>Upload photo</span>
+                          <span disabled>
+                            <i className="fa fa-upload"></i>Upload photo
+                          </span>
                           <input
                             name="sampleFile"
                             type="file"
@@ -895,7 +930,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -911,23 +946,21 @@ function ProfileSetting(props) {
                   </div>
                   <div className="submit-section">
                     <div className="text-center">
-                      <button
-                        type="submit"
-                        disabled
-                        className="btn submit-btn"
-                      >
+                      <button type="submit" disabled className="btn submit-btn">
                         Save Changes
-                  </button>
+                      </button>
                     </div>
                   </div>
                 </form>
               )}
-
             </Container>
           ) : value === 3 ? (
             <Container>
               {isExecutiveProducer === null ? (
-                <form onSubmit={(e) => enableExecutiveProducer(e)} style={{ margin: "20px" }}>
+                <form
+                  onSubmit={(e) => enableExecutiveProducer(e)}
+                  style={{ margin: "20px" }}
+                >
                   <div className="form-group">
                     {/* <label>Producer</label> */}
                     <input
@@ -937,11 +970,13 @@ function ProfileSetting(props) {
                       placeholder="Enter Executive Producer Name"
                       className="form-control"
                       onChange={(e) => {
-                        setExecutiveProducer(e.target.value)
+                        setExecutiveProducer(e.target.value);
                       }}
                     />
                   </div>
-                  <label className="focus-label">Executive Producer Profile Photo</label>
+                  <label className="focus-label">
+                    Executive Producer Profile Photo
+                  </label>
                   <div className="form-group">
                     <div className="change-avatar">
                       <div className="profile-img">
@@ -966,11 +1001,12 @@ function ProfileSetting(props) {
                                 animation="border"
                                 role="status"
                                 style={{ color: "#fff" }}
-                              >
-                              </Spinner>
+                              ></Spinner>
                             </div>
                           ) : (
-                            <span><i className="fa fa-upload"></i>Upload photo</span>
+                            <span>
+                              <i className="fa fa-upload"></i>Upload photo
+                            </span>
                           )}
                           <input
                             name="sampleFile"
@@ -982,7 +1018,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -996,7 +1032,7 @@ function ProfileSetting(props) {
                       placeholder="Inspiration For the Piece"
                       className="form-control"
                       onChange={(e) => {
-                        setExecutiveInspirationForThePiece(e.target.value)
+                        setExecutiveInspirationForThePiece(e.target.value);
                       }}
                     />
                   </div>
@@ -1019,7 +1055,7 @@ function ProfileSetting(props) {
                           className="btn submit-btn"
                         >
                           Save Changes
-                  </button>
+                        </button>
                       </div>
                     )}
                   </div>
@@ -1035,7 +1071,9 @@ function ProfileSetting(props) {
                       className="form-control"
                     />
                   </div>
-                  <label className="focus-label">Executive Producer Profile Photo</label>
+                  <label className="focus-label">
+                    Executive Producer Profile Photo
+                  </label>
                   <div className="form-group">
                     <div className="change-avatar">
                       <div className="profile-img">
@@ -1054,7 +1092,9 @@ function ProfileSetting(props) {
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
                         >
-                          <span disabled><i className="fa fa-upload"></i>Upload photo</span>
+                          <span disabled>
+                            <i className="fa fa-upload"></i>Upload photo
+                          </span>
                           <input
                             name="sampleFile"
                             type="file"
@@ -1065,7 +1105,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                  </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -1080,15 +1120,10 @@ function ProfileSetting(props) {
                     />
                   </div>
                   <div className="submit-section">
-
                     <div className="text-center">
-                      <button
-                        type="submit"
-                        disabled
-                        className="btn submit-btn"
-                      >
+                      <button type="submit" disabled className="btn submit-btn">
                         Save Changes
-              </button>
+                      </button>
                     </div>
                   </div>
                 </form>
@@ -1107,7 +1142,7 @@ function ProfileSetting(props) {
                       placeholder="Enter Fan Name"
                       className="form-control"
                       onChange={(e) => {
-                        setFan(e.target.value)
+                        setFan(e.target.value);
                       }}
                     />
                   </div>
@@ -1129,18 +1164,20 @@ function ProfileSetting(props) {
                         <div
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
-                        >{isUploadingFan ? (
-                          <div className="text-center">
-                            <Spinner
-                              animation="border"
-                              role="status"
-                              style={{ color: "#fff" }}
-                            >
-                            </Spinner>
-                          </div>
-                        ) : (
-                          <span><i className="fa fa-upload"></i>Upload photo</span>
-                        )}
+                        >
+                          {isUploadingFan ? (
+                            <div className="text-center">
+                              <Spinner
+                                animation="border"
+                                role="status"
+                                style={{ color: "#fff" }}
+                              ></Spinner>
+                            </div>
+                          ) : (
+                            <span>
+                              <i className="fa fa-upload"></i>Upload photo
+                            </span>
+                          )}
                           <input
                             name="sampleFile"
                             type="file"
@@ -1151,7 +1188,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                      </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -1165,7 +1202,7 @@ function ProfileSetting(props) {
                       placeholder="Inspiration For the Piece"
                       className="form-control"
                       onChange={(e) => {
-                        setFanInspirationForThePiece(e.target.value)
+                        setFanInspirationForThePiece(e.target.value);
                       }}
                     />
                   </div>
@@ -1182,17 +1219,13 @@ function ProfileSetting(props) {
                       </div>
                     ) : (
                       <div className="text-center">
-                        <button
-                          type="submit"
-                          className="btn submit-btn"
-                        >
+                        <button type="submit" className="btn submit-btn">
                           Save Changes
-                  </button>
+                        </button>
                       </div>
                     )}
                   </div>
                 </form>
-
               ) : (
                 <form onSubmit={(e) => enableFan(e)} style={{ margin: "20px" }}>
                   <div className="form-group">
@@ -1223,7 +1256,9 @@ function ProfileSetting(props) {
                           className="change-photo-btn"
                           style={{ backgroundColor: "rgb(167,0,0)" }}
                         >
-                          <span><i className="fa fa-upload"></i>Upload photo</span>
+                          <span>
+                            <i className="fa fa-upload"></i>Upload photo
+                          </span>
                           <input
                             name="sampleFile"
                             type="file"
@@ -1234,7 +1269,7 @@ function ProfileSetting(props) {
                         </div>
                         <small className="form-text text-muted">
                           Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                  </small>
+                        </small>
                       </div>
                     </div>
                   </div>
@@ -1250,24 +1285,17 @@ function ProfileSetting(props) {
                   </div>
                   <div className="submit-section">
                     <div className="text-center">
-                      <button
-                        type="submit"
-                        disabled
-                        className="btn submit-btn"
-                      >
+                      <button type="submit" disabled className="btn submit-btn">
                         Save Changes
-              </button>
+                      </button>
                     </div>
                   </div>
                 </form>
-
               )}
             </Container>
-          ) : (
-            null
-          )}
-        </div >
-      </div >
+          ) : null}
+        </div>
+      </div>
     </>
   );
 }

@@ -420,7 +420,7 @@ function SaleCubeNFTs(props) {
                 ) {
                   localStorage.removeItem("Address");
                   Cookies.remove("Authorization");
-                  window.location.reload();
+                  window.location.reload(false);
                 }
               }
               handleCloseSpinner();

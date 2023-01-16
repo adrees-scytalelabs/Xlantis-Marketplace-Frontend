@@ -135,12 +135,12 @@ function Accounts(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedAdmins(0,rowsPerPage);
+    getUnverifiedAdmins(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
-      manageAccounts : "",
-      accountApproval : "",
+      manageAccounts: "",
+      accountApproval: "",
       accounts: "active",
     }); // eslint-disable-next-line
   }, []);
@@ -150,7 +150,10 @@ function Accounts(props) {
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getUnverifiedAdmins(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
+    getUnverifiedAdmins(
+      newPage * rowsPerPage,
+      newPage * rowsPerPage + rowsPerPage
+    );
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -159,70 +162,69 @@ function Accounts(props) {
     setPage(0);
   };
 
-    let getUnverifiedAdmins = (start,end) => {
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
-        //     "Authorization"
-        // )}`;
-        setOpen(true);
-        axios
-            .get(`/v1-sso/super-admin/admins/${start}/${end}`)
-            .then((response) => {
-                console.log("response.data", response.data);
-                setAdmins(response.data.Admins);
-                setAdminCount(response.data.Admins.length)
-                setOpen(false);
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-                if (error.response.data !== undefined) {
-                    if (error.response.data === "Unauthorized access (invalid token) !!") {
-                        Cookies.remove("Authorization");
-                        localStorage.removeItem("Address")
-                        window.location.reload();
-                    }
-                }
-                setOpen(false);
-            });
+  let getUnverifiedAdmins = (start, end) => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(`/v1-sso/super-admin/admins/${start}/${end}`)
+      .then((response) => {
+        console.log("response.data", response.data);
+        setAdmins(response.data.Admins);
+        setAdminCount(response.data.Admins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+
+  let handleVerify = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
     };
 
-    let handleVerify = (e,verifyAdminId ) => { 
-      e.preventDefault();
-      setIsSaving(true);
-      handleShowBackdrop();
-      // setIsUploadingData(true);
+    console.log("data", data);
 
-      //sending data to backend
-      let data ={
-          adminId : verifyAdminId
+    axios.put(`/v1-sso/super-admin/admin/verify/${verifyAdminId}}`, data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on status pending nft: ", error);
+        console.log("Error on status pending nft: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
-
-      console.log("data", data);
-
-      axios.put(`/v1-sso/super-admin/admin/verify/${verifyAdminId}}`, data).then(
-          (response) => {
-              console.log("admin verify response: ", response);
-              let variant = "success";
-              enqueueSnackbar('Admin Verified Successfully.', { variant });
-              handleCloseBackdrop();
-              setIsSaving(false);
-              // setIsUploadingData(false);
-
-
-          },
-          (error) => {
-              console.log("Error on status pending nft: ", error);      
-              console.log("Error on status pending nft: ", error.response);                            
-
-              // setIsUploadingData(false);
-
-              handleCloseBackdrop();
-
-              let variant = "error";
-              enqueueSnackbar('Unable to Verify Admin.', { variant });
-          }
-      )
-  }
-    
+    );
+  };
 
   return (
     <div className="backgroundDefault">
@@ -269,7 +271,6 @@ function Accounts(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
-                  
                 </tr>
               </tbody>
             ))}

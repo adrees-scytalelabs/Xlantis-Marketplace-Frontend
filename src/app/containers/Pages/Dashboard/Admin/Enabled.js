@@ -159,76 +159,75 @@ function Enabled(props) {
     setPage(0);
   };
 
-    let getUnverifiedAdmins = () => {
-        // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
-        //     "Authorization"
-        // )}`;
-        setOpen(true);
-        axios
-            .get(`/v1-sso/super-admin/admins/enabled`)
-            .then((response) => {
-                console.log("response.data", response.data);
-                setAdmins(response.data.admins);
-                setAdminCount(response.data.admins.length)
-                setOpen(false);
-            })
-            .catch((error) => {
-                console.log(error.response.data);
-                if (error.response.data !== undefined) {
-                    if (error.response.data === "Unauthorized access (invalid token) !!") {
-                        Cookies.remove("Authorization");
-                        localStorage.removeItem("Address")
-                        window.location.reload();
-                    }
-                }
-                setOpen(false);
-            });
+  let getUnverifiedAdmins = () => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(`/v1-sso/super-admin/admins/enabled`)
+      .then((response) => {
+        console.log("response.data", response.data);
+        setAdmins(response.data.admins);
+        setAdminCount(response.data.admins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+
+  let handleDisable = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
     };
 
-    let handleDisable = (e,verifyAdminId ) => { 
-      e.preventDefault();
-      setIsSaving(true);
-      handleShowBackdrop();
-      // setIsUploadingData(true);
+    console.log("data", data);
 
-      //sending data to backend
-      let data ={
-          adminId : verifyAdminId
+    axios.patch("/v1-sso/super-admin/disable", data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Disabled Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        getUnverifiedAdmins(0, rowsPerPage);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
-
-      console.log("data", data);
-
-      axios.patch("/v1-sso/super-admin/disable", data).then(
-          (response) => {
-              console.log("admin verify response: ", response);
-              let variant = "success";
-              enqueueSnackbar('Admin Disabled Successfully.', { variant });
-              handleCloseBackdrop();
-              setIsSaving(false);
-              getUnverifiedAdmins(0,rowsPerPage);
-              // setIsUploadingData(false);
-
-
-          },
-          (error) => {
-              console.log("Error on disable: ", error);      
-              console.log("Error on disable: ", error.response);                            
-
-              // setIsUploadingData(false);
-
-              handleCloseBackdrop();
-
-              let variant = "error";
-              enqueueSnackbar('Unable to Verify Admin.', { variant });
-          }
-      )
-  }
-    
+    );
+  };
 
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
-    
+
       {/* Page Content */}
       <div className="card-body">
         <div className="row">
@@ -262,23 +261,23 @@ function Enabled(props) {
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center">
-                      <Button
-                        className={classes.approveBtn}
-                        // style={{
-                        //   backgroundColor: "#000",
-                        //   color: "#fff",
-                        //   padding: "10px 30px",
-                        //   border: "1px solid #F64D04",
-                        //   borderRadius: "0px 15px",
-                        // }}
-                        onClick={(e) =>  {
-                          handleDisable(e, i._id);
-                        }}
-                      >
-                        Disable
-                      </Button>
-                    </div>
-                    ) : (null)}
+                        <Button
+                          className={classes.approveBtn}
+                          // style={{
+                          //   backgroundColor: "#000",
+                          //   color: "#fff",
+                          //   padding: "10px 30px",
+                          //   border: "1px solid #F64D04",
+                          //   borderRadius: "0px 15px",
+                          // }}
+                          onClick={(e) => {
+                            handleDisable(e, i._id);
+                          }}
+                        >
+                          Disable
+                        </Button>
+                      </div>
+                    ) : null}
                     {/* </div> */}
                   </td>
                 </tr>

@@ -61,25 +61,27 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    
+
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/fixed-price/${start}/${end}`).then(
-      (response) => {
-        console.log("responseeeee", response);
-        setCubeData(response.data.data);
-        setUserSaledata(response.data.data);
-        setCubeAuctionData(response.data.data);
-        setUserAuctiondata(response.data.data);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
+    axios
+      .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
+      .then(
+        (response) => {
+          console.log("responseeeee", response);
+          setCubeData(response.data.data);
+          setUserSaledata(response.data.data);
+          setCubeAuctionData(response.data.data);
+          setUserAuctiondata(response.data.data);
+          handleCloseBackdrop();
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          handleCloseBackdrop();
         }
-        handleCloseBackdrop();
-      }
-    );
+      );
   };
 
   if (cubeData) {
