@@ -38,6 +38,7 @@ import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
 function App() {
   let isLoggedIn;
   let isVerified = false;
+  let version;
   let jwtDecoded;
   let jwt = Cookies.get("Authorization");
   let checkLoginStatus = () => {
@@ -52,6 +53,7 @@ function App() {
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
       isVerified = Cookies.get("Verified");
+      version = Cookies.get("Version")
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
@@ -73,10 +75,18 @@ function App() {
           <Route
             {...rest}
             render={(props) =>
+              (version === "v1-sso") ? (
               (isLoggedIn && isVerified)  ? (
                 <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
               ) : (
                 <Redirect to="/" />
+              )
+              ) : (
+                (isLoggedIn)  ? (
+                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                ) : (
+                  <Redirect to="/" />
+                )
               )
             }
           />
@@ -115,7 +125,11 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin") {
+    if (jwtDecoded && isLoggedIn && version === "v1-sso" && isVerified && jwtDecoded.role === "admin") {
+      // if (cookies.Verified && cookies.InfoAdded) {
+      console.log("herer!! ", jwtDecoded.role);
+      return <Redirect to="/dashboard" />;
+     }else if (jwtDecoded && isLoggedIn && version === "v2-wallet-login" && jwtDecoded.role === "admin") {
       // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;

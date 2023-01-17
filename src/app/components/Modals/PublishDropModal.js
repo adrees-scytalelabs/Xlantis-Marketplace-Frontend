@@ -14,6 +14,8 @@ import Divider from "@material-ui/core/Divider";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Badge from "@material-ui/core/Badge";
+import axios from "axios";
+
 
 // CUSTOM MATERIAL UI STYLING
 const useStyles = makeStyles((theme) => ({
@@ -138,7 +140,7 @@ const makeTheme = createMuiTheme({
   },
 });
 
-let response = {
+let data = {
   gasPriceInGwei: "20",
   totalCostInWei: "20000000000",
   estimatedTimeInSec: 123654,
@@ -150,7 +152,7 @@ let response = {
     totalCostInWei: "20000000000",
   },
   nfts: {
-    noOfTxs: 1,
+    noOfTxs: 0,
     totalNftsToMint: 1,
     MuiAccordion: {
       root: {},
@@ -170,7 +172,7 @@ let response = {
   },
 };
 
-console.log("json: ", response);
+console.log("json: ", data);
 
 //   COMPONENT FUNCTION
 const PublishDropModal = (props) => {
@@ -193,8 +195,44 @@ const PublishDropModal = (props) => {
     } else console.log("why are you so greedy?");
   };
 
+  const getTxSummary = (dropId) => {
+    
+    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        console.log("response", response);
+        data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+        
+        
+      
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
   useEffect(() => {
     clearTimeout();
+    console.log("Props : ", props);
+    // getTxSummary(props.dropId);
   }, []);
 
   return (
@@ -304,7 +342,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.noOfTxs}
+                        {props.isOpen ? (props.dropData.collectionTxSummary.txsCount) : (data.collections.noOfTxs)}
                       </p>
                     </div>
                   </div>
@@ -327,7 +365,8 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.totalCollectionsToCreate}
+                        {props.isOpen ? (props.dropData.collectionTxSummary.collectionCount) : (data.collections.totalCollectionsToCreate)}
+
                       </p>
                     </div>
                   </div>
@@ -373,7 +412,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        ${response.collections.totalCostInWei}
+                        ${data.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>
@@ -411,7 +450,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.noOfTxs}
+                        {props.isOpen ? (props.dropData.NFTsTxSummary.txsCount) : (data.nfts.noOfTxs)} 
                       </p>
                     </div>
                   </div>
@@ -434,7 +473,8 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.nfts.totalNftsToMint}
+                        {props.isOpen ? (props.dropData.NFTsTxSummary.NFTCount) : (data.nfts.totalNftsToMint)} 
+
                       </p>
                     </div>
                   </div>
@@ -480,7 +520,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        ${response.collections.totalCostInWei}
+                        ${data.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>
@@ -589,7 +629,8 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {response.collections.noOfTxs}
+                        {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (data.drop.noOfTxs)} 
+
                       </p>
                     </div>
                   </div>
@@ -635,7 +676,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        ${response.collections.totalCostInWei}
+                        ${data.collections.totalCostInWei}
                       </p>
                     </div>
                   </div>

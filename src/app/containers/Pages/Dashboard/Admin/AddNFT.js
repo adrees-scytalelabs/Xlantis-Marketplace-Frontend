@@ -40,6 +40,7 @@ import crypto from "crypto";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
 
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -202,52 +203,127 @@ function AddNFT(props) {
 
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
+  const [data, setData] = useState();
 
-  const handleOpenModal = () => {
-    setMOdalOpen(true);
+  const handleOpenModal = async(e) => {
+    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        console.log("response", response);
+        console.log("responeee", response.data.data.collectionTxSummary);
+        setData(response.data.data);
+        setMOdalOpen(true);
+
+        
+        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+        
+        
+      
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
   };
 
   const handleCloseModal = () => {
     setMOdalOpen(false);
   };
 
+  const getTxSummary = (dropId) => {
+    
+    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        console.log("response", response);
+        setData(response.data);
+        
+        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+        
+        
+      
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
+
   let getCollections = () => {
     const version = Cookies.get("Version");
     console.log("version", version);
     console.log("NFT TYPE", location.state.nftType);
 
-    axios
-      .get(`/${version}/collection/collections/${location.state.nftType}`)
-      .then(
-        (response) => {
-          console.log("response", response);
-          setChangeCollectionList(response.data.collectionData);
-          console.log("COLLECTION", changeCollectionList);
-          setCollectionTypes(...collectionTypes, response.data.collectionData);
-          console.log(collectionTypes);
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (error.response.data !== undefined) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
-              window.location.reload(false);
-            }
+    axios.get(`/${version}/collection/collections/${location.state.nftType}`).then(
+      (response) => {
+        console.log("response", response);
+        setChangeCollectionList(response.data.collectionData);
+        console.log("COLLECTION", changeCollectionList);
+        setCollectionTypes(...collectionTypes, response.data.collectionData);
+        console.log(collectionTypes);
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload();
           }
         }
-      );
+      }
+    );
   };
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
     environment: "STAGING", // STAGING/PRODUCTION
-    defaultCryptoCurrency: "ETH",
+    cryptoCurrencyCode: "MATIC",
+    network: "private",
+    defaultNetwork: "polygon",
+    walletAddress : "0xE66a70d89D44754f726A4B463975d1F624530111",
+    fiatAmount : 1100,
+    isAutoFillUserData : true,
     themeColor: "000000", // App theme color
     hostURL: window.location.origin,
     widgetHeight: "700px",
@@ -280,7 +356,7 @@ function AddNFT(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload(false);
+            window.location.reload();
           }
         }
       }
@@ -289,17 +365,16 @@ function AddNFT(props) {
 
   let handlePublish = () => {
     let dropData = {
-      dropId,
-    };
+      dropId
+    }
     axios.post(`/${versionB}/drop/finalize`, dropData).then(
       (response) => {
+        
         console.log("nft title response", response.data);
         let variant = "success";
-        enqueueSnackbar(
-          "Drop Is Being Finalized. Transactions Are In Process",
-          { variant }
-        );
+        enqueueSnackbar("Drop Is Being Finalized. Transactions Are In Process", { variant });
         handleCloseModal();
+
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -315,12 +390,12 @@ function AddNFT(props) {
           ) {
             Cookies.remove("Authorization");
             localStorage.removeItem("Address");
-            window.location.reload(false);
+            window.location.reload();
           }
         }
       }
     );
-  };
+  }
 
   function openTransak() {
     handleCloseModal();
@@ -331,6 +406,7 @@ function AddNFT(props) {
     // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
+
     });
 
     // This will trigger when the user closed the widget
@@ -338,6 +414,7 @@ function AddNFT(props) {
       console.log(eventData);
       transak.close();
       handleOpenModal();
+
     });
 
     // This will trigger when the user marks payment is made.
@@ -346,13 +423,14 @@ function AddNFT(props) {
       window.alert("Payment Success");
       transak.close();
       handleOpenModal();
+
     });
   }
 
   useEffect(() => {
     // getProfileData();
     setVersionB(Cookies.get("Version"));
-
+    
     setDropId(location.state.dropId);
     setStartTime(Math.round(location.state.startTime));
     console.log("START TIME COMING", Math.round(location.state.startTime));
@@ -696,6 +774,8 @@ function AddNFT(props) {
                 console.log("here");
                 setDropInfo(dropp);
               }
+
+              
             }
 
             console.log(dropInfo);
@@ -1258,11 +1338,7 @@ function AddNFT(props) {
             <button
               type="button"
               // onClick={(e) => handleSubmitEvent(e)}
-              onClick={(e) => {
-                versionB === "v1-sso"
-                  ? handleOpenModal(e)
-                  : handleSubmitEvent(e);
-              }}
+              onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModal(e)) : (handleSubmitEvent(e))} }
               // onClick={handleOpenModal}
               className="bttn"
             >
@@ -1288,12 +1364,7 @@ function AddNFT(props) {
         nftDetail={nftDetail}
         handleEdit={handleEdit}
       ></NFTDetailModal>
-      <PublishDropModal
-        handleClose={handleCloseModal}
-        open={modalOpen}
-        handlePublish={handlePublish}
-        handlePay={openTransak}
-      />
+      <PublishDropModal handleClose={handleCloseModal} open={modalOpen} handlePublish={handlePublish} handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
       {/* <NFTEditModal
                 show={openEditModal}
                 handleClose={handleEditClose}
