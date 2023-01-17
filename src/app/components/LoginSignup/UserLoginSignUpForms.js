@@ -8,6 +8,8 @@ import "react-intl-tel-input/dist/main.css";
 import { Typography } from "@material-ui/core";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
+import { useSnackbar } from 'notistack';
+
 
 // CUSTOM STYLING
 const useStyles = makeStyles((theme) => ({
@@ -26,14 +28,24 @@ const UserLoginSignUpForms = () => {
   const [phoneNum, setPhoneNum] = useState();
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
+
 
   // Hanlders
   const handleSetSignUp = () => {
+   
     setIsActive(true);
     console.log("active set");
   };
 
+  const handleSubmit = () => {
+    let variant = "warning";
+    enqueueSnackbar('This feature is under development', { variant });
+   
+  };
+
   const handleSetSignIn = () => {
+    
     setIsActive(false);
     console.log("inactive set");
   };
@@ -82,7 +94,7 @@ const UserLoginSignUpForms = () => {
               </div>
             </div>
           </div>
-          <button type="submit">Sign In</button>
+          <button type="submit" onClick={handleSubmit}>Sign In</button>
           <div>
             <Typography variant="body2" className={classes.signInWithGoogle}>
               Or
@@ -193,7 +205,7 @@ const UserLoginSignUpForms = () => {
             </div>
           </div>
 
-          <button type="submit">Sign Up</button>
+          <button type="submit" onClick={handleSubmit}>Sign Up</button>
           <div className="signUp-link">
             <p>
               Already have an account?{" "}
