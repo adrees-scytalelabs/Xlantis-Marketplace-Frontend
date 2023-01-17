@@ -226,6 +226,7 @@ function HeaderHome(props) {
       );
     }
 
+    setMOdalOpen(false);
     // contract = new web3.eth.Contract(ABI, ADDRESS);
   }
   const selectedStyling = {

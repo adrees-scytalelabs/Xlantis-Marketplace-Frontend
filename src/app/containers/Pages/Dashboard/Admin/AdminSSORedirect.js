@@ -31,7 +31,7 @@ const AdminSSORedirect = () => {
   const [cookies, setCookie] = useCookies(["user"]);
 
   // console.log("this is cookie token: ", cookies.Authorization);
-  // console.log("admin verified: ", cookies.Verified);
+  console.log("admin verified: ", cookies.Verified);
   // console.log("admin Info Added: ", cookies.InfoAdded);
   // console.log("the auth: ", cookies.auth);
 

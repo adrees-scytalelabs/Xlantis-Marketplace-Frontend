@@ -22,8 +22,9 @@ import MuiAlert from "@material-ui/lab/Alert";
 import InfoIcon from "@material-ui/icons/Info";
 // CONTEXT
 import { UserAuth } from "../../../components/context/AuthContext";
-// GOOGLE OAUTH
-import { auth } from "../../../assets/js/firebase";
+// GOOGLE 
+import { GoogleOAuthProvider } from '@react-oauth/google';
+import { GoogleLogin } from '@react-oauth/google';
 // STYLESHEETS
 import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
@@ -91,6 +92,7 @@ const AdminLoginSignupForms = () => {
   }
 
   // Handlers
+  const handleSuccess = (credentialResponse) => setAccount(credentialResponse.credential);
 
   const handleSetActive = () => {
     setIsActive(!isActive);
@@ -115,13 +117,13 @@ const AdminLoginSignupForms = () => {
   //   await googleSignIn();
   // };
 
-  function handleCredentialResponse(response) {
-    console.log("idToken: ", response.credential);
-    setAccount(response.credential);
-    // response.credential &&
-    // setCookie("auth", response.credential, { path: "/" });
-    // document.getElementById("signInDiv").hidden = true;
-  }
+  // function handleCredentialResponse(response) {
+  //   console.log("idToken: ", response.credential);
+  //   setAccount(response.credential);
+  //   // response.credential &&
+  //   // setCookie("auth", response.credential, { path: "/" });
+  //   // document.getElementById("signInDiv").hidden = true;
+  // }
 
   // const handleSignOut = (e) => {
   //   setAccount(null);
@@ -129,19 +131,19 @@ const AdminLoginSignupForms = () => {
   // };
 
   // Life Cycles
-  useEffect(() => {
-    /* global google */
+  // useEffect(() => {
+  //   /* global google */
 
-    google.accounts.id.initialize({
-      client_id: clientID,
-      callback: handleCredentialResponse,
-    });
-    google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-      theme: "outline",
-      size: "large",
-    });
-    google.accounts.id.prompt();
-  }, []);
+  //   google.accounts.id.initialize({
+  //     client_id: clientID,
+  //     callback: handleCredentialResponse,
+  //   });
+  //   google.accounts.id.renderButton(document.getElementById("signInDiv"), {
+  //     theme: "outline",
+  //     size: "large",
+  //   });
+  //   google.accounts.id.prompt();
+  // }, []);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -263,6 +265,15 @@ const AdminLoginSignupForms = () => {
                       </Typography>
                     </div>
                     <ThemeProvider theme={customTheme}>
+                    <GoogleOAuthProvider clientId={clientID}>
+                    <GoogleLogin
+  onSuccess={handleSuccess}
+  onError={() => {
+    console.log('Login Failed');
+  }}
+  width='258px'
+/>
+                    </GoogleOAuthProvider>
                       {/* <div>
                         <div
                           id="g_id_onload"
@@ -284,7 +295,7 @@ const AdminLoginSignupForms = () => {
                           data-width="258"
                         ></div>
                       </div> */}
-                      <div className="googleBtnWrapper mx-auto" id="signInDiv">
+                      {/* <div className="googleBtnWrapper mx-auto" id="signInDiv"> */}
                         {/* <GoogleButton
                           label="Continue With Google"
                           style={{
@@ -310,7 +321,7 @@ const AdminLoginSignupForms = () => {
                             </Alert>
                           </Snackbar>
                         )} */}
-                      </div>
+                      {/* </div> */}
                       {adminSignInData !== null &&
                         adminSignInData.isInfoAdded === false && (
                           <Redirect to="/admin-signup-details" />
@@ -325,7 +336,7 @@ const AdminLoginSignupForms = () => {
                           horizontal: "left",
                         }}
                         open={openSnackBar}
-                        autoHideDuration={6000}
+                        autoHideDuration={10000}
                         onClose={handleCloseSnackBar}
                         message="Your request is under process. Waiting for approval by super-admin"
                         action={

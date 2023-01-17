@@ -37,11 +37,13 @@ import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
 
 function App() {
   let isLoggedIn;
+  let isVerified = false;
   let jwtDecoded;
   let jwt = Cookies.get("Authorization");
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
-    console.log("jwt in application: ", jwt);
+    console.log("verified? ", Cookies.get("Verified"))
+    jwt && console.log("jwt in application: ", jwt);
     if (jwt) {
       console.log(jwtDecode(jwt));
       // setjwtDecoded(jwtDecode(jwt));
@@ -49,7 +51,9 @@ function App() {
       // jwtDecoded2 = jwtDecode(newJwt);
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
+      isVerified = Cookies.get("Verified");
       console.log("isLoggedIn", isLoggedIn);
+      console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
     } else {
       // setIsLoggedIn(false);
@@ -69,7 +73,7 @@ function App() {
           <Route
             {...rest}
             render={(props) =>
-              isLoggedIn ? (
+              (isLoggedIn && isVerified)  ? (
                 <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
               ) : (
                 <Redirect to="/" />
@@ -111,7 +115,7 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded && isLoggedIn && jwtDecoded.role === "admin") {
+    if (jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin") {
       // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
