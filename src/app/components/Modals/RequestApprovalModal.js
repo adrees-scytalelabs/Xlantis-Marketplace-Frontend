@@ -53,7 +53,7 @@ const RequestApprovalModal = (props) => {
               )}
             </Col>
           </Row>
-          <Row className="justify-content-center align-items-center no-gutters">
+          <Row className="justify-content-end align-items-center no-gutters">
             <Col style={{ color: "#000" }}>Give Approval to Auction Drop.</Col>
             <Col className="text-right">
               {props.approvingAuction ? (
