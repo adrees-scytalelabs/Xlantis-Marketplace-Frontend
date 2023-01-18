@@ -37,7 +37,7 @@ const FixedPriceDropNFTs = () => {
     console.log("version", version);
     axios.get(`${version}/drop/nfts/${dropId}/${start}/${end}`).then(
       (response) => {
-        console.log("getting a drop", response);
+        console.log("getting a nft", response);
         setDropData(response.data.data);
         // setCubeData(response.data.data);
         // setUserSaledata(response.data.data);
@@ -55,13 +55,15 @@ const FixedPriceDropNFTs = () => {
     );
   };
 
+  console.log("the drop id should be: ", Cookies.get("DropID"))
+let dropID = Cookies.get("DropID")
   // Side Effects
   useEffect(() => {
-    getNFTs("639348c0d9cb9fe5ceee1225", 0, 4); // eslint-disable-next-line
+    getNFTs(dropID, 0, 4); // eslint-disable-next-line
   }, []);
 
   if (dropData)
-    dropData.map((i, index) => console.log(`drop at ${index}: `, i));
+    dropData.map((i, index) => console.log(`nft at ${index}: `, i));
 
   return (
     <div className="main-wrapper">

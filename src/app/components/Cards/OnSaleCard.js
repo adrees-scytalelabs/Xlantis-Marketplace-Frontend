@@ -20,6 +20,7 @@ import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 import { AlertTitle } from "@material-ui/lab";
 import { truncate } from "../../assets/js/utils";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -64,6 +65,7 @@ const useStyles = makeStyles((theme) => ({
 
 const OnSaleCard = (props) => {
   console.log("the props in OnSaleCard: ", props);
+  Cookies.set("DropID", props.i._id, {});
 
   const styles = useStyles();
   return (

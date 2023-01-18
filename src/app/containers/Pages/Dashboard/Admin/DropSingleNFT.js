@@ -19,6 +19,11 @@ import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import Cookies from 'js-cookie';
+import {
+    createMuiTheme,
+    ThemeProvider,
+    useTheme,
+  } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -63,6 +68,47 @@ const useStyles = makeStyles((theme) => ({
     },
 
 }));
+
+const customTheme = createMuiTheme({
+    overrides: {
+        MuiAccordionSummary: {
+            root: {
+                borderBottom: "1px solid white",
+                backgroundColor: "black"
+            },
+            // content: {
+            //     borderBottom: "1px solid white",
+            //     paddingBottom: "12px"
+            // },
+            expandIcon: {
+                color: "white"
+            }
+        },
+        MuiAccordionDetails: {
+            root: {
+                padding: "8px 0px 16px",
+                backgroundColor: "black"
+            }
+        },
+        MuiOutlinedInput: {
+            input: {
+                border: "1px solid white",
+                color: "white",
+                borderRadius: "5px",
+                padding: "16px 14px"
+            }
+        }
+        // MuiIconButton: {
+        //     root: {
+        //         padding: 0
+        //     },
+        //     label: {
+        //         borderBottom: "1px solid white",
+        //         padding: "12px",
+        //     }
+        // }
+    }
+  });
 
 
 
@@ -355,14 +401,23 @@ const DropSingleNFT = (props) => {
     }
     
     return (
-        <div className="card">
-            <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
-                <li className="breadcrumb-item">
-                    <a href="/">Dashboard</a>
-                </li>
-                <li className="breadcrumb-item active">NFT</li>
+        <div className="backgroundDefault">
+        {/* Page Header */}
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">NFT</h3>
+            <ul className="breadcrumb">
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item active">NFT</li>
             </ul>
-            <div className="card-body" >
+          </div>
+        </div>
+      </div>
+      <ThemeProvider theme={customTheme}>
+            <div className="card-body px-0" >
                 <div className="row">
                     <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
@@ -453,25 +508,25 @@ const DropSingleNFT = (props) => {
                         </Paper>
                     </div>
                     <div className="col-md-12 col-lg-8">
-                        <Card>
+                        <Card style={{backgroundColor: "black"}}>
                             <CardContent>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                        <Typography variant="body1" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}} >
                                             <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
-                                    <Col>
+                                    <Col style={{color: "white", fontFamily: "inter"}}>
                                         {nftDetail.title}
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
+                                        <Typography variant="body1" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}} >
                                             <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
-                                    <Col>
+                                    <Col style={{color: "white", fontFamily: "inter"}}>
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
@@ -513,7 +568,7 @@ const DropSingleNFT = (props) => {
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
                                     >
-                                        <Typography variant="body1" style={{color:'#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                        <Typography variant="body1" style={{color: "#F64D04", fontFamily: "orbitron"}}><BlurLinear /><strong> Properties</strong></Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Table striped bordered hover responsive >
@@ -544,7 +599,7 @@ const DropSingleNFT = (props) => {
                                         <AccordionSummary
                                             expandIcon={<ExpandMore />}
                                         >
-                                            <Typography variant="body1" style={{color: '#a70000'}}><ListIcon /><strong> Offers</strong></Typography>
+                                            <Typography variant="body1" style={{color: "#F64D04", fontFamily: "orbitron"}}><ListIcon /><strong> Offers</strong></Typography>
                                         </AccordionSummary>
                                         <AccordionDetails>
                                             <Table striped hover bordered size="sm" responsive>
@@ -610,6 +665,7 @@ const DropSingleNFT = (props) => {
                     </div>
                 </div>
             </div>
+            </ThemeProvider>
         </div >
         
     );

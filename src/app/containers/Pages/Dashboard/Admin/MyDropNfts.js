@@ -32,6 +32,24 @@ const useStyles = makeStyles((theme) => ({
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
+  cardTitle: {
+    color: "#fff",
+    fontFamily: "orbitron",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    marginTop: "0rem",
+  },
+  cardDescriptions: {
+    color: "#999",
+    fontFamily: "inter",
+    fontSize: "1rem",
+    // marginTop: "0.15rem",
+  },
+  price: {
+    color: "hsla(350, 93%, 61%, 1)",
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
 
   card: {
     minWidth: 250,
@@ -223,14 +241,22 @@ function MyDropNFTs(props) {
     }
   };
   return (
-    <div className="card">
-      <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
-        <li className="breadcrumb-item">
-          <a href="/">Dashboard</a>
-        </li>
-        <li className="breadcrumb-item active">Drop Nfts</li>
-      </ul>
-      <div className="card-body">
+    <div className="backgroundDefault">
+    {/* Page Header */}
+    <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">Drop Nfts</h3>
+            <ul className="breadcrumb">
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item active">Drop Nfts</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div className="card-body px-0">
         <form>
           <div className="form-group">
             {open ? (
@@ -238,9 +264,9 @@ function MyDropNFTs(props) {
                 <Spinner
                   animation="border"
                   role="status"
-                  style={{ color: "#ff0000" }}
+                  style={{ color: "#fbfeff" }}
                 ></Spinner>
-                <span style={{ color: "#ff0000" }} className="sr-only">
+                <span style={{ color: "#fbfeff" }} className="sr-only">
                   Loading...
                 </span>
               </div>
@@ -251,13 +277,14 @@ function MyDropNFTs(props) {
                   padding: "40px",
                   marginTop: "20px",
                   marginBottom: "20px",
+                  backgroundColor:"black"
                 }}
               >
                 <Typography
                   variant="body2"
                   className="text-center"
-                  color="textSecondary"
                   component="p"
+                  style={{color: "white"}}
                 >
                   <strong>No items to display </strong>
                 </Typography>
@@ -278,7 +305,7 @@ function MyDropNFTs(props) {
                       }}
                     >
                       <Card
-                        style={{ height: "100%" }}
+                        style={{ height: "100%", backgroundColor: "black", border: "1px solid white", color: "white" }}
                         variant="outlined"
                         className={classes.cardHeight}
                       >
@@ -288,7 +315,7 @@ function MyDropNFTs(props) {
                                                         console.log("Open Dialog Value: ", openDialog); 
                                                 }}> */}
                         <div style={{ position: "relative" }}>
-                          <CardHeader
+                          {/* <CardHeader
                             className="text-center"
                             title={
                               i.title.length > 12 ? (
@@ -297,7 +324,7 @@ function MyDropNFTs(props) {
                                 i.title
                               )
                             }
-                          />
+                          /> */}
 
                           {i.currentMarketplaceId.isSold === true ? (
                             <CornerRibbon
@@ -381,26 +408,45 @@ function MyDropNFTs(props) {
                                                     <Typography variant="body2" color="textSecondary" component="p">
                                                         <strong>Token Supply: </strong>{i.tokenSupply}
                                                     </Typography> */}
-                          <Typography
+                                                    {/* Title, Description and Price */}
+            <div
+              className="row no-gutters justify-content-between"
+              style={{ minHeight: "60px" }}
+            >
+              <div className="col-8 align-self-end">
+              <Typography
+                  variant="h6"
+                  className={classes.cardTitle}
+                >
+                  {
+                            i.title.length > 12 ? (
+                                <span>{i.title.slice(0, 7)}...</span>
+                              ) : (
+                                i.title
+                              )
+                            }
+                </Typography>
+                <Typography
                             variant="body2"
-                            color="textSecondary"
-                            component="p"
+                            className={classes.cardDescriptions}
                           >
-                            <strong>Price : </strong>
+                            <strong>Artwork Description: </strong>
+                            {i.description}
+                          </Typography>
+              </div>
+              <div className="col-4 align-self-end text-right p-0">
+             
+                            <p className="nftPrice mb-0 p-0">
                             {Web3.utils.fromWei(
                               i.currentMarketplaceId.price,
                               "ether"
                             )}{" "}
                             WMATIC
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            <strong>Artwork Description: </strong>
-                            {i.description}
-                          </Typography>
+                            </p>
+              </div>
+            </div>
+                          
+                          
                         </CardContent>
                         {/* </CardActionArea> */}
                       </Card>

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { Accordion, AccordionDetails, AccordionSummary, Backdrop, Card, CardContent, CardHeader, CardMedia, CircularProgress, makeStyles, Paper, TextField, Typography } from '@material-ui/core';
+import { Accordion, AccordionDetails, AccordionSummary, Backdrop, Card, CardContent, CardHeader, CardMedia, CircularProgress, makeStyles, Paper, TextField, Tooltip, Typography } from '@material-ui/core';
 import { Col, Row, Table } from 'react-bootstrap';
 import Web3 from 'web3';
 import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
@@ -18,8 +18,53 @@ import "react-h5-audio-player/lib/styles.css";
 import { BlurLinear, ExpandMore } from '@material-ui/icons';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import Cookies from 'js-cookie';
+import ListIcon from "@material-ui/icons/List";
+import {
+    createMuiTheme,
+    ThemeProvider,
+    useTheme,
+  } from "@material-ui/core/styles";
 
-
+  const customTheme = createMuiTheme({
+    overrides: {
+        MuiAccordionSummary: {
+            root: {
+                borderBottom: "1px solid white",
+                backgroundColor: "black"
+            },
+            // content: {
+            //     borderBottom: "1px solid white",
+            //     paddingBottom: "12px"
+            // },
+            expandIcon: {
+                color: "white"
+            }
+        },
+        MuiAccordionDetails: {
+            root: {
+                padding: "8px 0px 16px",
+                backgroundColor: "black"
+            }
+        },
+        MuiOutlinedInput: {
+            input: {
+                border: "1px solid white",
+                color: "white",
+                borderRadius: "5px",
+                padding: "16px 14px"
+            }
+        }
+        // MuiIconButton: {
+        //     root: {
+        //         padding: 0
+        //     },
+        //     label: {
+        //         borderBottom: "1px solid white",
+        //         padding: "12px",
+        //     }
+        // }
+    }
+  });
 
 
 const useStyles = makeStyles((theme) => ({
@@ -71,6 +116,7 @@ const AuctionNFT = (props) => {
     const classes = useStyles();
     const { enqueueSnackbar } = useSnackbar();
     const { nftId, dropId } = useParams();
+    let [bidDetail, setBidDetail] = useState([]);
     const location = useLocation();
     const { nftContractAddress } = location.state;
     const [open, setOpen] = useState(false);
@@ -141,6 +187,22 @@ const AuctionNFT = (props) => {
         )
     }
 
+    let getBidList = (nftId) => {
+        let version = Cookies.get("Version");
+        axios.get(`/${version}/auction/bids/${nftId}/${0}/${1000}`).then(
+            (response) => {
+                console.log("Response from getting bid: ", response);
+                console.log("Bid array: ", response.data.data);
+                setBidDetail(response.data.data);
+            },
+            (err) => {
+                console.log("Error from getting bids: ", err);
+                console.log("Error response from getting bids: ", err);
+                setBidDetail([]);
+            }
+        )
+    }
+
     useEffect(() => {
         
         setVersionB(Cookies.get("Version"));
@@ -154,6 +216,7 @@ const AuctionNFT = (props) => {
         let priceCal = Web3.utils.fromWei(location.state.price, 'ether');
         console.log("price is", priceCal);
         setPrice(priceCal);
+        getBidList(nftId)
 
         props.setActiveTab({
             dashboard: "",
@@ -371,14 +434,24 @@ const AuctionNFT = (props) => {
     }
     
     return (
-        <div className="card">
-            <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
-                <li className="breadcrumb-item">
-                    <a href="/">Dashboard</a>
-                </li>
-                <li className="breadcrumb-item active">MarketPlace</li>
+        <div className="backgroundDefault">
+        {/* Page Header */}
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">Market Place</h3>
+            <ul className="breadcrumb">
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item active">Market Place</li>
             </ul>
-            <div className="card-body" >
+          </div>
+        </div>
+      </div>
+            
+            <ThemeProvider theme={customTheme}>
+            <div className="card-body px-0" >
                 <div className="row">
                     <div className="col-md-12 col-lg-4">
                         <Paper elevation={5} >
@@ -470,25 +543,25 @@ const AuctionNFT = (props) => {
                         </Paper>
                     </div>
                     <div className="col-md-12 col-lg-8">
-                        <Card>
+                        <Card style={{backgroundColor: "black"}}>
                             <CardContent>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}} >
                                             <strong>NFT Title </strong>
                                         </Typography>
                                     </Col>
-                                    <Col>
+                                    <Col style={{color: "white", fontFamily: "inter"}}>
                                         {nftDetail.title}
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
+                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}} >
                                             <strong>NFT Description </strong>
                                         </Typography>
                                     </Col>
-                                    <Col>
+                                    <Col style={{color: "white", fontFamily: "inter"}}>
                                         {nftDetail.description}
                                     </Col>
                                 </Row>
@@ -504,11 +577,11 @@ const AuctionNFT = (props) => {
                                 </Row> */}
                                 <Row>
                                     <Col>
-                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                        <Typography variant="body1" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}}>
                                             <strong>Floor Price </strong>
                                         </Typography>
                                     </Col>
-                                    <Col>
+                                    <Col style={{color: "white", fontFamily: "inter"}}>
                                         {price} WMATIC
                                     </Col>
                                 </Row>
@@ -517,21 +590,21 @@ const AuctionNFT = (props) => {
                                             
                                             <Row>
                                                 <Col>
-                                                    <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                    <Typography variant="body1" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}}>
                                                         <strong>Supply Type </strong>
                                                     </Typography>
                                                 </Col>
-                                                <Col>
+                                                <Col style={{color: "white", fontFamily: "inter"}}>
                                                     {nftDetail.supplyType}
                                                 </Col>
                                             </Row>
                                             <Row>
                                                 <Col>
-                                                    <Typography variant="body1" component="p" style={{color: '#a70000'}}>
+                                                    <Typography variant="body1" component="p" style={{color: "#F64D04", fontFamily: "orbitron"}}>
                                                         <strong>Token Supply </strong>
                                                     </Typography>
                                                 </Col>
-                                                <Col>
+                                                <Col style={{color: "white", fontFamily: "inter"}}>
                                                     {nftDetail.tokenSupply}
                                                 </Col>
                                             </Row>
@@ -542,11 +615,11 @@ const AuctionNFT = (props) => {
                         </Card>
                         <Row style={{marginTop: '5px'}}>
                             <Col>
-                                <Accordion>
+                                <Accordion style={{backgroundColor: "black"}}>
                                     <AccordionSummary
                                         expandIcon={<ExpandMore />}
                                     >
-                                        <Typography variant="body1" style={{color: '#a70000'}}><BlurLinear /><strong> Properties</strong></Typography>
+                                        <Typography variant="body1" style={{color: "#F64D04", fontFamily: "orbitron"}}><BlurLinear /><strong> Properties</strong></Typography>
                                     </AccordionSummary>
                                     <AccordionDetails>
                                         <Table striped bordered hover >
@@ -575,7 +648,7 @@ const AuctionNFT = (props) => {
                         <Row style={{marginTop: '5px'}} >
                             <Col>
                                 <form>
-                                    <label style={{color:"#a70000", marginTop: "10px"}}>Set Bid Expiry Time</label>
+                                    <label style={{color:"#F64D04", marginTop: "10px"}}>Set Bid Expiry Time</label>
                                     <div className="form-group">
                                         <DateTimePicker
                                             className="form-control"
@@ -586,12 +659,13 @@ const AuctionNFT = (props) => {
                                                 setBidExpiryTimeStamp(Number(Math.round(e.getTime())));
                                             }}
                                             value={bidExpiryTime}
+                                            style={{color: "white", backgroundColor: "black"}}
                                         />
                                     </div>
                                     <label>Bidding value</label>
                                     <div className="form-group">
-                                        <TextField
-                                            style={{marginTop:'5px'}} 
+                                    <div className='row no-gutters align-items-center'>
+                                        <TextField 
                                             autoComplete='false'
                                             value={biddingValue}
                                             variant="outlined" 
@@ -601,17 +675,61 @@ const AuctionNFT = (props) => {
                                                 handleChangeBiddingValue(e);
                                             }}  
                                         />
-                                        <button className='btn' style={{marginTop:'9px', marginLeft:'5px'}} onClick={(e) => handleBidSubmit(e)} >
+                                        <button className='bidBtn' onClick={(e) => handleBidSubmit(e)} >
                                             Bid
                                         </button>
+                                        </div>
                                     </div>
                                 </form>
                             </Col>
                         </Row>
-                    </div>
+                    
+                    <Row style={{marginTop: '5px'}}>
+                                <Col>
+                                    <Accordion>
+                                        <AccordionSummary
+                                            expandIcon={<ExpandMore />}
+                                        >
+                                            <Typography variant="body1" style={{color: '#F64D04'}}><ListIcon /><strong> Offers</strong></Typography>
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <Table striped hover bordered size="sm" responsive>
+                                                <thead>
+                                                    <tr>
+                                                        <th style={{padding: "0.75rem"}}>#</th>
+                                                        <th style={{padding: "0.75rem"}}>Bidder</th>
+                                                        <th style={{padding: "0.75rem"}}>Bid</th>
+                                                        {/* <th colSpan={2}></th> */}
+                                                        {/* <th>
+                                                            <button className="btn" onClick={props.acceptBid}>
+                                                                Accept
+                                                            </button>
+                                                        </th> */}
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    {bidDetail?.map((bid, index) => (
+                                                        <tr key={index}>
+                                                            <td style={{padding: "0.75rem"}}>{index+1}</td>
+                                                            <td style={{padding: "0.75rem"}}>
+                                                                <Tooltip title={bid.bidderAddress}>
+                                                                    <span>{bid.bidderAddress.slice(0,6)}...</span>
+                                                                </Tooltip>
+                                                            </td>
+                                                            <td style={{padding: "0.75rem"}}>{bid.bidAmount}</td>
+                                                            
+                                                        </tr>
+                                                    ))}
+                                                </tbody>
+                                            </Table>
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </Col>
+                            </Row>
+                </div>
                 </div>
             </div>
-
+</ThemeProvider>
             <NetworkErrorModal
                 show={show}
                 handleClose={handleClose}
