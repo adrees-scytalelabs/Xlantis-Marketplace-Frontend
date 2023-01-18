@@ -80,7 +80,7 @@ const OnSaleCard = (props) => {
             //   "/" +
             //   props.userSaleData[props.index]._id
             // }
-            to="/fixdropnft"
+            to="/dashboard/marketplace"
             style={{ width: "100%" }}
           >
             <div className="nftImgWrapper">
@@ -144,7 +144,7 @@ const OnSaleCard = (props) => {
                       //   "/" +
                       //   props.userSaleData[props.index]._id
                       // }
-                      to="/fixdropnft"
+                      to="/dashboard/marketplace"
                     >
                       <button className="exploreBtn">
                         Explore{" "}
