@@ -581,10 +581,14 @@ function NewCollection(props) {
           axios.put(`/${version}/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from approval of Fixed Price: ", response);
+              let variant = "success";
+              enqueueSnackbar('Collection Approved For Fixed Price Successfully', { variant });
               setIsFixedPriceApproved(true);
               setApprovingFixedPrice(false);
             },
             (err) => {
+              let variant = "error";
+              enqueueSnackbar('Unable to approve collection', { variant });
               console.log("Err from approval Fixed-price: ", err);
               console.log(
                 "Err response from approval Fixed-price: ",
@@ -651,10 +655,14 @@ function NewCollection(props) {
           axios.put(`/${version}/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from Auction approval: ", response);
+              let variant = "success";
+              enqueueSnackbar('Collection Approved For Auction Successfully', { variant });
               setIsAuctionApproved(true);
               setApprovingAuction(false);
             },
             (err) => {
+              let variant = "error";
+              enqueueSnackbar('Unable to approve collection', { variant });
               console.log("Err from auction approval: ", err);
               console.log("Err response from auction approval: ", err.response);
               setApprovingAuction(false);
