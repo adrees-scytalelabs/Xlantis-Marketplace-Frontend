@@ -32,7 +32,11 @@ import ReactTooltip from "react-tooltip";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
-
+import {
+  createMuiTheme,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import Cookies from "js-cookie";
 
@@ -40,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    backgroundColor: "black",
   },
   badge: {
     "& > *": {
@@ -78,6 +82,47 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: theme.typography.fontWeightRegular,
   },
 }));
+
+const customTheme = createMuiTheme({
+  overrides: {
+      MuiAccordionSummary: {
+          root: {
+              borderBottom: "1px solid white",
+              backgroundColor: "black"
+          },
+          // content: {
+          //     borderBottom: "1px solid white",
+          //     paddingBottom: "12px"
+          // },
+          expandIcon: {
+              color: "white"
+          }
+      },
+      MuiAccordionDetails: {
+          root: {
+              padding: "8px 0px 16px",
+              backgroundColor: "black"
+          }
+      },
+      MuiOutlinedInput: {
+          input: {
+              border: "1px solid white",
+              color: "white",
+              borderRadius: "5px",
+              padding: "16px 14px"
+          }
+      }
+      // MuiIconButton: {
+      //     root: {
+      //         padding: 0
+      //     },
+      //     label: {
+      //         borderBottom: "1px solid white",
+      //         padding: "12px",
+      //     }
+      // }
+  }
+});
 
 const NFTBuy = (props) => {
   let location = useLocation();
@@ -370,14 +415,24 @@ const NFTBuy = (props) => {
   }, []);
 
   return (
-    <div className="card">
-      <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
-        <li className="breadcrumb-item">
-          <a href="/">Dashboard</a>
-        </li>
-        <li className="breadcrumb-item active">MarketPlace</li>
-      </ul>
-      <div className="card-body">
+    <div className="backgroundDefault">
+      {/* Page Header */}
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+        <div className="row">
+          <div className="col-sm-12">
+            <h3 className="page-title">MarketPlace</h3>
+            <ul className="breadcrumb">
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item active">MarketPlace</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      {/* Page Content */}
+      <ThemeProvider theme={customTheme}>
+      <div className="card-body px-0">
         <div className="row">
           <div className="col-md-12 col-lg-4">
             <Paper elevation={5}>
@@ -478,31 +533,31 @@ const NFTBuy = (props) => {
             </Paper>
           </div>
           <div className="col-md-12 col-lg-8">
-            <Card>
+            <Card style={{backgroundColor: "black"}}>
               <CardContent>
                 <Row>
                   <Col>
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "#a70000" }}
+                      style={{color: "#F64D04", fontFamily: "orbitron"}}
                     >
                       <strong>NFT Title </strong>
                     </Typography>
                   </Col>
-                  <Col>{nftDetail.title}</Col>
+                  <Col style={{color: "white", fontFamily: "inter"}}>{nftDetail.title}</Col>
                 </Row>
                 <Row>
                   <Col>
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "#a70000" }}
+                      style={{color: "#F64D04", fontFamily: "orbitron"}}
                     >
                       <strong>NFT Description </strong>
                     </Typography>
                   </Col>
-                  <Col>{nftDetail.description}</Col>
+                  <Col style={{color: "white", fontFamily: "inter"}}>{nftDetail.description}</Col>
                 </Row>
                 {/* <Row>
                                     <Col>
@@ -519,12 +574,12 @@ const NFTBuy = (props) => {
                     <Typography
                       variant="body1"
                       component="p"
-                      style={{ color: "#a70000" }}
+                      style={{color: "#F64D04", fontFamily: "orbitron"}}
                     >
                       <strong>Price </strong>
                     </Typography>
                   </Col>
-                  <Col>{price} WMATIC</Col>
+                  <Col style={{color: "white", fontFamily: "inter"}}>{price} WMATIC</Col>
                 </Row>
 
                 {nftDetail.nftType === "1155" ? (
@@ -534,24 +589,24 @@ const NFTBuy = (props) => {
                         <Typography
                           variant="body1"
                           component="p"
-                          style={{ color: "#a70000" }}
+                          style={{color: "#F64D04", fontFamily: "orbitron"}}
                         >
                           <strong>Supply Type </strong>
                         </Typography>
                       </Col>
-                      <Col>{nftDetail.supplyType}</Col>
+                      <Col style={{color: "white", fontFamily: "inter"}}>{nftDetail.supplyType}</Col>
                     </Row>
                     <Row>
                       <Col>
                         <Typography
                           variant="body1"
                           component="p"
-                          style={{ color: "#a70000" }}
+                          style={{color: "#F64D04", fontFamily: "orbitron"}}
                         >
                           <strong>Token Supply </strong>
                         </Typography>
                       </Col>
-                      <Col>{nftDetail.tokenSupply}</Col>
+                      <Col style={{color: "white", fontFamily: "inter"}}>{nftDetail.tokenSupply}</Col>
                     </Row>
                   </span>
                 ) : null}
@@ -561,7 +616,7 @@ const NFTBuy = (props) => {
               <Col>
                 <Accordion>
                   <AccordionSummary expandIcon={<ExpandMore />}>
-                    <Typography variant="body1" style={{ color: "#a70000" }}>
+                    <Typography variant="body1" style={{color: "#F64D04", fontFamily: "orbitron"}}>
                       <BlurLinear />
                       <strong> Properties</strong>
                     </Typography>
@@ -601,7 +656,7 @@ const NFTBuy = (props) => {
                   <button
                     type="button"
                     onClick={(e) => handleBuy(e)}
-                    className="btn submit-btn "
+                    className="bidBtn"
                   >
                     Buy
                   </button>
@@ -621,7 +676,7 @@ const NFTBuy = (props) => {
                       data-for="registerTip"
                       disabled
                       onClick={(e) => handleBuy(e)}
-                      className="btn submit-btn "
+                      className="bidBtn"
                     >
                       Buy
                     </button>
@@ -631,7 +686,7 @@ const NFTBuy = (props) => {
                         NFT Is Sold
                       </ReactTooltip>
                     ) : new Date() < new Date(location.state.startTime) ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
+                      <ReactTooltip id="registerTip" place="top" effect="solid" style={{color: "white"}}>
                         Sale Has Not Started Yet
                       </ReactTooltip>
                     ) : new Date() > new Date(location.state.endTime) ? (
@@ -646,6 +701,7 @@ const NFTBuy = (props) => {
           </div>
         </div>
       </div>
+      </ThemeProvider>
       <NetworkErrorModal
         show={showNetworkModal}
         handleClose={handleCloseNetworkModal}
