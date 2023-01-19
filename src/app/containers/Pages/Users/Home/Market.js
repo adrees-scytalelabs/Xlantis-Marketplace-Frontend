@@ -50,6 +50,7 @@ function MarketPlace(props) {
   const classes = useStyles();
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
+  const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -68,6 +69,7 @@ function MarketPlace(props) {
       .then(
         (response) => {
           console.log("responseeeee", response);
+          setFixedPriceDrop(response.data.data);
           setCubeData(response.data.data);
           setUserSaledata(response.data.data);
           setCubeAuctionData(response.data.data);
@@ -113,6 +115,8 @@ function MarketPlace(props) {
         <div className="row no-gutters w-100">
           {cubeData ? (
             <TrendingAndTop
+            fixedPriceDrop={fixedPriceDrop}
+            fixedPriceDropLength={fixedPriceDrop.length}
               open={open}
               cubeData={cubeData}
               cubeDataLength={cubeData.length}

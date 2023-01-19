@@ -193,8 +193,8 @@ function App() {
           component={AuctionCubeNFTs}
         />
       );
-    } else if (path === "/fixdropnft") {
-      return <Route component={FixedPriceDropNFTs} />;
+    } else if (path === "/fixdropnft/:dropId") {
+      return <Route exact path = "/fixdropnft/:dropId" component={FixedPriceDropNFTs} />;
     } else {
       return <Route component={HomeScreen} />;
     }
@@ -208,7 +208,6 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/" />
             {/* <LoginRegisterRedirectCheck exact path="/login" /> */}
             <LoginRegisterRedirectCheck exact path="/register" />
-            <LoginRegisterRedirectCheck exact path="/fixdropnft" />
             <LoginRegisterRedirectCheck exact path="/marketPlace" />
             <LoginRegisterRedirectCheck exact path="/admin-login" />
             <LoginRegisterRedirectCheck exact path="/user-account" />
@@ -220,6 +219,7 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
+            <LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" component={FixedPriceDropNFTs} />
             <LoginRegisterRedirectCheck
               exact
               path="/auctionDrops/DropCubes/:dropId"

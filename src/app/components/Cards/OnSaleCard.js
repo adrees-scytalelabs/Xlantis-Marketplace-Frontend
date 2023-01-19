@@ -65,11 +65,10 @@ const useStyles = makeStyles((theme) => ({
 
 const OnSaleCard = (props) => {
   console.log("the props in OnSaleCard: ", props);
-  Cookies.set("DropID", props.i._id, {});
 
   const styles = useStyles();
   return (
-    <div className="col-12 p-2" key={props.index}>
+    <div className="col-12 p-2">
       {/* <Paper> */}
       <Card id="marketCardProps">
         <div className="row no-gutters">
@@ -82,7 +81,7 @@ const OnSaleCard = (props) => {
             //   "/" +
             //   props.userSaleData[props.index]._id
             // }
-            to="/fixdropnft"
+            to={`/fixdropnft/${props.i._id}`}
             style={{ width: "100%" }}
           >
             <div className="nftImgWrapper">

@@ -1,5 +1,7 @@
 // REACT
 import React, { useState, useEffect } from "react";
+// REACT ROUTER
+import { useParams } from "react-router-dom";
 // MUI
 import { Grid } from "@material-ui/core/";
 // COMPONENTS
@@ -20,6 +22,7 @@ const FixedPriceDropNFTs = () => {
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
   const [dropData, setDropData] = useState();
   const [open, setOpen] = useState(false);
+  const dropID = useParams();
 
   // Handlers
   const handleCloseBackdrop = () => {
@@ -55,11 +58,11 @@ const FixedPriceDropNFTs = () => {
     );
   };
 
-  console.log("the drop id should be: ", Cookies.get("DropID"))
-let dropID = Cookies.get("DropID")
+  console.log("drop id from params: ", dropID.dropId)
+
   // Side Effects
   useEffect(() => {
-    getNFTs(dropID, 0, 4); // eslint-disable-next-line
+    getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
   }, []);
 
   if (dropData)
