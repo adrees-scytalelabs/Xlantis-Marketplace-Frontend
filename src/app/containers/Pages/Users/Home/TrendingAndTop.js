@@ -188,6 +188,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -232,6 +233,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -239,7 +241,7 @@ const TrendingAndTop = (props) => {
                         className="text-center"
                         // color="textSecondary"
                         component="p"
-                        style={{ color: "#fff" }}
+                        style={{ color: "#fff", backgroundColor: "black" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
@@ -269,6 +271,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "black"
                     }}
                   >
                     <Typography
@@ -276,7 +279,7 @@ const TrendingAndTop = (props) => {
                       className="text-center"
                       // color="textSecondary"
                       component="p"
-                      style={{ color: "#fff" }}
+                      style={{ color: "#fff", backgroundColor: "black" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
@@ -304,6 +307,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -311,7 +315,7 @@ const TrendingAndTop = (props) => {
                         className="text-center"
                         // color="textSecondary"
                         component="p"
-                        style={{ color: "#fff" }}
+                        style={{ color: "#fff", backgroundColor: "black" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
@@ -349,6 +353,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -356,7 +361,7 @@ const TrendingAndTop = (props) => {
                         className="text-center"
                         // color="textSecondary"
                         component="p"
-                        style={{ color: "#fff" }}
+                        style={{ color: "#fff", backgroundColor: "black" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
@@ -386,6 +391,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "black"
                     }}
                   >
                     <Typography
@@ -393,7 +399,7 @@ const TrendingAndTop = (props) => {
                       className="text-center"
                       // color="textSecondary"
                       component="p"
-                      style={{ color: "#fff" }}
+                      style={{ color: "#fff", backgroundColor: "black" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>
@@ -421,6 +427,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -428,7 +435,7 @@ const TrendingAndTop = (props) => {
                         className="text-center"
                         // color="textSecondary"
                         component="p"
-                        style={{ color: "#fff" }}
+                        style={{ color: "#fff", backgroundColor: "black" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
@@ -443,8 +450,6 @@ const TrendingAndTop = (props) => {
                           >
                             <OnSaleCard
                               i={i}
-                              // userSaleData={props.userSaleData}
-                              // image={nftImage[index + 7]}
                             />
                           </div>
                         ))}
@@ -466,6 +471,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
+                        backgroundColor: "black"
                       }}
                     >
                       <Typography
@@ -473,7 +479,7 @@ const TrendingAndTop = (props) => {
                         className="text-center"
                         // color="textSecondary"
                         component="p"
-                        style={{ color: "#fff" }}
+                        style={{ color: "#fff", backgroundColor: "black" }}
                       >
                         <strong>No items to display </strong>
                       </Typography>
@@ -503,6 +509,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
+                      backgroundColor: "black"
                     }}
                   >
                     <Typography
@@ -510,7 +517,7 @@ const TrendingAndTop = (props) => {
                       className="text-center"
                       // color="textSecondary"
                       component="p"
-                      style={{ color: "#fff" }}
+                      style={{ color: "#fff", backgroundColor: "black" }}
                     >
                       <strong>No items to display </strong>
                     </Typography>

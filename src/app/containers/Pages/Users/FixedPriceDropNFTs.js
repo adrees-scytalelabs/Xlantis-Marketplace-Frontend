@@ -125,7 +125,6 @@ const FixedPriceDropNFTs = () => {
                   >
                     <FixedDropNFTCard
                       data={i}
-                      image={nftImage[index]}
                       type={"Epic"}
                     />
                   </Grid>

@@ -50,6 +50,7 @@ function MarketPlace(props) {
   const classes = useStyles();
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
+  const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
 
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
@@ -70,10 +71,11 @@ function MarketPlace(props) {
     handleShowBackdrop();
     let version = Cookies.get("Version");
     axios
-      .get(`/v1-sso/${version}/drop/saleType/fixed-price/${start}/${end}`)
+      .get(`/${version}/drop/saleType/fixed-price/${start}/${end}`)
       .then(
         (response) => {
           console.log("responseeeee", response);
+          setFixedPriceDrop(response.data.data);
           setCubeData(response.data.data);
           setUserSaledata(response.data.data);
           setCubeAuctionData(response.data.data);
@@ -151,6 +153,8 @@ function MarketPlace(props) {
                     item
                   >
                     <MarketPlaceTabs
+                      fixedPriceDrop={fixedPriceDrop}
+                      fixedPriceDropLength={fixedPriceDrop.length}
                       open={open}
                       cubeData={cubeData}
                       cubeDataLength={cubeData.length}
