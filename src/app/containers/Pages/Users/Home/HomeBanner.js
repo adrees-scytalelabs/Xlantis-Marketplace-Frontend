@@ -63,7 +63,7 @@ function HomeBanner() {
   const styles = useStyles();
   // Jsx
   return (
-    <Link to={"/fixdropnft"}>
+    <Link to={"/dashboard"}>
       <section className="section sectionHomeBanner">
         <div className="container-fluid">
           <div className="row no-gutters justify-content-center align-items-center">
@@ -132,7 +132,7 @@ function HomeBanner() {
                     </div>
                     {/* View Button */}
                     <div className="col-6 text-right py-2">
-                      <Link to="/fixdropnft">
+                      <Link to="/dashboard">
                         <button className="featuredExploreBtn">
                           View Drop
                         </button>

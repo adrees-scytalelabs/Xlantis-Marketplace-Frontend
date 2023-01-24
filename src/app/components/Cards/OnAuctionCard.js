@@ -74,7 +74,7 @@ const OnAuctionCard = (props) => {
             //   "/" +
             //   props.userAuctionData[props.index]._id
             // }
-            to="/fixdropnft"
+            to="/dashboard/marketplace"
             style={{ width: "100%" }}
           >
             <div className="nftImgWrapper">
@@ -143,7 +143,7 @@ const OnAuctionCard = (props) => {
                       //   "/" +
                       //   props.userAuctionData[props.index]._id
                       // }
-                      to="/fixdropnft"
+                      to="/dashboard/marketplace"
                     >
                       <button className="exploreBtn">
                         Explore{" "}
