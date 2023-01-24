@@ -198,18 +198,17 @@ const MarketPlaceTabs = (props) => {
             // style={{ paddingLeft: "0px", paddingRight: "0px" }}
             className={classes.tabPanelProps}
           >
-            <div className="row no-gutters">
+            <div className="row no-gutters align-items-center justify-content-center"  style={{minHeight: "50vh"}}>
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "fixedPriceDrops" ? ( */}
                 {props.open ? (
-                  <div className="row no-gutters">
+                  <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
                       <WhiteSpinner />
                     </div>
                   </div>
-                ) : props.cubeDataLength === 0 &&
-                  props.cubeAuctionDataLength === 0 ? (
+                ) : props.fixedPriceDropLength === 0 ? (
                   <Card
                     variant="outlined"
                     style={{
@@ -229,18 +228,16 @@ const MarketPlaceTabs = (props) => {
                       <strong>No items to display </strong>
                     </Typography>
                   </Card>
-                ) : props.cubeDataLength !== 0 &&
-                  props.cubeData !== "undefined" ? (
+                ) : props.fixedPriceDropLength !== 0 &&
+                  props.fixedPriceDrop !== "undefined" ? (
                   <div className="row no-gutters w-100 align-items-center position-relative ">
-                    {props.cubeData.map((i, index) => (
+                    {props.fixedPriceDrop.map((i, index) => (
                       <div
                         className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block "
                         key={index}
                       >
                         <OnSaleCard
                           i={i}
-                          index={index}
-                          userSaleData={props.userSaleData}
                         />
                       </div>
                     ))}
@@ -294,12 +291,12 @@ const MarketPlaceTabs = (props) => {
             dir={theme.direction}
             className={classes.tabPanelProps}
           >
-            <div className="row no-gutters">
+            <div className="row no-gutters align-items-center justify-content-center"  style={{minHeight: "50vh"}}>
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "bidableDrops" ? ( */}
                 {props.open ? (
-                  <div className="row no-gutters">
+                  <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
                       <WhiteSpinner />
                     </div>

@@ -21,6 +21,7 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
+    backgroundColor: "black"
   },
   bullet: {
     display: "inline-block",
@@ -215,6 +216,7 @@ function MyCollection(props) {
                 padding: "40px",
                 marginTop: "20px",
                 marginBottom: "20px",
+                backgroundColor: "black"
               }}
             >
               <Typography

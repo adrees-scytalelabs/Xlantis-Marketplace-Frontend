@@ -448,7 +448,7 @@ form.checkoutForm label {
 
 .bannerWrapper {
   position: relative;
-  z-index: 2049;
+  /* z-index: 1; */
 }
 
 .bannerWrapper .bannerImg {
@@ -471,7 +471,7 @@ form.checkoutForm label {
   border: 5px solid white;
   bottom: -1.5rem;
   position: absolute;
-  z-index: 2050;
+  /* z-index: 2; */
 }
 
 .modal-header {
