@@ -230,12 +230,12 @@ function AccountApproval(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Drop Approval</h3>
+            <h3 className="page-title">Account Approval</h3>
             <ul className="breadcrumb">
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">Drop Approval</li>
+              <li className="breadcrumb-item active">Account Approval</li>
             </ul>
           </div>
         </div>
@@ -259,7 +259,7 @@ function AccountApproval(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
+                    Approval Status
                   </div>
                 </th>
               </tr>
@@ -296,7 +296,7 @@ function AccountApproval(props) {
                             handleVerify(e, i._id);
                           }}
                         >
-                          Verify
+                          Approve
                         </Button>
                       </div>
                     )}
