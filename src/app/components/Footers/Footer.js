@@ -15,17 +15,17 @@ function Footer(props) {
           {/* <!-- Copyright --> */}
           <div className="copyright">
             <div className="row">
-              <div className="col-md-6 col-lg-6">
+              <div className="col-12 col-md-6 col-lg-6">
                 <div className="copyright-text">
-                  <p className="mb-0">
+                  <p className="mb-0 text-center text-md-left">
                     &copy; 2020 Robot Drop. All rights reserved.
                   </p>
                 </div>
               </div>
-              <div className="col-md-6 col-lg-6">
+              <div className="col-12 col-md-6 col-lg-6">
                 {/* <!-- Copyright Menu --> */}
                 <div className="copyright-menu">
-                  <ul className="policy-menu">
+                  <ul className="policy-menu text-center text-md-right">
                     <li>
                       <Link to="/termsandconditions">Terms and Conditions</Link>
                     </li>

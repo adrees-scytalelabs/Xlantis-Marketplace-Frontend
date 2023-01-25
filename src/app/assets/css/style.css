@@ -75,6 +75,11 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+.home-full-height {
+  margin-bottom: 40px;
+  min-height: 50vh;
+}
+
 .bidBtn {
   margin-left: 5px;
   padding: 14px;
@@ -392,6 +397,10 @@ form.checkoutForm label {
   border: 1px solid var(--borderOrange);
   color: var(--text);
   outline: none;
+}
+
+.userLoginWrapper button.googleTempBtn:hover {
+  box-shadow: none;
 }
 
 .userLoginWrapper button:hover,

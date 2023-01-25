@@ -8,8 +8,12 @@ import "react-intl-tel-input/dist/main.css";
 import { Typography } from "@material-ui/core";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
-import { useSnackbar } from 'notistack';
-
+import Snackbar from "@material-ui/core/Snackbar";
+import { useSnackbar } from "notistack";
+// GOOGLE
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
+import googleLogo from "../../assets/img/google.svg";
 
 // CUSTOM STYLING
 const useStyles = makeStyles((theme) => ({
@@ -30,22 +34,24 @@ const UserLoginSignUpForms = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
+  // Variables
+  const { REACT_APP_CLIENT_ID } = process.env;
+  const clientID = `${REACT_APP_CLIENT_ID}`;
 
   // Hanlders
+
   const handleSetSignUp = () => {
-   
     setIsActive(true);
     console.log("active set");
   };
 
-  const handleSubmit = () => {
-    let variant = "warning";
-    enqueueSnackbar('This feature is under development', { variant });
-   
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    let variant = "error";
+    enqueueSnackbar("This feature is under development", { variant });
   };
 
   const handleSetSignIn = () => {
-    
     setIsActive(false);
     console.log("inactive set");
   };
@@ -94,14 +100,53 @@ const UserLoginSignUpForms = () => {
               </div>
             </div>
           </div>
-          <button type="submit" onClick={handleSubmit}>Sign In</button>
+          <button type="submit" onClick={handleSubmit}>
+            Sign In
+          </button>
           <div>
             <Typography variant="body2" className={classes.signInWithGoogle}>
               Or
             </Typography>
           </div>
           <div className="signInGoogleBtn">
-            <GoogleButton />
+            <button
+              className="googleTempBtn"
+              style={{
+                marginTop: 0,
+                borderRadius: 5,
+                backgroundColor: "white",
+                border: "1px solid #dadce0",
+                color: "#212529",
+                fontSize: "15px",
+                // fontWeight: "bold",
+                fontFamily: "inter",
+                position: "relative",
+              }}
+              onClick={handleSubmit}
+            >
+              <img
+                src={googleLogo}
+                alt="google logo"
+                style={{
+                  width: "24px",
+                  height: "24px",
+                  textAlign: "left",
+                  left: 8,
+                  top: 8,
+                  position: "absolute",
+                }}
+              />
+              Sign in with Google{" "}
+            </button>
+            {/* <GoogleOAuthProvider clientId={clientID}>
+              <GoogleLogin
+                onSuccess={handleSuccess}
+                onError={() => {
+                  console.log("Login Failed");
+                }}
+                width="258px"
+              />
+            </GoogleOAuthProvider> */}
           </div>
           <div className="signUp-link">
             <p>
@@ -205,7 +250,9 @@ const UserLoginSignUpForms = () => {
             </div>
           </div>
 
-          <button type="submit" onClick={handleSubmit}>Sign Up</button>
+          <button type="submit" onClick={handleSubmit}>
+            Sign Up
+          </button>
           <div className="signUp-link">
             <p>
               Already have an account?{" "}
