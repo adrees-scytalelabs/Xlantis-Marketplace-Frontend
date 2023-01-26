@@ -1,0 +1,9 @@
+
+
+/* 1769px */
+@media (min-width: 1769px) {
+    .col-xl-3.xlColDropWidth {
+        width: 279.5px !important;
+        flex: 0 0 16.66%;
+    }
+}

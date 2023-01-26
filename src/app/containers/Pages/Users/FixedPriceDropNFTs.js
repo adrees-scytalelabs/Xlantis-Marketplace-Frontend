@@ -1,7 +1,7 @@
 // REACT
 import React, { useState, useEffect } from "react";
 // REACT ROUTER
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory, useParams, useLocation } from "react-router-dom";
 // MUI
 import { Grid } from "@material-ui/core/";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
@@ -9,8 +9,6 @@ import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import HeaderHome from "../../../components/Headers/Header";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
-// UTILS
-import { nftImage } from "../../../assets/js/images";
 // AXIOS
 import axios from "axios";
 import Cookies from "js-cookie";

@@ -1019,27 +1019,18 @@ li.menu-title {
 }
 
 .exploreBtn {
-  padding: 0.75rem 1.5rem;
-  /* border: none; */
+  padding: 8px 12px;
   border-radius: 0px 10px;
   font-size: 0.875rem;
   color: #fff;
-  border: 2px solid #F64D04;
+  border: 1px solid #F64D04;
   background-color: var(--bg);
   font-family: var(--inter);
-  font-weight: bold;
   transition: all 200ms ease-in;
-  width: 135px;
-  height: 52px;
 }
 
 .exploreBtn:hover {
-  /* color: #fff; */
-  /* background-image: linear-gradient(to right, #F83F5E, #FD4B30); */
-  /* background-color: #F64D04; */
-  box-shadow: 0px 0px 10px 10px rgba(255, 156, 65, 0.504);
-  /* background-image: linear-gradient(to right, #F83F5E, #FD4B30); */
-  /* box-shadow: 0 10px 6px -6px #777; */
+ box-shadow: var(--orangeBoxShadow);
 }
 
 .nftPrice {

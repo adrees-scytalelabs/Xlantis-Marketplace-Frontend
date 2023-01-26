@@ -10,10 +10,12 @@ import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useSnackbar } from "notistack";
+import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 // GOOGLE
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import googleLogo from "../../assets/img/google.svg";
+import { useHistory } from "react-router-dom";
 
 // CUSTOM STYLING
 const useStyles = makeStyles((theme) => ({
@@ -33,6 +35,7 @@ const UserLoginSignUpForms = () => {
   const [isActive, setIsActive] = useState(false);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
+  let history = useHistory();
 
   // Variables
   const { REACT_APP_CLIENT_ID } = process.env;
@@ -56,6 +59,10 @@ const UserLoginSignUpForms = () => {
     console.log("inactive set");
   };
 
+  const handleGoBack = () => {
+    history.push(`/`);
+  };
+
   // Content
   return (
     <div className="userLoginWrapper">
@@ -69,6 +76,22 @@ const UserLoginSignUpForms = () => {
         style={{ height: "100%" }}
       >
         <form action="" autoComplete="off">
+          <div className="col-12 text-right mb-1">
+            <p
+              onClick={handleGoBack}
+              style={{
+                cursor: "pointer",
+                display: "inline-block",
+                fontSize: "10px",
+                backgroundColor: "#F64D04",
+                borderRadius: "50%",
+                padding: "10px",
+              }}
+            >
+              {/* <ArrowBackIcon /> */}
+              {"  "}X
+            </p>
+          </div>
           <h2>Sign In</h2>
           <div className="userLoginInput-group">
             <div className="form-group">

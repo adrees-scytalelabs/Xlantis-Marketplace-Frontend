@@ -61,21 +61,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OnAuctionCard = (props) => {
+  console.log("on auction card props: ", props);
   const styles = useStyles();
   return (
-    <div className="col-12 p-2" key={props.index}>
+    <div className="col-12 p-2">
       {/* <Paper elevation={1}> */}
       <Card id="marketCardProps">
         <div className="row no-gutters">
           <Link
-            // to={
-            //   "/marketPlace/Cubes/Nfts/userauction/" +
-            //   props.i._id +
-            //   "/" +
-            //   props.userAuctionData[props.index]._id
-            // }
-            to="/fixdropnft"
             style={{ width: "100%" }}
+            to={{
+              pathname: `/fixdropnft/${props.i._id}`,
+              state: {
+                saleType: props.i.saleType,
+              },
+            }}
           >
             <div className="nftImgWrapper">
               <CardMedia
@@ -83,11 +83,6 @@ const OnAuctionCard = (props) => {
                 image={props.i.image}
                 title="Drop Image"
               />
-              {/* <img
-                  src={props.i.image}
-                  alt="a sample nft"
-                  className="myNFTImg"
-                /> */}
               <div
                 style={{
                   position: "absolute",
@@ -107,19 +102,16 @@ const OnAuctionCard = (props) => {
                     <Link to="/">
                       <div
                         style={{
-                          // borderRadius: 12,
-                          backgroundColor: "#000",
-                          // height: 80,
+                          backgroundColor: "transparent",
                         }}
                       >
                         <img
                           src={kangaroo}
                           alt="a sample nft"
                           style={{
-                            width: "85px",
-                            height: "85px",
+                            width: "75px",
+                            height: "75px",
                             objectFit: "cover",
-                            // borderRadius: "12px",
                           }}
                         />
                       </div>
@@ -137,18 +129,17 @@ const OnAuctionCard = (props) => {
                       > */}
 
                     <Link
-                      // to={
-                      //   "/marketPlace/Cubes/Nfts/userauction/" +
-                      //   props.i._id +
-                      //   "/" +
-                      //   props.userAuctionData[props.index]._id
-                      // }
-                      to="/fixdropnft"
+                      to={{
+                        pathname: `/fixdropnft/${props.i._id}`,
+                        state: {
+                          saleType: props.i.saleType,
+                        },
+                      }}
                     >
                       <button className="exploreBtn">
                         Explore{" "}
                         <span>
-                          <OpenInNewIcon />
+                          <OpenInNewIcon style={{ fontSize: "1rem" }} />
                         </span>
                       </button>
                     </Link>
@@ -157,13 +148,8 @@ const OnAuctionCard = (props) => {
                 </div>
               </div>
             </div>
-            {/* <div className="mainDiv">
-                  <div className="square"></div>
-                  <div className="square2"></div>
-                  <div className="square3"></div>
-                </div> */}
           </Link>
-          <CardContent style={{ paddingBottom: 0, width: "100%" }}>
+          <CardContent style={{ paddingBottom: 16, width: "100%" }}>
             <div
               className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
@@ -184,7 +170,7 @@ const OnAuctionCard = (props) => {
                   {props.i.description}
                 </Typography>
               </div>
-              <div className="col-4 align-self-end text-right">
+              {/* <div className="col-4 align-self-end text-right">
                 <p
                   style={{
                     marginBottom: "0",
@@ -200,43 +186,8 @@ const OnAuctionCard = (props) => {
                   {props.userAuctionData[props.index].minimumBid / 10 ** 18}{" "}
                   WETH
                 </p>
-              </div>
+              </div> */}
             </div>
-            {/* Artist Leads */}
-            {/* <Link
-              to={
-                "/User/Profile/Detail/musicArtist/" +
-                props.i.MusicArtistId +
-                "/null"
-              }
-              style={{ color: "#000" }}
-            >
-              <div
-                style={{
-                  borderRadius: "12px",
-                  padding: "5px",
-                  border: "1px solid #ccc",
-                  marginTop: "0.75rem",
-                  fontFamily: "orbitron",
-                }}
-              >
-                <CardHeader
-                  avatar={
-                    <Avatar
-                      src={props.i.MusicArtistProfile}
-                      aria-label="Artist"
-                      style={{
-                        borderRadius: "12px",
-                        border: "1px solid #777",
-                        fontFamily: "orbitron",
-                      }}
-                    />
-                  }
-                  title={props.i.MusicArtistName}
-                  subheader={props.i.MusicArtistAbout}
-                />
-              </div>
-            </Link> */}
             {/* Alerts */}
             <Typography
               variant="h6"
@@ -245,10 +196,8 @@ const OnAuctionCard = (props) => {
               className="text-center"
             >
               {/* Auction Ends and Auction Ended */}
-              {new Date() <
-              new Date(props.userAuctionData[props.index].auctionStartsAt) ? (
+              {new Date() < new Date(props.i.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))} */}
                   <Alert severity="warning" className={styles.textAlert}>
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
@@ -258,24 +207,15 @@ const OnAuctionCard = (props) => {
                     <span>
                       <Countdown
                         daysInHours
-                        date={
-                          new Date(
-                            props.userAuctionData[props.index].auctionStartsAt
-                          )
-                        }
+                        date={new Date(props.i.startTime)}
                         style={{ fontFamily: "orbitron" }}
                       ></Countdown>
                     </span>
                   </Alert>
                 </div>
-              ) : new Date() >
-                  new Date(
-                    props.userAuctionData[props.index].auctionStartsAt
-                  ) &&
-                new Date() <
-                  new Date(props.userAuctionData[props.index].auctionEndsAt) ? (
+              ) : new Date() > new Date(props.i.startTime) &&
+                new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert severity="warning" className={styles.textAlert}>
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
@@ -285,11 +225,7 @@ const OnAuctionCard = (props) => {
                     <span>
                       <Countdown
                         daysInHours
-                        date={
-                          new Date(
-                            props.userAuctionData[props.index].auctionEndsAt
-                          )
-                        }
+                        date={new Date(props.i.endTime)}
                         style={{ fontFamily: "orbitron" }}
                       ></Countdown>
                     </span>
@@ -316,37 +252,8 @@ const OnAuctionCard = (props) => {
               )}
             </Typography>
           </CardContent>
-          {/* Explore Button */}
-          {/* <div className="row no-gutters px-3 w-100">
-            <div className="col-12">
-              <CardActions
-                style={{
-                  marginTop: "5px",
-                  padding: "12px 0px",
-                  justifyContent: "end",
-                }}
-              >
-                <Link
-                  to={
-                    "/marketPlace/Cubes/Nfts/userauction/" +
-                    props.i._id +
-                    "/" +
-                    props.userAuctionData[props.index]._id
-                  }
-                >
-                  <button className="exploreBtn">
-                    Explore{" "}
-                    <span>
-                      <OpenInNewIcon />
-                    </span>
-                  </button>
-                </Link>
-              </CardActions>
-            </div>
-          </div> */}
         </div>
       </Card>
-      {/* </Paper> */}
     </div>
   );
 };

@@ -1,5 +1,7 @@
 // REACT
 import React, { useState } from "react";
+// STYLESHEETS
+import "../../assets/css/mediaQueries.css";
 // MUI
 import PropTypes from "prop-types";
 import {
@@ -134,6 +136,14 @@ const customTheme = createMuiTheme({
         color: "#fff",
       },
     },
+    MuiAlert: {
+      message: {
+        fontSize: 12,
+      },
+      icon: {
+        fontSize: 16,
+      },
+    },
   },
 });
 
@@ -198,7 +208,10 @@ const MarketPlaceTabs = (props) => {
             // style={{ paddingLeft: "0px", paddingRight: "0px" }}
             className={classes.tabPanelProps}
           >
-            <div className="row no-gutters align-items-center justify-content-center"  style={{minHeight: "50vh"}}>
+            <div
+              className="row no-gutters align-items-center justify-content-center"
+              style={{ minHeight: "50vh" }}
+            >
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "fixedPriceDrops" ? ( */}
@@ -230,15 +243,13 @@ const MarketPlaceTabs = (props) => {
                   </Card>
                 ) : props.fixedPriceDropLength !== 0 &&
                   props.fixedPriceDrop !== "undefined" ? (
-                  <div className="row no-gutters w-100 align-items-center position-relative ">
+                  <div className="row no-gutters w-100 align-items-center position-relative">
                     {props.fixedPriceDrop.map((i, index) => (
                       <div
-                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block "
+                        className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
                       >
-                        <OnSaleCard
-                          i={i}
-                        />
+                        <OnSaleCard i={i} />
                       </div>
                     ))}
                   </div>
@@ -291,7 +302,10 @@ const MarketPlaceTabs = (props) => {
             dir={theme.direction}
             className={classes.tabPanelProps}
           >
-            <div className="row no-gutters align-items-center justify-content-center"  style={{minHeight: "50vh"}}>
+            <div
+              className="row no-gutters align-items-center justify-content-center"
+              style={{ minHeight: "50vh" }}
+            >
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {/* props.type === "bidableDrops" ? ( */}
@@ -301,8 +315,7 @@ const MarketPlaceTabs = (props) => {
                       <WhiteSpinner />
                     </div>
                   </div>
-                ) : props.cubeDataLength === 0 &&
-                  props.cubeAuctionDataLength === 0 ? (
+                ) : props.bidableDropLength === 0 ? (
                   <Card
                     variant="outlined"
                     style={{
@@ -322,20 +335,15 @@ const MarketPlaceTabs = (props) => {
                       <strong>No items to display </strong>
                     </Typography>
                   </Card>
-                ) : props.cubeAuctionDataLength !== 0 &&
-                  props.cubeAuctionData !== "undefined" ? (
+                ) : props.bidableDropLength !== 0 &&
+                  props.bidableDrop !== "undefined" ? (
                   <div className="row no-gutters w-100 align-items-center position-relative ">
-                    {props.cubeAuctionData.map((i, index) => (
+                    {props.bidableDrop.map((i, index) => (
                       <div
-                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block "
+                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
                       >
-                        <OnAuctionCard
-                          i={i}
-                          index={index}
-                          userAuctionData={props.userAuctionData}
-                          marketTabs={true}
-                        />
+                        <OnAuctionCard i={i} />
                       </div>
                     ))}
                   </div>

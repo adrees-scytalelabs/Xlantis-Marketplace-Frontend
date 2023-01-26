@@ -137,27 +137,14 @@ function FixedDropNFTCard(props) {
         : defaultStyles,
   };
 
-  // const getDropDetails = () => {
-  //   axios.get(`/v1-sso/drop/${dropID}`).then(res => console.log("response from dropID: ", res), (err => console.log("Drop could not be get: ", err.response)))
-  // }
-
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   getDropDetails();
-
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }
-  // , []);
-
-  // <Link to={`/fixedDropNFTHome/${singleNFTid}`} state={data}>
   return (
     <Link
       to={{
         pathname: `/fixedDropNFTHome/${singleNFTid}`,
         state: {
-          id: props.data.dropId,
+          dropId: props.data.dropId,
+          isSold: props.data.currentMarketplaceId.isSold,
+          price: props.data.currentMarketplaceId.price,
         },
       }}
     >
