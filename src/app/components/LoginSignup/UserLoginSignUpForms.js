@@ -11,6 +11,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Snackbar from "@material-ui/core/Snackbar";
 import { useSnackbar } from "notistack";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import CloseIcon from "@material-ui/icons/Close";
 // GOOGLE
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
@@ -77,20 +78,9 @@ const UserLoginSignUpForms = () => {
       >
         <form action="" autoComplete="off">
           <div className="col-12 text-right mb-1">
-            <p
-              onClick={handleGoBack}
-              style={{
-                cursor: "pointer",
-                display: "inline-block",
-                fontSize: "10px",
-                backgroundColor: "#F64D04",
-                borderRadius: "50%",
-                padding: "10px",
-              }}
-            >
-              {/* <ArrowBackIcon /> */}
-              {"  "}X
-            </p>
+            <span onClick={handleGoBack} style={{ cursor: "pointer" }}>
+              <CloseIcon />
+            </span>
           </div>
           <h2>Sign In</h2>
           <div className="userLoginInput-group">

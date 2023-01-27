@@ -330,220 +330,227 @@ const FixedDropSingleNFTHome = () => {
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           {nftData ? (
-            <div
-              className="row"
-              style={{ minHeight: "76vh", padding: "1.5rem" }}
-            >
-              {/* NFT Image */}
-              <div className="col-md-12 col-lg-4">
-                <Paper elevation={5}>
-                  <Card className={classes.root}>
-                    <div style={{ marginTop: "20px" }}>
-                      <CardMedia
-                        className={classes.media}
-                        title={nftData?.title}
-                        image={nftData?.nftURI}
-                      ></CardMedia>
-                    </div>
-                  </Card>
-                </Paper>
+            <>
+              <div
+                className="row no-gutters justify-content-end"
+                style={{ padding: "1.5rem 1.5rem 0" }}
+              >
+                <div className="col-4 col-sm-3 col-md-2">
+                  <button className="bidBtn w-100" onClick={handleGoBack}>
+                    <ArrowBackIcon />
+                    {"  "}
+                    Back
+                  </button>
+                </div>
               </div>
-              {/* NFT Details */}
-              <div className="col-md-12 col-lg-8">
-                {/* Details */}
-                <Card style={{ backgroundColor: "black" }}>
-                  <CardContent>
-                    <Row>
-                      <Col>
-                        <Typography
-                          variant="body1"
-                          component="p"
-                          style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                        >
-                          <strong>NFT Title </strong>
-                        </Typography>
-                      </Col>
-                      <Col>
-                        <Typography
-                          variant="body1"
+              <div
+                className="row no-gutters"
+                style={{ minHeight: "76vh", padding: "1.5rem" }}
+              >
+                {/* NFT Image */}
+                <div className="col-md-12 col-lg-4 pr-md-3">
+                  <Paper elevation={5}>
+                    <Card className={classes.root}>
+                      <div style={{ marginTop: "20px" }}>
+                        <CardMedia
+                          className={classes.media}
+                          title={nftData?.title}
+                          image={nftData?.nftURI}
+                        ></CardMedia>
+                      </div>
+                    </Card>
+                  </Paper>
+                </div>
+                {/* NFT Details */}
+                <div className="col-md-12 col-lg-8 pl-md-3">
+                  {/* Details */}
+                  <Card style={{ backgroundColor: "black" }}>
+                    <CardContent>
+                      <Row>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            component="p"
+                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          >
+                            <strong>NFT Title </strong>
+                          </Typography>
+                        </Col>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            style={{
+                              color: "white",
+                              fontFamily: "inter",
+                              fontSize: "1rem",
+                            }}
+                          >
+                            {nftData.title}
+                          </Typography>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            component="p"
+                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          >
+                            <strong>NFT Description </strong>
+                          </Typography>
+                        </Col>
+                        <Col
                           style={{
                             color: "white",
                             fontFamily: "inter",
                             fontSize: "1rem",
                           }}
                         >
-                          {nftData.title}
-                        </Typography>
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Typography
-                          variant="body1"
-                          component="p"
-                          style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                        >
-                          <strong>NFT Description </strong>
-                        </Typography>
-                      </Col>
-                      <Col
-                        style={{
-                          color: "white",
-                          fontFamily: "inter",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {nftData.description}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Typography
-                          variant="body1"
-                          component="p"
-                          style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                        >
-                          <strong>Price </strong>
-                        </Typography>
-                      </Col>
-                      <Col
-                        style={{
-                          color: "white",
-                          fontFamily: "inter",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {price} WMATIC
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Typography
-                          variant="body1"
-                          component="p"
+                          {nftData.description}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            component="p"
+                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          >
+                            <strong>Price </strong>
+                          </Typography>
+                        </Col>
+                        <Col
                           style={{
-                            color: "#F64D04",
-                            fontFamily: "orbitron",
+                            color: "white",
+                            fontFamily: "inter",
+                            fontSize: "1rem",
                           }}
                         >
-                          <strong>Supply Type </strong>
-                        </Typography>
-                      </Col>
-                      <Col
-                        style={{
-                          color: "white",
-                          fontFamily: "inter",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {nftData.supplyType ? nftData.supplyType : null}
-                      </Col>
-                    </Row>
-                    <Row>
-                      <Col>
-                        <Typography
-                          variant="body1"
-                          component="p"
+                          {price} WMATIC
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            component="p"
+                            style={{
+                              color: "#F64D04",
+                              fontFamily: "orbitron",
+                            }}
+                          >
+                            <strong>Supply Type </strong>
+                          </Typography>
+                        </Col>
+                        <Col
                           style={{
-                            color: "#F64D04",
-                            fontFamily: "orbitron",
+                            color: "white",
+                            fontFamily: "inter",
+                            fontSize: "1rem",
                           }}
                         >
-                          <strong>Token Supply </strong>
-                        </Typography>
-                      </Col>
-                      <Col
-                        style={{
-                          color: "white",
-                          fontFamily: "inter",
-                          fontSize: "1rem",
-                        }}
-                      >
-                        {nftData.tokenSupply}
-                      </Col>
-                    </Row>
-                  </CardContent>
-                </Card>
-                {/* Porperties */}
-                <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
-                  <Col>
-                    <Accordion>
-                      <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography
-                          variant="body1"
-                          style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          {nftData.supplyType ? nftData.supplyType : null}
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Typography
+                            variant="body1"
+                            component="p"
+                            style={{
+                              color: "#F64D04",
+                              fontFamily: "orbitron",
+                            }}
+                          >
+                            <strong>Token Supply </strong>
+                          </Typography>
+                        </Col>
+                        <Col
+                          style={{
+                            color: "white",
+                            fontFamily: "inter",
+                            fontSize: "1rem",
+                          }}
                         >
-                          <BlurLinear />
-                          <strong> Properties</strong>
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Table striped bordered hover>
-                          <thead>
-                            <tr>
-                              <th>Key</th>
-                              <th>Value</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {nftProperties?.map((i, index) => (
-                              <tr key={index}>
-                                <td>{i[0]}</td>
-                                <td>{i[1]}</td>
+                          {nftData.tokenSupply}
+                        </Col>
+                      </Row>
+                    </CardContent>
+                  </Card>
+                  {/* Porperties */}
+                  <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
+                    <Col>
+                      <Accordion>
+                        <AccordionSummary expandIcon={<ExpandMore />}>
+                          <Typography
+                            variant="body1"
+                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          >
+                            <BlurLinear />
+                            <strong> Properties</strong>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          <Table striped bordered hover>
+                            <thead>
+                              <tr>
+                                <th>Key</th>
+                                <th>Value</th>
                               </tr>
-                            ))}
-                            {/* {keys?.map((j, index) => (
+                            </thead>
+                            <tbody>
+                              {nftProperties?.map((i, index) => (
+                                <tr key={index}>
+                                  <td>{i[0]}</td>
+                                  <td>{i[1]}</td>
+                                </tr>
+                              ))}
+                              {/* {keys?.map((j, index) => (
                           <tr key={index}>
                             <td>{j}</td>
                             <td>{properties[j]}</td>
                           </tr>
                         ))} */}
-                          </tbody>
-                        </Table>
-                      </AccordionDetails>
-                    </Accordion>
-                  </Col>
-                </Row>
-                <br></br>
-                {/* Buttons */}
-                {bidableDrop?.saleType !== "auction" ? (
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    <div className="col-12 col-md-4 mr-0 mr-md-2 mb-2 mb-md-0">
-                      <button className="bidBtn w-100" onClick={handleGoBack}>
-                        <ArrowBackIcon />
-                        {"  "}
-                        Back
-                      </button>
-                    </div>
-                    {nftData.isMinted === false && nftData.isOnSale === true ? (
-                      <div className="col-12 col-md-4 ml-0 ml-md-2 mt-2 mt-md-0">
-                        <button
-                          className="bidBtn w-100"
-                          type="button"
-                          // onClick={(e) => handleBuy(e)}
-                          onClick={() => console.log("clicked!")}
-                        >
-                          Buy
-                        </button>
-                      </div>
-                    ) : (
-                      <div
-                        className="col-12 col-md-4 ml-0 ml-md-2 mt-2 mt-md-0"
-                        data-tip
-                        data-for="registerTip"
-                      >
-                        <button
-                          className="bidBtn w-100"
-                          type="button"
+                            </tbody>
+                          </Table>
+                        </AccordionDetails>
+                      </Accordion>
+                    </Col>
+                  </Row>
+                  <br></br>
+                  {/* Buttons */}
+                  {bidableDrop?.saleType !== "auction" ? (
+                    <div className="row no-gutters">
+                      {nftData.isMinted === false &&
+                      nftData.isOnSale === true ? (
+                        <div className="col-12 col-md-4 mt-2 mt-md-0">
+                          <button
+                            className="bidBtn w-100"
+                            type="button"
+                            // onClick={(e) => handleBuy(e)}
+                            onClick={() => console.log("clicked!")}
+                          >
+                            Buy
+                          </button>
+                        </div>
+                      ) : (
+                        <div
+                          className="col-12 col-md-4 mt-2 mt-md-0"
                           data-tip
                           data-for="registerTip"
-                          disabled
-                          // onClick={(e) => handleBuy(e)}
-                          onClick={(e) => console.log(e)}
                         >
-                          Buy
-                        </button>
-                        {/* {nftData.isMinted  ===
+                          <button
+                            className="bidBtn w-100"
+                            type="button"
+                            data-tip
+                            data-for="registerTip"
+                            disabled
+                            // onClick={(e) => handleBuy(e)}
+                            onClick={(e) => console.log(e)}
+                          >
+                            Buy
+                          </button>
+                          {/* {nftData.isMinted  ===
                     true ? (
                       <ReactTooltip id="registerTip" place="top" effect="solid">
                         NFT Is Sold
@@ -558,113 +565,106 @@ const FixedDropSingleNFTHome = () => {
                         Sale Has Ended
                       </ReactTooltip>
                     ) : null} */}
-                      </div>
-                    )}
-                  </div>
-                ) : null}
-                {/* Bidding History */}
-                {bidableDrop?.saleType === "auction" ? (
-                  <div className="col-12">
-                    <Row style={{ marginTop: "5px" }}>
-                      <Col>
-                        <form>
-                          <label
-                            style={{ color: "#F64D04", marginTop: "10px" }}
-                          >
-                            Set Bid Expiry Time
-                          </label>
-                          <div className="form-group">
-                            <DateTimePicker
-                              className="form-control"
-                              onChange={(e) => {
-                                console.log(e);
-                                console.log(
-                                  "e.getTime()",
-                                  Math.round(e.getTime())
-                                );
-                                setBidExpiryTime(e);
-                                setBidExpiryTimeStamp(
-                                  Number(Math.round(e.getTime()))
-                                );
-                              }}
-                              value={bidExpiryTime}
-                              style={{
-                                color: "white",
-                                backgroundColor: "black",
-                              }}
-                            />
-                          </div>
-                          <label>Bidding value</label>
-                          <div className="form-group">
-                            <div className="row no-gutters align-items-center justify-content-md-between justify-content-center">
-                              <div className="col-12 col-md">
-                                <TextField
-                                  autoComplete="false"
-                                  value={biddingValue}
-                                  variant="outlined"
-                                  type="number"
-                                  color="secondary"
-                                  onChange={(e) => {
-                                    handleChangeBiddingValue(e);
-                                  }}
-                                  style={{ width: "100%" }}
-                                />
-                              </div>
-                              <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
-                                <button
-                                  className="bidBtn w-100 ml-0"
-                                  // onClick={(e) => handleBidSubmit(e)}
-                                >
-                                  Bid
-                                </button>
-                              </div>
-                              <div className="col-12 text-right mt-3">
-                                <p
-                                  onClick={handleGoBack}
-                                  style={{
-                                    cursor: "pointer",
-                                    display: "inline-block",
-                                  }}
-                                >
-                                  <ArrowBackIcon />
-                                  {"  "}
-                                  See all NFTs
-                                </p>
+                        </div>
+                      )}
+                    </div>
+                  ) : bidableDrop?.saleType === "auction" ? (
+                    <div className="col-12">
+                      <Row style={{ marginTop: "5px" }}>
+                        <Col>
+                          <form>
+                            <label
+                              style={{ color: "#F64D04", marginTop: "10px" }}
+                            >
+                              Set Bid Expiry Time
+                            </label>
+                            <div className="form-group">
+                              <DateTimePicker
+                                className="form-control"
+                                onChange={(e) => {
+                                  console.log(e);
+                                  console.log(
+                                    "e.getTime()",
+                                    Math.round(e.getTime())
+                                  );
+                                  setBidExpiryTime(e);
+                                  setBidExpiryTimeStamp(
+                                    Number(Math.round(e.getTime()))
+                                  );
+                                }}
+                                value={bidExpiryTime}
+                                style={{
+                                  color: "white",
+                                  backgroundColor: "black",
+                                }}
+                              />
+                            </div>
+                            <label>Bidding value</label>
+                            <div className="form-group">
+                              <div className="row no-gutters align-items-center justify-content-md-between justify-content-center">
+                                <div className="col-12 col-md">
+                                  <TextField
+                                    autoComplete="false"
+                                    value={biddingValue}
+                                    variant="outlined"
+                                    type="number"
+                                    color="secondary"
+                                    onChange={(e) => {
+                                      handleChangeBiddingValue(e);
+                                    }}
+                                    style={{ width: "100%" }}
+                                  />
+                                </div>
+                                <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
+                                  <button
+                                    className="bidBtn w-100 ml-0"
+                                    // onClick={(e) => handleBidSubmit(e)}
+                                  >
+                                    Bid
+                                  </button>
+                                </div>
                               </div>
                             </div>
-                          </div>
-                        </form>
-                      </Col>
-                    </Row>
+                          </form>
+                        </Col>
+                      </Row>
 
-                    <Row style={{ marginTop: "5px" }}>
-                      <Col>
-                        <Accordion>
-                          <AccordionSummary expandIcon={<ExpandMore />}>
-                            <Typography
-                              variant="body1"
-                              style={{ color: "#F64D04" }}
-                            >
-                              <ListIcon />
-                              <strong> Offers</strong>
-                            </Typography>
-                          </AccordionSummary>
-                          <AccordionDetails>
-                            <Table striped hover bordered size="sm" responsive>
-                              <thead>
-                                <tr>
-                                  <th style={{ padding: "0.75rem" }}>#</th>
-                                  <th style={{ padding: "0.75rem" }}>Bidder</th>
-                                  <th style={{ padding: "0.75rem" }}>Bid</th>
-                                  {/* <th colSpan={2}></th> */}
-                                  {/* <th>
+                      <Row style={{ marginTop: "5px" }}>
+                        <Col>
+                          <Accordion>
+                            <AccordionSummary expandIcon={<ExpandMore />}>
+                              <Typography
+                                variant="body1"
+                                style={{ color: "#F64D04" }}
+                              >
+                                <ListIcon />
+                                <strong> Offers</strong>
+                              </Typography>
+                            </AccordionSummary>
+                            <AccordionDetails>
+                              <Table
+                                striped
+                                hover
+                                bordered
+                                size="sm"
+                                responsive
+                              >
+                                <thead>
+                                  <tr>
+                                    <th style={{ padding: "0.75rem" }}>#</th>
+                                    <th style={{ padding: "0.75rem" }}>
+                                      Bidder
+                                    </th>
+                                    <th style={{ padding: "0.75rem" }}>Bid</th>
+                                    {/* <th colSpan={2}></th> */}
+                                    {/* <th>
                                                             <button className="btn" onClick={props.acceptBid}>
                                                                 Accept
                                                             </button>
                                                         </th> */}
-                                </tr>
-                              </thead>
-                              {/* <tbody>
+                                  </tr>
+                                </thead>
+                                {/* <tbody>
                                                     {bidDetail?.map((bid, index) => (
                                                         <tr key={index}>
                                                             <td style={{padding: "0.75rem"}}>{index+1}</td>
@@ -678,15 +678,16 @@ const FixedDropSingleNFTHome = () => {
                                                         </tr>
                                                     ))}
                                                 </tbody> */}
-                            </Table>
-                          </AccordionDetails>
-                        </Accordion>
-                      </Col>
-                    </Row>
-                  </div>
-                ) : null}
+                              </Table>
+                            </AccordionDetails>
+                          </Accordion>
+                        </Col>
+                      </Row>
+                    </div>
+                  ) : null}
+                </div>
               </div>
-            </div>
+            </>
           ) : !nftData ? (
             <div
               className="row no-gutters align-items-center justify-content-center"

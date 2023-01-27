@@ -177,14 +177,16 @@ const MarketPlaceTabs = (props) => {
               backgroundColor: "#000",
             }}
           >
-            <div className="col-12">
+            <div className="col-auto">
               <Tabs
                 value={value}
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                aria-label="trending and top collections"
                 centered
+                variant="scrollable"
+                scrollButtons="auto"
+                aria-label="trending and top collections"
               >
                 <Tab
                   label="Fixed Price Drops"

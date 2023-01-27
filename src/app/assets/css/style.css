@@ -163,11 +163,9 @@ form.checkoutForm label {
 /* -------------ADMIN SIGN IN AND SIGN UP-------------- */
 
 .adminCredWrapper {
-  height: 550px;
+  min-height: 650px;
   position: relative;
   width: 100%;
-  /* height: 100%; */
-  overflow: hidden;
   transition: 0.5s ease-in-out;
 }
 
@@ -219,7 +217,7 @@ form.checkoutForm label {
 }
 
 .adminInputFormGroup button {
-  width: 100%;
+  width: 260px;
   border: 1px solid var(--borderOrange);
   border-radius: 0px 15px;
   background-color: var(--bg);
@@ -290,17 +288,17 @@ form.checkoutForm label {
 
 
 .userPhone .intl-tel-input .country-list {
-  width: 320px;
+  width: 260px;
   background-color: var(--bg);
   overflow-x: hidden;
   border-radius: 5px;
 }
 
 .userLoginWrapper {
-  height: 650px;
+  height: 590px;
   border: 1px solid white;
   border-radius: 5px;
-  padding: 40px;
+  padding: 20px;
   overflow: hidden;
   position: relative;
 }
@@ -315,7 +313,7 @@ form.checkoutForm label {
 
 .userFormWrapper.userSignUp {
   position: absolute;
-  top: 0px;
+  top: 20px;
   /* transition: display 0.5s ease-in-out; */
   /* transform: scale(1); */
 }
@@ -345,7 +343,7 @@ form.checkoutForm label {
 
 .userLoginInput-group input,
 .ssoDetailsInput-group input {
-  width: 320px;
+  width: 260px;
   height: 40px;
   font-size: 1rem;
   color: var(--text) !important;
@@ -674,6 +672,7 @@ button.bttn:hover {
   color: var(--text);
   overflow: hidden;
   transition: all ease-in-out 0.5s;
+  width: 260px;
 }
 
 .newNftProps {
@@ -1078,11 +1077,7 @@ li.menu-title {
 .videoContentText {
   position: absolute;
   width: 100%;
-  height: 100%;
   bottom: 0;
-  /* display: flex;
-  justify-content: flex-end;
-  flex-direction: column; */
 }
 
 .videoContentText .row {
@@ -1094,14 +1089,15 @@ section.creatorName {
 }
 
 button.featuredExploreBtn {
-  padding: 1rem;
+  padding: 0.75rem;
   font-family: var(--inter);
   font-size: 1rem;
   color: #fff;
   font-weight: bold;
-  border: 2px solid #F64D04;
-  border-radius: 0px 10px;
+  border: 1px solid #F64D04;
+  border-radius: 0px 15px;
   background-color: var(--bg);
+  width: 150px;
 }
 
 button.featuredExploreBtn:hover {
