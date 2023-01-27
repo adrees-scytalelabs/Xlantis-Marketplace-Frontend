@@ -33,6 +33,7 @@ import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
 import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
 import { AuthContextProvider } from "../../components/context/AuthContext";
 import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
+import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
 
 
 function App() {
@@ -157,6 +158,8 @@ function App() {
       return <Route component={MarketPlace} />;
     } else if (path === "/auctionDrops") {
       return <Route component={AuctionDrops} />;
+    }  else if (path === "/fixedDropNFTHome") {
+      return <Route component={FixedDropSingleNFTHome} />;
     } else if (path === "/auctionDrops/DropCubes/:dropId") {
       return (
         <Route
@@ -195,6 +198,8 @@ function App() {
       );
     } else if (path === "/fixdropnft/:dropId") {
       return <Route exact path = "/fixdropnft/:dropId" component={FixedPriceDropNFTs} />;
+    } else if (path === "/fixedDropNFTHome/:singleNFTid") {
+      return <Route exact path = "/fixedDropNFTHome/:singleNFTid" component={FixedDropSingleNFTHome} />;
     } else {
       return <Route component={HomeScreen} />;
     }
@@ -219,6 +224,8 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
+            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />
+            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />
             <LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" component={FixedPriceDropNFTs} />
             <LoginRegisterRedirectCheck
               exact

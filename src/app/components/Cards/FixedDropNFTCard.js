@@ -6,13 +6,16 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { truncate } from "../../assets/js/utils";
+import { drop } from "lodash";
+import axios from "axios";
+import { useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,11 +108,16 @@ const defaultStyles = {
 
 // COMPONENT FUNCTION
 function FixedDropNFTCard(props) {
+  let { path } = useRouteMatch();
   console.log("props", props);
   const classes = useStyles();
   const rarity = props.type;
-  let description =
-    "This is a short description for this NFT. It is out of the box.";
+  let singleNFTid = props.data._id;
+  console.log("NFT id for fixed drop: ", singleNFTid);
+
+  let data = {
+    id: props.data.dropId,
+  };
 
   // Styling
   const selectedRarity = {
@@ -130,78 +138,91 @@ function FixedDropNFTCard(props) {
   };
 
   return (
-    <Card style={{ height: "100%" }} id="nftCardProps">
-      {/* <Link to={"/dashboard/nftDetail/" + props.data._id}> */}
-      <div className="row no-gutters mb-3">
-        {/* NFT Image */}
-        <CardMedia
-          className={classes.media}
-          image={props.data.nftURI}
-          title="NFT Image"
-        />
-        {/* <div className="nftImgWrapper">
+    <Link
+      to={{
+        pathname: `/fixedDropNFTHome/${singleNFTid}`,
+        state: {
+          dropId: props.data.dropId,
+          isSold: props.data.currentMarketplaceId.isSold,
+          price: props.data.currentMarketplaceId.price,
+        },
+      }}
+    >
+      <Card style={{ height: "100%" }} id="nftCardProps">
+        {/* <Link to={"/dashboard/nftDetail/" + props.data._id}> */}
+        <div className="row no-gutters mb-3">
+          {/* NFT Image */}
+          <CardMedia
+            className={classes.media}
+            image={props.data.nftURI}
+            title="NFT Image"
+          />
+          {/* <div className="nftImgWrapper">
             <img
               className="myNFTImg"
               src={props.image.url}
               alt="a sample nft"
             />
           </div> */}
-        {/* </CardMedia> */}
-        <CardContent style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}>
-          {/* <CardHeader className="text-center" title={props.data.title} /> */}
-          {/* Title & Rarity */}
-          <div
-            className="row no-gutters justify-content-between align-items-center"
-            // style={{ minHeight: "60px" }}
+          {/* </CardMedia> */}
+          <CardContent
+            style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
-            {/* title */}
-            <div className="col-auto">
-              <Typography
-                variant="h6"
-                component="div"
-                className={classes.cardTitle}
-              >
-                {props.data.title}
-              </Typography>
+            {/* <CardHeader className="text-center" title={props.data.title} /> */}
+            {/* Title & Rarity */}
+            <div
+              className="row no-gutters justify-content-between align-items-center"
+              // style={{ minHeight: "60px" }}
+            >
+              {/* title */}
+              <div className="col-auto">
+                <Typography
+                  variant="h6"
+                  component="div"
+                  className={classes.cardTitle}
+                >
+                  {props.data.title}
+                </Typography>
+              </div>
+              {/* rarity */}
+              <div className="col-auto">
+                <Typography
+                  variant="body2"
+                  component="p"
+                  // className={classes.commonRarity}
+                  style={selectedRarity.style}
+                >
+                  {/* <strong>Token Rarity: </strong> */}
+                  {rarity}
+                </Typography>
+              </div>
             </div>
-            {/* rarity */}
-            <div className="col-auto">
+            {/* Descriptions */}
+            <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
                 variant="body2"
+                className={classes.cardDescriptions}
                 component="p"
-                // className={classes.commonRarity}
-                style={selectedRarity.style}
               >
-                {/* <strong>Token Rarity: </strong> */}
-                {rarity}
+                {/* <strong>Artwork Description: </strong> */}
+                {/* {props.data.description} */}
+                {truncate(props.data.description, 35)}
+                {/* {description} */}
               </Typography>
             </div>
-          </div>
-          {/* Descriptions */}
-          <div className="row no-gutters justify-content-start align-items-center pb-2">
             <Typography
               variant="body2"
-              className={classes.cardDescriptions}
               component="p"
+              className={classes.cardDescriptions}
             >
-              {/* <strong>Artwork Description: </strong> */}
-              {/* {props.data.description} */}
-              {truncate(props.data.description, 35)}
-              {/* {description} */}
+              <strong>Token Supply: </strong>
+              {props.data.tokenSupply}
             </Typography>
-          </div>
-          <Typography
-            variant="body2"
-            component="p"
-            className={classes.cardDescriptions}
-          >
-            <strong>Token Supply: </strong>
-            {props.data.tokenSupply}
-          </Typography>
-        </CardContent>
-      </div>
-      {/* </Link> */}
-    </Card>
+          </CardContent>
+        </div>
+        {/* </Link> */}
+      </Card>
+    </Link>
   );
 }
 

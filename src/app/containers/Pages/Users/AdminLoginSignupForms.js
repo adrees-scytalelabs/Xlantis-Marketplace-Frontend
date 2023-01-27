@@ -1,6 +1,6 @@
 // REACT
 import React, { useEffect, useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 // AXIOS
 import axios from "axios";
 // COMPONENTS
@@ -22,9 +22,9 @@ import MuiAlert from "@material-ui/lab/Alert";
 import InfoIcon from "@material-ui/icons/Info";
 // CONTEXT
 import { UserAuth } from "../../../components/context/AuthContext";
-// GOOGLE 
-import { GoogleOAuthProvider } from '@react-oauth/google';
-import { GoogleLogin } from '@react-oauth/google';
+// GOOGLE
+import { GoogleOAuthProvider } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 // STYLESHEETS
 import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
@@ -85,6 +85,7 @@ const AdminLoginSignupForms = () => {
   // Variables
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
+  let history = useHistory();
 
   // Methods
   function Alert(props) {
@@ -92,7 +93,8 @@ const AdminLoginSignupForms = () => {
   }
 
   // Handlers
-  const handleSuccess = (credentialResponse) => setAccount(credentialResponse.credential);
+  const handleSuccess = (credentialResponse) =>
+    setAccount(credentialResponse.credential);
 
   const handleSetActive = () => {
     setIsActive(!isActive);
@@ -111,6 +113,10 @@ const AdminLoginSignupForms = () => {
       return;
     }
     setOpenSnackBar(false);
+  };
+
+  const handleGoBack = () => {
+    history.push(`/`);
   };
 
   // const handleGoogleSignIn = async () => {
@@ -226,6 +232,14 @@ const AdminLoginSignupForms = () => {
               >
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
+                    <div className="col-12 text-right mb-1">
+                      <span
+                        onClick={handleGoBack}
+                        style={{ cursor: "pointer" }}
+                      >
+                        <CloseIcon />
+                      </span>
+                    </div>
                     <h2>Sign In</h2>
                     <div className="form-group">
                       <label>Email</label>
@@ -265,15 +279,15 @@ const AdminLoginSignupForms = () => {
                       </Typography>
                     </div>
                     <ThemeProvider theme={customTheme}>
-                    <GoogleOAuthProvider clientId={clientID}>
-                    <GoogleLogin
-  onSuccess={handleSuccess}
-  onError={() => {
-    console.log('Login Failed');
-  }}
-  width='258px'
-/>
-                    </GoogleOAuthProvider>
+                      <GoogleOAuthProvider clientId={clientID}>
+                        <GoogleLogin
+                          onSuccess={handleSuccess}
+                          onError={() => {
+                            console.log("Login Failed");
+                          }}
+                          width="258px"
+                        />
+                      </GoogleOAuthProvider>
                       {/* <div>
                         <div
                           id="g_id_onload"
@@ -296,7 +310,7 @@ const AdminLoginSignupForms = () => {
                         ></div>
                       </div> */}
                       {/* <div className="googleBtnWrapper mx-auto" id="signInDiv"> */}
-                        {/* <GoogleButton
+                      {/* <GoogleButton
                           label="Continue With Google"
                           style={{
                             backgroundColor: "black",
@@ -310,7 +324,7 @@ const AdminLoginSignupForms = () => {
                           }}
                           onClick={handleGoogleSignIn}
                         /> */}
-                        {/*  {error !== undefined && (
+                      {/*  {error !== undefined && (
                           <Snackbar
                             open={snackOpen}
                             autoHideDuration={6000}
@@ -502,7 +516,9 @@ const AdminLoginSignupForms = () => {
                       </div>
                     </div>
                   </div>
-                  <button type="submit">Sign Up</button>
+                  <div className="text-center">
+                    <button type="submit">Sign Up</button>
+                  </div>
                   <div className="signUp-link">
                     <p>
                       Already have an account?{" "}

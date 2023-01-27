@@ -49,6 +49,7 @@ const useStyles = makeStyles((theme) => ({
 function MarketPlace(props) {
   const classes = useStyles();
   const [userSaleData, setUserSaledata] = useState([]);
+  const [bidableDrop, setBidableDrop] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
@@ -86,12 +87,29 @@ function MarketPlace(props) {
       );
   };
 
-  if (cubeData) {
-    console.log("this is cube data hahaha: ", cubeData);
+  let getBidableDrops = (start, end) => {
+    handleShowBackdrop();
+    let version = Cookies.get("Version");
+    axios.get(`/${version}/drop/saleType/auction/${start}/${end}`).then(
+      (res) => {
+        console.log("Bidable drops response: ", res);
+        setBidableDrop(res.data.data);
+        handleCloseBackdrop();
+      },
+      (err) => {
+        console.log("could not get bidable drops ", err.response);
+        handleCloseBackdrop();
+      }
+    );
+  };
+
+  if (bidableDrop) {
+    console.log("Bidable drops in Market ", bidableDrop);
   }
 
   useEffect(() => {
     getCubes(0, 4); // eslint-disable-next-line
+    getBidableDrops(0, 4);
   }, []);
 
   return (
@@ -115,8 +133,8 @@ function MarketPlace(props) {
         <div className="row no-gutters w-100">
           {cubeData ? (
             <TrendingAndTop
-            fixedPriceDrop={fixedPriceDrop}
-            fixedPriceDropLength={fixedPriceDrop.length}
+              fixedPriceDrop={fixedPriceDrop}
+              fixedPriceDropLength={fixedPriceDrop.length}
               open={open}
               cubeData={cubeData}
               cubeDataLength={cubeData.length}
@@ -183,6 +201,8 @@ function MarketPlace(props) {
         <div className="row no-gutters w-100">
           {cubeData ? (
             <TrendingAndTop
+              bidableDrop={bidableDrop}
+              bidableDropLength={bidableDrop.length}
               open={open}
               cubeData={cubeData}
               cubeAuctionData={cubeAuctionData}

@@ -73,16 +73,12 @@ const OnSaleCard = (props) => {
       <Card id="marketCardProps">
         <div className="row no-gutters">
           <Link
-            // to={
-            //   "/marketPlace/Cubes/Nfts/notdrop/" +
-            //   props.userSaleData[props.index].expiresAt +
-            //   "/" +
-            //   props.i._id +
-            //   "/" +
-            //   props.userSaleData[props.index]._id
-            // }
-            to={`/fixdropnft/${props.i._id}`}
-
+            to={{
+              pathname: `/fixdropnft/${props.i._id}`,
+              state: {
+                saleType: props.i.saleType,
+              },
+            }}
             style={{ width: "100%" }}
           >
             <div className="nftImgWrapper">
@@ -96,10 +92,7 @@ const OnSaleCard = (props) => {
                   position: "absolute",
                   bottom: 0,
                   left: 0,
-                  zIndex: "1000",
-                  // height: 100,
                   width: "100%",
-                  // border: "1px solid orange",
                 }}
                 className="p-3"
               >
@@ -110,18 +103,16 @@ const OnSaleCard = (props) => {
                     <Link to="/">
                       <div
                         style={{
-                          // borderRadius: 12,
-                          backgroundColor: "#000",
+                          backgroundColor: "transparent",
                         }}
                       >
                         <img
                           src={kangaroo}
                           alt="a sample nft"
                           style={{
-                            width: "85px",
-                            height: "85px",
+                            width: "75px",
+                            height: "75px",
                             objectFit: "cover",
-                            // borderRadius: "12px",
                           }}
                         />
                       </div>
@@ -129,7 +120,7 @@ const OnSaleCard = (props) => {
                     </Link>
                   </div>
                   {/* Explore Button */}
-                  <div className="col w-100 text-right align-self-end">
+                  <div className="col-8 w-100 text-right align-self-end">
                     {/* <CardActions
                         style={{
                           marginTop: "5px",
@@ -138,20 +129,17 @@ const OnSaleCard = (props) => {
                         }}
                       > */}
                     <Link
-                      // to={
-                      //   "/marketPlace/Cubes/Nfts/notdrop/" +
-                      //   props.userSaleData[props.index].expiresAt +
-                      //   "/" +
-                      //   props.i._id +
-                      //   "/" +
-                      //   props.userSaleData[props.index]._id
-                      // }
-                      to="/dashboard/marketplace"
+                      to={{
+                        pathname: `/fixdropnft/${props.i._id}`,
+                        state: {
+                          saleType: props.i.saleType,
+                        },
+                      }}
                     >
                       <button className="exploreBtn">
                         Explore{" "}
                         <span>
-                          <OpenInNewIcon />
+                          <OpenInNewIcon style={{ fontSize: "1rem" }} />
                         </span>
                       </button>
                     </Link>
@@ -166,7 +154,7 @@ const OnSaleCard = (props) => {
               <div className="square3"></div>
             </div> */}
           </Link>
-          <CardContent style={{ paddingBottom: 0, width: "100%" }}>
+          <CardContent style={{ paddingBottom: 16, width: "100%" }}>
             {/* Title, Description and Price */}
             <div
               className="row no-gutters justify-content-between"
@@ -188,47 +176,12 @@ const OnSaleCard = (props) => {
                   {truncate(props.i.description, 35)}
                 </Typography>
               </div>
-              <div className="col-4 align-self-end text-right p-0">
+              {/* <div className="col-4 align-self-end text-right p-0">
                 <p className="nftPrice mb-0 p-0">
                   {props.i.SalePrice / 10 ** 18} ETH
                 </p>
-              </div>
+              </div> */}
             </div>
-            {/* Artist Lead */}
-            {/* <Link
-              to={
-                "/User/Profile/Detail/musicArtist/" +
-                props.i.MusicArtistId +
-                "/null"
-              }
-              style={{ color: "#000" }}
-            >
-              <div
-                style={{
-                  borderRadius: "12px",
-                  padding: "5px",
-                  border: "1px solid #ccc",
-                  marginTop: "0.75rem",
-                  fontFamily: "poppins",
-                }}
-              >
-                <CardHeader
-                  avatar={
-                    <Avatar
-                      src={props.i.MusicArtistProfile}
-                      aria-label="Artist"
-                      style={{
-                        borderRadius: "12px",
-                        border: "1px solid #777",
-                        fontFamily: "poppins",
-                      }}
-                    />
-                  }
-                  title={props.i.MusicArtistName}
-                  subheader={props.i.MusicArtistAbout}
-                />
-              </div>
-            </Link> */}
             {/* Alerts */}
             <Typography
               variant="h6"

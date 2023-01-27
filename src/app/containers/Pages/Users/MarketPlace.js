@@ -48,15 +48,10 @@ const useStyles = makeStyles((theme) => ({
 
 function MarketPlace(props) {
   const classes = useStyles();
-  const [userSaleData, setUserSaledata] = useState([]);
-  const [cubeData, setCubeData] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
-
-  const [userAuctionData, setUserAuctiondata] = useState([]);
-  const [cubeAuctionData, setCubeAuctionData] = useState([]);
+  const [bidableDrop, setBidableDrop] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [totalNFTSale, setTotalNFTSale] = useState(0);
   const [page, setPage] = useState(0);
 
   const [open, setOpen] = useState(false);
@@ -70,51 +65,41 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios
-      .get(`/${version}/drop/saleType/fixed-price/${start}/${end}`)
-      .then(
-        (response) => {
-          console.log("responseeeee", response);
-          setFixedPriceDrop(response.data.data);
-          setCubeData(response.data.data);
-          setUserSaledata(response.data.data);
-          setCubeAuctionData(response.data.data);
-          setUserAuctiondata(response.data.data);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
+    axios.get(`/${version}/drop/saleType/fixed-price/${start}/${end}`).then(
+      (response) => {
+        console.log("responseeeee", response);
+        setFixedPriceDrop(response.data.data);
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        handleCloseBackdrop();
       }
     );
   };
-  // let getCubes2 = (start, end) => {
-  //   handleShowBackdrop();
-  //   axios.get(`/marketplace/tokenIds/${start}/${end}`).then(
-  //     (response) => {
-  //       console.log("responseeeee", response);
-  //       setCubeData(response.data.data);
-  //       setUserSaledata(response.data.data);
-  //       setTotalSaleCube(response.data.Salecount);
-  //       setCubeAuctionData(response.data.data);
-  //       setUserAuctiondata(response.data.data);
-  //       handleCloseBackdrop();
-  //     },
-  //     (error) => {
-  //       if (process.env.NODE_ENV === "development") {
-  //         console.log(error);
-  //         console.log(error.response);
-  //       }
-  //       handleCloseBackdrop();
-  //     }
-  //   );
-  // };
+
+  let getBidableDrops = (start, end) => {
+    handleShowBackdrop();
+    let version = Cookies.get("Version");
+    axios.get(`/${version}/drop/saleType/auction/${start}/${end}`).then(
+      (res) => {
+        console.log("Bidable drops response: ", res);
+        setBidableDrop(res.data.data);
+        handleCloseBackdrop();
+      },
+      (err) => {
+        console.log("could not get bidable drops ", err.response);
+        handleCloseBackdrop();
+      }
+    );
+  };
 
   useEffect(() => {
     getCubes(0, 12); // eslint-disable-next-line
+    getBidableDrops(0, 12);
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -155,14 +140,9 @@ function MarketPlace(props) {
                     <MarketPlaceTabs
                       fixedPriceDrop={fixedPriceDrop}
                       fixedPriceDropLength={fixedPriceDrop.length}
+                      bidableDrop={bidableDrop}
+                      bidableDropLength={bidableDrop.length}
                       open={open}
-                      cubeData={cubeData}
-                      cubeDataLength={cubeData.length}
-                      cubeAuctionDataLength={cubeAuctionData.length}
-                      userSaleData={userSaleData}
-                      cubeAuctionData={cubeAuctionData}
-                      userAuctionData={userAuctionData}
-                      totalSaleCube={2}
                       handleChangeRowsPerPage={handleChangeRowsPerPage}
                       handleChangePage={handleChangePage}
                       rowsPerPage={rowsPerPage}

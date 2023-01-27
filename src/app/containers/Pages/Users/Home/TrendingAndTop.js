@@ -79,6 +79,16 @@ const customTheme = createMuiTheme({
   typography: {
     fontFamily: "orbitron",
   },
+  overrides: {
+    MuiAlert: {
+      message: {
+        fontSize: 12,
+      },
+      icon: {
+        fontSize: 16,
+      },
+    },
+  },
 });
 
 const responsive = {
@@ -125,6 +135,8 @@ const TrendingAndTop = (props) => {
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="white"
+                variant="scrollable"
+                scrollButtons="auto"
                 aria-label="trending and top collections"
               >
                 <Tab
@@ -188,7 +200,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -206,13 +218,10 @@ const TrendingAndTop = (props) => {
                       <div className="saleCardSlider">
                         {props.fixedPriceDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnSaleCard
-                              i={i}
-                              // userSaleData={props.userSaleData}
-                            />
+                            <OnSaleCard i={i} />
                           </div>
                         ))}
                       </div>
@@ -225,15 +234,14 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) :
-                    props.cubeAuctionDataLength === 0 ? (
+                  ) : props.bidableDropLength === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -249,16 +257,12 @@ const TrendingAndTop = (props) => {
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.cubeAuctionData.map((i, index) => (
+                        {props.bidableDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 my-3 d-inline-block"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnAuctionCard
-                              i={i}
-                              index={index}
-                              userAuctionData={props.userAuctionData}
-                            />
+                            <OnAuctionCard i={i} />
                           </div>
                         ))}
                       </div>
@@ -271,7 +275,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
-                      backgroundColor: "black"
+                      backgroundColor: "black",
                     }}
                   >
                     <Typography
@@ -307,7 +311,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -325,7 +329,7 @@ const TrendingAndTop = (props) => {
                       <div className="saleCardSlider">
                         {props.fixedPriceDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 my-3 d-inline-block"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 my-3 px-0 d-inline-block"
                             key={index}
                           >
                             <OnSaleCard
@@ -345,15 +349,14 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) :
-                    props.cubeAuctionDataLength === 0 ? (
+                  ) : props.bidableDropLength === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -369,16 +372,12 @@ const TrendingAndTop = (props) => {
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.cubeAuctionData.map((i, index) => (
+                        {props.bidableDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnAuctionCard
-                              i={i}
-                              userAuctionData={props.userAuctionData}
-                              image={auctionImg[index + 7]}
-                            />
+                            <OnAuctionCard i={i} />
                           </div>
                         ))}
                       </div>
@@ -391,7 +390,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
-                      backgroundColor: "black"
+                      backgroundColor: "black",
                     }}
                   >
                     <Typography
@@ -427,7 +426,7 @@ const TrendingAndTop = (props) => {
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -445,12 +444,10 @@ const TrendingAndTop = (props) => {
                       <div className="saleCardSlider">
                         {props.fixedPriceDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4 d-inline-block my-3"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnSaleCard
-                              i={i}
-                            />
+                            <OnSaleCard i={i} />
                           </div>
                         ))}
                       </div>
@@ -463,15 +460,14 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) :
-                    props.cubeAuctionDataLength === 0 ? (
+                  ) : props.bidableDropLength === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
                         padding: "40px",
                         marginTop: "20px",
                         marginBottom: "20px",
-                        backgroundColor: "black"
+                        backgroundColor: "black",
                       }}
                     >
                       <Typography
@@ -487,16 +483,12 @@ const TrendingAndTop = (props) => {
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.cubeAuctionData.map((i, index) => (
+                        {props.bidableDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4  d-inline-block my-3"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnAuctionCard
-                              i={i}
-                              userAuctionData={props.userAuctionData}
-                              image={auctionImg[index + 4]}
-                            />
+                            <OnAuctionCard i={i} />
                           </div>
                         ))}
                       </div>
@@ -509,7 +501,7 @@ const TrendingAndTop = (props) => {
                       padding: "40px",
                       marginTop: "20px",
                       marginBottom: "20px",
-                      backgroundColor: "black"
+                      backgroundColor: "black",
                     }}
                   >
                     <Typography
