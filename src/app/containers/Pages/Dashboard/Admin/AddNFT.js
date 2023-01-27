@@ -742,6 +742,7 @@ function AddNFT(props) {
           (response) => {
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
+            
             setIsAdded(true);
             let found = false;
             if (nftType === "1155") {
@@ -775,6 +776,9 @@ function AddNFT(props) {
                 setDropInfo(dropp);
               }
 
+              let variant = "success";
+              enqueueSnackbar("NFT Added Successfully", { variant });
+
               
             }
 
@@ -784,6 +788,7 @@ function AddNFT(props) {
             handleCloseBackdrop();
           },
           (error) => {
+           
             console.log("Error on drop add nft: ", error);
             console.log("Error on drop add nft: ", error.response);
 
@@ -843,6 +848,7 @@ function AddNFT(props) {
 
         axios.put(`${versionB}/drop/nft`, data).then(
           (response) => {
+            
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
             setIsAdded(true);
@@ -878,6 +884,9 @@ function AddNFT(props) {
                 console.log("here");
                 setDropInfo(dropp);
               }
+
+              let variant = "success";
+              enqueueSnackbar("NFT Added Successfully", { variant });
             }
 
             console.log(dropInfo);
