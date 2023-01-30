@@ -272,8 +272,8 @@ function NewNFT(props) {
     setCollection("");
     console.log("get collections");
     console.log("collectionType", collectionType);
-    console.log("VERSION", versionB);
-    const url = `/${versionB}/collection/collections/${collectionType}`;
+    console.log("VERSION", Cookies.get("Version"));
+    const url = `${Cookies.get("Version")}/collection/collections/${collectionType}`;
     console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
