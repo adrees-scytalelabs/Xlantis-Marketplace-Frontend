@@ -16,6 +16,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { Col, Row, Table } from "react-bootstrap";
 import { useParams } from "react-router-dom";
+import Cookies from "js-cookie";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 
@@ -109,8 +110,9 @@ const SingleNftDetail = (props) => {
   };
 
   let getNftDetail = () => {
+    const version = Cookies.get("Version");
     // handleShowBackdrop();
-    axios.get(`nft/getSingleNFT/${nftId}`).then(
+    axios.get(`/${version}/nft/getSingleNFT/${nftId}`).then(
       (response) => {
         console.log("Response: ", response);
         setNftDetail(response.data.data[0]);
