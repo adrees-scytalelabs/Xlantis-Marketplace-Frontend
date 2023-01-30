@@ -2398,7 +2398,7 @@ function NewNFT(props) {
                               <CardContent>
                                 <Typography
                                   variant="body2"
-                                  color="textSecondary"
+                                  color="error"
                                   component="p"
                                 >
                                   <strong>Description: </strong>
@@ -2414,7 +2414,7 @@ function NewNFT(props) {
                                 </Typography> */}
                                 <Typography
                                   variant="body2"
-                                  color="textSecondary"
+                                  color="error"
                                   component="p"
                                 >
                                   <strong>Token Supply: </strong>
@@ -2453,7 +2453,7 @@ function NewNFT(props) {
                                                             </Typography> */}
                                 <Typography
                                   variant="body2"
-                                  color="textSecondary"
+                                  color="error"
                                   component="p"
                                 >
                                   <strong>Collection: </strong>

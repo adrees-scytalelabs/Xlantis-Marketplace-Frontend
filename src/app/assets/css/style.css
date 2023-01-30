@@ -827,7 +827,7 @@ nftSaleDetail {
   border: 1px solid var(--border);
   /* box-shadow: 3px 1px -1px rgb(0 0 0 / 10%); */
   transition: transform 0.4s ease 0;
-  background-color: var(--bg);
+   background-color: var(--bg);
   padding-bottom: 1.5rem;
 }
 
