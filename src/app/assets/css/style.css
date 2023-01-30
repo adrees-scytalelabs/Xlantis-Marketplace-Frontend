@@ -672,7 +672,7 @@ button.bttn:hover {
   color: var(--text);
   overflow: hidden;
   transition: all ease-in-out 0.5s;
-  width: 260px;
+  width: 100%;
 }
 
 .newNftProps {
