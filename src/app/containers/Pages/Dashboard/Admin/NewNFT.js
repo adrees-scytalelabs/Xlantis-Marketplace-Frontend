@@ -2382,7 +2382,7 @@ function NewNFT(props) {
                                 <div className="nftImgWrapper">
                                   <img
                                     className="myNFTImg"
-                                    src={i.previewImageURI}
+                                    src={i.nftURI}
                                     alt="a sample nft"
                                   />
                                 </div>
