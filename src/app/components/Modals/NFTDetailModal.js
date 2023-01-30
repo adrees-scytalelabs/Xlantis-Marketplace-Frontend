@@ -110,7 +110,9 @@ const NFTDetailModal = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col style={{justifyContent:'right'}}>
+                                    <Typography variant="body2" color="textSecondary" component="p">
                                         {props.nftDetail.description}
+                                    </Typography>
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
@@ -120,7 +122,9 @@ const NFTDetailModal = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col>
+                                    <Typography variant="body2" color="textSecondary" component="p">
                                         {props.nftDetail.rarity}
+                                    </Typography>
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
@@ -130,7 +134,9 @@ const NFTDetailModal = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col className='align-self-end'>
+                                    <Typography variant="body2" color="textSecondary" component="p">
                                         {props.nftDetail.tokensupply}
+                                        </Typography>
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
@@ -140,7 +146,9 @@ const NFTDetailModal = (props) => {
                                         </Typography>
                                     </Col>
                                     <Col>
+                                    <Typography variant="body2" color="textSecondary" component="p">
                                         {props.nftDetail.collectiontitle}
+                                    </Typography>
                                     </Col>
                                 </Row>
                                 <Row>

@@ -428,54 +428,51 @@ const NFTEditModal = (props) => {
                                         </div>
                                     </div>
                                 ): (
-                                    <div className="filter-widget">
-                                        <div className="form-group">
-                                            <div className="change-avatar">
-                                                <div className="profile-img">
-                                                    <div
-                                                        style={{
-                                                            background: "#E9ECEF",
-                                                            width: "100px",
-                                                            height: "100px",
-                                                        }}
-                                                    >
-                                                        <img src={nftDetail.nftURI} alt="Selfie" />
-                                                    </div>
-                                                </div>
-                                                <div className="upload-img">
-                                                    <div
-                                                        className="change-photo-btn"
-                                                        style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                    >
-                                                        {isUploadingIPFS ? (
-                                                            <div className="text-center">
-                                                                <Spinner
-                                                                    animation="border"
-                                                                    role="status"
-                                                                    style={{ color: "#fff" }}
-                                                                >
-                                                                </Spinner>
-                                                            </div>
-                                                        ) : (
-                                                            <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                        )}
-
-                                                        <input
-                                                            name="sampleFile"
-                                                            type="file"
-                                                            className="upload"
-                                                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
-                                                            onChange={onChangeFile}
-                                                        />
-                                                    </div>
-                                                    <small className="form-text text-muted">
-                                                        Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                    </small>
-                                                </div>
+                                    <div className="filter-widget row">
+                                      <div className="profile-img col-sm-12 col-md-6 col-lg-6 col-xl-6">
+                                        <img
+                                          className="img-fluid"
+                                          src={nftDetail.nftURI}
+                                          alt="Selfie"
+                                          style={{ background: "#E9ECEF" }}
+                                        />
+                                      </div>
+                                      <div
+                                        className="col-sm-12 col-md-6 col-lg-6 col-xl-6 mt-2"
+                                        style={{ wordWrap: "break-word" }}
+                                      >
+                                        {isUploadingIPFS ? (
+                                          <div className="text-center text-wrap">
+                                            <Spinner
+                                              animation="border"
+                                              role="status"
+                                              style={{ color: "#fff" }}
+                                            ></Spinner>
+                                          </div>
+                                        ) : (
+                                          <div className="mt-4">
+                                            <span className="mt-2">
+                                              <i className="fa fa-upload text-wrap"></i>
+                                              <label style={{ marginLeft: "5px" }}>Upload photo</label>
+                                            </span>
+                                            <div className="row">
+                                              <input
+                                                name="sampleFile"
+                                                type="file"
+                                                size={10}
+                                                className="mt-2"
+                                                accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                                                onChange={onChangeFile}
+                                              />
                                             </div>
-                                        </div>
+                                            <small className="form-text text-muted mt-2">
+                                              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                                            </small>
+                                          </div>
+                                        )}
+                                      </div>
                                     </div>
-                                )}
+                                  )}
                         <div className="form-group">
                             <label>NFT Title</label>
                             <div className="form-group">
