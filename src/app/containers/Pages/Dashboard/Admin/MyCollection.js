@@ -244,20 +244,7 @@ function MyCollection(props) {
                     key={index}
                   >
                     <Link to={"/dashboard/collection/nfts/" + i._id}>
-                    <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
-                                            <CardActionArea>
-                                                <CardMedia
-                                                    className={classes.media}
-                                                    image={i.thumbnail}
-                                                    title="Collection Image"
-                                                />
-                                                <CardContent>
-                                                    <Typography gutterBottom variant="h5" className="text-center" component="h2">
-                                                        {i.name}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                        </Card>
+                    <MyCollectionsCard i={i} />
                     </Link>
                   </Grid>
                
