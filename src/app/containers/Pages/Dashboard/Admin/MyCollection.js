@@ -232,8 +232,8 @@ function MyCollection(props) {
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (
-                <>
-                  <Grid
+               
+                   <Grid
                     item
                     xs={12}
                     sm={4}
@@ -243,9 +243,24 @@ function MyCollection(props) {
                     direction="row"
                     key={index}
                   >
-                    <MyCollectionsCard i={i} />
+                    <Link to={"/dashboard/collection/nfts/" + i._id}>
+                    <Card style={{ height: "100%" }} variant="outlined" className={classes.cardHeight}>
+                                            <CardActionArea>
+                                                <CardMedia
+                                                    className={classes.media}
+                                                    image={i.thumbnail}
+                                                    title="Collection Image"
+                                                />
+                                                <CardContent>
+                                                    <Typography gutterBottom variant="h5" className="text-center" component="h2">
+                                                        {i.name}
+                                                    </Typography>
+                                                </CardContent>
+                                            </CardActionArea>
+                                        </Card>
+                    </Link>
                   </Grid>
-                </>
+               
               ))}
             </Grid>
           )}
