@@ -144,13 +144,18 @@ const FixedDropSingleNFTHome = () => {
   let history = useHistory();
   const location = useLocation();
   let dropID = location.state.dropId;
+  const saleType = location.state.saleType;
+  const description = location.state.description;
 
   // Variables
   const { singleNFTid } = useParams();
 
   // Handlers
   const handleGoBack = () => {
-    history.push(`/fixdropnft/${dropID}`);
+    history.push({
+      pathname: `/fixdropnft/${dropID}`,
+      state: { saleType: saleType, description: description },
+    });
   };
 
   let handleChangeBiddingValue = (event) => {
@@ -282,7 +287,7 @@ const FixedDropSingleNFTHome = () => {
   const version = Cookies.get("Version");
 
   const getNFTDetails = () => {
-    axios.get(`/${version}/drop/nft/${singleNFTid}`).then(
+    axios.get(`/v2-wallet-login/drop/nft/${singleNFTid}`).then(
       (res) => {
         console.log("finding the price: ... ", res);
         setNftData(res.data.data[0]);

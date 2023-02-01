@@ -1,5 +1,5 @@
 // REACT
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 // MUI
 import PropTypes from "prop-types";
 import {
@@ -14,16 +14,20 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { Card } from "@material-ui/core";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 // COMPONENTS
 import FixedPriceDrops from "./FixedPriceDrops";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 // import SwipeableViews from "react-swipeable-views";
 import TrendingCollectionsHome from "../../../../components/tables/TrendingCollectionsHome";
 import { Spinner } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
+// import "react-multi-carousel/lib/styles.css";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
 import { nftImage, auctionImg } from "../../../../assets/js/images";
+import Carousel from "react-bootstrap/Carousel";
 
 // CONTENT
 function TabPanel(props) {
@@ -88,13 +92,18 @@ const customTheme = createMuiTheme({
         fontSize: 16,
       },
     },
+    MuiSvgIcon: {
+      root: {
+        color: "white",
+      },
+    },
   },
 });
 
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 1,
     paritialVisibilityGutter: 60,
   },
   tablet: {
@@ -114,13 +123,30 @@ const TrendingAndTop = (props) => {
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
-  const [activeFixedPriceDrops, setActiveFixedPriceDrops] = useState([]);
-  const [pendingFixedPriceDrops, setPendingFixedPriceDrops] = useState([]);
-  const [closedFixedPriceDrops, setClosedFixedPriceDrops] = useState([]);
+  const [isActive, setIsActive] = useState(false);
+  const [scrWidth, setScrWidth] = useState({});
+  const [cntWidth, setCntWidth] = useState();
+  const ref = useRef(null);
 
   //   Handlers
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const getWindowWidth = () => {
+    const { innerWidth: width, innerHeight: height } = window;
+    setScrWidth({
+      width,
+      height,
+    });
+  };
+
+  const getContainerWidth = () => {
+    let container = setCntWidth(container);
+  };
+
+  const handleClick = () => {
+    setIsActive(!isActive);
   };
 
   const handleChangeIndex = (index) => {
@@ -162,14 +188,20 @@ const TrendingAndTop = (props) => {
     console.log("A ", activeAuctionDrop);
   }
 
-  // useEffect(() => {
-  //   const controller = new AbortController();
-  //   // setDropStatus();
+  useEffect(() => {
+    const controller = new AbortController();
+    getWindowWidth();
 
-  //   return () => {
-  //     controller.abort();
-  //   };
-  // }, [props]);
+    const container = ref.current;
+    console.log("container: ", container);
+    setCntWidth(container);
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  if (cntWidth) console.log("width: ", cntWidth);
 
   return (
     <div className="w-100">
@@ -261,7 +293,11 @@ const TrendingAndTop = (props) => {
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative ">
+                    <div
+                      className="row no-gutters w-100 align-items-center position-relative "
+                      id="onSale"
+                      ref={ref}
+                    >
                       <div className="saleCardSlider">
                         {activeFixedDrop.map((i, index) => (
                           <div
@@ -272,6 +308,38 @@ const TrendingAndTop = (props) => {
                           </div>
                         ))}
                       </div>
+                      {/* <div className="d-xl-none">
+                        <div className="paddles">
+                          {isActive & (activeFixedDrop.length === 4) ? (
+                            <button
+                              className="left-paddle paddle"
+                              onClick={handleClick}
+                            >
+                              <ArrowLeftIcon style={{ color: "white" }} />
+                            </button>
+                          ) : (
+                            <button className="left-paddle paddle paddle-disabled">
+                              <ArrowLeftIcon style={{ color: "#9797977d" }} />
+                            </button>
+                          )}
+                          {isActive ? (
+                            <button
+                              className="right-paddle paddle paddle-disabled"
+                              disabled
+                              style={{ cursor: "pointer" }}
+                            >
+                              <ArrowRightIcon style={{ color: "#9797977d" }} />
+                            </button>
+                          ) : (
+                            <button
+                              className="right-paddle paddle"
+                              onClick={handleClick}
+                            >
+                              <ArrowRightIcon style={{ color: "white" }} />
+                            </button>
+                          )}
+                        </div>
+                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (
@@ -499,14 +567,18 @@ const TrendingAndTop = (props) => {
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 my-3 px-0 d-inline-block"
                             key={index}
                           >
-                            <OnSaleCard
-                              i={i}
-                              // userSaleData={props.userSaleData}
-                              // image={nftImage[index + 5]}
-                            />
+                            <OnSaleCard i={i} />
                           </div>
                         ))}
                       </div>
+                      {/* <div class="paddles">
+                        <button class="left-paddle paddle hidden">
+                          <ArrowLeftIcon />
+                        </button>
+                        <button class="right-paddle paddle">
+                          <ArrowRightIcon />
+                        </button>
+                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (

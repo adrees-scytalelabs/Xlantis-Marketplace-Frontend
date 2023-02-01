@@ -65,7 +65,6 @@ function MarketPlace(props) {
       .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
       .then(
         (response) => {
-          console.log("responseeeee", response);
           setFixedPriceDrop(response.data.data);
           handleCloseBackdrop();
         },
@@ -82,9 +81,8 @@ function MarketPlace(props) {
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/auction/${start}/${end}`).then(
+    axios.get(`/v2-wallet-login/drop/saleType/auction/${start}/${end}`).then(
       (res) => {
-        console.log("Bidable drops response: ", res);
         setBidableDrop(res.data.data);
         handleCloseBackdrop();
       },
@@ -94,10 +92,6 @@ function MarketPlace(props) {
       }
     );
   };
-
-  if (bidableDrop) {
-    console.log("Bidable drops in Market ", bidableDrop);
-  }
 
   useEffect(() => {
     getCubes(0, 4); // eslint-disable-next-line

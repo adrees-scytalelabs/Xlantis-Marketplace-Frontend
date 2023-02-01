@@ -127,9 +127,6 @@ const customTheme = createMuiTheme({
       root: {
         color: "#fff",
       },
-      "&$disabled": {
-        color: "#fff",
-      },
     },
     Mui: {
       "&$disabled": {
@@ -141,7 +138,7 @@ const customTheme = createMuiTheme({
         fontSize: 12,
       },
       icon: {
-        fontSize: 16,
+        fontSize: 12,
       },
     },
   },
@@ -153,8 +150,17 @@ const MarketPlaceTabs = (props) => {
   const paginationClasses = paginationStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
-  const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [rowsPerSalePage, setRowsPerSalePage] = useState(6);
+  const [salePage, setSalePage] = useState(0);
+  const [rowsPerAuctionPage, setRowsPerAuctionPage] = useState(6);
+  const [AuctionPage, setAuctionPage] = useState(0);
+
+  const emptySaleRows =
+    rowsPerSalePage -
+    Math.min(
+      rowsPerSalePage,
+      props.fixedPriceDrop.length - salePage * rowsPerSalePage
+    );
 
   //   Handlers
   const handleChange = (event, newValue) => {
@@ -163,6 +169,22 @@ const MarketPlaceTabs = (props) => {
 
   const handleChangeIndex = (index) => {
     setValue(index);
+  };
+
+  const handleChangeSalePage = (event, newPage) => {
+    setSalePage(newPage);
+  };
+  const handleChangeRowsPerSalePage = (event) => {
+    setRowsPerSalePage(parseInt(event.target.value, 10));
+    setSalePage(0);
+  };
+
+  const handleChangeAuctionPage = (event, newPage) => {
+    setAuctionPage(newPage);
+  };
+  const handleChangeRowsPerAuctionPage = (event) => {
+    setRowsPerAuctionPage(parseInt(event.target.value, 10));
+    setAuctionPage(0);
   };
 
   return (
@@ -223,30 +245,16 @@ const MarketPlaceTabs = (props) => {
                       <WhiteSpinner />
                     </div>
                   </div>
-                ) : props.fixedPriceDropLength === 0 ? (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      // color="textSecondary"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
                 ) : props.fixedPriceDropLength !== 0 &&
                   props.fixedPriceDrop !== "undefined" ? (
                   <div className="row no-gutters w-100 align-items-center position-relative">
-                    {props.fixedPriceDrop.map((i, index) => (
+                    {(rowsPerSalePage > 0
+                      ? props.fixedPriceDrop.slice(
+                          salePage * rowsPerSalePage,
+                          salePage * rowsPerSalePage + rowsPerSalePage
+                        )
+                      : props.fixedPriceDrop
+                    ).map((i, index) => (
                       <div
                         className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
@@ -281,14 +289,14 @@ const MarketPlaceTabs = (props) => {
             </div>
             <div className="row no-gutters justify-content-center paginationBg mt-5">
               <TablePagination
-                rowsPerPageOptions={[4, 8]}
+                rowsPerPageOptions={[6, 12]}
                 component="div"
-                count={props.totalSaleCube}
-                rowsPerPage={props.rowsPerPage}
-                labelRowsPerPage={"Rows per page"}
-                page={props.page}
-                onChangePage={props.handleChangePage}
-                onChangeRowsPerPage={props.handleChangeRowsPerPage}
+                count={props.fixedPriceDropLength}
+                rowsPerPage={rowsPerSalePage}
+                labelRowsPerPage={"Drops per page"}
+                page={salePage}
+                onChangePage={handleChangeSalePage}
+                onChangeRowsPerPage={handleChangeRowsPerSalePage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,
@@ -317,32 +325,18 @@ const MarketPlaceTabs = (props) => {
                       <WhiteSpinner />
                     </div>
                   </div>
-                ) : props.bidableDropLength === 0 ? (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      // color="textSecondary"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
                 ) : props.bidableDropLength !== 0 &&
                   props.bidableDrop !== "undefined" ? (
                   <div className="row no-gutters w-100 align-items-center position-relative ">
-                    {props.bidableDrop.map((i, index) => (
+                    {(rowsPerAuctionPage > 0
+                      ? props.bidableDrop.slice(
+                          AuctionPage * rowsPerAuctionPage,
+                          AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
+                        )
+                      : props.bidableDrop
+                    ).map((i, index) => (
                       <div
-                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block xlColDropWidth"
+                        className="col-12 col-md-6 col-lg-4 col-xl-3 d-inline-block  xlColDropWidth"
                         key={index}
                       >
                         <OnAuctionCard i={i} />
@@ -375,14 +369,14 @@ const MarketPlaceTabs = (props) => {
             </div>
             <div className="row no-gutters justify-content-center paginationBg mt-5">
               <TablePagination
-                rowsPerPageOptions={[4, 8]}
+                rowsPerPageOptions={[6, 12]}
                 component="div"
-                count={props.totalSaleCube}
-                rowsPerPage={props.rowsPerPage}
-                labelRowsPerPage={"Rows per page"}
-                page={props.page}
-                onChangePage={props.handleChangePage}
-                onChangeRowsPerPage={props.handleChangeRowsPerPage}
+                count={props.bidableDropLength}
+                rowsPerPage={rowsPerAuctionPage}
+                labelRowsPerPage={"Drops per page"}
+                page={AuctionPage}
+                onChangePage={handleChangeAuctionPage}
+                onChangeRowsPerPage={handleChangeRowsPerAuctionPage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,

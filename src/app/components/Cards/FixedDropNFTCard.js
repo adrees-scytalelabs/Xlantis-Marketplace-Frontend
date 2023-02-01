@@ -58,8 +58,8 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     margin: "0.625rem 0rem 0.25rem 0rem",
-    lineHeight: "1.2",
     fontSize: "1rem",
+    lineHeight: 1,
   },
   cardDescriptions: {
     color: "#999",
@@ -108,16 +108,11 @@ const defaultStyles = {
 
 // COMPONENT FUNCTION
 function FixedDropNFTCard(props) {
-  let { path } = useRouteMatch();
   console.log("props", props);
   const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
   console.log("NFT id for fixed drop: ", singleNFTid);
-
-  let data = {
-    id: props.data.dropId,
-  };
 
   // Styling
   const selectedRarity = {
@@ -145,6 +140,8 @@ function FixedDropNFTCard(props) {
           dropId: props.data.dropId,
           isSold: props.data.currentMarketplaceId.isSold,
           price: props.data.currentMarketplaceId.price,
+          saleType: props.saleType,
+          description: props.description,
         },
       }}
     >
@@ -157,13 +154,6 @@ function FixedDropNFTCard(props) {
             image={props.data.nftURI}
             title="NFT Image"
           />
-          {/* <div className="nftImgWrapper">
-            <img
-              className="myNFTImg"
-              src={props.image.url}
-              alt="a sample nft"
-            />
-          </div> */}
           {/* </CardMedia> */}
           <CardContent
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
@@ -206,7 +196,7 @@ function FixedDropNFTCard(props) {
               >
                 {/* <strong>Artwork Description: </strong> */}
                 {/* {props.data.description} */}
-                {truncate(props.data.description, 35)}
+                {truncate(props.data.description, 30)}
                 {/* {description} */}
               </Typography>
             </div>
@@ -227,4 +217,3 @@ function FixedDropNFTCard(props) {
 }
 
 export default FixedDropNFTCard;
-//User/Profile/Detail/userId

@@ -11,6 +11,7 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 // MUI ICONS
 // import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
@@ -38,11 +39,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
+    fontSize: "12px",
+    lineHeight: 1,
   },
   cardDescriptions: {
     color: "#999",
     fontFamily: "inter",
-    fontSize: "1rem",
+    fontSize: "12px",
     // marginTop: "0.15rem",
   },
   price: {
@@ -55,6 +58,11 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "12px",
     fontSize: "1rem",
   },
+  textAlertMd: {
+    justifyContent: "center",
+    // borderRadius: "12px",
+    fontSize: "12px",
+  },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
@@ -64,19 +72,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OnSaleCard = (props) => {
-  console.log("the props in OnSaleCard: ", props);
-
   const styles = useStyles();
+  const matchScrn = useMediaQuery("(max-width: 991px)");
+
   return (
     <div className="col-12 p-2">
       {/* <Paper> */}
       <Card id="marketCardProps">
-        <div className="row no-gutters">
+        <div className="row no-gutters mdColHeight">
           <Link
             to={{
               pathname: `/fixdropnft/${props.i._id}`,
               state: {
                 saleType: props.i.saleType,
+                description: props.i.description,
               },
             }}
             style={{ width: "100%" }}
@@ -160,7 +169,7 @@ const OnSaleCard = (props) => {
               className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
             >
-              <div className="col-8 align-self-end">
+              <div className="col-8 align-self-start">
                 <Typography
                   variant="h6"
                   component="p"
@@ -173,14 +182,16 @@ const OnSaleCard = (props) => {
                   component="p"
                   className={styles.cardDescriptions}
                 >
-                  {truncate(props.i.description, 35)}
+                  {truncate(props.i.description, 20)}
                 </Typography>
               </div>
-              {/* <div className="col-4 align-self-end text-right p-0">
+              <div className="col-4 align-self-start text-right p-0">
                 <p className="nftPrice mb-0 p-0">
-                  {props.i.SalePrice / 10 ** 18} ETH
+                  {props.i.NFTIds.length > 1
+                    ? `${props.i.NFTIds.length} NFTs`
+                    : `${props.i.NFTIds.length} NFT`}
                 </p>
-              </div> */}
+              </div>
             </div>
             {/* Alerts */}
             <Typography
@@ -194,7 +205,12 @@ const OnSaleCard = (props) => {
               {new Date() < new Date(props.i.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
                   {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
-                  <Alert severity="info" className={styles.textAlert}>
+                  <Alert
+                    severity="info"
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
+                  >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
@@ -213,7 +229,12 @@ const OnSaleCard = (props) => {
                 new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
                   {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
-                  <Alert severity="warning" className={styles.textAlert}>
+                  <Alert
+                    severity="warning"
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
+                  >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
@@ -241,7 +262,9 @@ const OnSaleCard = (props) => {
                   <Alert
                     severity="error"
                     // variant="filled"
-                    className={styles.textAlert}
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
                     style={{ fontWeight: "bold" }}
                   >
                     Sale Ended

@@ -1020,7 +1020,7 @@ li.menu-title {
 .exploreBtn {
   padding: 8px 12px;
   border-radius: 0px 10px;
-  font-size: 0.875rem;
+  font-size: 12px;
   color: #fff;
   border: 1px solid #F64D04;
   background-color: var(--bg);
@@ -1038,7 +1038,7 @@ li.menu-title {
   -webkit-text-fill-color: transparent; */
   color: var(--borderOrange);
   font-family: var(--orbitron);
-  font-size: 1rem;
+  font-size: 12px;
   font-weight: 600;
   line-height: 1;
 }
@@ -1129,14 +1129,52 @@ button.featuredExploreBtn:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.paddles {
+}
+.paddle {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 3em;
+}
+.left-paddle {
+	left: -40px;
+}
+.right-paddle {
+	right: -40px;
+}
+.hidden {
+	display: none;
+}
+
+button.paddle-disabled:hover {
+/* background-color: rgba(86, 86, 86, 0.49); */
+}
+
+.paddles button {
+  background-color: transparent;
+  border-radius: 5px;
+  border: none;
+  transition: all 300ms ease-in-out ;
+}
+
+.paddles button.paddle:hover {
+  background-color: rgba(255,255,255,0.29);
+}
+
+.saleCardSlider.slide {
+  transform: translate(-25%);
+}
 
 .row .saleCardSlider {
   width: 100%;
   height: 100%;
   white-space: nowrap;
-  overflow-x: scroll;
+  overflow-x: auto;
   scrollbar-width: none;
   scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  transition: 0.5s ease-in-out;
 }
 
 .row .marketTabs {}
