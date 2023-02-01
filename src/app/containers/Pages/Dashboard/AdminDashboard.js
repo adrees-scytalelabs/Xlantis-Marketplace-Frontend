@@ -129,16 +129,39 @@ function AdminDashboard(props) {
             href="/"
             className="navbar-brand logo"
             // onClick={(e) => e.preventDefault()}
+            style={{ width: "210px" }}
           >
-            <img src={Logo}  alt="Logo"  width="120" height="34" style={{marginTop:'10px'}} />
+            <img
+              src={Logo}
+              alt="Logo"
+              width="120"
+              height="34"
+              style={{
+                marginTop: "16px",
+                width: "210px",
+                height: "30px",
+                padding: "5px 15px",
+              }}
+            />
             {/* Robot Drop */}
           </a>
           <a
             href="/"
             className="logo logo-small"
             // onClick={(e) => e.preventDefault()}
+            style={{ width: "210px" }}
           >
-            <img src={Logo} alt="Logo" width="90" />
+            <img
+              src={Logo}
+              alt="Logo"
+              width="90"
+              style={{
+                marginTop: "16px",
+                width: "210px",
+                height: "30px",
+                padding: "5px 15px",
+              }}
+            />
             {/* Robot Drop */}
           </a>
         </div>
