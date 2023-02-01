@@ -2,7 +2,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 // MUI
-import { Avatar, CardHeader, Grid, Paper } from "@material-ui/core/";
+import {
+  Avatar,
+  CardHeader,
+  Grid,
+  Paper,
+  useMediaQuery,
+} from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -18,6 +24,8 @@ import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 // COMPONENTS
 import Countdown from "react-countdown";
 import XamButton from "../buttons/XamButton";
+import { truncate } from "../../assets/js/utils";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -35,11 +43,13 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0.5rem",
+    fontSize: "12px",
+    lineHeight: 1,
   },
   cardDescriptions: {
     color: "#999",
     fontFamily: "inter",
-    fontSize: "1rem",
+    fontSize: "12px",
     // marginTop: "0.15rem",
   },
   price: {
@@ -52,6 +62,11 @@ const useStyles = makeStyles((theme) => ({
     // borderRadius: "12px",
     fontSize: "1rem",
   },
+  textAlertMd: {
+    justifyContent: "center",
+    // borderRadius: "12px",
+    fontSize: "12px",
+  },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
@@ -61,19 +76,21 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const OnAuctionCard = (props) => {
-  console.log("on auction card props: ", props);
   const styles = useStyles();
+  const matchScrn = useMediaQuery("(max-width: 991px)");
+
   return (
     <div className="col-12 p-2">
       {/* <Paper elevation={1}> */}
       <Card id="marketCardProps">
-        <div className="row no-gutters">
+        <div className="row no-gutters mdColHeight">
           <Link
             style={{ width: "100%" }}
             to={{
               pathname: `/fixdropnft/${props.i._id}`,
               state: {
                 saleType: props.i.saleType,
+                description: props.i.description,
               },
             }}
           >
@@ -167,8 +184,15 @@ const OnAuctionCard = (props) => {
                   component="p"
                   className={styles.cardDescriptions}
                 >
-                  {props.i.description}
+                  {truncate(props.i.description, 20)}
                 </Typography>
+              </div>
+              <div className="col-4 align-self-start text-right p-0">
+                <p className="nftPrice mb-0 p-0">
+                  {props.i.NFTIds.length > 1
+                    ? `${props.i.NFTIds.length} NFTs`
+                    : `${props.i.NFTIds.length} NFT`}
+                </p>
               </div>
               {/* <div className="col-4 align-self-end text-right">
                 <p
@@ -198,7 +222,12 @@ const OnAuctionCard = (props) => {
               {/* Auction Ends and Auction Ended */}
               {new Date() < new Date(props.i.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert severity="warning" className={styles.textAlert}>
+                  <Alert
+                    severity="warning"
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
+                  >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
@@ -216,7 +245,12 @@ const OnAuctionCard = (props) => {
               ) : new Date() > new Date(props.i.startTime) &&
                 new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert severity="warning" className={styles.textAlert}>
+                  <Alert
+                    severity="warning"
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
+                  >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
@@ -243,7 +277,9 @@ const OnAuctionCard = (props) => {
                   <Alert
                     severity="error"
                     // variant="filled"
-                    className={styles.textAlert}
+                    className={
+                      matchScrn ? styles.textAlertMd : styles.textAlert
+                    }
                     style={{ fontWeight: "bold" }}
                   >
                     Auction Ended

@@ -1,6 +1,6 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
-import AccountCircle from '@material-ui/icons/AccountCircle';
+import AccountCircle from "@material-ui/icons/AccountCircle";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -26,8 +26,7 @@ import { providers, ethers } from "ethers";
 import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
-import { useSnackbar } from 'notistack';
-
+import { useSnackbar } from "notistack";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -61,7 +60,6 @@ function HeaderHome(props) {
     setCartOpen(!cartOpen);
   };
   const { enqueueSnackbar } = useSnackbar();
-
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -166,7 +164,7 @@ function HeaderHome(props) {
     console.log(network);
     console.log("role", props.role);
     console.log("Account test: ", accounts[0], network);
-    
+
     if (network !== "private") {
       setNetwork(network);
       setIsLoading(false);
@@ -204,8 +202,7 @@ function HeaderHome(props) {
       let route;
       if (props.role === "admin") {
         route = "v2-wallet-login/user/auth/admin/login";
-      }
-      else {
+      } else {
         route = "v2-wallet-login/user/auth/login";
       }
       axios.post(route, loginData).then(
@@ -322,10 +319,10 @@ function HeaderHome(props) {
   return (
     <header className={`header ${menuOpenedClass}`}>
       <nav
-        className="navbar navbar-expand-lg header-nav px-5 mainNav"
+        className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
       >
-        <div className="navbar-header">
+        <div className="navbar-header justify-content-center">
           <a
             id="mobile_btn"
             href="/"
@@ -342,8 +339,22 @@ function HeaderHome(props) {
             </span>
           </a>
 
-          <Link style={{ color: "#fff" }} to="/" className="navbar-brand logo">
-            <img src={Logo} alt="Logo" width="120" height="34"/>
+          <Link
+            style={{ color: "#fff", width: "auto" }}
+            to="/"
+            className="navbar-brand logo pr-sm-2 mr-sm-4"
+          >
+            <img
+              src={Logo}
+              alt="Logo"
+              width="120"
+              height="34"
+              style={{
+                width: "210px",
+                height: "30px",
+                padding: "5px 15px",
+              }}
+            />
             {/* Robot Drop */}
           </Link>
 
@@ -490,7 +501,7 @@ function HeaderHome(props) {
             </li>
           </ul>
         </div>
-        <ul className="nav header-navbar-rht">
+        <ul className="nav header-navbar-rht" style={{ paddingRight: "15px" }}>
           <li>
             {
               isLoading ? (
@@ -505,7 +516,11 @@ function HeaderHome(props) {
                 </div>
               ) : localStorage.getItem("Address") ? (
                 <div>
-                  <AccountCircle  onClick={handleClick} className="account-circle" fontSize="large"/>
+                  <AccountCircle
+                    onClick={handleClick}
+                    className="account-circle"
+                    fontSize="large"
+                  />
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -515,7 +530,7 @@ function HeaderHome(props) {
                     src={man}
                     sx={{ width: 24, height: 24 }}
                   /> */}
-                  
+
                   {/* <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}

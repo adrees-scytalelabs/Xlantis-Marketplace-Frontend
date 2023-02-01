@@ -6,6 +6,19 @@
     }
 }
 
+@media (min-width: 576px) and (max-width: 991px) {
+    .mdColHeight {
+        min-height: 430px;
+    }
+}
+
+/* max 767px */
+@media (max-width: 767px) {
+    .marketCatHeadings {
+        font-size: 1.5rem;
+    }
+}
+
 /* 1769px */
 @media (min-width: 1769px) {
     .col-xl-3.xlColDropWidth {

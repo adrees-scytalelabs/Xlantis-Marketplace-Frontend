@@ -25,6 +25,9 @@ const FixedPriceDropNFTs = () => {
   const [open, setOpen] = useState(false);
   let history = useHistory();
   const dropID = useParams();
+  const location = useLocation();
+  const saleType = location.state.saleType;
+  const description = location.state.description;
 
   // Handlers
   const handleCloseBackdrop = () => {
@@ -44,14 +47,10 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`${version}/drop/nfts/${dropId}/${start}/${end}`).then(
+    axios.get(`/v2-wallet-login/drop/nfts/${dropId}/${start}/${end}`).then(
       (response) => {
         console.log("getting a nft", response);
         setDropData(response.data.data);
-        // setCubeData(response.data.data);
-        // setUserSaledata(response.data.data);
-        // setCubeAuctionData(response.data.data);
-        // setUserAuctiondata(response.data.data);
         handleCloseBackdrop();
       },
       (error) => {
@@ -64,14 +63,10 @@ const FixedPriceDropNFTs = () => {
     );
   };
 
-  console.log("drop id from params: ", dropID.dropId);
-
   // Side Effects
   useEffect(() => {
     getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
   }, []);
-
-  if (dropData) dropData.map((i, index) => console.log(`nft at ${index}: `, i));
 
   return (
     <div className="main-wrapper">
@@ -123,9 +118,22 @@ const FixedPriceDropNFTs = () => {
                   </h1>
                 </div>
                 <div className="col-12 col-md-6">
-                  <h3 style={{ fontFamily: "inter" }}>Fixed Price Drop</h3>
+                  <h3
+                    style={{
+                      fontFamily: "inter",
+                      textTransform: "capitalize",
+                      marginBottom: 0,
+                    }}
+                  >
+                    {saleType} Drop
+                  </h3>
+                  <p
+                    style={{ fontFamily: "inter", textTransform: "capitalize" }}
+                  >
+                    {description}
+                  </p>
                 </div>
-                <div className="col-12 col-md-6 text-right">
+                <div className="col-12 col-md-6 text-right align-self-md-top">
                   <button className="bidBtn" onClick={handleGoBack}>
                     <ArrowBackIcon />
                     {"  "}
@@ -148,7 +156,12 @@ const FixedPriceDropNFTs = () => {
                         direction="row"
                         key={index}
                       >
-                        <FixedDropNFTCard data={i} type={"Epic"} />
+                        <FixedDropNFTCard
+                          data={i}
+                          type={"Epic"}
+                          saleType={saleType}
+                          description={description}
+                        />
                       </Grid>
                     ))}
                 </Grid>
