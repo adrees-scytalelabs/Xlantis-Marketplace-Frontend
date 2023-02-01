@@ -17,7 +17,10 @@ import ListIcon from "@material-ui/icons/List";
 import Countdown from 'react-countdown';
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import AcceptBidTxModal from '../../../../components/Modals/AcceptBidTxModal';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import transakSDK from "@transak/transak-sdk";
+
 import Cookies from 'js-cookie';
 import {
     createMuiTheme,
@@ -131,6 +134,97 @@ const DropSingleNFT = (props) => {
     let [isHovering, setIsHovering] = useState(false);
     let [contractType, setContractType] = useState("");
     let [versionB, setVersionB] = useState("");
+    let [bidId, setBidId] = useState();
+
+    const [modalOpen, setMOdalOpen] = useState(false);
+    const [data, setData] = useState();
+    const settings = {
+        apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
+        environment: "STAGING", // STAGING/PRODUCTION
+        cryptoCurrencyCode: "MATIC",
+        network: "private",
+        defaultNetwork: "polygon",
+        walletAddress : "0xE66a70d89D44754f726A4B463975d1F624530111",
+        fiatAmount : 1100,
+        isAutoFillUserData : true,
+        themeColor: "000000", // App theme color
+        hostURL: window.location.origin,
+        widgetHeight: "700px",
+        widgetWidth: "500px",
+      };
+    const handleCloseModalTx = () => {
+        setMOdalOpen(false);
+    };
+
+    const handleOpenModal = async(e, bidId) => {
+        setBidId(bidId);
+        console.log("NFTDETAIL", nftDetail);
+        axios.get(`v1-sso/auction/bid/accept/tx-cost-summary`).then(
+        (response) => {
+            console.log("response", response);
+            console.log("responeee", response.data.data);
+            setData(response.data.data);
+            setMOdalOpen(true);
+
+            
+            // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+            // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+            // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+            // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+            // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+            // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+            
+            
+        
+        },
+        (error) => {
+            if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+            }
+            if (error.response !== undefined) {
+            if (error.response.status === 400) {
+                // setMsg(error.response.data.message);
+            } else {
+                // setMsg("Unknown Error Occured, try again.");
+            }
+            } else {
+            // setMsg("Unknown Error Occured, try again.");
+            }
+            // setIsLoading(false);
+        }
+        );
+    };
+
+    function openTransak() {
+        handleCloseModal();
+        const transak = new transakSDK(settings);
+    
+        transak.init();
+    
+        // To get all the events
+        transak.on(transak.ALL_EVENTS, (data) => {
+          console.log(data);
+    
+        });
+    
+        // This will trigger when the user closed the widget
+        transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+          console.log(eventData);
+          transak.close();
+          handleOpenModal();
+    
+        });
+    
+        // This will trigger when the user marks payment is made.
+        transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+          console.log(orderData);
+          window.alert("Payment Success");
+          transak.close();
+          handleOpenModal();
+    
+        });
+      }
 
 
     const handleCloseBackdrop = () => {
@@ -283,7 +377,7 @@ const DropSingleNFT = (props) => {
         setShow(false);
     }
 
-    let handleAcceptBid = async (e, bidId) => {
+    let handleAcceptBid = async (e, bidIdd) => {
         e.preventDefault();
         await loadWeb3();
         const web3 = window.web3
@@ -316,7 +410,7 @@ const DropSingleNFT = (props) => {
                 let tokenId = nftDetail.nftId;
                 let uri = nftDetail.nftURI;
                 let signature = nftDetail.voucherSignature;
-                let bidIdHash = getHash(bidId) //get bid object id and get hash to send to blockchain
+                let bidIdHash = getHash(bidIdd) //get bid object id and get hash to send to blockchain
                 let trxHash;
 
                 let myContractInstance = await new web3.eth.Contract(abiAuctionFactory, addressAuctionFactory);
@@ -365,7 +459,7 @@ const DropSingleNFT = (props) => {
                 //sending call on backend to update data
 
                 let data = {
-                    "bidId": bidId,
+                    "bidId": bidIdd,
                     "txHash": trxHash 
                 }
 
@@ -398,6 +492,46 @@ const DropSingleNFT = (props) => {
             // }
             
         }   
+    }
+
+    let handleAcceptBidSSO = async (e) => {
+        e.preventDefault();
+       
+
+        let data = {
+            "bidId": bidId,
+        }
+
+        axios.post(`/${versionB}/auction/bid/accept`, data).then(
+            (response) => {
+              
+              console.log("nft bid response", response.data);
+              let variant = "success";
+              enqueueSnackbar("Bid Accepted Successfully", { variant });
+              handleCloseModal();
+      
+            },
+            (error) => {
+              if (process.env.NODE_ENV === "development") {
+                console.log(error);
+                console.log(error.response);
+                let variant = "error";
+                enqueueSnackbar("Unable To Accept Bid On NFT.", { variant });
+                handleCloseModal();
+              }
+              if (error.response.data !== undefined) {
+                if (
+                  error.response.data === "Unauthorized access (invalid token) !!"
+                ) {
+                  Cookies.remove("Authorization");
+                  localStorage.removeItem("Address");
+                  window.location.reload();
+                }
+              }
+          })
+
+                
+          
     }
     
     return (
@@ -647,7 +781,10 @@ const DropSingleNFT = (props) => {
                                                                         Accept
                                                                     </button>
                                                                 ) : (
-                                                                    <button className="btn" onClick={(e) => handleAcceptBid(e, bid._id)}>
+                                                                    <button className="btn" 
+                                                                    onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModal(e,bid._id)) : (handleAcceptBid(e, bid._id))} }
+
+                                                                    >
                                                                         Accept
                                                                     </button>
                                                                 )}
@@ -666,8 +803,10 @@ const DropSingleNFT = (props) => {
                 </div>
             </div>
             </ThemeProvider>
+        <AcceptBidTxModal handleClose={handleCloseModalTx} open={modalOpen} handleAcceptBid = {handleAcceptBidSSO}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
+
         </div >
-        
+    
     );
 }
  

@@ -30,6 +30,8 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import Backdrop from "@material-ui/core/Backdrop";
 import ReactTooltip from "react-tooltip";
 import AudioPlayer from "react-h5-audio-player";
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
+import transakSDK from "@transak/transak-sdk";
 import "react-h5-audio-player/lib/styles.css";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import {
@@ -140,6 +142,53 @@ const NFTBuy = (props) => {
   let [price, setPrice] = useState();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [versionB, setVersionB] = useState("");
+  const [modalOpen, setMOdalOpen] = useState(false);
+  const [data, setData] = useState();
+
+  const handleOpenModal = async(e) => {
+    const dropId = nftDetail.dropId;
+    const nftId = nftDetail._id;
+    console.log("NFTDETAIL", nftDetail);
+    axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
+      (response) => {
+        console.log("response", response);
+        console.log("responeee", response.data.data.data[0]);
+        setData(response.data.data);
+        setMOdalOpen(true);
+
+        
+        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+        
+        
+      
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+  };
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -160,6 +209,21 @@ const NFTBuy = (props) => {
         "Non-Ethereum browser detected. You should consider trying MetaMask!"
       );
     }
+  };
+
+  const settings = {
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
+    environment: "STAGING", // STAGING/PRODUCTION
+    cryptoCurrencyCode: "MATIC",
+    network: "private",
+    defaultNetwork: "polygon",
+    walletAddress : "0xE66a70d89D44754f726A4B463975d1F624530111",
+    fiatAmount : 1100,
+    isAutoFillUserData : true,
+    themeColor: "000000", // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
   };
 
   const getHash = (id) => {
@@ -343,6 +407,54 @@ const NFTBuy = (props) => {
           });
       }
 
+
+      function handleSSOBuy()
+      {
+        // setNftDetail(nftObject);
+        console.log("Nft detail: ", nftDetail);
+        console.log("Price", nftDetail);
+        // setNftDetail(nftDetail);
+        // console.log("Nft detail id: ", nftDetail.collectionId._id)
+        // setOpenDialog(false);
+        // setIsSaving(true);
+        // handleShowBackdrop();
+       
+        // let data = {
+        //   dropId: nftDetail.dropId,
+        //   nftId: nftDetail._id,
+        // };
+
+        // axios.post(`/${versionB}/marketplace/buy`, data).then(
+        //   (response) => {
+            
+        //     console.log("nft buy response", response.data);
+        //     let variant = "success";
+        //     enqueueSnackbar("Purchase Is Being Finalized. Transactions Are In Process", { variant });
+        //     handleCloseModal();
+    
+        //   },
+        //   (error) => {
+        //     if (process.env.NODE_ENV === "development") {
+        //       console.log(error);
+        //       console.log(error.response);
+        //       let variant = "error";
+        //       enqueueSnackbar("Unable To Buy NFT.", { variant });
+        //       handleCloseModal();
+        //     }
+        //     if (error.response.data !== undefined) {
+        //       if (
+        //         error.response.data === "Unauthorized access (invalid token) !!"
+        //       ) {
+        //         Cookies.remove("Authorization");
+        //         localStorage.removeItem("Address");
+        //         window.location.reload();
+        //       }
+        //     }
+        // })
+
+       
+    }
+      
       // await myContractInstance.methods.executeOrder(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.tokenSupply, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
       //     console.log('get transaction', err, response);
       //     let data = {
@@ -379,6 +491,36 @@ const NFTBuy = (props) => {
     }
   };
 
+  function openTransak() {
+    handleCloseModal();
+    const transak = new transakSDK(settings);
+
+
+    transak.init();
+
+    // To get all the events
+    transak.on(transak.ALL_EVENTS, (data) => {
+      console.log(data);
+
+    });
+
+    // This will trigger when the user closed the widget
+    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
+      console.log(eventData);
+      transak.close();
+      handleOpenModal();
+
+    });
+
+    // This will trigger when the user marks payment is made.
+    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
+      console.log(orderData);
+      window.alert("Payment Success");
+      transak.close();
+      handleOpenModal();
+
+    });
+  }
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
@@ -413,6 +555,52 @@ const NFTBuy = (props) => {
       marketPlace: "active",
     });
   }, []);
+
+  function SSOBuy() {
+    console.log("SSO BUY");
+      // setNftDetail(nftObject);
+      console.log("Nft detail: ", nftDetail);
+      console.log("Price", nftDetail);
+      // setNftDetail(nftDetail);
+      console.log("Nft detail id: ", nftDetail.collectionId._id)
+      setOpenDialog(false);
+      setIsSaving(true);
+      handleShowBackdrop();
+     
+      let data = {
+        dropId: nftDetail.dropId,
+        nftId: nftDetail._id,
+      };
+
+      axios.post(`/${versionB}/marketplace/buy`, data).then(
+        (response) => {
+          
+          console.log("nft buy response", response.data);
+          let variant = "success";
+          enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
+          handleCloseModal();
+  
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+            let variant = "error";
+            enqueueSnackbar("Unable To Buy NFT.", { variant });
+            handleCloseModal();
+          }
+          if (error.response.data !== undefined) {
+            if (
+              error.response.data === "Unauthorized access (invalid token) !!"
+            ) {
+              Cookies.remove("Authorization");
+              localStorage.removeItem("Address");
+              window.location.reload();
+            }
+          }
+      })
+
+  }
 
   return (
     <div className="backgroundDefault">
@@ -645,8 +833,7 @@ const NFTBuy = (props) => {
             <br></br>
             {location.state.nftDetail.currentMarketplaceId.isSold === false &&
             new Date() >= new Date(location.state.startTime) &&
-            new Date() < new Date(location.state.endTime) &&
-            versionB !== "v1-sso" ? (
+            new Date() < new Date(location.state.endTime) ? (
               <Row>
                 <Col
                   style={{
@@ -655,7 +842,7 @@ const NFTBuy = (props) => {
                 >
                   <button
                     type="button"
-                    onClick={(e) => handleBuy(e)}
+                    onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModal(e)) : (handleBuy(e))} }
                     className="bidBtn"
                   >
                     Buy
@@ -707,6 +894,7 @@ const NFTBuy = (props) => {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
+      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy = {SSOBuy}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
