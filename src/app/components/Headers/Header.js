@@ -1,5 +1,6 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -504,7 +505,8 @@ function HeaderHome(props) {
                 </div>
               ) : localStorage.getItem("Address") ? (
                 <div>
-                  <Avatar
+                  <AccountCircle  onClick={handleClick} className="account-circle" fontSize="large"/>
+                  {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
                     onClick={handleClick}
@@ -512,7 +514,8 @@ function HeaderHome(props) {
                     alt="Remy Sharp"
                     src={man}
                     sx={{ width: 24, height: 24 }}
-                  />
+                  /> */}
+                  
                   {/* <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
