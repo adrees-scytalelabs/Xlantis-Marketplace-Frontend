@@ -127,18 +127,16 @@ function AdminDashboard(props) {
         <div className="header-left">
           <a
             href="/"
-            className="logo"
+            className="navbar-brand logo"
             // onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
           >
-            <img src={Logo} alt="Logo" width="90" />
+            <img src={Logo} className="img-fluid" alt="Logo" style={{marginTop:'10px'}} />
             {/* Robot Drop */}
           </a>
           <a
             href="/"
             className="logo logo-small"
             // onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
           >
             <img src={Logo} alt="Logo" width="90" />
             {/* Robot Drop */}
