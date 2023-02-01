@@ -130,7 +130,7 @@ function AdminDashboard(props) {
             className="navbar-brand logo"
             // onClick={(e) => e.preventDefault()}
           >
-            <img src={Logo} className="img-fluid" alt="Logo" style={{marginTop:'10px'}} />
+            <img src={Logo}  alt="Logo"  width="120" height="34" style={{marginTop:'10px'}} />
             {/* Robot Drop */}
           </a>
           <a

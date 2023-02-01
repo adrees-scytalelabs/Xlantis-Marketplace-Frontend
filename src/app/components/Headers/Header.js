@@ -342,7 +342,7 @@ function HeaderHome(props) {
           </a>
 
           <Link style={{ color: "#fff" }} to="/" className="navbar-brand logo">
-            <img src={Logo} alt="Logo" width="90" />
+            <img src={Logo} alt="Logo" width="120" height="34"/>
             {/* Robot Drop */}
           </Link>
 
