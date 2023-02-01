@@ -181,7 +181,7 @@ const AdminLoginSignupForms = () => {
             // } else if
             console.log("3");
             response.data.raindropToken &&
-              Cookies.set("Authorization", response.data.raindropToken, {});
+              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
 
             window.location.reload(false);
             // setCookie("Authorization", response.data.raindropToken, {

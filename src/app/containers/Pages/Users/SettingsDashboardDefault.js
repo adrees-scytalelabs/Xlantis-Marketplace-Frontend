@@ -135,7 +135,7 @@ function SettingDashboardDefault(props) {
 
 
         let data ={
-            "walletAddress" : localStorage.getItem("Address"),
+            "walletAddress" : sessionStorage.getItem("Address"),
             "username" : name,
             "bio" : bio,
             "email" : email,
@@ -364,7 +364,7 @@ function SettingDashboardDefault(props) {
                                     <input
                                         type="text"
                                         readOnly="true"
-                                        value={localStorage.getItem("Address")}
+                                        value={sessionStorage.getItem("Address")}
                                         
                                         placeholder="Wallet Address"
                                         className="form-control"

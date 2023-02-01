@@ -161,8 +161,8 @@ function SuperAdminDashboard(props) {
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
-                      Cookies.remove("Authorization");
-                      localStorage.removeItem("Address");
+                      sessionStorage.removeItem("Authorization");
+                      sessionStorage.removeItem("Address");
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");

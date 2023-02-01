@@ -59,7 +59,7 @@ const SuperAdminLoginForms = () => {
         (response) => {
         console.log("response", response);
         Cookies.set("Version", "v1-sso", {});
-        Cookies.set("Authorization", response.data.token, {});
+        sessionStorage.setItem("Authorization", response.data.token, {});
         setIsLoading(false);
         let variant = "success";
         enqueueSnackbar('Logged In Successfully', { variant });

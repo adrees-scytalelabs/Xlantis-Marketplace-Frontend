@@ -201,8 +201,9 @@ function AdminDashboard(props) {
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
-                      Cookies.remove("Authorization");
-                      localStorage.removeItem("Address");
+                      sessionStorage.clear();
+                      // Cookies.remove("Authorization");
+                      sessionStorage.removeItem("Address");
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");

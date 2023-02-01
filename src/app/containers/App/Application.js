@@ -41,7 +41,7 @@ function App() {
   let isVerified = false;
   let version;
   let jwtDecoded;
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
     console.log("verified? ", Cookies.get("Verified"))
