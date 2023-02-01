@@ -317,6 +317,7 @@ function MyNFTs(props) {
       audio.pause();
     }
   };
+  let nftIdLen=location.state.nftId.length;
 
   let getNFTs = (start, end) => {
     handleShowBackdrop();
@@ -330,7 +331,10 @@ function MyNFTs(props) {
     };
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios
+    
+    
+    if (nftIdLen!=0){
+      axios
       .get(
         `${version}/drop/nfts/${location.state.dropId}/${start}/${end}`,
         data
@@ -369,6 +373,11 @@ function MyNFTs(props) {
           handleCloseBackdrop();
         }
       );
+    }
+    else{
+      handleCloseBackdrop();
+    }
+    
   };
 
   useEffect(() => {
@@ -477,28 +486,29 @@ function MyNFTs(props) {
                     Loading...
                   </span>
                 </div>
-              ) : tokenList.length === 0 ? (
+              ) : (tokenList.length === 0 ) ? (
                 <Card
-                  variant="outlined"
-                  style={{
+                variant="outlined"
+                style={{
                     padding: "40px",
+                    paddingTop:"80px",
                     marginTop: "20px",
                     marginBottom: "20px",
-                    borderRadius: 0,
-                    border: "1px solid #fff",
-                    minHeight: "65vh",
-                  }}
+                    backgroundColor: "#000",
+                    marginLeft:"20%"
+                }}
                 >
-                  <Typography
+                <Typography
                     variant="body2"
                     className="text-center"
-                    color="textSecondary"
                     component="p"
-                  >
+                    style={{ color: "#fff" }}
+                >
                     <strong>No items to display </strong>
-                  </Typography>
-                </Card>
+                </Typography>
+                </Card>         
               ) : (
+                
                 <Grid
                   container
                   spacing={3}
@@ -809,9 +819,9 @@ function MyNFTs(props) {
                     </Grid>
                   ))}
                 </Grid>
-              )}
-
-              <TablePagination
+                )}
+                
+                <TablePagination
                 rowsPerPageOptions={[4, 8, 12, 24]}
                 component="div"
                 count={totalNfts}
@@ -821,7 +831,9 @@ function MyNFTs(props) {
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
             </div>
-          </ThemeProvider>
+            </ThemeProvider>
+         
+         
         </div>
       </div>
       {/* <Backdrop className={classes.backdrop} open={open} >

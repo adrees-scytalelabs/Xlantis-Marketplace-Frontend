@@ -225,6 +225,7 @@ function DropsPage(props) {
                           saleType: i.saleType,
                           startTime: i.startTime,
                           endTime: i.endTime,
+                          nftType:i.dropType
                         },
                       }}
                     >

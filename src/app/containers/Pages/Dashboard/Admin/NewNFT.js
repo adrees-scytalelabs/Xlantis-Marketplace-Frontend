@@ -125,7 +125,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    height: 0,
+    // height: 0,
     paddingTop: "100%", // 16:9
   },
   bullet: {
@@ -272,8 +272,8 @@ function NewNFT(props) {
     setCollection("");
     console.log("get collections");
     console.log("collectionType", collectionType);
-    console.log("VERSION", versionB);
-    const url = `/${versionB}/collection/collections/${collectionType}`;
+    console.log("VERSION", Cookies.get("Version"));
+    const url = `${Cookies.get("Version")}/collection/collections/${collectionType}`;
     console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
@@ -2335,8 +2335,8 @@ function NewNFT(props) {
               </div>
             </form>
           </div>
-          <div className="row no-gutters w-100">
-            <div className="col-md-12 col-lg-6">
+          
+            <div className="col-sm-12 col-md-6 col-lg-5" style={{marginLeft:'10px'}}>
               {/* <!-- Change Password Form --> */}
               <form>
                 {/* <Scrollbars style={{ height: 1500 }}> */}
@@ -2352,7 +2352,7 @@ function NewNFT(props) {
                       // alignItems="flex-start"
                     >
                       {tokenList.map((i, index) => (
-                        <Grid item xs={12} sm={6} md={6} key={index}>
+                        <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
                           <CardActionArea
                             onClick={() => {
                               console.log("nftDetailObject: ", i);
@@ -2366,26 +2366,8 @@ function NewNFT(props) {
                                 className="text-center"
                                 title={i.title}
                               /> */}
-                              <CardMedia>
-                                {/* // variant="outlined" // style= */}
-                                {/* {{ */}
-                                {/* // height: "100%", // border: // i.rarity ===
-                                "Mastercraft" // ? "4px solid #ff0000" // :
-                                i.rarity === "Legendary" // ? "4px solid
-                                #FFD700" // : i.rarity === "Epic" // ? "4px
-                                solid #9400D3" // : i.rarity === "Rare" // ?
-                                "4px solid #0000FF" // : i.rarity === "Uncommon" */}
-                                {/* // ? "4px solid #008000" // : i.rarity === */}
-                                {/* "Common" // ? "4px solid #FFFFFF" // : "none", */}
-                                {/* // */}
-                                {/* }} */}
-                                <div className="nftImgWrapper">
-                                  <img
-                                    className="myNFTImg"
-                                    src={i.previewImageURI}
-                                    alt="a sample nft"
-                                  />
-                                </div>
+                              <CardMedia className={classes.media} image={i.nftURI}>
+                                
                                 {/* className={classes.media}
                                 image={
                                   i.previewImageURI === ""
@@ -2395,71 +2377,6 @@ function NewNFT(props) {
                                 title="NFT Image" */}
                                 {/* /> */}
                               </CardMedia>
-                              <CardContent>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Description: </strong>
-                                  {i.description}
-                                </Typography>
-                                {/* <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Rarity: </strong>
-                                  {i.rarity}
-                                </Typography> */}
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Token Supply: </strong>
-                                  {i.tokensupply}
-                                </Typography>
-                                {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography> */}
-                                {/* <CardHeader
-                                                                avatar={<Avatar src={i.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
-                                                                title={i.ImageArtistName}
-                                                                subheader={i.ImageArtistAbout}
-                                                            />
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Website URL: </strong>{i.ImageArtistWebsite}
-                                                            </Typography>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
-                                                                title={i.ProducerName}
-                                                                subheader={i.ProducerInspiration}
-                                                            />
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
-                                                                title={i.ExecutiveProducerName}
-                                                                subheader={i.ExecutiveProducerInspiration}
-                                                            />
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
-                                                            <CardHeader
-                                                                avatar={<Avatar src={i.FanProfile} aria-label="Fan" className={classes.avatar} />}
-                                                                title={i.FanName}
-                                                                subheader={i.FanInspiration}
-                                                            />
-
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Other: </strong>{i.other}
-                                                            </Typography> */}
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Collection: </strong>
-                                  {i.collectiontitle}
-                                </Typography>
-                              </CardContent>
                             </Card>
                             {/* <Dialog
                                                         fullWidth={true}
@@ -2534,7 +2451,7 @@ function NewNFT(props) {
                 {/* </Scrollbars> */}
               </form>
             </div>
-          </div>
+          
         </div>
         {isSaving ? (
           <div className="text-center">

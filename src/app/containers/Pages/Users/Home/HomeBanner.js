@@ -95,7 +95,7 @@ function HomeBanner() {
   const matchMedia = useMediaQuery("(max-width: 575px)");
   // Jsx
   return (
-    <Link to={"/fixdropnft"}>
+    <Link to={"/dashboard"}>
       <section className="section sectionHomeBanner">
         <div className="container-fluid">
           <div className="row no-gutters justify-content-center align-items-center">

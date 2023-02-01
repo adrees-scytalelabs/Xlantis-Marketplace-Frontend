@@ -415,8 +415,12 @@ const AuctionNFT = (props) => {
                             axios.put(`/${versionB}/auction/bid/finalize`, finalizeBidData).then(
                                 (response) => {
                                     console.log("Response from finalize bid: ", response);
+                                    let variant = "success";
+                                    enqueueSnackbar('Bid Placed Successfully', { variant });
                                 },
                                 (err) => {
+                                    let variant = "error";
+                                    enqueueSnackbar('Unable To Bid', { variant });
                                     console.log("Err from finalize bid: ", err);
                                     console.log("Err response from finalize bid: ", err);
                                 }

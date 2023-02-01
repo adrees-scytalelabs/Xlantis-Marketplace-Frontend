@@ -5,6 +5,8 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import NFTCard from '../../../../components/Cards/NFTCard';
+import Card from '@material-ui/core/Card';
+import Typography from '@material-ui/core/Typography';
 
 function CollectionNfts(props) {
     const { collectionId } = useParams();
@@ -19,7 +21,7 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        axios.get(`/${versionB}/myCollection/${collectionId}`).then(
+        axios.get(`/${Cookies.get("Version")}/collection/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.nftsdata);
@@ -61,14 +63,12 @@ function CollectionNfts(props) {
     }, []);
 
     return (
-        <div className="card">
-            <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
-                <li className="breadcrumb-item">
-                    <a href="/">Dashboard</a>
-                </li>
-                <li className="breadcrumb-item">
-                    <Link to="/dashboard/newCollection">Collections</Link>
-                </li>
+        <div className="card" style={{ backgroundColor: "#000", border:"None" }}>
+            <ul className="breadcrumb" style={{ backgroundColor: "#000" }}>
+            <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Dashboard
+              </li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>Collections</li>
                 <li className="breadcrumb-item active">My NFTs</li>
             </ul>
             <div className="card-body">
@@ -87,6 +87,26 @@ function CollectionNfts(props) {
                                 <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                             </div>
                         ) : (
+                            (tokenList.length === 0) ? (
+                                <Card
+                                    variant="outlined"
+                                    style={{
+                                        padding: "40px",
+                                        marginTop: "20px",
+                                        marginBottom: "20px",
+                                        backgroundColor: "#000",
+                                    }}
+                                    >
+                                    <Typography
+                                        variant="body2"
+                                        className="text-center"
+                                        component="p"
+                                        style={{ color: "#fff" }}
+                                    >
+                                        <strong>No items to display </strong>
+                                    </Typography>
+                                    </Card>
+                            ):
                             <Grid
                                 container
                                 spacing={2}
@@ -94,7 +114,9 @@ function CollectionNfts(props) {
                                 justify="flex-start"
                             >
                                 {tokenList.map((i, index) => (
-                                    <NFTCard data={i[0]} key={index}></NFTCard>
+                                    <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
+                                        <NFTCard data={i[0]} />
+                                    </Grid>
                                 ))}
                             </Grid>
                         )}

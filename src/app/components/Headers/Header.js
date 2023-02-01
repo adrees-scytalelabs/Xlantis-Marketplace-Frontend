@@ -1,5 +1,6 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
+import AccountCircle from '@material-ui/icons/AccountCircle';
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -25,6 +26,8 @@ import { providers, ethers } from "ethers";
 import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
+import { useSnackbar } from 'notistack';
+
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -57,6 +60,8 @@ function HeaderHome(props) {
   const handleOpenCart = () => {
     setCartOpen(!cartOpen);
   };
+  const { enqueueSnackbar } = useSnackbar();
+
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -157,8 +162,11 @@ function HeaderHome(props) {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
+
     console.log(network);
+    console.log("role", props.role);
     console.log("Account test: ", accounts[0], network);
+    
     if (network !== "private") {
       setNetwork(network);
       setIsLoading(false);
@@ -193,7 +201,14 @@ function HeaderHome(props) {
         walletAddress: address,
         signature: signatureHash,
       };
-      axios.post("v2-wallet-login/user/auth/login", loginData).then(
+      let route;
+      if (props.role === "admin") {
+        route = "v2-wallet-login/user/auth/admin/login";
+      }
+      else {
+        route = "v2-wallet-login/user/auth/login";
+      }
+      axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
           Cookies.set("Authorization", response.data.token, {});
@@ -214,6 +229,8 @@ function HeaderHome(props) {
           }
           if (error.response !== undefined) {
             if (error.response.status === 400) {
+              let variant = "error";
+              enqueueSnackbar(error.response.data.message, { variant });
               // setMsg(error.response.data.message);
             } else {
               // setMsg("Unknown Error Occured, try again.");
@@ -326,7 +343,7 @@ function HeaderHome(props) {
           </a>
 
           <Link style={{ color: "#fff" }} to="/" className="navbar-brand logo">
-            <img src={Logo} alt="Logo" width="90" />
+            <img src={Logo} alt="Logo" width="120" height="34"/>
             {/* Robot Drop */}
           </Link>
 
@@ -488,7 +505,8 @@ function HeaderHome(props) {
                 </div>
               ) : localStorage.getItem("Address") ? (
                 <div>
-                  <Avatar
+                  <AccountCircle  onClick={handleClick} className="account-circle" fontSize="large"/>
+                  {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
                     onClick={handleClick}
@@ -496,7 +514,8 @@ function HeaderHome(props) {
                     alt="Remy Sharp"
                     src={man}
                     sx={{ width: 24, height: 24 }}
-                  />
+                  /> */}
+                  
                   {/* <Menu
                   id="simple-menu"
                   anchorEl={anchorEl}
