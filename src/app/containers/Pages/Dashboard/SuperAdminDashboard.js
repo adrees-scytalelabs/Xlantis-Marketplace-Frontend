@@ -89,18 +89,38 @@ function SuperAdminDashboard(props) {
             href="/"
             className="logo"
             // onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
+            style={{ width: "210px" }}
           >
-            <img src={Logo} alt="Logo" width="90" />
+            <img
+              src={Logo}
+              alt="Logo"
+              width="90"
+              style={{
+                marginTop: "16px",
+                width: "210px",
+                height: "30px",
+                padding: "5px 15px",
+              }}
+            />
             {/* Robot Drop */}
           </a>
           <a
             href="/"
             className="logo logo-small"
             // onClick={(e) => e.preventDefault()}
-            style={{ color: "rgb(167,0,0)" }}
+            style={{ width: "210px" }}
           >
-            <img src={Logo} alt="Logo" width="90" />
+            <img
+              src={Logo}
+              alt="Logo"
+              width="90"
+              style={{
+                marginTop: "16px",
+                width: "210px",
+                height: "30px",
+                padding: "5px 15px",
+              }}
+            />
             {/* Robot Drop */}
           </a>
         </div>
@@ -146,15 +166,23 @@ function SuperAdminDashboard(props) {
 
               <Dropdown.Menu
                 alignRight="true"
-                style={{ backgroundColor: "rgb(167, 0, 0)" }}
+                style={{ backgroundColor: "black" }}
               >
                 <Dropdown.Item>
-                  <Link to="/dashboard" style={{ width: "100%" }}>
+                  <Link
+                    to="/dashboard"
+                    style={{ width: "100%" }}
+                    className="headerAccountMenu"
+                  >
                     Dashboard
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <span style={{ color: "white" }} onClick={openTransak}>
+                  <span
+                    style={{ color: "white" }}
+                    onClick={openTransak}
+                    className="headerAccountMenu"
+                  >
                     Buy Crypto
                   </span>
                 </Dropdown.Item>
@@ -170,6 +198,7 @@ function SuperAdminDashboard(props) {
                     }}
                     to="/"
                     style={{ width: "100%" }}
+                    className="headerAccountMenu"
                   >
                     Logout
                   </Link>

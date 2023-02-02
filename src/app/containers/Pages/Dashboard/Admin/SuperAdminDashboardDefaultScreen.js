@@ -25,7 +25,6 @@ function SuperAdminDashboardDefaultScreen(props) {
     )}`;
     axios
 
-
       .get(`/v1-sso/super-admin/admins/counts`)
       .then((response) => {
         console.log(response);
@@ -33,7 +32,7 @@ function SuperAdminDashboardDefaultScreen(props) {
         setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
         setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
         setTotalEnabled(response.data.counts.totalEnabledAdmins);
-        setTotalDisabled(response.data.counts. totalDisabledAdmins);
+        setTotalDisabled(response.data.counts.totalDisabledAdmins);
       })
       .catch((error) => {
         console.log(error);
@@ -44,13 +43,15 @@ function SuperAdminDashboardDefaultScreen(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
-      manageAccounts : "",
-      accountApproval : "",
+      manageAccounts: "",
+      accountApproval: "",
       accounts: "",
     });
     getCounts();
     // eslint-disable-next-line
   }, []);
+
+  console.log("props in super admin dashboard: ", props);
 
   return (
     <>
@@ -80,7 +81,7 @@ function SuperAdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/myNFTs`}>
+            <Link to={`${props.match.url}/accounts`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -123,7 +124,7 @@ function SuperAdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/myNFTs`}>
+            <Link to={`${props.match.url}/manageAccounts`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -166,7 +167,7 @@ function SuperAdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/myNFTs`}>
+            <Link to={`${props.match.url}/manageAccounts`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -209,7 +210,7 @@ function SuperAdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/myNFTs`}>
+            <Link to={`${props.match.url}/accounts`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -252,7 +253,7 @@ function SuperAdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/myNFTs`}>
+            <Link to={`${props.match.url}/accountApproval`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>

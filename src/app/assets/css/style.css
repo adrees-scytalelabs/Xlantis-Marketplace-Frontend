@@ -75,6 +75,16 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+.headerAccountMenu:hover {
+  /* background-color: var(--borderOrange); */
+  color: var(--border);
+}
+
+.user-menu .dropdown-menu .dropdown-item:hover {
+  background-color: var(--borderOrange);
+  color: var(--border);
+}
+
 .home-full-height {
   margin-bottom: 40px;
   min-height: 50vh;
@@ -894,6 +904,7 @@ li.slash::after {
   /* box-shadow: 0 10px 6px -6px #777; */
   /* background-color: unset;
   background-image: var(--linearGradient); */
+  background-color: var(--borderOrange);
 }
 
 .totalNftsAdminDashCountHover,
