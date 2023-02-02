@@ -204,7 +204,7 @@ function Accounts(props) {
 
     console.log("data", data);
 
-    axios.put(`/v1-sso/super-admin/admin/verify/${verifyAdminId}}`, data).then(
+    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";

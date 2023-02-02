@@ -654,7 +654,8 @@ let handleBidSubmitSSO = async (event) => {
     
 
     
-
+    handleCloseModal();
+   
     
     axios.post(`/${versionB}/auction/bid`, bidData).then(
         (response) => {
@@ -662,7 +663,8 @@ let handleBidSubmitSSO = async (event) => {
             console.log("nft bid response", response.data);
             let variant = "success";
             enqueueSnackbar("Bid Is Being Finalized. Transactions Are In Process", { variant });
-            handleCloseModal();
+            handleCloseBackdrop();
+
     
         },
         (error) => {
@@ -671,7 +673,8 @@ let handleBidSubmitSSO = async (event) => {
             console.log(error.response);
             let variant = "error";
             enqueueSnackbar("Unable To Bid On NFT.", { variant });
-            handleCloseModal();
+            handleCloseBackdrop();
+            
             }
             if (error.response.data !== undefined) {
             if (
