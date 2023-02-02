@@ -215,7 +215,6 @@ function AdminDashboardDefaultScreen(props) {
         </div>
       </div>
 
-      <button onClick = {(e) => handleOpenModal(e)}>BUY SUMMARY</button>
       {/* <div className="row mt-5">
         <div className="col-12 col-sm-3">
           <Link to={`${props.match.url}/myCubes`}>
