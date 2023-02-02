@@ -55,7 +55,7 @@ const SuperAdminLoginForms = () => {
         email: email.toLowerCase(),
         password: password,
     };
-    axios.post("/v1-sso/user/auth/login", loginData).then(
+    axios.post("/v1-sso/user/auth/super-admin-login", loginData).then(
         (response) => {
         console.log("response", response);
         Cookies.set("Version", "v1-sso", {});
