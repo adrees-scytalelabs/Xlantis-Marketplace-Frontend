@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
   collectionTitle: {
     color: "#fff",
     fontSize: "1rem",
+    fontFamily: "inter",
   },
   approveBtn: {
     backgroundColor: "#F64D04",
@@ -241,8 +242,8 @@ function AccountApproval(props) {
         </div>
       </div>
       {/* Page Content */}
-      <div className="card-body">
-        <div className="row">
+      <div>
+        <div className="row no-gutters">
           {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
