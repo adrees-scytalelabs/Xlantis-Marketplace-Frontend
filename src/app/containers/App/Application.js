@@ -34,7 +34,7 @@ import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
 import { AuthContextProvider } from "../../components/context/AuthContext";
 import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
 import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
-
+import Testt from "../Pages/Users/Testt";
 
 function App() {
   let isLoggedIn;
@@ -44,7 +44,7 @@ function App() {
   let jwt = Cookies.get("Authorization");
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
-    console.log("verified? ", Cookies.get("Verified"))
+    console.log("verified? ", Cookies.get("Verified"));
     jwt && console.log("jwt in application: ", jwt);
     if (jwt) {
       console.log(jwtDecode(jwt));
@@ -54,7 +54,7 @@ function App() {
       console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
       isVerified = Cookies.get("Verified");
-      version = Cookies.get("Version")
+      version = Cookies.get("Version");
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
@@ -76,18 +76,16 @@ function App() {
           <Route
             {...rest}
             render={(props) =>
-              (version === "v1-sso") ? (
-              (isLoggedIn && isVerified)  ? (
-                <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
-              ) : (
-                <Redirect to="/" />
-              )
-              ) : (
-                (isLoggedIn)  ? (
+              version === "v1-sso" ? (
+                isLoggedIn && isVerified ? (
                   <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
                 ) : (
                   <Redirect to="/" />
                 )
+              ) : isLoggedIn ? (
+                <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+              ) : (
+                <Redirect to="/" />
               )
             }
           />
@@ -126,11 +124,22 @@ function App() {
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (jwtDecoded && isLoggedIn && version === "v1-sso" && isVerified && jwtDecoded.role === "admin") {
+    if (
+      jwtDecoded &&
+      isLoggedIn &&
+      version === "v1-sso" &&
+      isVerified &&
+      jwtDecoded.role === "admin"
+    ) {
       // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
-     }else if (jwtDecoded && isLoggedIn && version === "v2-wallet-login" && jwtDecoded.role === "admin") {
+    } else if (
+      jwtDecoded &&
+      isLoggedIn &&
+      version === "v2-wallet-login" &&
+      jwtDecoded.role === "admin"
+    ) {
       // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
@@ -158,8 +167,10 @@ function App() {
       return <Route component={MarketPlace} />;
     } else if (path === "/auctionDrops") {
       return <Route component={AuctionDrops} />;
-    }  else if (path === "/fixedDropNFTHome") {
+    } else if (path === "/fixedDropNFTHome") {
       return <Route component={FixedDropSingleNFTHome} />;
+    } else if (path === "/test") {
+      return <Route component={Testt} />;
     } else if (path === "/auctionDrops/DropCubes/:dropId") {
       return (
         <Route
@@ -197,9 +208,21 @@ function App() {
         />
       );
     } else if (path === "/fixdropnft/:dropId") {
-      return <Route exact path = "/fixdropnft/:dropId" component={FixedPriceDropNFTs} />;
+      return (
+        <Route
+          exact
+          path="/fixdropnft/:dropId"
+          component={FixedPriceDropNFTs}
+        />
+      );
     } else if (path === "/fixedDropNFTHome/:singleNFTid") {
-      return <Route exact path = "/fixedDropNFTHome/:singleNFTid" component={FixedDropSingleNFTHome} />;
+      return (
+        <Route
+          exact
+          path="/fixedDropNFTHome/:singleNFTid"
+          component={FixedDropSingleNFTHome}
+        />
+      );
     } else {
       return <Route component={HomeScreen} />;
     }
@@ -224,9 +247,17 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
-            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />
+            <LoginRegisterRedirectCheck
+              exact
+              path="/fixedDropNFTHome/:singleNFTid"
+            />
             <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />
-            <LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" component={FixedPriceDropNFTs} />
+            <LoginRegisterRedirectCheck exact path="/test" />
+            <LoginRegisterRedirectCheck
+              exact
+              path="/fixdropnft/:dropId"
+              component={FixedPriceDropNFTs}
+            />
             <LoginRegisterRedirectCheck
               exact
               path="/auctionDrops/DropCubes/:dropId"

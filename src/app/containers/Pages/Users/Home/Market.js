@@ -48,12 +48,8 @@ const useStyles = makeStyles((theme) => ({
 
 function MarketPlace(props) {
   const classes = useStyles();
-  const [userSaleData, setUserSaledata] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
-  const [cubeData, setCubeData] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
-  const [userAuctionData, setUserAuctiondata] = useState([]);
-  const [cubeAuctionData, setCubeAuctionData] = useState([]);
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -69,12 +65,7 @@ function MarketPlace(props) {
       .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
       .then(
         (response) => {
-          console.log("responseeeee", response);
           setFixedPriceDrop(response.data.data);
-          setCubeData(response.data.data);
-          setUserSaledata(response.data.data);
-          setCubeAuctionData(response.data.data);
-          setUserAuctiondata(response.data.data);
           handleCloseBackdrop();
         },
         (error) => {
@@ -90,9 +81,8 @@ function MarketPlace(props) {
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/auction/${start}/${end}`).then(
+    axios.get(`/v2-wallet-login/drop/saleType/auction/${start}/${end}`).then(
       (res) => {
-        console.log("Bidable drops response: ", res);
         setBidableDrop(res.data.data);
         handleCloseBackdrop();
       },
@@ -102,10 +92,6 @@ function MarketPlace(props) {
       }
     );
   };
-
-  if (bidableDrop) {
-    console.log("Bidable drops in Market ", bidableDrop);
-  }
 
   useEffect(() => {
     getCubes(0, 4); // eslint-disable-next-line
@@ -131,57 +117,14 @@ function MarketPlace(props) {
         </div>
         <hr className="m-0"></hr>
         <div className="row no-gutters w-100">
-          {cubeData ? (
+          {fixedPriceDrop ? (
             <TrendingAndTop
               fixedPriceDrop={fixedPriceDrop}
               fixedPriceDropLength={fixedPriceDrop.length}
               open={open}
-              cubeData={cubeData}
-              cubeDataLength={cubeData.length}
-              cubeAuctionDataLength={cubeAuctionData.length}
-              userSaleData={userSaleData}
-              userAuctionData={userAuctionData}
               type={"fixedPriceDrops"}
             />
           ) : null}
-          {/* {open ? (
-            <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              ></Spinner>
-              <span style={{ color: "#ff0000" }} className="sr-only">
-                Loading...
-              </span>
-            </div>
-          ) : cubeData.length === 0 && cubeAuctionData.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                color="textSecondary"
-                component="p"
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
-          ) : (
-            <div className="row no-gutters w-100">
-              {cubeData.map((i, index) => (
-                <div className="col-sm-6 col-lg-4 col-xl-3" key={index}>
-                  <OnSaleCard i={i} index={index} userSaleData={userSaleData} />
-                </div>
-              ))}
-            </div>
-          )} */}
         </div>
         {/* Section 2 ON AUCTION */}
         <div className="row no-gutters justify-content-between align-items-end mt-4 pt-3">
@@ -199,62 +142,14 @@ function MarketPlace(props) {
         <hr className="m-0"></hr>
         {/* On Auction */}
         <div className="row no-gutters w-100">
-          {cubeData ? (
+          {bidableDrop ? (
             <TrendingAndTop
               bidableDrop={bidableDrop}
               bidableDropLength={bidableDrop.length}
               open={open}
-              cubeData={cubeData}
-              cubeAuctionData={cubeAuctionData}
-              cubeDataLength={cubeData.length}
-              cubeAuctionDataLength={cubeAuctionData.length}
-              userSaleData={userSaleData}
-              userAuctionData={userAuctionData}
               type={"bidableDrops"}
             />
           ) : null}
-          {/* {open ? (
-            <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              ></Spinner>
-              <span style={{ color: "#ff0000" }} className="sr-only">
-                Loading...
-              </span>
-            </div>
-          ) : cubeData.length === 0 && cubeAuctionData.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                color="textSecondary"
-                component="p"
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
-          ) : (
-            <div className="row no-gutters w-100">
-              {cubeAuctionData.map((i, index) => (
-                <div className="col-sm-6 col-lg-4 col-xl-3" key={index}>
-                  <OnAuctionCard
-                    i={i}
-                    index={index}
-                    userAuctionData={userAuctionData}
-                  />
-                </div>
-              ))}
-            </div>
-          )} */}
         </div>
       </div>
     </div>

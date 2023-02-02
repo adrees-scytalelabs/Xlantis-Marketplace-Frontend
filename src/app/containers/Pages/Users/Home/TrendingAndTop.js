@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 // MUI
 import PropTypes from "prop-types";
 import {
@@ -14,16 +14,20 @@ import Tab from "@material-ui/core/Tab";
 import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { Card } from "@material-ui/core";
+import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
+import ArrowRightIcon from "@material-ui/icons/ArrowRight";
 // COMPONENTS
 import FixedPriceDrops from "./FixedPriceDrops";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 // import SwipeableViews from "react-swipeable-views";
 import TrendingCollectionsHome from "../../../../components/tables/TrendingCollectionsHome";
 import { Spinner } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
+// import Carousel from "react-multi-carousel";
+// import "react-multi-carousel/lib/styles.css";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
 import { nftImage, auctionImg } from "../../../../assets/js/images";
+import Carousel from "react-bootstrap/Carousel";
 
 // CONTENT
 function TabPanel(props) {
@@ -88,13 +92,18 @@ const customTheme = createMuiTheme({
         fontSize: 16,
       },
     },
+    MuiSvgIcon: {
+      root: {
+        color: "white",
+      },
+    },
   },
 });
 
 const responsive = {
   desktop: {
     breakpoint: { max: 3000, min: 1024 },
-    items: 3,
+    items: 1,
     paritialVisibilityGutter: 60,
   },
   tablet: {
@@ -113,16 +122,86 @@ const responsive = {
 const TrendingAndTop = (props) => {
   const classes = useStyles();
   const theme = useTheme();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
+  const [isActive, setIsActive] = useState(false);
+  const [scrWidth, setScrWidth] = useState({});
+  const [cntWidth, setCntWidth] = useState();
+  const ref = useRef(null);
 
   //   Handlers
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
+  const getWindowWidth = () => {
+    const { innerWidth: width, innerHeight: height } = window;
+    setScrWidth({
+      width,
+      height,
+    });
+  };
+
+  const getContainerWidth = () => {
+    let container = setCntWidth(container);
+  };
+
+  const handleClick = () => {
+    setIsActive(!isActive);
+  };
+
   const handleChangeIndex = (index) => {
     setValue(index);
   };
+
+  var activeFixedDrop = [];
+  var pendingFixedDrop = [];
+  var closedFixedDrop = [];
+  if (props.fixedPriceDrop) {
+    for (let i = 0; i < props.fixedPriceDrop.length; i++) {
+      if (props.fixedPriceDrop[i].status === "active") {
+        console.log(`index ${props.fixedPriceDrop[i].status}`);
+        activeFixedDrop = [...activeFixedDrop, props.fixedPriceDrop[i]];
+      } else if (props.fixedPriceDrop[i].status === "pending") {
+        pendingFixedDrop = [...pendingFixedDrop, props.fixedPriceDrop[i]];
+      } else {
+        closedFixedDrop = [...closedFixedDrop, props.fixedPriceDrop[i]];
+      }
+    }
+  }
+
+  var activeAuctionDrop = [];
+  var pendingAuctionDrop = [];
+  var closedAuctionDrop = [];
+  if (props.bidableDrop) {
+    for (let i = 0; i < props.bidableDrop.length; i++) {
+      if (props.bidableDrop[i].status === "active") {
+        activeAuctionDrop = [...activeAuctionDrop, props.bidableDrop[i]];
+      } else if (props.bidableDrop[i].status === "pending") {
+        pendingAuctionDrop = [...pendingAuctionDrop, props.bidableDrop[i]];
+      } else {
+        closedAuctionDrop = [...closedAuctionDrop, props.bidableDrop[i]];
+      }
+    }
+  }
+
+  if (activeAuctionDrop.length !== 0) {
+    console.log("A ", activeAuctionDrop);
+  }
+
+  useEffect(() => {
+    const controller = new AbortController();
+    getWindowWidth();
+
+    const container = ref.current;
+    console.log("container: ", container);
+    setCntWidth(container);
+
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
+  if (cntWidth) console.log("width: ", cntWidth);
 
   return (
     <div className="w-100">
@@ -149,8 +228,8 @@ const TrendingAndTop = (props) => {
                 <Tab
                   label={
                     props.type === "fixedPriceDrops"
-                      ? "Top Sold Out"
-                      : "Top Auctions"
+                      ? "Sale Starting Soon"
+                      : "Auction Starting Soon"
                   }
                   {...a11yProps(1)}
                   className={classes.tabsProps}
@@ -158,8 +237,8 @@ const TrendingAndTop = (props) => {
                 <Tab
                   label={
                     props.type === "fixedPriceDrops"
-                      ? "Sale Starting Soon"
-                      : "Auction Starting Soon"
+                      ? "Ended Sales"
+                      : "Ended Auctions"
                   }
                   {...a11yProps(2)}
                   className={classes.tabsProps}
@@ -193,7 +272,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.fixedPriceDropLength === 0 ? (
+                  ) : activeFixedDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -210,13 +289,17 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No Drops on Sale</strong>
                       </Typography>
                     </Card>
                   ) : (
-                    <div className="row no-gutters w-100 align-items-center position-relative ">
+                    <div
+                      className="row no-gutters w-100 align-items-center position-relative "
+                      id="onSale"
+                      ref={ref}
+                    >
                       <div className="saleCardSlider">
-                        {props.fixedPriceDrop.map((i, index) => (
+                        {activeFixedDrop.map((i, index) => (
                           <div
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
@@ -225,6 +308,38 @@ const TrendingAndTop = (props) => {
                           </div>
                         ))}
                       </div>
+                      {/* <div className="d-xl-none">
+                        <div className="paddles">
+                          {isActive & (activeFixedDrop.length === 4) ? (
+                            <button
+                              className="left-paddle paddle"
+                              onClick={handleClick}
+                            >
+                              <ArrowLeftIcon style={{ color: "white" }} />
+                            </button>
+                          ) : (
+                            <button className="left-paddle paddle paddle-disabled">
+                              <ArrowLeftIcon style={{ color: "#9797977d" }} />
+                            </button>
+                          )}
+                          {isActive ? (
+                            <button
+                              className="right-paddle paddle paddle-disabled"
+                              disabled
+                              style={{ cursor: "pointer" }}
+                            >
+                              <ArrowRightIcon style={{ color: "#9797977d" }} />
+                            </button>
+                          ) : (
+                            <button
+                              className="right-paddle paddle"
+                              onClick={handleClick}
+                            >
+                              <ArrowRightIcon style={{ color: "white" }} />
+                            </button>
+                          )}
+                        </div>
+                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (
@@ -234,7 +349,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.bidableDropLength === 0 ? (
+                  ) : activeAuctionDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -251,13 +366,13 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No Drops On Auction</strong>
                       </Typography>
                     </Card>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.bidableDrop.map((i, index) => (
+                        {activeAuctionDrop.map((i, index) => (
                           <div
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
@@ -294,7 +409,7 @@ const TrendingAndTop = (props) => {
             </div>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
-            <div className="row no-gutters">
+            <div className="row no-gutters w-100">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
@@ -304,7 +419,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.fixedPriceDropLength === 0 ? (
+                  ) : pendingFixedDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -321,24 +436,29 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No Upcoming Drop Sales</strong>
                       </Typography>
                     </Card>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.fixedPriceDrop.map((i, index) => (
+                        {pendingFixedDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 my-3 px-0 d-inline-block"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnSaleCard
-                              i={i}
-                              // userSaleData={props.userSaleData}
-                              // image={nftImage[index + 5]}
-                            />
+                            <OnSaleCard i={i} />
                           </div>
                         ))}
+
+                        {/* {props.fixedPriceDrop.map((i, index) => (
+                          <div
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
+                            key={index}
+                          >
+                            <OnSaleCard i={i} />
+                          </div>
+                        ))} */}
                       </div>
                     </div>
                   )
@@ -349,7 +469,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.bidableDropLength === 0 ? (
+                  ) : pendingAuctionDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -366,13 +486,13 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No Pending Drops For Auction</strong>
                       </Typography>
                     </Card>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.bidableDrop.map((i, index) => (
+                        {pendingAuctionDrop.map((i, index) => (
                           <div
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
@@ -409,7 +529,7 @@ const TrendingAndTop = (props) => {
             </div>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
-            <div className="row no-gutters w-100">
+            <div className="row no-gutters">
               <div className="col-12">
                 {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
@@ -419,7 +539,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.fixedPriceDropLength === 0 ? (
+                  ) : closedFixedDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -436,21 +556,29 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No items to display</strong>
                       </Typography>
                     </Card>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.fixedPriceDrop.map((i, index) => (
+                        {closedFixedDrop.map((i, index) => (
                           <div
-                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
+                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 my-3 px-0 d-inline-block"
                             key={index}
                           >
                             <OnSaleCard i={i} />
                           </div>
                         ))}
                       </div>
+                      {/* <div class="paddles">
+                        <button class="left-paddle paddle hidden">
+                          <ArrowLeftIcon />
+                        </button>
+                        <button class="right-paddle paddle">
+                          <ArrowRightIcon />
+                        </button>
+                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (
@@ -460,7 +588,7 @@ const TrendingAndTop = (props) => {
                         <WhiteSpinner />
                       </div>
                     </div>
-                  ) : props.bidableDropLength === 0 ? (
+                  ) : closedAuctionDrop.length === 0 ? (
                     <Card
                       variant="outlined"
                       style={{
@@ -477,13 +605,13 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No items to display </strong>
+                        <strong>No items to display</strong>
                       </Typography>
                     </Card>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
-                        {props.bidableDrop.map((i, index) => (
+                        {closedAuctionDrop.map((i, index) => (
                           <div
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
@@ -519,6 +647,7 @@ const TrendingAndTop = (props) => {
               {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
+
           {/* </SwipeableViews> */}
         </div>
       </ThemeProvider>

@@ -8,7 +8,7 @@ import StorageIcon from "@material-ui/icons/Storage";
 import Card from "@material-ui/core/Card";
 import Cookies from "js-cookie";
 import CartModal from "../../../../components/Modals/CartModal";
-
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 // COMPONENT FUNCTION
 function AdminDashboardDefaultScreen(props) {
   let [totalCubes, setTotalCubes] = useState(0);
@@ -39,6 +39,52 @@ function AdminDashboardDefaultScreen(props) {
         console.log(error.response);
       });
   };
+
+  const [modalOpen, setMOdalOpen] = useState(false);
+  const [data, setData] = useState();
+
+  const handleOpenModal = async(e) => {
+    // axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
+    //   (response) => {
+    //     console.log("response", response);
+    //     console.log("responeee", response.data.data.collectionTxSummary);
+    //     setData(response.data.data);
+        setMOdalOpen(true);
+
+        
+        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+        
+        
+      
+    //   },
+    //   (error) => {
+    //     if (process.env.NODE_ENV === "development") {
+    //       console.log(error);
+    //       console.log(error.response);
+    //     }
+    //     if (error.response !== undefined) {
+    //       if (error.response.status === 400) {
+    //         // setMsg(error.response.data.message);
+    //       } else {
+    //         // setMsg("Unknown Error Occured, try again.");
+    //       }
+    //     } else {
+    //       // setMsg("Unknown Error Occured, try again.");
+    //     }
+    //     // setIsLoading(false);
+    //   }
+    // );
+  };
+
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+  };
+
 
   useEffect(() => {
     props.setActiveTab({
@@ -237,8 +283,12 @@ function AdminDashboardDefaultScreen(props) {
           </Link>
         </div>
       </div> */}
+    <BuyTxModal handleClose={handleCloseModal} open={modalOpen}   dropData = {data} isOpen = {modalOpen} />
+
     </>
+    
   );
+
 }
 
 export default AdminDashboardDefaultScreen;

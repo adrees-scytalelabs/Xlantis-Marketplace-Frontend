@@ -50,11 +50,10 @@ function MarketPlace(props) {
   const classes = useStyles();
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
-
-  const [rowsPerPage, setRowsPerPage] = useState(4);
-  const [page, setPage] = useState(0);
-
   const [open, setOpen] = useState(false);
+
+  // Handlers
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -62,29 +61,41 @@ function MarketPlace(props) {
     setOpen(true);
   };
 
+  // const handleChangePage = (event, newPage) => {
+  //   setPage(newPage);
+  //   // getCubes(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
+  // };
+  // const handleChangeRowsPerPage = (event) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   // getCubes(0, parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
+
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/fixed-price/${start}/${end}`).then(
-      (response) => {
-        console.log("responseeeee", response);
-        setFixedPriceDrop(response.data.data);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
+    axios
+      .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
+      .then(
+        (response) => {
+          console.log("responseeeee", response);
+          setFixedPriceDrop(response.data.data);
+          handleCloseBackdrop();
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          handleCloseBackdrop();
         }
-        handleCloseBackdrop();
-      }
-    );
+      );
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/${version}/drop/saleType/auction/${start}/${end}`).then(
+    axios.get(`/v2-wallet-login/drop/saleType/auction/${start}/${end}`).then(
       (res) => {
         console.log("Bidable drops response: ", res);
         setBidableDrop(res.data.data);
@@ -97,22 +108,13 @@ function MarketPlace(props) {
     );
   };
 
+  // Side Effects
   useEffect(() => {
     getCubes(0, 12); // eslint-disable-next-line
     getBidableDrops(0, 12);
   }, []);
-  const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
-    setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getCubes(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
-  };
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    getCubes(0, parseInt(event.target.value, 10));
-    setPage(0);
-  };
+
+  // Jsx
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -143,10 +145,6 @@ function MarketPlace(props) {
                       bidableDrop={bidableDrop}
                       bidableDropLength={bidableDrop.length}
                       open={open}
-                      handleChangeRowsPerPage={handleChangeRowsPerPage}
-                      handleChangePage={handleChangePage}
-                      rowsPerPage={rowsPerPage}
-                      page={page}
                     />
                   </Grid>
                 </div>
