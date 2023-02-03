@@ -113,6 +113,7 @@ function AccountApproval(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   let [admins, setAdmins] = useState([]);
+  let [walletAdmins, setWalletAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
   let [adminCount, setAdminCount] = useState(0);
@@ -136,7 +137,8 @@ function AccountApproval(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedAdmins(0, rowsPerPage);
+    getUnverifiedAdminsWallet(0, rowsPerPage);
+    getUnverifiedAdminsSSO(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -160,7 +162,7 @@ function AccountApproval(props) {
     setPage(0);
   };
 
-  let getUnverifiedAdmins = (start, end) => {
+  let getUnverifiedAdminsSSO = (start, end) => {
     // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
     //     "Authorization"
     // )}`;
@@ -170,6 +172,36 @@ function AccountApproval(props) {
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.unverifiedAdmins);
+        setAdminCount(response.data.unverifiedAdmins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            Cookies.remove("Authorization");
+            localStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+
+  let getUnverifiedAdminsWallet = (start, end) => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(
+        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
+      )
+      .then((response) => {
+        console.log("response.data", response.data);
+        setWalletAdmins(response.data.unverifiedAdmins);
         setAdminCount(response.data.unverifiedAdmins.length);
         setOpen(false);
       })
@@ -208,7 +240,7 @@ function AccountApproval(props) {
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        getUnverifiedAdmins(0, rowsPerPage);
+        getUnverifiedAdminsSSO(0, rowsPerPage);
         // setIsUploadingData(false);
       },
       (error) => {
@@ -259,17 +291,25 @@ function AccountApproval(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">Login Type</div>
+                </th>
+                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Approval Status
                   </div>
                 </th>
               </tr>
             </thead>
-            {admins.map((i, index) => (
-              <tbody>
+            <tbody>
+              {admins.map((i, index) => (
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
+                  <td
+                    className={`${classes.collectionTitle}`}
+                  >
+                    <label style={{marginLeft:'10%'}}>SSO</label>
+                  </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isVerified ? (
@@ -301,11 +341,53 @@ function AccountApproval(props) {
                         </Button>
                       </div>
                     )}
+
                     {/* </div> */}
                   </td>
                 </tr>
-              </tbody>
-            ))}
+              ))}
+              {walletAdmins.map((i, index) => (
+                <tr>
+                  <td className={classes.collectionTitle}>{i.username}</td>
+                  <td className={classes.collectionTitle}>{i.walletAddress}</td>
+                  <td className={classes.collectionTitle} ><label style={{marginLeft:'10%'}}>Wallet</label></td>
+                  <td>
+                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    {i.isVerified ? (
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button disabled>
+                          <span className="text-white">Verified</span>
+                          <i
+                            className="fas fa-check ml-2"
+                            style={{ color: "#F64D04" }}
+                          ></i>{" "}
+                        </Button>
+                      </div>
+                    ) : (
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className={classes.approveBtn}
+                          // style={{
+                          //   backgroundColor: "#000",
+                          //   color: "#fff",
+                          //   padding: "10px 30px",
+                          //   border: "1px solid #F64D04",
+                          //   borderRadius: "0px 15px",
+                          // }}
+                          onClick={(e) => {
+                            handleVerify(e, i._id);
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    )}
+
+                    {/* </div> */}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
           </Table>
         </div>
       </div>
