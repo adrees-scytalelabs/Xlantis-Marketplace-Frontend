@@ -12,7 +12,6 @@ import {
   Backdrop,
   Card,
   CardContent,
-  CardHeader,
   CardMedia,
   CircularProgress,
   makeStyles,
