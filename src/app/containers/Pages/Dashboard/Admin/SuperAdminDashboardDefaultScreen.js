@@ -2,13 +2,8 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles} from "@material-ui/styles";
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import SuperAdminDefaultScreen from "./SuperAdminDefaultScreen";
 import SuperAdminSSOScreen from "./SuperAdminSSOScreen";
 import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
@@ -143,11 +138,11 @@ function SuperAdminDashboardDefaultScreen(props) {
             </div>
           </div>
         </div>
-        {/* <!-- /Page Header --> */}
+        {/* <!-- /Page Content --> */}
         <div className="card-body page-height px-0">
           <ThemeProvider theme={customTheme}>
             <div className="row no-gutters">
-              <div className="col-md-12">
+              <div className="col-md-12 col-lg-12 col-xl-12">
                 {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
                 <Tabs
                   value={value}
@@ -179,7 +174,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                     setActiveTab={props.setActiveTab}
                   />
                 </TabPanel>
-                <TabPanel className="d-flex justify-content-center" value={value} index={1}>
+                <TabPanel value={value} index={1}>
                   <SuperAdminSSOScreen
                     match={props.match}
                     setActiveTab={props.setActiveTab}
@@ -196,100 +191,6 @@ function SuperAdminDashboardDefaultScreen(props) {
           </ThemeProvider>
         </div>
       </div>
-      {/* <div>
-        
-      </div> */}
-
-      {/* <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/myCubes`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-secondary border-secondary">
-                    <i className="fas fa-cubes" />
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalCubes}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Cubes</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-secondary w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/myDrops`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-danger border-danger">
-                    <StorageIcon />
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalDrops}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Drops</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-danger w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/mySeason`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-success border-success">
-                    <i className="fas fa-boxes"></i>
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalSeasons}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Seasons</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-success w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/newCollection`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-info border-info">
-                    <i className="fas fa-layer-group"></i>
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalCollections}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Collections</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-info w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div> */}
     </>
   );
 }
