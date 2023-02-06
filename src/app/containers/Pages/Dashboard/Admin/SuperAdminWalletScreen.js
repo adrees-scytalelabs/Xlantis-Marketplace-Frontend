@@ -14,7 +14,7 @@ function SuperAdminWalletScreen(props) {
   let [hover, setHover] = useState(false);
 
   let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios

@@ -39,7 +39,7 @@ import SingleNftDetail from "./Admin/singleNftDetail";
 
 
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
   "Authorization"
 )}`;
 

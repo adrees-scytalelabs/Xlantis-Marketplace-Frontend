@@ -58,7 +58,7 @@ function MyCubes(props) {
   };
   let getMyCubes = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get(`/token/TokenIds/${start}/${end}`).then(
