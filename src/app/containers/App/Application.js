@@ -40,21 +40,20 @@ function App() {
   let isLoggedIn;
   let isVerified = false;
   let version;
-  let jwtDecoded;
+  var jwtDecoded;
   let jwt = Cookies.get("Authorization");
+  if (jwt) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
     console.log("verified? ", Cookies.get("Verified"));
     jwt && console.log("jwt in application: ", jwt);
-    if (jwt) {
-      console.log(jwtDecode(jwt));
-      // setjwtDecoded(jwtDecode(jwt));
-      jwtDecoded = jwtDecode(jwt);
+    if (jwtDecoded) {
+      // jwtDecoded = jwtDecode(jwt);
       // jwtDecoded2 = jwtDecode(newJwt);
-      console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
       isVerified = Cookies.get("Verified");
       version = Cookies.get("Version");
+
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
@@ -66,7 +65,9 @@ function App() {
 
   useEffect(() => {
     checkLoginStatus(); // eslint-disable-next-line
-  }, []);
+  }, [jwt]);
+
+  jwt && console.log("jwtDecoded", jwtDecoded.role);
 
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();

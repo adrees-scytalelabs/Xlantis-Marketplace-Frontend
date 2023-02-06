@@ -21,19 +21,7 @@ const indsutries = [
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
-  const [fullName, setFullName] = useState();
-  const [industry, setIndustry] = useState();
-  const [compnayName, setCompanyName] = useState();
-  const [designation, setDesignation] = useState();
-  const [domain, setDomain] = useState();
-  const [desciption, setDescription] = useState();
   const [success, setSucess] = useState();
-  const [cookies, setCookie] = useCookies(["user"]);
-
-  // console.log("this is cookie token: ", cookies.Authorization);
-  console.log("admin verified: ", cookies.Verified);
-  // console.log("admin Info Added: ", cookies.InfoAdded);
-  // console.log("the auth: ", cookies.auth);
 
   // Handlers
   const handleChangeValues = (event) => {
@@ -59,9 +47,6 @@ const AdminSSORedirect = () => {
     addDetails();
     console.log(inputs, "the form inputs");
   };
-
-  // const rainDropToken =
-  //   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFhYWxpaWk0dUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJ1c2VySWQiOiI2M2JlZGNlMWRhZWI1ZWE5YmY1ODliMTgiLCJpYXQiOjE2NzM0NTI3NjksImV4cCI6NjAwMDAxNjczNDUyNzY5fQ.LOIH0EgrNQx306nvd_NtF94UjZSAk_PPOmuAlHN4rVM";
 
   const config = {
     headers: {

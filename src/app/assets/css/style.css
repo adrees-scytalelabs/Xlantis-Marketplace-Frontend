@@ -891,9 +891,8 @@ li.slash::after {
 
 #totalNftsAdminDash:hover,
 #totalCollectionsAdminDash:hover {
-  /* box-shadow: 0 10px 6px -6px #777; */
-  /* background-color: unset;
-  background-image: var(--linearGradient); */
+  /* box-shadow: var(--orangeBoxShadow) */
+  background-color: var(--borderOrange);
 }
 
 .totalNftsAdminDashCountHover,

@@ -68,19 +68,11 @@ const AdminLoginSignupForms = () => {
   // States
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [account, setAccount] = useState(null);
-  const [inputs, setInputs] = useState({});
   const [isActive, setIsActive] = useState(false);
   const [phoneNum, setPhoneNum] = useState();
-  const [userCheck, setUserCheck] = useState(false);
-  const [error, setError] = useState();
   const [adminSignInData, setAdminSignInData] = useState(null);
-  const [infoAdded, setInfoAdded] = useState();
-  const [verified, setVerified] = useState();
-  const [rdToken, setRdToken] = useState();
   const [tokenVerification, setTokenVerification] = useState(true);
   const classes = useStyles();
-  const [cookies, setCookie] = useCookies(["user"]);
-  const { googleSignIn, user, accessToken } = UserAuth();
 
   // Variables
   const { REACT_APP_CLIENT_ID } = process.env;
@@ -104,10 +96,6 @@ const AdminLoginSignupForms = () => {
     setOpenSnackBar(true);
   };
 
-  if (adminSignInData !== null && infoAdded === true && verified === false) {
-    handleSnackBarOpen();
-  }
-
   const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
       return;
@@ -119,45 +107,8 @@ const AdminLoginSignupForms = () => {
     history.push(`/`);
   };
 
-  // const handleGoogleSignIn = async () => {
-  //   await googleSignIn();
-  // };
-
-  // function handleCredentialResponse(response) {
-  //   console.log("idToken: ", response.credential);
-  //   setAccount(response.credential);
-  //   // response.credential &&
-  //   // setCookie("auth", response.credential, { path: "/" });
-  //   // document.getElementById("signInDiv").hidden = true;
-  // }
-
-  // const handleSignOut = (e) => {
-  //   setAccount(null);
-  //   document.getElementById("signInDiv").hidden = false;
-  // };
-
-  // Life Cycles
-  // useEffect(() => {
-  //   /* global google */
-
-  //   google.accounts.id.initialize({
-  //     client_id: clientID,
-  //     callback: handleCredentialResponse,
-  //   });
-  //   google.accounts.id.renderButton(document.getElementById("signInDiv"), {
-  //     theme: "outline",
-  //     size: "large",
-  //   });
-  //   google.accounts.id.prompt();
-  // }, []);
-
   useEffect(() => {
     const controller = new AbortController();
-    // Axios Calls
-    // const adminAccount = (token) => {
-
-    // };
-
     if (account !== null) {
       axios
         .post("/v1-sso/user/auth/user-login", { idToken: account })
@@ -167,26 +118,17 @@ const AdminLoginSignupForms = () => {
             Cookies.set("Version", "v1-sso", {});
 
             setAdminSignInData(response.data);
-            // if (response.data.isInfoAdded && response.data.isVerified) {
             console.log("1");
             response.data.isInfoAdded === true &&
               Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-            // setCookie("InfoAdded", response.data.isInfoAdded, {
-            //   path: "/",
-            // });
             console.log("2");
             response.data.isVerified === true &&
               Cookies.set("Verified", response.data.isVerified, {});
-            // setCookie("Verified", response.data.isVerified, { path: "/" });
-            // } else if
             console.log("3");
-            response.data.raindropToken &&
+            if (response.data.raindropToken) {
               Cookies.set("Authorization", response.data.raindropToken, {});
-              // history.push("/");
-            // window.location.reload();
-            // setCookie("Authorization", response.data.raindropToken, {
-            //   path: "/",
-            // });
+              window.location.reload();
+            }
           }
         })
         .catch((error) => {
@@ -213,6 +155,9 @@ const AdminLoginSignupForms = () => {
     }
   }, [adminSignInData]);
 
+  adminSignInData &&
+    console.log("user token before refresh /// ", adminSignInData);
+
   // Content
   return (
     <>
@@ -227,9 +172,7 @@ const AdminLoginSignupForms = () => {
             }
           >
             <div className="adminLoginContainer">
-              <div
-              // style={{ height: "100%" }}
-              >
+              <div>
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
                     <div className="col-12 text-right mb-1">
@@ -288,63 +231,7 @@ const AdminLoginSignupForms = () => {
                           width="258px"
                         />
                       </GoogleOAuthProvider>
-                      {/* <div>
-                        <div
-                          id="g_id_onload"
-                          data-client_id="547231391553-6q1fivchst9ahh6v1u68lvjifne3po0g.apps.googleusercontent.com"
-                          data-context="signin"
-                          data-ux_mode="popup"
-                          data-callback="handleCredentialResponse"
-                          data-auto_prompt="false"
-                        ></div>
-
-                        <div
-                          className="g_id_signin"
-                          data-type="standard"
-                          data-shape="rectangular"
-                          data-theme="outline"
-                          data-text="continue_with"
-                          data-size="large"
-                          data-logo_alignment="left"
-                          data-width="258"
-                        ></div>
-                      </div> */}
-                      {/* <div className="googleBtnWrapper mx-auto" id="signInDiv"> */}
-                      {/* <GoogleButton
-                          label="Continue With Google"
-                          style={{
-                            backgroundColor: "black",
-                            margin: "0px",
-                            border: "1px solid white",
-                            width: "100%",
-                            borderRadius: "5px",
-                            height: "unset",
-                            // lineHeight: "1.5",
-                            // padding: "5px 0px",
-                          }}
-                          onClick={handleGoogleSignIn}
-                        /> */}
-                      {/*  {error !== undefined && (
-                          <Snackbar
-                            open={snackOpen}
-                            autoHideDuration={6000}
-                            onClose={handleClose}
-                          >
-                            <Alert onClose={handleClose} severity="error">
-                              {error.message}
-                            </Alert>
-                          </Snackbar>
-                        )} */}
-                      {/* </div> */}
-                      {adminSignInData !== null &&
-                         (
-                            history.push("/")
-                          
-                        )}
-                      {/* {adminSignInData !== null &&
-                        adminSignInData.isVerified === true && (
-                          <Redirect to="/dashboard" />
-                        )} */}
+                      {adminSignInData !== null && history.push("/")}
                       <Snackbar
                         anchorOrigin={{
                           vertical: "bottom",
@@ -374,25 +261,6 @@ const AdminLoginSignupForms = () => {
                           </React.Fragment>
                         }
                       />
-                      {/* {account !== null && (
-                        <div className="googleBtnWrapper">
-                          <button onClick={(e) => handleSignOut(e)}>
-                            Sign Out
-                          </button>
-                        </div>
-                      )} */}
-
-                      {/* {account && (
-                        <div>
-                          <img src={account.picture} alt="user profile" />
-                          <h3>{user.name}</h3>
-                        </div>
-                      )} */}
-                      {/* {userCheck ? (
-                        <Redirect to="/admin-signup-details" />
-                      ) : (
-                        <Redirect to="/admin-account" />
-                      )} */}
                     </ThemeProvider>
                     <div className="signUp-link">
                       <p>
@@ -423,7 +291,6 @@ const AdminLoginSignupForms = () => {
           </div>
           {/* Sign up */}
           <div
-            // className="row no-gutters w-100"
             className={
               isActive
                 ? "row no-gutters justify-content-center align-items-center adminCredWrapper userSignUp w-100"

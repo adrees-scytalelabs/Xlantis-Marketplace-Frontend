@@ -27,6 +27,7 @@ import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
+import jwtDecode from "jwt-decode";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -314,6 +315,10 @@ function HeaderHome(props) {
     }
   };
 
+  let jwtDecoded, jwt;
+  jwt = Cookies.get("Authorization");
+  if (jwt) jwtDecoded = jwtDecode(jwt);
+
   useEffect(() => {}, []);
 
   return (
@@ -426,27 +431,17 @@ function HeaderHome(props) {
                       fontWeight: "bold",
                     }}
                   > */}
-                  {user ? (
+                  <>
                     <span
                       className={hoverClassStyle.Community}
                       style={selectedNavStyle.Community}
-                      onClick={handleSignOut}
+                      onClick={handleOpenModal}
                     >
-                      Logout
+                      Login/SignUp
+                      {/* Connect Wallet */}
                     </span>
-                  ) : (
-                    <>
-                      <span
-                        className={hoverClassStyle.Community}
-                        style={selectedNavStyle.Community}
-                        onClick={handleOpenModal}
-                      >
-                        Login/SignUp
-                        {/* Connect Wallet */}
-                      </span>
-                      {userSignOut && <Redirect to="/" />}
-                    </>
-                  )}
+                    {userSignOut && <Redirect to="/" />}
+                  </>
                   {/* {userSignOut && } */}
 
                   {/* </Link> */}
@@ -573,13 +568,18 @@ function HeaderHome(props) {
           </li>
 
           <li>
-            {localStorage.getItem("Address") ? (
-              <Link to="/dashboard" style={{ color: "#fff" }}>
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                {/* <div>
+            {
+              localStorage.getItem("Address") ? (
+                <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
+              ) : jwtDecoded !== undefined && jwtDecoded.role === "user" ? (
+                <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
+              ) : (
+                <>
+                  {/* <div>
                   <Avatar
                   aria-owns={anchorEl ? "simple-menu" : undefined}
                   aria-haspopup="true"
@@ -590,17 +590,8 @@ function HeaderHome(props) {
                   sx={{ width: 24, height: 24 }}
                 />
                 </div> */}
-                {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                {/* <Link to="/login" style={{ color: "#fff" }}> */}
-                {user ? (
-                  <span
-                    className={hoverClassStyle.Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleSignOut}
-                  >
-                    Logout
-                  </span>
-                ) : (
+                  {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
+                  {/* <Link to="/login" style={{ color: "#fff" }}> */}
                   <>
                     <span
                       className={hoverClassStyle.Community}
@@ -612,9 +603,8 @@ function HeaderHome(props) {
                     </span>
                     {userSignOut && <Redirect to="/" />}
                   </>
-                )}
 
-                {/* (
+                  {/* (
                   <span
                     className={hoverClassStyle.Community}
                     style={selectedNavStyle.Community}
@@ -624,18 +614,19 @@ function HeaderHome(props) {
                     Connect Wallet
                   </span>
                 )} */}
-                {/* <span
+                  {/* <span
                   style={{ cursor: "pointer", color: "#fff" }}
                   onClick={handleOpenModal}
                 >
                   Login/SignUp */}
-                {/* Connect Wallet */}
-                {/* </span> */}
-                {/* </Link> */}
-                {/* </span> */}
-              </>
+                  {/* Connect Wallet */}
+                  {/* </span> */}
+                  {/* </Link> */}
+                  {/* </span> */}
+                </>
+              )
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            )}
+            }
           </li>
 
           <li>
@@ -645,6 +636,10 @@ function HeaderHome(props) {
           </li>
           <li>
             {localStorage.getItem("Address") ? (
+              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+                Logout
+              </span>
+            ) : jwtDecoded !== undefined && jwtDecoded.role === "user" ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
