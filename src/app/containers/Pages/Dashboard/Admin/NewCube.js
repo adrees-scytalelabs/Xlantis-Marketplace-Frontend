@@ -224,7 +224,7 @@ function NewCube(props) {
     e.preventDefault();
     setIsSaving(true);
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     let jwtDecoded = jwtDecode(jwt);
     let exporter = jwtDecoded.id;
     console.log("exporter", exporter);

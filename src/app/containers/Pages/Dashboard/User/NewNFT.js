@@ -279,7 +279,7 @@ function NewNFT(props) {
 
             axios.defaults.headers.common[
               "Authorization"
-            ] = `Bearer ${Cookies.get("Authorization")}`;
+            ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
             axios.post("/nft/createnft", Data).then(
               (response) => {
                 console.log("response", response);

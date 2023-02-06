@@ -237,7 +237,7 @@ function ProfileSetting(props) {
     }
   };
   let getUserRoles = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/getuserprofile").then(

@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UserCubeNFTs(props) {
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     console.log(jwtDecode(jwt));

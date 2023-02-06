@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import Cookies from "js-cookie";
 import { Card } from "@material-ui/core";
+import { Session } from "walletlink/dist/relay/Session";
 function SuperAdminDefaultScreen(props) {
   let [totalAdmins, setTotalAdmins] = useState(0);
   let [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
@@ -13,7 +14,7 @@ function SuperAdminDefaultScreen(props) {
   let [totalDisabled, setTotalDisabled] = useState(0);
   let [hover, setHover] = useState(false);
   let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios

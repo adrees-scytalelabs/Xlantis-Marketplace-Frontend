@@ -47,6 +47,7 @@ function HeaderHome(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
+  let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -315,7 +316,28 @@ function HeaderHome(props) {
     }
   };
 
-  useEffect(() => {}, []);
+  let getProfile = () => {
+    let userLogin=sessionStorage.getItem("Authorization");
+    if (userLogin){
+      let version = Cookies.get("Version");
+    axios
+      .get(`${version}/user/profile`)
+      .then((response) => {
+        console.log("profile data image:",response.data.userData.imageURL);
+        response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response);
+      });
+    }
+   
+  }
+
+
+useEffect(() => {
+  getProfile();
+},[]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -516,12 +538,7 @@ function HeaderHome(props) {
                   </Spinner>
                 </div>
               ) : sessionStorage.getItem("Address") ? (
-                <div>
-                  <AccountCircle
-                    onClick={handleClick}
-                    className="account-circle"
-                    fontSize="large"
-                  />
+                <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"

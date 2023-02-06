@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SaleCubeNFTs(props) {
   let history = useHistory();
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     jwtDecoded = jwtDecode(jwt);
@@ -202,7 +202,7 @@ function SaleCubeNFTs(props) {
   let BuyCube = async (e) => {
     e.preventDefault();
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     if (jwt) {
       await loadWeb3();
       const web3 = window.web3;

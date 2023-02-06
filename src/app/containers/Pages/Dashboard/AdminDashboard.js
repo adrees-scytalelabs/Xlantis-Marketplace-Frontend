@@ -41,7 +41,7 @@ import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import transakSDK from "@transak/transak-sdk";
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
   "Authorization"
 )}`;
 

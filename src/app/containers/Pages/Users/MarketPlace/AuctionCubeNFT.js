@@ -79,7 +79,7 @@ const useStyles = makeStyles((theme) => ({
 
 function AuctionCubeNFTs(props) {
   let history = useHistory();
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     jwtDecoded = jwtDecode(jwt);
@@ -180,7 +180,7 @@ function AuctionCubeNFTs(props) {
   let Bid = async (e) => {
     e.preventDefault();
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     if (jwt) {
       //   console.log(jwtDecode(jwt));
       await loadWeb3();
@@ -587,7 +587,7 @@ function AuctionCubeNFTs(props) {
 
           axios.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${Cookies.get("Authorization")}`;
+          ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
           axios.post("usercubehistory/createhistory", BidData).then(
             (response) => {
               console.log("response", response);
