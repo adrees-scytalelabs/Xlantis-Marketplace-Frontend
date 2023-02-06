@@ -4,8 +4,9 @@ import { Link } from "react-router-dom";
 
 function SuperAdminSidebar(props) {
   let handleLogout = (e) => {
-    Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    sessionStorage.clear();
+    sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);

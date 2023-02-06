@@ -696,8 +696,8 @@ function CubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  localStorage.removeItem("Address");
-                  Cookies.remove("Authorization");
+                  sessionStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
                   window.location.reload(false);
                 }
               }

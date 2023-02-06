@@ -9,8 +9,9 @@ import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 function AdminSidebar(props) {
   console.log(props);
   let handleLogout = (e) => {
-    localStorage.removeItem("Address");
-    Cookies.remove("Authorization");
+    sessionStorage.clear();
+    sessionStorage.removeItem("Address");
+    sessionStorage.removeItem("Authorization");
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);

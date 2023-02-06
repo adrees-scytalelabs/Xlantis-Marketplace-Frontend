@@ -208,14 +208,14 @@ function HeaderHome(props) {
       axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
-          Cookies.set("Authorization", response.data.token, {});
+          sessionStorage.setItem("Authorization", response.data.token, {});
           Cookies.set("Version", "v2-wallet-login", {});
           // if (response.data.roles.includes("user")) {
           //   console.log("we here");
           //   localStorage.setItem("Address", accounts[0]);
           // }
           // setIsLoading(false);
-          localStorage.setItem("Address", accounts[0]);
+          sessionStorage.setItem("Address", accounts[0]);
           // history.push("/");
           window.location.reload();
         },
@@ -285,8 +285,9 @@ function HeaderHome(props) {
 
   let Logout = (e) => {
     console.log("akjdf");
-    Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Address");
+    sessionStorage.clear();
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
 
@@ -402,18 +403,18 @@ function HeaderHome(props) {
             <li className="login-link" style={{ padding: "15px 20px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
-              {localStorage.getItem("Address") ? (
+              {sessionStorage.getItem("Address") ? (
                 <a
                   href={
                     "https://ropsten.etherscan.io/address/" +
-                    localStorage.getItem("Address")
+                    sessionStorage.getItem("Address")
                   }
                   target="_blank"
                   rel="noopener noreferrer"
                   style={{ color: "#fff" }}
                 >
                   <span style={{ cursor: "pointer" }}>
-                    {localStorage.getItem("Address").substr(0, 10)}. . .
+                    {sessionStorage.getItem("Address").substr(0, 10)}. . .
                   </span>
                 </a>
               ) : (
@@ -514,7 +515,7 @@ function HeaderHome(props) {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
-              ) : localStorage.getItem("Address") ? (
+              ) : sessionStorage.getItem("Address") ? (
                 <div>
                   <AccountCircle
                     onClick={handleClick}
@@ -573,7 +574,7 @@ function HeaderHome(props) {
           </li>
 
           <li>
-            {localStorage.getItem("Address") ? (
+            {sessionStorage.getItem("Address") ? (
               <Link to="/dashboard" style={{ color: "#fff" }}>
                 Dashboard
               </Link>
@@ -644,7 +645,7 @@ function HeaderHome(props) {
             </span>
           </li>
           <li>
-            {localStorage.getItem("Address") ? (
+            {sessionStorage.getItem("Address") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
