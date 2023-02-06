@@ -273,7 +273,16 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
+                  <td className={classes.collectionTitle}>
+                    {i.walletAddress != undefined ? (
+                      <Tooltip title={i.walletAddress}>
+                        
+                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                      </Tooltip>
+                    ) : (
+                      <label>N/A</label>
+                    )}
+                  </td>
                   <td className={`${classes.collectionTitle}`}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
@@ -317,13 +326,10 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>
-                    <label >N/A</label>
+                    <label>N/A</label>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <Tooltip
-                      title={i.walletAddress}
-                      
-                    >
+                    <Tooltip title={i.walletAddress}>
                       <span>{i.walletAddress.slice(0, 6)}...</span>
                     </Tooltip>
                   </td>
