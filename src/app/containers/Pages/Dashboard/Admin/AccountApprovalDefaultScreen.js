@@ -232,6 +232,43 @@ function AccountApprovalDefaultScreen(props) {
     );
   };
 
+  let handleVerifyWallet = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
+    };
+
+    console.log("data", data);
+
+    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        getUnverifiedAdminsWallet(0, rowsPerPage);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on verify: ", error);
+        console.log("Error on verify: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
+      }
+    );
+  };
+
   return (
     <div className="backgroundDefault">
       {/* Page Content */}
@@ -360,7 +397,7 @@ function AccountApprovalDefaultScreen(props) {
                           //   borderRadius: "0px 15px",
                           // }}
                           onClick={(e) => {
-                            handleVerify(e, i._id);
+                            handleVerifyWallet(e, i._id);
                           }}
                         >
                           Approve
