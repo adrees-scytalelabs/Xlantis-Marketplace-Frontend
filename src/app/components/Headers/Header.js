@@ -202,7 +202,7 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        route = "v2-wallet-login/user/auth/admin/login";
+        route = "v2-wallet-login/user/auth/admin-login";
       } else {
         route = "v2-wallet-login/user/auth/login";
       }
