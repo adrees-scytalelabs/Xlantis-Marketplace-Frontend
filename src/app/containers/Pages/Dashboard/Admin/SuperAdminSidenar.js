@@ -12,6 +12,9 @@ function SuperAdminSidebar(props) {
       setStyle("dropdown-container1");
     }
   };
+  let closedDropdown = (e) => {
+    setStyle("dropdown-container1");
+  };
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");
@@ -30,12 +33,12 @@ function SuperAdminSidebar(props) {
             <li className="menu-title">
               <span>Main</span>
             </li>
-            <li className={props.activeTab.dashboard}>
-              <Link to={`${props.match.url}`} className="sidebarLink">
+            <li className={props.activeTab.dashboard} onClick={closedDropdown}>
+              <Link to={`${props.match.url}`} className="sidebarLink" >
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.accountApproval}>
+            <li className={props.activeTab.accountApproval} onClick={closedDropdown}>
               <Link
                 to={`${props.match.url}/accountApproval`}
                 className="sidebarLink"
@@ -92,7 +95,7 @@ function SuperAdminSidebar(props) {
                 
               </Link>
             </li> */}
-            <li className={props.activeTab.accounts}>
+            <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>
