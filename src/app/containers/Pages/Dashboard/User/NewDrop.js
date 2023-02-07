@@ -93,7 +93,7 @@ function NewDrop(props) {
   };
 
   let getMyCubes = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/token/TokenIdsnotonauction").then(
@@ -286,7 +286,7 @@ function NewDrop(props) {
         };
         console.log("cubeData", DropData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("/drop/createdrop", DropData).then(

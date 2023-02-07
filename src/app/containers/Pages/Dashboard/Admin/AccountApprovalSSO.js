@@ -112,7 +112,6 @@ function AccountApprovalSSO(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedAdminsWallet(0, rowsPerPage);
     getUnverifiedAdminsSSO(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
@@ -138,7 +137,7 @@ function AccountApprovalSSO(props) {
   };
 
   let getUnverifiedAdminsSSO = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
@@ -158,36 +157,6 @@ function AccountApprovalSSO(props) {
           ) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-
-  let getUnverifiedAdminsWallet = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
-    //     "Authorization"
-    // )}`;
-    setOpen(true);
-    axios
-      .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
-      .then((response) => {
-        console.log("response.data", response.data);
-        setWalletAdmins(response.data.unverifiedAdmins);
-        setAdminCount(response.data.unverifiedAdmins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -257,11 +226,6 @@ function AccountApprovalSSO(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Login Type
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Approval Status
                   </div>
@@ -273,62 +237,15 @@ function AccountApprovalSSO(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
-                  <td className={`${classes.collectionTitle}`}>
-                    <label style={{ marginLeft: "10%" }}>SSO</label>
-                  </td>
-                  <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
-                    {i.isVerified ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button disabled>
-                          <span className="text-white">Verified</span>
-                          <i
-                            className="fas fa-check ml-2"
-                            style={{ color: "#F64D04" }}
-                          ></i>{" "}
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
-                          onClick={(e) => {
-                            handleVerify(e, i._id);
-                          }}
-                        >
-                          Approve
-                        </Button>
-                      </div>
-                    )}
 
-                    {/* </div> */}
-                  </td>
-                </tr>
-              ))}
-              {walletAdmins.map((i, index) => (
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>
-                    <label >N/A</label>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip
-                      title={i.walletAddress}
-                      
-                    >
-                      <span>{i.walletAddress.slice(0, 6)}...</span>
-                    </Tooltip>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>Wallet</label>
+                    {i.walletAddress != undefined ? (
+                      <Tooltip title={i.walletAddress}>
+                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                      </Tooltip>
+                    ) : (
+                      <label>N/A</label>
+                    )}
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
@@ -346,13 +263,6 @@ function AccountApprovalSSO(props) {
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
                           onClick={(e) => {
                             handleVerify(e, i._id);
                           }}

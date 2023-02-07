@@ -1,0 +1,33 @@
+.dropdown-container1 {
+    display: none;
+    background-color: #262626;
+    padding-left: 8px;
+    
+  }
+  .dropdown-container2 {
+    display: block;
+    background-color: white;
+    padding-left: 8px;
+    width: 100%;
+  }
+  .dropdown-btn{
+    background-color: transparent;
+    border:none;
+    color: white;
+    padding: 8px;
+  }
+  .fa-caret-down {
+    float: right;
+    padding-right: 8px;
+  }
+  .ssoRow:hover{
+    
+    border:2px solid black;
+    text-align: center;
+  }
+  .walletRow:hover{
+    
+    border:2px solid black;
+    text-align: center;
+    justify-content: center;
+  }

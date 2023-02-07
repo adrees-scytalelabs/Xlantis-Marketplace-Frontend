@@ -1,21 +1,11 @@
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+
+import { createMuiTheme, ThemeProvider,Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -112,10 +102,12 @@ function Enabled(props) {
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  let [admins, setAdmins] = useState([]);
+  let [admins, setSSOAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
-  let [adminCount, setAdminCount] = useState(0);
+  let [adminCount, setSSOAdminCount] = useState(0);
+  let [walletAdmins, setWalletAdmins] = useState([]);
+  let [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -136,7 +128,8 @@ function Enabled(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedAdmins();
+    getEnabledSSOAdmins();
+    getEnabledWalletAdmins();
     // getMyCubes();
     // props.setActiveTab({
     //   dashboard: "",
@@ -160,8 +153,8 @@ function Enabled(props) {
     setPage(0);
   };
 
-  let getUnverifiedAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+  let getEnabledSSOAdmins = () => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
@@ -169,8 +162,35 @@ function Enabled(props) {
       .get(`/v1-sso/super-admin/admins/enabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
-        setAdmins(response.data.admins);
-        setAdminCount(response.data.admins.length);
+        setSSOAdmins(response.data.admins);
+        setSSOAdminCount(response.data.admins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+  let getEnabledWalletAdmins = () => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(`/v2-wallet-login/super-admin/admins/enabled?userType=v2`)
+      .then((response) => {
+        console.log("response.data", response.data);
+        setWalletAdmins(response.data.admins);
+        setWalletAdminCount(response.data.admins.length);
         setOpen(false);
       })
       .catch((error) => {
@@ -208,7 +228,43 @@ function Enabled(props) {
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        getUnverifiedAdmins(0, rowsPerPage);
+        getEnabledSSOAdmins(0, rowsPerPage);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
+      }
+    );
+  };
+  let handleWalletDisable = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
+    };
+
+    console.log("data", data);
+
+    axios.patch("/v2-wallet-login/super-admin/disable?userType=v2", data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Disabled Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        getEnabledWalletAdmins(0, rowsPerPage);
         // setIsUploadingData(false);
       },
       (error) => {
@@ -247,6 +303,16 @@ function Enabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Wallet Address
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Login Type
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Status
                   </div>
@@ -258,6 +324,16 @@ function Enabled(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
+                  <td className={classes.collectionTitle}>
+                    {i.walletAddress != undefined ? (
+                      <Tooltip title={i.walletAddress}>
+                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                      </Tooltip>
+                    ) : (
+                      <label>N/A</label>
+                    )}
+                  </td>
+                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>SSO</label></td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled ? (
@@ -273,6 +349,46 @@ function Enabled(props) {
                           // }}
                           onClick={(e) => {
                             handleDisable(e, i._id);
+                          }}
+                        >
+                          Disable
+                        </Button>
+                      </div>
+                    ) : null}
+                    {/* </div> */}
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+             {walletAdmins.map((i, index) => (
+              <tbody>
+                <tr>
+                  <td className={classes.collectionTitle}>{i.username}</td>
+                  <td className={classes.collectionTitle}>N/A</td>
+                  <td className={classes.collectionTitle}>
+                    <Tooltip
+                      title={i.walletAddress}
+                      
+                    >
+                      <span>{i.walletAddress.slice(0, 8)}...</span>
+                    </Tooltip>
+                  </td>
+                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>Wallet</label></td>
+                  <td>
+                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    {i.isEnabled ? (
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className={classes.approveBtn}
+                          // style={{
+                          //   backgroundColor: "#000",
+                          //   color: "#fff",
+                          //   padding: "10px 30px",
+                          //   border: "1px solid #F64D04",
+                          //   borderRadius: "0px 15px",
+                          // }}
+                          onClick={(e) => {
+                            handleWalletDisable(e, i._id);
                           }}
                         >
                           Disable

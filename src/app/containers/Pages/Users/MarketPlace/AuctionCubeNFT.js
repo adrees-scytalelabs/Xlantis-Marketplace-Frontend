@@ -243,7 +243,7 @@ function AuctionCubeNFTs(props) {
         auctionId: auctionId,
         tokenId: cubeId,
       };
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post("/userclaimfunds/claimfunds", Data).then(
@@ -277,7 +277,7 @@ function AuctionCubeNFTs(props) {
     };
     console.log("saleData", saleData);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("auction/deleteauction", saleData).then(
@@ -346,7 +346,7 @@ function AuctionCubeNFTs(props) {
         };
         console.log("BuyData", BuyData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("token/buyuserToken", BuyData).then(
@@ -404,7 +404,7 @@ function AuctionCubeNFTs(props) {
           transaction: receipt.transactionHash,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("/transaction/tokenTransaction ", TrasactionData).then(
@@ -627,7 +627,7 @@ function AuctionCubeNFTs(props) {
       tokenId: cubeId,
     };
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post(`/usercubehistory/history`, bidData).then(
@@ -653,7 +653,7 @@ function AuctionCubeNFTs(props) {
       }
     );
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(

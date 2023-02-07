@@ -138,7 +138,7 @@ function AccountApprovalDefaultScreen(props) {
   };
 
   let getUnverifiedAdminsSSO = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
@@ -166,7 +166,7 @@ function AccountApprovalDefaultScreen(props) {
   };
 
   let getUnverifiedAdminsWallet = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
@@ -232,6 +232,43 @@ function AccountApprovalDefaultScreen(props) {
     );
   };
 
+  let handleVerifyWallet = (e, verifyAdminId) => {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      adminId: verifyAdminId,
+    };
+
+    console.log("data", data);
+
+    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+      (response) => {
+        console.log("admin verify response: ", response);
+        let variant = "success";
+        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        handleCloseBackdrop();
+        setIsSaving(false);
+        getUnverifiedAdminsWallet(0, rowsPerPage);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on verify: ", error);
+        console.log("Error on verify: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        let variant = "error";
+        enqueueSnackbar("Unable to Verify Admin.", { variant });
+      }
+    );
+  };
+
   return (
     <div className="backgroundDefault">
       {/* Page Content */}
@@ -273,7 +310,16 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
+                  <td className={classes.collectionTitle}>
+                    {i.walletAddress != undefined ? (
+                      <Tooltip title={i.walletAddress}>
+                        
+                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                      </Tooltip>
+                    ) : (
+                      <label>N/A</label>
+                    )}
+                  </td>
                   <td className={`${classes.collectionTitle}`}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
@@ -317,13 +363,10 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>
-                    <label >N/A</label>
+                    <label>N/A</label>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <Tooltip
-                      title={i.walletAddress}
-                      
-                    >
+                    <Tooltip title={i.walletAddress}>
                       <span>{i.walletAddress.slice(0, 6)}...</span>
                     </Tooltip>
                   </td>
@@ -354,7 +397,7 @@ function AccountApprovalDefaultScreen(props) {
                           //   borderRadius: "0px 15px",
                           // }}
                           onClick={(e) => {
-                            handleVerify(e, i._id);
+                            handleVerifyWallet(e, i._id);
                           }}
                         >
                           Approve
