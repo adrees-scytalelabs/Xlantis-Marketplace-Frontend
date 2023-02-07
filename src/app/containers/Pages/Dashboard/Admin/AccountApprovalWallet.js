@@ -113,7 +113,6 @@ function AccountApprovalWallet(props) {
 
   useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
-    getUnverifiedAdminsSSO(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -135,34 +134,6 @@ function AccountApprovalWallet(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     // getCollections(0, parseInt(event.target.value, 10));
     setPage(0);
-  };
-
-  let getUnverifiedAdminsSSO = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
-    //     "Authorization"
-    // )}`;
-    setOpen(true);
-    axios
-      .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}?userType=v1`)
-      .then((response) => {
-        console.log("response.data", response.data);
-        setAdmins(response.data.unverifiedAdmins);
-        setAdminCount(response.data.unverifiedAdmins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
   };
 
   let getUnverifiedAdminsWallet = (start, end) => {
@@ -215,7 +186,7 @@ function AccountApprovalWallet(props) {
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        getUnverifiedAdminsSSO(0, rowsPerPage);
+        getUnverifiedAdminsWallet(0, rowsPerPage);
         // setIsUploadingData(false);
       },
       (error) => {
@@ -248,11 +219,6 @@ function AccountApprovalWallet(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
-                    Email
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
                   </div>
                 </th>
@@ -269,50 +235,6 @@ function AccountApprovalWallet(props) {
               </tr>
             </thead>
             <tbody>
-              {admins.map((i, index) => (
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
-                  <td className={`${classes.collectionTitle}`}>
-                    <label style={{ marginLeft: "10%" }}>SSO</label>
-                  </td>
-                  <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
-                    {i.isVerified ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button disabled>
-                          <span className="text-white">Verified</span>
-                          <i
-                            className="fas fa-check ml-2"
-                            style={{ color: "#F64D04" }}
-                          ></i>{" "}
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
-                          onClick={(e) => {
-                            handleVerify(e, i._id);
-                          }}
-                        >
-                          Approve
-                        </Button>
-                      </div>
-                    )}
-
-                    {/* </div> */}
-                  </td>
-                </tr>
-              ))}
               {walletAdmins.map((i, index) => (
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
