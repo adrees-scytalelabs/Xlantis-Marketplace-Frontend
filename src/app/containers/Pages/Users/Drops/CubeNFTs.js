@@ -306,7 +306,7 @@ function CubeNFTs(props) {
         };
         console.log("BuyData", BuyData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("token/buytoken", BuyData).then(
@@ -339,7 +339,7 @@ function CubeNFTs(props) {
           withdraw: true,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.put("dropcubehistory/claimhistory", ClaimData).then(
@@ -369,7 +369,7 @@ function CubeNFTs(props) {
           transaction: receipt.transactionHash,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
 
@@ -441,7 +441,7 @@ function CubeNFTs(props) {
         withdraw: true,
       };
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.put("dropcubehistory/claimhistory", ClaimData).then(
@@ -600,7 +600,7 @@ function CubeNFTs(props) {
       tokenId: cubeId,
     };
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post(`/dropcubehistory/history`, bidData).then(
@@ -629,7 +629,7 @@ function CubeNFTs(props) {
       }
     );
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(
@@ -672,7 +672,7 @@ function CubeNFTs(props) {
           }
         }
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios

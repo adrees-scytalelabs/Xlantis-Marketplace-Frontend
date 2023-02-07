@@ -161,7 +161,7 @@ function Enabled(props) {
   };
 
   let getUnverifiedAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);

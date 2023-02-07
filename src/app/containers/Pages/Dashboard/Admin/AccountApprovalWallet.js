@@ -137,7 +137,7 @@ function AccountApprovalWallet(props) {
   };
 
   let getUnverifiedAdminsWallet = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);

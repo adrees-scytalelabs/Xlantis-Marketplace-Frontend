@@ -62,7 +62,7 @@ function MyCollection(props) {
     const version = Cookies.get("Version");
     console.log("version", version);
 
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
