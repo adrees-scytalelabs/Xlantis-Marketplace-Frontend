@@ -74,8 +74,16 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
+    let endpoint;
+    if (version === undefined) {
+      endpoint = `/v1-sso/drop/saleType/fixed-price/${start}/${end}`
+    }
+    else
+    {
+      endpoint = `/${version}/drop/saleType/fixed-price/${start}/${end}`
+    }
     axios
-      .get(`/v2-wallet-login/drop/saleType/fixed-price/${start}/${end}`)
+      .get(endpoint)
       .then(
         (response) => {
           console.log("responseeeee", response);
@@ -95,7 +103,15 @@ function MarketPlace(props) {
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    axios.get(`/v2-wallet-login/drop/saleType/auction/${start}/${end}`).then(
+    let endpoint;
+    if (version === undefined) {
+      endpoint = `/v1-sso/drop/saleType/auction/${start}/${end}`
+    }
+    else
+    {
+      endpoint = `/${version}/drop/saleType/auction/${start}/${end}`
+    }
+    axios.get(endpoint).then(
       (res) => {
         console.log("Bidable drops response: ", res);
         setBidableDrop(res.data.data);
