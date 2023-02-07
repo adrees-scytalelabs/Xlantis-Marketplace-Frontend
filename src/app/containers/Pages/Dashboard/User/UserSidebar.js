@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import BusinessIcon from "@material-ui/icons/Business";
+import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 function AdminSidebar(props) {
@@ -50,6 +51,15 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
+            <li className="menu-title">
+              <span>SETTINGS</span>
+            </li>
+            <li className={props.activeTab.profile}>
+              <Link to={`/user/settings`}>
+               <AccountCircle /> <span>Profile</span>
+              </Link>
+            </li>
+            
             {/* <li className={props.activeTab.newCube}>
               <Link to={`${props.match.url}/newCube`}>
                 <i className="fas fa-cube"></i> <span>New Cube</span>

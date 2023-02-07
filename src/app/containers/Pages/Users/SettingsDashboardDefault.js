@@ -121,7 +121,6 @@ function SettingDashboardDefault(props) {
     const handleSubmitEvent = async (event) => {
         event.preventDefault();
         setIsSaving(true);
-        
         handleShowBackdrop();
         // if (name === "") {
         //     let variant = "error";
@@ -156,6 +155,7 @@ function SettingDashboardDefault(props) {
                 enqueueSnackbar('Profile Updated Succesfully', { variant });
                 setIsUploadingData(false);
                 handleCloseBackdrop();
+                window.location.reload();
 
             },
             (error) => {
@@ -209,7 +209,7 @@ function SettingDashboardDefault(props) {
                     setProfileImage(response.data.url);
                     setIsUploadingIPFS(false);
                     let variant = "success";
-                    enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                    enqueueSnackbar('Image Uploaded Successfully', { variant });
                 },
                 (error) => {
                     if (process.env.NODE_ENV === "development") {
@@ -218,7 +218,7 @@ function SettingDashboardDefault(props) {
                     }
                     setIsUploadingIPFS(false);
                     let variant = "error";
-                    enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+                    enqueueSnackbar('Unable to Upload Image .', { variant });
 
                 }
             );
@@ -259,7 +259,7 @@ function SettingDashboardDefault(props) {
                     setBannerImage(response.data.url);
                     setIsUploadingBannerIPFS(false);
                     let variant = "success";
-                    enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                    enqueueSnackbar('Image Uploaded Successfully', { variant });
                 },
                 (error) => {
                     if (process.env.NODE_ENV === "development") {
@@ -268,7 +268,7 @@ function SettingDashboardDefault(props) {
                     }
                     setIsUploadingBannerIPFS(false);
                     let variant = "error";
-                    enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+                    enqueueSnackbar('Unable to Upload Image .', { variant });
 
                 }
             );
@@ -279,6 +279,7 @@ function SettingDashboardDefault(props) {
     }
     let getProfile = () => {
         let version = Cookies.get("Version");
+        console.log("Version: ",version);
         console.log("UserId:",sessionStorage.getItem("Authorization"));
         axios
           .get(`${version}/user/profile`)
@@ -411,7 +412,10 @@ function SettingDashboardDefault(props) {
                                         }}
                                     />
                                 </div>
-                                <label>Email</label>
+                                {
+                                    Cookies.get("Version")!="v2-wallet-login" &&
+                                    <>
+                                    <label>Email</label>
                                 <div className="form-group">
                                     <input
                                         type="email"
@@ -424,6 +428,10 @@ function SettingDashboardDefault(props) {
                                         }}
                                     />
                                 </div>
+                                </>
+                                    
+                                }
+                                
                                 {/* <label>Link</label>
                                 <div className="form-group">
                                     <input

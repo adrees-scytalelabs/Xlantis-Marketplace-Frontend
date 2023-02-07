@@ -301,6 +301,11 @@ function App() {
             <PrivateRoute path="/superAdminDashboard" />
             <PrivateRoute path="/user/settings">
               <UserSettings></UserSettings>
+              {/* <Route
+              exact
+              path="/user/settings"
+              render={(routeProps) => <UserSettings {...routeProps} />}
+            /> */}
             </PrivateRoute>
           </Switch>
         </BrowserRouter>
