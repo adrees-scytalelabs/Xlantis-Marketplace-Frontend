@@ -58,7 +58,7 @@ function MyDrops(props) {
   };
   let getMyDrops = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get(`/drop/mydrops/${start}/${end}`).then(

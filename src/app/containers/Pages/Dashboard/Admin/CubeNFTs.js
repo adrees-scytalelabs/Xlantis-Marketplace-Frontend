@@ -261,7 +261,7 @@ function CubeNFTs(props) {
         dropId: dropId,
         tokenId: cubeId,
       };
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post(`/adminclaimfunds/claimfunds`, Data).then(

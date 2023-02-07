@@ -40,7 +40,7 @@ function UserExecutiveProducer(props) {
 
   let getUserData = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     // nft/getnft/{userId}/{start}/{end}

@@ -58,7 +58,7 @@ function NewSeason(props) {
   let [type, setType] = useState();
   let [types, setTypes] = useState([]);
   let getMyDrops = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/drop/drops").then(
@@ -129,7 +129,7 @@ function NewSeason(props) {
     };
     console.log("cubeData", SeasonData);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/season/createseason", SeasonData).then(

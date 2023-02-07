@@ -107,7 +107,7 @@ function UserCubeNFTs(props) {
 
     console.log("Data", Data);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(

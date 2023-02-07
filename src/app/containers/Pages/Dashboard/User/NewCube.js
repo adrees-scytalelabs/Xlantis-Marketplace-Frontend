@@ -95,7 +95,7 @@ function NewCube(props) {
     setOpen(true);
   };
   let getProfileData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/createprofile").then(
@@ -183,7 +183,7 @@ function NewCube(props) {
     }); // eslint-disable-next-line
   }, []);
   let getMyNFTs = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/nft/createnft").then(

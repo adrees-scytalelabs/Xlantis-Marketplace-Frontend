@@ -56,7 +56,7 @@ function MySeasons(props) {
   };
   let getMySeasons = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get(`/season/seasons/${start}/${end}`).then(

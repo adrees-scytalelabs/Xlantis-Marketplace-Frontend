@@ -127,7 +127,7 @@ function NewNFT(props) {
   let [executiveProducerId, setExecutiveProducerId] = useState("");
 
   let getProfileData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/createprofile").then(
@@ -156,7 +156,7 @@ function NewNFT(props) {
     );
   };
   let getCollections = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/collection/collections").then(
