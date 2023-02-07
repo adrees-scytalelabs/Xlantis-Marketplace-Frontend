@@ -123,7 +123,7 @@ function HomeBanner() {
                     {/* Tile and Name */}
                     <div className="col-12 col-sm-6">
                       {/* Collection Tile */}
-                      <Card
+                      {/* <Card
                         className={
                           matchMedia ? styles.cardThemeSm : styles.cardTheme
                         }
@@ -154,9 +154,9 @@ function HomeBanner() {
                             </Typography>
                           </CardContent>
                         </CardActionArea>
-                      </Card>
+                      </Card> */}
                       {/* Creator Name */}
-                      <section className="creatorName mt-sm-2 d-flex">
+                      {/* <section className="creatorName mt-sm-2 d-flex">
                         <Link to={"/"}>
                           <Typography
                             variant="h6"
@@ -179,8 +179,8 @@ function HomeBanner() {
                             </span>
                           </Typography>
                         </Link>
-                      </section>
-                      <section>
+                      </section> */}
+                      {/* <section>
                         <h4
                           className={
                             matchMedia ? styles.dropPriceSm : styles.dropPrice
@@ -188,16 +188,16 @@ function HomeBanner() {
                         >
                           Floor: 2.28 ETH
                         </h4>
-                      </section>
+                      </section> */}
                     </div>
                     {/* View Button */}
-                    <div className="col-12 col-sm-6 text-right py-2">
+                    {/* <div className="col-12 col-sm-6 text-right py-2">
                       <Link to="/fixdropnft">
                         <button className="featuredExploreBtn">
                           View Drop
                         </button>
                       </Link>
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </div>
