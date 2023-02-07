@@ -337,7 +337,8 @@ function HeaderHome(props) {
 
 useEffect(() => {
   getProfile();
-},[]);
+  console.log("In Hook");
+},);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -410,8 +411,8 @@ useEffect(() => {
               marginTop: "4px",
             }}
           >
-            <li className="login-link ">
-              <a
+            
+              {/* <a
                 href="/"
                 style={{ paddingLeft: "5px" }}
                 onClick={(e) => {
@@ -420,25 +421,28 @@ useEffect(() => {
                 }}
               >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </a>
-            </li>
-            <li className="login-link" style={{ padding: "15px 20px" }}>
+              </a> */}
+
+            
+            <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
               {sessionStorage.getItem("Address") ? (
-                <a
-                  href={
-                    "https://ropsten.etherscan.io/address/" +
-                    sessionStorage.getItem("Address")
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#fff" }}
-                >
-                  <span style={{ cursor: "pointer" }}>
-                    {sessionStorage.getItem("Address").substr(0, 10)}. . .
-                  </span>
-                </a>
+              //   <a
+              //   href={
+              //     "https://ropsten.etherscan.io/address/" +
+              //     sessionStorage.getItem("Address")
+              //   }
+              //   target="_blank"
+              //   rel="noopener noreferrer"
+              //   style={{ color: "#fff" }}
+              // >
+              //   <span style={{ cursor: "pointer" }}>
+              //     {sessionStorage.getItem("Address").substr(0, 10)}. . .
+              //   </span>
+              // </a>
+              <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}></div>
+             
               ) : (
                 <>
                   {/* <Link
@@ -507,6 +511,21 @@ useEffect(() => {
                 </span>
               </Link>
             </li> */}
+             <li
+              className="login-link"
+              style={{ padding: "15px 20px" }}
+              onClick={openTransak}
+            >
+              <span
+                style={{
+                  padding: "10px 20px",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+               Buy Crypto
+              </span>
+            </li>
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -522,6 +541,25 @@ useEffect(() => {
                 View Cart
               </span>
             </li>
+            {
+              sessionStorage.getItem("Address") ?(
+                <li
+                className="login-link"
+                style={{ padding: "15px 20px" }}
+                onClick={Logout}
+              >
+                <span
+                  style={{
+                    padding: "10px 20px",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  Logout
+                </span>
+              </li>
+              ): null
+            }
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "15px" }}>
