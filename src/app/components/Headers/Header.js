@@ -27,7 +27,6 @@ import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
-import jwtDecode from "jwt-decode";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -203,9 +202,9 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        route = "/v2-wallet-login/user/auth/admin-login";
+        route = "v2-wallet-login/user/auth/admin-login";
       } else {
-        route = "/v2-wallet-login/user/auth/login";
+        route = "v2-wallet-login/user/auth/login";
       }
       axios.post(route, loginData).then(
         (response) => {
@@ -290,8 +289,6 @@ function HeaderHome(props) {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     sessionStorage.clear();
-    Cookies.remove("Version");
-
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
 
@@ -456,17 +453,27 @@ useEffect(() => {
                       fontWeight: "bold",
                     }}
                   > */}
-                  <>
+                  {user ? (
                     <span
                       className={hoverClassStyle.Community}
                       style={selectedNavStyle.Community}
-                      onClick={handleOpenModal}
+                      onClick={handleSignOut}
                     >
-                      Login/SignUp
-                      {/* Connect Wallet */}
+                      Logout
                     </span>
-                    {userSignOut && <Redirect to="/" />}
-                  </>
+                  ) : (
+                    <>
+                      <span
+                        className={hoverClassStyle.Community}
+                        style={selectedNavStyle.Community}
+                        onClick={handleOpenModal}
+                      >
+                        Login/SignUp
+                        {/* Connect Wallet */}
+                      </span>
+                      {userSignOut && <Redirect to="/" />}
+                    </>
+                  )}
                   {/* {userSignOut && } */}
 
                   {/* </Link> */}
@@ -639,8 +646,17 @@ useEffect(() => {
                   sx={{ width: 24, height: 24 }}
                 />
                 </div> */}
-                  {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                  {/* <Link to="/login" style={{ color: "#fff" }}> */}
+                {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
+                {/* <Link to="/login" style={{ color: "#fff" }}> */}
+                {user ? (
+                  <span
+                    className={hoverClassStyle.Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleSignOut}
+                  >
+                    Logout
+                  </span>
+                ) : (
                   <>
                     <span
                       className={hoverClassStyle.Community}
@@ -652,8 +668,9 @@ useEffect(() => {
                     </span>
                     {userSignOut && <Redirect to="/" />}
                   </>
+                )}
 
-                  {/* (
+                {/* (
                   <span
                     className={hoverClassStyle.Community}
                     style={selectedNavStyle.Community}
@@ -663,19 +680,18 @@ useEffect(() => {
                     Connect Wallet
                   </span>
                 )} */}
-                  {/* <span
+                {/* <span
                   style={{ cursor: "pointer", color: "#fff" }}
                   onClick={handleOpenModal}
                 >
                   Login/SignUp */}
-                  {/* Connect Wallet */}
-                  {/* </span> */}
-                  {/* </Link> */}
-                  {/* </span> */}
-                </>
-              )
+                {/* Connect Wallet */}
+                {/* </span> */}
+                {/* </Link> */}
+                {/* </span> */}
+              </>
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            }
+            )}
           </li>
 
           <li>
@@ -685,10 +701,6 @@ useEffect(() => {
           </li>
           <li>
             {sessionStorage.getItem("Address") ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
-                Logout
-              </span>
-            ) : jwtDecoded !== undefined && jwtDecoded.role === "user" ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
