@@ -41,10 +41,11 @@ function UserSettings(props) {
                 
             />
            
-            <UserSidebar 
-             match={props.match}
-            activeTab={activeTab}
-                setActiveTab={setActiveTab} />
+           <SettingsSidebar
+                activeTab={activeTab}
+                setActiveTab={setActiveTab} 
+
+            />
              
         <div className="page-wrapper">
         <div className="content container-fluid">

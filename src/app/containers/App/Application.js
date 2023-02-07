@@ -299,14 +299,14 @@ function App() {
 
             <PrivateRoute path="/dashboard" />
             <PrivateRoute path="/superAdminDashboard" />
-            {/* <PrivateRoute path="/user/settings">
-              <UserSettings></UserSettings> */}
-              <Route
+            <PrivateRoute path="/user/settings">
+              <UserSettings></UserSettings>
+              {/* <Route
               exact
               path="/user/settings"
               render={(routeProps) => <UserSettings {...routeProps} />}
-            />
-            {/* </PrivateRoute> */}
+            /> */}
+            </PrivateRoute>
           </Switch>
         </BrowserRouter>
       </SnackbarProvider>
