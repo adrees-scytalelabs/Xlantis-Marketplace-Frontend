@@ -34,11 +34,14 @@ function SuperAdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard} onClick={closedDropdown}>
-              <Link to={`${props.match.url}`} className="sidebarLink" >
+              <Link to={`${props.match.url}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.accountApproval} onClick={closedDropdown}>
+            <li
+              className={props.activeTab.accountApproval}
+              onClick={closedDropdown}
+            >
               <Link
                 to={`${props.match.url}/accountApproval`}
                 className="sidebarLink"
@@ -47,7 +50,7 @@ function SuperAdminSidebar(props) {
                 <span>Approve Accounts</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={props.activeTab.manageAccounts}
               onClick={changeStyle}
               
@@ -59,10 +62,10 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
                 <i class="fa fa-caret-down"></i>
-              </Link>
-              {/* <button class="dropdown-btn" > */}
-              {/* </button> */}
-              <div className={`${style} container`}>
+              </Link> */}
+            {/* <button class="dropdown-btn" > */}
+            {/* </button> */}
+            {/* <div className={`${style} container`}>
                 <div
                   className="row ssoRow d-flex justify-content-center"
                   style={{  }}
@@ -84,17 +87,17 @@ function SuperAdminSidebar(props) {
                     </Link>
                   </li>
                 </div>
-              </div>
-            </li>
-            {/* <li className={props.activeTab.manageAccounts}>
+              </div> */}
+            {/* </li> */}
+            <li className={props.activeTab.manageAccounts}>
               <Link
                 to={`${props.match.url}/manageAccounts`}
                 className="sidebarLink"
               >
-
-                
+                <i className="fas fa-layer-group"></i>
+                <span>Manage Accounts</span>
               </Link>
-            </li> */}
+            </li>
             <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
