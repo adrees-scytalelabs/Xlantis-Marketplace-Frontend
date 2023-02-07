@@ -203,9 +203,9 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        route = "v2-wallet-login/user/auth/admin/login";
+        route = "/v2-wallet-login/user/auth/admin-login";
       } else {
-        route = "v2-wallet-login/user/auth/login";
+        route = "/v2-wallet-login/user/auth/login";
       }
       axios.post(route, loginData).then(
         (response) => {
@@ -290,6 +290,8 @@ function HeaderHome(props) {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     sessionStorage.clear();
+    Cookies.remove("Version");
+
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
 
