@@ -524,6 +524,8 @@ const DropSingleNFT = (props) => {
                   error.response.data === "Unauthorized access (invalid token) !!"
                 ) {
                   Cookies.remove("Authorization");
+                  Cookies.remove("Version");
+
                   localStorage.removeItem("Address");
                   window.location.reload();
                 }

@@ -19,6 +19,8 @@ function SuperAdminSidebar(props) {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
+    Cookies.remove("Version");
+
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);

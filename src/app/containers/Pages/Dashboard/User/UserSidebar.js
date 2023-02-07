@@ -13,6 +13,8 @@ function AdminSidebar(props) {
     sessionStorage.clear();
     sessionStorage.removeItem("Address");
     sessionStorage.removeItem("Authorization");
+    Cookies.remove("Version");
+
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
