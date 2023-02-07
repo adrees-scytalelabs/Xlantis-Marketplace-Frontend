@@ -147,7 +147,7 @@ function ProfileHeader(props) {
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
-                      Cookies.remove("Authorization");
+                      sessionStorage.removeItem("Authorization");
                       Cookies.remove("PNT");
                       window.location.reload(false);
                     }}

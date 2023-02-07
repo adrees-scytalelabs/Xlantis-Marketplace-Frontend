@@ -18,7 +18,7 @@ function Footer(props) {
               <div className="col-12 col-md-6 col-lg-6">
                 <div className="copyright-text">
                   <p className="mb-0 text-center text-md-left">
-                    &copy; 2020 Robot Drop. All rights reserved.
+                    &copy; 2023 XLANTIS. All rights reserved.
                   </p>
                 </div>
               </div>

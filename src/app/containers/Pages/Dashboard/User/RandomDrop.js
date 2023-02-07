@@ -51,7 +51,7 @@ function RandomDrop(props) {
         event.preventDefault();
         setIsSaving(true);
 
-        let jwt = Cookies.get("Authorization");
+        let jwt = sessionStorage.getItem("Authorization");
         let jwtDecoded = jwtDecode(jwt);
         let exporter = jwtDecoded.id;
         let fileData = new FormData();

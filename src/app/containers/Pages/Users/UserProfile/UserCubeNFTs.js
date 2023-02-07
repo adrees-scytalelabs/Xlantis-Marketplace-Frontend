@@ -60,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function UserCubeNFTs(props) {
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     console.log(jwtDecode(jwt));
@@ -107,7 +107,7 @@ function UserCubeNFTs(props) {
 
     console.log("Data", Data);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(
@@ -137,8 +137,8 @@ function UserCubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  Cookies.remove("Authorization");
-                  localStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
+                  sessionStorage.removeItem("Address");
                   window.location.reload(false);
                 }
               }
@@ -155,8 +155,8 @@ function UserCubeNFTs(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }

@@ -59,7 +59,7 @@ function UserLoginScreen(props) {
       (response) => {
         console.log("response", response);
         Cookies.set("Version", "v1-sso", {});
-        Cookies.set("Authorization", response.data.token, {});
+        sessionStorage.setItem("Authorization", response.data.token, {});
         if (response.data.roles === "user") {
           // localStorage.setItem("Address", accounts[0]);
         }

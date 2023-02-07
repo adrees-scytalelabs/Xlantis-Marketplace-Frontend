@@ -109,7 +109,7 @@ const useStyles = makeStyles((theme) => ({
 
 function SaleCubeNFTs(props) {
   let history = useHistory();
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     jwtDecoded = jwtDecode(jwt);
@@ -202,7 +202,7 @@ function SaleCubeNFTs(props) {
   let BuyCube = async (e) => {
     e.preventDefault();
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     if (jwt) {
       await loadWeb3();
       const web3 = window.web3;
@@ -231,7 +231,7 @@ function SaleCubeNFTs(props) {
     };
     console.log("saleData", saleData);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("auction/deleteauction", saleData).then(
@@ -327,7 +327,7 @@ function SaleCubeNFTs(props) {
         };
         console.log("BuyData", BuyData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("token/buyuserToken", BuyData).then(
@@ -358,7 +358,7 @@ function SaleCubeNFTs(props) {
           transaction: receipt1.transactionHash,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("/transaction/tokenTransaction ", TrasactionData).then(
@@ -386,7 +386,7 @@ function SaleCubeNFTs(props) {
     };
     console.log("Data", Data);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(
@@ -418,8 +418,8 @@ function SaleCubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  localStorage.removeItem("Address");
-                  Cookies.remove("Authorization");
+                  sessionStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
                   window.location.reload(false);
                 }
               }

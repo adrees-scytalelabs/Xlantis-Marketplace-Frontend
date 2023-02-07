@@ -50,7 +50,7 @@ const AdminSSORedirect = () => {
 
   const config = {
     headers: {
-      Authorization: `Bearer ${Cookies.get("Authorization")}`,
+      Authorization: `Bearer ${sessionStorage.getItem("Authorization")}`,
     },
   };
 

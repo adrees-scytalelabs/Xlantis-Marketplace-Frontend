@@ -40,9 +40,8 @@ function App() {
   let isLoggedIn;
   let isVerified = false;
   let version;
-  var jwtDecoded;
-  let jwt = Cookies.get("Authorization");
-  if (jwt) jwtDecoded = jwtDecode(jwt);
+  let jwtDecoded;
+  let jwt = sessionStorage.getItem("Authorization");
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
     console.log("verified? ", Cookies.get("Verified"));
@@ -302,6 +301,11 @@ function App() {
             <PrivateRoute path="/superAdminDashboard" />
             <PrivateRoute path="/user/settings">
               <UserSettings></UserSettings>
+              {/* <Route
+              exact
+              path="/user/settings"
+              render={(routeProps) => <UserSettings {...routeProps} />}
+            /> */}
             </PrivateRoute>
           </Switch>
         </BrowserRouter>

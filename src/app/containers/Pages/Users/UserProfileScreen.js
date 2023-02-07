@@ -225,8 +225,8 @@ function UserProfileScreen(props) {
                       <Dropdown.Item>
                         <Link
                           onClick={() => {
-                            Cookies.remove("Authorization");
-                            localStorage.removeItem("Address");
+                            sessionStorage.removeItem("Authorization");
+                            sessionStorage.removeItem("Address");
                             Cookies.remove("PNT");
                             // web3Modal.clearCachedProvider();
                             window.location.reload(false);

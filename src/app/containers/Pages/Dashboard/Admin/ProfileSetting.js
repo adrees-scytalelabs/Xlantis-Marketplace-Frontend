@@ -75,7 +75,7 @@ function ProfileSetting(props) {
             .then((result) => {
               axios.defaults.headers.common[
                 "Authorization"
-              ] = `Bearer ${Cookies.get("Authorization")}`;
+              ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
               axios
                 .post(`/api/v1/users/upload/image/${props.userData._id}`, {
                   url: url,
@@ -102,7 +102,7 @@ function ProfileSetting(props) {
               setIsSavingChanges(false);
               axios.defaults.headers.common[
                 "Authorization"
-              ] = `Bearer ${Cookies.get("Authorization")}`;
+              ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
               // setMsg("Couldn't Upload File, try again");
               // handleShowSuccessModal();
             });

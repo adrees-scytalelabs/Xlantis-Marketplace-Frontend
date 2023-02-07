@@ -15,7 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -75,6 +75,7 @@ const useStyles = makeStyles((theme) => ({
   collectionTitle: {
     color: "#fff",
     fontSize: "1rem",
+    fontFamily: "inter",
   },
   approveBtn: {
     backgroundColor: "#F64D04",
@@ -114,6 +115,8 @@ function Accounts(props) {
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
+  let [walletAdmins, setWalletAdmins] = useState([]);
+  let [adminWalletCount, setWalletAdminCount] = useState(0);
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -135,6 +138,7 @@ function Accounts(props) {
   const history = useHistory();
 
   useEffect(() => {
+    getUnverifiedWallet(0, rowsPerPage);
     getUnverifiedAdmins(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
@@ -163,7 +167,7 @@ function Accounts(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
@@ -181,8 +185,35 @@ function Accounts(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            window.location.reload(false);
+          }
+        }
+        setOpen(false);
+      });
+  };
+  let getUnverifiedWallet = (start, end) => {
+    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    //     "Authorization"
+    // )}`;
+    setOpen(true);
+    axios
+      .get(`/v2-wallet-login/super-admin/admins/${start}/${end}`)
+      .then((response) => {
+        console.log("response.data", response.data);
+        setWalletAdmins(response.data.Admins);
+        setWalletAdminCount(response.data.Admins.length);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log(error.response.data);
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -203,7 +234,7 @@ function Accounts(props) {
 
     console.log("data", data);
 
-    axios.put(`/v1-sso/super-admin/admin/verify/${verifyAdminId}}`, data).then(
+    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -243,8 +274,8 @@ function Accounts(props) {
         </div>
       </div>
       {/* Page Content */}
-      <div className="card-body">
-        <div className="row">
+      <div>
+        <div className="row no-gutters">
           {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
@@ -259,6 +290,16 @@ function Accounts(props) {
                     Email
                   </div>
                 </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Wallet Address
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Login Type
+                  </div>
+                </th>
                 {/* <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Verify
@@ -271,6 +312,34 @@ function Accounts(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>{i.email}</td>
+                  <td className={classes.collectionTitle}>
+                    {i.walletAddress != undefined ? (
+                      <Tooltip title={i.walletAddress}>
+                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                      </Tooltip>
+                    ) : (
+                      <label>N/A</label>
+                    )}
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <label style={{ marginLeft: "10%" }}>SSO</label>
+                  </td>
+                </tr>
+              </tbody>
+            ))}
+            {walletAdmins.map((i, index) => (
+              <tbody>
+                <tr>
+                  <td className={classes.collectionTitle}>{i.username}</td>
+                  <td className={classes.collectionTitle}>N/A</td>
+                  <td className={classes.collectionTitle}>
+                    <Tooltip title={i.walletAddress}>
+                      <span>{i.walletAddress.slice(0, 8)}...</span>
+                    </Tooltip>
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <label style={{ marginLeft: "10%" }}>Wallet</label>
+                  </td>
                 </tr>
               </tbody>
             ))}

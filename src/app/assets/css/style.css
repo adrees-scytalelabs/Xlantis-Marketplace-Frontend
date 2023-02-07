@@ -75,6 +75,16 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+.headerAccountMenu:hover {
+  /* background-color: var(--borderOrange); */
+  color: var(--border);
+}
+
+.user-menu .dropdown-menu .dropdown-item:hover {
+  background-color: var(--borderOrange);
+  color: var(--border);
+}
+
 .home-full-height {
   margin-bottom: 40px;
   min-height: 50vh;
@@ -891,7 +901,9 @@ li.slash::after {
 
 #totalNftsAdminDash:hover,
 #totalCollectionsAdminDash:hover {
-  /* box-shadow: var(--orangeBoxShadow) */
+  /* box-shadow: 0 10px 6px -6px #777; */
+  /* background-color: unset;
+  background-image: var(--linearGradient); */
   background-color: var(--borderOrange);
 }
 
@@ -10533,4 +10545,92 @@ object:hover {
   position: absolute;
   left: 0px;
   top: -32px;
+}
+.banner-img{
+  width: 100%;
+  height: 350px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover
+}
+#banner-file-input,#profile-file-input{
+  display: none;
+}
+.profile-backgrnd{
+  width: 190px;
+  height: 190px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border: 5px solid white;
+  border-radius: 50%;
+  bottom: -1.5rem;
+  position: absolute;
+ }
+ .profile-input-label{
+  width: 100%;
+  height: 100%;
+ }
+ .profile-dark-layer{
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0, 0, 0, 0.4);
+  border-radius: 50%;
+  visibility: hidden;
+ }
+ #profile-icon{
+  position: relative;
+  left: 75px;
+  top: 75px;
+  visibility: hidden;
+ 
+ }
+ .profile-backgrnd:hover #profile-icon{
+visibility: visible;
+}
+ .profile-backgrnd:hover .profile-dark-layer{
+  visibility: visible;
+}
+.banner-input-label{
+  width: 100%;
+  height: 100%;
+}
+.banner-dark-layer{
+  width: 100%;
+  height: 100%;
+  background-color:rgba(0, 0, 0, 0.7);
+  visibility: hidden;
+  text-align: center;
+}
+.banner-img:hover .banner-dark-layer { 
+  visibility: visible;
+}
+#banner-icon{
+  position: relative;
+  visibility: hidden;
+  top: 150px;
+  
+ }
+.banner-img:hover #banner-icon { 
+  visibility: visible;
+}
+.header-profile-image{
+  width: 34px;
+  height: 34px;
+  
+  background-color: white;
+  border-radius: 50%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  
+}
+.profileDetailHeading {
+  font-size: 2.2rem;
+  color: var(--text);
+  font-family: var(--orbitron);
+  font-weight: bold;
+  padding-left: 35px;
+  padding-top: 10px;
+  padding-bottom: 20px;
 }

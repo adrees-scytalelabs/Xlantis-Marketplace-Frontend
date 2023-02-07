@@ -55,11 +55,11 @@ const SuperAdminLoginForms = () => {
         email: email.toLowerCase(),
         password: password,
     };
-    axios.post("/v1-sso/user/auth/login", loginData).then(
+    axios.post("/v1-sso/user/auth/super-admin-login", loginData).then(
         (response) => {
         console.log("response", response);
         Cookies.set("Version", "v1-sso", {});
-        Cookies.set("Authorization", response.data.token, {});
+        sessionStorage.setItem("Authorization", response.data.token, {});
         setIsLoading(false);
         let variant = "success";
         enqueueSnackbar('Logged In Successfully', { variant });

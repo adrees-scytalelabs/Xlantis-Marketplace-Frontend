@@ -128,13 +128,12 @@ const AdminLoginSignupForms = () => {
             // } else if
             console.log("3");
             response.data.raindropToken &&
-              Cookies.set("Authorization", response.data.raindropToken, {});
-            if (
-              response.data.isInfoAdded === true &&
-              response.data.isVerified === true
-            ) {
-              window.location.reload(false);
-            }
+              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+
+            window.location.reload(false);
+            // setCookie("Authorization", response.data.raindropToken, {
+            //   path: "/",
+            // });
           }
         })
         .catch((error) => {
