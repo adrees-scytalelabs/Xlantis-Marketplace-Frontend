@@ -58,7 +58,7 @@ function NewSeason(props) {
   let [type, setType] = useState();
   let [types, setTypes] = useState([]);
   let getMyDrops = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/drop/drops").then(
@@ -75,8 +75,8 @@ function NewSeason(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -129,7 +129,7 @@ function NewSeason(props) {
     };
     console.log("cubeData", SeasonData);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/season/createseason", SeasonData).then(

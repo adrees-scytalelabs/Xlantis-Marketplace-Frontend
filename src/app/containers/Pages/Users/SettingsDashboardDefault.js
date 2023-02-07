@@ -1,6 +1,7 @@
 // eslint-disable-next-line
 import axios from "axios";// eslint-disable-next-line
 import React, { useEffect, useState } from "react";
+import Typography from "@material-ui/core/Typography";
 import { Link } from "react-router-dom";
 // import React, { useEffect } from "react";
 import Edit from '@material-ui/icons/Edit';
@@ -27,12 +28,13 @@ import { isUndefined } from 'lodash';
 import { useSnackbar } from 'notistack';
 import { Col, Row, Spinner } from "react-bootstrap";
 // import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
-import r1 from '../../../assets/img/patients/patient.jpg';
+
 // import ipfs from 'src/app/components/IPFS/ipfs.js';
 
 import { Scrollbars } from 'react-custom-scrollbars';
 import { useHistory } from 'react-router-dom';
 import Web3 from 'web3';
+
 // import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
 // import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
 // import ipfs from '../../../../components/IPFS/ipfs';
@@ -90,12 +92,14 @@ function SettingDashboardDefault(props) {
   const [open, setOpen] = useState(false);
   let [isSaving, setIsSaving] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
+  let [isBannerSelected, setIsBannerSelected]= useState(false);
+  let [isProfileSelected, setIsProfileSelected]= useState(false);
   const classes = useStyles();
 
 
   
-  let [profileImage, setProfileImage] = useState(r1);
-  let [bannerImage, setBannerImage] = useState(r1);
+  let [profileImage, setProfileImage] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
+  let [bannerImage, setBannerImage] = useState("http://www.mub.eps.manchester.ac.uk/graphene/wp-content/themes/uom-theme/assets/images/default-banner.jpg");
   let [ipfsHash, setIpfsHash] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -117,7 +121,6 @@ function SettingDashboardDefault(props) {
     const handleSubmitEvent = async (event) => {
         event.preventDefault();
         setIsSaving(true);
-        
         handleShowBackdrop();
         // if (name === "") {
         //     let variant = "error";
@@ -135,7 +138,7 @@ function SettingDashboardDefault(props) {
 
 
         let data ={
-            "walletAddress" : localStorage.getItem("Address"),
+            "walletAddress" : sessionStorage.getItem("Address"),
             "username" : name,
             "bio" : bio,
             "email" : email,
@@ -145,13 +148,14 @@ function SettingDashboardDefault(props) {
 
         console.log("data", data);
 
-        axios.put("user/profile", data).then(
+        axios.put(`/${Cookies.get("Version")}/user/profile`, data).then(
             (response) => {
                 console.log("profile update response: ", response);
                 let variant = "success";
                 enqueueSnackbar('Profile Updated Succesfully', { variant });
                 setIsUploadingData(false);
                 handleCloseBackdrop();
+                window.location.reload();
 
             },
             (error) => {
@@ -199,13 +203,13 @@ function SettingDashboardDefault(props) {
             // }
             let fileData = new FormData();
             fileData.append("image", imageNFT);
-            axios.post("upload/uploadtos3", fileData).then(
+            axios.post(`/${Cookies.get("Version")}/upload/uploadtos3`, fileData).then(
                 (response) => {
                     console.log("response", response);
                     setProfileImage(response.data.url);
                     setIsUploadingIPFS(false);
                     let variant = "success";
-                    enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                    enqueueSnackbar('Image Uploaded Successfully', { variant });
                 },
                 (error) => {
                     if (process.env.NODE_ENV === "development") {
@@ -214,7 +218,7 @@ function SettingDashboardDefault(props) {
                     }
                     setIsUploadingIPFS(false);
                     let variant = "error";
-                    enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+                    enqueueSnackbar('Unable to Upload Image .', { variant });
 
                 }
             );
@@ -249,13 +253,13 @@ function SettingDashboardDefault(props) {
             // }
             let fileData = new FormData();
             fileData.append("image", imageNFT);
-            axios.post("upload/uploadtos3", fileData).then(
+            axios.post(`/${Cookies.get("Version")}/upload/uploadtos3`, fileData).then(
                 (response) => {
                     console.log("response", response);
                     setBannerImage(response.data.url);
                     setIsUploadingBannerIPFS(false);
                     let variant = "success";
-                    enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                    enqueueSnackbar('Image Uploaded Successfully', { variant });
                 },
                 (error) => {
                     if (process.env.NODE_ENV === "development") {
@@ -264,7 +268,7 @@ function SettingDashboardDefault(props) {
                     }
                     setIsUploadingBannerIPFS(false);
                     let variant = "error";
-                    enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+                    enqueueSnackbar('Unable to Upload Image .', { variant });
 
                 }
             );
@@ -273,6 +277,25 @@ function SettingDashboardDefault(props) {
             setIsUploadingIPFS(false);
         }
     }
+    let getProfile = () => {
+        let version = Cookies.get("Version");
+        console.log("Version: ",version);
+        console.log("UserId:",sessionStorage.getItem("Authorization"));
+        axios
+          .get(`${version}/user/profile`)
+          .then((response) => {
+            console.log("profile data id:",response.data.userData);
+            console.log("profile data name:",response.data.userData.imageURL);
+            setName(response.data.userData.username);
+            setBio(response.data.userData.bio);
+            response.data.userData.imageURL && setProfileImage(response.data.userData.imageURL);
+            response.data.userData.bannerURL && setBannerImage(response.data.userData.bannerURL);
+          })
+          .catch((error) => {
+            console.log(error);
+            console.log(error.response);
+          });
+      };
 
 
   useEffect(() => {
@@ -281,17 +304,72 @@ function SettingDashboardDefault(props) {
       offer: "",
      
     });
-    
-    // eslint-disable-next-line
+    getProfile();
+
   }, []);
 
   return (
    
-            <div >
-                
-                    <div className="row">
-                        <h1 className="page-title">Profile Details</h1>
-                    </div>
+        <div>
+         
+            <div className="row no-gutters">
+              <div className="col-12">
+                 
+                <div className="banner-img" style={{ backgroundImage:`url(${bannerImage})` }}>
+                    {/* banner */}
+                     {isUploadingBannerIPFS ? (
+                                                 <div className="text-center" style={{ position: "relative",
+                                                 top:"150px",right:"10px" }}>
+                                                            <Spinner
+                                                                animation="border"
+                                                                role="status"
+                                                                style={{ color: "#0055ff" }}
+                                                            >
+                                                            </Spinner>
+                                                </div>
+                                                    ) : (
+                                                        <label for="banner-file-input" className="banner-input-label">
+                                                        <div className="banner-dark-layer">
+                                                            <Edit fontSize="large"  id="banner-icon"/>
+                                                        </div>
+                                                        </label>
+                        )}
+                   
+                         
+                                
+
+                        <input id="banner-file-input" type="file" onChange={onChangeBannerFile}/>
+                </div>
+                {/* profile pic */}
+               
+                <div style={{ backgroundImage:`url(${profileImage})`,marginLeft:"1%"}} className="profile-backgrnd">
+                {isUploadingIPFS? (
+                                                 <div className="text-center" style={{ position: "relative",
+                                                 top:"70px" }}>
+                                                            <Spinner
+                                                                animation="border"
+                                                                role="status"
+                                                                style={{ color: "#0055ff" }}
+                                                            >
+                                                            </Spinner>
+                                                </div>
+                                                    ) : (
+                                                        <label for="profile-file-input"  className="profile-input-label">
+                                                        <div className="profile-dark-layer">
+                                                        <Edit fontSize="medium" id="profile-icon"/>
+                                                        </div>
+                                                        
+                                                        </label>
+                        )}
+                            
+                        <input id="profile-file-input" type="file" onChange={onChangeFile}/>
+                </div>       
+              </div>
+          </div>
+          <div className="row pt-5">
+                        <h1 className="profileDetailHeading">Profile Details</h1>
+            </div>
+        
                 
             
             {/* <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
@@ -310,7 +388,7 @@ function SettingDashboardDefault(props) {
                                     <input
                                         type="text"
                                         required
-                                        
+                                        value={name}
                                         placeholder="Enter Username"
                                         className="form-control"
                                         onChange={(e) => {
@@ -323,6 +401,7 @@ function SettingDashboardDefault(props) {
                                     {/* <label>About the Art</label> */}
                                     <textarea
                                         type="text"
+                                        value={bio}
                                         required
                                         rows="4"
                                         // value={description}
@@ -333,12 +412,15 @@ function SettingDashboardDefault(props) {
                                         }}
                                     />
                                 </div>
-                                <label>Email</label>
+                                {
+                                    Cookies.get("Version")!="v2-wallet-login" &&
+                                    <>
+                                    <label>Email</label>
                                 <div className="form-group">
                                     <input
                                         type="email"
                                         required
-                                        
+                                        value={email}
                                         placeholder="Enter Email"
                                         className="form-control"
                                         onChange={(e) => {
@@ -346,6 +428,10 @@ function SettingDashboardDefault(props) {
                                         }}
                                     />
                                 </div>
+                                </>
+                                    
+                                }
+                                
                                 {/* <label>Link</label>
                                 <div className="form-group">
                                     <input
@@ -364,7 +450,7 @@ function SettingDashboardDefault(props) {
                                     <input
                                         type="text"
                                         readOnly="true"
-                                        value={localStorage.getItem("Address")}
+                                        value={sessionStorage.getItem("Address")}
                                         
                                         placeholder="Wallet Address"
                                         className="form-control"
@@ -422,55 +508,9 @@ function SettingDashboardDefault(props) {
                             {/* <Scrollbars style={{ height: 1500 }}> */}
 
                             <div className="form-group">
-                            <label>Profile Image</label>
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar">
-                                            <div className="profile-img">
-                                                <div
-                                                    style={{
-                                                        background: "#E9ECEF",
-                                                        width: "100px",
-                                                        height: "100px",
-                                                    }}
-                                                >
-                                                    <img src={profileImage} alt="Selfie" />
-                                                </div>
-                                            </div>
-                                            <div className="upload-img">
-                                                <div
-                                                    className="change-photo-btn"
-                                                    style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                >
-                                                    {isUploadingIPFS ? (
-                                                        <div className="text-center">
-                                                            <Spinner
-                                                                animation="border"
-                                                                role="status"
-                                                                style={{ color: "#fff" }}
-                                                            >
-                                                            </Spinner>
-                                                        </div>
-                                                    ) : (
-                                                        <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                    )}
-
-                                                    <input
-                                                        name="sampleFile"
-                                                        type="file"
-                                                        className="upload"
-                                                        accept=".png,.jpg,.jpeg,.gif"
-                                                        onChange={onChangeFile}
-                                                    />
-                                                </div>
-                                                <small className="form-text text-muted">
-                                                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                </small>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                            
+                                
+                              
                             {/* <label>Profile Image </label>
                                     <span  title = "TOOLTIP">
                                         <i class="fa fa-info-circle fa-fw" ></i>
@@ -551,55 +591,7 @@ function SettingDashboardDefault(props) {
                                 </div>
                                 )} */}
 
-                                <label>Banner Image</label>
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar">
-                                            <div className="profile-img">
-                                                <div
-                                                    style={{
-                                                        background: "#E9ECEF",
-                                                        width: "100px",
-                                                        height: "100px",
-                                                    }}
-                                                >
-                                                    <img src={bannerImage} alt="Selfie" />
-                                                </div>
-                                            </div>
-                                            <div className="upload-img">
-                                                <div
-                                                    className="change-photo-btn"
-                                                    style={{ backgroundColor: "rgb(167,0,0)" }}
-                                                >
-                                                    {isUploadingBannerIPFS ? (
-                                                        <div className="text-center">
-                                                            <Spinner
-                                                                animation="border"
-                                                                role="status"
-                                                                style={{ color: "#fff" }}
-                                                            >
-                                                            </Spinner>
-                                                        </div>
-                                                    ) : (
-                                                        <span><i className="fa fa-upload"></i>Upload photo</span>
-                                                    )}
-
-                                                    <input
-                                                        name="sampleFile"
-                                                        type="file"
-                                                        className="upload"
-                                                        accept=".png,.jpg,.jpeg,.gif"
-                                                        onChange={onChangeBannerFile}
-                                                    />
-                                                </div>
-                                                <small className="form-text text-muted">
-                                                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                                                </small>
-                                            </div>
-
-                                        </div>
-                                    </div>
-                                </div>
+                               
                                 
                                 {/* <span  title = "TOOLTIP">
                                         <i class="fa fa-info-circle fa-fw" ></i>
@@ -673,3 +665,4 @@ function SettingDashboardDefault(props) {
 }
 
 export default SettingDashboardDefault;
+  

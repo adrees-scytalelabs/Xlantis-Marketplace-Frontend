@@ -67,7 +67,7 @@ function DropCubes(props) {
 
         axios.defaults.headers.common[
             "Authorization"
-        ] = `Bearer ${Cookies.get("Authorization")}`;
+        ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
         axios.post("/drop/drops", DropId).then(
             (response) => {
                 console.log("response", response);

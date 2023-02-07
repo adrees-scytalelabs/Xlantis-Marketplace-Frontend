@@ -95,7 +95,7 @@ function NewCube(props) {
     setOpen(true);
   };
   let getProfileData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/createprofile").then(
@@ -112,8 +112,8 @@ function NewCube(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -183,7 +183,7 @@ function NewCube(props) {
     }); // eslint-disable-next-line
   }, []);
   let getMyNFTs = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/nft/createnft").then(
@@ -200,8 +200,8 @@ function NewCube(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -224,7 +224,7 @@ function NewCube(props) {
     e.preventDefault();
     setIsSaving(true);
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     let jwtDecoded = jwtDecode(jwt);
     let exporter = jwtDecoded.id;
     console.log("exporter", exporter);
@@ -365,7 +365,7 @@ function NewCube(props) {
 
                 axios.defaults.headers.common[
                   "Authorization"
-                ] = `Bearer ${Cookies.get("Authorization")}`;
+                ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
                 axios.post("/token/TokenIds", cubeData).then(
                   (response) => {
                     console.log("response", response);
@@ -401,7 +401,7 @@ function NewCube(props) {
 
                 axios.defaults.headers.common[
                   "Authorization"
-                ] = `Bearer ${Cookies.get("Authorization")}`;
+                ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
                 axios
                   .post("/transaction/tokenTransaction ", TrasactionData)
                   .then(

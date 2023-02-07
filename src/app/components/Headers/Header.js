@@ -47,6 +47,7 @@ function HeaderHome(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
+  let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -208,14 +209,14 @@ function HeaderHome(props) {
       axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
-          Cookies.set("Authorization", response.data.token, {});
+          sessionStorage.setItem("Authorization", response.data.token, {});
           Cookies.set("Version", "v2-wallet-login", {});
           // if (response.data.roles.includes("user")) {
           //   console.log("we here");
           //   localStorage.setItem("Address", accounts[0]);
           // }
           // setIsLoading(false);
-          localStorage.setItem("Address", accounts[0]);
+          sessionStorage.setItem("Address", accounts[0]);
           // history.push("/");
           window.location.reload();
         },
@@ -285,8 +286,9 @@ function HeaderHome(props) {
 
   let Logout = (e) => {
     console.log("akjdf");
-    Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Address");
+    sessionStorage.clear();
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
 
@@ -314,7 +316,29 @@ function HeaderHome(props) {
     }
   };
 
-  useEffect(() => {}, []);
+  let getProfile = () => {
+    let userLogin=sessionStorage.getItem("Authorization");
+    if (userLogin){
+      let version = Cookies.get("Version");
+    axios
+      .get(`${version}/user/profile`)
+      .then((response) => {
+        console.log("profile data image:",response.data.userData.imageURL);
+        response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
+      })
+      .catch((error) => {
+        console.log(error);
+        console.log(error.response);
+      });
+    }
+   
+  }
+
+
+useEffect(() => {
+  getProfile();
+  console.log("In Hook");
+},);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -387,8 +411,8 @@ function HeaderHome(props) {
               marginTop: "4px",
             }}
           >
-            <li className="login-link ">
-              <a
+            
+              {/* <a
                 href="/"
                 style={{ paddingLeft: "5px" }}
                 onClick={(e) => {
@@ -397,25 +421,28 @@ function HeaderHome(props) {
                 }}
               >
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </a>
-            </li>
-            <li className="login-link" style={{ padding: "15px 20px" }}>
+              </a> */}
+
+            
+            <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
-              {localStorage.getItem("Address") ? (
-                <a
-                  href={
-                    "https://ropsten.etherscan.io/address/" +
-                    localStorage.getItem("Address")
-                  }
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{ color: "#fff" }}
-                >
-                  <span style={{ cursor: "pointer" }}>
-                    {localStorage.getItem("Address").substr(0, 10)}. . .
-                  </span>
-                </a>
+              {sessionStorage.getItem("Address") ? (
+              //   <a
+              //   href={
+              //     "https://ropsten.etherscan.io/address/" +
+              //     sessionStorage.getItem("Address")
+              //   }
+              //   target="_blank"
+              //   rel="noopener noreferrer"
+              //   style={{ color: "#fff" }}
+              // >
+              //   <span style={{ cursor: "pointer" }}>
+              //     {sessionStorage.getItem("Address").substr(0, 10)}. . .
+              //   </span>
+              // </a>
+              <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}></div>
+             
               ) : (
                 <>
                   {/* <Link
@@ -484,6 +511,21 @@ function HeaderHome(props) {
                 </span>
               </Link>
             </li> */}
+             <li
+              className="login-link"
+              style={{ padding: "15px 20px" }}
+              onClick={openTransak}
+            >
+              <span
+                style={{
+                  padding: "10px 20px",
+                  color: "white",
+                  cursor: "pointer",
+                }}
+              >
+               Buy Crypto
+              </span>
+            </li>
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -499,6 +541,25 @@ function HeaderHome(props) {
                 View Cart
               </span>
             </li>
+            {
+              sessionStorage.getItem("Address") ?(
+                <li
+                className="login-link"
+                style={{ padding: "15px 20px" }}
+                onClick={Logout}
+              >
+                <span
+                  style={{
+                    padding: "10px 20px",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  Logout
+                </span>
+              </li>
+              ): null
+            }
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "15px" }}>
@@ -514,13 +575,8 @@ function HeaderHome(props) {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
-              ) : localStorage.getItem("Address") ? (
-                <div>
-                  <AccountCircle
-                    onClick={handleClick}
-                    className="account-circle"
-                    fontSize="large"
-                  />
+              ) : sessionStorage.getItem("Address") ? (
+                <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -573,7 +629,7 @@ function HeaderHome(props) {
           </li>
 
           <li>
-            {localStorage.getItem("Address") ? (
+            {sessionStorage.getItem("Address") ? (
               <Link to="/dashboard" style={{ color: "#fff" }}>
                 Dashboard
               </Link>
@@ -644,7 +700,7 @@ function HeaderHome(props) {
             </span>
           </li>
           <li>
-            {localStorage.getItem("Address") ? (
+            {sessionStorage.getItem("Address") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>

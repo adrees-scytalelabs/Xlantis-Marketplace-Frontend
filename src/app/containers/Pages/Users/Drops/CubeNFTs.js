@@ -78,7 +78,7 @@ const useStyles = makeStyles((theme) => ({
 
 function CubeNFTs(props) {
   let history = useHistory();
-  let jwt = Cookies.get("Authorization");
+  let jwt = sessionStorage.getItem("Authorization");
   let jwtDecoded;
   if (jwt) {
     jwtDecoded = jwtDecode(jwt);
@@ -176,7 +176,7 @@ function CubeNFTs(props) {
   let Bid = async (e) => {
     e.preventDefault();
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     if (jwt) {
       //   console.log(jwtDecode(jwt));
       await loadWeb3();
@@ -306,7 +306,7 @@ function CubeNFTs(props) {
         };
         console.log("BuyData", BuyData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.post("token/buytoken", BuyData).then(
@@ -339,7 +339,7 @@ function CubeNFTs(props) {
           withdraw: true,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios.put("dropcubehistory/claimhistory", ClaimData).then(
@@ -369,7 +369,7 @@ function CubeNFTs(props) {
           transaction: receipt.transactionHash,
         };
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
 
@@ -441,7 +441,7 @@ function CubeNFTs(props) {
         withdraw: true,
       };
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.put("dropcubehistory/claimhistory", ClaimData).then(
@@ -553,7 +553,7 @@ function CubeNFTs(props) {
 
           axios.defaults.headers.common[
             "Authorization"
-          ] = `Bearer ${Cookies.get("Authorization")}`;
+          ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
           axios.post("dropcubehistory/createhistory", BidData).then(
             (response) => {
               console.log("response", response);
@@ -600,7 +600,7 @@ function CubeNFTs(props) {
       tokenId: cubeId,
     };
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post(`/dropcubehistory/history`, bidData).then(
@@ -629,7 +629,7 @@ function CubeNFTs(props) {
       }
     );
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(
@@ -672,7 +672,7 @@ function CubeNFTs(props) {
           }
         }
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
           "Authorization"
         )}`;
         axios
@@ -696,8 +696,8 @@ function CubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  localStorage.removeItem("Address");
-                  Cookies.remove("Authorization");
+                  sessionStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
                   window.location.reload(false);
                 }
               }

@@ -127,7 +127,7 @@ function NewNFT(props) {
   let [executiveProducerId, setExecutiveProducerId] = useState("");
 
   let getProfileData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/createprofile").then(
@@ -147,8 +147,8 @@ function NewNFT(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -156,7 +156,7 @@ function NewNFT(props) {
     );
   };
   let getCollections = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/collection/collections").then(
@@ -173,8 +173,8 @@ function NewNFT(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -279,7 +279,7 @@ function NewNFT(props) {
 
             axios.defaults.headers.common[
               "Authorization"
-            ] = `Bearer ${Cookies.get("Authorization")}`;
+            ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
             axios.post("/nft/createnft", Data).then(
               (response) => {
                 console.log("response", response);

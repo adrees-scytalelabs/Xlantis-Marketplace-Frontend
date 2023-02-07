@@ -151,7 +151,7 @@ function CubeNFTs(props) {
         tokenId: cubeId,
       };
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post(`/dropcubehistory/history`, bidData).then(
@@ -178,7 +178,7 @@ function CubeNFTs(props) {
     }
     console.log("Data", Data);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("/token/SingleTokenId", Data).then(
@@ -210,8 +210,8 @@ function CubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  Cookies.remove("Authorization");
-                  localStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
+                  sessionStorage.removeItem("Address");
                   window.location.reload(false);
                 }
               }
@@ -228,8 +228,8 @@ function CubeNFTs(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -290,7 +290,7 @@ function CubeNFTs(props) {
         dropId: dropId,
         tokenId: cubeId,
       };
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post(`/adminclaimfunds/claimfunds`, Data).then(
@@ -326,7 +326,7 @@ function CubeNFTs(props) {
       tokenId: cubeId,
     };
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post(`/adminclaimfunds/getclaimfunds`, Data).then(
@@ -404,7 +404,7 @@ function CubeNFTs(props) {
         expiresAt: time,
       };
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post(`auction/createsale`, SaleData).then(
@@ -498,7 +498,7 @@ function CubeNFTs(props) {
       };
       console.log("AuctionData", AuctionData);
 
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post("/auction/createauction", AuctionData).then(
@@ -532,7 +532,7 @@ function CubeNFTs(props) {
     };
     console.log("saleData", saleData);
 
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.post("drop/deletedrop", saleData).then(

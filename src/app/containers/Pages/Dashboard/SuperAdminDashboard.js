@@ -18,7 +18,7 @@ import ManageAccounts from "./Admin/ManageAccounts";
 
 import transakSDK from "@transak/transak-sdk";
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
   "Authorization"
 )}`;
 
@@ -189,8 +189,8 @@ function SuperAdminDashboard(props) {
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
-                      Cookies.remove("Authorization");
-                      localStorage.removeItem("Address");
+                      sessionStorage.removeItem("Authorization");
+                      sessionStorage.removeItem("Address");
                       // web3Modal.clearCachedProvider();
 
                       Cookies.remove("PNT");
