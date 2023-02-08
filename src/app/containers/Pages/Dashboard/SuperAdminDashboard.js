@@ -18,6 +18,7 @@ import ManageAccounts from "./Admin/ManageAccounts";
 import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
 
 import transakSDK from "@transak/transak-sdk";
+import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
   "Authorization"
@@ -238,6 +239,10 @@ function SuperAdminDashboard(props) {
             <Route exact path={`${path}/manageAccounts/SSO`}>
               {console.log(setActiveTab)}
               <ManageAccountsSSO setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/manageAccounts/Wallet`}>
+              {console.log(setActiveTab)}
+              <ManageAccountsWallet setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/accounts`}>
               <Accounts setActiveTab={setActiveTab} />

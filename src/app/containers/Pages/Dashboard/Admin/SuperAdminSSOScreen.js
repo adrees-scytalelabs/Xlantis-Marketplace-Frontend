@@ -26,9 +26,9 @@ function SuperAdminSSOScreen(props) {
   let [hover, setHover] = useState(false);
 
   let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios
 
       .get(`/v1-sso/super-admin/admins/counts`)
@@ -45,7 +45,6 @@ function SuperAdminSSOScreen(props) {
         console.log(error.response);
       });
   };
-
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
