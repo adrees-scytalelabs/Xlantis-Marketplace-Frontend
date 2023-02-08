@@ -183,7 +183,7 @@ const AdminLoginSignupForms = () => {
               >
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
-                    <div className="col-12 text-right mb-1">
+                    <div className="col-12 text-right mb-1 px-0">
                       <span
                         onClick={handleGoBack}
                         style={{ cursor: "pointer" }}

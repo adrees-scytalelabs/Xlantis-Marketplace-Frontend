@@ -1,5 +1,8 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -28,6 +31,12 @@ import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
 import jwtDecode from "jwt-decode";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core/styles";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -38,7 +47,24 @@ import { UserAuth } from "../context/AuthContext";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
 
+
+const customTheme = createMuiTheme({
+  overrides: {
+    MuiIconButton: {
+      root: {
+        margin: "0 !important",
+        backgroundColor: "transparent !important",
+        border: "none",
+        '"&:hover"': {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+});
+
 function HeaderHome(props) {
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut, setUserSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -48,6 +74,8 @@ function HeaderHome(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
+  const [adminSignInData, setAdminSignInData] = useState(null);
+  const [tokenVerification, setTokenVerification] = useState(true);
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -202,15 +230,35 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        route = "v2-wallet-login/user/auth/admin/login";
+        route = "/v2-wallet-login/user/auth/admin-login";
       } else {
         route = "v2-wallet-login/user/auth/login";
       }
+
+      console.log(route)
       axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
-          Cookies.set("Authorization", response.data.token, {});
-          Cookies.set("Version", "v2-wallet-login", {});
+          if (props.role === "admin") {
+            Cookies.set("Version", "v2-wallet-login", {});
+            setAdminSignInData(response.data);
+            console.log("1");
+              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+              console.log("2", response.data.isVerified);
+              Cookies.set("Verified", response.data.isVerified, {});
+              console.log("3");
+              Cookies.set("Authorization", response.data.raindropToken, {});
+              if (
+                response.data.isInfoAdded === true &&
+                response.data.isVerified === true
+              ) {
+                window.location.reload(false);
+              }
+          } else {
+            console.log("Running user")
+            Cookies.set("Authorization", response.data.raindropToken, {});
+            window.location.reload(); 
+          // }
           // if (response.data.roles.includes("user")) {
           //   console.log("we here");
           //   localStorage.setItem("Address", accounts[0]);
@@ -218,12 +266,13 @@ function HeaderHome(props) {
           // setIsLoading(false);
           localStorage.setItem("Address", accounts[0]);
           // history.push("/");
-          window.location.reload();
-        },
+          // window.location.reload();
+        }},
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
+            if (error) setTokenVerification(false);
           }
           if (error.response !== undefined) {
             if (error.response.status === 400) {
@@ -244,6 +293,7 @@ function HeaderHome(props) {
     setMOdalOpen(false);
     // contract = new web3.eth.Contract(ABI, ADDRESS);
   }
+  
   const selectedStyling = {
     border: "1px solid #F64D04",
     padding: "10px 20px",
@@ -315,14 +365,39 @@ function HeaderHome(props) {
     }
   };
 
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpenSnackBar(false);
+  };
+
   let jwtDecoded, jwt;
   jwt = Cookies.get("Authorization");
-  if (jwt) jwtDecoded = jwtDecode(jwt);
+  console.log("jwt in header /// ", jwt)
+  if (jwt) {jwtDecoded = jwtDecode(jwt)
+  console.log("Header JWT /// ", jwtDecoded)
+  };
 
-  useEffect(() => {}, []);
+if(adminSignInData !== null) {
+      if (
+        adminSignInData.isInfoAdded === true &&
+        adminSignInData.isVerified === false
+      ) {
+         // Case 2
+        setOpenSnackBar(true);
+      }
+}
+
+  adminSignInData &&
+  console.log("jwt after submission: //// ", adminSignInData.raindropToken);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
+    {adminSignInData !== null &&
+                        adminSignInData.isInfoAdded === false && (
+                          <Redirect to="/admin-signup-details" />
+                        )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -509,13 +584,10 @@ function HeaderHome(props) {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
-              ) : localStorage.getItem("Address") ? (
-                <div>
-                  <AccountCircle
-                    onClick={handleClick}
-                    className="account-circle"
-                    fontSize="large"
-                  />
+              ) : localStorage.getItem("Address") && props.role === "admin" ? (
+                <>
+                {null}
+                
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -541,11 +613,17 @@ function HeaderHome(props) {
                   <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
                   <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
                 </Menu> */}
-                </div>
-              ) : // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
+                </>
+              ) : localStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user" ? (// <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
               //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
               // </a>
-              null
+              <div>
+                  <AccountCircle
+                    onClick={handleClick}
+                    className="account-circle"
+                    fontSize="large"
+                  />
+                   </div>
               //   <>
               //     <div>
               //       <Avatar
@@ -564,20 +642,11 @@ function HeaderHome(props) {
               // </span>
               //     </span>
               //     </>
-            }
+           ) : null }
           </li>
-
           <li>
             {
-              localStorage.getItem("Address") ? (
-                <Link to="/dashboard" style={{ color: "#fff" }}>
-                  Dashboard
-                </Link>
-              ) : jwtDecoded !== undefined && jwtDecoded.role === "user" ? (
-                <Link to="/dashboard" style={{ color: "#fff" }}>
-                  Dashboard
-                </Link>
-              ) : (
+              localStorage.getItem("Address") && props.role === "admin" ? null  : localStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user" ? (
                 <>
                   {/* <div>
                   <Avatar
@@ -592,18 +661,10 @@ function HeaderHome(props) {
                 </div> */}
                   {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
                   {/* <Link to="/login" style={{ color: "#fff" }}> */}
-                  <>
-                    <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                      onClick={handleOpenModal}
-                    >
-                      Login/SignUp
-                      {/* Connect Wallet */}
-                    </span>
-                    {userSignOut && <Redirect to="/" />}
-                  </>
-
+                  
+                  <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
                   {/* (
                   <span
                     className={hoverClassStyle.Community}
@@ -624,7 +685,20 @@ function HeaderHome(props) {
                   {/* </Link> */}
                   {/* </span> */}
                 </>
-              )
+              ) : (
+                <>
+                    <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleOpenModal}
+                    >
+                      Login/SignUp
+                      {/* Connect Wallet */}
+                    </span>
+                    {userSignOut && <Redirect to="/" />}
+                  </>
+                
+              ) 
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
             }
           </li>
@@ -635,15 +709,9 @@ function HeaderHome(props) {
             </span>
           </li>
           <li>
-            {localStorage.getItem("Address") ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+            {localStorage.getItem("Address") && props.role === "admin" ? null  : localStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user" ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
-              </span>
-            ) : jwtDecoded !== undefined && jwtDecoded.role === "user" ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
-                Logout
-              </span>
-            ) : null}
+              </span>) : null }
           </li>
           <li>
             <ShoppingCartIcon
@@ -658,6 +726,38 @@ function HeaderHome(props) {
           network={network}
         ></NetworkErrorModal>
       </nav>
+      {/* <ThemeProvider theme={customTheme}>
+      <Snackbar
+                        anchorOrigin={{
+                          vertical: "bottom",
+                          horizontal: "left",
+                        }}
+                        open={openSnackBar}
+                        autoHideDuration={10000}
+                        onClose={handleCloseSnackBar}
+                        message="Your request is under process. Waiting for approval by super-admin"
+                        action={
+                          <React.Fragment>
+                            {/* <Button
+                              color="secondary"
+                              size="small"
+                              onClick={handleCloseSnackBar}
+                            >
+                              OK
+                            </Button> */}
+                            {/* <IconButton
+                              size="small"
+                              aria-label="close"
+                              color="inherit"
+                              onClick={handleCloseSnackBar}
+                            >
+                              <CloseIcon fontSize="small" />
+                            </IconButton>
+                          </React.Fragment> 
+                        }
+                      />
+                      </ThemeProvider>
+                          */}
       <SSOWalletModal
         handleClose={handleCloseModal}
         open={modalOpen}

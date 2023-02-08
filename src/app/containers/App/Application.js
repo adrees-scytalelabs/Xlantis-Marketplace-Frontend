@@ -38,22 +38,23 @@ import Testt from "../Pages/Users/Testt";
 
 function App() {
   let isLoggedIn;
-  let isVerified = false;
+  let isVerified;
   let version;
   var jwtDecoded;
   let jwt = Cookies.get("Authorization");
   if (jwt) jwtDecoded = jwtDecode(jwt);
+  console.log("jwt decoded /// ", jwtDecoded)
   let checkLoginStatus = () => {
-    // Cookies.remove("Authorization");
-    console.log("verified? ", Cookies.get("Verified"));
+    console.log("verified? ", typeof Cookies.get("Verified"));
     jwt && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
       // jwtDecoded = jwtDecode(jwt);
       // jwtDecoded2 = jwtDecode(newJwt);
       isLoggedIn = true;
-      isVerified = Cookies.get("Verified");
+      if(Cookies.get("Verified") === 'true') {
+        isVerified = true
+      } else if(Cookies.get("Verified") === 'false') isVerified = false;
       version = Cookies.get("Version");
-
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
@@ -81,6 +82,10 @@ function App() {
                 isLoggedIn && isVerified ? (
                   <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
                 ) : (
+                  <Redirect to="/" />
+                )
+              ) : version === "v2-wallet-login" ? (
+                isLoggedIn && isVerified ? <AdminDashboard {...props} jwtDecoded={jwtDecoded} /> : (
                   <Redirect to="/" />
                 )
               ) : isLoggedIn ? (
@@ -139,6 +144,7 @@ function App() {
       jwtDecoded &&
       isLoggedIn &&
       version === "v2-wallet-login" &&
+      isVerified &&
       jwtDecoded.role === "admin"
     ) {
       // if (cookies.Verified && cookies.InfoAdded) {
