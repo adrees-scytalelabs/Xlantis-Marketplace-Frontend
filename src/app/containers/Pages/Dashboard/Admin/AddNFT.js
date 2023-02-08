@@ -308,6 +308,8 @@ function AddNFT(props) {
           ) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
             window.location.reload();
           }
         }
@@ -356,6 +358,8 @@ function AddNFT(props) {
           ) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
             window.location.reload();
           }
         }
@@ -389,6 +393,8 @@ function AddNFT(props) {
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
             sessionStorage.removeItem("Authorization");
+            Cookies.remove("Version");
+
             sessionStorage.removeItem("Address");
             window.location.reload();
           }

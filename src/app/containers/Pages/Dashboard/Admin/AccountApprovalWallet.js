@@ -157,8 +157,8 @@ function AccountApprovalWallet(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -223,11 +223,6 @@ function AccountApprovalWallet(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Login Type
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Approval Status
                   </div>
@@ -238,9 +233,7 @@ function AccountApprovalWallet(props) {
               {walletAdmins.map((i, index) => (
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>
-                    <label >N/A</label>
-                  </td>
+                 
                   <td className={classes.collectionTitle}>
                     <Tooltip
                       title={i.walletAddress}
@@ -249,9 +242,7 @@ function AccountApprovalWallet(props) {
                       <span>{i.walletAddress.slice(0, 6)}...</span>
                     </Tooltip>
                   </td>
-                  <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>Wallet</label>
-                  </td>
+                 
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isVerified ? (
