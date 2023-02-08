@@ -49,6 +49,7 @@ const AdminSSORedirect = () => {
     event.preventDefault();
     addDetails();
     Cookies.remove("Verified");
+    localStorage.removeItem("Address");
     console.log(inputs, "the form inputs");
   };
 
@@ -82,7 +83,7 @@ const AdminSSORedirect = () => {
       <div className="main-wrapper sso-redirect-wrapper">
         {/* Header */}
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={""} />
+          <HeaderHome selectedNav={""} role={null}/>
         </div>
         <div className="container my-5 px-lg-0">
           <div className="row no-gutters justify-content-center align-items-center">

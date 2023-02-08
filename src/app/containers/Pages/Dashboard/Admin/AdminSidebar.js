@@ -13,6 +13,7 @@ function AdminSidebar(props) {
   let handleLogout = (e) => {
     Cookies.remove("Authorization");
     localStorage.removeItem("Address");
+    console.log("Cookies here ")
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);

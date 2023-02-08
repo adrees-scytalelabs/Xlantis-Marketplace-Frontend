@@ -330,7 +330,7 @@ const FixedDropSingleNFTHome = () => {
     <>
       {/* Header */}
       <div style={{ minHeight: "95px" }}>
-        <HeaderHome selectedNav={"Market"} />
+        <HeaderHome selectedNav={"Market"} role={null} />
       </div>
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">

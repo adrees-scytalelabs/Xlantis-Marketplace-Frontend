@@ -240,8 +240,8 @@ function HeaderHome(props) {
         (response) => {
           console.log("response", response);
           if (props.role === "admin") {
-            Cookies.set("Version", "v2-wallet-login", {});
             setAdminSignInData(response.data);
+            Cookies.set("Version", "v2-wallet-login", {});
             console.log("1");
               Cookies.set("InfoAdded", response.data.isInfoAdded, {});
               console.log("2", response.data.isVerified);
@@ -252,21 +252,27 @@ function HeaderHome(props) {
                 response.data.isInfoAdded === true &&
                 response.data.isVerified === true
               ) {
-                window.location.reload(false);
+                localStorage.setItem("Address", accounts[0]);
+                // window.location.reload(false);
               }
-          } else {
-            console.log("Running user")
+          } 
+          else {
+            // if(adminSignInData !== null) {
+            //   console.log("Admin sign in data is not null")
+            //   if(adminSignInData.role === "admin") 
+            //   {Cookies.remove("Verified");
+            //   Cookies.remove("Authorization");
+            //   localStorage.removeItem("Address");
+            //   let variant = "error";
+            //   enqueueSnackbar("This Address is registered as Admin", { variant })}
+            // } else 
+          //  { 
+            console.log("Running user", response.data)
+            // if(response.data.role)
             Cookies.set("Authorization", response.data.raindropToken, {});
-            window.location.reload(); 
+            // window.location.reload(); 
+            localStorage.setItem("Address", accounts[0]);
           // }
-          // if (response.data.roles.includes("user")) {
-          //   console.log("we here");
-          //   localStorage.setItem("Address", accounts[0]);
-          // }
-          // setIsLoading(false);
-          localStorage.setItem("Address", accounts[0]);
-          // history.push("/");
-          // window.location.reload();
         }},
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -337,6 +343,8 @@ function HeaderHome(props) {
   let Logout = (e) => {
     console.log("akjdf");
     Cookies.remove("Authorization");
+    Cookies.remove("InfoAdded");
+    Cookies.remove("Verified");
     localStorage.removeItem("Address");
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
@@ -354,16 +362,6 @@ function HeaderHome(props) {
   function handleMenuClose() {
     setAnchorEl(null);
   }
-
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-      console.log("clicked logout");
-      setUserSignOut(!userSignOut);
-    } catch (e) {
-      console.log("signout Error: ", e.message);
-    }
-  };
 
   const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
@@ -384,13 +382,17 @@ if(adminSignInData !== null) {
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
+        // Cookies.remove("Verified");
+        // Cookies.remove("Authorization");
+        // localStorage.removeItem("Address");
          // Case 2
-        setOpenSnackBar(true);
+         let variant = "info";
+         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
 }
 
   adminSignInData &&
-  console.log("jwt after submission: //// ", adminSignInData.raindropToken);
+  console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -726,38 +728,6 @@ if(adminSignInData !== null) {
           network={network}
         ></NetworkErrorModal>
       </nav>
-      {/* <ThemeProvider theme={customTheme}>
-      <Snackbar
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "left",
-                        }}
-                        open={openSnackBar}
-                        autoHideDuration={10000}
-                        onClose={handleCloseSnackBar}
-                        message="Your request is under process. Waiting for approval by super-admin"
-                        action={
-                          <React.Fragment>
-                            {/* <Button
-                              color="secondary"
-                              size="small"
-                              onClick={handleCloseSnackBar}
-                            >
-                              OK
-                            </Button> */}
-                            {/* <IconButton
-                              size="small"
-                              aria-label="close"
-                              color="inherit"
-                              onClick={handleCloseSnackBar}
-                            >
-                              <CloseIcon fontSize="small" />
-                            </IconButton>
-                          </React.Fragment> 
-                        }
-                      />
-                      </ThemeProvider>
-                          */}
       <SSOWalletModal
         handleClose={handleCloseModal}
         open={modalOpen}

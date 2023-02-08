@@ -55,12 +55,19 @@ const customTheme = createMuiTheme({
         margin: "0 !important",
         backgroundColor: "transparent !important",
         border: "none",
-        '"&:hover"': {
+        "&:hover": {
           boxShadow: "none",
         },
       },
     },
+    MuiSvgIcon : {
+      root: {
+        '&:hover': {
+          color: "red"
+        }
+      }
   },
+} 
 });
 
 // COMPONENT FUNCTION

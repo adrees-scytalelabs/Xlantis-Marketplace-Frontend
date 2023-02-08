@@ -37,7 +37,7 @@ function UserSettings(props) {
         <div className="main-wrapper">
         <div className="home-section home-full-height">
             <HeaderHome  
-                
+                selectedNav={""} role={null}
             />
             <SettingsSidebar
                 activeTab={activeTab}

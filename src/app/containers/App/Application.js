@@ -45,7 +45,7 @@ function App() {
   if (jwt) jwtDecoded = jwtDecode(jwt);
   console.log("jwt decoded /// ", jwtDecoded)
   let checkLoginStatus = () => {
-    console.log("verified? ", typeof Cookies.get("Verified"));
+    console.log("verified? ", Cookies.get("Verified"));
     jwt && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
       // jwtDecoded = jwtDecode(jwt);
