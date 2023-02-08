@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme, ThemeProvider,Tooltip } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -150,7 +150,6 @@ function WalletEnabled(props) {
     setPage(0);
   };
 
- 
   let getEnabledWalletAdmins = () => {
     // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
@@ -179,7 +178,6 @@ function WalletEnabled(props) {
       });
   };
 
-  
   let handleWalletDisable = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -233,19 +231,10 @@ function WalletEnabled(props) {
                     Username
                   </div>
                 </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Email
-                  </div>
-                </th>
+
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Login Type
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
@@ -255,61 +244,17 @@ function WalletEnabled(props) {
                 </th>
               </tr>
             </thead>
-            {admins.map((i, index) => (
+            {walletAdmins.map((i, index) => (
               <tbody>
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
+
                   <td className={classes.collectionTitle}>
-                    {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
-                      </Tooltip>
-                    ) : (
-                      <label>N/A</label>
-                    )}
-                  </td>
-                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>SSO</label></td>
-                  <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
-                    {i.isEnabled ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
-                          onClick={(e) => {
-                            handleDisable(e, i._id);
-                          }}
-                        >
-                          Disable
-                        </Button>
-                      </div>
-                    ) : null}
-                    {/* </div> */}
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-             {walletAdmins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip
-                      title={i.walletAddress}
-                      
-                    >
+                    <Tooltip title={i.walletAddress}>
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
-                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>Wallet</label></td>
+
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled ? (
@@ -343,7 +288,7 @@ function WalletEnabled(props) {
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
-        count={adminCount}
+        count={walletCount}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}

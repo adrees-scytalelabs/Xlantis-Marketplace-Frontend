@@ -67,17 +67,21 @@ function SuperAdminSidebar(props) {
                   className="row ssoRow d-flex justify-content-center"
                   style={{}}
                 >
-                  <li className={`${props.activeTab.manageAccountsSSO} ssoSidebar` }>
-                    <Link to={`${props.match.url}/manageAccounts/SSO`}>SSO</Link>
+                  <li
+                    className={`${props.activeTab.manageAccountsSSO} ssoSidebar`}
+                  >
+                    <Link to={`${props.match.url}/manageAccounts/SSO`}>
+                      SSO
+                    </Link>
                   </li>
                 </div>
                 <div
                   className="row walletRow d-flex justify-content-center"
                   style={{}}
                 >
-                  <li>
+                  <li className={`${props.activeTab.manageAccountsSSO}`}>
                     <Link
-                      to={`${props.match.url}/accountApproval`}
+                      to={`${props.match.url}/manageAccounts/Wallet`}
                       className="wallet-sidebar"
                     >
                       Wallet
