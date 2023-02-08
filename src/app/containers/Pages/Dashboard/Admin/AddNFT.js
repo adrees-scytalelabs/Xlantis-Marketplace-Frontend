@@ -392,10 +392,10 @@ function AddNFT(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
+            sessionStorage.removeItem("Authorization");
             Cookies.remove("Version");
 
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Address");
             window.location.reload();
           }
         }

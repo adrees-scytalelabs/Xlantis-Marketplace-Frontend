@@ -126,7 +126,7 @@ const AdminLoginSignupForms = () => {
               Cookies.set("Verified", response.data.isVerified, {});
             console.log("3");
             if (response.data.raindropToken) {
-              Cookies.set("Authorization", response.data.raindropToken, {});
+              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
               window.location.reload();
             }
           }

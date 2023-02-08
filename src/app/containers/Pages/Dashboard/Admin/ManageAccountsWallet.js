@@ -1,11 +1,43 @@
-import React, { useEffect, useState } from "react";
+import {
+  AppBar,
+  Box,
+  Card,
+  CardHeader,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@material-ui/core";
+import React, { useEffect } from "react";
+import { useState } from "react";
 import PropTypes from "prop-types";
+import { makeStyles, useTheme } from "@material-ui/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
-import AccountsDefaultScreen from "./AccountsDefaultScreen";
-import AccountsSSO from "./AccountsSSO";
-import AccountsWallet from "./AccountsWallet";
+import MarketPlacePage from "./MarketPlacePage";
+
+import WalletEnabled from "./WalletEnabled";
+import WalletDisabled from "./WalletDisabled";
+
+// STYLING
+const paginationStyles = makeStyles({
+  base: {
+    // borderRadius: 12,
+    border: 0,
+    color: "#fff",
+    padding: "0 30px",
+    fontWeight: "bold",
+    fontFamily: "orbitron",
+  },
+  label: {
+    textTransform: "capitalize",
+    color: "#fff",
+  },
+  body2: {
+    fontWeight: "bold",
+    color: "#fff",
+    fontFamily: "orbitron",
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -65,6 +97,7 @@ const customTheme = createMuiTheme({
     },
   },
 });
+
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -98,19 +131,27 @@ function a11yProps(index) {
   };
 }
 
-function Accounts(props) {
+// COMPONENT FUNCTION
+const ManageAccountsWallet = (props) => {
   const classes = useStyles();
+  const theme = useTheme();
   const [value, setValue] = useState(0);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+  };
+
+  const handleChangeIndex = (index) => {
+    setValue(index);
   };
 
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
+      manageAccounts: "active",
       accountApproval: "",
-      accounts: "active",
+      accounts: "",
+      manageAccountsSSO: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -120,12 +161,12 @@ function Accounts(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Accounts</h3>
+            <h3 className="page-title">Manage Accounts</h3>
             <ul className="breadcrumb">
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">Accounts</li>
+              <li className="breadcrumb-item active">Manage Accounts</li>
             </ul>
           </div>
         </div>
@@ -144,39 +185,22 @@ function Accounts(props) {
                 textColor="primary"
               >
                 <Tab
-                  label="All"
+                  label="Enabled"
                   className={classes.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
-                  label="SSO"
+                  label="Disabled"
                   className={classes.tabsProps}
                   {...a11yProps(1)}
                 />
-                <Tab
-                  label="Wallet"
-                  className={classes.tabsProps}
-                  {...a11yProps(2)}
-                />
               </Tabs>
               {/* </AppBar> */}
-              <TabPanel value={value} index={0} className="">
-                <AccountsDefaultScreen
-                  match={props.match}
-                  setActiveTab={props.setActiveTab}
-                />
+              <TabPanel value={value} index={0}>
+                <WalletEnabled />
               </TabPanel>
-              <TabPanel className="" value={value} index={1}>
-                <AccountsSSO
-                  match={props.match}
-                  setActiveTab={props.setActiveTab}
-                />
-              </TabPanel>
-              <TabPanel value={value} index={2} className="">
-                <AccountsWallet
-                  match={props.match}
-                  setActiveTab={props.setActiveTab}
-                />
+              <TabPanel value={value} index={1}>
+                <WalletDisabled />
               </TabPanel>
             </div>
           </div>
@@ -184,6 +208,6 @@ function Accounts(props) {
       </div>
     </div>
   );
-}
+};
 
-export default Accounts;
+export default ManageAccountsWallet;

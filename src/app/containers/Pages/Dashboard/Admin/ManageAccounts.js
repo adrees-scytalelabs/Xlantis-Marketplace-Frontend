@@ -150,6 +150,7 @@ const ManageAccounts = (props) => {
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
+      manageAccountsSSO:""
     }); // eslint-disable-next-line
   }, []);
 

@@ -1,16 +1,41 @@
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
+import TextField from "@material-ui/core/TextField";
+import Typography from "@material-ui/core/Typography";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import FormControl from "@material-ui/core/FormControl";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
 import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { Spinner } from "react-bootstrap";
+import { Scrollbars } from "react-custom-scrollbars";
+import DateTimePicker from "react-datetime-picker";
+import Web3 from "web3";
+import r1 from "../../../../assets/img/patients/patient.jpg";
+import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory } from "react-router-dom";
+import { useHistory, useRouteMatch } from "react-router-dom";
+import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
+import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
+import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
+import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,17 +106,16 @@ const makeTheme = createMuiTheme({
   },
 });
 
-function AccountApprovalWallet(props) {
+function WalletDisabled(props) {
   const classes = useStyles();
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  let [admins, setAdmins] = useState([]);
-  let [walletAdmins, setWalletAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
-  let [adminCount, setAdminCount] = useState(0);
+  let [walletAdminCount, setWalletAdminCount] = useState(0);
+  let [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -112,14 +136,14 @@ function AccountApprovalWallet(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedAdminsWallet(0, rowsPerPage);
+    getDisableWalletAdmins();
     // getMyCubes();
-    props.setActiveTab({
-      dashboard: "",
-      manageAccounts: "",
-      accountApproval: "active",
-      accounts: "",
-    }); // eslint-disable-next-line
+    // props.setActiveTab({
+    //   dashboard: "",
+    //   manageAccounts : "",
+    //   accountApproval : "active",
+    //   accounts: "",
+    // }); // eslint-disable-next-line
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -136,19 +160,17 @@ function AccountApprovalWallet(props) {
     setPage(0);
   };
 
-  let getUnverifiedAdminsWallet = (start, end) => {
+  let getDisableWalletAdmins = () => {
     // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
+      .get(`/v2-wallet-login/super-admin/admins/disabled?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
-        setWalletAdmins(response.data.unverifiedAdmins);
-        setAdminCount(response.data.unverifiedAdmins.length);
+        setWalletAdmins(response.data.admins);
+        setWalletAdminCount(response.data.admins.length);
         setOpen(false);
       })
       .catch((error) => {
@@ -166,7 +188,7 @@ function AccountApprovalWallet(props) {
       });
   };
 
-  let handleVerify = (e, verifyAdminId) => {
+  let handleEnableWallet = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
@@ -179,34 +201,36 @@ function AccountApprovalWallet(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+    axios.patch(`/v2-wallet-login/super-admin/enable?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        getUnverifiedAdminsWallet(0, rowsPerPage);
+        getDisableWalletAdmins(0, rowsPerPage);
         // setIsUploadingData(false);
       },
       (error) => {
-        console.log("Error on verify: ", error);
-        console.log("Error on verify: ", error.response);
+        console.log("Error on status pending nft: ", error);
+        console.log("Error on status pending nft: ", error.response);
 
         // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
         let variant = "error";
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
+        enqueueSnackbar("Unable to Enable Admin.", { variant });
       }
     );
   };
 
   return (
-    <div className="backgroundDefault">
+    <div className="">
+      {/* Page Header */}
+
       {/* Page Content */}
-      <div>
+      <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
           {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
@@ -217,45 +241,35 @@ function AccountApprovalWallet(props) {
                     Username
                   </div>
                 </th>
+
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
                   </div>
                 </th>
+
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
-                    Approval Status
+                    Status
                   </div>
                 </th>
               </tr>
             </thead>
-            <tbody>
-              {walletAdmins.map((i, index) => (
+
+            {walletAdmins.map((i, index) => (
+              <tbody>
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                 
+
                   <td className={classes.collectionTitle}>
-                    <Tooltip
-                      title={i.walletAddress}
-                      
-                    >
-                      <span>{i.walletAddress.slice(0, 6)}...</span>
+                    <Tooltip title={i.walletAddress}>
+                      <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
-                 
+
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
-                    {i.isVerified ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button disabled>
-                          <span className="text-white">Verified</span>
-                          <i
-                            className="fas fa-check ml-2"
-                            style={{ color: "#F64D04" }}
-                          ></i>{" "}
-                        </Button>
-                      </div>
-                    ) : (
+                    {i.isEnabled === false ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
@@ -267,19 +281,18 @@ function AccountApprovalWallet(props) {
                           //   borderRadius: "0px 15px",
                           // }}
                           onClick={(e) => {
-                            handleVerify(e, i._id);
+                            handleEnableWallet(e, i._id);
                           }}
                         >
-                          Approve
+                          Enable
                         </Button>
                       </div>
-                    )}
-
+                    ) : null}
                     {/* </div> */}
                   </td>
                 </tr>
-              ))}
-            </tbody>
+              </tbody>
+            ))}
           </Table>
         </div>
       </div>
@@ -287,7 +300,7 @@ function AccountApprovalWallet(props) {
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
-        count={adminCount}
+        count={walletAdminCount}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
@@ -305,4 +318,4 @@ function AccountApprovalWallet(props) {
   );
 }
 
-export default AccountApprovalWallet;
+export default WalletDisabled;

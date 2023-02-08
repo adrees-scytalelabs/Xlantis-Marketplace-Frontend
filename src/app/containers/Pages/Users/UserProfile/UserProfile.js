@@ -15,7 +15,7 @@ function UserProfile(props) {
   let [userData, setUserData] = useState([]);
 
   let getUserData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     // nft/getnft/{userId}/{start}/{end}
