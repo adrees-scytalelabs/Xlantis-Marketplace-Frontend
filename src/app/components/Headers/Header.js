@@ -202,14 +202,14 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        route = "v2-wallet-login/user/auth/admin/login";
+        route = "v2-wallet-login/user/auth/admin-login";
       } else {
         route = "v2-wallet-login/user/auth/login";
       }
       axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
-          sessionStorage.setItem("Authorization", response.data.token, {});
+          sessionStorage.setItem("Authorization", response.data.raindropToken, {});
           Cookies.set("Version", "v2-wallet-login", {});
           // if (response.data.roles.includes("user")) {
           //   console.log("we here");
@@ -317,28 +317,31 @@ function HeaderHome(props) {
   };
 
   let getProfile = () => {
-    let userLogin=sessionStorage.getItem("Authorization");
-    if (userLogin){
+    let userLogin = sessionStorage.getItem("Authorization");
+    if (userLogin != "undefined") {
       let version = Cookies.get("Version");
-    axios
-      .get(`${version}/user/profile`)
-      .then((response) => {
-        console.log("profile data image:",response.data.userData.imageURL);
-        response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+
+      console.log("userLogin", userLogin);
+      console.log("version", version);
+      axios
+        .get(`${version}/user/profile`)
+        .then((response) => {
+          console.log("profile data image:", response.data.userData.imageURL);
+          response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(error.response);
+        });
     }
-   
+
   }
 
 
-useEffect(() => {
-  getProfile();
-  console.log("In Hook");
-},);
+  useEffect(() => {
+    getProfile();
+    console.log("In Hook");
+  },);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -411,8 +414,8 @@ useEffect(() => {
               marginTop: "4px",
             }}
           >
-            
-              {/* <a
+
+            {/* <a
                 href="/"
                 style={{ paddingLeft: "5px" }}
                 onClick={(e) => {
@@ -423,26 +426,26 @@ useEffect(() => {
                 <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
               </a> */}
 
-            
+
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
               {sessionStorage.getItem("Address") ? (
-              //   <a
-              //   href={
-              //     "https://ropsten.etherscan.io/address/" +
-              //     sessionStorage.getItem("Address")
-              //   }
-              //   target="_blank"
-              //   rel="noopener noreferrer"
-              //   style={{ color: "#fff" }}
-              // >
-              //   <span style={{ cursor: "pointer" }}>
-              //     {sessionStorage.getItem("Address").substr(0, 10)}. . .
-              //   </span>
-              // </a>
-              <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}></div>
-             
+                //   <a
+                //   href={
+                //     "https://ropsten.etherscan.io/address/" +
+                //     sessionStorage.getItem("Address")
+                //   }
+                //   target="_blank"
+                //   rel="noopener noreferrer"
+                //   style={{ color: "#fff" }}
+                // >
+                //   <span style={{ cursor: "pointer" }}>
+                //     {sessionStorage.getItem("Address").substr(0, 10)}. . .
+                //   </span>
+                // </a>
+                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}></div>
+
               ) : (
                 <>
                   {/* <Link
@@ -511,7 +514,7 @@ useEffect(() => {
                 </span>
               </Link>
             </li> */}
-             <li
+            <li
               className="login-link"
               style={{ padding: "15px 20px" }}
               onClick={openTransak}
@@ -523,7 +526,7 @@ useEffect(() => {
                   cursor: "pointer",
                 }}
               >
-               Buy Crypto
+                Buy Crypto
               </span>
             </li>
             <li
@@ -542,23 +545,23 @@ useEffect(() => {
               </span>
             </li>
             {
-              sessionStorage.getItem("Address") ?(
+              sessionStorage.getItem("Address") ? (
                 <li
-                className="login-link"
-                style={{ padding: "15px 20px" }}
-                onClick={Logout}
-              >
-                <span
-                  style={{
-                    padding: "10px 20px",
-                    color: "white",
-                    cursor: "pointer",
-                  }}
+                  className="login-link"
+                  style={{ padding: "15px 20px" }}
+                  onClick={Logout}
                 >
-                  Logout
-                </span>
-              </li>
-              ): null
+                  <span
+                    style={{
+                      padding: "10px 20px",
+                      color: "white",
+                      cursor: "pointer",
+                    }}
+                  >
+                    Logout
+                  </span>
+                </li>
+              ) : null
             }
           </ul>
         </div>
@@ -576,7 +579,7 @@ useEffect(() => {
                   </Spinner>
                 </div>
               ) : sessionStorage.getItem("Address") ? (
-                <div className="header-profile-image"  onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`}}>
+                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -604,9 +607,9 @@ useEffect(() => {
                 </Menu> */}
                 </div>
               ) : // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
-              //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
-              // </a>
-              null
+                //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
+                // </a>
+                null
               //   <>
               //     <div>
               //       <Avatar

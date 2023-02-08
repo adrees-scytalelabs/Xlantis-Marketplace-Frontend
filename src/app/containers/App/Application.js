@@ -40,21 +40,21 @@ function App() {
   let isLoggedIn;
   let isVerified = false;
   let version;
-  let jwtDecoded;
+  var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
+  console.log("jwtjwt", jwt);
+  if (jwt && jwt != "undefined") jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
-    console.log("verified? ", Cookies.get("Verified"));
-    jwt && console.log("jwt in application: ", jwt);
-    if (jwt) {
-      console.log(jwtDecode(jwt));
-      // setjwtDecoded(jwtDecode(jwt));
-      jwtDecoded = jwtDecode(jwt);
+    console.log("verified? ", sessionStorage.getItem("Authorization"));
+    jwt && jwt != "undefined" && console.log("jwt in application: ", jwt);
+    if (jwtDecoded) {
+      // jwtDecoded = jwtDecode(jwt);
       // jwtDecoded2 = jwtDecode(newJwt);
-      console.log("jwtDecoded", jwtDecoded);
       isLoggedIn = true;
       isVerified = Cookies.get("Verified");
       version = Cookies.get("Version");
+
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
       // setIsLoggedIn(true);
@@ -66,7 +66,9 @@ function App() {
 
   useEffect(() => {
     checkLoginStatus(); // eslint-disable-next-line
-  }, []);
+  }, [jwt]);
+
+  jwt && jwt != "undefined" && console.log("jwtDecoded", jwtDecoded.role);
 
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();
@@ -301,11 +303,6 @@ function App() {
             <PrivateRoute path="/superAdminDashboard" />
             <PrivateRoute path="/user/settings">
               <UserSettings></UserSettings>
-              {/* <Route
-              exact
-              path="/user/settings"
-              render={(routeProps) => <UserSettings {...routeProps} />}
-            /> */}
             </PrivateRoute>
           </Switch>
         </BrowserRouter>

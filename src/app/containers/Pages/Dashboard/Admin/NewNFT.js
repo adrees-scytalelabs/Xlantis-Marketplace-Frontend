@@ -309,6 +309,8 @@ function NewNFT(props) {
           ) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
             window.location.reload(false);
           }
         }
