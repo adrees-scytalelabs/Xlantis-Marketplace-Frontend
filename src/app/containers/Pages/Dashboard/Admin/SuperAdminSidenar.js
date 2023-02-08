@@ -50,10 +50,9 @@ function SuperAdminSidebar(props) {
                 <span>Approve Accounts</span>
               </Link>
             </li>
-            {/* <li
+            <li
               className={props.activeTab.manageAccounts}
               onClick={changeStyle}
-              
             >
               <Link
                 to={`${props.match.url}/manageAccounts`}
@@ -62,21 +61,19 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
                 <i class="fa fa-caret-down"></i>
-              </Link> */}
-            {/* <button class="dropdown-btn" > */}
-            {/* </button> */}
-            {/* <div className={`${style} container`}>
+              </Link>
+              <div className={`${style} container`}>
                 <div
                   className="row ssoRow d-flex justify-content-center"
-                  style={{  }}
+                  style={{}}
                 >
-                  <li className="ssoSidebar ">
-                    <Link to={`${props.match.url}/accountApproval`}>SSO</Link>
+                  <li className={`${props.activeTab.manageAccountsSSO} ssoSidebar` }>
+                    <Link to={`${props.match.url}/manageAccounts/SSO`}>SSO</Link>
                   </li>
                 </div>
                 <div
                   className="row walletRow d-flex justify-content-center"
-                  style={{  }}
+                  style={{}}
                 >
                   <li>
                     <Link
@@ -87,9 +84,9 @@ function SuperAdminSidebar(props) {
                     </Link>
                   </li>
                 </div>
-              </div> */}
-            {/* </li> */}
-            <li className={props.activeTab.manageAccounts}>
+              </div>
+            </li>
+            {/* <li className={props.activeTab.manageAccounts}>
               <Link
                 to={`${props.match.url}/manageAccounts`}
                 className="sidebarLink"
@@ -97,7 +94,7 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
               </Link>
-            </li>
+            </li> */}
             <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
