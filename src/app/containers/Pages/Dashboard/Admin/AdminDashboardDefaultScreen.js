@@ -19,7 +19,7 @@ function AdminDashboardDefaultScreen(props) {
 
   let getCounts = () => {
     let version = Cookies.get("Version");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios
@@ -64,6 +64,22 @@ function AdminDashboardDefaultScreen(props) {
       newRandomDrop: "",
     });
     getCounts();
+    // const unloadCallback = (event) => {
+    //   event.preventDefault();
+    //   event.returnValue = Cookies.remove('Authorization');
+    //   localStorage.removeItem("Address");
+    //   return "";
+    // };
+  
+    // window.addEventListener("beforeunload", unloadCallback);
+    // return () => window.removeEventListener("beforeunload", unloadCallback);
+  //   window.addEventListener(
+  //     "beforeunload",(event) => {
+  //       event.preventDefault();
+  //       event.returnValue = Cookies.remove('Authorization');
+  //       localStorage.removeItem("Address");
+  //     }
+  // );
     // eslint-disable-next-line
   }, []);
   return (

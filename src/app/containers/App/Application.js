@@ -41,12 +41,13 @@ function App() {
   let isVerified;
   let version;
   var jwtDecoded;
-  let jwt = Cookies.get("Authorization");
-  if (jwt) jwtDecoded = jwtDecode(jwt);
-  console.log("jwt decoded /// ", jwtDecoded)
+  let jwt = sessionStorage.getItem("Authorization");
+  console.log("jwtjwt", jwt);
+  if (jwt && jwt != "undefined") jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
-    console.log("verified? ", Cookies.get("Verified"));
-    jwt && console.log("jwt in application: ", jwt);
+    // Cookies.remove("Authorization");
+    console.log("verified? ", sessionStorage.getItem("Authorization"));
+    jwt && jwt != "undefined" && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
       // jwtDecoded = jwtDecode(jwt);
       // jwtDecoded2 = jwtDecode(newJwt);
@@ -68,7 +69,7 @@ function App() {
     checkLoginStatus(); // eslint-disable-next-line
   }, [jwt]);
 
-  jwt && console.log("jwtDecoded", jwtDecoded.role);
+  jwt && jwt != "undefined" && console.log("jwtDecoded", jwtDecoded.role);
 
   const PrivateRoute = ({ path, ...rest }) => {
     // checkLoginStatus();

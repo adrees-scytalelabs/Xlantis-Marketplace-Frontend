@@ -23,7 +23,7 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
@@ -43,8 +43,10 @@ function MyNFTs(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
             window.location.reload(false);
           }
         }

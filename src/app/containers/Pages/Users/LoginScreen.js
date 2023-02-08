@@ -29,7 +29,7 @@ function LoginScreen(props) {
       .then((response) => {
         console.log("response", response);
 
-        Cookies.set("Authorization", response.data.token, {});
+        sessionStorage.setItem("Authorization", response.data.token, {});
         // setData(response.data.token);
 
         setIsLoading(false);

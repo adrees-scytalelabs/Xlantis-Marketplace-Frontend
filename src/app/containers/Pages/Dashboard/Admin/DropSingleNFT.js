@@ -497,18 +497,18 @@ const DropSingleNFT = (props) => {
     let handleAcceptBidSSO = async (e) => {
         e.preventDefault();
        
-
+        handleShowBackdrop();
         let data = {
             "bidId": bidId,
         }
-
+        handleCloseModal();
         axios.post(`/${versionB}/auction/bid/accept`, data).then(
             (response) => {
               
               console.log("nft bid response", response.data);
               let variant = "success";
               enqueueSnackbar("Bid Accepted Successfully", { variant });
-              handleCloseModal();
+              handleCloseBackdrop();
       
             },
             (error) => {
@@ -517,14 +517,16 @@ const DropSingleNFT = (props) => {
                 console.log(error.response);
                 let variant = "error";
                 enqueueSnackbar("Unable To Accept Bid On NFT.", { variant });
-                handleCloseModal();
+                handleCloseBackdrop();
               }
               if (error.response.data !== undefined) {
                 if (
                   error.response.data === "Unauthorized access (invalid token) !!"
                 ) {
-                  Cookies.remove("Authorization");
-                  localStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
+                  Cookies.remove("Version");
+
+                  sessionStorage.removeItem("Address");
                   window.location.reload();
                 }
               }

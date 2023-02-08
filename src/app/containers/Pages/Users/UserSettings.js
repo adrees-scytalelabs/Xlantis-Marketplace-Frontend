@@ -21,6 +21,7 @@ import UserProfileSidebar from "./UserProfile/UserProfileSidebar";
 import SettingsSidebar from "./SettingsSidebar";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import SettingDashboardDefault from "./SettingsDashboardDefault";
+import UserSidebar from "../../Pages/Dashboard/User/UserSidebar";
 
 
 function UserSettings(props) {
@@ -39,11 +40,13 @@ function UserSettings(props) {
             <HeaderHome  
                 selectedNav={""} role={null}
             />
-            <SettingsSidebar
+           
+           <SettingsSidebar
                 activeTab={activeTab}
                 setActiveTab={setActiveTab} 
-                
+
             />
+             
         <div className="page-wrapper">
         <div className="content container-fluid">
           <Switch>

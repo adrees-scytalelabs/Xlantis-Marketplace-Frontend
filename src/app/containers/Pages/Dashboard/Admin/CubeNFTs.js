@@ -159,8 +159,8 @@ function CubeNFTs(props) {
                   error.response.data ===
                   "Unauthorized access (invalid token) !!"
                 ) {
-                  Cookies.remove("Authorization");
-                  localStorage.removeItem("Address");
+                  sessionStorage.removeItem("Authorization");
+                  sessionStorage.removeItem("Address");
                   window.location.reload(false);
                 }
               }
@@ -197,8 +197,8 @@ function CubeNFTs(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -261,7 +261,7 @@ function CubeNFTs(props) {
         dropId: dropId,
         tokenId: cubeId,
       };
-      axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+      axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
         "Authorization"
       )}`;
       axios.post(`/adminclaimfunds/claimfunds`, Data).then(

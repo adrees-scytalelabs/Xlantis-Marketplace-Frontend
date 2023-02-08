@@ -1,11 +1,26 @@
 import Cookies from "js-cookie";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import "../../../../assets/css/superAdmin.css";
 
 function SuperAdminSidebar(props) {
+  const [style, setStyle] = useState("dropdown-container1");
+  let changeStyle = (e) => {
+    if (style === "dropdown-container1") {
+      setStyle("dropdown-container2");
+    } else {
+      setStyle("dropdown-container1");
+    }
+  };
+  let closedDropdown = (e) => {
+    setStyle("dropdown-container1");
+  };
   let handleLogout = (e) => {
-    Cookies.remove("Authorization");
-    localStorage.removeItem("Address");
+    sessionStorage.clear();
+    sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Address");
+    Cookies.remove("Version");
+
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
@@ -20,12 +35,15 @@ function SuperAdminSidebar(props) {
             <li className="menu-title">
               <span>Main</span>
             </li>
-            <li className={props.activeTab.dashboard}>
+            <li className={props.activeTab.dashboard} onClick={closedDropdown}>
               <Link to={`${props.match.url}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.accountApproval}>
+            <li
+              className={props.activeTab.accountApproval}
+              onClick={closedDropdown}
+            >
               <Link
                 to={`${props.match.url}/accountApproval`}
                 className="sidebarLink"
@@ -34,7 +52,47 @@ function SuperAdminSidebar(props) {
                 <span>Approve Accounts</span>
               </Link>
             </li>
-            <li className={props.activeTab.manageAccounts}>
+            <li
+              className={props.activeTab.manageAccounts}
+              onClick={changeStyle}
+            >
+              <Link
+                to={`${props.match.url}/manageAccounts`}
+                className="sidebarLink"
+              >
+                <i className="fas fa-layer-group"></i>
+                <span>Manage Accounts</span>
+                <i class="fa fa-caret-down"></i>
+              </Link>
+              <div className={`${style} container`}>
+                <div
+                  className="row ssoRow d-flex justify-content-center"
+                  style={{}}
+                >
+                  <li
+                    className={`${props.activeTab.manageAccountsSSO} ssoSidebar`}
+                  >
+                    <Link to={`${props.match.url}/manageAccounts/SSO`}>
+                      SSO
+                    </Link>
+                  </li>
+                </div>
+                <div
+                  className="row walletRow d-flex justify-content-center"
+                  style={{}}
+                >
+                  <li className={`${props.activeTab.manageAccountsSSO}`}>
+                    <Link
+                      to={`${props.match.url}/manageAccounts/Wallet`}
+                      className="wallet-sidebar"
+                    >
+                      Wallet
+                    </Link>
+                  </li>
+                </div>
+              </div>
+            </li>
+            {/* <li className={props.activeTab.manageAccounts}>
               <Link
                 to={`${props.match.url}/manageAccounts`}
                 className="sidebarLink"
@@ -42,8 +100,8 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
               </Link>
-            </li>
-            <li className={props.activeTab.accounts}>
+            </li> */}
+            <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>

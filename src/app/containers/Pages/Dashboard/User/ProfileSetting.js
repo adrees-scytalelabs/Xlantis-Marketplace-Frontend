@@ -237,7 +237,7 @@ function ProfileSetting(props) {
     }
   };
   let getUserRoles = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     axios.get("/profile/getuserprofile").then(
@@ -258,8 +258,10 @@ function ProfileSetting(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
             window.location.reload(false);
           }
         }

@@ -47,7 +47,15 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`/v2-wallet-login/drop/nfts/${dropId}/${start}/${end}`).then(
+    let endpoint;
+    if (version === undefined) {
+      endpoint = `/v1-sso/drop/nfts/${dropId}/${start}/${end}`
+    }
+    else
+    {
+      endpoint = `/${version}/drop/nfts/${dropId}/${start}/${end}`
+    }
+    axios.get(endpoint).then(
       (response) => {
         console.log("getting a nft", response);
         setDropData(response.data.data);

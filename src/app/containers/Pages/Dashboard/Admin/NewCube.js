@@ -115,8 +115,8 @@ function NewCube(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -200,8 +200,8 @@ function NewCube(props) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
-            Cookies.remove("Authorization");
-            localStorage.removeItem("Address");
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
             window.location.reload(false);
           }
         }
@@ -224,7 +224,7 @@ function NewCube(props) {
     e.preventDefault();
     setIsSaving(true);
 
-    let jwt = Cookies.get("Authorization");
+    let jwt = sessionStorage.getItem("Authorization");
     let jwtDecoded = jwtDecode(jwt);
     let exporter = jwtDecoded.id;
     console.log("exporter", exporter);

@@ -40,7 +40,7 @@ function UserExecutiveProducer(props) {
 
   let getUserData = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${Cookies.get(
+    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
     // nft/getnft/{userId}/{start}/{end}
@@ -64,8 +64,8 @@ function UserExecutiveProducer(props) {
             if (
               error.response.data === "Unauthorized access (invalid token) !!"
             ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
+              sessionStorage.removeItem("Authorization");
+              sessionStorage.removeItem("Address");
               window.location.reload(false);
             }
           }

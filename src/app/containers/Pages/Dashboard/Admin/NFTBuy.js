@@ -571,14 +571,14 @@ const NFTBuy = (props) => {
         dropId: nftDetail.dropId,
         nftId: nftDetail._id,
       };
-
+      handleCloseModal();
       axios.post(`/${versionB}/marketplace/buy`, data).then(
         (response) => {
           
           console.log("nft buy response", response.data);
           let variant = "success";
           enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
-          handleCloseModal();
+          handleCloseBackdrop();
   
         },
         (error) => {
@@ -587,14 +587,16 @@ const NFTBuy = (props) => {
             console.log(error.response);
             let variant = "error";
             enqueueSnackbar("Unable To Buy NFT.", { variant });
-            handleCloseModal();
+            handleCloseBackdrop();
           }
           if (error.response.data !== undefined) {
             if (
               error.response.data === "Unauthorized access (invalid token) !!"
             ) {
-              Cookies.remove("Authorization");
-              localStorage.removeItem("Address");
+              sessionStorage.removeItem("Authorization");
+              sessionStorage.removeItem("Address");
+              Cookies.remove("Version");
+
               window.location.reload();
             }
           }
