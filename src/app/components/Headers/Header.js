@@ -38,6 +38,7 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
 
 function HeaderHome(props) {
+  const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut, setUserSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -342,8 +343,7 @@ function HeaderHome(props) {
 
   useEffect(() => {
     getProfile();
-    console.log("In Hook");
-  },);
+  });
 
   return (
     <header className={`header ${menuOpenedClass}`}>
