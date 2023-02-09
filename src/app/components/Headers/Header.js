@@ -374,12 +374,12 @@ function HeaderHome(props) {
     setOpenSnackBar(false);
   };
 
-  let jwtDecoded, jwt;
-  jwt = sessionStorage.getItem("Authorization");
-  console.log("jwt in header /// ", jwt)
-  if (jwt) {jwtDecoded = jwtDecode(jwt)
-  console.log("Header JWT /// ", jwtDecoded)
-  };
+  // let jwtDecoded, jwt;
+  // jwt = sessionStorage.getItem("Authorization");
+  // console.log("jwt in header /// ", jwt)
+  // if (jwt) {jwtDecoded = jwtDecode(jwt)
+  // console.log("Header JWT /// ", jwtDecoded)
+  // };
 
 if(adminSignInData !== null) {
       if (
@@ -400,7 +400,7 @@ if(adminSignInData !== null) {
 
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
-    if (userLogin != "undefined") {
+    if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
       console.log("userLogin", userLogin);
@@ -516,7 +516,7 @@ if(adminSignInData !== null) {
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
-              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user") ? (
+              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) ? (
                 //   <a
                 //   href={
                 //     "https://ropsten.etherscan.io/address/" +
@@ -597,7 +597,7 @@ if(adminSignInData !== null) {
               </span>
             </li>
             {
-              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user") ? (
+              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) ? (
                 <li
                   className="login-link"
                   style={{ padding: "15px 20px" }}
@@ -633,7 +633,7 @@ if(adminSignInData !== null) {
               ) : sessionStorage.getItem("Address") && props.role === "admin" ? (
                 null
                 
-              ) : sessionStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user"  ? (
+              ) : sessionStorage.getItem("Address")  ? (
                 <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
@@ -691,7 +691,7 @@ if(adminSignInData !== null) {
           </li>
           <li>
             {
-              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user" ? (
+              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") ? (
                 <>
                   {/* <div>
                   <Avatar
@@ -754,7 +754,7 @@ if(adminSignInData !== null) {
             </span>
           </li>
           <li>
-            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") && jwtDecoded && jwtDecoded.role === "user" ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>) : null }
           </li>

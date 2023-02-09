@@ -43,11 +43,11 @@ function App() {
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
   console.log("jwtjwt", jwt);
-  if (jwt && jwt != "undefined") jwtDecoded = jwtDecode(jwt);
+  if (jwt && jwt !== "undefined") jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     // Cookies.remove("Authorization");
     console.log("verified? ", sessionStorage.getItem("Authorization"));
-    jwt && jwt != "undefined" && console.log("jwt in application: ", jwt);
+    jwt && jwt !== "undefined" && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
       // jwtDecoded = jwtDecode(jwt);
       // jwtDecoded2 = jwtDecode(newJwt);
