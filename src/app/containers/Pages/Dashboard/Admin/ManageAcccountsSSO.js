@@ -150,7 +150,8 @@ import {
         manageAccounts: "active",
         accountApproval: "",
         accounts: "",
-        manageAccountsSSO:"active"
+        sso:"active",
+        wallet:"",
       }); // eslint-disable-next-line
     }, []);
   

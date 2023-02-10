@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../../../assets/css/superAdmin.css";
 
@@ -26,6 +26,16 @@ function SuperAdminSidebar(props) {
     // setTimeout(() => { }, 1);
     window.location.reload(false);
   };
+  useEffect(() => {
+   if(props.activeTab.sso==='active'){
+    setStyle("dropdown-container2");
+   }
+   if(props.activeTab.wallet==='active'){
+    setStyle("dropdown-container2");
+   }
+   console.log("Active Tab",props.activeTab);
+    // eslint-disable-next-line
+  });
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -70,7 +80,7 @@ function SuperAdminSidebar(props) {
                   style={{}}
                 >
                   <li
-                    className={`${props.activeTab.manageAccountsSSO} ssoSidebar`}
+                    className={`${props.activeTab.sso} ssoSidebar`}
                   >
                     <Link to={`${props.match.url}/manageAccounts/SSO`}>
                       SSO
@@ -81,7 +91,7 @@ function SuperAdminSidebar(props) {
                   className="row walletRow d-flex justify-content-center"
                   style={{}}
                 >
-                  <li className={`${props.activeTab.manageAccountsSSO}`}>
+                  <li className={`${props.activeTab.wallet}`}>
                     <Link
                       to={`${props.match.url}/manageAccounts/Wallet`}
                       className="wallet-sidebar"
