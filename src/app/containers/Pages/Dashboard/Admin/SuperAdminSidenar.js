@@ -30,8 +30,11 @@ function SuperAdminSidebar(props) {
    if(props.activeTab.sso==='active'){
     setStyle("dropdown-container2");
    }
-   if(props.activeTab.wallet==='active'){
+   else if(props.activeTab.wallet==='active'){
     setStyle("dropdown-container2");
+   }
+   else if(props.activeTab.sso==="" && props.activeTab.wallet===""){
+    setStyle("dropdown-container1");
    }
    console.log("Active Tab",props.activeTab);
     // eslint-disable-next-line

@@ -113,6 +113,8 @@ function SuperAdminDashboardDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
+      sso:"",
+      wallet:""
     });
     // eslint-disable-next-line
   }, []);
