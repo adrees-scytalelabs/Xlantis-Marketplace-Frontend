@@ -123,6 +123,8 @@ function SuperAdminDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
+      sso:"",
+      wallet:""
     });
     getCounts();
     // eslint-disable-next-line
