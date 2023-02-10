@@ -151,7 +151,8 @@ const ManageAccountsWallet = (props) => {
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
-      manageAccountsSSO: "",
+      sso:"",
+      wallet:"active",
     }); // eslint-disable-next-line
   }, []);
 

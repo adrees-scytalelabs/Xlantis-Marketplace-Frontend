@@ -146,6 +146,8 @@ function AccountsDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "active",
+      sso:"",
+      wallet:"",
     }); // eslint-disable-next-line
   }, []);
 

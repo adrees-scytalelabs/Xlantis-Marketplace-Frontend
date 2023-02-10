@@ -119,6 +119,8 @@ function AccountApprovalWallet(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
+      sso:"",
+      wallet:"",
     }); // eslint-disable-next-line
   }, []);
 
