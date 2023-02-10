@@ -33,12 +33,13 @@ function UserSettings(props) {
         offer: ""
         
       });
+      const [updateProfile,setUpdateProfile]=useState("");
     console.log("hello");
     return(
         <div className="main-wrapper">
         <div className="home-section home-full-height">
-            <HeaderHome  
-                
+            <HeaderHome
+            updateProfile={updateProfile} 
             />
            
            <SettingsSidebar
@@ -54,6 +55,8 @@ function UserSettings(props) {
               <SettingDashboardDefault
                 // match={props.match}
                 setActiveTab={setActiveTab}
+                updateProfile={updateProfile} 
+                setUpdateProfile={setUpdateProfile}
               />
             </Route>
             {/* <Route exact path={`${path}/myCubes`}>
