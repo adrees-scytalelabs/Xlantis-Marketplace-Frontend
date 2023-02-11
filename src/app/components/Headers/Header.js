@@ -293,6 +293,7 @@ function HeaderHome(props) {
     sessionStorage.removeItem("Address");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
+     history.push({ pathname: '/' });
     window.location.reload(false);
 
     // setTimeout(() => { }, 1);
