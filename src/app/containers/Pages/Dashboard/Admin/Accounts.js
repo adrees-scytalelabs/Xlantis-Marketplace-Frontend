@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import { Link } from "react-router-dom";
 import AccountsDefaultScreen from "./AccountsDefaultScreen";
 import AccountsSSO from "./AccountsSSO";
 import AccountsWallet from "./AccountsWallet";
@@ -106,11 +107,11 @@ function Accounts(props) {
   };
 
   useEffect(() => {
-    if(props.tab===1){
+    if (props.tab === 1) {
       setValue(1);
       props.setTab(0);
     }
-    if(props.tab===2){
+    if (props.tab === 2) {
       setValue(2);
       props.setTab(0);
     }
@@ -119,8 +120,8 @@ function Accounts(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "active",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -132,9 +133,11 @@ function Accounts(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Accounts</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Accounts</li>
             </ul>
           </div>

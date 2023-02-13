@@ -7,6 +7,7 @@ import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import AccountApprovalDefaultScreen from "./AccountApprovalDefaultScreen";
 import AccountApprovalSSO from "./AccountApprovalSSO";
 import AccountApprovalWallet from "./AccountApprovalWallet";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -107,11 +108,11 @@ function AccountApproval(props) {
   };
 
   useEffect(() => {
-    if(props.tab===1){
+    if (props.tab === 1) {
       setValue(1);
       props.setTab(0);
     }
-    if(props.tab===2){
+    if (props.tab === 2) {
       setValue(2);
       props.setTab(0);
     }
@@ -120,8 +121,8 @@ function AccountApproval(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:""
+      sso: "",
+      wallet: "",
     });
     // eslint-disable-next-line
   }, []);
@@ -136,9 +137,11 @@ function AccountApproval(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Account Approval</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Account Approval</li>
             </ul>
           </div>
@@ -180,11 +183,7 @@ function AccountApproval(props) {
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
-              <TabPanel
-                className=""
-                value={value}
-                index={1}
-              >
+              <TabPanel className="" value={value} index={1}>
                 <AccountApprovalSSO
                   match={props.match}
                   setActiveTab={props.setActiveTab}

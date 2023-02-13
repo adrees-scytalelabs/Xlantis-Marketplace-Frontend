@@ -15,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
+import { Link } from "react-router-dom";
 import Enabled from "./Enabled";
 import Disabled from "./Disabled";
 
@@ -158,8 +159,8 @@ const ManageAccounts = (props) => {
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
-      sso:"active",
-      wallet:"active",
+      sso: "active",
+      wallet: "active",
     }); // eslint-disable-next-line
   }, []);
 
@@ -171,9 +172,11 @@ const ManageAccounts = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">Manage Accounts</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Manage Accounts</li>
             </ul>
           </div>
