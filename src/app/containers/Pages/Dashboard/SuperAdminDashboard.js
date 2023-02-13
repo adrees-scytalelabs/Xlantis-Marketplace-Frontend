@@ -20,9 +20,9 @@ import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
 import transakSDK from "@transak/transak-sdk";
 import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+axios.defaults.headers.common[
   "Authorization"
-)}`;
+] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function SuperAdminDashboard(props) {
   let { path } = useRouteMatch();
@@ -57,6 +57,7 @@ function SuperAdminDashboard(props) {
     accountApproval: "",
     accounts: "",
   });
+  let [tab, setTab] = useState(0);
 
   function openTransak() {
     const transak = new transakSDK(settings);
@@ -218,6 +219,8 @@ function SuperAdminDashboard(props) {
       <SuperAdminSidebar
         match={props.match}
         activeTab={activeTab}
+        tab={tab}
+        setTab={setTab}
         setActiveTab={setActiveTab}
       />
       <div className="page-wrapper">
@@ -226,32 +229,52 @@ function SuperAdminDashboard(props) {
             <Route exact path={`${path}`}>
               <SuperAdminDashboardDefaultScreen
                 match={props.match}
+                tab={tab}
+                setTab={setTab}
                 setActiveTab={setActiveTab}
               />
             </Route>
 
             <Route exact path={`${path}/accountApproval`}>
-              <AccountApproval setActiveTab={setActiveTab} />
+              <AccountApproval
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
             </Route>
             <Route exact path={`${path}/manageAccounts`}>
-              <ManageAccounts setActiveTab={setActiveTab} />
+              <ManageAccounts
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
             </Route>
             <Route exact path={`${path}/manageAccounts/SSO`}>
               {console.log(setActiveTab)}
-              <ManageAccountsSSO setActiveTab={setActiveTab} />
+              <ManageAccountsSSO
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
             </Route>
             <Route exact path={`${path}/manageAccounts/Wallet`}>
               {console.log(setActiveTab)}
-              <ManageAccountsWallet setActiveTab={setActiveTab} />
+              <ManageAccountsWallet
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
             </Route>
             <Route exact path={`${path}/accounts`}>
-              <Accounts setActiveTab={setActiveTab} />
+              <Accounts setActiveTab={setActiveTab} tab={tab} setTab={setTab} />
             </Route>
 
             <Route path={`${path}`}>
               <SuperAdminDashboardDefaultScreen
                 match={props.match}
                 setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
               />
             </Route>
           </Switch>

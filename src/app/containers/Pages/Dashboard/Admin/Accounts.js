@@ -106,6 +106,14 @@ function Accounts(props) {
   };
 
   useEffect(() => {
+    if(props.tab===1){
+      setValue(1);
+      props.setTab(0);
+    }
+    if(props.tab===2){
+      setValue(2);
+      props.setTab(0);
+    }
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",

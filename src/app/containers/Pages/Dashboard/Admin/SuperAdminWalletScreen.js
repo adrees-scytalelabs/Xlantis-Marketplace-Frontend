@@ -72,9 +72,9 @@ function SuperAdminWalletScreen(props) {
   let [hover, setHover] = useState(false);
 
   let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
     axios
 
@@ -95,13 +95,14 @@ function SuperAdminWalletScreen(props) {
   };
 
   useEffect(() => {
+    props.setTab(2);
     props.setActiveTab({
       dashboard: "active",
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     });
     getCounts();
     // eslint-disable-next-line
@@ -164,7 +165,12 @@ function SuperAdminWalletScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+            <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts/Wallet`,
+                state: { current: "enabled" },
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -207,7 +213,12 @@ function SuperAdminWalletScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+            <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts/Wallet`,
+                state: { current: "disabled" },
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>

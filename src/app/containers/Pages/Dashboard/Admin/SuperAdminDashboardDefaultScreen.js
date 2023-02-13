@@ -108,13 +108,14 @@ function SuperAdminDashboardDefaultScreen(props) {
   };
 
   useEffect(() => {
+    props.setTab(0)
     props.setActiveTab({
       dashboard: "active",
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      sso:"",
-      wallet:""
+      sso: "",
+      wallet: "",
     });
     // eslint-disable-next-line
   }, []);
@@ -174,18 +175,24 @@ function SuperAdminDashboardDefaultScreen(props) {
                   <SuperAdminDefaultScreen
                     match={props.match}
                     setActiveTab={props.setActiveTab}
+                    setTab={props.setTab}
+                    tab={props.tab}
                   />
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <SuperAdminSSOScreen
                     match={props.match}
                     setActiveTab={props.setActiveTab}
+                    setTab={props.setTab}
+                    tab={props.tab}
                   />
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   <SuperAdminWalletScreen
                     match={props.match}
                     setActiveTab={props.setActiveTab}
+                    setTab={props.setTab}
+                    tab={props.tab}
                   />
                 </TabPanel>
               </div>

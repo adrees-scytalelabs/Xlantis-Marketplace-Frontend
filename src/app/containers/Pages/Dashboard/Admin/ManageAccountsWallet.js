@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
+import { useLocation } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
 
@@ -133,10 +134,10 @@ function a11yProps(index) {
 
 // COMPONENT FUNCTION
 const ManageAccountsWallet = (props) => {
+  const location = useLocation();
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -146,13 +147,19 @@ const ManageAccountsWallet = (props) => {
   };
 
   useEffect(() => {
+    props.setTab(0);
+    if (location.state != null) {
+      if (location.state.current === "disabled") {
+        setValue(1);
+      }
+    }
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
-      sso:"",
-      wallet:"active",
+      sso: "",
+      wallet: "active",
     }); // eslint-disable-next-line
   }, []);
 
