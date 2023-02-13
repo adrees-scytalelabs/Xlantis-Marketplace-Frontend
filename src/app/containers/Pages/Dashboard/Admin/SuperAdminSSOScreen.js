@@ -105,13 +105,14 @@ function SuperAdminSSOScreen(props) {
       });
   };
   useEffect(() => {
+    props.setTab(1);
     props.setActiveTab({
       dashboard: "active",
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     });
     getCounts();
     // eslint-disable-next-line
@@ -174,7 +175,12 @@ function SuperAdminSSOScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+            <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts/SSO`,
+                state: {current:"enabled"},
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -217,7 +223,12 @@ function SuperAdminSSOScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+             <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts/SSO`,
+                state: {current:"disabled"},
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>

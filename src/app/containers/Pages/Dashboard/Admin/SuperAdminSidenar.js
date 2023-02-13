@@ -27,6 +27,7 @@ function SuperAdminSidebar(props) {
     window.location.reload(false);
   };
   useEffect(() => {
+   
    if(props.activeTab.sso==='active'){
     setStyle("dropdown-container2");
    }
@@ -85,7 +86,7 @@ function SuperAdminSidebar(props) {
                   <li
                     className={`${props.activeTab.sso} ssoSidebar`}
                   >
-                    <Link to={`${props.match.url}/manageAccounts/SSO`}>
+                    <Link to={`${props.match.url}/manageAccounts/SSO` } >
                       SSO
                     </Link>
                   </li>
@@ -96,7 +97,7 @@ function SuperAdminSidebar(props) {
                 >
                   <li className={`${props.activeTab.wallet}`}>
                     <Link
-                      to={`${props.match.url}/manageAccounts/Wallet`}
+                      to={`${props.match.url}/manageAccounts/Wallet` }
                       className="wallet-sidebar"
                     >
                       Wallet

@@ -187,7 +187,12 @@ function SuperAdminDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+            <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts`,
+                state: {current:"enabled"},
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
@@ -230,7 +235,12 @@ function SuperAdminDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/manageAccounts`}>
+           <Link
+              to={{
+                pathname: `${props.match.url}/manageAccounts`,
+                state: {current:"disabled"},
+              }}
+            >
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
