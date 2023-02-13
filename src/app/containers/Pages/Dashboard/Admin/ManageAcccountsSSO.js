@@ -17,6 +17,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
 import SSOEnabled from "./SSOEnabled";
 import SSODisabled from "./SSODisabled";
+import { Link } from "react-router-dom";
 
 // STYLING
 const paginationStyles = makeStyles({
@@ -169,12 +170,19 @@ const ManageAccountsSSO = (props) => {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Manage Account SSO Admins</h3>
+            <h3 className="page-title">Manage Accounts of SSO Admin</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">Manage Accounts</li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/superAdminDashboard/manageAccounts`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Manage Accounts
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">SSO</li>
             </ul>
           </div>
         </div>

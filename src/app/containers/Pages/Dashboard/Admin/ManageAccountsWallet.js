@@ -15,7 +15,7 @@ import { makeStyles, useTheme } from "@material-ui/styles";
 import { useLocation } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
-
+import { Link } from "react-router-dom";
 import WalletEnabled from "./WalletEnabled";
 import WalletDisabled from "./WalletDisabled";
 
@@ -169,12 +169,19 @@ const ManageAccountsWallet = (props) => {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Manage Accounts</h3>
+            <h3 className="page-title">Manage Accounts of Wallet Admin</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">Manage Accounts</li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/superAdminDashboard/manageAccounts`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Manage Accounts
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">Wallet</li>
             </ul>
           </div>
         </div>
