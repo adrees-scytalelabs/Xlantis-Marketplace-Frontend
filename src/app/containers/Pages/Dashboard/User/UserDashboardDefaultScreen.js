@@ -16,6 +16,7 @@ function UserDashboardDefaultScreen(props) {
   let [totalSeasons, setTotalSeasons] = useState(0);
   let [totalCollections, setTotalCollections] = useState(0);
   let [hover, setHover] = useState(false);
+   let [userName, setUserName] = useState("");
 
   let getCounts = () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
@@ -36,6 +37,25 @@ function UserDashboardDefaultScreen(props) {
         console.log(error.response);
       });
   };
+  let getProfile = () => {
+    let userLogin = sessionStorage.getItem("Authorization");
+    if (userLogin != "undefined") {
+      let version = Cookies.get("Version");
+
+      console.log("userLogin", userLogin);
+      console.log("version", version);
+      axios
+        .get(`${version}/user/profile`)
+        .then((response) => {
+          setUserName(response.data.userData.username);
+        })
+        .catch((error) => {
+          console.log(error);
+          console.log(error.response);
+        });
+    }
+
+  }
 
   useEffect(() => {
     props.setActiveTab({
@@ -56,6 +76,7 @@ function UserDashboardDefaultScreen(props) {
       newRandomDrop: "",
     });
     getCounts();
+    getProfile();
     // eslint-disable-next-line
   }, []);
 
@@ -65,7 +86,7 @@ function UserDashboardDefaultScreen(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Welcome User!</h3>
+          <h3 className="page-title">Welcome {userName}!</h3>
             <ul className="breadcrumb">
               <li className="breadcrumb-item active" style={{ color: "#999" }}>
                 Dashboard
