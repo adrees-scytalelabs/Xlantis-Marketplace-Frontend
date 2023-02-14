@@ -4,7 +4,7 @@ import AccountCircle from "@material-ui/icons/AccountCircle";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, Redirect } from "react-router-dom";
+import { Link, matchPath, Redirect,useLocation } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
@@ -36,6 +36,8 @@ import transakSDK from "@transak/transak-sdk";
 import { UserAuth } from "../context/AuthContext";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
+import BusinessIcon from "@material-ui/icons/Business";
+import ListAltIcon from "@material-ui/icons/ListAlt";
 
 function HeaderHome(props) {
   const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
@@ -49,6 +51,7 @@ function HeaderHome(props) {
   const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
   let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
+  let location = useLocation();
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -412,7 +415,7 @@ function HeaderHome(props) {
             </a>
           </div>
           <ul
-            className="main-nav "
+            className="main-nav"
             style={{
               marginTop: "4px",
             }}
@@ -507,16 +510,43 @@ function HeaderHome(props) {
                 </span>
               </Link>
             </li>
-            {/* <li>
-              <Link to="/auctionDrops" style={{ color: "#fff" }}>
-                <span
-                  className={hoverClassStyle.Drops}
-                  style={selectedNavStyle.Drops}
-                >
-                  Drops
-                </span>
-              </Link>
-            </li> */}
+            <li className="login-link">
+                  <Link to={`/dashboard`}>
+                    <span style={{
+                      padding: "10px 20px",
+                      cursor: "pointer",
+                    }}>Dashboard</span>
+                  </Link>
+                </li>
+
+            {
+             location.pathname.match("/dashboard") || location.pathname.match("/user/settings")
+           ?(
+              <><li className="sidebar-items">
+                    <Link to={`/dashboard/myNFTs`}>
+                      <span style={{
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                      }}>My NFTs</span>
+                    </Link>
+                  </li><li className="sidebar-items">
+                    <Link to={`/dashboard/marketPlace`}>
+                      <span style={{
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                      }}>MarketPlace</span>
+                    </Link>
+                  </li><li className="sidebar-items">
+                    <Link to={`/user/settings`}>
+                      <span style={{
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                      }}>Profile</span>
+                    </Link>
+                  </li></>
+            ):
+            null
+           }
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -565,10 +595,10 @@ function HeaderHome(props) {
                   </span>
                 </li>
               ) : null
-            }
+            }   
           </ul>
         </div>
-        <ul className="nav header-navbar-rht" style={{ paddingRight: "15px" }}>
+        <ul className="nav header-navbar-rht" style={{ paddingRight: "5px" }}>
           <li>
             {
               isLoading ? (
@@ -634,26 +664,14 @@ function HeaderHome(props) {
             }
           </li>
 
-          <li>
+          <li className="header-item-rht">
             {sessionStorage.getItem("Address") ? (
               <Link to="/dashboard" style={{ color: "#fff" }}>
                 Dashboard
               </Link>
             ) : (
               <>
-                {/* <div>
-                  <Avatar
-                  aria-owns={anchorEl ? "simple-menu" : undefined}
-                  aria-haspopup="true"
-                  onClick={handleLogin}
-                  // onMouseOver={handleClick}
-                  alt="Remy Sharp"
-                  src={money}
-                  sx={{ width: 24, height: 24 }}
-                />
-                </div> */}
-                {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                {/* <Link to="/login" style={{ color: "#fff" }}> */}
+                
                 {user ? (
                   <span
                     className={hoverClassStyle.Community}
@@ -700,19 +718,19 @@ function HeaderHome(props) {
             )}
           </li>
 
-          <li>
+          <li className="header-item-rht">
             <span style={{ color: "#fff" }} onClick={openTransak}>
               <span style={{ cursor: "pointer" }}>Buy Crypto</span>
             </span>
           </li>
-          <li>
+          <li className="header-item-rht">
             {sessionStorage.getItem("Address") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
             ) : null}
           </li>
-          <li>
+          <li className="header-item-rht">
             <ShoppingCartIcon
               onClick={handleOpenCart}
               style={{ cursor: "pointer" }}

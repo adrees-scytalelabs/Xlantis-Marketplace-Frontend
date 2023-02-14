@@ -8684,6 +8684,12 @@ html.menu-opened body {
 }
 
 @media (min-width: 992px) {
+  .sidebar-items span{
+    display: none;
+  }
+  .sidebar-items{
+    display: none;
+  }
   .main-nav>li {
     margin-right: 30px;
     padding: 5px;
@@ -9607,6 +9613,36 @@ html.menu-opened body {
   .blog-view .blog-title {
     font-size: 22px;
   }
+  .header-nav {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+
+  .header-navbar-rht {
+    display: none;
+  }
+
+  .main-nav li.login-link {
+    display: block;
+  }
+
+  .navbar-header {
+    width: 100%;
+  }
+
+  #mobile_btn {
+    left: 0;
+    margin-right: 0;
+    padding: 0 15px;
+    position: absolute;
+    z-index: 99;
+  }
+
+  .navbar-brand.logo {
+    width: 100%;
+    text-align: center;
+    margin-right: 0;
+  }
 }
 
 @media only screen and (max-width: 575.98px) {
@@ -9658,37 +9694,6 @@ html.menu-opened body {
 
   .card-footer {
     padding: 0.75rem 1.25rem;
-  }
-
-  .header-nav {
-    padding-left: 15px;
-    padding-right: 15px;
-  }
-
-  .header-navbar-rht {
-    display: none;
-  }
-
-  .main-nav li.login-link {
-    display: block;
-  }
-
-  .navbar-header {
-    width: 100%;
-  }
-
-  #mobile_btn {
-    left: 0;
-    margin-right: 0;
-    padding: 0 15px;
-    position: absolute;
-    z-index: 99;
-  }
-
-  .navbar-brand.logo {
-    width: 100%;
-    text-align: center;
-    margin-right: 0;
   }
 
   /* .navbar-brand.logo img {
@@ -10641,4 +10646,9 @@ visibility: visible;
   }
   #save-profile-btn:hover{
     background-color: var(--borderOrange);
+  }
+  @media only screen and (min-width: 990px) and (max-width: 1070px) {
+    .header-item-rht{
+        font-size: 0.7rem;;
+      }
   }
