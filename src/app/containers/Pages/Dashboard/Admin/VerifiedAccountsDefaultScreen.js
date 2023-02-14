@@ -145,9 +145,10 @@ function VerifiedAccountsDefaultScreen(props) {
       dashboard: "",
       manageAccounts: "",
       accountApproval: "",
-      accounts: "active",
-      sso:"",
-      wallet:"",
+      accounts: "",
+      verifiedAccounts: "active",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -295,42 +296,50 @@ function VerifiedAccountsDefaultScreen(props) {
                 </th> */}
               </tr>
             </thead>
-            {admins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>
-                    {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
-                      </Tooltip>
-                    ) : (
-                      <label>N/A</label>
-                    )}
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>SSO</label>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-            {walletAdmins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>N/A</td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
-                    </Tooltip>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>Wallet</label>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+            {admins.map((i, index) => {
+              return (
+                i.isVerified === true && (
+                  <tbody>
+                    <tr>
+                      <td className={classes.collectionTitle}>{i.username}</td>
+                      <td className={classes.collectionTitle}>{i.email}</td>
+                      <td className={classes.collectionTitle}>
+                        {i.walletAddress != undefined ? (
+                          <Tooltip title={i.walletAddress}>
+                            <span>{i.walletAddress.slice(0, 8)}...</span>
+                          </Tooltip>
+                        ) : (
+                          <label>N/A</label>
+                        )}
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <label style={{ marginLeft: "10%" }}>SSO</label>
+                      </td>
+                    </tr>
+                  </tbody>
+                )
+              );
+            })}
+            {walletAdmins.map((i, index) => {
+              return (
+                i.isVerified === true && (
+                  <tbody>
+                    <tr>
+                      <td className={classes.collectionTitle}>{i.username}</td>
+                      <td className={classes.collectionTitle}>N/A</td>
+                      <td className={classes.collectionTitle}>
+                        <Tooltip title={i.walletAddress}>
+                          <span>{i.walletAddress.slice(0, 8)}...</span>
+                        </Tooltip>
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <label style={{ marginLeft: "10%" }}>Wallet</label>
+                      </td>
+                    </tr>
+                  </tbody>
+                )
+              );
+            })}
           </Table>
         </div>
       </div>
