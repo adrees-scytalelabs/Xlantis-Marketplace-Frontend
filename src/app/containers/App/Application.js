@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
@@ -37,20 +37,17 @@ import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNF
 import Testt from "../Pages/Users/Testt";
 
 function App() {
+  const [reload, setReload] = useState();
   let isLoggedIn;
   let isVerified;
   let version;
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
   console.log("jwtjwt", jwt);
-  if (jwt && jwt !== "undefined") jwtDecoded = jwtDecode(jwt);
+  if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
-    // Cookies.remove("Authorization");
-    console.log("verified? ", sessionStorage.getItem("Authorization"));
-    jwt && jwt !== "undefined" && console.log("jwt in application: ", jwt);
+    jwt !== null && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
-      // jwtDecoded = jwtDecode(jwt);
-      // jwtDecoded2 = jwtDecode(newJwt);
       isLoggedIn = true;
       if(Cookies.get("Verified") === 'true') {
         isVerified = true
@@ -58,21 +55,25 @@ function App() {
       version = Cookies.get("Version");
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
-      // setIsLoggedIn(true);
     } else {
-      // setIsLoggedIn(false);
       isLoggedIn = false;
     }
   };
 
   useEffect(() => {
+    const controller = new AbortController();
+
     checkLoginStatus(); // eslint-disable-next-line
+
+    return () => {
+      controller.abort();
+    };
+
   }, [jwt]);
 
-  jwt && jwt != "undefined" && console.log("jwtDecoded", jwtDecoded.role);
+ jwt !== null && console.log("jwtDecoded", jwtDecoded.role);
 
   const PrivateRoute = ({ path, ...rest }) => {
-    // checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (

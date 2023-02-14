@@ -256,25 +256,15 @@ function HeaderHome(props) {
                 response.data.isVerified === true
               ) {
                 sessionStorage.setItem("Address", accounts[0]);
-                // window.location.reload(false);
+                window.location.reload(false);
               }
           } 
           else {
-            // if(adminSignInData !== null) {
-            //   console.log("Admin sign in data is not null")
-            //   if(adminSignInData.role === "admin") 
-            //   {Cookies.remove("Verified");
-            //   Cookies.remove("Authorization");
-            //   localStorage.removeItem("Address");
-            //   let variant = "error";
-            //   enqueueSnackbar("This Address is registered as Admin", { variant })}
-            // } else 
-          //  { 
             console.log("Running user", response.data)
-            // if(response.data.role)
+            Cookies.set("Version", "v2-wallet-login", {});
             sessionStorage.setItem("Authorization", response.data.raindropToken, {});
             sessionStorage.setItem("Address", accounts[0]);
-            // window.location.reload(); 
+            window.location.reload(); 
           // }
         }},
         (error) => {
@@ -349,6 +339,7 @@ function HeaderHome(props) {
     sessionStorage.removeItem("Address");
     Cookies.remove("InfoAdded");
     Cookies.remove("Verified");
+    Cookies.remove("Version");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
     window.location.reload(false);
@@ -374,12 +365,16 @@ function HeaderHome(props) {
     setOpenSnackBar(false);
   };
 
-  // let jwtDecoded, jwt;
-  // jwt = sessionStorage.getItem("Authorization");
-  // console.log("jwt in header /// ", jwt)
-  // if (jwt) {jwtDecoded = jwtDecode(jwt)
-  // console.log("Header JWT /// ", jwtDecoded)
-  // };
+  let jwtDecoded, jwt;
+    if(props.role === null) {
+      jwt = sessionStorage.getItem("Authorization");
+      console.log("Header JWT  /// ", jwt)
+      if (jwt !== null) {jwtDecoded = jwtDecode(jwt)
+      console.log("JWT Decoded in Header /// ", jwtDecoded)
+    };
+  }
+  console.log("JWT Decoded in Header /// ", jwtDecoded)
+  
 
 if(adminSignInData !== null) {
       if (
@@ -405,6 +400,7 @@ if(adminSignInData !== null) {
 
       console.log("userLogin", userLogin);
       console.log("version", version);
+      console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
@@ -516,7 +512,7 @@ if(adminSignInData !== null) {
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
-              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) ? (
+              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 //   <a
                 //   href={
                 //     "https://ropsten.etherscan.io/address/" +
@@ -597,7 +593,7 @@ if(adminSignInData !== null) {
               </span>
             </li>
             {
-              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) ? (
+              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <li
                   className="login-link"
                   style={{ padding: "15px 20px" }}
@@ -633,8 +629,8 @@ if(adminSignInData !== null) {
               ) : sessionStorage.getItem("Address") && props.role === "admin" ? (
                 null
                 
-              ) : sessionStorage.getItem("Address")  ? (
-                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}>
+              ) : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`, cursor: "pointer" }}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -691,7 +687,7 @@ if(adminSignInData !== null) {
           </li>
           <li>
             {
-              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") ? (
+              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <>
                   {/* <div>
                   <Avatar
@@ -730,6 +726,17 @@ if(adminSignInData !== null) {
                   {/* </Link> */}
                   {/* </span> */}
                 </>
+              ) : props.role === "admin" ? (
+                <>
+                <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleLogin}
+                    >
+                      Sign in with wallet
+                      {/* Connect Wallet */}
+                    </span>
+                </>
               ) : (
                 <>
                     <span
@@ -754,7 +761,7 @@ if(adminSignInData !== null) {
             </span>
           </li>
           <li>
-            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>) : null }
           </li>
