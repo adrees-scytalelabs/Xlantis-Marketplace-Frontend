@@ -65,6 +65,18 @@ function SuperAdminSidebar(props) {
               </Link>
             </li>
             <li
+              className={props.activeTab.verifiedAccounts}
+              onClick={closedDropdown}
+            >
+              <Link
+                to={`${props.match.url}/verifiedAccounts`}
+                className="sidebarLink"
+              >
+                <i className="fas fa-layer-group"></i>
+                <span>Verified Accounts</span>
+              </Link>
+            </li>
+            <li
               className={props.activeTab.accountApproval}
               onClick={closedDropdown}
             >
