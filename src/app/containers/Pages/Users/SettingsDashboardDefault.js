@@ -155,7 +155,7 @@ function SettingDashboardDefault(props) {
                 enqueueSnackbar('Profile Updated Succesfully', { variant });
                 setIsUploadingData(false);
                 handleCloseBackdrop();
-                window.location.reload();
+                props.setUpdateProfile(profileImage);
 
             },
             (error) => {
@@ -323,7 +323,7 @@ function SettingDashboardDefault(props) {
                                                             <Spinner
                                                                 animation="border"
                                                                 role="status"
-                                                                style={{ color: "#0055ff" }}
+                                                                style={{ color: "#FFFFFF" }}
                                                             >
                                                             </Spinner>
                                                 </div>
@@ -349,7 +349,7 @@ function SettingDashboardDefault(props) {
                                                             <Spinner
                                                                 animation="border"
                                                                 role="status"
-                                                                style={{ color: "#0055ff" }}
+                                                                style={{ color: "#FFFFFF" }}
                                                             >
                                                             </Spinner>
                                                 </div>
@@ -471,7 +471,7 @@ function SettingDashboardDefault(props) {
                                 </div>):(
 
                                 <div className="submit-section">
-                                            <button type="button"  onClick={(e) => handleSubmitEvent(e)}  className="btn submit-btn" >
+                                            <button type="button"  onClick={(e) => handleSubmitEvent(e)}  className="btn submit-btn" id="save-profile-btn" >
                                                 Save
                                             </button>
                                 </div>

@@ -106,16 +106,16 @@ const makeTheme = createMuiTheme({
   },
 });
 
-function AccountsWallet(props) {
+function VerifiedAccountsSSOScreen(props) {
   const classes = useStyles();
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
+  let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
+  let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -136,15 +136,16 @@ function AccountsWallet(props) {
   const history = useHistory();
 
   useEffect(() => {
-    getUnverifiedWallet(0, rowsPerPage);
+    getUnverifiedAdmins(0, rowsPerPage);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
       accountApproval: "",
-      accounts: "active",
-      sso:"",
-      wallet:"",
+      accounts: "",
+      verifiedAccounts: "active",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -153,7 +154,7 @@ function AccountsWallet(props) {
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getUnverifiedWallet(
+    getUnverifiedAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
     );
@@ -161,21 +162,21 @@ function AccountsWallet(props) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedWallet(0, parseInt(event.target.value, 10));
+    getUnverifiedAdmins(0, parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  let getUnverifiedWallet = (start, end) => {
+  let getUnverifiedAdmins = (start, end) => {
     // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/${start}/${end}`)
+      .get(`/v1-sso/super-admin/admins/${start}/${end}`)
       .then((response) => {
         console.log("response.data", response.data);
-        setWalletAdmins(response.data.Admins);
-        setWalletAdminCount(response.data.Admins.length);
+        setAdmins(response.data.Admins);
+        setAdminCount(response.data.Admins.length);
         setOpen(false);
       })
       .catch((error) => {
@@ -245,6 +246,11 @@ function AccountsWallet(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
+                    Email
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
                   </div>
                 </th>
@@ -255,18 +261,27 @@ function AccountsWallet(props) {
                 </th> */}
               </tr>
             </thead>
-            {walletAdmins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
-                    </Tooltip>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+            {admins.map((i, index) => {
+              return (
+                i.isVerified === true && (
+                  <tbody>
+                    <tr>
+                      <td className={classes.collectionTitle}>{i.username}</td>
+                      <td className={classes.collectionTitle}>{i.email}</td>
+                      <td className={classes.collectionTitle}>
+                        {i.walletAddress != undefined ? (
+                          <Tooltip title={i.walletAddress}>
+                            <span>{i.walletAddress.slice(0, 8)}...</span>
+                          </Tooltip>
+                        ) : (
+                          <label>N/A</label>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                )
+              );
+            })}
           </Table>
         </div>
       </div>
@@ -274,7 +289,7 @@ function AccountsWallet(props) {
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
-        count={adminWalletCount}
+        count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
         onChangePage={handleChangePage}
@@ -292,4 +307,4 @@ function AccountsWallet(props) {
   );
 }
 
-export default AccountsWallet;
+export default VerifiedAccountsSSOScreen;

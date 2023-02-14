@@ -10666,3 +10666,11 @@ object:hover {
   padding-top: 10px;
   padding-bottom: 20px;
 }
+#save-profile-btn{
+  border-radius: 5px 15px;
+    background-color: black;
+    border: 1px solid var(--borderOrange);
+  }
+  #save-profile-btn:hover{
+    background-color: var(--borderOrange);
+  }

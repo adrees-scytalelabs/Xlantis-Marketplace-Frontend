@@ -308,9 +308,12 @@ function App() {
 
             <PrivateRoute path="/dashboard" />
             <PrivateRoute path="/superAdminDashboard" />
-            <PrivateRoute path="/user/settings">
-              <UserSettings></UserSettings>
-            </PrivateRoute>
+            <Route
+              exact
+              path="/user/settings"
+              render={(routeProps) =>
+                (isLoggedIn && jwtDecoded.role === "user") ? <UserSettings {...routeProps} /> : <Redirect to="/" />}
+            />
           </Switch>
         </BrowserRouter>
       </SnackbarProvider>

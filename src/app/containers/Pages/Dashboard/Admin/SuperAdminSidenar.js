@@ -1,10 +1,12 @@
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../../../assets/css/superAdmin.css";
 
 function SuperAdminSidebar(props) {
   const [style, setStyle] = useState("dropdown-container1");
+  const [ssoStyle, setSSOStyle] = useState("");
+  const [walletStyle, setWalletStyle] = useState("");
   let changeStyle = (e) => {
     if (style === "dropdown-container1") {
       setStyle("dropdown-container2");
@@ -12,8 +14,18 @@ function SuperAdminSidebar(props) {
       setStyle("dropdown-container1");
     }
   };
+  let subMenuSSOClick = (e) => {
+    setSSOStyle("ssoRowClick");
+    setWalletStyle("");
+  };
+  let subMenuWalletClick = (e) => {
+    setSSOStyle("");
+    setWalletStyle("walletRowClick");
+  };
   let closedDropdown = (e) => {
     setStyle("dropdown-container1");
+    setSSOStyle("");
+    setWalletStyle("");
   };
   let handleLogout = (e) => {
     sessionStorage.clear();
@@ -26,6 +38,18 @@ function SuperAdminSidebar(props) {
     // setTimeout(() => { }, 1);
     window.location.reload(false);
   };
+  useEffect(() => {
+
+    if (props.activeTab.sso === "active") {
+      setStyle("dropdown-container2");
+    } else if (props.activeTab.wallet === "active") {
+      setStyle("dropdown-container2");
+    } else if (props.activeTab.sso === "" && props.activeTab.wallet === "") {
+      setStyle("dropdown-container1");
+    }
+    console.log("Active Tab", props.activeTab);
+    // eslint-disable-next-line
+  });
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -38,6 +62,18 @@ function SuperAdminSidebar(props) {
             <li className={props.activeTab.dashboard} onClick={closedDropdown}>
               <Link to={`${props.match.url}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
+              </Link>
+            </li>
+            <li
+              className={props.activeTab.verifiedAccounts}
+              onClick={closedDropdown}
+            >
+              <Link
+                to={`${props.match.url}/verifiedAccounts`}
+                className="sidebarLink"
+              >
+                <i className="fas fa-layer-group"></i>
+                <span>Verified Accounts</span>
               </Link>
             </li>
             <li
@@ -66,22 +102,20 @@ function SuperAdminSidebar(props) {
               </Link>
               <div className={`${style} container`}>
                 <div
-                  className="row ssoRow d-flex justify-content-center"
-                  style={{}}
+                  className={`${ssoStyle} row ssoRow d-flex justify-content-center`}
+                  onClick={subMenuSSOClick}
                 >
-                  <li
-                    className={`${props.activeTab.manageAccountsSSO} ssoSidebar`}
-                  >
+                  <li className={`${props.activeTab.sso} ssoSidebar`}>
                     <Link to={`${props.match.url}/manageAccounts/SSO`}>
                       SSO
                     </Link>
                   </li>
                 </div>
                 <div
-                  className="row walletRow d-flex justify-content-center"
-                  style={{}}
+                  className={`${walletStyle} row walletRow d-flex justify-content-center`}
+                  onClick={subMenuWalletClick}
                 >
-                  <li className={`${props.activeTab.manageAccountsSSO}`}>
+                  <li className={`${props.activeTab.wallet}`}>
                     <Link
                       to={`${props.match.url}/manageAccounts/Wallet`}
                       className="wallet-sidebar"

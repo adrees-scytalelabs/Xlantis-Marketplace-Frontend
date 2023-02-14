@@ -25,9 +25,16 @@
     border:2px solid black;
     text-align: center;
   }
+  .ssoRowClick{
+    border:2px solid black;
+  }
+  .walletRowClick{
+    border:2px solid black;
+  }
   .walletRow:hover{
     
     border:2px solid black;
     text-align: center;
     justify-content: center;
   }
+  

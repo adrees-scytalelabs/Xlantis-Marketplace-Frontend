@@ -65,6 +65,7 @@ const customTheme = createMuiTheme({
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut, setUserSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -342,6 +343,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
+     history.push({ pathname: '/' });
     window.location.reload(false);
 
     // setTimeout(() => { }, 1);
