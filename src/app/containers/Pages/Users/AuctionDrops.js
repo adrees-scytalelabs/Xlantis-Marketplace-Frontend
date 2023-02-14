@@ -102,7 +102,7 @@ function AuctionDrops() {
         <>
             <div className="main-wrapper">
                 <div className="home-section home-full-height">
-                    <HeaderHome selectedNav={"Drops"} />
+                    <HeaderHome selectedNav={"Drops"} role={null}/>
                     <div className="card-body">
                         <div className="form-group" style={{ minHeight: '500px', marginTop: '120px' }}>
 

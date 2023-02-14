@@ -141,7 +141,7 @@ const CheckoutScreen = () => {
         <div className="main-wrapper">
           {/* Header */}
           <div style={{ minHeight: "95px" }}>
-            <HeaderHome selectedNav={"Market"} />
+            <HeaderHome selectedNav={"Market"} role={null}/>
           </div>
 
           {/* Heading */}

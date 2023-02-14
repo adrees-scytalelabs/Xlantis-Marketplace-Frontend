@@ -81,7 +81,7 @@ const FixedPriceDropNFTs = () => {
       <div className="home-section home-full-height">
         {/* Header */}
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} />
+          <HeaderHome selectedNav={"Market"} role={null} />
         </div>
         {/* Body */}
         {/* Banner and Thumb */}

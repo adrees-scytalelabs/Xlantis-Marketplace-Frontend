@@ -490,7 +490,7 @@ function SaleCubeNFTs(props) {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        <HeaderHome selectedNav={"Market"} />
+        <HeaderHome selectedNav={"Market"} role={null}/>
         <div className="card">
           <div className="card-body" style={{ marginTop: "110px" }}>
             {openSpinner ? (

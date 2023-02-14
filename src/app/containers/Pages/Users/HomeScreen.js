@@ -25,7 +25,7 @@ function HomeScreen({ deviceType }) {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        <HeaderHome selectedNav={"Home"} />
+        <HeaderHome selectedNav={"Home"} role={null}/>
         <div id="hBanner">
           <HomeBanner />
         </div>

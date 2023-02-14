@@ -10,7 +10,7 @@ const AdminLoginSignup = () => {
       <div className="main-wrapper">
         {/* Header */}
         <div className="row no-gutters w-100">
-          <HeaderHome role="admin" />
+          <HeaderHome selectedNav={""} role="admin" />
         </div>
         {/* Login Signup */}
         <div

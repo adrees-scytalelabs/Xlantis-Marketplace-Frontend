@@ -38,7 +38,8 @@ function UserSettings(props) {
     return(
         <div className="main-wrapper">
         <div className="home-section home-full-height">
-            <HeaderHome
+            <HeaderHome  
+                selectedNav={""} role={null}
             updateProfile={updateProfile} 
             />
            

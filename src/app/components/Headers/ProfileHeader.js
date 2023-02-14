@@ -148,6 +148,8 @@ function ProfileHeader(props) {
                   <Link
                     onClick={() => {
                       sessionStorage.removeItem("Authorization");
+                      Cookies.remove("InfoAdded");
+                      Cookies.remove("Verified");
                       Cookies.remove("PNT");
                       window.location.reload(false);
                     }}

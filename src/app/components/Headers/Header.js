@@ -1,5 +1,8 @@
 import Person from "@material-ui/icons/Person";
 import Avatar from "@material-ui/core/Avatar";
+import Snackbar from "@material-ui/core/Snackbar";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -27,6 +30,13 @@ import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
+import jwtDecode from "jwt-decode";
+import {
+  createMuiTheme,
+  makeStyles,
+  ThemeProvider,
+  useTheme,
+} from "@material-ui/core/styles";
 
 import Web3Modal from "web3modal";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -37,7 +47,24 @@ import { UserAuth } from "../context/AuthContext";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
 
+
+const customTheme = createMuiTheme({
+  overrides: {
+    MuiIconButton: {
+      root: {
+        margin: "0 !important",
+        backgroundColor: "transparent !important",
+        border: "none",
+        '"&:hover"': {
+          boxShadow: "none",
+        },
+      },
+    },
+  },
+});
+
 function HeaderHome(props) {
+  const [openSnackBar, setOpenSnackBar] = useState(false);
   const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
   let [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut, setUserSignOut] = useState(false);
@@ -48,6 +75,8 @@ function HeaderHome(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const { user, logOut } = UserAuth();
+  const [adminSignInData, setAdminSignInData] = useState(null);
+  const [tokenVerification, setTokenVerification] = useState(true);
   let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
 
   const handleOpenModal = () => {
@@ -209,24 +238,38 @@ function HeaderHome(props) {
         
         route = "v2-wallet-login/user/auth/login";
       }
+
+      console.log(route)
       axios.post(route, loginData).then(
         (response) => {
           console.log("response", response);
-          sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-          Cookies.set("Version", "v2-wallet-login", {});
-          // if (response.data.roles.includes("user")) {
-          //   console.log("we here");
-          //   localStorage.setItem("Address", accounts[0]);
+          if (props.role === "admin") {
+            setAdminSignInData(response.data);
+            Cookies.set("Version", "v2-wallet-login", {});
+              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+              Cookies.set("Verified", response.data.isVerified, {});
+              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+              if (
+                response.data.isInfoAdded === true &&
+                response.data.isVerified === true
+              ) {
+                sessionStorage.setItem("Address", accounts[0]);
+                window.location.reload(false);
+              }
+          } 
+          else {
+            console.log("Running user", response.data)
+            Cookies.set("Version", "v2-wallet-login", {});
+            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+            sessionStorage.setItem("Address", accounts[0]);
+            window.location.reload(); 
           // }
-          // setIsLoading(false);
-          sessionStorage.setItem("Address", accounts[0]);
-          // history.push("/");
-          window.location.reload();
-        },
+        }},
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
+            if (error) setTokenVerification(false);
           }
           if (error.response !== undefined) {
             if (error.response.status === 400) {
@@ -247,6 +290,7 @@ function HeaderHome(props) {
     setMOdalOpen(false);
     // contract = new web3.eth.Contract(ABI, ADDRESS);
   }
+  
   const selectedStyling = {
     border: "1px solid #F64D04",
     padding: "10px 20px",
@@ -291,6 +335,9 @@ function HeaderHome(props) {
     console.log("akjdf");
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
+    Cookies.remove("InfoAdded");
+    Cookies.remove("Verified");
+    Cookies.remove("Version");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
      history.push({ pathname: '/' });
@@ -310,23 +357,43 @@ function HeaderHome(props) {
     setAnchorEl(null);
   }
 
-  const handleSignOut = async () => {
-    try {
-      await logOut();
-      console.log("clicked logout");
-      setUserSignOut(!userSignOut);
-    } catch (e) {
-      console.log("signout Error: ", e.message);
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
     }
+    setOpenSnackBar(false);
   };
+
+  let jwtDecoded, jwt;
+    if(props.role === null) {
+      jwt = sessionStorage.getItem("Authorization");
+      if (jwt !== null) {jwtDecoded = jwtDecode(jwt)
+    };
+  }
+  
+
+if(adminSignInData !== null) {
+      if (
+        adminSignInData.isInfoAdded === true &&
+        adminSignInData.isVerified === false
+      ) {
+         // Case 2
+         let variant = "info";
+         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
+      }
+}
+
+  adminSignInData &&
+  console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
 
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
-    if (userLogin != "undefined") {
+    if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
       console.log("userLogin", userLogin);
       console.log("version", version);
+      console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
@@ -344,10 +411,15 @@ function HeaderHome(props) {
 
   useEffect(() => {
     getProfile();
-  });
+    console.log("In Hook");
+  },[]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
+    {adminSignInData !== null &&
+                        adminSignInData.isInfoAdded === false && (
+                          <Redirect to="/admin-signup-details" />
+                        )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -433,7 +505,7 @@ function HeaderHome(props) {
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
-              {sessionStorage.getItem("Address") ? (
+              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 //   <a
                 //   href={
                 //     "https://ropsten.etherscan.io/address/" +
@@ -449,41 +521,7 @@ function HeaderHome(props) {
                 // </a>
                 <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}></div>
 
-              ) : (
-                <>
-                  {/* <Link
-                    to="/login"
-                    style={{
-                      color: "#fff",
-                      fontSize: "18px",
-                      fontWeight: "bold",
-                    }}
-                  > */}
-                  {user ? (
-                    <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                      onClick={handleSignOut}
-                    >
-                      Logout
-                    </span>
-                  ) : (
-                    <>
-                      <span
-                        className={hoverClassStyle.Community}
-                        style={selectedNavStyle.Community}
-                        onClick={handleOpenModal}
-                      >
-                        Login/SignUp
-                        {/* Connect Wallet */}
-                      </span>
-                      {userSignOut && <Redirect to="/" />}
-                    </>
-                  )}
-                  {/* {userSignOut && } */}
-
-                  {/* </Link> */}
-                </>
+              ) : ( null
               )}
               {/* </Link> */}
             </li>
@@ -548,7 +586,7 @@ function HeaderHome(props) {
               </span>
             </li>
             {
-              sessionStorage.getItem("Address") ? (
+              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <li
                   className="login-link"
                   style={{ padding: "15px 20px" }}
@@ -581,8 +619,11 @@ function HeaderHome(props) {
                     <span className="sr-only">Loading...</span>
                   </Spinner>
                 </div>
-              ) : sessionStorage.getItem("Address") ? (
-                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}>
+              ) : sessionStorage.getItem("Address") && props.role === "admin" ? (
+                null
+                
+              ) : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`, cursor: "pointer" }}>
                   {/* <Avatar
                     aria-owns={anchorEl ? "simple-menu" : undefined}
                     aria-haspopup="true"
@@ -608,6 +649,10 @@ function HeaderHome(props) {
                   <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
                   <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
                 </Menu> */}
+                {/* </div> */}
+              {/* // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
+              //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
+              // </a> */}
                 </div>
               ) : // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
                 //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
@@ -631,17 +676,13 @@ function HeaderHome(props) {
               // </span>
               //     </span>
               //     </>
-            }
+           }
           </li>
-
           <li>
-            {sessionStorage.getItem("Address") ? (
-              <Link to="/dashboard" style={{ color: "#fff" }}>
-                Dashboard
-              </Link>
-            ) : (
-              <>
-                {/* <div>
+            {
+              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                <>
+                  {/* <div>
                   <Avatar
                   aria-owns={anchorEl ? "simple-menu" : undefined}
                   aria-haspopup="true"
@@ -652,31 +693,13 @@ function HeaderHome(props) {
                   sx={{ width: 24, height: 24 }}
                 />
                 </div> */}
-                {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                {/* <Link to="/login" style={{ color: "#fff" }}> */}
-                {user ? (
-                  <span
-                    className={hoverClassStyle.Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleSignOut}
-                  >
-                    Logout
-                  </span>
-                ) : (
-                  <>
-                    <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                      onClick={handleOpenModal}
-                    >
-                      Login/SignUp
-                      {/* Connect Wallet */}
-                    </span>
-                    {userSignOut && <Redirect to="/" />}
-                  </>
-                )}
-
-                {/* (
+                  {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
+                  {/* <Link to="/login" style={{ color: "#fff" }}> */}
+                  
+                  <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
+                  {/* (
                   <span
                     className={hoverClassStyle.Community}
                     style={selectedNavStyle.Community}
@@ -691,13 +714,38 @@ function HeaderHome(props) {
                   onClick={handleOpenModal}
                 >
                   Login/SignUp */}
-                {/* Connect Wallet */}
-                {/* </span> */}
-                {/* </Link> */}
-                {/* </span> */}
-              </>
+                  {/* Connect Wallet */}
+                  {/* </span> */}
+                  {/* </Link> */}
+                  {/* </span> */}
+                </>
+              ) : props.role === "admin" ? (
+                <>
+                <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleLogin}
+                    >
+                      Sign in with wallet
+                      {/* Connect Wallet */}
+                    </span>
+                </>
+              ) : (
+                <>
+                    <span
+                      className={hoverClassStyle.Community}
+                      style={selectedNavStyle.Community}
+                      onClick={handleOpenModal}
+                    >
+                      Login/SignUp
+                      {/* Connect Wallet */}
+                    </span>
+                    {userSignOut && <Redirect to="/" />}
+                  </>
+                
+              ) 
               // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-            )}
+            }
           </li>
 
           <li>
@@ -706,11 +754,9 @@ function HeaderHome(props) {
             </span>
           </li>
           <li>
-            {sessionStorage.getItem("Address") ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
-              </span>
-            ) : null}
+              </span>) : null }
           </li>
           <li>
             <ShoppingCartIcon
