@@ -15,6 +15,7 @@ import SuperAdminSidebar from "./Admin/SuperAdminSidenar";
 import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
 import ManageAccounts from "./Admin/ManageAccounts";
+import VerifiedAccounts from "./Admin/VerifiedAccounts";
 import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
 
 import transakSDK from "@transak/transak-sdk";
@@ -234,7 +235,14 @@ function SuperAdminDashboard(props) {
                 setActiveTab={setActiveTab}
               />
             </Route>
-
+            <Route exact path={`${path}/verifiedAccounts`}>
+              <VerifiedAccounts
+                match={props.match}
+                tab={tab}
+                setTab={setTab}
+                setActiveTab={setActiveTab}
+              />
+            </Route>
             <Route exact path={`${path}/accountApproval`}>
               <AccountApproval
                 setActiveTab={setActiveTab}
