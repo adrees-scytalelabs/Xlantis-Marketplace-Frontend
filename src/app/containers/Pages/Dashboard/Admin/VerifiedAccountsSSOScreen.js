@@ -142,9 +142,10 @@ function VerifiedAccountsSSOScreen(props) {
       dashboard: "",
       manageAccounts: "",
       accountApproval: "",
-      accounts: "active",
-      sso:"",
-      wallet:"",
+      accounts: "",
+      verifiedAccounts: "active",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -260,23 +261,27 @@ function VerifiedAccountsSSOScreen(props) {
                 </th> */}
               </tr>
             </thead>
-            {admins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>
-                    {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
-                      </Tooltip>
-                    ) : (
-                      <label>N/A</label>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+            {admins.map((i, index) => {
+              return (
+                i.isVerified === true && (
+                  <tbody>
+                    <tr>
+                      <td className={classes.collectionTitle}>{i.username}</td>
+                      <td className={classes.collectionTitle}>{i.email}</td>
+                      <td className={classes.collectionTitle}>
+                        {i.walletAddress != undefined ? (
+                          <Tooltip title={i.walletAddress}>
+                            <span>{i.walletAddress.slice(0, 8)}...</span>
+                          </Tooltip>
+                        ) : (
+                          <label>N/A</label>
+                        )}
+                      </td>
+                    </tr>
+                  </tbody>
+                )
+              );
+            })}
           </Table>
         </div>
       </div>

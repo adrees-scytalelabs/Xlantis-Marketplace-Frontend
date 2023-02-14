@@ -142,9 +142,10 @@ function VerifiedAccountsWalletScreen(props) {
       dashboard: "",
       manageAccounts: "",
       accountApproval: "",
-      accounts: "active",
-      sso:"",
-      wallet:"",
+      accounts: "",
+      verifiedAccounts: "active",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -248,6 +249,7 @@ function VerifiedAccountsWalletScreen(props) {
                     Wallet Address
                   </div>
                 </th>
+
                 {/* <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Verify
@@ -255,18 +257,22 @@ function VerifiedAccountsWalletScreen(props) {
                 </th> */}
               </tr>
             </thead>
-            {walletAdmins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
-                    </Tooltip>
-                  </td>
-                </tr>
-              </tbody>
-            ))}
+            {walletAdmins.map((i, index) => {
+              return (
+                i.isVerified === true && (
+                  <tbody>
+                    <tr>
+                      <td className={classes.collectionTitle}>{i.username}</td>
+                      <td className={classes.collectionTitle}>
+                        <Tooltip title={i.walletAddress}>
+                          <span>{i.walletAddress.slice(0, 8)}...</span>
+                        </Tooltip>
+                      </td>
+                    </tr>
+                  </tbody>
+                )
+              );
+            })}
           </Table>
         </div>
       </div>
