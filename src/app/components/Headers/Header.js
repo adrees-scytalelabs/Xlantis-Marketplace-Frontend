@@ -246,11 +246,8 @@ function HeaderHome(props) {
           if (props.role === "admin") {
             setAdminSignInData(response.data);
             Cookies.set("Version", "v2-wallet-login", {});
-            console.log("1");
               Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-              console.log("2", response.data.isVerified);
               Cookies.set("Verified", response.data.isVerified, {});
-              console.log("3");
               sessionStorage.setItem("Authorization", response.data.raindropToken, {});
               if (
                 response.data.isInfoAdded === true &&
@@ -370,12 +367,9 @@ function HeaderHome(props) {
   let jwtDecoded, jwt;
     if(props.role === null) {
       jwt = sessionStorage.getItem("Authorization");
-      console.log("Header JWT  /// ", jwt)
       if (jwt !== null) {jwtDecoded = jwtDecode(jwt)
-      console.log("JWT Decoded in Header /// ", jwtDecoded)
     };
   }
-  console.log("JWT Decoded in Header /// ", jwtDecoded)
   
 
 if(adminSignInData !== null) {
@@ -383,9 +377,6 @@ if(adminSignInData !== null) {
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
-        // Cookies.remove("Verified");
-        // Cookies.remove("Authorization");
-        // localStorage.removeItem("Address");
          // Case 2
          let variant = "info";
          enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })

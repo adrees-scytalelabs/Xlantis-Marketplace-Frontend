@@ -105,11 +105,8 @@ const AdminLoginSignupForms = () => {
     const controller = new AbortController();
     
     if (adminSignInData !== null) {
-      console.log(Cookies.get("Version"), " /// Version for user in useEffect");
-      console.log("user token after refresh /// ", sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {}));
       history.push("/");
       history.go(0);
-      // window.location.reload(false);
     }
 
     return () => {
