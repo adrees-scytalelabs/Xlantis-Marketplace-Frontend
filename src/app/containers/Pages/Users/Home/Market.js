@@ -72,6 +72,7 @@ function MarketPlace(props) {
       .get(endpoint)
       .then(
         (response) => {
+          console.log("response /// ", response)
           setFixedPriceDrop(response.data.data);
           handleCloseBackdrop();
         },
@@ -98,6 +99,7 @@ function MarketPlace(props) {
     }
     axios.get(endpoint).then(
       (res) => {
+        console.log("res >>> ", res)
         setBidableDrop(res.data.data);
         handleCloseBackdrop();
       },

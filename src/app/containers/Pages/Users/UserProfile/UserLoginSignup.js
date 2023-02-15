@@ -10,7 +10,7 @@ const UserLoginSignup = () => {
       <div className="main-wrapper">
         {/* Header */}
         <div className="row no-gutters">
-          <HeaderHome />
+          <HeaderHome selectedNav={""} role={null} />
         </div>
         {/* Login */}
         <div

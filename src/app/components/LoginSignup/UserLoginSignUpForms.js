@@ -48,25 +48,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
-  overrides: {
-    MuiIconButton: {
-      root: {
-        margin: "0 !important",
-        backgroundColor: "transparent !important",
-        border: "none",
-        '"&:hover"': {
-          boxShadow: "none",
-        },
-      },
-    },
-  },
-});
-
 // COMPONENT FUNCTION
 const AdminLoginSignupForms = () => {
   // States
-  const [openSnackBar, setOpenSnackBar] = useState(false);
   const [account, setAccount] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [phoneNum, setPhoneNum] = useState();
@@ -79,28 +63,12 @@ const AdminLoginSignupForms = () => {
   const clientID = `${REACT_APP_CLIENT_ID}`;
   let history = useHistory();
 
-  // Methods
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
   // Handlers
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
 
   const handleSetActive = () => {
     setIsActive(!isActive);
-  };
-
-  const handleSnackBarOpen = () => {
-    setOpenSnackBar(true);
-  };
-
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
   };
 
   const handleGoBack = () => {
@@ -116,23 +84,13 @@ const AdminLoginSignupForms = () => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
             Cookies.set("Version", "v1-sso", {});
-
+            response.data.raindropToken &&
+            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
             setAdminSignInData(response.data);
-            console.log("1");
-            response.data.isInfoAdded === true &&
-              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-            console.log("2");
-            response.data.isVerified === true &&
-              Cookies.set("Verified", response.data.isVerified, {});
-            console.log("3");
-            if (response.data.raindropToken) {
-              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-              window.location.reload();
-            }
+            
           }
         })
         .catch((error) => {
-          // case 4
           console.log("JWT could not be submitted,", error);
           if (error) setTokenVerification(false);
         });
@@ -144,19 +102,21 @@ const AdminLoginSignupForms = () => {
   }, [account]);
 
   useEffect(() => {
-    // Case 2
+    const controller = new AbortController();
+    
     if (adminSignInData !== null) {
-      if (
-        adminSignInData.isInfoAdded === true &&
-        adminSignInData.isVerified === false
-      ) {
-        setOpenSnackBar(true);
-      }
+      history.push("/");
+      history.go(0);
     }
+
+    return () => {
+      controller.abort();
+    };
+
   }, [adminSignInData]);
 
-  adminSignInData &&
-    console.log("user token before refresh /// ", adminSignInData);
+  adminSignInData && console.log("user token before refresh /// ", sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {}));
+  console.log(Cookies.get("Version"), " /// Version for user")
 
   // Content
   return (
@@ -175,7 +135,7 @@ const AdminLoginSignupForms = () => {
               <div>
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
-                    <div className="col-12 text-right mb-1">
+                    <div className="col-12 text-right mb-1 px-0">
                       <span
                         onClick={handleGoBack}
                         style={{ cursor: "pointer" }}
@@ -221,7 +181,6 @@ const AdminLoginSignupForms = () => {
                         OR
                       </Typography>
                     </div>
-                    <ThemeProvider theme={customTheme}>
                       <GoogleOAuthProvider clientId={clientID}>
                         <GoogleLogin
                           onSuccess={handleSuccess}
@@ -231,37 +190,6 @@ const AdminLoginSignupForms = () => {
                           width="258px"
                         />
                       </GoogleOAuthProvider>
-                      {adminSignInData !== null && history.push("/")}
-                      <Snackbar
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "left",
-                        }}
-                        open={openSnackBar}
-                        autoHideDuration={10000}
-                        onClose={handleCloseSnackBar}
-                        message="Your request is under process. Waiting for approval by super-admin"
-                        action={
-                          <React.Fragment>
-                            {/* <Button
-                              color="secondary"
-                              size="small"
-                              onClick={handleCloseSnackBar}
-                            >
-                              OK
-                            </Button> */}
-                            <IconButton
-                              size="small"
-                              aria-label="close"
-                              color="inherit"
-                              onClick={handleCloseSnackBar}
-                            >
-                              <CloseIcon fontSize="small" />
-                            </IconButton>
-                          </React.Fragment>
-                        }
-                      />
-                    </ThemeProvider>
                     <div className="signUp-link">
                       <p>
                         Don’t have an account?{" "}

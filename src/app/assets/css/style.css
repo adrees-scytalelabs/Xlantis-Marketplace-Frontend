@@ -61,6 +61,8 @@ Version      : 1.2
 @import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 
 :root {
+  --disabledBorder: #b93801;
+  --disabledText: #aaa;
   --bg: #000;
   --border: #fff;
   --borderOrange: #F64D04;
@@ -96,6 +98,16 @@ Version      : 1.2
   background-color: black;
   color: white;
   border: 1px solid #F64D04;
+  border-radius: 0 15px 0 15px;
+  cursor: pointer;
+}
+
+.bidBtn-disabled {
+  margin-left: 5px;
+  padding: 14px;
+  background-color: black;
+  color: var(--disabledText);
+  border: 1px solid var(--disabledBorder);
   border-radius: 0 15px 0 15px;
 }
 
@@ -1040,7 +1052,7 @@ li.menu-title {
 }
 
 .exploreBtn:hover {
- box-shadow: var(--orangeBoxShadow);
+  box-shadow: var(--orangeBoxShadow);
 }
 
 .nftPrice {
@@ -1140,37 +1152,41 @@ button.featuredExploreBtn:hover {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
 }
-.paddles {
-}
+
+.paddles {}
+
 .paddle {
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	width: 3em;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3em;
 }
+
 .left-paddle {
-	left: -40px;
+  left: -40px;
 }
+
 .right-paddle {
-	right: -40px;
+  right: -40px;
 }
+
 .hidden {
-	display: none;
+  display: none;
 }
 
 button.paddle-disabled:hover {
-/* background-color: rgba(86, 86, 86, 0.49); */
+  /* background-color: rgba(86, 86, 86, 0.49); */
 }
 
 .paddles button {
   background-color: transparent;
   border-radius: 5px;
   border: none;
-  transition: all 300ms ease-in-out ;
+  transition: all 300ms ease-in-out;
 }
 
 .paddles button.paddle:hover {
-  background-color: rgba(255,255,255,0.29);
+  background-color: rgba(255, 255, 255, 0.29);
 }
 
 .saleCardSlider.slide {
@@ -10551,17 +10567,21 @@ object:hover {
   left: 0px;
   top: -32px;
 }
-.banner-img{
+
+.banner-img {
   width: 100%;
   height: 350px;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover
 }
-#banner-file-input,#profile-file-input{
+
+#banner-file-input,
+#profile-file-input {
   display: none;
 }
-.profile-backgrnd{
+
+.profile-backgrnd {
   width: 190px;
   height: 190px;
   background-position: center;
@@ -10571,65 +10591,77 @@ object:hover {
   border-radius: 50%;
   bottom: -1.5rem;
   position: absolute;
- }
- .profile-input-label{
+}
+
+.profile-input-label {
   width: 100%;
   height: 100%;
- }
- .profile-dark-layer{
+}
+
+.profile-dark-layer {
   width: 100%;
   height: 100%;
-  background-color:rgba(0, 0, 0, 0.4);
+  background-color: rgba(0, 0, 0, 0.4);
   border-radius: 50%;
   visibility: hidden;
- }
- #profile-icon{
+}
+
+#profile-icon {
   position: relative;
   left: 75px;
   top: 75px;
   visibility: hidden;
- 
- }
- .profile-backgrnd:hover #profile-icon{
-visibility: visible;
+
 }
- .profile-backgrnd:hover .profile-dark-layer{
+
+.profile-backgrnd:hover #profile-icon {
   visibility: visible;
 }
-.banner-input-label{
+
+.profile-backgrnd:hover .profile-dark-layer {
+  visibility: visible;
+}
+
+.banner-input-label {
   width: 100%;
   height: 100%;
 }
-.banner-dark-layer{
+
+.banner-dark-layer {
   width: 100%;
   height: 100%;
-  background-color:rgba(0, 0, 0, 0.7);
+  background-color: rgba(0, 0, 0, 0.7);
   visibility: hidden;
   text-align: center;
 }
-.banner-img:hover .banner-dark-layer { 
+
+.banner-img:hover .banner-dark-layer {
   visibility: visible;
 }
-#banner-icon{
+
+#banner-icon {
   position: relative;
   visibility: hidden;
   top: 150px;
-  
- }
-.banner-img:hover #banner-icon { 
+
+}
+
+.banner-img:hover #banner-icon {
   visibility: visible;
 }
-.header-profile-image{
+
+.header-profile-image {
   width: 34px;
   height: 34px;
-  
+
   background-color: white;
   border-radius: 50%;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  
+
 }
+
 .profileDetailHeading {
   font-size: 2.2rem;
   color: var(--text);

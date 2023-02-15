@@ -91,7 +91,7 @@ function DropCubes(props) {
     return (
         <div className="main-wrapper">
             <div className="home-section home-full-height">
-                <HeaderHome selectedNav={"Drops"} />
+                <HeaderHome selectedNav={"Drops"} role={null} />
                 <div className="card">
 
                     <div className="card-body" style={{ marginTop: '110px' }}>

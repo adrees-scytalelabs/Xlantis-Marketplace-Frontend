@@ -163,7 +163,7 @@ const TrendingAndTop = (props) => {
         activeFixedDrop = [...activeFixedDrop, props.fixedPriceDrop[i]];
       } else if (props.fixedPriceDrop[i].status === "pending") {
         pendingFixedDrop = [...pendingFixedDrop, props.fixedPriceDrop[i]];
-      } else {
+      } else if(props.fixedPriceDrop[i].status === "closed") {
         closedFixedDrop = [...closedFixedDrop, props.fixedPriceDrop[i]];
       }
     }
@@ -174,11 +174,12 @@ const TrendingAndTop = (props) => {
   var closedAuctionDrop = [];
   if (props.bidableDrop) {
     for (let i = 0; i < props.bidableDrop.length; i++) {
+      console.log([i])
       if (props.bidableDrop[i].status === "active") {
         activeAuctionDrop = [...activeAuctionDrop, props.bidableDrop[i]];
       } else if (props.bidableDrop[i].status === "pending") {
         pendingAuctionDrop = [...pendingAuctionDrop, props.bidableDrop[i]];
-      } else {
+      } else if(props.bidableDrop[i].status === "closed") {
         closedAuctionDrop = [...closedAuctionDrop, props.bidableDrop[i]];
       }
     }

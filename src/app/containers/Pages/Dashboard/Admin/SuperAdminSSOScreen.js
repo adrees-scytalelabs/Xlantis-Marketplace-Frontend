@@ -271,7 +271,7 @@ function SuperAdminSSOScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-            <Link to={`${props.match.url}/accounts`}>
+            <Link to={`${props.match.url}/verifiedAccounts`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
