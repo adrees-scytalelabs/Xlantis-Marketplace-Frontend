@@ -49,7 +49,7 @@ function SuperAdminSidebar(props) {
     }
     console.log("Active Tab", props.activeTab);
     // eslint-disable-next-line
-  });
+  },[props.activeTab]);
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
