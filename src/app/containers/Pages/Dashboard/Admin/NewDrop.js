@@ -808,7 +808,7 @@ function NewDrop(props) {
                       />
                     </div>
                   </div>
-                  <div className="form-group newNftWrapper datePicker">
+                  {/* <div className="form-group newNftWrapper datePicker">
                     <label
                       style={{ fontWeight: "bold", fontFamily: "poppins" }}
                     >
@@ -857,43 +857,7 @@ function NewDrop(props) {
                         value={endTime}
                       />
                     </div>
-                    {/* <label>Minimum Bid (WETH)</label>
-                                    <div className="form-group">
-                                        <div className="filter-widget">
-                                            <input
-                                                type="number"
-                                                required
-                                                value={minimumBid}
-                                                className="form-control"
-                                                onChange={(e) => {
-                                                    if (e.target.value > 0) {
-                                                        setMinimumBid(e.target.value);
-                                                    } else {
-                                                        setMinimumBid(0);
-                                                    }
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                    <label>Bid Delta (WETH)</label>
-                                    <div className="form-group">
-                                        <div className="filter-widget">
-                                            <input
-                                                type="number"
-                                                required
-                                                value={bidDelta}
-                                                className="form-control"
-                                                onChange={(e) => {
-                                                    if (e.target.value > 0) {
-                                                        setBidDelta(e.target.value);
-                                                    } else {
-                                                        setBidDelta(0);
-                                                    }
-                                                }}
-                                            />
-                                        </div>
-                                    </div> */}
-                  </div>
+                  </div> */}
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <lable
