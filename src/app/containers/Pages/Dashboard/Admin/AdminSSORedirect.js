@@ -49,7 +49,7 @@ const AdminSSORedirect = () => {
     event.preventDefault();
     addDetails();
     Cookies.remove("Verified");
-    localStorage.removeItem("Address");
+    sessionStorage.removeItem("Address");
     console.log(inputs, "the form inputs");
   };
 
