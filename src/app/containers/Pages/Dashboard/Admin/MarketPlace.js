@@ -14,6 +14,7 @@ import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
+import { Link } from "react-router-dom";
 
 // STYLING
 const paginationStyles = makeStyles({
@@ -172,8 +173,8 @@ const MarketPlace = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">MarketPlace</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
+            <li className="breadcrumb-item slash" >
+                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
               </li>
               <li className="breadcrumb-item active">MarketPlace</li>
             </ul>

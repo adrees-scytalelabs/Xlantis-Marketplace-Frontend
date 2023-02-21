@@ -135,7 +135,7 @@ function MarketPlace(props) {
     <div className="main-wrapper">
       <div className="home-section home-full-height">
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} />
+          <HeaderHome selectedNav={"Market"} role={null}/>
         </div>
         <div className="row no-gutters mt-5">
           <div className="container-fluid">

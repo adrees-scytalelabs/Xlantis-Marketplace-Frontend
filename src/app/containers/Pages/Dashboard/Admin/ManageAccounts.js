@@ -11,9 +11,11 @@ import {
 import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import { useLocation } from "react-router-dom";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
+import { Link } from "react-router-dom";
 import Enabled from "./Enabled";
 import Disabled from "./Disabled";
 
@@ -133,6 +135,7 @@ function a11yProps(index) {
 // COMPONENT FUNCTION
 const ManageAccounts = (props) => {
   const classes = useStyles();
+  const location = useLocation();
   const theme = useTheme();
   const [value, setValue] = useState(0);
 
@@ -145,12 +148,19 @@ const ManageAccounts = (props) => {
   };
 
   useEffect(() => {
+    props.setTab(0);
+    if (location.state != null) {
+      if (location.state.current === "disabled") {
+        setValue(1);
+      }
+    }
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
-      manageAccountsSSO:""
+      sso: "active",
+      wallet: "active",
     }); // eslint-disable-next-line
   }, []);
 
@@ -162,9 +172,11 @@ const ManageAccounts = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">Manage Accounts</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Manage Accounts</li>
             </ul>
           </div>

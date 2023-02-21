@@ -12,7 +12,7 @@ function AdminSidebar(props) {
   let [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
     sessionStorage.clear();
-    // sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
 

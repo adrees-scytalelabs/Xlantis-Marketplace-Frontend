@@ -6,6 +6,7 @@ import axios from "axios";
 // COMPONENTS
 import IntlTelInput from "react-intl-tel-input";
 import GoogleButton from "react-google-button";
+import { useSnackbar } from "notistack";
 // MUI COMPONENTS
 import { Divider, Typography } from "@material-ui/core";
 import {
@@ -55,12 +56,19 @@ const customTheme = createMuiTheme({
         margin: "0 !important",
         backgroundColor: "transparent !important",
         border: "none",
-        '"&:hover"': {
+        "&:hover": {
           boxShadow: "none",
         },
       },
     },
+    MuiSvgIcon : {
+      root: {
+        '&:hover': {
+          color: "red"
+        }
+      }
   },
+} 
 });
 
 // COMPONENT FUNCTION
@@ -73,6 +81,7 @@ const AdminLoginSignupForms = () => {
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const classes = useStyles();
+  const { enqueueSnackbar } = useSnackbar();
 
   // Variables
   const { REACT_APP_CLIENT_ID } = process.env;
@@ -112,28 +121,22 @@ const AdminLoginSignupForms = () => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
             Cookies.set("Version", "v1-sso", {});
-
             setAdminSignInData(response.data);
-            // if (response.data.isInfoAdded && response.data.isVerified) {
             console.log("1");
             response.data.isInfoAdded === true &&
               Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-            // setCookie("InfoAdded", response.data.isInfoAdded, {
-            //   path: "/",
-            // });
             console.log("2");
             response.data.isVerified === true &&
               Cookies.set("Verified", response.data.isVerified, {});
-            // setCookie("Verified", response.data.isVerified, { path: "/" });
-            // } else if
             console.log("3");
             response.data.raindropToken &&
               sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-
-            window.location.reload(false);
-            // setCookie("Authorization", response.data.raindropToken, {
-            //   path: "/",
-            // });
+              if (
+                response.data.isInfoAdded === true &&
+                response.data.isVerified === true
+              ) {
+                window.location.reload(false);
+              }
           }
         })
         .catch((error) => {
@@ -141,7 +144,6 @@ const AdminLoginSignupForms = () => {
           console.log("JWT could not be submitted,", error);
           if (error) setTokenVerification(false);
         });
-      // adminAccount(account);
     }
     return () => {
       controller.abort();
@@ -155,7 +157,8 @@ const AdminLoginSignupForms = () => {
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
-        setOpenSnackBar(true);
+        let variant = "info";
+         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
     }
   }, [adminSignInData]);
@@ -182,7 +185,7 @@ const AdminLoginSignupForms = () => {
               >
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
-                    <div className="col-12 text-right mb-1">
+                    <div className="col-12 text-right mb-1 px-0">
                       <span
                         onClick={handleGoBack}
                         style={{ cursor: "pointer" }}
@@ -246,35 +249,6 @@ const AdminLoginSignupForms = () => {
                         adminSignInData.isVerified === true && (
                           <Redirect to="/dashboard" />
                         )} */}
-                      <Snackbar
-                        anchorOrigin={{
-                          vertical: "bottom",
-                          horizontal: "left",
-                        }}
-                        open={openSnackBar}
-                        autoHideDuration={10000}
-                        onClose={handleCloseSnackBar}
-                        message="Your request is under process. Waiting for approval by super-admin"
-                        action={
-                          <React.Fragment>
-                            {/* <Button
-                              color="secondary"
-                              size="small"
-                              onClick={handleCloseSnackBar}
-                            >
-                              OK
-                            </Button> */}
-                            <IconButton
-                              size="small"
-                              aria-label="close"
-                              color="inherit"
-                              onClick={handleCloseSnackBar}
-                            >
-                              <CloseIcon fontSize="small" />
-                            </IconButton>
-                          </React.Fragment>
-                        }
-                      />
                     </ThemeProvider>
                     <div className="signUp-link">
                       <p>

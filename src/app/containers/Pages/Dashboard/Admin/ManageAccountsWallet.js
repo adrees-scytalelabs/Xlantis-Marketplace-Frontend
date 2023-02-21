@@ -12,9 +12,10 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
+import { useLocation } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
-
+import { Link } from "react-router-dom";
 import WalletEnabled from "./WalletEnabled";
 import WalletDisabled from "./WalletDisabled";
 
@@ -133,10 +134,10 @@ function a11yProps(index) {
 
 // COMPONENT FUNCTION
 const ManageAccountsWallet = (props) => {
+  const location = useLocation();
   const classes = useStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -146,12 +147,19 @@ const ManageAccountsWallet = (props) => {
   };
 
   useEffect(() => {
+    props.setTab(0);
+    if (location.state != null) {
+      if (location.state.current === "disabled") {
+        setValue(1);
+      }
+    }
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "active",
       accountApproval: "",
       accounts: "",
-      manageAccountsSSO: "",
+      sso: "",
+      wallet: "active",
     }); // eslint-disable-next-line
   }, []);
 
@@ -161,12 +169,19 @@ const ManageAccountsWallet = (props) => {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Manage Accounts</h3>
+            <h3 className="page-title">Manage Accounts of Wallet Admin</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">Manage Accounts</li>
+              <Link to={`/superAdminDashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/superAdminDashboard/manageAccounts`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Manage Accounts
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">Wallet</li>
             </ul>
           </div>
         </div>

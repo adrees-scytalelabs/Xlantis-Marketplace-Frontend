@@ -8,6 +8,7 @@ import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { Link } from "react-router-dom";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -99,8 +100,8 @@ function MyNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
+            <li className="breadcrumb-item slash" >
+                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
               </li>
               <li className="breadcrumb-item active">My NFTs</li>
             </ul>

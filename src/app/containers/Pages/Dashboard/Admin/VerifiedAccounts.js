@@ -1,44 +1,15 @@
-import {
-  AppBar,
-  Box,
-  Card,
-  CardHeader,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { useLocation } from "react-router-dom";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import MarketPlacePage from "./MarketPlacePage";
-import SSOEnabled from "./SSOEnabled";
-import SSODisabled from "./SSODisabled";
+import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { Link } from "react-router-dom";
-
-// STYLING
-const paginationStyles = makeStyles({
-  base: {
-    // borderRadius: 12,
-    border: 0,
-    color: "#fff",
-    padding: "0 30px",
-    fontWeight: "bold",
-    fontFamily: "orbitron",
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "#fff",
-  },
-  body2: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontFamily: "orbitron",
-  },
-});
+import AccountsDefaultScreen from "./AccountsDefaultScreen";
+import AccountsSSO from "./AccountsSSO";
+import AccountsWallet from "./AccountsWallet";
+import VerifiedAccountsDefaultScreen from "./VerifiedAccountsDefaultScreen";
+import VerifiedAccountsSSOScreen from "./VerifiedAccountsSSOScreen";
+import VerifiedAccountsWalletScreen from "./VerifiedAccountsWalletScreen";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -98,7 +69,6 @@ const customTheme = createMuiTheme({
     },
   },
 });
-
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -132,34 +102,29 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
-const ManageAccountsSSO = (props) => {
-  const location = useLocation();
+function VerifiedAccounts(props) {
   const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
-
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
   useEffect(() => {
-    props.setTab(0);
-    if (location.state != null) {
-      if (location.state.current === "disabled") {
-        setValue(1);
-      }
+    if (props.tab === 1) {
+      setValue(1);
+      props.setTab(0);
+    }
+    if (props.tab === 2) {
+      setValue(2);
+      props.setTab(0);
     }
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "active",
+      manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      sso: "active",
+      verifiedAccounts:"active",
+      sso: "",
       wallet: "",
     }); // eslint-disable-next-line
   }, []);
@@ -170,19 +135,14 @@ const ManageAccountsSSO = (props) => {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Manage Accounts of SSO Admin</h3>
+            <h3 className="page-title">Verified Accounts</h3>
             <ul className="breadcrumb">
               <Link to={`/superAdminDashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                   Dashboard
                 </li>
               </Link>
-              <Link to={`/superAdminDashboard/manageAccounts`}>
-                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                  Manage Accounts
-                </li>
-              </Link>
-              <li className="breadcrumb-item active">SSO</li>
+              <li className="breadcrumb-item active">Verified Accounts</li>
             </ul>
           </div>
         </div>
@@ -201,22 +161,39 @@ const ManageAccountsSSO = (props) => {
                 textColor="primary"
               >
                 <Tab
-                  label="Enabled"
+                  label="All"
                   className={classes.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
-                  label="Disabled"
+                  label="SSO"
                   className={classes.tabsProps}
                   {...a11yProps(1)}
                 />
+                <Tab
+                  label="Wallet"
+                  className={classes.tabsProps}
+                  {...a11yProps(2)}
+                />
               </Tabs>
               {/* </AppBar> */}
-              <TabPanel value={value} index={0}>
-                <SSOEnabled />
+              <TabPanel value={value} index={0} className="">
+                <VerifiedAccountsDefaultScreen
+                  match={props.match}
+                  setActiveTab={props.setActiveTab}
+                />
               </TabPanel>
-              <TabPanel value={value} index={1}>
-                <SSODisabled />
+              <TabPanel className="" value={value} index={1}>
+                <VerifiedAccountsSSOScreen
+                  match={props.match}
+                  setActiveTab={props.setActiveTab}
+                />
+              </TabPanel>
+              <TabPanel value={value} index={2} className="">
+                <VerifiedAccountsWalletScreen
+                  match={props.match}
+                  setActiveTab={props.setActiveTab}
+                />
               </TabPanel>
             </div>
           </div>
@@ -224,6 +201,6 @@ const ManageAccountsSSO = (props) => {
       </div>
     </div>
   );
-};
+}
 
-export default ManageAccountsSSO;
+export default VerifiedAccounts;

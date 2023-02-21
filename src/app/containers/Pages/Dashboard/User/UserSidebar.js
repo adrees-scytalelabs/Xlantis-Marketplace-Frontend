@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link,useHistory  } from "react-router-dom";
 import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import BusinessIcon from "@material-ui/icons/Business";
@@ -9,6 +9,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 function AdminSidebar(props) {
   console.log(props);
+  let history = useHistory();
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Address");
@@ -18,6 +19,7 @@ function AdminSidebar(props) {
     // web3Modal.clearCachedProvider();
 
     // setTimeout(() => { }, 1);
+    history.push({ pathname: '/' });
     window.location.reload(false);
   };
 
@@ -34,7 +36,7 @@ function AdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard}>
-              <Link to={`${props.match.url}`}>
+            <Link to={`/dashboard`}>
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
@@ -44,12 +46,12 @@ function AdminSidebar(props) {
               </Link>
             </li> */}
             <li className={props.activeTab.myNFTs}>
-              <Link to={`${props.match.url}/myNFTs`}>
+              <Link to={`/dashboard/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
             <li className={props.activeTab.marketPlace}>
-              <Link to={`${props.match.url}/marketPlace`}>
+              <Link to={`/dashboard/marketPlace`}>
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
