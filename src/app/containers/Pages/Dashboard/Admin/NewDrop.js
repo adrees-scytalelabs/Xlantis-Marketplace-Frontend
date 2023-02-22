@@ -808,7 +808,7 @@ function NewDrop(props) {
                       />
                     </div>
                   </div>
-                  {/* <div className="form-group newNftWrapper datePicker">
+                  <div className="form-group newNftWrapper datePicker">
                     <label
                       style={{ fontWeight: "bold", fontFamily: "poppins" }}
                     >
@@ -857,7 +857,7 @@ function NewDrop(props) {
                         value={endTime}
                       />
                     </div>
-                  </div> */}
+                  </div> 
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <lable
