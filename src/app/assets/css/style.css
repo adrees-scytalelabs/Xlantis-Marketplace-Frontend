@@ -77,6 +77,19 @@ Version      : 1.2
   --linearGradient: linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%);
 }
 
+select.templatesSelect {
+  position: relative;
+  width: 100%;
+  height: 45px;
+  padding: 6px 15px;
+  color: var(--border);
+  box-shadow: none;
+  border-color: var(--border);
+  border-radius: 4px;
+  background-color: var(--bg);
+  font-family: var(--inter);
+}
+
 .headerAccountMenu:hover {
   /* background-color: var(--borderOrange); */
   color: var(--border);
@@ -8700,12 +8713,14 @@ html.menu-opened body {
 }
 
 @media (min-width: 992px) {
-  .sidebar-items span{
+  .sidebar-items span {
     display: none;
   }
-  .sidebar-items{
+
+  .sidebar-items {
     display: none;
   }
+
   .main-nav>li {
     margin-right: 30px;
     padding: 5px;
@@ -9629,6 +9644,7 @@ html.menu-opened body {
   .blog-view .blog-title {
     font-size: 22px;
   }
+
   .header-nav {
     padding-left: 15px;
     padding-right: 15px;
@@ -10671,16 +10687,20 @@ object:hover {
   padding-top: 10px;
   padding-bottom: 20px;
 }
-#save-profile-btn{
+
+#save-profile-btn {
   border-radius: 5px 15px;
-    background-color: black;
-    border: 1px solid var(--borderOrange);
+  background-color: black;
+  border: 1px solid var(--borderOrange);
+}
+
+#save-profile-btn:hover {
+  background-color: var(--borderOrange);
+}
+
+@media only screen and (min-width: 990px) and (max-width: 1070px) {
+  .header-item-rht {
+    font-size: 0.7rem;
+    ;
   }
-  #save-profile-btn:hover{
-    background-color: var(--borderOrange);
-  }
-  @media only screen and (min-width: 990px) and (max-width: 1070px) {
-    .header-item-rht{
-        font-size: 0.7rem;;
-      }
-  }
+}

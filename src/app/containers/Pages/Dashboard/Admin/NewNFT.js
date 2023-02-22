@@ -6,6 +6,9 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@material-ui/core/";
 import Avatar from "@material-ui/core/Avatar";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -50,6 +53,16 @@ import { ethers } from "ethers";
 
 // STYLES
 
+const themeTemplate = createMuiTheme({
+  overrides: {
+    Mui: {
+      focused: {
+
+      }
+    }
+  }
+});
+
 const makeTheme = createMuiTheme({
   overrides: {
     MuiTextField: {
@@ -82,7 +95,7 @@ const makeTheme = createMuiTheme({
         "&$focused": {},
       },
       underline: {
-        "&$before": {},
+        "&:$before": {},
         "&::after": {
           border: "none !important",
         },
@@ -162,6 +175,97 @@ function NewNFT(props) {
     setOpen(true);
   };
 
+  let defaultTemplates = [{
+    "_id": "63a17fdbdf852a1017aa2c98",
+    "name": "Cars",
+    "properties": [
+      {
+        "value": [],
+        "key": "Suspension",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2c99"
+      },
+      {
+        "value": [],
+        "key": "Engine",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2c9a"
+      },
+      {
+        "value": [],
+        "key": "Color",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2c9b"
+      }
+    ],
+    "__v": 0
+  },
+  {
+    "_id": "63a1805e5cb0ae01ba9e1378",
+    "name": "Bikes",
+    "properties": [
+      {
+        "value": [],
+        "key": "Hybrid",
+        "type": "Boolean",
+        "_id": "63a1805e5cb0ae01ba9e1379"
+      },
+      {
+        "value": [],
+        "key": "EngineType",
+        "type": "String",
+        "_id": "63a1805e5cb0ae01ba9e137a"
+      },
+      {
+        "value": [],
+        "key": "Gears",
+        "type": "Number",
+        "_id": "63a1805e5cb0ae01ba9e137b"
+      }
+    ]
+  }]
+  let defaultCarProperties = [{
+    make: "", model: "", color: "",
+  }];
+
+  let defaultComputerProperties = [{
+    cpu: "", ram: "", memory: ""
+  }];
+
+  let defaultBuildingProperties = [{
+    height: "", floors: ""
+  }];
+
+
+  console.log("template data /// ", defaultTemplates)
+
+  const [template, setTemplate] = useState(null);
+
+  const handleTemplateChange = (e) => {
+    console.log("logging template: ", e.target.value);
+    if (e.target.value === "default") {
+      setTemplate("default")
+    } else if (e.target.value === "custom") {
+      setTemplate("custom")
+    } else setTemplate(null)
+  }
+
+  const [carData, setCarData] = useState();
+  const [computerData, setComputerData] = useState();
+  const [buildingData, setBuildingData] = useState();
+
+  const handleDefaultTemplate = (e) => {
+    console.log("some default template /// ", e.target.value);
+    let value = e.target.value;
+    if (value === "Cars") {
+      setCarData([...defaultCarProperties]);
+    } else if (value === "Computers") {
+      setComputerData([...defaultComputerProperties])
+    } else if (value === "Buildings") {
+      setBuildingData([...defaultBuildingProperties])
+    }
+  }
+
   const [tokenList, setTokenList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [name, setName] = useState("");
@@ -173,6 +277,7 @@ function NewNFT(props) {
   // let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
   // let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
+  console.log("properties..... /// ", [...properties])
 
   let [value, setValue] = useState("");
   let [key, setKey] = useState("");
@@ -1179,6 +1284,8 @@ function NewNFT(props) {
 
   let handlePropertyChange = (index, event) => {
     let data = [...properties];
+    console.log("the datat change: ", event.target);
+    console.log("the data index /// ", data[index][event.target.name])
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -1700,10 +1807,10 @@ function NewNFT(props) {
                             showJumpControls={false}
                             header={`Now playing: ${name}`}
                             showDownloadProgress
-                            // onClickPrevious={handleClickPrevious}
-                            // onClickNext={handleClickNext}
-                            // onEnded={handleClickNext}
-                            // other props here
+                          // onClickPrevious={handleClickPrevious}
+                          // onClickNext={handleClickNext}
+                          // onEnded={handleClickNext}
+                          // other props here
                           />
                         </div>
                         <div className="co-12 col-md-auto">
@@ -1894,10 +2001,115 @@ function NewNFT(props) {
                     />
                   </div> */}
 
+                  {/* Templates */}
                   <div>
-                    <label>Properties</label>
+                    <label>Templates</label>
                     <small style={{ marginLeft: "5px" }}>(optional)</small>
                   </div>
+                  <div className="w-100 position-relative mb-4">
+                    <select name="templates" id="selectTemplate" className="templatesSelect" placeholder="Select a Template" onChange={handleTemplateChange}>
+                      <option value="none" selected>None</option>
+                      <option value="default">Default Templates</option>
+                      <option value="custom">Create Custom Template</option>
+                    </select>
+                    {
+                      template === "default" ? (
+                        <div className="w-100 my-3">
+                          <select name="defaultTemplate" id="defaultTemplate" className="templatesSelect" onChange={handleDefaultTemplate}>
+                            <option value="none" selected>None</option>
+                            {defaultTemplates.map((template, index) => (
+                              <option value={template.name} id={template.id} index={index}>{template.name}</option>
+                            ))}
+                          </select>
+                          <div>
+                            {properties.map((property, index) => {
+                              return (
+                                <div key={index}>
+                                  <div className="row no-gutters justify-content-md-between align-items-center">
+                                    <div className="col-12 col-md-5">
+                                      <div className="form-group w-100">
+                                        <label>Key</label>
+                                        <div className="filter-widget">
+                                          <input
+                                            name="key"
+                                            type="text"
+                                            placeholder="Enter key of the property"
+                                            required
+                                            value={property.key}
+                                            className="newNftProps"
+                                            onChange={(e) =>
+                                              handlePropertyChange(index, e)
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12 col-md-5">
+                                      <div className="form-group w-100">
+                                        <label>Value</label>
+                                        <div className="filter-widget">
+                                          <input
+                                            name="value"
+                                            type="text"
+                                            placeholder="Enter Value of the property"
+                                            required
+                                            value={property.value}
+                                            className="newNftProps"
+                                            onChange={(e) =>
+                                              handlePropertyChange(index, e)
+                                            }
+                                          />
+                                        </div>
+                                      </div>
+                                    </div>
+                                    <div className="col-12 col-md-auto text-right">
+                                      <div className="form-group">
+                                        <label>Action</label>
+                                        <div className="filter-widget">
+                                          <Tooltip
+                                            title="Remove a property"
+                                            placement="bottom"
+                                          >
+                                            <button
+                                              className="btn btn-submit btn-lg propsActionBtn"
+                                              onClick={(e) =>
+                                                handleRemoveProperty(e, index)
+                                              }
+                                            >
+                                              -
+                                            </button>
+                                          </Tooltip>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                            <div className="row no-gutters align-items-center justify-content-end">
+                              <div className="col-auto">
+                                <Tooltip title="Add a property" placement="right">
+                                  <button
+                                    className="btn btn-submit btn-lg propsActionBtn mb-4"
+                                    // className="btn submit-btn"
+                                    onClick={(e) => handleAddProperty(e)}
+                                  >
+                                    +
+                                  </button>
+                                </Tooltip>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      ) : template === "custom" ? (<div className="w-100 my-3">
+
+                      </div>) : null
+                    }
+                  </div>
+                  {/* <div>
+                    <label>Properties</label>
+                    <small style={{ marginLeft: "5px" }}>(optional)</small>
+                  </div> */}
                   <div>
                     {properties.map((property, index) => {
                       return (
@@ -1976,32 +2188,6 @@ function NewNFT(props) {
                         </Tooltip>
                       </div>
                     </div>
-                    {/* <Dialog
-                                            fullWidth={true}
-                                            maxWidth={true}
-                                            open={openDialog}
-                                            onClose={onDialogCloseClick}
-                                            aria-labelledby="max-width-dialog-title"
-                                        >
-                                            <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
-                                            <DialogContent>
-                                                <DialogContentText>Enter Properties in key value pair</DialogContentText>
-                                                <form>
-                                                    <TextField
-                                                        label="Key"
-                                                        value={propertyKey}
-                                                        onChange={(e) => setPropertyKey(e.target.value)}
-                                                    />
-                                                    <TextField
-                                                        label="Value"
-                                                        value={propertyValue}
-                                                        onChange={(e) => setPropertyValue(e.target.value)}
-                                                        style={{ marginLeft: "5px" }}
-                                                    />
-                                                    <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
-                                                </form>
-                                            </DialogContent>
-                                        </Dialog> */}
                   </div>
 
                   <ThemeProvider theme={makeTheme}>
@@ -2147,8 +2333,8 @@ function NewNFT(props) {
                               <TextField
                                 {...params}
                                 placeholder="Collections"
-                                // label="Collections"
-                                // variant="outlined"
+                              // label="Collections"
+                              // variant="outlined"
                               />
                             </ThemeProvider>
                           )}
@@ -2191,7 +2377,7 @@ function NewNFT(props) {
                                 {...params}
                                 // label="Collections"
                                 placeholder="Collections"
-                                // variant="outlined"
+                              // variant="outlined"
                               />
                             </ThemeProvider>
                           )}
@@ -2311,11 +2497,11 @@ function NewNFT(props) {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-                    name === "" ||
-                    description === "" ||
-                    tokenSupply === "" ||
-                    collection === "" ||
-                    isUploadingData === true ? (
+                      name === "" ||
+                      description === "" ||
+                      tokenSupply === "" ||
+                      collection === "" ||
+                      isUploadingData === true ? (
                       <button
                         className="btn propsActionBtn"
                         type="submit"
@@ -2337,50 +2523,50 @@ function NewNFT(props) {
               </div>
             </form>
           </div>
-          
-            <div className="col-sm-12 col-md-6 col-lg-5" style={{marginLeft:'10px'}}>
-              {/* <!-- Change Password Form --> */}
-              <form>
-                {/* <Scrollbars style={{ height: 1500 }}> */}
 
-                {/* CARD */}
-                <div className="form-group">
-                  <div>
-                    <Grid
-                      container
-                      spacing={2}
-                      direction="row"
-                      justify="flex-start"
-                      // alignItems="flex-start"
-                    >
-                      {tokenList.map((i, index) => (
-                        <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
-                          <CardActionArea
-                            onClick={() => {
-                              console.log("nftDetailObject: ", i);
-                              handleOpenNFTDetailModal(i);
-                              setEditObjectIndex(index);
-                              console.log("Open Dialog Value: ", openDialog);
-                            }}
-                          >
-                            <Card id="nftCardProps">
-                              {/* <CardHeader
+          <div className="col-sm-12 col-md-6 col-lg-5" style={{ marginLeft: '10px' }}>
+            {/* <!-- Change Password Form --> */}
+            <form>
+              {/* <Scrollbars style={{ height: 1500 }}> */}
+
+              {/* CARD */}
+              <div className="form-group">
+                <div>
+                  <Grid
+                    container
+                    spacing={2}
+                    direction="row"
+                    justify="flex-start"
+                  // alignItems="flex-start"
+                  >
+                    {tokenList.map((i, index) => (
+                      <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
+                        <CardActionArea
+                          onClick={() => {
+                            console.log("nftDetailObject: ", i);
+                            handleOpenNFTDetailModal(i);
+                            setEditObjectIndex(index);
+                            console.log("Open Dialog Value: ", openDialog);
+                          }}
+                        >
+                          <Card id="nftCardProps">
+                            {/* <CardHeader
                                 className="text-center"
                                 title={i.title}
                               /> */}
-                              <CardMedia className={classes.media} image={i.nftURI}>
-                                
-                                {/* className={classes.media}
+                            <CardMedia className={classes.media} image={i.nftURI}>
+
+                              {/* className={classes.media}
                                 image={
                                   i.previewImageURI === ""
                                     ? i.nftURI
                                     : i.previewImageURI
                                 }
                                 title="NFT Image" */}
-                                {/* /> */}
-                              </CardMedia>
-                            </Card>
-                            {/* <Dialog
+                              {/* /> */}
+                            </CardMedia>
+                          </Card>
+                          {/* <Dialog
                                                         fullWidth={true}
                                                         maxWidth={true}
                                                         open={openDialog}
@@ -2417,19 +2603,19 @@ function NewNFT(props) {
                                                             </form>
                                                         </DialogContent>
                                                     </Dialog> */}
-                          </CardActionArea>
-                          <CardActions>
-                            <Button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleRemoveClick(index);
-                              }}
-                              className="btn btn-sm btn-block propsActionBtn"
-                            >
-                              Remove NFT
-                            </Button>
-                          </CardActions>
-                          {/* <NFTDetailModal 
+                        </CardActionArea>
+                        <CardActions>
+                          <Button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleRemoveClick(index);
+                            }}
+                            className="btn btn-sm btn-block propsActionBtn"
+                          >
+                            Remove NFT
+                          </Button>
+                        </CardActions>
+                        {/* <NFTDetailModal 
                                                     show={openDialog} 
                                                     handleClose={handleCloseNFTDetailModal}
                                                     nftDetail={tokenList[index]}
@@ -2444,16 +2630,16 @@ function NewNFT(props) {
                                                     onUpdate={onUpdateEditModal}
                                                 >
                                                 </NFTEditModal> */}
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </div>
+              </div>
 
-                {/* </Scrollbars> */}
-              </form>
-            </div>
-          
+              {/* </Scrollbars> */}
+            </form>
+          </div>
+
         </div>
         {isSaving ? (
           <div className="text-center">
