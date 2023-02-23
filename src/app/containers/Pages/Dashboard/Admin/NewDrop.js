@@ -87,13 +87,6 @@ function NewDrop(props) {
   const classes = useStyles();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  const [startTimeStamp, setStartTimeStamp] = useState(
-    Math.round(startTime.getTime() / 1000)
-  );
-  const [endTimeStamp, setEndTimeStamp] = useState(
-    Math.round(endTime.getTime() / 1000)
-  );
-  const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
   // const [inputList, setInputList] = useState([]);
   // const [imageData, setImageData] = useState([]);
   let [saleType, setSaleType] = useState("auction");
@@ -233,37 +226,6 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
       } else {
         let dropID;
         let DropData = {
@@ -274,46 +236,56 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: startTime,
-          endTime: endTime,
+          startTime: `2023-03-27T02:55:00.000+00:00`,
+          endTime: `2023-04-27T02:55:00.000+00:00`,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
-          (response) => {
-            console.log("drop creation response", response);
-            setDropId(response.data.dropId);
-            dropID = response.data.dropId;
-            setIsSaving(false);
-            handleCloseBackdrop();
-            // history.push(`${path}/addNft`);
-            history.push({
-              pathname: `${path}/addNft`,
-              state: {
-                dropId: dropID,
-                saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
-                nftType: nftType,
-              },
-            });
-
-            // let variant = "success";
-            // enqueueSnackbar('Drop Created Successfully.', { variant });
+        history.push({
+          pathname: `${path}/addNft`,
+          state: {
+            dropId: dropID,
+            saleType: saleType,
+            startTime: `2023-02-27T02:55:00.000+00:00`,
+            endTime: `2023-04-27T02:55:00.000+00:00`,
+            nftType: nftType,
           },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
-            handleCloseBackdrop();
+        });
+        // axios.post(`/${versionB}/drop/`, DropData).then(
+        //   (response) => {
+        //     console.log("drop creation response", response);
+        //     setDropId(response.data.dropId);
+        //     dropID = response.data.dropId;
+        //     setIsSaving(false);
+        //     handleCloseBackdrop();
+        //     // history.push(`${path}/addNft`);
+        //     history.push({
+        //       pathname: `${path}/addNft`,
+        //       state: {
+        //         dropId: dropID,
+        //         saleType: saleType,
+        //         startTime: `2023-03-27T02:55:00.000+00:00`,
+        //         endTime: `2023-04-27T02:55:00.000+00:00`,
+        //         nftType: nftType,
+        //       },
+        //     });
 
-            setIsSaving(false);
-            let variant = "error";
-            enqueueSnackbar("Unable to Create Drop.", { variant });
-          }
-        );
+        // let variant = "success";
+        // enqueueSnackbar('Drop Created Successfully.', { variant });
+        // },
+        //   (error) => {
+        //     if (process.env.NODE_ENV === "development") {
+        //       console.log(error);
+        //       console.log(error.response);
+        //     }
+        //     handleCloseBackdrop();
+
+        //     setIsSaving(false);
+        //     let variant = "error";
+        //     enqueueSnackbar("Unable to Create Drop.", { variant });
+        //   }
+        // );
 
         // })
       }
@@ -364,47 +336,6 @@ function NewDrop(props) {
           });
           setIsSaving(false);
           handleCloseBackdrop();
-        } else if (
-          startTimeStamp === endTimeStamp ||
-          new Date(startTime) === new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction cannot be Start and End on same time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          startTimeStamp > endTimeStamp ||
-          new Date(startTime) > new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction End time must be greater than Start time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          currentTimeStamp >= startTimeStamp ||
-          new Date(Date.now()) >= new Date(startTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar(
-            "Auction Start time must be greater than Current time.",
-            { variant }
-          );
-          setIsSaving(false);
-          handleCloseBackdrop();
-          // } else if (minimumBid === undefined || minimumBid === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter minimum bid.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
-          // } else if (bidDelta === undefined || bidDelta === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
         } else {
           let dropID;
           // let tokenId = [];
@@ -439,8 +370,8 @@ function NewDrop(props) {
             title: name,
             image: image,
             description: description,
-            startTime: startTime,
-            endTime: endTime,
+            startTime: `2023-03-27T02:55:00.000+00:00`,
+            endTime: `2023-04-27T02:55:00.000+00:00`,
             saleType: saleType,
             dropType: nftType,
           };
@@ -470,8 +401,8 @@ function NewDrop(props) {
                 state: {
                   dropId: dropID,
                   saleType: saleType,
-                  startTime: startTimeStamp,
-                  endTime: endTimeStamp,
+                  startTime: `2023-03-27T02:55:00.000+00:00`,
+                  endTime: `2023-04-27T02:55:00.000+00:00`,
                   nftType: nftType,
                 },
               });
@@ -511,65 +442,36 @@ function NewDrop(props) {
     } else {
       handleShowBackdrop();
 
-      if (name === "") {
-        let variant = "error";
-        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (description === "") {
-        let variant = "error";
-        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (image === r1) {
-        let variant = "error";
-        enqueueSnackbar("Please Select title image for Drop to continue.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else {
+      // if (name === "") {
+      //   let variant = "error";
+      //   enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+      //   setIsSaving(false);
+      //   handleCloseBackdrop();
+      // } else if (description === "") {
+      //   let variant = "error";
+      //   enqueueSnackbar("Description of the Drop Cannot be Empty.", {
+      //     variant,
+      //   });
+      //   setIsSaving(false);
+      //   handleCloseBackdrop();
+      // } 
+      // else if (image === r1) {
+      //   let variant = "error";
+      //   enqueueSnackbar("Please Select title image for Drop to continue.", {
+      //     variant,
+      //   });
+      //   setIsSaving(false);
+      //   handleCloseBackdrop();
+      // } 
+      
         let dropID;
 
         let DropData = {
-          title: name,
-          image: image,
-          description: description,
-          startTime: startTime,
-          endTime: endTime,
+          title: 'a',
+          image: 'a',
+          description: 'asas',
+          startTime: `2023-02-27T02:55:00.000+00:00`,
+          endTime: `2023-04-27T02:55:00.000+00:00`,
           saleType: saleType,
           dropType: nftType,
         };
@@ -587,8 +489,8 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
+                startTime: `2023-02-27T02:55:00.000+00:00`,
+                endTime: `2023-04-27T02:55:00.000+00:00`,
                 nftType: nftType,
               },
             });
@@ -605,7 +507,7 @@ function NewDrop(props) {
             enqueueSnackbar("Unable to Create Drop.", { variant });
           }
         );
-      }
+      
     }
   };
 
