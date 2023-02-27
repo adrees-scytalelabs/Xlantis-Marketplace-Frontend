@@ -14,10 +14,13 @@ import Collectible721 from "../../../../components/blockchain/Abis/Collectible72
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import { useSnackbar } from "notistack";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
+import BidTxModal from "../../../../components/Modals/BidTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import Backdrop from "@material-ui/core/Backdrop";
 import ReactTooltip from "react-tooltip";
+import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
+import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 
 
 // MUI
@@ -50,6 +53,8 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import DateTimePicker from "react-datetime-picker";
 import ListIcon from "@material-ui/icons/List";
 import Footer from "../../../../components/Footers/Footer";
+import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
+
 
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
@@ -165,6 +170,8 @@ const FixedDropSingleNFTHome = () => {
   let [versionB, setVersionB] = useState("");
   let [startTime, setStartTime] = useState();
   let [endTime, setEndTime] = useState();
+  const [nftBlockChainId, setNftBlockChainId] = useState("");
+
 
   let account = sessionStorage.getItem("Authorization");
 
@@ -395,203 +402,257 @@ const FixedDropSingleNFTHome = () => {
 //         })
 //     }
 // }
-  let handleBidSubmit = async (event) => {
-    // event.preventDefault();
+let handleBidSubmit = async (event) => {
+  event.preventDefault();
 
-    // //conditions checking
-    // console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
-    // // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
-    // console.log("Bid Expiry Time: ", bidExpiryTime);
-    // // console.log("Drop Expiry Time: ", dropExpiryTime);
+  //conditions checking
+  console.log("Bid Expiry Timestamp: ", bidExpiryTime);
+  // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
+  // console.log("Bid Expiry Time: ", bidExpiryTime);
+  console.log("Drop Expiry Time: ", endTime);
 
-    // // if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
-    // //     let variant = 'error';
-    // //     enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
-    // // }
-    // if (biddingValue === 0) {
-    //     let variant = "error";
-    //     enqueueSnackbar("Bidding Value cannot be zero.", { variant });
-    // }
-    // else {
-    //     await loadWeb3();
-    //     const web3 = window.web3
-    //     const accounts = await web3.eth.getAccounts();
-    //     console.log("Accounts[0]: ", accounts[[0]]);
-    //     const network = await web3.eth.net.getNetworkType()
-    //     if (network !== 'private') {
-    //         setNetwork(network);
-    //         // handleShow();
-    //     }
-    //     else {
-    //         handleShowBackdrop();
-    //         await giveAuctionErc20Approval();
+  if (
+    bidExpiryTime > endTime ||
+    new Date(bidExpiryTime) > new Date(endTime)
+  ) {
+    let variant = "error";
+    enqueueSnackbar(
+      "Bid Expiry Time cannot be more than Drop's Expiry Time.",
+      { variant }
+    );
+  }
+  if (biddingValue === 0) {
+    let variant = "error";
+    enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+  } else {
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    console.log("Accounts[0]: ", accounts[[0]]);
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+      // handleShow();
+    } else {
+      handleShowBackdrop();
+      await giveAuctionErc20Approval();
 
-    //         //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
-    //         let bidData = {
-    //             nftId: nftDetail._id,
-    //             bidAmount: biddingValue.toString(),
-    //             bidderAddress: accounts[0],
-    //             expiryTime: bidExpiryTime
-    //         }
+      //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+      let bidData = {
+        nftId: nftData._id,
+        bidAmount: biddingValue.toString(),
+        bidderAddress: accounts[0],
+        expiryTime: bidExpiryTime,
+      };
 
-    //         console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
-    //         console.log("Bid data: ", bidData);
-            
+      console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
+      console.log("Bid data: ", bidData);
 
-    //         let dropIdHash = getHash(dropIdObj);
-    //         let nftId = nftBlockChainId;
-    //         let bidValue = web3.utils.toWei(biddingValue, 'ether');
+      let dropIdHash = getHash(theDrop._id);
+      let nftId = nftBlockChainId;
+      let bidValue = web3.utils.toWei(biddingValue, "ether");
 
-    //         console.log("NFT id type: ", typeof(nftId));
-    //         console.log("Bid Value type: ", typeof(bidValue), bidValue);
-    //         console.log("Drop Id Hash: ", dropIdHash);
+      console.log("NFT id type: ", typeof nftId);
+      console.log("Bid Value type: ", typeof bidValue, bidValue);
+      console.log("Drop Id Hash: ", dropIdHash);
 
+      let contractAddress;
+      let contractAbi;
 
-    //         let contractAddress;
-    //         let contractAbi;
-            
-    //         if (contractType === '1155') {
-    //             contractAddress = Addresses.AuctionDropFactory1155;
-    //             contractAbi = AuctionDropFactory1155ABI;
-    //             console.log("hello", contractAddress, contractType);
-    //         }
-    //         else if (contractType === '721') {
-    //             contractAddress = Addresses.AuctionDropFactory721;
-    //             contractAbi = AuctionDropFactory721ABI;
-    //         }
+      if (nftData.collectionId.contractType === "1155") {
+        contractAddress = Addresses.AuctionDropFactory1155;
+        contractAbi = AuctionDropFactory1155ABI;
+        console.log("hello", contractAddress, nftData.collectionId.contractType);
+      } else if (nftData.collectionId.contractType === "721") {
+        contractAddress = Addresses.AuctionDropFactory721;
+        contractAbi = AuctionDropFactory721ABI;
+      }
 
-    //         let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
-    //         let trxHash;
+      let myContractInstance = await new web3.eth.Contract(
+        contractAbi,
+        contractAddress
+      );
+      let trxHash;
 
-    //         axios.post(`/${versionB}/auction/bid`, bidData).then(
-    //             (response) => {
-    //                 console.log("Response from sending bid data to backend: ", response);
-    //                 let bidIdHash = getHash(response.data.bidId);
-    //                 let bidId = response.data.bidId;
+      axios.post(`/auction/bid`, bidData).then(
+        (response) => {
+          console.log(
+            "Response from sending bid data to backend: ",
+            response
+          );
+          let bidIdHash = getHash(response.data.bidId);
+          let bidId = response.data.bidId;
 
-    //                 //sending call on blockchain
+          //sending call on blockchain
 
-    //                 console.log("Bid data for blockchain: ");
-    //                 console.log("drop id hash: ", dropIdHash);
-    //                 console.log("bid id hash: ", bidIdHash);
-    //                 console.log("nft address: ", location.state.nftContractAddress);
-    //                 console.log("nft id: ", nftId);
-    //                 console.log("bid Value: ", bidValue);
-                    
-                  
-    //                 myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
-    //                     console.log('get transaction: ', err, response);
-    //                     if (err !== null) {
-    //                         console.log('err: ', err);
-    //                         handleCloseBackdrop();
-    //                     }
-    //                     trxHash = response;
-                        
+          console.log("Bid data for blockchain: ");
+          console.log("drop id hash: ", dropIdHash);
+          console.log("bid id hash: ", bidIdHash);
+          console.log("nft address: ", location.state.nftContractAddress);
+          console.log("nft id: ", nftId);
+          console.log("bid Value: ", bidValue);
 
-    //                 })
-    //                 .on('receipt', (receipt) => {
-    //                     console.log('receipt: ', receipt);
+          myContractInstance.methods
+            .bid(
+              dropIdHash,
+              bidIdHash,
+              location.state.nftContractAddress,
+              nftId,
+              bidValue
+            )
+            .send({ from: accounts[0] }, (err, response) => {
+              console.log("get transaction: ", err, response);
+              if (err !== null) {
+                console.log("err: ", err);
+                handleCloseBackdrop();
+              }
+              trxHash = response;
+            })
+            .on("receipt", (receipt) => {
+              console.log("receipt: ", receipt);
 
-    //                     //sending finalize call on backend
-    //                     let finalizeBidData = {
-    //                         "bidId": bidId,
-    //                         "txHash": trxHash 
-    //                     }
+              //sending finalize call on backend
+              let finalizeBidData = {
+                bidId: bidId,
+                txHash: trxHash,
+              };
 
-    //                     axios.put(`/${versionB}/auction/bid/finalize`, finalizeBidData).then(
-    //                         (response) => {
-    //                             console.log("Response from finalize bid: ", response);
-    //                             let variant = "success";
-    //                             enqueueSnackbar('Bid Placed Successfully', { variant });
-    //                         },
-    //                         (err) => {
-    //                             let variant = "error";
-    //                             enqueueSnackbar('Unable To Bid', { variant });
-    //                             console.log("Err from finalize bid: ", err);
-    //                             console.log("Err response from finalize bid: ", err);
-    //                         }
-    //                     )
-    //                     handleCloseBackdrop();
-    //                 });
-    //             },
-    //             (error) => {
-    //                 console.log("Error from sending bid data to backend: ", error);
-    //                 handleCloseBackdrop();
-    //             }
-    //         )
-    //     }
-    // }
-}
+              axios.put(`/auction/bid/finalize`, finalizeBidData).then(
+                (response) => {
+                  console.log("Response from finalize bid: ", response);
+                  let variant = "success";
+                  enqueueSnackbar("Bid Placed Successfully", { variant });
+                },
+                (err) => {
+                  let variant = "error";
+                  enqueueSnackbar("Unable To Bid", { variant });
+                  console.log("Err from finalize bid: ", err);
+                  console.log("Err response from finalize bid: ", err);
+                }
+              );
+              handleCloseBackdrop();
+            });
+        },
+        (error) => {
+          console.log("Error from sending bid data to backend: ", error);
+          handleCloseBackdrop();
+        }
+      );
+    }
+  }
+};
 
 let handleBidSubmitSSO = async (event) => {
-//     event.preventDefault();
+  event.preventDefault();
 
-//     //conditions checking
-//     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
-//     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
-//     console.log("Bid Expiry Time: ", bidExpiryTime);
-//     console.log("Drop Expiry Time: ", dropExpiryTime);
+  //conditions checking
+  // console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
+  // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
+  // console.log("Bid Expiry Time: ", bidExpiryTime);
+  // console.log("Drop Expiry Time: ", dropExpiryTime);
 
-//     if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
-//         let variant = 'error';
-//         enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
-//     }
-//     if (biddingValue === 0) {
-//         let variant = "error";
-//         enqueueSnackbar("Bidding Value cannot be zero.", { variant });
-//     }
-//     else {
-       
-//     handleShowBackdrop();
-//     let bidAmountInWei = Web3.utils.toWei(biddingValue);
-        
+  if (
+    bidExpiryTime > endTime ||
+    new Date(bidExpiryTime) > new Date(endTime)
+  ) {
+    let variant = "error";
+    enqueueSnackbar(
+      "Bid Expiry Time cannot be more than Drop's Expiry Time.",
+      { variant }
+    );
+  }
+  if (biddingValue === 0) {
+    let variant = "error";
+    enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+  } else {
+    handleShowBackdrop();
+    let bidAmountInWei = Web3.utils.toWei(biddingValue);
 
-//     //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
-//     let bidData = {
-//         nftId: nftDetail._id,
-//         bidAmount: bidAmountInWei,
-//         // bidderAddress: accounts[0],
-//         expiryTime: bidExpiryTime
-//     }
+    //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+    let bidData = {
+      nftId: nftData._id,
+      bidAmount: bidAmountInWei,
+      // bidderAddress: accounts[0],
+      expiryTime: bidExpiryTime,
+    };
 
-//     console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
-//     console.log("Bid data: ", bidData);
-    
+    console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
+    console.log("Bid data: ", bidData);
 
-    
+    axios.post(`/${versionB}/auction/bid`, bidData).then(
+      (response) => {
+        console.log("nft bid response", response.data);
+        let variant = "success";
+        enqueueSnackbar(
+          "Bid Is Being Finalized. Transactions Are In Process",
+          { variant }
+        );
+        handleCloseModal();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar("Unable To Bid On NFT.", { variant });
+          handleCloseModal();
+        }
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            Cookies.remove("Version");
 
-    
-//     axios.post(`/${versionB}/auction/bid`, bidData).then(
-//         (response) => {
-            
-//             console.log("nft bid response", response.data);
-//             let variant = "success";
-//             enqueueSnackbar("Bid Is Being Finalized. Transactions Are In Process", { variant });
-//             handleCloseModal();
-    
-//         },
-//         (error) => {
-//             if (process.env.NODE_ENV === "development") {
-//             console.log(error);
-//             console.log(error.response);
-//             let variant = "error";
-//             enqueueSnackbar("Unable To Bid On NFT.", { variant });
-//             handleCloseModal();
-//             }
-//             if (error.response.data !== undefined) {
-//             if (
-//                 error.response.data === "Unauthorized access (invalid token) !!"
-//             ) {
-//                 sessionStorage.removeItem("Authorization");
-//                 Cookies.remove("Version");
+            sessionStorage.removeItem("Address");
+            window.location.reload();
+          }
+        }
+      }
+    );
+  }
+};
 
-//                 sessionStorage.removeItem("Address");
-//                 window.location.reload();
-//             }
-//             }
-//     })
-// }
-}
+let giveAuctionErc20Approval = async () => {
+  await loadWeb3();
+  const web3 = window.web3;
+  const accounts = await web3.eth.getAccounts();
+  console.log("Account 0: ", accounts[0]);
+  const network = await web3.eth.net.getNetworkType();
+  if (network !== "private") {
+    setNetwork(network);
+    // handleShow();
+  } else {
+    const addressErc20Auction = Addresses.AuctionERC20;
+    const addressDropClone = dropCloneAddress;
+    const abiERC20 = ERC20Abi;
+
+    let bidValue = web3.utils.toWei(biddingValue, "ether");
+
+    console.log("Contract Address: ", addressErc20Auction);
+    var myContractInstance = await new web3.eth.Contract(
+      abiERC20,
+      addressErc20Auction
+    );
+    console.log("myContractInstance", myContractInstance);
+
+    await myContractInstance.methods
+      .approve(addressDropClone, bidValue)
+      .send({ from: accounts[0] }, (err, response) => {
+        console.log("get transaction", err, response);
+
+        if (err !== null) {
+          console.log("err", err);
+          let variant = "error";
+          enqueueSnackbar("User Canceled Transaction", { variant });
+          handleCloseBackdrop();
+        }
+      })
+      .on("receipt", (receipt) => {
+        console.log("receipt", receipt);
+      });
+  }
+};
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -884,6 +945,8 @@ let handleBidSubmitSSO = async (event) => {
     setVersionB(Cookies.get("Version"));
     console.log("nftdetails props", location.state);
     setNftData(location.state.nftDetails);
+    setNftBlockChainId(location.state.nftDetails.nftId);
+
     // getDropCloneAddress();
     // getNFTDetails();
     getTheDrop();
@@ -1207,7 +1270,7 @@ let handleBidSubmitSSO = async (event) => {
                                 <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
                                   <button
                                     className="bidBtn w-100 ml-0"
-                                    // onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModalBid(e)) : (handleBid(e))} }
+                                    onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModalBid(e)) : (handleBidSubmit(e))} }
                                   >
                                     Bid
                                   </button>
@@ -1338,7 +1401,7 @@ let handleBidSubmitSSO = async (event) => {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      {/* <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid = {handleBidSubmitSSO}  handlePay = {openTransak} dropData = {dataBid} isOpen = {modalOpenBid} /> */}
+      <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid = {handleBidSubmitSSO}  handlePay = {openTransak} dropData = {dataBid} isOpen = {modalOpenBid} />
       
       <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy = {SSOBuy}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
       <Backdrop className={classes.backdrop} open={open}>
