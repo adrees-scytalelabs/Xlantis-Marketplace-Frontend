@@ -26,6 +26,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import ReactTooltip from "react-tooltip";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 import { isUndefined } from "lodash";
@@ -200,7 +202,7 @@ function NewNFT(props) {
 
   // let [producerId, setProducerId] = useState('');
   // let [producer, setProducer] = useState('');
-  let [tokenSupply, setTokenSupply] = useState("1");
+  let [tokenSupply, setTokenSupply] = useState(1);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   // let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] = useState(false);
   // let [isUploadingProducer, setIsUploadingProducer] = useState(false);
@@ -757,6 +759,7 @@ function NewNFT(props) {
   // handle click event of the Add button
   const handleAddClick = (e) => {
     e.preventDefault();
+    console.log("token supply", tokenSupply);
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
@@ -772,7 +775,7 @@ function NewNFT(props) {
     //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
     // }
     else if (
-      tokenSupply === "" ||
+      tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
     ) {
@@ -2298,11 +2301,11 @@ function NewNFT(props) {
                               value={tokenSupply}
                               className="form-control"
                               onChange={(e) => {
-                                if (e.target.value > 0)
+                                // if (e.target.value > 0)
                                   setTokenSupply(e.target.value);
-                                else {
-                                  setTokenSupply(1);
-                                }
+                                // else {
+                                  // setTokenSupply(1);
+                                // }
                               }}
                             />
                           </div>
@@ -2318,21 +2321,31 @@ function NewNFT(props) {
                     description === "" ||
                     tokenSupply === "" ||
                     collection === "" ||
+                    tokenSupply <=  0 ||
                     isUploadingData === true ? (
+                    <div data-tip data-for="registerTip">
+
                       <button
                         className="btn propsActionBtn"
                         type="submit"
                         disabled
                       >
-                        <i className="fa fa-plus"></i> Add NFT to queue
+                        <i className="fa fa-plus"></i> Add NFT to Queue
                       </button>
+                      {tokenSupply <= 0 ? (
+                        <ReactTooltip id="registerTip" place="top" effect="solid">
+                          Token Supply Cannot Be Less Than 1
+                        </ReactTooltip>
+                      ) : (null)}
+                    </div>
+                      
                     ) : (
                       <button
                         className="btn propsActionBtn"
                         type="button"
                         onClick={(e) => handleAddClick(e)}
                       >
-                        <i className="fa fa-plus"></i> Add NFT to queue
+                        <i className="fa fa-plus"></i> Add NFT to Queue
                       </button>
                     )}
                   </div>
