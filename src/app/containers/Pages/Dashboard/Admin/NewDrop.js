@@ -696,56 +696,6 @@ function NewDrop(props) {
                       />
                     </div>
                   </div>
-                  <div className="form-group newNftWrapper datePicker">
-                    <label
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Starts At
-                    </label>
-                    <div
-                      className="form-group"
-                      style={{ borderRadius: "12px" }}
-                    >
-                      <DateTimePicker
-                        className="form-control"
-                        onChange={(e) => {
-                          console.log(e);
-                          console.log("START", Math.round(e.getTime() / 1000));
-                          console.log("NOW", Math.round(Date.now() / 1000));
-
-                          setCurrentTimeStamp(
-                            Number(Math.round(Date.now()) / 1000)
-                          );
-                          setStartTimeStamp(
-                            Number(Math.round(e.getTime()) / 1000)
-                          );
-
-                          setStartTime(e);
-                        }}
-                        value={startTime}
-                      />
-                    </div>
-                    <label
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Ends At
-                    </label>
-                    <div className="form-group newNftWrapper">
-                      <DateTimePicker
-                        className="form-control"
-                        onChange={(e) => {
-                          console.log(e);
-                          console.log(
-                            "e.getTime()",
-                            Math.round(e.getTime() / 1000)
-                          );
-                          setEndTimeStamp(Math.round(e.getTime() / 1000));
-                          setEndTime(e);
-                        }}
-                        value={endTime}
-                      />
-                    </div>
-                  </div> 
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <lable

@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -188,8 +191,6 @@ function SSODisabled(props) {
       });
   };
 
-  
-
   let handleEnableSSO = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -253,7 +254,7 @@ function SSODisabled(props) {
                     Wallet Address
                   </div>
                 </th>
-               
+
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Status
@@ -268,7 +269,12 @@ function SSODisabled(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (

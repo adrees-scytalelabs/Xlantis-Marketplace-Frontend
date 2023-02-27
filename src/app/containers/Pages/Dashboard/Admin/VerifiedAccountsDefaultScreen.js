@@ -1,4 +1,4 @@
-import { TablePagination } from "@material-ui/core/";
+import { Grow, TablePagination, Zoom } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -15,7 +15,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { createMuiTheme, Tooltip, Fade } from "@material-ui/core";
+// import { styled,tooltipClasses} from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -111,7 +115,6 @@ function VerifiedAccountsDefaultScreen(props) {
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
@@ -151,7 +154,6 @@ function VerifiedAccountsDefaultScreen(props) {
       wallet: "",
     }); // eslint-disable-next-line
   }, []);
-
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -223,7 +225,6 @@ function VerifiedAccountsDefaultScreen(props) {
         setOpen(false);
       });
   };
-
   let handleVerify = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -305,7 +306,12 @@ function VerifiedAccountsDefaultScreen(props) {
                       <td className={classes.collectionTitle}>{i.email}</td>
                       <td className={classes.collectionTitle}>
                         {i.walletAddress != undefined ? (
-                          <Tooltip title={i.walletAddress}>
+                          <Tooltip
+                            classes={{ tooltip: classes.noMaxWidth }}
+                            leaveDelay={1500}
+                            title={i.walletAddress}
+                            arrow
+                          >
                             <span>{i.walletAddress.slice(0, 8)}...</span>
                           </Tooltip>
                         ) : (
@@ -328,7 +334,12 @@ function VerifiedAccountsDefaultScreen(props) {
                       <td className={classes.collectionTitle}>{i.username}</td>
                       <td className={classes.collectionTitle}>N/A</td>
                       <td className={classes.collectionTitle}>
-                        <Tooltip title={i.walletAddress}>
+                        <Tooltip
+                          classes={{ tooltip: classes.noMaxWidth }}
+                          leaveDelay={1500}
+                          title={i.walletAddress}
+                          arrow
+                        >
                           <span>{i.walletAddress.slice(0, 8)}...</span>
                         </Tooltip>
                       </td>

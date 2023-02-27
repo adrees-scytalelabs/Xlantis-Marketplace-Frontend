@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -119,8 +122,8 @@ function AccountApprovalSSO(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -242,7 +245,12 @@ function AccountApprovalSSO(props) {
 
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 6)}...</span>
                       </Tooltip>
                     ) : (

@@ -238,7 +238,7 @@ function UserDashboard(props) {
               <DropCubes setActiveTab={setActiveTab} />
             </Route>
 
-            <Route exact path={`${path}/newCollection`}>
+            <Route exact path={`${path}/myCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 

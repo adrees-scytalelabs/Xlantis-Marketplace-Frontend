@@ -324,7 +324,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/createNewCollection`}>
               <NewCollection setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/newCollection`}>
+            <Route exact path={`${path}/myCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 
