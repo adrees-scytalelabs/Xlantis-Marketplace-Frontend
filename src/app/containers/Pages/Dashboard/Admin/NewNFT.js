@@ -844,7 +844,7 @@ function NewNFT(props) {
           }
 
           if (batchId === "") {
-            axios.post(`/batch-mint`, data).then(
+            axios.post(`/batch-mint/`, data).then(
               (response) => {
                 console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
