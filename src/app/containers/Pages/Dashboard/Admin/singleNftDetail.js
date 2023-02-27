@@ -112,7 +112,7 @@ const SingleNftDetail = (props) => {
   let getNftDetail = () => {
     const version = Cookies.get("Version");
     // handleShowBackdrop();
-    axios.get(`/${version}/nft/getSingleNFT/${nftId}`).then(
+    axios.get(`/nft/getSingleNFT/${nftId}`).then(
       (response) => {
         console.log("Response: ", response);
         setNftDetail(response.data.data[0]);

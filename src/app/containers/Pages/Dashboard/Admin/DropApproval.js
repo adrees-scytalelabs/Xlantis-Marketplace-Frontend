@@ -244,7 +244,7 @@ function DropApproval(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/${versionB}/collection/approve`, approvalData).then(
+          axios.put(`/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from Auction approval: ", response);
               setIsAuctionApproved(true);
@@ -268,7 +268,7 @@ function DropApproval(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/${version}/collection/myCollections/${start}/${end}`)
+      .get(`/collection/myCollections/${start}/${end}`)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.collectionData);

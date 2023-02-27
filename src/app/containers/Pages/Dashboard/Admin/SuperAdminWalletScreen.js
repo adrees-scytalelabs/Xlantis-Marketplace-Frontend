@@ -78,7 +78,7 @@ function SuperAdminWalletScreen(props) {
     setOpen(true);
     axios
 
-      .get(`/v2-wallet-login/super-admin/admins/counts`)
+      .get(`/super-admin/admins/counts?userType=v2`)
       .then((response) => {
         console.log(response);
         setTotalAdmins(response.data.counts.totalAdmins);

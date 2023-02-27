@@ -170,7 +170,7 @@ const AuctionNFT = (props) => {
         // handleShowBackdrop();
         let version = Cookies.get("Version");
 
-        axios.get(`/${version}/drop/nft/${nftId}`).then(
+        axios.get(`/drop/nft/${nftId}`).then(
             (response) => {
                 console.log("Response getting NFT Detail: ", response);
                 setNftDetail(response.data.data[0]);
@@ -193,7 +193,7 @@ const AuctionNFT = (props) => {
     let getDropCloneAddress = () => {
         console.log("Drop ID: ", dropId);
         let version = Cookies.get("Version");
-        axios.get(`/${version}/drop/${dropId}`).then(
+        axios.get(`/drop/${dropId}`).then(
             (response) => {
                 console.log("Response from getting drop details: ", response);
                 console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
@@ -209,7 +209,7 @@ const AuctionNFT = (props) => {
 
     let getBidList = (nftId) => {
         let version = Cookies.get("Version");
-        axios.get(`/${version}/auction/bids/${nftId}/${0}/${1000}`).then(
+        axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
             (response) => {
                 console.log("Response from getting bid: ", response);
                 console.log("Bid array: ", response.data.data);
@@ -530,7 +530,7 @@ const AuctionNFT = (props) => {
                 let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
                 let trxHash;
 
-                axios.post(`/${versionB}/auction/bid`, bidData).then(
+                axios.post(`/auction/bid`, bidData).then(
                     (response) => {
                         console.log("Response from sending bid data to backend: ", response);
                         let bidIdHash = getHash(response.data.bidId);
@@ -565,7 +565,7 @@ const AuctionNFT = (props) => {
                                 "txHash": trxHash 
                             }
 
-                            axios.put(`/${versionB}/auction/bid/finalize`, finalizeBidData).then(
+                            axios.put(`/auction/bid/finalize`, finalizeBidData).then(
                                 (response) => {
                                     console.log("Response from finalize bid: ", response);
                                     let variant = "success";

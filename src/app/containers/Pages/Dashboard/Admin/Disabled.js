@@ -169,7 +169,7 @@ function Disabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/disabled?userType=v1`)
+      .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.admins);
@@ -199,7 +199,7 @@ function Disabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/disabled?userType=v2`)
+      .get(`/super-admin/admins/disabled?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
@@ -234,7 +234,7 @@ function Disabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/enable?userType=v1`, data).then(
+    axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -270,7 +270,7 @@ function Disabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/enable?userType=v2`, data).then(
+    axios.patch(`/super-admin/enable?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";

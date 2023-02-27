@@ -87,13 +87,6 @@ function NewDrop(props) {
   const classes = useStyles();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  const [startTimeStamp, setStartTimeStamp] = useState(
-    Math.round(startTime.getTime() / 1000)
-  );
-  const [endTimeStamp, setEndTimeStamp] = useState(
-    Math.round(endTime.getTime() / 1000)
-  );
-  const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
   // const [inputList, setInputList] = useState([]);
   // const [imageData, setImageData] = useState([]);
   let [saleType, setSaleType] = useState("auction");
@@ -233,37 +226,6 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
       } else {
         let dropID;
         let DropData = {
@@ -274,13 +236,21 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: startTime,
-          endTime: endTime,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
+        // history.push({
+        //   pathname: `${path}/addNft`,
+        //   state: {
+        //     dropId: dropID,
+        //     saleType: saleType,
+        //     startTime: `2023-02-27T02:55:00.000+00:00`,
+        //     endTime: `2023-04-27T02:55:00.000+00:00`,
+        //     nftType: nftType,
+        //   },
+        // });
+        axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -293,8 +263,6 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
                 nftType: nftType,
               },
             });
@@ -364,47 +332,6 @@ function NewDrop(props) {
           });
           setIsSaving(false);
           handleCloseBackdrop();
-        } else if (
-          startTimeStamp === endTimeStamp ||
-          new Date(startTime) === new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction cannot be Start and End on same time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          startTimeStamp > endTimeStamp ||
-          new Date(startTime) > new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction End time must be greater than Start time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          currentTimeStamp >= startTimeStamp ||
-          new Date(Date.now()) >= new Date(startTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar(
-            "Auction Start time must be greater than Current time.",
-            { variant }
-          );
-          setIsSaving(false);
-          handleCloseBackdrop();
-          // } else if (minimumBid === undefined || minimumBid === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter minimum bid.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
-          // } else if (bidDelta === undefined || bidDelta === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
         } else {
           let dropID;
           // let tokenId = [];
@@ -439,13 +366,11 @@ function NewDrop(props) {
             title: name,
             image: image,
             description: description,
-            startTime: startTime,
-            endTime: endTime,
             saleType: saleType,
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post(`/${versionB}/drop/`, DropData).then(
+          axios.post(`/drop/`, DropData).then(
             (response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
@@ -470,8 +395,6 @@ function NewDrop(props) {
                 state: {
                   dropId: dropID,
                   saleType: saleType,
-                  startTime: startTimeStamp,
-                  endTime: endTimeStamp,
                   nftType: nftType,
                 },
               });
@@ -530,37 +453,6 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
       } else {
         let dropID;
 
@@ -568,13 +460,11 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: startTime,
-          endTime: endTime,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
+        axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -587,8 +477,6 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
                 nftType: nftType,
               },
             });
@@ -640,7 +528,7 @@ function NewDrop(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
+    axios.post(`/upload/image`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);

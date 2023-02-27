@@ -157,7 +157,7 @@ function SSOEnabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/enabled?userType=v1`)
+      .get(`/super-admin/admins/enabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setSSOAdmins(response.data.admins);
@@ -193,7 +193,7 @@ function SSOEnabled(props) {
 
     console.log("data", data);
 
-    axios.patch("/v1-sso/super-admin/disable?userType=v1", data).then(
+    axios.patch("/super-admin/disable?userType=v1", data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";

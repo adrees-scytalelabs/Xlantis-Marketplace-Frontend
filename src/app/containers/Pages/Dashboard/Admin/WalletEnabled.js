@@ -156,7 +156,7 @@ function WalletEnabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/enabled?userType=v2`)
+      .get(`/super-admin/admins/enabled?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
@@ -191,7 +191,7 @@ function WalletEnabled(props) {
 
     console.log("data", data);
 
-    axios.patch("/v2-wallet-login/super-admin/disable?userType=v2", data).then(
+    axios.patch("/super-admin/disable?userType=v2", data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";

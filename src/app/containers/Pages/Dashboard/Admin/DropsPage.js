@@ -104,7 +104,7 @@ function DropsPage(props) {
     handleShowBackdrop();
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`/${version}/drop/myDrops/${status}/${start}/${end}`).then(
+    axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.data);

@@ -197,7 +197,7 @@ const AcceptBidTxModal = (props) => {
 
   const getTxSummary = (dropId) => {
     
-    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
+    axios.get(`drop/${dropId}/tx-cost-summary`).then(
       (response) => {
         console.log("response", response);
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;

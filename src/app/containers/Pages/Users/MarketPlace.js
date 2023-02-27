@@ -76,11 +76,11 @@ function MarketPlace(props) {
     let version = Cookies.get("Version");
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/saleType/fixed-price/${start}/${end}`
+      endpoint = `/drop/saleType/fixed-price/${start}/${end}`
     }
     else
     {
-      endpoint = `/${version}/drop/saleType/fixed-price/${start}/${end}`
+      endpoint = `/drop/saleType/fixed-price/${start}/${end}`
     }
     axios
       .get(endpoint)
@@ -105,11 +105,11 @@ function MarketPlace(props) {
     let version = Cookies.get("Version");
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/saleType/auction/${start}/${end}`
+      endpoint = `/drop/saleType/auction/${start}/${end}`
     }
     else
     {
-      endpoint = `/${version}/drop/saleType/auction/${start}/${end}`
+      endpoint = `/drop/saleType/auction/${start}/${end}`
     }
     axios.get(endpoint).then(
       (res) => {

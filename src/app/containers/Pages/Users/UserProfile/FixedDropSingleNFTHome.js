@@ -515,10 +515,11 @@ const FixedDropSingleNFTHome = () => {
     console.log(version, " /// version");
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/nft/${singleNFTid}`
+      endpoint = `/drop/nft/${singleNFTid}`
     }
-    else {
-      endpoint = `/${version}/drop/nft/${singleNFTid}`
+    else
+    {
+      endpoint = `/drop/nft/${singleNFTid}`
     }
     axios.get(endpoint).then(
       (res) => {
@@ -535,10 +536,11 @@ const FixedDropSingleNFTHome = () => {
     let version = Cookies.get("Version");
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/${dropID}`
+      endpoint = `/drop/${dropID}`
     }
-    else {
-      endpoint = `/${version}/drop/${dropID}`
+    else
+    {
+      endpoint = `/drop/${dropID}`
     }
     axios.get(endpoint).then(
       (res) => {
