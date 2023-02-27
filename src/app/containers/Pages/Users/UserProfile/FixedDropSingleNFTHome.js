@@ -239,7 +239,7 @@ const FixedDropSingleNFTHome = () => {
   };
 
 
-  const handleOpenModal = async(e) => {
+  const handleOpenModal = async (e) => {
     const dropId = nftData.dropId;
     const nftId = nftData._id;
     console.log("NFTDETAIL", nftData);
@@ -275,9 +275,9 @@ const FixedDropSingleNFTHome = () => {
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
-    walletAddress : "0xE66a70d89D44754f726A4B463975d1F624530111",
-    fiatAmount : 1100,
-    isAutoFillUserData : true,
+    walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
+    fiatAmount: 1100,
+    isAutoFillUserData: true,
     themeColor: "000000", // App theme color
     hostURL: window.location.origin,
     widgetHeight: "700px",
@@ -463,48 +463,48 @@ const FixedDropSingleNFTHome = () => {
 
   function SSOBuy() {
     console.log("SSO BUY");
-      // setnftData(nftObject);
-      console.log("Nft detail: ", nftData);
-      console.log("Price", nftData);
-      // setnftData(nftData);
-      console.log("Nft detail id: ", nftData.collectionId._id)
-      setOpenDialog(false);
-      setIsSaving(true);
-      handleShowBackdrop();
-     
-      let data = {
-        dropId: nftData.dropId,
-        nftId: nftData._id,
-      };
-      handleCloseModal();
-      axios.post(`/${versionB}/marketplace/buy`, data).then(
-        (response) => {
-          
-          console.log("nft buy response", response.data);
-          let variant = "success";
-          enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
-          handleCloseBackdrop();
-  
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-            let variant = "error";
-            enqueueSnackbar("Unable To Buy NFT.", { variant });
-            handleCloseBackdrop();
-          }
-          if (error.response.data !== undefined) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              sessionStorage.removeItem("Authorization");
-              Cookies.remove("Version");
+    // setnftData(nftObject);
+    console.log("Nft detail: ", nftData);
+    console.log("Price", nftData);
+    // setnftData(nftData);
+    console.log("Nft detail id: ", nftData.collectionId._id)
+    setOpenDialog(false);
+    setIsSaving(true);
+    handleShowBackdrop();
 
-              sessionStorage.removeItem("Address");
-              window.location.reload();
-            }
+    let data = {
+      dropId: nftData.dropId,
+      nftId: nftData._id,
+    };
+    handleCloseModal();
+    axios.post(`/${versionB}/marketplace/buy`, data).then(
+      (response) => {
+
+        console.log("nft buy response", response.data);
+        let variant = "success";
+        enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
+        handleCloseBackdrop();
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar("Unable To Buy NFT.", { variant });
+          handleCloseBackdrop();
+        }
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            Cookies.remove("Version");
+
+            sessionStorage.removeItem("Address");
+            window.location.reload();
           }
+        }
       })
 
   }
@@ -525,7 +525,7 @@ const FixedDropSingleNFTHome = () => {
       (res) => {
         console.log(endpoint, " /// Endpoint for V2")
         console.log("finding the price: ... ", res);
-        setNftData(res.data.data[0]);
+        setNftData(res.data.data);
         // setNftProperties(Object.entries(res.data.data[0].properties));
       },
       (err) => console.log("Could not get NFT details: ", err.response)
@@ -570,9 +570,9 @@ const FixedDropSingleNFTHome = () => {
     console.log("bidding response: ... ", theDrop);
   }
 
- if(nftData !== undefined) {
-  console.log(nftData, " /// nftData")
- }
+  if (nftData !== undefined) {
+    console.log(nftData, " /// nftData")
+  }
 
   // jsx
   return (
@@ -776,13 +776,13 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters" >
                       {account &&
-                      nftData.isOnSale === true ? (
+                        nftData.isOnSale === true ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
                             type="button"
                             // onClick={(e) => handleBuy(e)}
-                            onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModal(e)) : (handleBuy(e))} }
+                            onClick={(e) => { versionB === "v1-sso" ? (handleOpenModal(e)) : (handleBuy(e)) }}
                           >
                             Buy
                           </button>
@@ -804,19 +804,19 @@ const FixedDropSingleNFTHome = () => {
                           >
                             Buy
                           </button>
-                      {!account ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
-                        Please Login First! 
-                      </ReactTooltip>
-                    ) :  nftData?.currentMarketplaceId.isSold === true ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
-                        NFT has been sold out
-                      </ReactTooltip>
-                    ) : nftData?.isOnSale === false ? (
-                        <ReactTooltip id="registerTip" place="top" effect="solid" style={{color: "white"}}>
-                          Sale has ended
-                        </ReactTooltip>
-                    ) : null}
+                          {!account ? (
+                            <ReactTooltip id="registerTip" place="top" effect="solid">
+                              Please Login First!
+                            </ReactTooltip>
+                          ) : nftData?.currentMarketplaceId.isSold === true ? (
+                            <ReactTooltip id="registerTip" place="top" effect="solid">
+                              NFT has been sold out
+                            </ReactTooltip>
+                          ) : nftData?.isOnSale === false ? (
+                            <ReactTooltip id="registerTip" place="top" effect="solid" style={{ color: "white" }}>
+                              Sale has ended
+                            </ReactTooltip>
+                          ) : null}
                         </div>
                       )}
                     </div>
@@ -870,7 +870,7 @@ const FixedDropSingleNFTHome = () => {
                                 <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
                                   <button
                                     className="bidBtn w-100 ml-0"
-                                    // onClick={(e) => handleBidSubmit(e)}
+                                  // onClick={(e) => handleBidSubmit(e)}
                                   >
                                     Bid
                                   </button>
@@ -1001,7 +1001,7 @@ const FixedDropSingleNFTHome = () => {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy = {SSOBuy}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
+      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy={SSOBuy} handlePay={openTransak} dropData={data} isOpen={modalOpen} />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

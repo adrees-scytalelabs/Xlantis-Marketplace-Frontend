@@ -50,11 +50,11 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.marketPlace}>
+            {/* <li className={props.activeTab.marketPlace}>
               <Link to={`/dashboard/marketPlace`}>
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
-            </li>
+            </li> */}
             <li className="menu-title">
               <span>SETTINGS</span>
             </li>
