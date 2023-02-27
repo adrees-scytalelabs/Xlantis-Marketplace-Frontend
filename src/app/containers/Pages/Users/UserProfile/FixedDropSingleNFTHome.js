@@ -150,7 +150,11 @@ const FixedDropSingleNFTHome = () => {
   const saleType = location.state.saleType;
   const description = location.state.description;
   const [modalOpen, setMOdalOpen] = useState(false);
+  const [modalOpenBid, setMOdalOpenBid] = useState(false);
+
   const [data, setData] = useState();
+  const [dataBid, setDataBid] = useState();
+  let [ dropCloneAddress, setDropCloneAddress] = useState("");
   const [open, setOpen] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [openDialog, setOpenDialog] = useState(false);
@@ -159,6 +163,9 @@ const FixedDropSingleNFTHome = () => {
   let [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   let [versionB, setVersionB] = useState("");
+  let [startTime, setStartTime] = useState();
+  let [endTime, setEndTime] = useState();
+
   let account = sessionStorage.getItem("Authorization");
 
 
@@ -216,6 +223,9 @@ const FixedDropSingleNFTHome = () => {
   const handleCloseModal = () => {
     setMOdalOpen(false);
   };
+  const handleCloseModalBid = () => {
+    setMOdalOpenBid(false);
+  };
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -238,6 +248,64 @@ const FixedDropSingleNFTHome = () => {
     }
   };
 
+  const handleOpenModalBid = async(e) => {
+    if(e) {
+        e.preventDefault();
+    }
+    
+
+    const dropId = nftData.dropId;
+    const nftId = nftData._id;
+    console.log("version", versionB);
+    console.log("NFTDETAIL");
+    // if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
+    //     let variant = 'error';
+    //     enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
+    // }
+    if (biddingValue === 0) {
+        let variant = "error";
+        enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+    }
+    else {
+
+        axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
+            (response) => {
+            console.log("response", response);
+            console.log("responeee", response.data.data.data[0]);
+            setData(response.data.data);
+            setMOdalOpen(true);
+
+            
+            // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+            // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+            // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+            // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+            // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+            // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+            
+            
+            
+            },
+            (error) => {
+            if (process.env.NODE_ENV === "development") {
+                console.log(error);
+                console.log(error.response);
+            }
+            if (error.response !== undefined) {
+                if (error.response.status === 400) {
+                // setMsg(error.response.data.message);
+                } else {
+                // setMsg("Unknown Error Occured, try again.");
+                }
+            } else {
+            //   setMsg("Unknown Error Occured, try again.");
+            }
+            // setIsLoading(false);
+            }
+        );
+    }
+
+  };
 
   const handleOpenModal = async (e) => {
     const dropId = nftData.dropId;
@@ -268,6 +336,262 @@ const FixedDropSingleNFTHome = () => {
       }
     );
   };
+//   let getDropCloneAddress = () => {
+//     console.log("Drop ID: ", dropId);
+//     let version = Cookies.get("Version");
+//     axios.get(`/${version}/drop/${dropId}`).then(
+//         (response) => {
+//             console.log("Response from getting drop details: ", response);
+//             console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
+//             //set contract type when its done at backend
+//             setDropCloneAddress(response.data.dropData.dropCloneAddress);
+//         },
+//         (err) => {
+//             console.log("Err from getting drop details: ", err);
+//             console.log("Err response from getting drop details: ", err.response);
+//         }
+//     )
+//   }
+//   let giveAuctionErc20Approval = async () => {
+//     await loadWeb3();
+//     const web3 = window.web3
+//     const accounts = await web3.eth.getAccounts();
+//     console.log("Account 0: ", accounts[0]);
+//     const network = await web3.eth.net.getNetworkType()
+//     if (network !== 'private') {
+//         setNetwork(network);
+//         // handleShow();
+//     }
+//     else{
+
+//         const addressErc20Auction = Addresses.AuctionERC20;
+//         const addressDropClone = dropCloneAddress;            
+//         const abiERC20 = ERC20Abi;
+
+//         let bidValue = web3.utils.toWei(biddingValue, 'ether');
+
+        
+
+//         console.log("Contract Address: ", addressErc20Auction);
+//         var myContractInstance = await new web3.eth.Contract(abiERC20, addressErc20Auction);
+//         console.log("myContractInstance", myContractInstance)
+        
+
+//         await myContractInstance.methods.approve(addressDropClone, bidValue).send({from : accounts[0]}, (err, response) => {
+//             console.log('get transaction', err, response);
+            
+//             if (err !== null) {
+//                 console.log("err", err);
+//                 let variant = "error";
+//                 enqueueSnackbar('User Canceled Transaction', { variant });
+//                 handleCloseBackdrop();
+
+//             }
+        
+//         }
+//     )
+//         .on('receipt', (receipt) => {
+//             console.log("receipt", receipt);
+//         })
+//     }
+// }
+  let handleBidSubmit = async (event) => {
+    // event.preventDefault();
+
+    // //conditions checking
+    // console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
+    // // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
+    // console.log("Bid Expiry Time: ", bidExpiryTime);
+    // // console.log("Drop Expiry Time: ", dropExpiryTime);
+
+    // // if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
+    // //     let variant = 'error';
+    // //     enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
+    // // }
+    // if (biddingValue === 0) {
+    //     let variant = "error";
+    //     enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+    // }
+    // else {
+    //     await loadWeb3();
+    //     const web3 = window.web3
+    //     const accounts = await web3.eth.getAccounts();
+    //     console.log("Accounts[0]: ", accounts[[0]]);
+    //     const network = await web3.eth.net.getNetworkType()
+    //     if (network !== 'private') {
+    //         setNetwork(network);
+    //         // handleShow();
+    //     }
+    //     else {
+    //         handleShowBackdrop();
+    //         await giveAuctionErc20Approval();
+
+    //         //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+    //         let bidData = {
+    //             nftId: nftDetail._id,
+    //             bidAmount: biddingValue.toString(),
+    //             bidderAddress: accounts[0],
+    //             expiryTime: bidExpiryTime
+    //         }
+
+    //         console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
+    //         console.log("Bid data: ", bidData);
+            
+
+    //         let dropIdHash = getHash(dropIdObj);
+    //         let nftId = nftBlockChainId;
+    //         let bidValue = web3.utils.toWei(biddingValue, 'ether');
+
+    //         console.log("NFT id type: ", typeof(nftId));
+    //         console.log("Bid Value type: ", typeof(bidValue), bidValue);
+    //         console.log("Drop Id Hash: ", dropIdHash);
+
+
+    //         let contractAddress;
+    //         let contractAbi;
+            
+    //         if (contractType === '1155') {
+    //             contractAddress = Addresses.AuctionDropFactory1155;
+    //             contractAbi = AuctionDropFactory1155ABI;
+    //             console.log("hello", contractAddress, contractType);
+    //         }
+    //         else if (contractType === '721') {
+    //             contractAddress = Addresses.AuctionDropFactory721;
+    //             contractAbi = AuctionDropFactory721ABI;
+    //         }
+
+    //         let myContractInstance = await new web3.eth.Contract(contractAbi, contractAddress);
+    //         let trxHash;
+
+    //         axios.post(`/${versionB}/auction/bid`, bidData).then(
+    //             (response) => {
+    //                 console.log("Response from sending bid data to backend: ", response);
+    //                 let bidIdHash = getHash(response.data.bidId);
+    //                 let bidId = response.data.bidId;
+
+    //                 //sending call on blockchain
+
+    //                 console.log("Bid data for blockchain: ");
+    //                 console.log("drop id hash: ", dropIdHash);
+    //                 console.log("bid id hash: ", bidIdHash);
+    //                 console.log("nft address: ", location.state.nftContractAddress);
+    //                 console.log("nft id: ", nftId);
+    //                 console.log("bid Value: ", bidValue);
+                    
+                  
+    //                 myContractInstance.methods.bid(dropIdHash, bidIdHash, location.state.nftContractAddress, nftId, bidValue).send({ from: accounts[0] }, (err, response) => {
+    //                     console.log('get transaction: ', err, response);
+    //                     if (err !== null) {
+    //                         console.log('err: ', err);
+    //                         handleCloseBackdrop();
+    //                     }
+    //                     trxHash = response;
+                        
+
+    //                 })
+    //                 .on('receipt', (receipt) => {
+    //                     console.log('receipt: ', receipt);
+
+    //                     //sending finalize call on backend
+    //                     let finalizeBidData = {
+    //                         "bidId": bidId,
+    //                         "txHash": trxHash 
+    //                     }
+
+    //                     axios.put(`/${versionB}/auction/bid/finalize`, finalizeBidData).then(
+    //                         (response) => {
+    //                             console.log("Response from finalize bid: ", response);
+    //                             let variant = "success";
+    //                             enqueueSnackbar('Bid Placed Successfully', { variant });
+    //                         },
+    //                         (err) => {
+    //                             let variant = "error";
+    //                             enqueueSnackbar('Unable To Bid', { variant });
+    //                             console.log("Err from finalize bid: ", err);
+    //                             console.log("Err response from finalize bid: ", err);
+    //                         }
+    //                     )
+    //                     handleCloseBackdrop();
+    //                 });
+    //             },
+    //             (error) => {
+    //                 console.log("Error from sending bid data to backend: ", error);
+    //                 handleCloseBackdrop();
+    //             }
+    //         )
+    //     }
+    // }
+}
+
+let handleBidSubmitSSO = async (event) => {
+//     event.preventDefault();
+
+//     //conditions checking
+//     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
+//     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
+//     console.log("Bid Expiry Time: ", bidExpiryTime);
+//     console.log("Drop Expiry Time: ", dropExpiryTime);
+
+//     if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
+//         let variant = 'error';
+//         enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
+//     }
+//     if (biddingValue === 0) {
+//         let variant = "error";
+//         enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+//     }
+//     else {
+       
+//     handleShowBackdrop();
+//     let bidAmountInWei = Web3.utils.toWei(biddingValue);
+        
+
+//     //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+//     let bidData = {
+//         nftId: nftDetail._id,
+//         bidAmount: bidAmountInWei,
+//         // bidderAddress: accounts[0],
+//         expiryTime: bidExpiryTime
+//     }
+
+//     console.log("Type of time: ", typeof(bidExpiryTime), bidExpiryTime);
+//     console.log("Bid data: ", bidData);
+    
+
+    
+
+    
+//     axios.post(`/${versionB}/auction/bid`, bidData).then(
+//         (response) => {
+            
+//             console.log("nft bid response", response.data);
+//             let variant = "success";
+//             enqueueSnackbar("Bid Is Being Finalized. Transactions Are In Process", { variant });
+//             handleCloseModal();
+    
+//         },
+//         (error) => {
+//             if (process.env.NODE_ENV === "development") {
+//             console.log(error);
+//             console.log(error.response);
+//             let variant = "error";
+//             enqueueSnackbar("Unable To Bid On NFT.", { variant });
+//             handleCloseModal();
+//             }
+//             if (error.response.data !== undefined) {
+//             if (
+//                 error.response.data === "Unauthorized access (invalid token) !!"
+//             ) {
+//                 sessionStorage.removeItem("Authorization");
+//                 Cookies.remove("Version");
+
+//                 sessionStorage.removeItem("Address");
+//                 window.location.reload();
+//             }
+//             }
+//     })
+// }
+}
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -545,6 +869,8 @@ const FixedDropSingleNFTHome = () => {
     axios.get(endpoint).then(
       (res) => {
         setTheDrop(res.data.dropData);
+        setStartTime(new Date(res.data.dropData.startTime));
+        setEndTime(new Date(res.data.dropData.endTime));
       },
       (err) => {
         console.log("could not get the drop ", err.response);
@@ -556,10 +882,13 @@ const FixedDropSingleNFTHome = () => {
 
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
-    getNFTDetails();
+    console.log("nftdetails props", location.state);
+    setNftData(location.state.nftDetails);
+    // getDropCloneAddress();
+    // getNFTDetails();
     getTheDrop();
-    let priceCal = Web3.utils.fromWei(location.state.price, "ether");
-    setPrice(priceCal);
+    // let priceCal = Web3.utils.fromWei(location.state.price, "ether");
+    // setPrice(priceCal);
 
     return () => {
       controller.abort();
@@ -680,7 +1009,7 @@ const FixedDropSingleNFTHome = () => {
                             fontSize: "1rem",
                           }}
                         >
-                          {price} WMATIC
+                          {Web3.utils.fromWei(nftData.currentMarketplaceId.price, "ether")} WMATIC
                         </Col>
                       </Row>
                       <Row>
@@ -776,7 +1105,10 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters" >
                       {account &&
-                        nftData.isOnSale === true ? (
+                      nftData.currentMarketplaceId.isSold === false &&
+                      new Date() >= startTime &&
+                      new Date() < endTime ?
+                      (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
@@ -804,19 +1136,24 @@ const FixedDropSingleNFTHome = () => {
                           >
                             Buy
                           </button>
-                          {!account ? (
-                            <ReactTooltip id="registerTip" place="top" effect="solid">
-                              Please Login First!
-                            </ReactTooltip>
-                          ) : nftData?.currentMarketplaceId.isSold === true ? (
-                            <ReactTooltip id="registerTip" place="top" effect="solid">
-                              NFT has been sold out
-                            </ReactTooltip>
-                          ) : nftData?.isOnSale === false ? (
-                            <ReactTooltip id="registerTip" place="top" effect="solid" style={{ color: "white" }}>
-                              Sale has ended
-                            </ReactTooltip>
-                          ) : null}
+                          
+                      {!account ? (
+                      <ReactTooltip id="registerTip" place="top" effect="solid">
+                        Please Login First! 
+                      </ReactTooltip>
+                    ) :  nftData?.currentMarketplaceId.isSold === true ? (
+                      <ReactTooltip id="registerTip" place="top" effect="solid">
+                        NFT has been sold out
+                      </ReactTooltip>
+                    ) : new Date() < startTime ? (                      
+                      <ReactTooltip id="registerTip" place="top" effect="solid" style={{color: "white"}}>
+                        Sale Has Not Started Yet
+                      </ReactTooltip>
+                    ) : new Date() > endTime ? (
+                      <ReactTooltip id="registerTip" place="top" effect="solid">
+                        Sale Has Ended
+                      </ReactTooltip>
+                    ) : null}
                         </div>
                       )}
                     </div>
@@ -870,7 +1207,7 @@ const FixedDropSingleNFTHome = () => {
                                 <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
                                   <button
                                     className="bidBtn w-100 ml-0"
-                                  // onClick={(e) => handleBidSubmit(e)}
+                                    // onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModalBid(e)) : (handleBid(e))} }
                                   >
                                     Bid
                                   </button>
@@ -1001,7 +1338,9 @@ const FixedDropSingleNFTHome = () => {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy={SSOBuy} handlePay={openTransak} dropData={data} isOpen={modalOpen} />
+      {/* <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid = {handleBidSubmitSSO}  handlePay = {openTransak} dropData = {dataBid} isOpen = {modalOpenBid} /> */}
+      
+      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy = {SSOBuy}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

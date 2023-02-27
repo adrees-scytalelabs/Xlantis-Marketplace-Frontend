@@ -142,6 +142,8 @@ const OnSaleCard = (props) => {
                         pathname: `/fixdropnft/${props.i._id}`,
                         state: {
                           saleType: props.i.saleType,
+                          startTime: props.i.startTime,
+                          endTime: props.i.endTime
                         },
                       }}
                     >

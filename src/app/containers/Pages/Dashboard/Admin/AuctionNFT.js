@@ -163,128 +163,34 @@ const AuctionNFT = (props) => {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
 
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
-
-  const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
-    cryptoCurrencyCode: "MATIC",
-    network: "private",
-    defaultNetwork: "polygon",
-    walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
-    fiatAmount: 1100,
-    isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
-    hostURL: window.location.origin,
-    widgetHeight: "700px",
-    widgetWidth: "500px",
-  };
-
-  let getNftDetail = () => {
+let getNftDetail = () => {
     // handleShowBackdrop();
     let version = Cookies.get("Version");
 
-    axios
-      .get(`/drop/nft/${nftId}`)
-      .then((response) => {
-        console.log("Response getting NFT Detail: ", response);
-        setNftDetail(response.data.data[0]);
-        setDropIdObj(response.data.data[0].dropId);
-        setNftBlockChainId(response.data.data[0].nftId);
-        const keys = Object.keys(response.data.data[0].properties);
-        console.log("Keys: ", keys);
-
-        setKeys(keys);
-        setProperties(response.data.data[0].properties);
-      })
-      .catch((error) => {
+    axios.get(`/${version}/drop/nft/${nftId}`).then(
+        (response) => {
+            console.log("Response getting NFT Detail: ", response);
+            setNftDetail(response.data.data);
+            setDropIdObj(response.data.data.dropId);
+            setNftBlockChainId(response.data.data[0].nftId);
+            const keys = Object.keys(response.data.data[0].properties);
+            console.log("Keys: ", keys);
+            
+            setKeys(keys);
+            setProperties(response.data.data[0].properties);
+            
+        }
+    )
+    .catch((error) => {
         console.log("Error: ", error);
-      });
-  };
+    })
+}
 
-  let getDropCloneAddress = () => {
-    console.log("Drop ID: ", dropId);
-    let version = Cookies.get("Version");
-    axios.get(`/drop/${dropId}`).then(
-      (response) => {
-        console.log("Response from getting drop details: ", response);
-        console.log(
-          "Response from getting drop details: ",
-          response.data.dropData.dropCloneAddress
-        );
-        //set contract type when its done at backend
-        setDropCloneAddress(response.data.dropData.dropCloneAddress);
-      },
-      (err) => {
-        console.log("Err from getting drop details: ", err);
-        console.log("Err response from getting drop details: ", err.response);
-      }
-    );
-  };
-
-  let getBidList = (nftId) => {
-    let version = Cookies.get("Version");
-    axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
-      (response) => {
-        console.log("Response from getting bid: ", response);
-        console.log("Bid array: ", response.data.data);
-        setBidDetail(response.data.data);
-      },
-      (err) => {
-        console.log("Error from getting bids: ", err);
-        console.log("Error response from getting bids: ", err);
-        setBidDetail([]);
-      }
-    );
-  };
-  // const handleOpenModal = async(e) => {
-  // const dropId = nftDetail.dropId;
-  // const nftId = nftDetail._id;
-  // console.log("NFTDETAIL", nftDetail);
-  // axios.get(`v1-sso/auction/bid/tx-cost-summary/${dropId}/${nftId}`).then(
-  //   (response) => {
-  //     console.log("response", response);
-  //     console.log("responeee", response.data.data.data);
-  //     setData(response.data.data);
-  //     setMOdalOpen(true);
-
-  //     // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-  //     // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-  //     // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-  //     // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-  //     // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-  //     // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-
-  //   },
-  //   (error) => {
-  //     if (process.env.NODE_ENV === "development") {
-  //       console.log(error);
-  //       console.log(error.response);
-  //     }
-  //     if (error.response !== undefined) {
-  //       if (error.response.status === 400) {
-  //         // setMsg(error.response.data.message);
-  //       } else {
-  //         // setMsg("Unknown Error Occured, try again.");
-  //       }
-  //     } else {
-  //       // setMsg("Unknown Error Occured, try again.");
-  //     }
-  //     // setIsLoading(false);
-  //   }
-  // );
-  //   };
-
-  const handleCloseModal = () => {
+const handleCloseModal = () => {
     setMOdalOpen(false);
-  };
+};
 
-  const handleOpenModal = async (e) => {
+const handleOpenModal = async (e) => {
     if (e) {
       e.preventDefault();
     }
@@ -341,6 +247,64 @@ const AuctionNFT = (props) => {
           }
         );
     }
+  };
+
+  let getBidList = (nftId) => {
+    let version = Cookies.get("Version");
+    axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
+      (response) => {
+        console.log("Response from getting bid: ", response);
+        console.log("Bid array: ", response.data.data);
+        setBidDetail(response.data.data);
+      },
+      (err) => {
+        console.log("Error from getting bids: ", err);
+        console.log("Error response from getting bids: ", err);
+        setBidDetail([]);
+      }
+    );
+  };
+
+  let getDropCloneAddress = () => {
+    console.log("Drop ID: ", dropId);
+    let version = Cookies.get("Version");
+    axios.get(`/drop/${dropId}`).then(
+      (response) => {
+        console.log("Response from getting drop details: ", response);
+        console.log(
+          "Response from getting drop details: ",
+          response.data.dropData.dropCloneAddress
+        );
+        //set contract type when its done at backend
+        setDropCloneAddress(response.data.dropData.dropCloneAddress);
+      },
+      (err) => {
+        console.log("Err from getting drop details: ", err);
+        console.log("Err response from getting drop details: ", err.response);
+      }
+    );
+  };
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+
+  const settings = {
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
+    environment: "STAGING", // STAGING/PRODUCTION
+    cryptoCurrencyCode: "MATIC",
+    network: "private",
+    defaultNetwork: "polygon",
+    walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
+    fiatAmount: 1100,
+    isAutoFillUserData: true,
+    themeColor: "000000", // App theme color
+    hostURL: window.location.origin,
+    widgetHeight: "700px",
+    widgetWidth: "500px",
   };
 
   function openTransak() {
