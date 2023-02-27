@@ -236,56 +236,52 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: `2023-03-27T02:55:00.000+00:00`,
-          endTime: `2023-04-27T02:55:00.000+00:00`,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        history.push({
-          pathname: `${path}/addNft`,
-          state: {
-            dropId: dropID,
-            saleType: saleType,
-            startTime: `2023-02-27T02:55:00.000+00:00`,
-            endTime: `2023-04-27T02:55:00.000+00:00`,
-            nftType: nftType,
+        // history.push({
+        //   pathname: `${path}/addNft`,
+        //   state: {
+        //     dropId: dropID,
+        //     saleType: saleType,
+        //     startTime: `2023-02-27T02:55:00.000+00:00`,
+        //     endTime: `2023-04-27T02:55:00.000+00:00`,
+        //     nftType: nftType,
+        //   },
+        // });
+        axios.post(`/drop/`, DropData).then(
+          (response) => {
+            console.log("drop creation response", response);
+            setDropId(response.data.dropId);
+            dropID = response.data.dropId;
+            setIsSaving(false);
+            handleCloseBackdrop();
+            // history.push(`${path}/addNft`);
+            history.push({
+              pathname: `${path}/addNft`,
+              state: {
+                dropId: dropID,
+                saleType: saleType,
+                nftType: nftType,
+              },
+            });
+
+            // let variant = "success";
+            // enqueueSnackbar('Drop Created Successfully.', { variant });
           },
-        });
-        // axios.post(`/${versionB}/drop/`, DropData).then(
-        //   (response) => {
-        //     console.log("drop creation response", response);
-        //     setDropId(response.data.dropId);
-        //     dropID = response.data.dropId;
-        //     setIsSaving(false);
-        //     handleCloseBackdrop();
-        //     // history.push(`${path}/addNft`);
-        //     history.push({
-        //       pathname: `${path}/addNft`,
-        //       state: {
-        //         dropId: dropID,
-        //         saleType: saleType,
-        //         startTime: `2023-03-27T02:55:00.000+00:00`,
-        //         endTime: `2023-04-27T02:55:00.000+00:00`,
-        //         nftType: nftType,
-        //       },
-        //     });
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+            handleCloseBackdrop();
 
-        // let variant = "success";
-        // enqueueSnackbar('Drop Created Successfully.', { variant });
-        // },
-        //   (error) => {
-        //     if (process.env.NODE_ENV === "development") {
-        //       console.log(error);
-        //       console.log(error.response);
-        //     }
-        //     handleCloseBackdrop();
-
-        //     setIsSaving(false);
-        //     let variant = "error";
-        //     enqueueSnackbar("Unable to Create Drop.", { variant });
-        //   }
-        // );
+            setIsSaving(false);
+            let variant = "error";
+            enqueueSnackbar("Unable to Create Drop.", { variant });
+          }
+        );
 
         // })
       }
@@ -370,13 +366,11 @@ function NewDrop(props) {
             title: name,
             image: image,
             description: description,
-            startTime: `2023-03-27T02:55:00.000+00:00`,
-            endTime: `2023-04-27T02:55:00.000+00:00`,
             saleType: saleType,
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post(`/${versionB}/drop/`, DropData).then(
+          axios.post(`/drop/`, DropData).then(
             (response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
@@ -401,8 +395,6 @@ function NewDrop(props) {
                 state: {
                   dropId: dropID,
                   saleType: saleType,
-                  startTime: `2023-03-27T02:55:00.000+00:00`,
-                  endTime: `2023-04-27T02:55:00.000+00:00`,
                   nftType: nftType,
                 },
               });
@@ -442,41 +434,37 @@ function NewDrop(props) {
     } else {
       handleShowBackdrop();
 
-      // if (name === "") {
-      //   let variant = "error";
-      //   enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
-      //   setIsSaving(false);
-      //   handleCloseBackdrop();
-      // } else if (description === "") {
-      //   let variant = "error";
-      //   enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-      //     variant,
-      //   });
-      //   setIsSaving(false);
-      //   handleCloseBackdrop();
-      // } 
-      // else if (image === r1) {
-      //   let variant = "error";
-      //   enqueueSnackbar("Please Select title image for Drop to continue.", {
-      //     variant,
-      //   });
-      //   setIsSaving(false);
-      //   handleCloseBackdrop();
-      // } 
-      
+      if (name === "") {
+        let variant = "error";
+        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (description === "") {
+        let variant = "error";
+        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (image === r1) {
+        let variant = "error";
+        enqueueSnackbar("Please Select title image for Drop to continue.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else {
         let dropID;
 
         let DropData = {
-          title: 'a',
-          image: 'a',
-          description: 'asas',
-          startTime: `2023-02-27T02:55:00.000+00:00`,
-          endTime: `2023-04-27T02:55:00.000+00:00`,
+          title: name,
+          image: image,
+          description: description,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
+        axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -489,8 +477,6 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: `2023-02-27T02:55:00.000+00:00`,
-                endTime: `2023-04-27T02:55:00.000+00:00`,
                 nftType: nftType,
               },
             });
@@ -507,7 +493,7 @@ function NewDrop(props) {
             enqueueSnackbar("Unable to Create Drop.", { variant });
           }
         );
-      
+      }
     }
   };
 
@@ -542,7 +528,7 @@ function NewDrop(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
+    axios.post(`/upload/image`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);

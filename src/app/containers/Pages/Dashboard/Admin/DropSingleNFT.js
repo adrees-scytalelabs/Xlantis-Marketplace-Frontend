@@ -159,7 +159,7 @@ const DropSingleNFT = (props) => {
     const handleOpenModal = async(e, bidId) => {
         setBidId(bidId);
         console.log("NFTDETAIL", nftDetail);
-        axios.get(`v1-sso/auction/bid/accept/tx-cost-summary`).then(
+        axios.get(`/auction/bid/accept/tx-cost-summary`).then(
         (response) => {
             console.log("response", response);
             console.log("responeee", response.data.data);
@@ -323,7 +323,7 @@ const DropSingleNFT = (props) => {
 
     let getBidList = (nftId) => {
         let version = Cookies.get("Version");
-        axios.get(`/${version}/auction/bids/${nftId}/${0}/${1000}`).then(
+        axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
             (response) => {
                 console.log("Response from getting bid: ", response);
                 console.log("Bid array: ", response.data.data);
@@ -463,7 +463,7 @@ const DropSingleNFT = (props) => {
                     "txHash": trxHash 
                 }
 
-                axios.post(`${versionB}/auction/bid/accept`, data).then(
+                axios.post(`/auction/bid/accept`, data).then(
                     (response) => {
                         console.log("response", response);
                     },
@@ -502,7 +502,7 @@ const DropSingleNFT = (props) => {
             "bidId": bidId,
         }
         handleCloseModal();
-        axios.post(`/${versionB}/auction/bid/accept`, data).then(
+        axios.post(`/auction/bid/accept`, data).then(
             (response) => {
               
               console.log("nft bid response", response.data);

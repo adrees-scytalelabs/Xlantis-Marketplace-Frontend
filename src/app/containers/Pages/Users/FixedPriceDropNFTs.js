@@ -49,11 +49,11 @@ const FixedPriceDropNFTs = () => {
     console.log("version", version);
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/nfts/${dropId}/${start}/${end}`
+      endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
     else
     {
-      endpoint = `/${version}/drop/nfts/${dropId}/${start}/${end}`
+      endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
     axios.get(endpoint).then(
       (response) => {

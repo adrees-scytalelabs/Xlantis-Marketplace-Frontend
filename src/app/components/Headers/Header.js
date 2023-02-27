@@ -235,10 +235,10 @@ function HeaderHome(props) {
       let route;
       if (props.role === "admin") {
         
-        route = "v2-wallet-login/user/auth/admin-login";
+        route = "/user/auth/admin-login";
       } else {
         
-        route = "v2-wallet-login/user/auth/login";
+        route = "/user/auth/user-login";
       }
 
       console.log(route)

@@ -177,7 +177,7 @@ function NewCollection(props) {
     
 
       if (nftType === "ERC1155") {
-        axios.post(`/${version}/collection/`, fileData).then(
+        axios.post(`/collection/`, fileData).then(
           async (response) => {
             console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
@@ -223,7 +223,7 @@ function NewCollection(props) {
           setIsSaving(false);
           handleShow();
         } else {
-          axios.post(`${version}/collection/`, fileData).then(
+          axios.post(`/collection/`, fileData).then(
             async (response) => {
               console.log("collection creation response", response);
               setCollectionId(response.data.collection._id);
@@ -243,7 +243,7 @@ function NewCollection(props) {
                   console.log(typeof response);
                   // console.log("Collection ID: ", collectionId);
                   axios
-                    .put(`${version}/collection/txHash/${collectionID}`, {
+                    .put(`/collection/txHash/${collectionID}`, {
                       txHash: response,
                     })
                     .then(
@@ -323,7 +323,7 @@ function NewCollection(props) {
 
       
 
-      axios.post(`/${version}/collection/`, fileData).then(
+      axios.post(`/collection/`, fileData).then(
         async (response) => {
           console.log("collection creation response", response);
           setCollectionId(response.data.collection._id);
@@ -345,7 +345,7 @@ function NewCollection(props) {
                 console.log(typeof response);
                 // console.log("Collection ID: ", collectionId);
                 axios
-                  .put(`/${version}/collection/txHash/${collectionID}`, {
+                  .put(`/collection/txHash/${collectionID}`, {
                     txHash: response,
                   })
                   .then(
@@ -397,7 +397,7 @@ function NewCollection(props) {
                 console.log(typeof response);
                 // console.log("Collection ID: ", collectionId);
                 axios
-                  .put(`/${version}/collection/txHash/${collectionID}`, {
+                  .put(`/collection/txHash/${collectionID}`, {
                     txHash: response,
                   })
                   .then(
@@ -578,7 +578,7 @@ function NewCollection(props) {
             factoryType: "fixed-price",
           };
 
-          axios.put(`/${version}/collection/approve`, approvalData).then(
+          axios.put(`/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from approval of Fixed Price: ", response);
               let variant = "success";
@@ -652,7 +652,7 @@ function NewCollection(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/${version}/collection/approve`, approvalData).then(
+          axios.put(`/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";

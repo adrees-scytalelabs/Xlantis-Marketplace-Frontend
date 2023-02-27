@@ -273,7 +273,7 @@ function NewNFT(props) {
     console.log("get collections");
     console.log("collectionType", collectionType);
     console.log("VERSION", Cookies.get("Version"));
-    const url = `${Cookies.get("Version")}/collection/collections/${collectionType}`;
+    const url = `/collection/collections/${collectionType}`;
     console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
@@ -723,7 +723,7 @@ function NewNFT(props) {
   };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
-      axios.delete(`/${versionB}/batch-mint/${batchId}`).then(
+      axios.delete(`/batch-mint/${batchId}`).then(
         (response) => {
           console.log("deleting batch response: ", response);
           Cookies.remove("NFT-Detail");
@@ -737,7 +737,7 @@ function NewNFT(props) {
       );
     } else {
       axios
-        .delete(`/${versionB}/batch-mint/nft/${tokenList[index].nftId}`)
+        .delete(`/batch-mint/nft/${tokenList[index].nftId}`)
         .then(
           (response) => {
             console.log("Response for delete nft from batch: ", response);
@@ -844,7 +844,7 @@ function NewNFT(props) {
           }
 
           if (batchId === "") {
-            axios.post(`/${versionB}/batch-mint`, data).then(
+            axios.post(`/batch-mint`, data).then(
               (response) => {
                 console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
@@ -900,7 +900,7 @@ function NewNFT(props) {
           } else {
             data["batchId"] = batchId;
             console.log("data: ", data);
-            axios.post(`/${versionB}/batch-mint/nft`, data).then(
+            axios.post(`/batch-mint/nft`, data).then(
               (response) => {
                 console.log(
                   "Batch minting into existing batch response: ",
@@ -1046,7 +1046,7 @@ function NewNFT(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
+    axios.post(`/upload/image`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);
@@ -1260,7 +1260,7 @@ function NewNFT(props) {
         Cookies.set("NFT-Detail", data, {});
 
         axios
-          .put(`/${versionB}/nft/${data[editObjectIndex].nftId}`, updatedObject)
+          .put(`/nft/${data[editObjectIndex].nftId}`, updatedObject)
           .then(
             (response) => {
               console.log("Response of updated nft: ", response);
@@ -1317,7 +1317,7 @@ function NewNFT(props) {
       batchId: batchId,
       collectionId: collectionObj._id,
     };
-    axios.put(`/${versionB}/batch-mint/collection`, updatedCollectionID).then(
+    axios.put(`/batch-mint/collection`, updatedCollectionID).then(
       (response) => {
         console.log("Response after updating collection id: ", response);
       },
@@ -1431,7 +1431,7 @@ function NewNFT(props) {
         }
 
         console.log("NFT Data: ", nftData);
-        await axios.post(`/${versionB}/lazy-mint/NFT`, nftData).then(
+        await axios.post(`/lazy-mint/NFT`, nftData).then(
           async (response) => {
             console.log("Response from backend on free mint: ", response);
             lazyMintId = response.data.nftObjectId;
@@ -1465,7 +1465,7 @@ function NewNFT(props) {
           signature: signature,
         };
 
-        await axios.patch(`/${versionB}/lazy-mint/voucher`, voucherData).then(
+        await axios.patch(`/lazy-mint/voucher`, voucherData).then(
           (response) => {
             console.log("Response from sending voucher sign: ", response);
           },
@@ -1556,6 +1556,9 @@ function NewNFT(props) {
 
     if (signature) {
       return signature;
+    }
+    else{
+      alert("Signature")
     }
   };
 

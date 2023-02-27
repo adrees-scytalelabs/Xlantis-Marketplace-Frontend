@@ -144,7 +144,7 @@ function AccountApprovalSSO(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}?userType=v1`)
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.unverifiedAdmins);
@@ -179,7 +179,7 @@ function AccountApprovalSSO(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";

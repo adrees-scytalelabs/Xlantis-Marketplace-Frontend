@@ -336,7 +336,7 @@ function MyNFTs(props) {
     if (nftIdLen!=0){
       axios
       .get(
-        `${version}/drop/nfts/${location.state.dropId}/${start}/${end}`,
+        `/drop/nfts/${location.state.dropId}/${start}/${end}`,
         data
       )
       .then(

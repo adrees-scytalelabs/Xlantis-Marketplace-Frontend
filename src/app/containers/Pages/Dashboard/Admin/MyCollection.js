@@ -66,7 +66,7 @@ function MyCollection(props) {
     //     "Authorization"
     // )}`;
     setOpen(true);
-    const url = `/${version}/collection/myCollections/${start}/${end}`;
+    const url = `/collection/myCollections/${start}/${end}`;
     axios
       .get(url)
       .then((response) => {

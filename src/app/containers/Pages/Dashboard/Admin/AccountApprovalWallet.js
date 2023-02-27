@@ -145,7 +145,7 @@ function AccountApprovalWallet(props) {
     setOpen(true);
     axios
       .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
+        `/super-admin/admins/unverified/${start}/${end}?userType=v2`
       )
       .then((response) => {
         console.log("response.data", response.data);
@@ -181,7 +181,7 @@ function AccountApprovalWallet(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
