@@ -103,7 +103,7 @@ const NFTEditModal = (props) => {
                 data.nftURI = `https://ipfs.io/ipfs/${result[0].hash}`;
                 // setNftDetail(data);
                 let variant = "success";
-                enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
+                enqueueSnackbar('Image Uploaded to IPFS', { variant });
                 
                 if(typeImage === "glb") {
                     setIsGlbFile(true);
@@ -123,7 +123,7 @@ const NFTEditModal = (props) => {
                 setNftDetail(data);
                 setIsUploadingIPFS(false);
                 let variant = "success";
-                enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+                enqueueSnackbar('Image Uploaded Successfully', { variant });
             },
             (error) => {
                 if (process.env.NODE_ENV === "development") {
@@ -132,7 +132,7 @@ const NFTEditModal = (props) => {
                 }
                 setIsUploadingIPFS(false);
                 let variant = "error";
-                enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+                enqueueSnackbar('Unable to Upload Image.', { variant });
 
             }
         );
@@ -194,7 +194,7 @@ const NFTEditModal = (props) => {
                 setNftDetail(data);
 
                 let variant = "success";
-                enqueueSnackbar('Preview Image Uploaded to IPFS Successfully', { variant });
+                enqueueSnackbar('Preview Image Uploaded to IPFS ', { variant });
                 setIsUploadingPreview(false);
                 // 
             })

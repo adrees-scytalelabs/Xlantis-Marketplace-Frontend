@@ -23,7 +23,7 @@ function CreateNewCollectionModal(props) {
             setCollectionImage(response.data.url);
             setIsUploadingCollectionImage(false);
             let variant = "success";
-            enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
+            enqueueSnackbar('Image Uploaded Successfully', { variant });
           },
           (error) => {
             if (process.env.NODE_ENV === "development") {
@@ -32,7 +32,7 @@ function CreateNewCollectionModal(props) {
             }
             setIsUploadingCollectionImage(false);
             let variant = "error";
-            enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
+            enqueueSnackbar('Unable to Upload Image .', { variant });
     
           }
         );
