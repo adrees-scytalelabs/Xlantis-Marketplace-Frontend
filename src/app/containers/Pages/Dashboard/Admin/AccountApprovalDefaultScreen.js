@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -120,8 +123,8 @@ function AccountApprovalDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -173,9 +176,7 @@ function AccountApprovalDefaultScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.unverifiedAdmins);
@@ -314,8 +315,12 @@ function AccountApprovalDefaultScreen(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 6)}...</span>
                       </Tooltip>
                     ) : (
@@ -368,8 +373,13 @@ function AccountApprovalDefaultScreen(props) {
                     <label>N/A</label>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
-                      <span>{i.walletAddress.slice(0, 6)}...</span>
+                    <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
+                      title={i.walletAddress}
+                      arrow
+                    >
+                      <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>

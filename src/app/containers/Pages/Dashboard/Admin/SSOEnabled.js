@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme, ThemeProvider,Tooltip } from "@material-ui/core";
+import { createMuiTheme, ThemeProvider, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -127,7 +130,7 @@ function SSOEnabled(props) {
 
   useEffect(() => {
     getEnabledSSOAdmins();
-    
+
     // getMyCubes();
     // props.setActiveTab({
     //   dashboard: "",
@@ -178,7 +181,6 @@ function SSOEnabled(props) {
         setOpen(false);
       });
   };
-  
 
   let handleDisable = (e, verifyAdminId) => {
     e.preventDefault();
@@ -257,7 +259,12 @@ function SSOEnabled(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (

@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -250,7 +253,12 @@ function WalletEnabled(props) {
                   <td className={classes.collectionTitle}>{i.username}</td>
 
                   <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
+                    <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
+                      title={i.walletAddress}
+                      arrow
+                    >
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
