@@ -344,6 +344,10 @@ function NewCollection(props) {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
                 // console.log("Collection ID: ", collectionId);
+                let variant = "success";
+                enqueueSnackbar("Sending transaction on blockchain to deploy a collection (1155)", {
+                  variant,
+                });
                 axios
                   .put(`/collection/txHash/${collectionID}`, {
                     txHash: response,
@@ -395,6 +399,10 @@ function NewCollection(props) {
               .send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
+                let variant = "success";
+                enqueueSnackbar("Sending transaction on blockchain to deploy a collection (ERC721)", {
+                  variant,
+                });
                 // console.log("Collection ID: ", collectionId);
                 axios
                   .put(`/collection/txHash/${collectionID}`, {
