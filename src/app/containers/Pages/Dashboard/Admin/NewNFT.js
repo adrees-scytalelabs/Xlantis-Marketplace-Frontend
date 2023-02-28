@@ -660,7 +660,7 @@ function NewNFT(props) {
 
             // let Data = new FormData();
             // console.log("Data", Data);
-            axios.put(`/${versionB}/batch-mint/minted/${batchId}`, data).then(
+            axios.put(`/batch-mint/minted/${batchId}`, data).then(
               (response) => {
                 console.log("response", response);
                 let variant = "success";
