@@ -182,7 +182,7 @@ function SuperAdminDashboard(props) {
                     Dashboard
                   </Link>
                 </Dropdown.Item>
-                <Dropdown.Item>
+                {/* <Dropdown.Item>
                   <span
                     style={{ color: "white" }}
                     onClick={openTransak}
@@ -190,7 +190,7 @@ function SuperAdminDashboard(props) {
                   >
                     Buy Crypto
                   </span>
-                </Dropdown.Item>
+                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {

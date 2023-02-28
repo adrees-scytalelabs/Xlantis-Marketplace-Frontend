@@ -584,7 +584,7 @@ if(adminSignInData !== null) {
             ):
             null
            }
-            <li
+            {/* <li
               className="login-link"
               style={{ padding: "15px 20px" }}
               onClick={openTransak}
@@ -598,7 +598,7 @@ if(adminSignInData !== null) {
               >
                 Buy Crypto
               </span>
-            </li>
+            </li> */}
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -777,11 +777,11 @@ if(adminSignInData !== null) {
             }
           </li>
 
-          <li className="header-item-rht">
+          {/* <li className="header-item-rht">
             <span style={{ color: "#fff" }} onClick={openTransak}>
               <span style={{ cursor: "pointer" }}>Buy Crypto</span>
             </span>
-          </li>
+          </li> */}
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
