@@ -26,6 +26,8 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+// import ReactTooltip from "react-tooltip";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 import { isUndefined } from "lodash";
@@ -200,7 +202,7 @@ function NewNFT(props) {
 
   // let [producerId, setProducerId] = useState('');
   // let [producer, setProducer] = useState('');
-  let [tokenSupply, setTokenSupply] = useState("1");
+  let [tokenSupply, setTokenSupply] = useState(1);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   // let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] = useState(false);
   // let [isUploadingProducer, setIsUploadingProducer] = useState(false);
@@ -241,6 +243,8 @@ function NewNFT(props) {
 
   let [previewImage, setPreviewImage] = useState(r1);
   let [versionB, setVersionB] = useState("");
+  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
 
   // let [executiveProducerId, setExecutiveProducerId] = useState('');
   // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -660,7 +664,7 @@ function NewNFT(props) {
 
             // let Data = new FormData();
             // console.log("Data", Data);
-            axios.put(`/${versionB}/batch-mint/minted/${batchId}`, data).then(
+            axios.put(`/batch-mint/minted/${batchId}`, data).then(
               (response) => {
                 console.log("response", response);
                 let variant = "success";
@@ -757,6 +761,7 @@ function NewNFT(props) {
   // handle click event of the Add button
   const handleAddClick = (e) => {
     e.preventDefault();
+    console.log("token supply", tokenSupply);
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
@@ -772,7 +777,7 @@ function NewNFT(props) {
     //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
     // }
     else if (
-      tokenSupply === "" ||
+      tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
     ) {
@@ -1036,7 +1041,7 @@ function NewNFT(props) {
         setIpfsHash(result[0].hash);
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
+        enqueueSnackbar("Image Uploaded to IPFS", { variant });
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -1052,7 +1057,7 @@ function NewNFT(props) {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -1061,7 +1066,7 @@ function NewNFT(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -1356,7 +1361,7 @@ function NewNFT(props) {
         // setIpfsHash(result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS Successfully", {
+        enqueueSnackbar("Preview Image Uploaded to IPFS", {
           variant,
         });
         setIsUploadingPreview(false);
@@ -2029,6 +2034,7 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
+                          <Tooltip title={Text721}>
                           <FormControlLabel
                             style={{ color: "white" }}
                             disabled
@@ -2040,14 +2046,21 @@ function NewNFT(props) {
                             }}
                             checked={NFTType === "721"}
                             control={<Radio />}
+
                             label={
                               <span
                                 style={{ fontSize: "0.9rem", color: "white" }}
                               >
-                                ERC721
+                                Single
                               </span>
                             }
+                            
                           />
+                          </Tooltip>
+
+                          <Tooltip title={Text1155}>
+
+
                           <FormControlLabel
                             style={{ color: "white" }}
                             disabled
@@ -2062,10 +2075,11 @@ function NewNFT(props) {
                               <span
                                 style={{ fontSize: "0.9rem", color: "white" }}
                               >
-                                ERC1155
+                                Multiple
                               </span>
                             }
                           />
+                          </Tooltip>
                         </RadioGroup>
                       </FormControl>
                     ) : (
@@ -2082,35 +2096,47 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC721"
-                            onChange={() => {
-                              setNFTType("721");
-                              getCollections("721");
-                              // checked={saleType === 'auction'}
-                            }}
-                            checked={NFTType === "721"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                            }
-                          />
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC1155"
-                            onChange={() => {
-                              setNFTType("1155");
-                              getCollections("1155");
-                            }}
-                            checked={NFTType === "1155"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                ERC1155
-                              </span>
-                            }
-                          />
+                            <Tooltip title={Text721}>
+
+                            <FormControlLabel
+                              style={{ color: "black" }}
+                              value="ERC721"
+                              onChange={() => {
+                                setNFTType("721");
+                                getCollections("721");
+                                // checked={saleType === 'auction'}
+                              }}
+                              checked={NFTType === "721"}
+                              control={<Radio color="secondary" />}
+                              label={
+                                <span style={{ fontSize: "0.9rem" }}>Single <i class="fa fa-info-circle" aria-hidden="true"></i></span>
+                              }
+                            />
+                            </Tooltip>
+
+                           
+                           
+                            <Tooltip title={Text1155}>
+                            
+                            <FormControlLabel
+                              style={{ color: "black"  , marginLeft: '.8rem'}}
+                              value="ERC1155"
+                              onChange={() => {
+                                setNFTType("1155");
+                                getCollections("1155");
+                              }}
+                              checked={NFTType === "1155"}
+                              control={<Radio color="secondary" />}
+                              label={
+                                <span style={{ fontSize: "0.9rem" }}>
+                                  Multiple <i class="fa fa-info-circle" aria-hidden="true"></i>
+                                </span>
+                              }
+                            />
+                            </Tooltip>
+                          
+
+                            
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -2298,11 +2324,11 @@ function NewNFT(props) {
                               value={tokenSupply}
                               className="form-control"
                               onChange={(e) => {
-                                if (e.target.value > 0)
+                                // if (e.target.value > 0)
                                   setTokenSupply(e.target.value);
-                                else {
-                                  setTokenSupply(1);
-                                }
+                                // else {
+                                  // setTokenSupply(1);
+                                // }
                               }}
                             />
                           </div>
@@ -2318,21 +2344,27 @@ function NewNFT(props) {
                     description === "" ||
                     tokenSupply === "" ||
                     collection === "" ||
+                    tokenSupply <=  0 ||
                     isUploadingData === true ? (
-                      <button
-                        className="btn propsActionBtn"
-                        type="submit"
-                        disabled
-                      >
-                        <i className="fa fa-plus"></i> Add NFT to queue
-                      </button>
+
+                      <Tooltip title= { tokenSupply <= 0 ? ("Token Supply Cannot Be Less Than 1") : (null)}>
+                        <button
+                          className="btn propsActionBtn"
+                          type="submit"
+                          disabled
+                        >
+                          <i className="fa fa-plus"></i> Add NFT to Queue
+                        </button>
+                      </Tooltip>
+                   
+                      
                     ) : (
                       <button
                         className="btn propsActionBtn"
                         type="button"
                         onClick={(e) => handleAddClick(e)}
                       >
-                        <i className="fa fa-plus"></i> Add NFT to queue
+                        <i className="fa fa-plus"></i> Add NFT to Queue
                       </button>
                     )}
                   </div>
