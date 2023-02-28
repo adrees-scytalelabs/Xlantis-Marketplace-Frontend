@@ -590,7 +590,7 @@ function AddNFT(props) {
     console.log("drop", dropInfo);
     try {
       await myContractInstance.methods
-        .createDrop(dropCloneId, startTimeStamp, endTimeStamp, dropInfo)
+        .createDrop(dropCloneId, Math.round(startTimeStamp), endTimeStamp, dropInfo)
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
           let data = {
@@ -658,7 +658,7 @@ function AddNFT(props) {
     console.log("drop", dropInfo);
     try {
       await myContractInstance.methods
-        .createAuctionDrop(dropCloneId, startTimeStamp, endTimeStamp, dropInfo)
+        .createAuctionDrop(dropCloneId, Math.round(startTimeStamp), endTimeStamp, dropInfo)
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
           let data = {
