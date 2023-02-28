@@ -1039,7 +1039,7 @@ function NewNFT(props) {
         setIpfsHash(result[0].hash);
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
+        enqueueSnackbar("Image Uploaded to IPFS", { variant });
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -1055,7 +1055,7 @@ function NewNFT(props) {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -1064,7 +1064,7 @@ function NewNFT(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -1359,7 +1359,7 @@ function NewNFT(props) {
         // setIpfsHash(result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS Successfully", {
+        enqueueSnackbar("Preview Image Uploaded to IPFS", {
           variant,
         });
         setIsUploadingPreview(false);

@@ -169,7 +169,7 @@ function NewSeason(props) {
         setImage(response.data.url);
         setIsUploading(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -178,7 +178,7 @@ function NewSeason(props) {
         }
         setIsUploading(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };

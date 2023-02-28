@@ -293,7 +293,7 @@ function ProfileSetting(props) {
         setArtistImage(response.data.url);
         setIsUploadingImageArtist(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -302,7 +302,7 @@ function ProfileSetting(props) {
         }
         setIsUploadingImageArtist(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -316,7 +316,7 @@ function ProfileSetting(props) {
         setProducerImage(response.data.url);
         setIsUploadingProducer(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -325,7 +325,7 @@ function ProfileSetting(props) {
         }
         setIsUploadingProducer(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -339,7 +339,7 @@ function ProfileSetting(props) {
         setExecutiveProducerImage(response.data.url);
         setIsUploadingExecutiveProducer(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -348,7 +348,7 @@ function ProfileSetting(props) {
         }
         setIsUploadingExecutiveProducer(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -362,7 +362,7 @@ function ProfileSetting(props) {
         setFanImage(response.data.url);
         setIsUploadingFan(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -371,7 +371,7 @@ function ProfileSetting(props) {
         }
         setIsUploadingFan(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -385,7 +385,7 @@ function ProfileSetting(props) {
         setMusicArtistImage(response.data.url);
         setIsUploadingArtist(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -394,7 +394,7 @@ function ProfileSetting(props) {
         }
         setIsUploadingArtist(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
