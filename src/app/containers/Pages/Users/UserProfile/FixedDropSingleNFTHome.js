@@ -630,6 +630,7 @@ let giveAuctionErc20Approval = async () => {
     let bidValue = web3.utils.toWei(biddingValue, "ether");
 
     console.log("Contract Address: ", addressErc20Auction);
+    console.log("drop clone address",dropCloneAddress);
     var myContractInstance = await new web3.eth.Contract(
       abiERC20,
       addressErc20Auction
@@ -932,6 +933,8 @@ let giveAuctionErc20Approval = async () => {
         setTheDrop(res.data.dropData);
         setStartTime(new Date(res.data.dropData.startTime));
         setEndTime(new Date(res.data.dropData.endTime));
+        setDropCloneAddress(res.data.dropData.dropCloneAddress);
+
       },
       (err) => {
         console.log("could not get the drop ", err.response);
