@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 // import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 // import { Scrollbars } from 'react-custom-scrollbars';
@@ -116,6 +118,9 @@ function NewCollection(props) {
   let [doneLoader, setDoneLoader] = useState(false);
   let [nftType, setNftType] = useState("ERC721");
   let [version, setVersion] = useState("");
+  let [royaltyFee, setRoyaltyFee] = useState(0);
+  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -161,7 +166,10 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    setIsSaving(true);
+    if(royaltyFee > 0 ) {
+
+      setIsSaving(true);
+    
 
     
       handleShowBackdrop();
@@ -172,7 +180,9 @@ function NewCollection(props) {
       fileData.append("name", collectionName);
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
-      fileData.append("royaltyFee", 1);
+      fileData.append("royaltyFee", royaltyFee);
+
+      let royaltyBlockchain = royaltyFee * 10000;
 
     
 
@@ -190,6 +200,7 @@ function NewCollection(props) {
             setCollectionSymbol("");
             setCollectionDescription("");
             setFileURL(r1);
+            setRoyaltyFee(0);
             setIsSaving(false);
             // setCollectionName("");
             // setCollectionSymbol("");
@@ -237,7 +248,7 @@ function NewCollection(props) {
               var myContractInstance = await new web3.eth.Contract(abi, address);
               console.log("ERC721 Contract", myContractInstance);
               await myContractInstance.methods
-                .createNFT721(CloneId, 250000)
+                .createNFT721(CloneId, royaltyBlockchain)
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
@@ -295,12 +306,18 @@ function NewCollection(props) {
             })
           }
       }
+    }
+    else {
+      let variant = "error";
+      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+    }
       
     // }
   };
 
   const handleSubmitEventMetamask = async (event) => {
     event.preventDefault();
+    if (royaltyFee > 0 ) {
     setIsSaving(true);
 
     await loadWeb3();
@@ -320,7 +337,9 @@ function NewCollection(props) {
       fileData.append("name", collectionName);
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
+      fileData.append("royaltyFee", royaltyFee);
 
+      let royaltyBlockchain = royaltyFee * 10000;
       
 
       axios.post(`/collection/`, fileData).then(
@@ -339,7 +358,7 @@ function NewCollection(props) {
             var myContractInstance = await new web3.eth.Contract(abi, address);
             console.log("ERC1155 Contract", myContractInstance);
             await myContractInstance.methods
-              .createNFT1155(CloneId, true, 250000)
+              .createNFT1155(CloneId, true, royaltyBlockchain)
               .send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
@@ -395,7 +414,7 @@ function NewCollection(props) {
             var myContractInstance = await new web3.eth.Contract(abi, address);
             console.log("ERC721 Contract", myContractInstance);
             await myContractInstance.methods
-              .createNFT721(CloneId, 250000)
+              .createNFT721(CloneId, royaltyBlockchain)
               .send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
@@ -523,6 +542,11 @@ function NewCollection(props) {
       //             })
       //     })
     }
+  }
+  else {
+    let variant = "error";
+    enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+  }
   };
 
   let onChangeFile = (e) => {
@@ -807,6 +831,25 @@ function NewCollection(props) {
                     />
                   </div>
 
+                  <div>
+                    <label>Royalty Fee</label>
+                    <small style={{ marginLeft: "5px" }}></small>
+                  </div>
+
+                  <div className="form-group newNftWrapper">
+                    {/* <label>About the Art</label> */}
+                    <input
+                      type="number"
+                      required
+                      value={royaltyFee}
+                      placeholder="Enter Royalty Fee"
+                      className="form-control newNftInput"
+                      onChange={(e) => {
+                        setRoyaltyFee(e.target.value);
+                      }}
+                    />
+                  </div>
+
                   <FormControl component="fieldset">
                     <lable
                       component="legend"
@@ -820,6 +863,8 @@ function NewCollection(props) {
                       name="position"
                       defaultValue="top"
                     >
+                      <Tooltip title={Text721}>
+
                       <FormControlLabel
                         style={{ color: "white" }}
                         value="ERC721"
@@ -830,9 +875,12 @@ function NewCollection(props) {
                         checked={nftType === "ERC721"}
                         control={<Radio style={{ color: "#fff" }} />}
                         label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC721</span>
+                          <span style={{ fontSize: "0.9rem" }}>Single</span>
                         }
                       />
+                      </Tooltip>
+                      <Tooltip title={Text1155}>
+
                       <FormControlLabel
                         style={{ color: "white" }}
                         value="ERC1155"
@@ -842,9 +890,10 @@ function NewCollection(props) {
                         checked={nftType === "ERC1155"}
                         control={<Radio style={{ color: "#fff" }} />}
                         label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
+                          <span style={{ fontSize: "0.9rem" }}>Multiple</span>
                         }
                       />
+                      </Tooltip>
                     </RadioGroup>
                   </FormControl>
                   {/* <div>

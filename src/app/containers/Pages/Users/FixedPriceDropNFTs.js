@@ -28,6 +28,8 @@ const FixedPriceDropNFTs = () => {
   const location = useLocation();
   const saleType = location.state.saleType;
   const description = location.state.description;
+  const startTime = location.state.startTime;
+  const endTime = location.state.endTime;
 
   // Handlers
   const handleCloseBackdrop = () => {
@@ -169,6 +171,8 @@ const FixedPriceDropNFTs = () => {
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
+                          startTime = {startTime}
+                          endTime = {endTime}
                         />
                       </Grid>
                     ))}
