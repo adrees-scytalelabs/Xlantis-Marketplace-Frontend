@@ -30,6 +30,8 @@ import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import jwtDecode from "jwt-decode";
 import {
   createMuiTheme,
@@ -48,7 +50,16 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
 import BusinessIcon from "@material-ui/icons/Business";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import { io } from "socket.io-client";
+import zIndex from "@material-ui/core/styles/zIndex";
+import NotificationList from "../Cards/NotificationList Card";
+import Badge from "@material-ui/core/Badge";
 
 const customTheme = createMuiTheme({
   overrides: {
@@ -80,6 +91,31 @@ function HeaderHome(props) {
   const [tokenVerification, setTokenVerification] = useState(true);
   let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
   let location = useLocation();
+  const [userId, setUserId] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [anchorElPopper, setAnchorElPopper] = React.useState(null);
+  const openPopper = Boolean(anchorElPopper);
+  const [notificationsList, setNotificationsList ] = useState();
+  let [isSaving, setIsSaving] = useState(false);
+
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+  useEffect(() => {
+    setSocket(io("http://localhost:5000"));
+    console.log("socket was set");
+  }, []);
+  useEffect(() => {
+    if (userId !== "" && socket !== null) {
+      socket.emit("user-logged-in", userId);
+    } else if (userId === "" && socket !== null) {
+      socket.emit("user-logged-out", userId);
+    }
+  }, [socket, userId]);
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -188,6 +224,69 @@ function HeaderHome(props) {
     }
   };
 
+  function getNotifications(start, end) {
+    
+    axios.get(`/notifications/${start}/${end}`).then(
+      (response) => {
+        console.log("response", response);
+        setNotificationsList(response.data.notifications);
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
+            // window.location.reload(false);
+          }
+        }
+      }
+    );
+  }
+
+  function readNotification(e, notificationId) {
+    e.preventDefault();
+    setIsSaving(true);
+    handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      notificationId
+    };
+
+    console.log("data", data);
+
+    axios.patch("/notifications/hide", data).then(
+      (response) => {
+        console.log("notification hide response: ", response);
+        handleCloseBackdrop();
+        setIsSaving(false);
+        // getNotifications(0, 10);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+
+        // setIsUploadingData(false);
+
+        handleCloseBackdrop();
+
+        // let variant = "error";
+        // enqueueSnackbar("Unable to Verify Admin.", { variant });
+      }
+    );
+    
+  }
   async function handleLogin() {
     await loadWeb3();
     const web3 = window.web3;
@@ -264,6 +363,7 @@ function HeaderHome(props) {
             Cookies.set("Version", "v2-wallet-login", {});
             sessionStorage.setItem("Authorization", response.data.raindropToken, {});
             sessionStorage.setItem("Address", accounts[0]);
+            setUserId(accounts[0]);
             window.location.reload(); 
           // }
         }},
@@ -291,6 +391,12 @@ function HeaderHome(props) {
 
     setMOdalOpen(false);
     // contract = new web3.eth.Contract(ABI, ADDRESS);
+  }
+
+  function handleNotificationsIcon(event) {
+    console.log("I was called");
+    setAnchorElPopper(anchorElPopper ? null : event.currentTarget);
+    console.log("event", event);
   }
   
   const selectedStyling = {
@@ -342,6 +448,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
+    setUserId("");
      history.push({ pathname: '/' });
     window.location.reload(false);
 
@@ -413,6 +520,7 @@ if(adminSignInData !== null) {
 
   useEffect(() => {
     getProfile();
+    getNotifications(0,10);
     console.log("In Hook");
   },[]);
 
@@ -793,6 +901,61 @@ if(adminSignInData !== null) {
               style={{ cursor: "pointer" }}
             />
           </li>
+          <li>
+            {sessionStorage.getItem("Address") ? (
+              <div>
+                <Badge color="secondary" badgeContent={1}>
+                  <NotificationsIcon
+                    type="button"
+                    onClick={(event) => {
+                      setAnchorElPopper(
+                        anchorElPopper ? null : event.currentTarget
+                      );
+                    }}
+                  />
+                </Badge>
+                <Popper
+                  id={openPopper ? "simple-popper" : undefined}
+                  open={openPopper}
+                  anchorEl={anchorElPopper}
+                  placement="bottom-end"
+                  style={{
+                    zIndex: 2500,
+                    paddingTop: 15,
+                  }}
+                >
+                  <div>
+                    <Paper elevation={3} variant="outlined" square>
+                      <NotificationList itemCount={10}  notifications = {notificationsList} />
+                      {/* <ul
+                        style={{
+                          listStyleType: "none",
+                          padding: 10,
+                          margin: 0,
+                        }}
+                      >
+                        <li>
+                          <div>Congratulations! John accepted your bid</div>
+                        </li>
+                        {/* <Divider />
+                        <li>
+                          <div style={{ padding: 2 }}>
+                            Congratulations! Amy accepted your bid
+                          </div>
+                        </li>
+                        <Divider />
+                        <li>
+                          <div style={{ padding: 2 }}>
+                            Congratulations! Amy accepted your bid
+                          </div>
+                        </li>
+                      </ul> */}
+                    </Paper>
+                  </div>
+                </Popper>
+              </div>
+            ) : null}
+          </li>
         </ul>
         <NetworkErrorModal
           show={show}
@@ -806,6 +969,7 @@ if(adminSignInData !== null) {
         metamaskLogin={handleLogin}
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
+   
     </header>
   );
 }
