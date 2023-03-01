@@ -1,7 +1,8 @@
 // REACT
 import React, { useEffect, useState } from "react";
 // REACT ROUTER
-import { useParams, useHistory, useLocation } from "react-router-dom";
+import { useParams, useHistory, useLocation,Redirect} from "react-router-dom";
+
 import axios from "axios";
 import Cookies from "js-cookie";
 import transakSDK from "@transak/transak-sdk";
@@ -318,7 +319,7 @@ const FixedDropSingleNFTHome = () => {
     const dropId = nftData.dropId;
     const nftId = nftData._id;
     console.log("NFTDETAIL", nftData);
-    axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
+    axios.get(`/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
       (response) => {
         console.log("response", response);
         console.log("responeee", response.data.data.data[0]);
@@ -675,6 +676,37 @@ let giveAuctionErc20Approval = async () => {
     console.log("conversion to hex: ", hex);
     return hex;
   };
+  let handlePurchase =async() =>{
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
+    console.log("Authorization",sessionStorage.getItem("Authorization"))
+    console.log("Nft detail: ", nftData);
+    let data = {
+      dropId: nftData.dropId,
+      nftId: nftData._id,
+    };
+    console.log("Data",data)
+    console.log("Purchase Function Called");
+    console.log("NFT ID")
+    axios.post(`marketplace/buy`, data).then(
+      (response) => {
+        console.log(
+          "Transaction Hash sending on backend response: ",
+          response
+        );
+        console.log("Stripe Url",response.data.stripeSession)
+        // history.push(response.data.stripeSession)
+        window.location.replace(response.data.stripeSession)
+      },
+      (error) => {
+        console.log(
+          "Transaction hash on backend error: ",
+          error.response
+        );
+      }
+    );
+  }
 
   let handleBuy = async () => {
     console.log("Nft detail: ", nftData);
@@ -754,7 +786,7 @@ let giveAuctionErc20Approval = async () => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
+                  axios.post(`/marketplace/buy`, data).then(
                     (response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
@@ -863,7 +895,7 @@ let giveAuctionErc20Approval = async () => {
       nftId: nftData._id,
     };
     handleCloseModal();
-    axios.post(`/${versionB}/marketplace/buy`, data).then(
+    axios.post(`/marketplace/buy`, data).then(
       (response) => {
 
         console.log("nft buy response", response.data);
@@ -953,8 +985,8 @@ let giveAuctionErc20Approval = async () => {
     // getDropCloneAddress();
     // getNFTDetails();
     getTheDrop();
-    // let priceCal = Web3.utils.fromWei(location.state.price, "ether");
-    // setPrice(priceCal);
+    let priceCal = location.state.price;
+    setPrice(priceCal);
 
     return () => {
       controller.abort();
@@ -1075,7 +1107,7 @@ let giveAuctionErc20Approval = async () => {
                             fontSize: "1rem",
                           }}
                         >
-                          {Web3.utils.fromWei(nftData.currentMarketplaceId.price, "ether")} WMATIC
+                          {price} USD
                         </Col>
                       </Row>
                       <Row>
@@ -1180,7 +1212,7 @@ let giveAuctionErc20Approval = async () => {
                             className="bidBtn w-100"
                             type="button"
                             // onClick={(e) => handleBuy(e)}
-                            onClick={(e) => { versionB === "v1-sso" ? (handleOpenModal(e)) : (handleBuy(e)) }}
+                            onClick={(e) => { versionB === "v1-sso" ? (handlePurchase(e)) : (handleBuy(e)) }}
                           >
                             Buy
                           </button>
