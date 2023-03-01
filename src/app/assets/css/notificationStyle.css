@@ -1,0 +1,23 @@
+.List {
+    border: 1px solid #d9dddd;
+}
+
+.ListItemUnread,
+.ListItemUnread:hover {
+    background-color: #bed2db;
+}
+
+.ListItemRead {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+.ListItemRead:hover {
+    background-color: #bed2db;
+}
+
+.ListItemUnread {
+    background-color: #cde2eb;
+}

@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 // import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import Tooltip from "@material-ui/core/Tooltip";
+
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 // import { Scrollbars } from 'react-custom-scrollbars';
@@ -117,6 +119,8 @@ function NewCollection(props) {
   let [nftType, setNftType] = useState("ERC721");
   let [version, setVersion] = useState("");
   let [royaltyFee, setRoyaltyFee] = useState(0);
+  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -859,6 +863,8 @@ function NewCollection(props) {
                       name="position"
                       defaultValue="top"
                     >
+                      <Tooltip title={Text721}>
+
                       <FormControlLabel
                         style={{ color: "white" }}
                         value="ERC721"
@@ -869,9 +875,12 @@ function NewCollection(props) {
                         checked={nftType === "ERC721"}
                         control={<Radio style={{ color: "#fff" }} />}
                         label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC721</span>
+                          <span style={{ fontSize: "0.9rem" }}>Single</span>
                         }
                       />
+                      </Tooltip>
+                      <Tooltip title={Text1155}>
+
                       <FormControlLabel
                         style={{ color: "white" }}
                         value="ERC1155"
@@ -881,9 +890,10 @@ function NewCollection(props) {
                         checked={nftType === "ERC1155"}
                         control={<Radio style={{ color: "#fff" }} />}
                         label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
+                          <span style={{ fontSize: "0.9rem" }}>Multiple</span>
                         }
                       />
+                      </Tooltip>
                     </RadioGroup>
                   </FormControl>
                   {/* <div>
