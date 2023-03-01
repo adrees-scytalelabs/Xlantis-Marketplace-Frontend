@@ -834,7 +834,7 @@ function AddNFT(props) {
         handleShowBackdrop();
         setIsUploadingData(true);
 
-        let weiPrice = Web3.utils.toWei(price);
+        let Price = price;
         //sending data to backend
         let data;
         let newObject;
@@ -845,7 +845,7 @@ function AddNFT(props) {
             // "collectionId": collectionId,
             nftId: nftId,
             dropId: dropId,
-            price: weiPrice,
+            price: Price,
             supply: parseInt(supply),
           };
 
@@ -853,7 +853,7 @@ function AddNFT(props) {
             nftContractAddress: nftContractAddresses,
             tokenIds: [tokenId],
             amounts: [parseInt(supply)],
-            prices: [weiPrice],
+            prices: [Price],
           };
         }
 
@@ -941,7 +941,7 @@ function AddNFT(props) {
         handleShowBackdrop();
         setIsUploadingData(true);
 
-        let weiPrice = Web3.utils.toWei(price);
+        let Price = price;
         //sending data to backend
         let data;
         let newObject;
@@ -953,7 +953,7 @@ function AddNFT(props) {
             // "collectionId": collectionId,
             nftId: nftId,
             dropId: dropId,
-            price: weiPrice,
+            price: Price,
             // "supply": parseInt(supply)
           };
 
@@ -961,7 +961,7 @@ function AddNFT(props) {
             nftContractAddress: nftContractAddresses,
             tokenIds: [tokenId],
             // "amounts" : [parseInt(supply)],
-            prices: [weiPrice],
+            prices: [Price],
           };
         }
         console.log("data", data);
@@ -1184,9 +1184,9 @@ function AddNFT(props) {
                 ) : null}
 
                 {location.state.saleType === "auction" ? (
-                  <label>Floor Price (WMATIC)</label>
+                  <label>Floor Price (USD)</label>
                 ) : (
-                  <label>Price (WMATIC)</label>
+                  <label>Price (USD)</label>
                 )}
 
                 <div className="form-group">
@@ -1201,7 +1201,7 @@ function AddNFT(props) {
                       }}
                       type="number"
                       required
-                      value={price}
+                      placeholder={0}
                       className="form-control"
                       onChange={(e) => {
                         if (e.target.value > 0) {
