@@ -808,7 +808,7 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters" >
                       {account &&
-                        nftData.isOnSale === true ? (
+                        nftData.isOnSale === false ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"

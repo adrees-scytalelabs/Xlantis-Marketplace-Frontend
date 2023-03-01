@@ -6,50 +6,60 @@ import ListItemText from "@material-ui/core/ListItemText";
 import { grey } from "@material-ui/core/colors";
 
 import "../../assets/css/notificationStyle.css";
-function handleNotificationClick(event) {
-  //move to a different link
-  console.log("clicked");
-}
-function handleIconClick(event) {
-  //delete notifications
-  event.stopPropagation();
-  console.log("Icon clicked");
-}
 
-function Row({ index, style }) {
-  let arr = [
-    "Shabnam",
-    "Altaf",
-    "Nawaz",
-    "Billo",
-    "Parveen",
-    "Papa ki Pari",
-    "Bubbly",
-    "PrinceMughal",
-    "Princess32",
-    "HansMukh",
-  ];
-  let read = [true, true, false, true, false, true, true, false, false, true];
-  return (
-    <ListItem
-      divider
-      className={read[index] ? "ListItemRead" : "ListItemUnread"}
-      style={style}
-      key={index}
-      onClick={handleNotificationClick}
-    >
-      <ListItemText
-        secondary={`Congratulations! ${arr[index]} accepted your bid`}
-      />
-      <CloseIcon
-        style={{ fontSize: 15, color: grey[600] }}
-        onClick={handleIconClick}
-      />
-    </ListItem>
-  );
-}
+
 
 export default function NotificationList(props) {
+  function handleNotificationClick(event) {
+    //move to a different link
+    console.log("clicked");
+  }
+  function handleIconClick(id) {
+    //delete notifications
+    // event.stopPropagation();
+    console.log("id", id);
+    props.close(id);
+    console.log("Icon clicked");
+  }
+  function Row({ index, style }) {
+    let arr = props.notifications;
+    console.log("array", arr);
+    console.log("message", arr[index]);
+    // let arr = [
+    //   "Shabnam",
+    //   "Altaf",
+    //   "Nawaz",
+    //   "Billo",
+    //   "Parveen",
+    //   "Papa ki Pari",
+    //   "Bubbly",
+    //   "PrinceMughal",
+    //   "Princess32",
+    //   "HansMukh",
+    // ];
+    let read = [true, true, false, true, false, true, true, false, false, true];
+    return (
+      <ListItem
+        divider
+        // className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
+  
+        className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
+        style={style}
+        key={index}
+        onClick={handleNotificationClick}
+      >
+        <ListItemText
+          // secondary={`Congratulations! ${arr[index]} accepted your bid`}
+          secondary={arr[index].message}
+  
+        />
+        <CloseIcon
+          style={{ fontSize: 15, color: grey[600] }}
+          onClick={handleIconClick(arr[index]._id)}
+        />
+      </ListItem>
+    );
+  }
   return (
     <List
       className="List"

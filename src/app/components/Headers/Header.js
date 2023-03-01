@@ -97,6 +97,7 @@ function HeaderHome(props) {
   const openPopper = Boolean(anchorElPopper);
   const [notificationsList, setNotificationsList ] = useState();
   let [isSaving, setIsSaving] = useState(false);
+  let [notificationCount, setNotificationCount] = useState(0);
 
 
   const handleCloseBackdrop = () => {
@@ -106,7 +107,7 @@ function HeaderHome(props) {
     setOpen(true);
   };
   useEffect(() => {
-    setSocket(io("http://localhost:5000"));
+    setSocket(io("https://xlantis-marketplace.herokuapp.com/"));
     console.log("socket was set");
   }, []);
   useEffect(() => {
@@ -225,11 +226,38 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
+    // let data = {
+    //   message : "Bid on Single NFT accepted by the owner.",
+    //   userId
+    // }
+    // axios.post('/notifications/generate', data).then(
+    //   (response) => {
+    //     console.log("notifications generated");
+    //   },
+    //   (error) => {
+    //     if (process.env.NODE_ENV === "development") {
+    //       console.log(error);
+    //       console.log(error.response);
+    //     }
+    //     if (error.response.data !== undefined) {
+    //       if (
+    //         error.response.data === "Unauthorized access (invalid token) !!"
+    //       ) {
+    //         sessionStorage.removeItem("Authorization");
+    //         sessionStorage.removeItem("Address");
+    //         Cookies.remove("Version");
+
+    //         // window.location.reload(false);
+    //       }
+    //     }
+    //   }
+    // );
     
     axios.get(`/notifications/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+        console.log("notification response", response);
         setNotificationsList(response.data.notifications);
+        setNotificationCount(response.data.notifications.length);
 
       },
       (error) => {
@@ -252,10 +280,10 @@ function HeaderHome(props) {
     );
   }
 
-  function readNotification(e, notificationId) {
-    e.preventDefault();
-    setIsSaving(true);
-    handleShowBackdrop();
+  function readNotification(notificationId) {
+    // e.preventDefault();
+    // setIsSaving(true);
+    // handleShowBackdrop();
     // setIsUploadingData(true);
 
     //sending data to backend
@@ -268,8 +296,8 @@ function HeaderHome(props) {
     axios.patch("/notifications/hide", data).then(
       (response) => {
         console.log("notification hide response: ", response);
-        handleCloseBackdrop();
-        setIsSaving(false);
+        // handleCloseBackdrop();
+        // setIsSaving(false);
         // getNotifications(0, 10);
         // setIsUploadingData(false);
       },
@@ -279,12 +307,14 @@ function HeaderHome(props) {
 
         // setIsUploadingData(false);
 
-        handleCloseBackdrop();
+        // handleCloseBackdrop();
 
         // let variant = "error";
         // enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
     );
+
+    // getNotifications(0,10);
     
   }
   async function handleLogin() {
@@ -902,7 +932,7 @@ if(adminSignInData !== null) {
             />
           </li>
           <li>
-            {sessionStorage.getItem("Address") ? (
+            {sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
                 <Badge color="secondary" badgeContent={1}>
                   <NotificationsIcon
@@ -926,7 +956,7 @@ if(adminSignInData !== null) {
                 >
                   <div>
                     <Paper elevation={3} variant="outlined" square>
-                      <NotificationList itemCount={10}  notifications = {notificationsList} />
+                      <NotificationList itemCount={notificationCount}  notifications = {notificationsList} close = {readNotification} />
                       {/* <ul
                         style={{
                           listStyleType: "none",
