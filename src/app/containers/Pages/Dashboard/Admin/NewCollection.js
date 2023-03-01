@@ -116,6 +116,7 @@ function NewCollection(props) {
   let [doneLoader, setDoneLoader] = useState(false);
   let [nftType, setNftType] = useState("ERC721");
   let [version, setVersion] = useState("");
+  let [royaltyFee, setRoyaltyFee] = useState(0);
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -161,7 +162,10 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    setIsSaving(true);
+    if(royaltyFee > 0 ) {
+
+      setIsSaving(true);
+    
 
     
       handleShowBackdrop();
@@ -172,7 +176,9 @@ function NewCollection(props) {
       fileData.append("name", collectionName);
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
-      fileData.append("royaltyFee", 1);
+      fileData.append("royaltyFee", royaltyFee);
+
+      let royaltyBlockchain = royaltyFee * 10000;
 
     
 
@@ -190,6 +196,7 @@ function NewCollection(props) {
             setCollectionSymbol("");
             setCollectionDescription("");
             setFileURL(r1);
+            setRoyaltyFee(0);
             setIsSaving(false);
             // setCollectionName("");
             // setCollectionSymbol("");
@@ -237,7 +244,7 @@ function NewCollection(props) {
               var myContractInstance = await new web3.eth.Contract(abi, address);
               console.log("ERC721 Contract", myContractInstance);
               await myContractInstance.methods
-                .createNFT721(CloneId, 250000)
+                .createNFT721(CloneId, royaltyBlockchain)
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
@@ -295,12 +302,18 @@ function NewCollection(props) {
             })
           }
       }
+    }
+    else {
+      let variant = "error";
+      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+    }
       
     // }
   };
 
   const handleSubmitEventMetamask = async (event) => {
     event.preventDefault();
+    if (royaltyFee > 0 ) {
     setIsSaving(true);
 
     await loadWeb3();
@@ -320,7 +333,9 @@ function NewCollection(props) {
       fileData.append("name", collectionName);
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
+      fileData.append("royaltyFee", royaltyFee);
 
+      let royaltyBlockchain = royaltyFee * 10000;
       
 
       axios.post(`/collection/`, fileData).then(
@@ -339,7 +354,7 @@ function NewCollection(props) {
             var myContractInstance = await new web3.eth.Contract(abi, address);
             console.log("ERC1155 Contract", myContractInstance);
             await myContractInstance.methods
-              .createNFT1155(CloneId, true, 250000)
+              .createNFT1155(CloneId, true, royaltyBlockchain)
               .send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
@@ -395,7 +410,7 @@ function NewCollection(props) {
             var myContractInstance = await new web3.eth.Contract(abi, address);
             console.log("ERC721 Contract", myContractInstance);
             await myContractInstance.methods
-              .createNFT721(CloneId, 250000)
+              .createNFT721(CloneId, royaltyBlockchain)
               .send({ from: accounts[0] }, (err, response) => {
                 console.log("Get transaction ", err, response);
                 console.log(typeof response);
@@ -523,6 +538,11 @@ function NewCollection(props) {
       //             })
       //     })
     }
+  }
+  else {
+    let variant = "error";
+    enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+  }
   };
 
   let onChangeFile = (e) => {
@@ -803,6 +823,25 @@ function NewCollection(props) {
                       className="form-control newNftInput"
                       onChange={(e) => {
                         setCollectionDescription(e.target.value);
+                      }}
+                    />
+                  </div>
+
+                  <div>
+                    <label>Royalty Fee</label>
+                    <small style={{ marginLeft: "5px" }}></small>
+                  </div>
+
+                  <div className="form-group newNftWrapper">
+                    {/* <label>About the Art</label> */}
+                    <input
+                      type="number"
+                      required
+                      value={royaltyFee}
+                      placeholder="Enter Royalty Fee"
+                      className="form-control newNftInput"
+                      onChange={(e) => {
+                        setRoyaltyFee(e.target.value);
                       }}
                     />
                   </div>
