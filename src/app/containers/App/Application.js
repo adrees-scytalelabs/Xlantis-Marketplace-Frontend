@@ -35,6 +35,8 @@ import { AuthContextProvider } from "../../components/context/AuthContext";
 import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
 import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
 import Testt from "../Pages/Users/Testt";
+import Success from "../Pages/Users/UserProfile/Success";
+import Failed from "../Pages/Users/UserProfile/Failed";
 
 function App() {
   const [reload, setReload] = useState();
@@ -178,7 +180,14 @@ function App() {
       return <Route component={AuctionDrops} />;
     } else if (path === "/fixedDropNFTHome") {
       return <Route component={FixedDropSingleNFTHome} />;
-    } else if (path === "/test") {
+    } 
+    else if (path === "/success") {
+      return <Route component={Success} />;
+    } 
+    else if (path === "/failed") {
+      return <Route component={Failed} />;
+    } 
+    else if (path === "/test") {
       return <Route component={Testt} />;
     } else if (path === "/auctionDrops/DropCubes/:dropId") {
       return (
@@ -254,6 +263,8 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/checkout" />
             <LoginRegisterRedirectCheck exact path="/admin-signup-details" />
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
+            <LoginRegisterRedirectCheck exact path="/success" />
+            <LoginRegisterRedirectCheck exact path="/failed" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
             <LoginRegisterRedirectCheck
