@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 // REACT ROUTER
-import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
-
+import {
+  useParams,
+  useHistory,
+  useLocation,
+  Redirect,
+  Link,
+} from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import transakSDK from "@transak/transak-sdk";
@@ -37,6 +42,8 @@ import {
   Typography,
   TextField,
 } from "@material-ui/core";
+import CheckCircleIcon from "@material-ui/icons/CheckCircle";
+import InfoIcon from "@material-ui/icons/Info";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Grid from "@material-ui/core/Grid";
@@ -48,108 +55,63 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import DateTimePicker from "react-datetime-picker";
 import ListIcon from "@material-ui/icons/List";
 import Footer from "../../../../components/Footers/Footer";
-import Modal from '@material-ui/core/Modal';
-import Fade from '@material-ui/core/Fade';
+import Modal from "@material-ui/core/Modal";
+import Fade from "@material-ui/core/Fade";
 
-function rand() {
-    return Math.round(Math.random() * 20) - 10;
-  }
-  
-  function getModalStyle() {
-    const top = 50 + rand();
-    const left = 50 + rand();
-  
-    return {
-      top: `${top}%`,
-      left: `${left}%`,
-      transform: `translate(-${top}%, -${left}%)`,
-    };
-  }
-  
 const useStyles = makeStyles((theme) => ({
-  modal: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
+  mainInfoHeading: {
+    fontFamily: "orbitron",
+    fontWeight: "bold",
+    color: "#009850",
+    textAlign: "center",
   },
-  paper: {
-    backgroundColor: theme.palette.background.paper,
-    border: "2px solid #000",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+  infoIcon: {
+    fontSize: "3rem",
+    color: "#F64D04",
+  },
+  infoMessage: {
+    marginTop: "16px",
+    padding: "8px",
+    textAlign: "center",
+  },
+  infoOK: {
+    color: "#009850",
+    marginLeft: "5px",
   },
 }));
-const customTheme = createMuiTheme({
-  overrides: {
-    MuiAccordionSummary: {
-      root: {
-        borderBottom: "1px solid white",
-        backgroundColor: "black",
-      },
-      expandIcon: {
-        color: "white",
-      },
-    },
-    MuiAccordionDetails: {
-      root: {
-        padding: "8px 0px 16px",
-        backgroundColor: "black",
-      },
-    },
-    MuiOutlinedInput: {
-      input: {
-        border: "1px solid white",
-        color: "white",
-        borderRadius: "5px",
-        padding: "16px 14px",
-      },
-    },
-    MuiCardContent: {
-      root: {
-        padding: "16px 0px",
-      },
-    },
-  },
-});
 
 function Success() {
   const classes = useStyles();
   let history = useHistory();
-  const [modalStyle] = React.useState(getModalStyle);
-  const [open, setOpen] = React.useState(true);
-  const handleClose = () => {
-    setOpen(false);
-    history.push("/")
-  };
   return (
     <>
       <div style={{ minHeight: "95px" }}>
         <HeaderHome selectedNav={"Market"} role={null} />
       </div>
-      <ThemeProvider theme={customTheme}></ThemeProvider>
-      <div className="">
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={open}
-          onClose={handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={open}>
-            <div className={classes.paper}>
-              <h2 id="transition-modal-title" style={{color:'black'}}>NFT Purchase</h2>
-              <p id="transition-modal-description" style={{color:"black"}}>
-                You buy NFT Successfully
-              </p>
-              <button onClick={handleClose}>Close</button>
+      <div className="main-wrapper">
+        <div className="container px-md-0">
+          <div
+            className="row no-gutters justify-content-center align-items-center"
+            style={{ minHeight: "100vh" }}
+          >
+            <div className="col-12 col-md-6">
+              <div className="redirectInfoBoxWrapper">
+                {/* <Typography variant="h3" className={classes.mainInfoHeading}>
+                  <InfoIcon className={classes.infoIcon} /> Information
+                </Typography> */}
+                <Typography variant="h3" className={classes.mainInfoHeading}>
+                  Payment Successful!{" "}
+                  <CheckCircleIcon className={classes.infoOK} />
+                </Typography>
+                <div className="row no-gutters justify-content-end align-items-center w-100 mt-4 detailRedirectWrapper border-0">
+                  <Link to="/" className="w-100">
+                    <button>OK</button>
+                  </Link>
+                </div>
+              </div>
             </div>
-          </Fade>
-        </Modal>
+          </div>
+        </div>
       </div>
     </>
   );

@@ -181,10 +181,10 @@ function App() {
     } else if (path === "/fixedDropNFTHome") {
       return <Route component={FixedDropSingleNFTHome} />;
     } 
-    else if (path === "/success") {
+    else if (path === "/usd_payment/success") {
       return <Route component={Success} />;
     } 
-    else if (path === "/failed") {
+    else if (path === "/usd_payment/failed") {
       return <Route component={Failed} />;
     } 
     else if (path === "/test") {
@@ -263,8 +263,8 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/checkout" />
             <LoginRegisterRedirectCheck exact path="/admin-signup-details" />
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
-            <LoginRegisterRedirectCheck exact path="/success" />
-            <LoginRegisterRedirectCheck exact path="/failed" />
+            <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
+            <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
             <LoginRegisterRedirectCheck
