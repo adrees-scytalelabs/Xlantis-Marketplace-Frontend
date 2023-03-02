@@ -155,7 +155,7 @@ function AdminDashboardDefaultScreen(props) {
             onMouseEnter={() => setHoverCollections(true)}
             onMouseLeave={() => setHoverCollections(false)}
           >
-            <Link to={`${props.match.url}/newCollection`}>
+            <Link to={`${props.match.url}/myCollection`}>
               <div className="row no-gutters justify-content-between">
                 <div className="col align-self-end">
                   <section>
