@@ -40,6 +40,8 @@ import { ContactSupportOutlined, EventRounded, Web } from "@material-ui/icons";
 import crypto from "crypto";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -1170,12 +1172,12 @@ function AddNFT(props) {
                           value={supply}
                           className="form-control"
                           onChange={(e) => {
-                            if (e.target.value > 0) {
-                              setSupply(e.target.value);
-                            } else {
-                              setSupply(0);
-                            }
-                            // setSupply(e.target.value);
+                            // if (e.target.value > 0) {
+                            //   setSupply(e.target.value);
+                            // } else {
+                            //   setSupply(0);
+                            // }
+                            setSupply(e.target.value);
                           }}
                         />
                       </div>
@@ -1218,10 +1220,14 @@ function AddNFT(props) {
               {collection === "" ||
               nftName === 0 ||
               price === "" ||
+              supply <=  0 ||
               supply === "" ? (
+                <Tooltip title= { supply <= 0 ? ("Supply Cannot Be Less Than 1") : (null)}>
+
                 <button className="bttn" type="submit" disabled>
                   <i className="fa fa-plus"></i> Add NFT To Drop
                 </button>
+                </Tooltip>
               ) : (
                 <button
                   className="bttn"
