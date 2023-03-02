@@ -179,174 +179,184 @@ function NewNFT(props) {
     setOpen(true);
   };
 
-  let defaultTemplates =
-  {
-    "_id": "63a17fdbdf852a1017aa2ccc",
-    "name": "Tables",
+  let [defaultTemplates, setDefaultTemplates] = useState({
+    "name": "",
     "properties": [
-      {
-        "value": "",
-        "key": "Material",
-        "type": "String",
-        "_id": "63a17fdbdf852a1017aa2cab"
-      },
-      {
-        "value": "",
-        "key": "Wooden",
-        "type": "Boolean",
-        "_id": "63a17fdbdf852a1017aa2cbc"
-      }
     ],
-    "__v": 0
-  };
+  });
+  let [templateData, setTemplateData] = useState([]);
+  let [standardTemplates, setStandardTemplates] = useState([]);
 
-  let standardTemplates = [{
-    "_id": "63a17fdbdf852a1017aa298c",
-    "name": "Pens",
-    "properties": [
-      {
-        "value": "",
-        "key": "Type",
-        "type": "String",
-        "_id": "63a17fdbdf852a1017aa2bb9"
-      },
-      {
-        "value": "",
-        "key": "Color",
-        "type": "String",
-        "_id": "63a17fdbdf852a1017aa2aaa"
-      },
-      {
-        "value": "",
-        "key": "Eraseable",
-        "type": "Boolean",
-        "_id": "63a17fdbdf852a1bb7aa2c9b"
-      }
-    ],
-    "__v": 0
-  }, {
-    "_id": "63a17fdbdfacac3017aa298c",
-    "name": "Paints",
-    "properties": [
-      {
-        "value": "",
-        "key": "Container Capacity (L)",
-        "type": "Number",
-        "_id": "63a17fdbbebe2a2017aa2bb9"
-      },
-      {
-        "value": "",
-        "key": "Color",
-        "type": "String",
-        "_id": "63a17f0f4a852a1017aa2aaa"
-      },
-      {
-        "value": "",
-        "key": "Token",
-        "type": "Boolean",
-        "_id": "63a17ffffff52a1bb7aa2c9b"
-      }
-    ],
-    "__v": 0
-  }, {
-    "_id": "00a00fdbdfacac3017aa298c",
-    "name": "Bread",
-    "properties": [
-      {
-        "value": "",
-        "key": "Baker",
-        "type": "String",
-        "_id": "600a00dbbebe2a2017aa2bb9"
-      },
-      {
-        "value": "",
-        "key": "Type",
-        "type": "String",
-        "_id": "63a00a004a852a1017aa2aaa"
-      },
-      {
-        "value": "",
-        "key": "Large",
-        "type": "Boolean",
-        "_id": "00a00ffffff52a1bb7aa2c9b"
-      }
-    ],
-    "__v": 0
-  }];
 
-  let templateData = [{
-    "_id": "63a17fdbdf854d1017aa2c98",
-    "name": "Cars",
-    "properties": [
-      {
-        "value": "",
-        "key": "Suspension",
-        "type": "String",
-        "_id": "63a17fdbdfc32a1017aa2c99"
-      },
-      {
-        "value": "",
-        "key": "Engine",
-        "type": "String",
-        "_id": "63a17fdbb4da2a1017aa2c9a"
-      },
-      {
-        "value": "",
-        "key": "Color",
-        "type": "String",
-        "_id": "63a17fdbdf856c1017aa2c9b"
-      }
-    ],
-    "__v": 0
-  },
-  {
-    "_id": "63a1805e5cb0ae01bffe1378",
-    "name": "Bikes",
-    "properties": [
-      {
-        "value": "",
-        "key": "Hybrid",
-        "type": "Boolean",
-        "_id": "63ee805e5cb0ae01ba9e1379"
-      },
-      {
-        "value": "",
-        "key": "EngineType",
-        "type": "String",
-        "_id": "63a1805e5cb0aeeeba9e137a"
-      },
-      {
-        "value": "",
-        "key": "Gears",
-        "type": "Number",
-        "_id": "63a18bae5cb0ae01ba9e137b"
-      }
-    ]
-  },
-  {
-    "_id": "63a1805e5cb0ae01baae4471",
-    "name": "Laptop",
-    "properties": [
-      {
-        "value": "",
-        "key": "SSD",
-        "type": "Boolean",
-        "_id": "63a1805e5cccce01ba9e137e"
-      },
-      {
-        "value": "",
-        "key": "Graphic Card",
-        "type": "Boolean",
-        "_id": "63a4ac5e5cb0ae01ba9e13ba"
-      },
-      {
-        "value": "",
-        "key": "Mechanical Keyboard",
-        "type": "Boolean",
-        "_id": "63a1805e5cb0ae01ba96c6cb"
-      }
-    ]
-  }];
+
+  // let defaultTemplates =
+  // {
+  //   "_id": "63a17fdbdf852a1017aa2ccc",
+  //   "name": "Tables",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Material",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2cab"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Wooden",
+  //       "type": "Boolean",
+  //       "_id": "63a17fdbdf852a1017aa2cbc"
+  //     }
+  //   ],
+  //   "__v": 0
+  // };
+
+  // let standardTemplates = [{
+  //   "_id": "63a17fdbdf852a1017aa298c",
+  //   "name": "Pens",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Type",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Eraseable",
+  //       "type": "Boolean",
+  //       "_id": "63a17fdbdf852a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }, {
+  //   "_id": "63a17fdbdfacac3017aa298c",
+  //   "name": "Paints",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Container Capacity (L)",
+  //       "type": "Number",
+  //       "_id": "63a17fdbbebe2a2017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17f0f4a852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Token",
+  //       "type": "Boolean",
+  //       "_id": "63a17ffffff52a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }, {
+  //   "_id": "00a00fdbdfacac3017aa298c",
+  //   "name": "Bread",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Baker",
+  //       "type": "String",
+  //       "_id": "600a00dbbebe2a2017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Type",
+  //       "type": "String",
+  //       "_id": "63a00a004a852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Large",
+  //       "type": "Boolean",
+  //       "_id": "00a00ffffff52a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }];
+
+  // let templateData = [{
+  //   "_id": "63a17fdbdf854d1017aa2c98",
+  //   "name": "Cars",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Suspension",
+  //       "type": "String",
+  //       "_id": "63a17fdbdfc32a1017aa2c99"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Engine",
+  //       "type": "String",
+  //       "_id": "63a17fdbb4da2a1017aa2c9a"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf856c1017aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // },
+  // {
+  //   "_id": "63a1805e5cb0ae01bffe1378",
+  //   "name": "Bikes",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Hybrid",
+  //       "type": "Boolean",
+  //       "_id": "63ee805e5cb0ae01ba9e1379"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "EngineType",
+  //       "type": "String",
+  //       "_id": "63a1805e5cb0aeeeba9e137a"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Gears",
+  //       "type": "Number",
+  //       "_id": "63a18bae5cb0ae01ba9e137b"
+  //     }
+  //   ]
+  // },
+  // {
+  //   "_id": "63a1805e5cb0ae01baae4471",
+  //   "name": "Laptop",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "SSD",
+  //       "type": "Boolean",
+  //       "_id": "63a1805e5cccce01ba9e137e"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Graphic Card",
+  //       "type": "Boolean",
+  //       "_id": "63a4ac5e5cb0ae01ba9e13ba"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Mechanical Keyboard",
+  //       "type": "Boolean",
+  //       "_id": "63a1805e5cb0ae01ba96c6cb"
+  //     }
+  //   ]
+  // }];
 
   // const [templateOptions, setTemplateOptions] = useState(null);
   // const [savedData, setSavedData] = useState(null);
@@ -367,6 +377,8 @@ function NewNFT(props) {
 
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
+    getDefaultTemplate();
+    getSavedTemplate("admin");
     setTemplate("default");
   };
 
@@ -379,6 +391,10 @@ function NewNFT(props) {
     console.log(e.target.value, " template change");
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
+    if(e.target.value === "default") {
+      handleSetProperties(defaultTemplates.properties);
+    }
+    
   }
 
   const handleSelectTemplate = (e) => {
@@ -387,6 +403,8 @@ function NewNFT(props) {
     if (templateData) {
       for (let i = 0; i < templateData.length; i++) {
         if (e.target.value === templateData[i].name) {
+          handleSetProperties(templateData[i].properties);
+
           console.log("values matched")
           let dynamicField = [];
           for (let p = 0; p < templateData[i].properties.length; p++) {
@@ -410,6 +428,7 @@ function NewNFT(props) {
     if (standardTemplates) {
       for (let i = 0; i < standardTemplates.length; i++) {
         if (e.target.value === standardTemplates[i].name) {
+          handleSetProperties(standardTemplates[i].properties);
           console.log("values matched")
           let dynamicField = [];
           for (let p = 0; p < standardTemplates[i].properties.length; p++) {
@@ -419,6 +438,7 @@ function NewNFT(props) {
               type: standardTemplates[i].properties[p].type,
               id: standardTemplates[i].properties[p]._id
             });
+
             setExtractedDataProps(dynamicField);
           }
         }
@@ -431,27 +451,16 @@ function NewNFT(props) {
     console.log(extractedDataProps, " Extracted Properties")
   }
 
-  // const handleDefaultPropertyChange = (index, e, check) => {
-  //   if (check === 'text') {
-  //     setDataStringProp(e.target.value)
-  //   } else if (check === 'number') {
-  //     setDataNumProp(e.target.value)
-  //   } else if (check === 'yes') {
-  //     setDataBoolProp('yes')
-  //   } else if (check === 'no') {
-  //     setDataBoolProp('no')
-  //   }
+  const handleTemplatePropertyChange = (index,e) => {
 
-  //   // let data = [];
-  //   // if (check === null) {
-  //   //   console.log(e.target.value, "value")
-  //   // } else if (check === true) {
-  //   //   data[index].value = "yes"
-  //   // } else data[index].value = "no"
-  //   // console.log(data[index].value)
-  //   // console.log(data)
-  //   // setTemplateDataProps(data)
-  // }
+    console.log(properties, " /// properties")
+    let data = [...properties];
+    
+    data[index].value = e.target.value;
+    console.log("change", data[index]);
+    setProperties(data);
+    
+  }
 
   // const handleSavedPropertyChange = (index, e, check) => {
 
@@ -685,6 +694,101 @@ function NewNFT(props) {
     );
   };
 
+  const handleSetProperties = (availableProperties) => {
+    console.log("avail prop", availableProperties);
+    let prop = []
+    
+    availableProperties.map(property => {
+      let val;
+      if (property.type === "boolean") {
+        val = true;
+      }
+      else if (property.type === "number") {
+        val = 0;
+      }
+      else {
+        val = "";
+      }
+      // property.type ==="boolean" ? true : property.type === "number" ? 0 :
+    
+      let newData = { key: property.key, value: val };
+      prop. push(newData);
+      console.log("property" , property);
+
+    })
+
+    console.log("prop", prop);
+    console.log("properties from def", prop);
+    setProperties(prop);
+
+  }
+
+
+  const getDefaultTemplate = () => {
+    axios.get(`/nft-properties/admin/default`).then(
+      (response) => {
+        console.log("default template response", response);
+
+        setDefaultTemplates(response.data.defaultTemplate);
+        if(response.data.defaultTemplate != null) {
+          handleSetProperties(response.data.defaultTemplate.properties);
+        }
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
+  const getSavedTemplate = (role) => {
+    if (role === "admin"){
+
+    }
+    axios.get(`/nft-properties/${role}`).then(
+      (response) => {
+        if (role === "admin"){
+          console.log("saved template response", response);
+          setTemplateData(response.data.templates);
+        }
+        else {
+          console.log("standard template response", response);
+          setStandardTemplates(response.data.templates);
+        }
+      
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
+
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
     let batchMintId = Cookies.get("Batch-ID");
@@ -714,6 +818,10 @@ function NewNFT(props) {
     setVersionB(Cookies.get("Version"));
     console.log("version", Cookies.get("Version"));
     getCollections(NFTType);
+    getDefaultTemplate();
+    getSavedTemplate("admin");
+    getSavedTemplate("super-admin")
+    console.log("default valu", defaultTemplates);
 
     // setTokenList(Cookies.get("NFT-Detail"));
     getDataFromCookies();
@@ -2304,7 +2412,7 @@ function NewNFT(props) {
                                     <div className="w-100">
                                       <label>{p.key}</label>
                                       {
-                                        p.type === "String" ?
+                                        p.type === "string" ?
                                           (
                                             <div className="filter-widget">
                                               <input
@@ -2312,26 +2420,26 @@ function NewNFT(props) {
                                                 type="text"
                                                 placeholder="value"
                                                 required
-                                                value={p.value}
+                                                value={properties[index].value}
                                                 className="newNftProps"
-                                              // onChange={(e) =>
-                                              //   handleDefaultPropertyChange(index, e, null)
-                                              // }
+                                                onChange={(e) =>
+                                                  handleTemplatePropertyChange(index, e)
+                                                }
                                               />
                                             </div>
-                                          ) : p.type === "Number" ?
+                                          ) : p.type === "number" ?
                                             (
                                               <div className="filter-widget">
                                                 <input
                                                   name={p.key}
                                                   type="number"
-                                                  placeholder="0000"
+                                                  placeholder="0"
                                                   required
-                                                  value={p.value}
+                                                  // value={properties[index].value}
                                                   className="newNftProps"
-                                                // onChange={(e, yes = "no") =>
-                                                //   handleDefaultPropertyChange(index, e, null)
-                                                // }
+                                                  onChange={(e) =>
+                                                    handleTemplatePropertyChange(index, e)
+                                                  }
                                                 />
                                               </div>
                                             ) : (
@@ -2341,12 +2449,12 @@ function NewNFT(props) {
                                                   type="radio"
                                                   id="templateYes"
                                                   required
-                                                  value={p.value}
+                                                  value={true}
                                                   className="newNftProps"
                                                   style={{ width: "auto", margin: "0.5rem" }}
-                                                // onChange={(e) =>
-                                                //   handleDefaultPropertyChange(index, e, true)
-                                                // }
+                                                   onChange={(e) =>
+                                                    handleTemplatePropertyChange(index, e)
+                                                  }
                                                 />
                                                 <label for="templateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
                                                 <input
@@ -2354,12 +2462,12 @@ function NewNFT(props) {
                                                   type="radio"
                                                   id="templateNo"
                                                   required
-                                                  value={p.value}
+                                                  value={false}
                                                   className="newNftProps"
                                                   style={{ width: "auto", margin: "0.5rem" }}
-                                                // onChange={(e) =>
-                                                //   handleDefaultPropertyChange(index, e, false)
-                                                // }
+                                                  onChange={(e) =>
+                                                    handleTemplatePropertyChange(index, e)
+                                                  }
                                                 />
                                                 <label for="templateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
                                               </div>
@@ -2479,7 +2587,7 @@ function NewNFT(props) {
                                         <div className="w-100">
                                           <label>{p.key}</label>
                                           {
-                                            p.type === "String" ?
+                                            p.type === "string" ?
                                               (
                                                 <div className="filter-widget">
                                                   <input
@@ -2487,26 +2595,26 @@ function NewNFT(props) {
                                                     type="text"
                                                     placeholder="value"
                                                     required
-                                                    value={p.value}
+                                                    value={properties[index].value}
                                                     className="newNftProps"
-                                                  // onChange={(e) =>
-                                                  //   handleDefaultPropertyChange(index, e, null)
-                                                  // }
+                                                    onChange={(e) =>
+                                                      handleTemplatePropertyChange(index, e)
+                                                    }
                                                   />
                                                 </div>
-                                              ) : p.type === "Number" ?
+                                              ) : p.type === "number" ?
                                                 (
                                                   <div className="filter-widget">
                                                     <input
                                                       name={p.key}
                                                       type="number"
-                                                      placeholder="0000"
+                                                      placeholder="0"
                                                       required
-                                                      value={p.value}
+                                                      value={properties[index].value}
                                                       className="newNftProps"
-                                                    // onChange={(e, yes = "no") =>
-                                                    //   handleDefaultPropertyChange(index, e, null)
-                                                    // }
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                   </div>
                                                 ) : (
@@ -2516,12 +2624,12 @@ function NewNFT(props) {
                                                       type="radio"
                                                       id="savedTemplateYes"
                                                       required
-                                                      value={p.value}
-                                                      className="newNftProps"
+                                                      value={true}
                                                       style={{ width: "auto", margin: "0.5rem" }}
-                                                    // onChange={(e) =>
-                                                    //   handleDefaultPropertyChange(index, e, true)
-                                                    // }
+                                                      className="newNftProps"
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                     <label for="savedTemplateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
                                                     <input
@@ -2529,12 +2637,12 @@ function NewNFT(props) {
                                                       type="radio"
                                                       id="savedTemplateNo"
                                                       required
-                                                      value={p.value}
+                                                      value={false}
                                                       className="newNftProps"
                                                       style={{ width: "auto", margin: "0.5rem" }}
-                                                    // onChange={(e) =>
-                                                    //   handleDefaultPropertyChange(index, e, false)
-                                                    // }
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                     <label for="savedTemplateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
                                                   </div>
@@ -2580,7 +2688,7 @@ function NewNFT(props) {
                                         <div className="w-100">
                                           <label>{p.key}</label>
                                           {
-                                            p.type === "String" ?
+                                            p.type === "string" ?
                                               (
                                                 <div className="filter-widget">
                                                   <input
@@ -2588,26 +2696,26 @@ function NewNFT(props) {
                                                     type="text"
                                                     placeholder="value"
                                                     required
-                                                    value={p.value}
+                                                    value={properties[index].value}
                                                     className="newNftProps"
-                                                  // onChange={(e) =>
-                                                  //   handleDefaultPropertyChange(index, e, null)
-                                                  // }
+                                                    onChange={(e) =>
+                                                      handleTemplatePropertyChange(index, e)
+                                                    }
                                                   />
                                                 </div>
-                                              ) : p.type === "Number" ?
+                                              ) : p.type === "number" ?
                                                 (
                                                   <div className="filter-widget">
                                                     <input
                                                       name={p.key}
                                                       type="number"
-                                                      placeholder="0000"
+                                                      placeholder="0"
                                                       required
-                                                      value={p.value}
+                                                      value={properties[index].value}
                                                       className="newNftProps"
-                                                    // onChange={(e, yes = "no") =>
-                                                    //   handleDefaultPropertyChange(index, e, null)
-                                                    // }
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                   </div>
                                                 ) : (
@@ -2617,12 +2725,12 @@ function NewNFT(props) {
                                                       type="radio"
                                                       id="standardTemplateYes"
                                                       required
-                                                      value={p.value}
+                                                      value={true}
                                                       className="newNftProps"
                                                       style={{ width: "auto", margin: "0.5rem" }}
-                                                    // onChange={(e) =>
-                                                    //   handleDefaultPropertyChange(index, e, true)
-                                                    // }
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                     <label for="standardTemplateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
                                                     <input
@@ -2630,12 +2738,12 @@ function NewNFT(props) {
                                                       type="radio"
                                                       id="standardTemplateNo"
                                                       required
-                                                      value={p.value}
+                                                      value={false}
                                                       className="newNftProps"
                                                       style={{ width: "auto", margin: "0.5rem" }}
-                                                    // onChange={(e) =>
-                                                    //   handleDefaultPropertyChange(index, e, false)
-                                                    // }
+                                                      onChange={(e) =>
+                                                        handleTemplatePropertyChange(index, e)
+                                                      }
                                                     />
                                                     <label for="standardTemplateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
                                                   </div>
