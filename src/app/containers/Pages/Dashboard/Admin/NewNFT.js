@@ -2989,20 +2989,6 @@ function NewNFT(props) {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-<<<<<<< HEAD
-                      name === "" ||
-                      description === "" ||
-                      tokenSupply === "" ||
-                      collection === "" ||
-                      isUploadingData === true ? (
-                      <button
-                        className="btn propsActionBtn"
-                        type="submit"
-                        disabled
-                      >
-                        <i className="fa fa-plus"></i> Add NFT to queue
-                      </button>
-=======
                     name === "" ||
                     description === "" ||
                     tokenSupply === "" ||
@@ -3021,7 +3007,6 @@ function NewNFT(props) {
                       </Tooltip>
                    
                       
->>>>>>> stage-test
                     ) : (
                       <button
                         className="btn propsActionBtn"
