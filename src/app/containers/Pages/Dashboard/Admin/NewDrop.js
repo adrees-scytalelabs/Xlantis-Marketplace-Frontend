@@ -767,7 +767,7 @@ function NewDrop(props) {
                           checked={nftType === "721"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
-                            <span style={{ fontSize: "0.9rem" }}>Single</span>
+                            <span style={{ fontSize: "0.9rem" }}>Single <i class="fa fa-info-circle" aria-hidden="true"></i></span>
                           }
                         />
                         </Tooltip>
@@ -782,7 +782,7 @@ function NewDrop(props) {
                           checked={nftType === "1155"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
-                            <span style={{ fontSize: "0.9rem" }}>Multiple</span>
+                            <span style={{ fontSize: "0.9rem" }}>Multiple <i class="fa fa-info-circle" aria-hidden="true"></i></span>
                           }
                         />
                         </Tooltip>
