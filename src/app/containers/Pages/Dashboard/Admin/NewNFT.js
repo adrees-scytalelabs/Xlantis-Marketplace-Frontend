@@ -31,7 +31,7 @@ import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { isUndefined } from "lodash";
+import { isUndefined, templateSettings } from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Spinner } from "react-bootstrap";
@@ -50,6 +50,8 @@ import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { ethers } from "ethers";
+import Alert from '@material-ui/lab/Alert';
+import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 
 // STYLES
 
@@ -175,96 +177,353 @@ function NewNFT(props) {
     setOpen(true);
   };
 
-  let defaultTemplates = [{
-    "_id": "63a17fdbdf852a1017aa2c98",
+  let defaultTemplates =
+  {
+    "_id": "63a17fdbdf852a1017aa2ccc",
+    "name": "Tables",
+    "properties": [
+      {
+        "value": "",
+        "key": "Material",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2cab"
+      },
+      {
+        "value": "",
+        "key": "Wooden",
+        "type": "Boolean",
+        "_id": "63a17fdbdf852a1017aa2cbc"
+      }
+    ],
+    "__v": 0
+  };
+
+  let standardTemplates = [{
+    "_id": "63a17fdbdf852a1017aa298c",
+    "name": "Pens",
+    "properties": [
+      {
+        "value": "",
+        "key": "Type",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2bb9"
+      },
+      {
+        "value": "",
+        "key": "Color",
+        "type": "String",
+        "_id": "63a17fdbdf852a1017aa2aaa"
+      },
+      {
+        "value": "",
+        "key": "Eraseable",
+        "type": "Boolean",
+        "_id": "63a17fdbdf852a1bb7aa2c9b"
+      }
+    ],
+    "__v": 0
+  }, {
+    "_id": "63a17fdbdfacac3017aa298c",
+    "name": "Paints",
+    "properties": [
+      {
+        "value": "",
+        "key": "Container Capacity (L)",
+        "type": "Number",
+        "_id": "63a17fdbbebe2a2017aa2bb9"
+      },
+      {
+        "value": "",
+        "key": "Color",
+        "type": "String",
+        "_id": "63a17f0f4a852a1017aa2aaa"
+      },
+      {
+        "value": "",
+        "key": "Token",
+        "type": "Boolean",
+        "_id": "63a17ffffff52a1bb7aa2c9b"
+      }
+    ],
+    "__v": 0
+  }, {
+    "_id": "00a00fdbdfacac3017aa298c",
+    "name": "Bread",
+    "properties": [
+      {
+        "value": "",
+        "key": "Baker",
+        "type": "String",
+        "_id": "600a00dbbebe2a2017aa2bb9"
+      },
+      {
+        "value": "",
+        "key": "Type",
+        "type": "String",
+        "_id": "63a00a004a852a1017aa2aaa"
+      },
+      {
+        "value": "",
+        "key": "Large",
+        "type": "Boolean",
+        "_id": "00a00ffffff52a1bb7aa2c9b"
+      }
+    ],
+    "__v": 0
+  }];
+
+  let templateData = [{
+    "_id": "63a17fdbdf854d1017aa2c98",
     "name": "Cars",
     "properties": [
       {
-        "value": [],
+        "value": "",
         "key": "Suspension",
         "type": "String",
-        "_id": "63a17fdbdf852a1017aa2c99"
+        "_id": "63a17fdbdfc32a1017aa2c99"
       },
       {
-        "value": [],
+        "value": "",
         "key": "Engine",
         "type": "String",
-        "_id": "63a17fdbdf852a1017aa2c9a"
+        "_id": "63a17fdbb4da2a1017aa2c9a"
       },
       {
-        "value": [],
+        "value": "",
         "key": "Color",
         "type": "String",
-        "_id": "63a17fdbdf852a1017aa2c9b"
+        "_id": "63a17fdbdf856c1017aa2c9b"
       }
     ],
     "__v": 0
   },
   {
-    "_id": "63a1805e5cb0ae01ba9e1378",
+    "_id": "63a1805e5cb0ae01bffe1378",
     "name": "Bikes",
     "properties": [
       {
-        "value": [],
+        "value": "",
         "key": "Hybrid",
         "type": "Boolean",
-        "_id": "63a1805e5cb0ae01ba9e1379"
+        "_id": "63ee805e5cb0ae01ba9e1379"
       },
       {
-        "value": [],
+        "value": "",
         "key": "EngineType",
         "type": "String",
-        "_id": "63a1805e5cb0ae01ba9e137a"
+        "_id": "63a1805e5cb0aeeeba9e137a"
       },
       {
-        "value": [],
+        "value": "",
         "key": "Gears",
         "type": "Number",
-        "_id": "63a1805e5cb0ae01ba9e137b"
+        "_id": "63a18bae5cb0ae01ba9e137b"
       }
     ]
-  }]
-  let defaultCarProperties = [{
-    make: "", model: "", color: "",
+  },
+  {
+    "_id": "63a1805e5cb0ae01baae4471",
+    "name": "Laptop",
+    "properties": [
+      {
+        "value": "",
+        "key": "SSD",
+        "type": "Boolean",
+        "_id": "63a1805e5cccce01ba9e137e"
+      },
+      {
+        "value": "",
+        "key": "Graphic Card",
+        "type": "Boolean",
+        "_id": "63a4ac5e5cb0ae01ba9e13ba"
+      },
+      {
+        "value": "",
+        "key": "Mechanical Keyboard",
+        "type": "Boolean",
+        "_id": "63a1805e5cb0ae01ba96c6cb"
+      }
+    ]
   }];
 
-  let defaultComputerProperties = [{
-    cpu: "", ram: "", memory: ""
-  }];
+  // const [templateOptions, setTemplateOptions] = useState(null);
+  // const [savedData, setSavedData] = useState(null);
+  // const [savedDataProps, setSavedDataProps] = useState(null)
+  // const [defaultPropNum, setDefaultPropNum] = useState()
+  // const [defaultPropValueYes, setDefaultPropValueYes] = useState("Yes")
+  const [defaultPropValue, setDefaultPropValue] = useState("default")
+  const [defaultPropValueNo, setDefaultPropValueNo] = useState("No")
+  const [dataStringProp, setDataStringProp] = useState("");
+  const [dataNumProp, setDataNumProp] = useState("");
+  const [dataBoolProp, setDataBoolProp] = useState("");
+  const [standardDataProps, setStandardDataProps] = useState(null)
 
-  let defaultBuildingProperties = [{
-    height: "", floors: ""
-  }];
 
+  const [extractedDataProps, setExtractedDataProps] = useState(null)
+  const [newTemplateModalShow, setNewTemplateModalShow] = useState(false);
+  const [template, setTemplate] = useState("default");
 
-  console.log("template data /// ", defaultTemplates)
+  let handleNewTemplateModalClose = () => {
+    setNewTemplateModalShow(false);
+    setTemplate("default");
+  };
 
-  const [template, setTemplate] = useState(null);
+  let handleNewTemplateModalOpen = () => {
+    setNewTemplateModalShow(true);
+  }
 
   const handleTemplateChange = (e) => {
-    console.log("logging template: ", e.target.value);
-    if (e.target.value === "default") {
-      setTemplate("default")
-    } else if (e.target.value === "custom") {
-      setTemplate("custom")
-    } else setTemplate(null)
+    setExtractedDataProps(null);
+    console.log(e.target.value, " template change");
+    if (e.target.value === "new") handleNewTemplateModalOpen();
+    setTemplate(e.target.value);
   }
 
-  const [carData, setCarData] = useState();
-  const [computerData, setComputerData] = useState();
-  const [buildingData, setBuildingData] = useState();
-
-  const handleDefaultTemplate = (e) => {
-    console.log("some default template /// ", e.target.value);
-    let value = e.target.value;
-    if (value === "Cars") {
-      setCarData([...defaultCarProperties]);
-    } else if (value === "Computers") {
-      setComputerData([...defaultComputerProperties])
-    } else if (value === "Buildings") {
-      setBuildingData([...defaultBuildingProperties])
+  const handleSelectTemplate = (e) => {
+    setExtractedDataProps(null);
+    console.log(e.target.value, " Template selected!");
+    if (templateData) {
+      for (let i = 0; i < templateData.length; i++) {
+        if (e.target.value === templateData[i].name) {
+          console.log("values matched")
+          let dynamicField = [];
+          for (let p = 0; p < templateData[i].properties.length; p++) {
+            dynamicField.push({
+              key: templateData[i].properties[p].key,
+              value: "",
+              type: templateData[i].properties[p].type,
+              id: templateData[i].properties[p]._id
+            });
+            setExtractedDataProps(dynamicField);
+          }
+        }
+      }
+      if (e.target.value === "none") setExtractedDataProps(null);
     }
   }
+
+  const handleStandardSelectTemplate = (e) => {
+    setExtractedDataProps(null);
+    console.log(e.target.value, " Template selected!");
+    if (standardTemplates) {
+      for (let i = 0; i < standardTemplates.length; i++) {
+        if (e.target.value === standardTemplates[i].name) {
+          console.log("values matched")
+          let dynamicField = [];
+          for (let p = 0; p < standardTemplates[i].properties.length; p++) {
+            dynamicField.push({
+              key: standardTemplates[i].properties[p].key,
+              value: "",
+              type: standardTemplates[i].properties[p].type,
+              id: standardTemplates[i].properties[p]._id
+            });
+            setExtractedDataProps(dynamicField);
+          }
+        }
+      }
+      if (e.target.value === "none") setExtractedDataProps(null);
+    }
+  }
+
+  if (extractedDataProps) {
+    console.log(extractedDataProps, " Extracted Properties")
+  }
+
+  // const handleDefaultPropertyChange = (index, e, check) => {
+  //   if (check === 'text') {
+  //     setDataStringProp(e.target.value)
+  //   } else if (check === 'number') {
+  //     setDataNumProp(e.target.value)
+  //   } else if (check === 'yes') {
+  //     setDataBoolProp('yes')
+  //   } else if (check === 'no') {
+  //     setDataBoolProp('no')
+  //   }
+
+  //   // let data = [];
+  //   // if (check === null) {
+  //   //   console.log(e.target.value, "value")
+  //   // } else if (check === true) {
+  //   //   data[index].value = "yes"
+  //   // } else data[index].value = "no"
+  //   // console.log(data[index].value)
+  //   // console.log(data)
+  //   // setTemplateDataProps(data)
+  // }
+
+  // const handleSavedPropertyChange = (index, e, check) => {
+
+  //   let data = [...savedDataProps]
+  //   if (check === null) {
+  //     data[index].value = e.target.value;
+  //   } else if (check === true) {
+  //     data[index].value = "yes"
+  //   } else data[index].value = "no"
+  //   console.log(data[index].value)
+  //   console.log(data)
+  //   setSavedDataProps(data)
+  // }
+
+  // useEffect(() => {
+  //   if (template === "") {
+  //     console.log(template, "template is null")
+  //     setTemplate("default")
+  //   } else if (template === "new") {
+  //     handleNewTemplateModalOpen();
+  //   }
+  // });
+
+
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   if (templateOptions) {
+  //     console.log(templateOptions)
+  //     for (let i = 0; i < defaultTemplates.length; i++) {
+  //       if (templateOptions === defaultTemplates[i].name) {
+  //         setDefaultPropValue(templateOptions);
+  //         let dynamicField = [];
+  //         for (let p = 0; p < defaultTemplates[i].properties.length; p++) {
+  //           dynamicField.push({
+  //             key: defaultTemplates[i].properties[p].key,
+  //             value: "",
+  //             type: defaultTemplates[i].properties[p].type,
+  //             id: defaultTemplates[i].properties[p]._id
+  //           });
+  //           setTemplateDataProps(dynamicField);
+  //         }
+  //       }
+  //     }
+  //   } else if (savedData) {
+  //     console.log(savedData)
+  //     for (let i = 0; i < defaultTemplates.length; i++) {
+  //       if (savedData === defaultTemplates[i].name) {
+  //         let dynamicField = [];
+  //         for (let p = 0; p < defaultTemplates[i].properties.length; p++) {
+  //           dynamicField.push({
+  //             key: defaultTemplates[i].properties[p].key,
+  //             value: "",
+  //             type: defaultTemplates[i].properties[p].type,
+  //             id: defaultTemplates[i].properties[p]._id
+  //           });
+  //           setSavedDataProps(dynamicField);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return () => {
+  //     controller.abort();
+  //   };
+  //}, [templateOptions, savedData, template])
+
+  // useEffect(() => {
+  // if (document.getElementById('selectTemplate').getAttribute('listener') !== 'true') {
+  //   document.getElementById('selectTemplate').addEventListener('change', function () {
+  //     alert('changed');
+  //   });
+  // }
+  // }, [template])
+
+
 
   const [tokenList, setTokenList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
@@ -277,7 +536,6 @@ function NewNFT(props) {
   // let [executiveInspirationForThePiece, setExecutiveInspirationForThePiece] = useState("");
   // let [fanInspirationForThePiece, setFanInspirationForThePiece] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
-  console.log("properties..... /// ", [...properties])
 
   let [value, setValue] = useState("");
   let [key, setKey] = useState("");
@@ -1283,6 +1541,7 @@ function NewNFT(props) {
   };
 
   let handlePropertyChange = (index, event) => {
+    console.log(properties, " /// properties")
     let data = [...properties];
     console.log("the datat change: ", event.target);
     console.log("the data index /// ", data[index][event.target.name])
@@ -2007,21 +2266,111 @@ function NewNFT(props) {
                     <small style={{ marginLeft: "5px" }}>(optional)</small>
                   </div>
                   <div className="w-100 position-relative mb-4">
-                    <select name="templates" id="selectTemplate" className="templatesSelect" placeholder="Select a Template" onChange={handleTemplateChange}>
-                      <option value="none" selected>None</option>
-                      <option value="default">Default Templates</option>
-                      <option value="custom">Create Custom Template</option>
+                    <select name="templates" id="selectTemplate" className="templatesSelect" placeholder="Select a Template" onChange={handleTemplateChange} value={template}>
+                      <option value="default" >Default</option>
+                      <option value="none">None</option>
+                      <option value="saved">Saved</option>
+                      <option value="standard">Standard</option>
+                      <option value="new">Create New</option>
                     </select>
                     {
-                      template === "default" ? (
-                        <div className="w-100 my-3">
-                          <select name="defaultTemplate" id="defaultTemplate" className="templatesSelect" onChange={handleDefaultTemplate}>
-                            <option value="none" selected>None</option>
-                            {defaultTemplates.map((template, index) => (
-                              <option value={template.name} id={template.id} index={index}>{template.name}</option>
-                            ))}
-                          </select>
-                          <div>
+                      template === "default" ?
+                        (
+                          defaultTemplates !== null ? (
+                            <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                              <div className="filter-widget col-12">
+                                <input
+                                  name={defaultTemplates.name}
+                                  type="text"
+                                  placeholder={defaultTemplates.name}
+                                  required
+                                  value={defaultTemplates.name}
+                                  className="newNftProps"
+                                  disabled
+                                  style={{ color: "#696969", borderColor: "#626262" }}
+                                />
+                              </div>
+                              {
+                                defaultTemplates.properties.map((p, index) => (
+                                  <div className="col-12 col-md-5" key={index}>
+                                    <div className="w-100">
+                                      <label>{p.key}</label>
+                                      {
+                                        p.type === "String" ?
+                                          (
+                                            <div className="filter-widget">
+                                              <input
+                                                name={p.key}
+                                                type="text"
+                                                placeholder="value"
+                                                required
+                                                value={p.value}
+                                                className="newNftProps"
+                                              // onChange={(e) =>
+                                              //   handleDefaultPropertyChange(index, e, null)
+                                              // }
+                                              />
+                                            </div>
+                                          ) : p.type === "Number" ?
+                                            (
+                                              <div className="filter-widget">
+                                                <input
+                                                  name={p.key}
+                                                  type="number"
+                                                  placeholder="0000"
+                                                  required
+                                                  value={p.value}
+                                                  className="newNftProps"
+                                                // onChange={(e, yes = "no") =>
+                                                //   handleDefaultPropertyChange(index, e, null)
+                                                // }
+                                                />
+                                              </div>
+                                            ) : (
+                                              <div className="filter-widget">
+                                                <input
+                                                  name={p.key}
+                                                  type="radio"
+                                                  id="templateYes"
+                                                  required
+                                                  value={p.value}
+                                                  className="newNftProps"
+                                                  style={{ width: "auto", margin: "0.5rem" }}
+                                                // onChange={(e) =>
+                                                //   handleDefaultPropertyChange(index, e, true)
+                                                // }
+                                                />
+                                                <label for="templateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
+                                                <input
+                                                  name={p.key}
+                                                  type="radio"
+                                                  id="templateNo"
+                                                  required
+                                                  value={p.value}
+                                                  className="newNftProps"
+                                                  style={{ width: "auto", margin: "0.5rem" }}
+                                                // onChange={(e) =>
+                                                //   handleDefaultPropertyChange(index, e, false)
+                                                // }
+                                                />
+                                                <label for="templateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
+                                              </div>
+                                            )
+                                      }
+                                    </div>
+                                  </div>
+                                ))
+                              }
+                            </div>
+                          ) : (
+                            <div className="mt-2 mb-4">
+                              <div className="alert alert-info" role="alert" style={{ fontFamily: "inter" }}>
+                                You have not set Default Template
+                              </div>
+                            </div>
+                          )
+                        ) : template === "none" ? (
+                          <div className="w-100 my-3">
                             {properties.map((property, index) => {
                               return (
                                 <div key={index}>
@@ -2100,96 +2449,210 @@ function NewNFT(props) {
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ) : template === "custom" ? (<div className="w-100 my-3">
-
-                      </div>) : null
-                    }
-                  </div>
-                  {/* <div>
-                    <label>Properties</label>
-                    <small style={{ marginLeft: "5px" }}>(optional)</small>
-                  </div> */}
-                  <div>
-                    {properties.map((property, index) => {
-                      return (
-                        <div key={index}>
-                          <div className="row no-gutters justify-content-md-between align-items-center">
-                            <div className="col-12 col-md-5">
-                              <div className="form-group w-100">
-                                <label>Key</label>
-                                <div className="filter-widget">
-                                  <input
-                                    name="key"
-                                    type="text"
-                                    placeholder="Enter key of the property"
-                                    required
-                                    value={property.key}
-                                    className="newNftProps"
-                                    onChange={(e) =>
-                                      handlePropertyChange(index, e)
-                                    }
-                                  />
-                                </div>
+                        ) : template === "saved" ? (
+                          templateData !== null ? (
+                            <div className="w-100 my-3">
+                              <select
+                                name="savedTemplate"
+                                id="savedTemplate"
+                                className="templatesSelect"
+                                onChange={handleSelectTemplate}
+                              >
+                                <option value="none" defaultValue>None</option>
+                                {templateData.map((data, index) => (
+                                  <option value={data.name} id={data.id} key={index + 100}>{data.name}</option>
+                                ))}
+                              </select>
+                              <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                                {
+                                  extractedDataProps !== null ? (
+                                    extractedDataProps.map((p, index) => (
+                                      <div className="col-12 col-md-5" key={index + 200}>
+                                        <div className="w-100">
+                                          <label>{p.key}</label>
+                                          {
+                                            p.type === "String" ?
+                                              (
+                                                <div className="filter-widget">
+                                                  <input
+                                                    name={p.key}
+                                                    type="text"
+                                                    placeholder="value"
+                                                    required
+                                                    value={p.value}
+                                                    className="newNftProps"
+                                                  // onChange={(e) =>
+                                                  //   handleDefaultPropertyChange(index, e, null)
+                                                  // }
+                                                  />
+                                                </div>
+                                              ) : p.type === "Number" ?
+                                                (
+                                                  <div className="filter-widget">
+                                                    <input
+                                                      name={p.key}
+                                                      type="number"
+                                                      placeholder="0000"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                    // onChange={(e, yes = "no") =>
+                                                    //   handleDefaultPropertyChange(index, e, null)
+                                                    // }
+                                                    />
+                                                  </div>
+                                                ) : (
+                                                  <div className="filter-widget">
+                                                    <input
+                                                      name={p.key}
+                                                      type="radio"
+                                                      id="savedTemplateYes"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                      style={{ width: "auto", margin: "0.5rem" }}
+                                                    // onChange={(e) =>
+                                                    //   handleDefaultPropertyChange(index, e, true)
+                                                    // }
+                                                    />
+                                                    <label for="savedTemplateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
+                                                    <input
+                                                      name={p.key}
+                                                      type="radio"
+                                                      id="savedTemplateNo"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                      style={{ width: "auto", margin: "0.5rem" }}
+                                                    // onChange={(e) =>
+                                                    //   handleDefaultPropertyChange(index, e, false)
+                                                    // }
+                                                    />
+                                                    <label for="savedTemplateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
+                                                  </div>
+                                                )
+                                          }
+                                        </div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="mt-2 mb-4 w-100">
+                                      <div className="alert alert-info" role="alert" style={{ fontFamily: "inter" }}>
+                                        There are no Properties in this Template
+                                      </div>
+                                    </div>
+                                  )
+                                }
                               </div>
                             </div>
-                            <div className="col-12 col-md-5">
-                              <div className="form-group w-100">
-                                <label>Value</label>
-                                <div className="filter-widget">
-                                  <input
-                                    name="value"
-                                    type="text"
-                                    placeholder="Enter Value of the property"
-                                    required
-                                    value={property.value}
-                                    className="newNftProps"
-                                    onChange={(e) =>
-                                      handlePropertyChange(index, e)
-                                    }
-                                  />
-                                </div>
+                          ) : (<div className="mt-2 mb-4">
+                            <div className="alert alert-info" role="alert" style={{ fontFamily: "inter" }}>
+                              You have not saved any Template
+                            </div>
+                          </div>)
+                        ) : template === "standard" && (
+                          standardTemplates !== null ? (
+                            <div className="w-100 my-3">
+                              <select
+                                name="savedTemplate"
+                                id="savedTemplate"
+                                className="templatesSelect"
+                                onChange={handleStandardSelectTemplate}
+                              >
+                                <option value="none" defaultValue>None</option>
+                                {standardTemplates.map((data, index) => (
+                                  <option value={data.name} id={data.id} key={index + 300}>{data.name}</option>
+                                ))}
+                              </select>
+                              <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                                {
+                                  extractedDataProps !== null ? (
+                                    extractedDataProps.map((p, index) => (
+                                      <div className="col-12 col-md-5" key={index + 400}>
+                                        <div className="w-100">
+                                          <label>{p.key}</label>
+                                          {
+                                            p.type === "String" ?
+                                              (
+                                                <div className="filter-widget">
+                                                  <input
+                                                    name={p.key}
+                                                    type="text"
+                                                    placeholder="value"
+                                                    required
+                                                    value={p.value}
+                                                    className="newNftProps"
+                                                  // onChange={(e) =>
+                                                  //   handleDefaultPropertyChange(index, e, null)
+                                                  // }
+                                                  />
+                                                </div>
+                                              ) : p.type === "Number" ?
+                                                (
+                                                  <div className="filter-widget">
+                                                    <input
+                                                      name={p.key}
+                                                      type="number"
+                                                      placeholder="0000"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                    // onChange={(e, yes = "no") =>
+                                                    //   handleDefaultPropertyChange(index, e, null)
+                                                    // }
+                                                    />
+                                                  </div>
+                                                ) : (
+                                                  <div className="filter-widget">
+                                                    <input
+                                                      name={p.key}
+                                                      type="radio"
+                                                      id="standardTemplateYes"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                      style={{ width: "auto", margin: "0.5rem" }}
+                                                    // onChange={(e) =>
+                                                    //   handleDefaultPropertyChange(index, e, true)
+                                                    // }
+                                                    />
+                                                    <label for="standardTemplateYes" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>Yes</label>
+                                                    <input
+                                                      name={p.key}
+                                                      type="radio"
+                                                      id="standardTemplateNo"
+                                                      required
+                                                      value={p.value}
+                                                      className="newNftProps"
+                                                      style={{ width: "auto", margin: "0.5rem" }}
+                                                    // onChange={(e) =>
+                                                    //   handleDefaultPropertyChange(index, e, false)
+                                                    // }
+                                                    />
+                                                    <label for="standardTemplateNo" style={{ width: "calc(100% - 55px)", fontFamily: "inter", fontWeight: "normal" }}>No</label>
+                                                  </div>
+                                                )
+                                          }
+                                        </div>
+                                      </div>
+                                    ))
+                                  ) : (
+                                    <div className="mt-2 mb-4 w-100">
+                                      <div className="alert alert-info" role="alert" style={{ fontFamily: "inter" }}>
+                                        There are no Properties in this Template
+                                      </div>
+                                    </div>
+                                  )
+                                }
                               </div>
                             </div>
-                            <div className="col-12 col-md-auto text-right">
-                              <div className="form-group">
-                                <label>Action</label>
-                                <div className="filter-widget">
-                                  <Tooltip
-                                    title="Remove a property"
-                                    placement="bottom"
-                                  >
-                                    <button
-                                      className="btn btn-submit btn-lg propsActionBtn"
-                                      onClick={(e) =>
-                                        handleRemoveProperty(e, index)
-                                      }
-                                    >
-                                      -
-                                    </button>
-                                  </Tooltip>
-                                </div>
-                              </div>
+                          ) : (<div className="mt-2 mb-4">
+                            <div className="alert alert-info" role="alert" style={{ fontFamily: "inter" }}>
+                              Standard Properties not set
                             </div>
                           </div>
-                        </div>
-                      );
-                    })}
-                    <div className="row no-gutters align-items-center justify-content-end">
-                      <div className="col-auto">
-                        <Tooltip title="Add a property" placement="right">
-                          <button
-                            className="btn btn-submit btn-lg propsActionBtn mb-4"
-                            // className="btn submit-btn"
-                            onClick={(e) => handleAddProperty(e)}
-                          >
-                            +
-                          </button>
-                        </Tooltip>
-                      </div>
-                    </div>
+                          ))}
                   </div>
-
                   <ThemeProvider theme={makeTheme}>
                     {tokenList.length > 0 ? (
                       <FormControl
@@ -2253,12 +2716,12 @@ function NewNFT(props) {
                       </FormControl>
                     ) : (
                       <FormControl component="fieldset">
-                        <lable
+                        <label
                           component="legend"
                           style={{ fontWeight: "bold", fontFamily: "poppins" }}
                         >
                           Select NFT Type
-                        </lable>
+                        </label>
                         <RadioGroup
                           row
                           aria-label="position"
@@ -2711,6 +3174,7 @@ function NewNFT(props) {
         handleChangeCollection={handleChangeCollectionOpen}
         isUploadingData={isUploadingData}
       ></NFTEditModal>
+      <NewTamplateModal handleClose={handleNewTemplateModalClose} show={newTemplateModalShow} />
       <ChangeCollectionConfirmationModal
         show={changeCollection}
         handleClose={handleChangeCollectionClose}

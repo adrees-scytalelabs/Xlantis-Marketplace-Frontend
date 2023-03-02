@@ -88,6 +88,7 @@ select.templatesSelect {
   border-radius: 4px;
   background-color: var(--bg);
   font-family: var(--inter);
+  transition: all ease-in-out 0.5s;
 }
 
 .headerAccountMenu:hover {
@@ -514,6 +515,37 @@ form.checkoutForm label {
   bottom: -1.5rem;
   position: absolute;
   /* z-index: 2; */
+}
+
+.newTemplateBtn {
+  margin-left: 5px;
+  padding: 8px 14px;
+  background-color: black;
+  color: white;
+  border: 1px solid #F64D04;
+  border-radius: 0 15px 0 15px;
+  cursor: pointer;
+}
+
+.newTemplateBtn:hover {
+  box-shadow: var(--orangeBoxShadow);
+}
+
+.modal-backdrop.show .modal-open .modal {
+  padding-right: 0 !important;
+}
+
+.modal-header.NewTemplateHeader {
+  background-color: var(--border);
+  color: var(--bg) !important;
+  border: 1px solid var(--border);
+}
+
+.modal-body.NewTemplateBody,
+.modal-footer.NewTemplateFooter {
+  background-color: var(--bg);
+  color: var(--border);
+  border: 1px solid var(--border);
 }
 
 .modal-header {
