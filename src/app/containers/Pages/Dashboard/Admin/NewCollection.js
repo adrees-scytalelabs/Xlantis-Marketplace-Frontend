@@ -556,6 +556,9 @@ function NewCollection(props) {
 
   let handleApprovalModalClose = () => {
     setApprovalModalShow(false);
+    setDoneLoader(false);
+    setIsAuctionApproved(false);
+    setIsFixedPriceApproved(false);
   };
 
   //approval
@@ -715,21 +718,6 @@ function NewCollection(props) {
     }
     if (isAuctionApproved === true && isFixedPriceApproved === true) {
       setDoneLoader(true);
-      // axios.put(`/collection/approve/${collectionId}`).then(
-      //     (response) => {
-      //         console.log("Response from collection approval: ", response);
-      //         let variant = "success";
-      //         enqueueSnackbar("Collection Approval Successful", { variant });
-      //         setDoneLoader(false);
-      //     },
-      //     (error) => {
-      //         console.log("Error from collection approval: ", error);
-      //         let variant = "error";
-      //         enqueueSnackbar("Collection Approval Unsuccessful", { variant });
-      //         setDoneLoader(false);
-      //     }
-      // );
-
       handleApprovalModalClose();
     }
   };
@@ -896,118 +884,6 @@ function NewCollection(props) {
                       </Tooltip>
                     </RadioGroup>
                   </FormControl>
-                  {/* <div>
-                                        <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
-                                    </div>
-                                    <div>
-                                        <button
-                                            className="btn btn-submit"
-                                            color="primary"
-                                            // className="btn submit-btn"
-                                            onClick={onDialogOpenClick}
-                                        >
-                                            Add Properties
-                                        </button>
-                                        <Dialog
-                                            fullWidth={true}
-                                            maxWidth={true}
-                                            open={openDialog}
-                                            onClose={onDialogCloseClick}
-                                            aria-labelledby="max-width-dialog-title"
-                                        >
-                                            <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
-                                            <DialogContent>
-                                                <DialogContentText>Enter Properties in key value pair</DialogContentText>
-                                                <form>
-                                                    <TextField
-                                                        label="Key"
-                                                        value={propertyKey}
-                                                        onChange={(e) => setPropertyKey(e.target.value)}
-                                                    />
-                                                    <TextField
-                                                        label="Value"
-                                                        value={propertyValue}
-                                                        onChange={(e) => setPropertyValue(e.target.value)}
-                                                        style={{ marginLeft: "5px" }}
-                                                    />
-                                                    <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
-                                                </form>
-                                            </DialogContent>
-                                        </Dialog>
-                                    </div> */}
-                  {/* <div>
-                                        <div>
-                                            {properties.map((property, index) => {
-                                                return (
-                                                    <Card>
-                                                        <CardHeader
-                                                            title={property.key}
-                                                            subheader={property.value}
-                                                        />
-                                                    </Card>
-                                                )
-                                            })}
-                                        </div>
-                                    </div> */}
-                  {/* <div style={{marginTop: "5px"}}>
-                                        <label>Add Level</label>
-                                    </div> */}
-                  {/* {levelValues.map((level, index)=> {
-                                      return (
-                                        <div>
-                                            <div 
-                                                style={{
-                                                float: "left",
-                                                width: "55%"
-                                                }}
-                                            >
-                                                <div>
-                                                    <small><label>Name</label></small>
-                                                </div>
-                                                <div>
-                                                    <input 
-                                                        name= "name"
-                                                        type= "text"
-                                                        placeholder='Name'
-                                                        value={ level.name }
-                                                        className= "form-control"
-                                                        onChange = { (e) => handleOnChangeLevel(index, e)} 
-                                                        // style={{width: "30%"}}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div style={{ float: "left", width: "45%" }} >
-                                                <div>
-                                                    <small><label>Value</label></small>
-                                                </div>
-                                                <div style={{ float: "left", width: "33.33%" }}>
-                                                    <input 
-                                                        name= "lowLevel"
-                                                        type= "number"
-                                                        value= { level.lowLevel } 
-                                                        className= "form-control"
-                                                        onChange= { (e) => handleOnChangeLevel(index, e)}
-                                                    />
-                                                </div>
-                                                <div style={{ width: "33.33%", border: "thin black", float: "left", marginTop: "10px" }} >Of</div>
-                                                <div style={{ float: "left", width: "33.33%" }}>
-                                                    <input 
-                                                        name= "highLevel"
-                                                        type= "number"
-                                                        value= { level.highLevel } 
-                                                        className= "form-control"
-                                                        onChange= { (e) => handleOnChangeLevel(index, e)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <IconButton onClick={() => onRemoveLevels(index)} >
-                                                <Clear />
-                                            </IconButton>
-                                        </div>
-                                      )      
-                                    })} */}
-                  {/* <button className= "btn" onClick={addLevels} >Add more</button> */}
-                  {/* <button onClick={ onSubmit }>Submit</button> */}
                 </div>
               </div>
             </form>
