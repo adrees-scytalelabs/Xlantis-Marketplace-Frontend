@@ -50,7 +50,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.newCollection}>
               <Link
-                to={`${props.match.url}/newCollection`}
+                to={`${props.match.url}/myCollection`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>

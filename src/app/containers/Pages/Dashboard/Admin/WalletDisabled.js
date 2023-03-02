@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -166,7 +169,7 @@ function WalletDisabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/disabled?userType=v2`)
+      .get(`/super-admin/admins/disabled?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
@@ -201,7 +204,7 @@ function WalletDisabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/enable?userType=v2`, data).then(
+    axios.patch(`/super-admin/enable?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -262,7 +265,12 @@ function WalletDisabled(props) {
                   <td className={classes.collectionTitle}>{i.username}</td>
 
                   <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
+                    <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
+                      title={i.walletAddress}
+                      arrow
+                    >
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>

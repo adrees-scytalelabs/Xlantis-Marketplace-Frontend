@@ -19,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -119,8 +122,8 @@ function AccountApprovalWallet(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -144,9 +147,7 @@ function AccountApprovalWallet(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.unverifiedAdmins);
@@ -181,7 +182,7 @@ function AccountApprovalWallet(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -235,16 +236,18 @@ function AccountApprovalWallet(props) {
               {walletAdmins.map((i, index) => (
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                 
+
                   <td className={classes.collectionTitle}>
                     <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
                       title={i.walletAddress}
-                      
+                      arrow
                     >
                       <span>{i.walletAddress.slice(0, 6)}...</span>
                     </Tooltip>
                   </td>
-                 
+
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isVerified ? (

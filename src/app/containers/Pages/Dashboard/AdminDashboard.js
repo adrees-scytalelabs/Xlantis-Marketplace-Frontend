@@ -214,11 +214,11 @@ function AdminDashboard(props) {
                     Dashboard
                   </Link>
                 </Dropdown.Item>
-                <Dropdown.Item>
+                {/* <Dropdown.Item>
                   <span style={{ color: "white" }} onClick={openTransak}>
                     Buy Crypto
                   </span>
-                </Dropdown.Item>
+                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
@@ -324,7 +324,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/createNewCollection`}>
               <NewCollection setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/newCollection`}>
+            <Route exact path={`${path}/myCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 

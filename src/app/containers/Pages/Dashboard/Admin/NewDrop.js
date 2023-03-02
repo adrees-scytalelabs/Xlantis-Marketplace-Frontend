@@ -31,6 +31,8 @@ import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
+import Tooltip from "@material-ui/core/Tooltip";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,13 +89,6 @@ function NewDrop(props) {
   const classes = useStyles();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  const [startTimeStamp, setStartTimeStamp] = useState(
-    Math.round(startTime.getTime() / 1000)
-  );
-  const [endTimeStamp, setEndTimeStamp] = useState(
-    Math.round(endTime.getTime() / 1000)
-  );
-  const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
   // const [inputList, setInputList] = useState([]);
   // const [imageData, setImageData] = useState([]);
   let [saleType, setSaleType] = useState("auction");
@@ -122,6 +117,8 @@ function NewDrop(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
+  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -233,37 +230,6 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
       } else {
         let dropID;
         let DropData = {
@@ -274,13 +240,21 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: startTime,
-          endTime: endTime,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
+        // history.push({
+        //   pathname: `${path}/addNft`,
+        //   state: {
+        //     dropId: dropID,
+        //     saleType: saleType,
+        //     startTime: `2023-02-27T02:55:00.000+00:00`,
+        //     endTime: `2023-04-27T02:55:00.000+00:00`,
+        //     nftType: nftType,
+        //   },
+        // });
+        axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -293,8 +267,6 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
                 nftType: nftType,
               },
             });
@@ -364,47 +336,6 @@ function NewDrop(props) {
           });
           setIsSaving(false);
           handleCloseBackdrop();
-        } else if (
-          startTimeStamp === endTimeStamp ||
-          new Date(startTime) === new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction cannot be Start and End on same time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          startTimeStamp > endTimeStamp ||
-          new Date(startTime) > new Date(endTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar("Auction End time must be greater than Start time.", {
-            variant,
-          });
-          setIsSaving(false);
-          handleCloseBackdrop();
-        } else if (
-          currentTimeStamp >= startTimeStamp ||
-          new Date(Date.now()) >= new Date(startTime)
-        ) {
-          let variant = "error";
-          enqueueSnackbar(
-            "Auction Start time must be greater than Current time.",
-            { variant }
-          );
-          setIsSaving(false);
-          handleCloseBackdrop();
-          // } else if (minimumBid === undefined || minimumBid === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter minimum bid.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
-          // } else if (bidDelta === undefined || bidDelta === null) {
-          //     let variant = "error";
-          //     enqueueSnackbar("Please Enter Bid Delta.", { variant });
-          //     setIsSaving(false);
-          //     handleCloseBackdrop();
         } else {
           let dropID;
           // let tokenId = [];
@@ -439,13 +370,11 @@ function NewDrop(props) {
             title: name,
             image: image,
             description: description,
-            startTime: startTime,
-            endTime: endTime,
             saleType: saleType,
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post(`/${versionB}/drop/`, DropData).then(
+          axios.post(`/drop/`, DropData).then(
             (response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
@@ -470,8 +399,6 @@ function NewDrop(props) {
                 state: {
                   dropId: dropID,
                   saleType: saleType,
-                  startTime: startTimeStamp,
-                  endTime: endTimeStamp,
                   nftType: nftType,
                 },
               });
@@ -530,37 +457,6 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (
-        startTimeStamp === endTimeStamp ||
-        new Date(startTime) === new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction cannot be Start and End on same time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        startTimeStamp > endTimeStamp ||
-        new Date(startTime) > new Date(endTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar("Auction End time must be greater than Start time.", {
-          variant,
-        });
-        setIsSaving(false);
-        handleCloseBackdrop();
-      } else if (
-        currentTimeStamp >= startTimeStamp ||
-        new Date(Date.now()) >= new Date(startTime)
-      ) {
-        let variant = "error";
-        enqueueSnackbar(
-          "Auction Start time must be greater than Current time.",
-          { variant }
-        );
-        setIsSaving(false);
-        handleCloseBackdrop();
       } else {
         let dropID;
 
@@ -568,13 +464,11 @@ function NewDrop(props) {
           title: name,
           image: image,
           description: description,
-          startTime: startTime,
-          endTime: endTime,
           saleType: saleType,
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/${versionB}/drop/`, DropData).then(
+        axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
@@ -587,8 +481,6 @@ function NewDrop(props) {
               state: {
                 dropId: dropID,
                 saleType: saleType,
-                startTime: startTimeStamp,
-                endTime: endTimeStamp,
                 nftType: nftType,
               },
             });
@@ -633,20 +525,20 @@ function NewDrop(props) {
         setIpfsHash(result[0].hash);
         setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
+        enqueueSnackbar("Image Uploaded to IPFS", { variant });
         //
       });
     };
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
+    axios.post(`/upload/image`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -655,7 +547,7 @@ function NewDrop(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
 
@@ -808,56 +700,6 @@ function NewDrop(props) {
                       />
                     </div>
                   </div>
-                  {/* <div className="form-group newNftWrapper datePicker">
-                    <label
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Starts At
-                    </label>
-                    <div
-                      className="form-group"
-                      style={{ borderRadius: "12px" }}
-                    >
-                      <DateTimePicker
-                        className="form-control"
-                        onChange={(e) => {
-                          console.log(e);
-                          console.log("START", Math.round(e.getTime() / 1000));
-                          console.log("NOW", Math.round(Date.now() / 1000));
-
-                          setCurrentTimeStamp(
-                            Number(Math.round(Date.now()) / 1000)
-                          );
-                          setStartTimeStamp(
-                            Number(Math.round(e.getTime()) / 1000)
-                          );
-
-                          setStartTime(e);
-                        }}
-                        value={startTime}
-                      />
-                    </div>
-                    <label
-                      style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                    >
-                      Ends At
-                    </label>
-                    <div className="form-group newNftWrapper">
-                      <DateTimePicker
-                        className="form-control"
-                        onChange={(e) => {
-                          console.log(e);
-                          console.log(
-                            "e.getTime()",
-                            Math.round(e.getTime() / 1000)
-                          );
-                          setEndTimeStamp(Math.round(e.getTime() / 1000));
-                          setEndTime(e);
-                        }}
-                        value={endTime}
-                      />
-                    </div>
-                  </div> */}
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <lable
@@ -913,6 +755,8 @@ function NewDrop(props) {
                         name="position"
                         defaultValue="top"
                       >
+                        <Tooltip title={Text721}>
+
                         <FormControlLabel
                           style={{ color: "black" }}
                           value="ERC721"
@@ -923,9 +767,12 @@ function NewDrop(props) {
                           checked={nftType === "721"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC721</span>
+                            <span style={{ fontSize: "0.9rem" }}>Single <i class="fa fa-info-circle" aria-hidden="true"></i></span>
                           }
                         />
+                        </Tooltip>
+                        <Tooltip title={Text1155}>
+
                         <FormControlLabel
                           style={{ color: "black" }}
                           value="ERC1155"
@@ -935,9 +782,10 @@ function NewDrop(props) {
                           checked={nftType === "1155"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
-                            <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
+                            <span style={{ fontSize: "0.9rem" }}>Multiple <i class="fa fa-info-circle" aria-hidden="true"></i></span>
                           }
                         />
+                        </Tooltip>
                       </RadioGroup>
                     </FormControl>
                   </ThemeProvider>

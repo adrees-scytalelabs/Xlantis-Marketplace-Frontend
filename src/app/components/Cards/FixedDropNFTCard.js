@@ -108,7 +108,7 @@ const defaultStyles = {
 
 // COMPONENT FUNCTION
 function FixedDropNFTCard(props) {
-  console.log("props", props);
+  console.log("props nftCrad", props);
   const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
@@ -137,11 +137,13 @@ function FixedDropNFTCard(props) {
       to={{
         pathname: `/fixedDropNFTHome/${singleNFTid}`,
         state: {
+          nftDetails: props.data,
           dropId: props.data.dropId,
-          isSold: props.data.currentMarketplaceId.isSold,
-          price: props.data.currentMarketplaceId.price,
+          // isSold: props.data.currentMarketplaceId.isSold,
+          // price: props.data.currentMarketplaceId.price,
           saleType: props.saleType,
           description: props.description,
+         
         },
       }}
     >

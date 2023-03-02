@@ -28,6 +28,8 @@ const FixedPriceDropNFTs = () => {
   const location = useLocation();
   const saleType = location.state.saleType;
   const description = location.state.description;
+  const startTime = location.state.startTime;
+  const endTime = location.state.endTime;
 
   // Handlers
   const handleCloseBackdrop = () => {
@@ -49,11 +51,11 @@ const FixedPriceDropNFTs = () => {
     console.log("version", version);
     let endpoint;
     if (version === undefined) {
-      endpoint = `/v1-sso/drop/nfts/${dropId}/${start}/${end}`
+      endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
     else
     {
-      endpoint = `/${version}/drop/nfts/${dropId}/${start}/${end}`
+      endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
     axios.get(endpoint).then(
       (response) => {
@@ -169,6 +171,8 @@ const FixedPriceDropNFTs = () => {
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
+                          startTime = {startTime}
+                          endTime = {endTime}
                         />
                       </Grid>
                     ))}

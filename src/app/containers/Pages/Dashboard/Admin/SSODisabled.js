@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -166,7 +169,7 @@ function SSODisabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/disabled?userType=v1`)
+      .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.admins);
@@ -188,8 +191,6 @@ function SSODisabled(props) {
       });
   };
 
-  
-
   let handleEnableSSO = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -203,7 +204,7 @@ function SSODisabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/enable?userType=v1`, data).then(
+    axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -253,7 +254,7 @@ function SSODisabled(props) {
                     Wallet Address
                   </div>
                 </th>
-               
+
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Status
@@ -268,7 +269,12 @@ function SSODisabled(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (

@@ -21,7 +21,7 @@ function CollectionNfts(props) {
     };
     let getCollectionNfts = () => {
         handleShowBackdrop();
-        axios.get(`/${Cookies.get("Version")}/collection/${collectionId}`).then(
+        axios.get(`/collection/${collectionId}`).then(
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.nftsdata);

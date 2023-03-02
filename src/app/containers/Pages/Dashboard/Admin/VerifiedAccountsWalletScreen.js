@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -172,7 +175,7 @@ function VerifiedAccountsWalletScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/${start}/${end}`)
+      .get(`/super-admin/admins/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.Admins);
@@ -207,7 +210,7 @@ function VerifiedAccountsWalletScreen(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -264,7 +267,12 @@ function VerifiedAccountsWalletScreen(props) {
                     <tr>
                       <td className={classes.collectionTitle}>{i.username}</td>
                       <td className={classes.collectionTitle}>
-                        <Tooltip title={i.walletAddress}>
+                        <Tooltip
+                          classes={{ tooltip: classes.noMaxWidth }}
+                          leaveDelay={1500}
+                          title={i.walletAddress}
+                          arrow
+                        >
                           <span>{i.walletAddress.slice(0, 8)}...</span>
                         </Tooltip>
                       </td>

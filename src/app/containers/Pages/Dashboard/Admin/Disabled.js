@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   media: {
     height: 300,
   },
+  noMaxWidth: {
+    maxWidth: "none",
+  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
@@ -169,7 +172,7 @@ function Disabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/disabled?userType=v1`)
+      .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.admins);
@@ -199,7 +202,7 @@ function Disabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/disabled?userType=v2`)
+      .get(`/super-admin/admins/disabled?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
@@ -234,7 +237,7 @@ function Disabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/enable?userType=v1`, data).then(
+    axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -270,7 +273,7 @@ function Disabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/enable?userType=v2`, data).then(
+    axios.patch(`/super-admin/enable?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -339,14 +342,21 @@ function Disabled(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
                         <span>{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (
                       <label>N/A</label>
                     )}
                   </td>
-                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>SSO</label></td>
+                  <td className={classes.collectionTitle}>
+                    <label style={{ marginLeft: "10%" }}>SSO</label>
+                  </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled === false ? (
@@ -380,13 +390,17 @@ function Disabled(props) {
                   <td className={classes.collectionTitle}>N/A</td>
                   <td className={classes.collectionTitle}>
                     <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
                       title={i.walletAddress}
-                      
+                      arrow
                     >
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
-                  <td className={classes.collectionTitle}><label style={{ marginLeft: "10%" }}>Wallet</label></td>
+                  <td className={classes.collectionTitle}>
+                    <label style={{ marginLeft: "10%" }}>Wallet</label>
+                  </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled === false ? (

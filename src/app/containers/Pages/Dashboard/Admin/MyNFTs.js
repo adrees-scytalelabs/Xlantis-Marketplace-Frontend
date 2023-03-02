@@ -87,7 +87,7 @@ function MyNFTs(props) {
     handleShowBackdrop();
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`/${version}/nft/myNFTs/${start}/${end}`).then(
+    axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         let nfts = response.data.NFTdata;
