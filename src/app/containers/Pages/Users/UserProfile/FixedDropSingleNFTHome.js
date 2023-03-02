@@ -985,7 +985,7 @@ let giveAuctionErc20Approval = async () => {
     // getDropCloneAddress();
     // getNFTDetails();
     getTheDrop();
-    let priceCal = location.state.price;
+    let priceCal = location.state.nftDetails.currentMarketplaceId.price;
     setPrice(priceCal);
 
     return () => {
