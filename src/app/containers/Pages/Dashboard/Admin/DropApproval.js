@@ -260,6 +260,89 @@ function DropApproval(props) {
     }
   };
 
+  let giveFixedPriceApproval = async (i) => {
+    console.log(i);
+    console.log("Contract Type",i.contractType);
+    try{
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+      setIsSaving(false);
+      handleShow();
+    } else {
+      setApprovingFixedPrice(true);
+
+      const addressNft = i.nftContractAddress;
+      let addressDropFactory;
+      let abiNft;
+      if (i.contractType === "1155") {
+        console.log("1155 enter")
+        abiNft = CreateNFTContract1155;
+        addressDropFactory = Addresses.FactoryDrop1155;
+      } else if (i.contractType === "721") {
+        console.log("721 enter")
+        abiNft = CreateNFTContract721;
+        addressDropFactory = Addresses.FactoryDrop721;
+      }
+
+      console.log("Contract Address: ", i.nftContractAddress);
+      var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+      console.log("myContractInstance", myContractInstance);
+
+      await myContractInstance.methods
+        .setApprovalForAll(addressDropFactory, true)
+        .send({ from: accounts[0] }, (err, response) => {
+          console.log("get transaction", err, response);
+
+          if (err !== null) {
+            console.log("err", err);
+            let variant = "error";
+            enqueueSnackbar("User Canceled Transaction", { variant });
+            setApprovingFixedPrice(false);
+            handleCloseBackdrop();
+            setIsSaving(false);
+          }
+        })
+        .on("receipt", (receipt) => {
+          console.log("receipt", receipt);
+
+          //sending call on backend
+
+          let approvalData = {
+            collectionId: i._id,
+            factoryType: "fixed-price",
+          };
+
+          axios.put(`/collection/approve`, approvalData).then(
+            (response) => {
+              console.log("Response from approval of Fixed Price: ", response);
+              let variant = "success";
+              enqueueSnackbar('Collection Approved For Fixed Price Successfully', { variant });
+              setIsFixedPriceApproved(true);
+              setApprovingFixedPrice(false);
+            },
+            (err) => {
+              let variant = "error";
+              enqueueSnackbar('Unable to approve collection', { variant });
+              console.log("Err from approval Fixed-price: ", err);
+              console.log(
+                "Err response from approval Fixed-price: ",
+                err.response
+              );
+              setApprovingFixedPrice(false);
+            }
+          );
+        });
+    }
+  }
+  catch(e){
+    console.log("Fixed drop issue",e)
+  }
+  };
+
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
     console.log("version", version);
@@ -383,7 +466,7 @@ function DropApproval(props) {
                       </div>
                     ) : (
                       <div className="row no-gutters justify-content-center align-items-center">
-                        <Button className={classes.approveBtn}>Approve</Button>
+                        <Button className={classes.approveBtn} onClick={(e) => {giveFixedPriceApproval(i)}}>Approve</Button>
                       </div>
                     )}
                   </td>
