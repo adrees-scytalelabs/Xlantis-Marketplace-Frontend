@@ -261,6 +261,9 @@ function DropApproval(props) {
   };
 
   let giveFixedPriceApproval = async (i) => {
+    console.log(i);
+    console.log("Contract Type",i.contractType);
+    try{
     await loadWeb3();
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
@@ -275,10 +278,12 @@ function DropApproval(props) {
       const addressNft = i.nftContractAddress;
       let addressDropFactory;
       let abiNft;
-      if (i.nftType === "ERC1155") {
+      if (i.contractType === "1155") {
+        console.log("1155 enter")
         abiNft = CreateNFTContract1155;
         addressDropFactory = Addresses.FactoryDrop1155;
-      } else if (i.nftType === "ERC721") {
+      } else if (i.contractType === "721") {
+        console.log("721 enter")
         abiNft = CreateNFTContract721;
         addressDropFactory = Addresses.FactoryDrop721;
       }
@@ -332,6 +337,10 @@ function DropApproval(props) {
           );
         });
     }
+  }
+  catch(e){
+    console.log("Fixed drop issue",e)
+  }
   };
 
   let getCollections = (start, end) => {
@@ -457,7 +466,7 @@ function DropApproval(props) {
                       </div>
                     ) : (
                       <div className="row no-gutters justify-content-center align-items-center">
-                        <Button className={classes.approveBtn} >Approve</Button>
+                        <Button className={classes.approveBtn} onClick={(e) => {giveFixedPriceApproval(i)}}>Approve</Button>
                       </div>
                     )}
                   </td>
