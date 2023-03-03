@@ -77,13 +77,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
   },
   approveBtn: {
-    backgroundColor: "#F64D04",
+    backgroundColor: "#018f08",
     color: "#fff",
     padding: "6px 24px",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
     "&$hover": {
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+      color:"#fff"
     },
   },
 }));
