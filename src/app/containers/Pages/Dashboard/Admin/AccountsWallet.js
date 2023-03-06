@@ -148,6 +148,9 @@ function AccountsWallet(props) {
       accounts: "active",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 

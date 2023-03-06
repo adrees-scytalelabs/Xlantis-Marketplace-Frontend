@@ -160,6 +160,9 @@ const ManageAccountsWallet = (props) => {
       accounts: "",
       sso: "",
       wallet: "active",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 

@@ -113,6 +113,9 @@ function SuperAdminSSOScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     });
     getCounts();
     // eslint-disable-next-line

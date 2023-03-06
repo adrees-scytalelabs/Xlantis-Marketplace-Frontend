@@ -125,6 +125,9 @@ function AccountApprovalDefaultScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 
