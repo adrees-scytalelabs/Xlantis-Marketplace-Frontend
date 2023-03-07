@@ -126,6 +126,9 @@ function VerifiedAccounts(props) {
       verifiedAccounts:"active",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 

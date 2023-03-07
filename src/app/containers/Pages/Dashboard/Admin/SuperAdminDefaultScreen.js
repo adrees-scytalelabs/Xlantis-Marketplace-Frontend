@@ -124,7 +124,10 @@ function SuperAdminDefaultScreen(props) {
       accountApproval: "",
       accounts: "",
       sso:"",
-      wallet:""
+      wallet:"",
+      properties:"",
+      template:"",
+      saved:"",
     });
     getCounts();
     // eslint-disable-next-line

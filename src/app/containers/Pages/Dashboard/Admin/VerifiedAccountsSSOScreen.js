@@ -136,7 +136,6 @@ function VerifiedAccountsSSOScreen(props) {
     setOpen(true);
   };
 
-  const history = useHistory();
 
   useEffect(() => {
     getUnverifiedAdmins(0, rowsPerPage);
@@ -149,6 +148,9 @@ function VerifiedAccountsSSOScreen(props) {
       verifiedAccounts: "active",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 

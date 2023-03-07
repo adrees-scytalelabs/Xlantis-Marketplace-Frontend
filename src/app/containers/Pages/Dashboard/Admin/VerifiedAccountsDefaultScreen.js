@@ -152,6 +152,9 @@ function VerifiedAccountsDefaultScreen(props) {
       verifiedAccounts: "active",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
   const handleChangePage = (event, newPage) => {
