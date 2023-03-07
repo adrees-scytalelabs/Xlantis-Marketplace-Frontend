@@ -107,7 +107,8 @@ function HeaderHome(props) {
     setOpen(true);
   };
   useEffect(() => {
-    setSocket(io("https://xlantis-marketplace.herokuapp.com/"));
+    // setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    setSocket(io("http://localhost:3002"));
     console.log("socket was set");
   }, []);
   useEffect(() => {
@@ -375,18 +376,22 @@ function HeaderHome(props) {
         (response) => {
           console.log("response", response);
           if (props.role === "admin") {
-            setAdminSignInData(response.data);
+            console.log("admin sett");
+            console.log("admin data set");
             Cookies.set("Version", "v2-wallet-login", {});
-              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-              Cookies.set("Verified", response.data.isVerified, {});
-              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-              if (
-                response.data.isInfoAdded === true &&
-                response.data.isVerified === true
-              ) {
-                sessionStorage.setItem("Address", accounts[0]);
-                window.location.reload(false);
-              }
+            console.log("version set");
+            Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+            Cookies.set("Verified", response.data.isVerified, {});
+            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+            if (
+              response.data.isInfoAdded === true &&
+              response.data.isVerified === true
+            ) {
+              sessionStorage.setItem("Address", accounts[0]);
+              window.location.reload(false);
+            }
+            setAdminSignInData(response.data);
+
           } 
           else {
             console.log("Running user", response.data)
