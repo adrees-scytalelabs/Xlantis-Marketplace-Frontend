@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
 import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function TemplateProperties(props) {
+  let history = useHistory();
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
@@ -14,6 +16,7 @@ function TemplateProperties(props) {
       template:"active",
       saved:"active",
     }); // eslint-disable-next-line
+    history.push({ pathname: '/superAdminDashboard/properties/savedTemplate' })
   }, []);
   return (
     <div className="backgroundDefault">
