@@ -12,7 +12,9 @@ const RequestApprovalModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header>Approval Required</Modal.Header>
+      <Modal.Header closeButton className="custom-header">
+        Approval Required
+      </Modal.Header>
       <Modal.Body>
         <div
           style={{
