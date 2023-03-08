@@ -33,30 +33,37 @@ function TemplateDetails(props) {
               </Col>
             </Row>
             {props.templateData.properties.map((i, index) => (
-            
               <Row key={index} className="no-gutters mt-3">
-                <Col xs={12} lg={5} md={5} sm={12} style={{ color: "#000" }}>Key
-                <input
-                  name="key"
-                  type="text"
-                  disabled
-                  value={i.key}
-                  className="newNftProps"
-                />
-              </Col>
-              
-                <Col xs={12} lg={5} md={5} sm={12} className="ml-5" style={{ color: "#000" }}>Type
-                <input
-                  name="value"
-                  type="text"
-                  disabled
-                  value={i.type}
-                  className="newNftProps"
-                />
+                <Col xs={12} lg={5} md={5} sm={12} style={{ color: "#000" }}>
+                  Key
+                  <input
+                    name="key"
+                    type="text"
+                    disabled
+                    value={i.key}
+                    className="newNftProps"
+                  />
+                </Col>
+
+                <Col
+                  xs={12}
+                  lg={5}
+                  md={5}
+                  sm={12}
+                  className="ml-5"
+                  style={{ color: "#000" }}
+                >
+                  Type
+                  <input
+                    name="value"
+                    type="text"
+                    disabled
+                    value={i.type}
+                    className="newNftProps"
+                  />
                 </Col>
               </Row>
-            
-          ))}
+            ))}
           </div>
         </Modal.Body>
         <Modal.Footer>

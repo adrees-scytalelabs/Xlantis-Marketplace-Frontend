@@ -9,8 +9,8 @@ import Backdrop from "@material-ui/core/Backdrop";
 import { useSnackbar } from "notistack";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import Table from "react-bootstrap/Table";
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from "@material-ui/icons/Delete";
+import EditIcon from "@material-ui/icons/Edit";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 
 const useStyles = makeStyles((theme) => ({
@@ -95,32 +95,28 @@ function SavedTemplate(props) {
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [templateData, setTemplateData] = useState([]);
   const [open, setOpen] = useState(false);
-  const [modalState,setModalState] = useState(false);
-  const [modalData,setModalData] = useState();
+  const [modalState, setModalState] = useState(false);
+  const [modalData, setModalData] = useState();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  const handleOpen = (e,data) => {
+  const handleOpen = (e, data) => {
     e.preventDefault();
     setModalData(data);
     setModalState(true);
-  }
-  const handleClose =() => {
+  };
+  const handleClose = () => {
     setModalState(false);
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    // getUnverifiedAdmins(
-    //   newPage * rowsPerPage,
-    //   newPage * rowsPerPage + rowsPerPage
-    // );
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -130,18 +126,7 @@ function SavedTemplate(props) {
   };
 
   let handleSavedTemplate = async () => {
-    // e.preventDefault();
     handleShowBackdrop();
-
-    // console.log("Properties : ", properties);
-    // console.log("Title", title);
-
-    // let templateData = {
-    //   name: title,
-    //   data: properties,
-    // };
-
-    // console.log("Template Data", templateData);
     try {
       axios.get("/super-admin/template").then(
         (response) => {
@@ -168,8 +153,15 @@ function SavedTemplate(props) {
       console.log("Error in axios request to create template", e);
     }
   };
-  let check = () => {
-    console.log("Data of the state", templateData);
+  let handleDelete = (e, data) => {
+    e.preventDefault();
+    let variant = "success";
+    enqueueSnackbar("Template deleted successfully", { variant });
+  };
+  let handleUpdate = (e, data) => {
+    e.preventDefault();
+    let variant = "success";
+    enqueueSnackbar("Template updated successfully", { variant });
   };
   useEffect(() => {
     handleSavedTemplate();
@@ -220,8 +212,11 @@ function SavedTemplate(props) {
               </th>
               <th className={classes.tableHeader}>
                 <div className="row no-gutters justify-content-start align-items-center">
-                  Properties
+                  No of Properties
                 </div>
+              </th>
+              <th className={`${classes.tableHeader}`}>
+                <div className="ml-5">Details</div>
               </th>
               <th className={classes.tableHeader}>
                 <div className="row no-gutters justify-content-start align-items-center">
@@ -234,21 +229,34 @@ function SavedTemplate(props) {
             <tbody>
               <tr>
                 <td className={classes.collectionTitle}>{i.name}</td>
+                <td className={`${classes.collectionTitle}`}>
+                  <div className="justify-content-center align-items-center ml-5">
+                    {" "}
+                    {i.properties.length}{" "}
+                  </div>
+                </td>
                 <td className={classes.collectionTitle}>
-                  Total Number of Properties is {i.properties.length}
-                  <br></br>
                   <button
-                    className="btn submit-btn propsActionBtn ml-3"
-                    // onClick={(e) => handleSaveTemplate(e)}
-                    // style={{ float: "right" }}
-                    onClick={(e) => handleOpen(e,i)}
+                    className="btn submit-btn propsActionBtn "
+                    onClick={(e) => handleOpen(e, i)}
                   >
-                    View Properties
+                    View
                   </button>
                 </td>
                 <td className={classes.collectionTitle}>
-                  <span className="ml-5"><DeleteIcon color="action" style={{color:"red"}}></DeleteIcon></span>
-                  <span className="ml-2"><EditIcon  style={{color:`green` }}></EditIcon></span>
+                  <span className="ml-5">
+                    <DeleteIcon
+                      color="action"
+                      style={{ color: "red" }}
+                      onClick={(e) => handleDelete(e, i)}
+                    ></DeleteIcon>
+                  </span>
+                  <span className="ml-2">
+                    <EditIcon
+                      style={{ color: `green` }}
+                      onClick={(e) => handleUpdate(e, i)}
+                    ></EditIcon>
+                  </span>
                 </td>
               </tr>
             </tbody>
