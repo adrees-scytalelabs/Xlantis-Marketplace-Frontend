@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
  
 }));
+
 // COMPONENT FUNCTION
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -30,6 +31,8 @@ const NewTamplateModal = (props) => {
   let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   let [defaultt, setDefault] = useState(false);
   const [open, setOpen] = useState(false);
+  let [available, setAvailable] = useState();
+  let [checking , setChecking] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -63,6 +66,34 @@ const NewTamplateModal = (props) => {
     setProperties(data);
   };
 
+  let handleAvailibility = (e) => {
+    e.preventDefault();
+    setChecking(true);
+    let namee = e.target.value;
+    
+
+    axios.get(`/nft-properties/template/is-available/${namee}`).then(
+      (response) => {
+        console.log("response", response);
+        setAvailable(response.data.isAvailable);
+        setChecking(false);
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          setChecking(false);
+
+          console.log(error);
+          console.log(error.response);
+        }
+
+        
+      }
+    );
+    // setTimeout(() => {
+    //   setChecking(false);
+    // }, 2000);
+  }
 
 
 
@@ -105,6 +136,65 @@ const NewTamplateModal = (props) => {
     );
   }
 
+  const getIcon = () => {
+    if (checking) {
+      return (
+        <div
+          style={{
+            position: 'absolute',
+            top: '50%',
+            right: '5px',
+            transform: 'translateY(-50%)',
+          }}
+        >
+          <i className="fa fa-spinner"></i>
+        </div>
+      );
+    } else if (title && !checking) {
+      if (!available) {
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: '5px',
+              transform: 'translateY(-50%)',
+              color: 'green',
+              fontWeight: 'bold',
+            }}
+          >
+            ✓
+          </div>
+        );
+      } else {
+        return (
+          <div
+            style={{
+              position: 'absolute',
+              top: '50%',
+              right: '5px',
+              transform: 'translateY(-50%)',
+              color:'red'
+              // cursor: 'pointer',
+            }}
+            // onClick={handleClearClick}
+          >
+            X
+          </div>
+        );
+      }
+    }
+  };
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -123,20 +213,30 @@ const NewTamplateModal = (props) => {
               <div className="form-group w-100">
                 <label>Title<span style={{ color: "#F64D04" }}>&#42;</span></label>
                 <div className="filter-widget">
-                  <input
-                    name="title"
-                    type="text"
-                    placeholder="Enter title of the property"
-                    required
-                    value={title}
-                    className="newNftProps"
-                    onChange={(e) => {
-                      console.log("title", e.target.value)
-                      setTitle(e.target.value);
-                    }
-                    }
-                  />
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      name="title"
+                      type="text"
+                      placeholder="Enter title of the property"
+                      required
+                      value={title}
+                      style={{ paddingRight: '20px' }}
+                      className="newNftProps"
+                      onBlur={(e) => {
+                        setAvailable()
+                        handleAvailibility(e)
+                      }}
+                      onChange={(e) => {
+                        console.log("title", e.target.value)
+                        setTitle(e.target.value);
+                      }}
+                      
+                    />
+                    {getIcon()}
+
+                  </div>
                 </div>
+
               </div>
             </div>
             <div className="row no-gutters justify-content-md-between align-items-center">
@@ -236,12 +336,29 @@ const NewTamplateModal = (props) => {
             </div>
           </div>
           <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
-            <button
+            {available ? (
+              <Tooltip
+              title="Template title already taken"
+              placement="bottom"
+              >
+                <button
+                className="newTemplateBtn"
+                disabled
+                onClick={(e) => handleSaveTemplate(e)}
+                >
+                Save Template
+                </button>
+              </Tooltip>
+            ) : (
+              <button
               className="newTemplateBtn"
               onClick={(e) => handleSaveTemplate(e)}
-            >
-              Save Template
-            </button>
+              >
+                Save Template
+              </button>
+
+            )}
+            
           </div>
         </div>
         <div className="mt-2 row no-gutters align-items-center">
