@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 
@@ -12,11 +12,11 @@ function TemplateProperties(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"active",
-      template:"active",
-      saved:"active",
+      properties: "active",
+      template: "active",
+      saved: "active",
     }); // eslint-disable-next-line
-    history.push({ pathname: '/superAdminDashboard/properties/savedTemplate' })
+    history.push({ pathname: "/superAdminDashboard/properties/savedTemplate" });
   }, []);
   return (
     <div className="backgroundDefault">
@@ -36,8 +36,8 @@ function TemplateProperties(props) {
           </div>
         </div>
       </div>
-      </div>
-  )
+    </div>
+  );
 }
 
-export default TemplateProperties
+export default TemplateProperties;
