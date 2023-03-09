@@ -169,7 +169,15 @@ function AccountsDefaultScreen(props) {
       newPage * rowsPerPage + rowsPerPage
     );
   };
-
+  const handleModalOpen = (e,data) => {
+      e.preventDefault();
+      handleShow()
+      setModalData(data);
+  }
+  const handleModalClose = (e,data) => {
+    e.preventDefault();
+    handleClose()
+}
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -292,7 +300,11 @@ function AccountsDefaultScreen(props) {
                     Wallet Address
                   </div>
                 </th>
-               
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Detail
+                  </div>
+                </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Login Type
@@ -324,7 +336,14 @@ function AccountsDefaultScreen(props) {
                       <label>N/A</label>
                     )}
                   </td>
-                  
+                  <td className={classes.collectionTitle}>
+                  <button
+                    className="btn submit-btn propsActionBtn "
+                    onClick={(e) => handleModalOpen(e, i)}
+                  >
+                    View
+                  </button>
+                </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
@@ -346,7 +365,14 @@ function AccountsDefaultScreen(props) {
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
-                 
+                  <td className={classes.collectionTitle}>
+                  <button
+                    className="btn submit-btn propsActionBtn "
+                    onClick={(e) => handleModalOpen(e, i)}
+                  >
+                    View
+                  </button>
+                </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>Wallet</label>
                   </td>
@@ -374,7 +400,13 @@ function AccountsDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-     
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      >
+
+      </AdminInformationModal>
     </div>
   );
 }
