@@ -36,6 +36,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +127,7 @@ function AccountsDefaultScreen(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
-
+  const [modalData,setModalData] = useState()
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -143,6 +144,7 @@ function AccountsDefaultScreen(props) {
   useEffect(() => {
     getUnverifiedWallet(0, rowsPerPage);
     getUnverifiedAdmins(0, rowsPerPage);
+    setShow(false);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -167,6 +169,7 @@ function AccountsDefaultScreen(props) {
       newPage * rowsPerPage + rowsPerPage
     );
   };
+
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -289,6 +292,7 @@ function AccountsDefaultScreen(props) {
                     Wallet Address
                   </div>
                 </th>
+               
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Login Type
@@ -320,6 +324,7 @@ function AccountsDefaultScreen(props) {
                       <label>N/A</label>
                     )}
                   </td>
+                  
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
@@ -341,6 +346,7 @@ function AccountsDefaultScreen(props) {
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
+                 
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>Wallet</label>
                   </td>
@@ -368,6 +374,7 @@ function AccountsDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+     
     </div>
   );
 }
