@@ -127,7 +127,7 @@ function AccountsDefaultScreen(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
-  const [modalData,setModalData] = useState()
+  const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -153,9 +153,9 @@ function AccountsDefaultScreen(props) {
       accounts: "active",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -169,15 +169,15 @@ function AccountsDefaultScreen(props) {
       newPage * rowsPerPage + rowsPerPage
     );
   };
-  const handleModalOpen = (e,data) => {
-      e.preventDefault();
-      handleShow()
-      setModalData(data);
-  }
-  const handleModalClose = (e,data) => {
+  const handleModalOpen = (e, data) => {
     e.preventDefault();
-    handleClose()
-}
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
@@ -281,7 +281,6 @@ function AccountsDefaultScreen(props) {
       {/* Page Content */}
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
               <tr>
@@ -310,11 +309,6 @@ function AccountsDefaultScreen(props) {
                     Login Type
                   </div>
                 </th>
-                {/* <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
-                  </div>
-                </th> */}
               </tr>
             </thead>
             {admins.map((i, index) => (
@@ -337,13 +331,13 @@ function AccountsDefaultScreen(props) {
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) => handleModalOpen(e, i)}
-                  >
-                    View
-                  </button>
-                </td>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
@@ -366,13 +360,13 @@ function AccountsDefaultScreen(props) {
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) => handleModalOpen(e, i)}
-                  >
-                    View
-                  </button>
-                </td>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>Wallet</label>
                   </td>
@@ -404,9 +398,7 @@ function AccountsDefaultScreen(props) {
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
-      >
-
-      </AdminInformationModal>
+      ></AdminInformationModal>
     </div>
   );
 }

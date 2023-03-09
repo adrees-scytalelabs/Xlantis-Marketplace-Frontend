@@ -115,7 +115,7 @@ function AccountsSSO(props) {
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-  const [modalData,setModalData] = useState()
+  const [modalData, setModalData] = useState();
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [adminCount, setAdminCount] = useState(0);
@@ -295,13 +295,13 @@ function AccountsSSO(props) {
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) => handleModalOpen(e, i)}
-                  >
-                    View
-                  </button>
-                </td>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
                 </tr>
               </tbody>
             ))}
