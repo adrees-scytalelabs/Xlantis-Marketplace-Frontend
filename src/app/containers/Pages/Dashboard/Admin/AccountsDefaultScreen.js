@@ -36,6 +36,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -126,7 +127,7 @@ function AccountsDefaultScreen(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
-
+  const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -143,6 +144,7 @@ function AccountsDefaultScreen(props) {
   useEffect(() => {
     getUnverifiedWallet(0, rowsPerPage);
     getUnverifiedAdmins(0, rowsPerPage);
+    setShow(false);
     // getMyCubes();
     props.setActiveTab({
       dashboard: "",
@@ -151,9 +153,9 @@ function AccountsDefaultScreen(props) {
       accounts: "active",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -166,6 +168,15 @@ function AccountsDefaultScreen(props) {
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
     );
+  };
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -270,7 +281,6 @@ function AccountsDefaultScreen(props) {
       {/* Page Content */}
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
               <tr>
@@ -291,14 +301,14 @@ function AccountsDefaultScreen(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
+                    Detail
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
                     Login Type
                   </div>
                 </th>
-                {/* <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
-                  </div>
-                </th> */}
               </tr>
             </thead>
             {admins.map((i, index) => (
@@ -321,6 +331,14 @@ function AccountsDefaultScreen(props) {
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
+                  <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
                   </td>
                 </tr>
@@ -340,6 +358,14 @@ function AccountsDefaultScreen(props) {
                     >
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>Wallet</label>
@@ -368,6 +394,11 @@ function AccountsDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }
