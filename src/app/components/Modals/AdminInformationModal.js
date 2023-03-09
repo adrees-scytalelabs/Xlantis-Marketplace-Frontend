@@ -3,9 +3,9 @@ import { Col, Modal, Row } from "react-bootstrap";
 
 function AdminInformationModal(props) {
   useEffect(() => {
-    console.log(props);
+    console.log(props.adminData);
     console.log("Reach Template Data", props);
-  }, []);
+  },[props]);
   return (
     props.show == true && (
         <Modal
@@ -25,7 +25,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.username}
+                    value={props.adminData.username}
                     className="newNftProps"
                   />
                 </Col>
@@ -37,7 +37,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.companyName}
+                    value={props.adminData.companyName}
                     className="newNftProps"
                   />
                 </Col>
@@ -49,7 +49,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.designation}
+                    value={props.adminData.designation}
                     className="newNftProps"
                   />
                 </Col>
@@ -61,7 +61,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.domain}
+                    value={props.adminData.domain}
                     className="newNftProps"
                   />
                 </Col>
@@ -73,7 +73,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.industryType}
+                    value={props.adminData.industryType}
                     className="newNftProps"
                   />
                 </Col>
@@ -85,7 +85,7 @@ function AdminInformationModal(props) {
                     name="title"
                     type="text"
                     disabled
-                    value={props.reasonForInterest}
+                    value={props.adminData.reasonForInterest}
                     className="newNftProps"
                   />
                 </Col>
