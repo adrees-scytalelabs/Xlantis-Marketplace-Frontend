@@ -36,6 +36,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -114,10 +115,9 @@ function AccountsSSO(props) {
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
+  const [modalData,setModalData] = useState()
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
-
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -148,9 +148,9 @@ function AccountsSSO(props) {
       accounts: "active",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -234,6 +234,15 @@ function AccountsSSO(props) {
       }
     );
   };
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
 
   return (
     <div className="backgroundDefault">
@@ -259,11 +268,11 @@ function AccountsSSO(props) {
                     Wallet Address
                   </div>
                 </th>
-                {/* <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Detail
                   </div>
-                </th> */}
+                </th>
               </tr>
             </thead>
             {admins.map((i, index) => (
@@ -285,6 +294,14 @@ function AccountsSSO(props) {
                       <label>N/A</label>
                     )}
                   </td>
+                  <td className={classes.collectionTitle}>
+                  <button
+                    className="btn submit-btn propsActionBtn "
+                    onClick={(e) => handleModalOpen(e, i)}
+                  >
+                    View
+                  </button>
+                </td>
                 </tr>
               </tbody>
             ))}
@@ -309,6 +326,11 @@ function AccountsSSO(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }
