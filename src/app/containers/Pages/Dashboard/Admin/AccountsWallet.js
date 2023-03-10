@@ -164,19 +164,13 @@ function AccountsWallet(props) {
             <thead>
               <tr>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
+                  <div className="row no-gutters">Username</div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
+                  <div className="row no-gutters">Wallet Address</div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Detail
-                  </div>
+                  <div className="row no-gutters ml-5">Details</div>
                 </th>
                 {/* <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
@@ -196,7 +190,9 @@ function AccountsWallet(props) {
                       title={i.walletAddress}
                       arrow
                     >
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
+                      <span className="ml-4">
+                        {i.walletAddress.slice(0, 8)}...
+                      </span>
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>
