@@ -219,16 +219,11 @@ function AccountsSSO(props) {
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on status pending nft: ", error);
         console.log("Error on status pending nft: ", error.response);
-
-        // setIsUploadingData(false);
-
         handleCloseBackdrop();
-
         let variant = "error";
         enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
@@ -249,29 +244,16 @@ function AccountsSSO(props) {
       {/* Page Content */}
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
               <tr>
+                <th className={classes.tableHeader}>Username</th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
+                  <span className="ml-4"> Email</span>
                 </th>
+                <th className={classes.tableHeader}>Wallet Address</th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Email
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Detail
-                  </div>
+                  <div className="ml-5">Details</div>
                 </th>
               </tr>
             </thead>
@@ -288,10 +270,12 @@ function AccountsSSO(props) {
                         title={i.walletAddress}
                         arrow
                       >
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-5">N/A</label>
                     )}
                   </td>
                   <td className={classes.collectionTitle}>

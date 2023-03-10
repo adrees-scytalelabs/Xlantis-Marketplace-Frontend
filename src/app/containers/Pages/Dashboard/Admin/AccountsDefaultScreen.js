@@ -301,7 +301,7 @@ function AccountsDefaultScreen(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center ml-5">
-                    Detail
+                    Details
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
