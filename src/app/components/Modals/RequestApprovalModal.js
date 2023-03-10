@@ -40,6 +40,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
@@ -66,6 +67,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
