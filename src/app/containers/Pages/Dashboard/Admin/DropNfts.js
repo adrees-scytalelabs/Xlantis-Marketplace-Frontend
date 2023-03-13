@@ -317,7 +317,7 @@ function MyNFTs(props) {
       audio.pause();
     }
   };
-  let nftIdLen=location.state.nftId.length;
+  let nftIdLen = location.state.nftId.length;
 
   let getNFTs = (start, end) => {
     handleShowBackdrop();
@@ -331,55 +331,49 @@ function MyNFTs(props) {
     };
     const version = Cookies.get("Version");
     console.log("version", version);
-    
-    
-    if (nftIdLen!=0){
+
+    if (nftIdLen != 0) {
       axios
-      .get(
-        `/drop/nfts/${location.state.dropId}/${start}/${end}`,
-        data
-      )
-      .then(
-        (response) => {
-          console.log("response", response.data.data);
+        .get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data)
+        .then(
+          (response) => {
+            console.log("response", response.data.data);
 
-          let nfts = response.data.data;
-          let newState = nfts.map((obj) => {
-            return { ...obj, isPlaying: false };
-          });
-          console.log("NFTS", nfts);
-          console.log("Updated", newState);
-          setTokenList(newState);
-          // setTokenList(tokenList.map())
-          // setTokenList(...tokenList, isPlaying : false);
-          setTotalNfts(response.data.data.length);
+            let nfts = response.data.data;
+            let newState = nfts.map((obj) => {
+              return { ...obj, isPlaying: false };
+            });
+            console.log("NFTS", nfts);
+            console.log("Updated", newState);
+            setTokenList(newState);
+            // setTokenList(tokenList.map())
+            // setTokenList(...tokenList, isPlaying : false);
+            setTotalNfts(response.data.data.length);
 
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (error.response.data !== undefined) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              sessionStorage.removeItem("Authorization");
-              sessionStorage.removeItem("Address");
-              Cookies.remove("Version");
-
-              window.location.reload(false);
+            handleCloseBackdrop();
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
             }
+            if (error.response.data !== undefined) {
+              if (
+                error.response.data === "Unauthorized access (invalid token) !!"
+              ) {
+                sessionStorage.removeItem("Authorization");
+                sessionStorage.removeItem("Address");
+                Cookies.remove("Version");
+
+                window.location.reload(false);
+              }
+            }
+            handleCloseBackdrop();
           }
-          handleCloseBackdrop();
-        }
-      );
-    }
-    else{
+        );
+    } else {
       handleCloseBackdrop();
     }
-    
   };
 
   useEffect(() => {
@@ -435,6 +429,9 @@ function MyNFTs(props) {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Market Place
+              </li>
               <li className="breadcrumb-item active">Market Place Drops</li>
             </ul>
           </div>
@@ -488,29 +485,28 @@ function MyNFTs(props) {
                     Loading...
                   </span>
                 </div>
-              ) : (tokenList.length === 0 ) ? (
+              ) : tokenList.length === 0 ? (
                 <Card
-                variant="outlined"
-                style={{
+                  variant="outlined"
+                  style={{
                     padding: "40px",
-                    paddingTop:"80px",
+                    paddingTop: "80px",
                     marginTop: "20px",
                     marginBottom: "20px",
                     backgroundColor: "#000",
-                    marginLeft:"20%"
-                }}
+                    marginLeft: "20%",
+                  }}
                 >
-                <Typography
+                  <Typography
                     variant="body2"
                     className="text-center"
                     component="p"
                     style={{ color: "#fff" }}
-                >
+                  >
                     <strong>No items to display </strong>
-                </Typography>
-                </Card>         
+                  </Typography>
+                </Card>
               ) : (
-                
                 <Grid
                   container
                   spacing={3}
@@ -821,9 +817,9 @@ function MyNFTs(props) {
                     </Grid>
                   ))}
                 </Grid>
-                )}
-                
-                <TablePagination
+              )}
+
+              <TablePagination
                 rowsPerPageOptions={[4, 8, 12, 24]}
                 component="div"
                 count={totalNfts}
@@ -833,9 +829,7 @@ function MyNFTs(props) {
                 onChangeRowsPerPage={handleChangeRowsPerPage}
               />
             </div>
-            </ThemeProvider>
-         
-         
+          </ThemeProvider>
         </div>
       </div>
       {/* <Backdrop className={classes.backdrop} open={open} >

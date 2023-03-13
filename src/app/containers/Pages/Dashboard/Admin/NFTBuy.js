@@ -615,7 +615,11 @@ const NFTBuy = (props) => {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">MarketPlace</li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                Market Place
+              </li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>Market Place Drops</li>
+              <li className="breadcrumb-item active">Buy Details</li>
             </ul>
           </div>
         </div>

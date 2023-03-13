@@ -174,7 +174,7 @@ function MyNFTs(props) {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">My NFTs</li>
+              <li className="breadcrumb-item active">NFTs</li>
             </ul>
           </div>
         </div>
