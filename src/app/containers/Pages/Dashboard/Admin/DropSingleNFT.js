@@ -551,7 +551,9 @@ const DropSingleNFT = (props) => {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">NFT</li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>Drop Nfts</li>
+              <li className="breadcrumb-item active">NFT Detail</li>
             </ul>
           </div>
         </div>

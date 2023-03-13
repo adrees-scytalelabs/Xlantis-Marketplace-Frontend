@@ -164,6 +164,7 @@ const SingleNftDetail = (props) => {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>NFTs</li>
               <li className="breadcrumb-item active">NFT Details</li>
             </ul>
           </div>

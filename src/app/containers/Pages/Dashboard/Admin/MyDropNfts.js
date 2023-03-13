@@ -253,6 +253,7 @@ function MyDropNFTs(props) {
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
               <li className="breadcrumb-item active">Drop Nfts</li>
             </ul>
           </div>
