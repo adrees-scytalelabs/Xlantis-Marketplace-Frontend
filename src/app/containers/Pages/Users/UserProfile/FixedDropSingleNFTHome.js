@@ -148,7 +148,7 @@ const FixedDropSingleNFTHome = () => {
     Math.round(bidExpiryTime.getTime() / 1000)
   );
   const [price, setPrice] = useState();
-  const [nftProperties, setNftProperties] = useState([]);
+  const [nftProperties, setNftProperties] = useState({});
   const classes = useStyles();
   let history = useHistory();
   const location = useLocation();
@@ -981,6 +981,9 @@ let giveAuctionErc20Approval = async () => {
     console.log("nftdetails props", location.state);
     setNftData(location.state.nftDetails);
     setNftBlockChainId(location.state.nftDetails.nftId);
+    setNftProperties(Object.entries(location.state.nftDetails.properties));
+    console.log("properties", location.state.nftDetails.properties );
+
 
     // getDropCloneAddress();
     // getNFTDetails();
@@ -1110,6 +1113,8 @@ let giveAuctionErc20Approval = async () => {
                           {price} USD
                         </Col>
                       </Row>
+                      {nftData.supplyType ?
+                      (
                       <Row>
                         <Col>
                           <Typography
@@ -1133,6 +1138,8 @@ let giveAuctionErc20Approval = async () => {
                           {nftData.supplyType ? nftData.supplyType : null}
                         </Col>
                       </Row>
+                      ) : (null)}
+                      {nftData.tokenSupply ? (
                       <Row>
                         <Col>
                           <Typography
@@ -1156,6 +1163,7 @@ let giveAuctionErc20Approval = async () => {
                           {nftData.tokenSupply}
                         </Col>
                       </Row>
+                      ) : (null)}
                     </CardContent>
                   </Card>
                   {/* Porperties */}
