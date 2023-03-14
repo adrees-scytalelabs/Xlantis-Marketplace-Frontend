@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  tooltip: {
+    fontSize: "16px", 
+  },
 }));
 
 function NewCollection(props) {
@@ -859,7 +862,9 @@ function NewCollection(props) {
                       name="position"
                       defaultValue="top"
                     >
-                      <Tooltip title={Text721}>
+                      <Tooltip title={Text721}
+                      classes={{ tooltip: classes.tooltip }}>
+                          
 
                       <FormControlLabel
                         style={{ color: "white" }}
@@ -875,7 +880,9 @@ function NewCollection(props) {
                         }
                       />
                       </Tooltip>
-                      <Tooltip title={Text1155}>
+                      <Tooltip title={Text1155}
+                      classes={{ tooltip: classes.tooltip }}>
+
 
                       <FormControlLabel
                         style={{ color: "white" }}

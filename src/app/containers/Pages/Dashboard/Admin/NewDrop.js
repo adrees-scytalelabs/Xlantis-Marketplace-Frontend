@@ -64,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  tooltip: {
+    fontSize: "16px", 
+  },
 }));
 
 const makeTheme = createMuiTheme({
@@ -755,7 +758,9 @@ function NewDrop(props) {
                         name="position"
                         defaultValue="top"
                       >
-                        <Tooltip title={Text721}>
+                        <Tooltip title={Text721}
+                        classes={{ tooltip: classes.tooltip }}>
+                        
 
                         <FormControlLabel
                           style={{ color: "black" }}
@@ -771,7 +776,9 @@ function NewDrop(props) {
                           }
                         />
                         </Tooltip>
-                        <Tooltip title={Text1155}>
+                        <Tooltip title={Text1155}
+                          classes={{ tooltip: classes.tooltip }}>
+                          
 
                         <FormControlLabel
                           style={{ color: "black" }}
