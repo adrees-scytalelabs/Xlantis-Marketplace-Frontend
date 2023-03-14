@@ -250,10 +250,14 @@ function MyDropNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Drop Nfts</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+              </Link>
+              <Link to={`/dashboard/myDrops`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
+              </Link>
               <li className="breadcrumb-item active">Drop Nfts</li>
             </ul>
           </div>
@@ -304,6 +308,8 @@ function MyDropNFTs(props) {
                           nftDetail: i,
                           saleType: location.state.saleType,
                           status: location.state.status,
+                          nftId: location.state.nftId,
+                          dropId:location.state.dropId
                         },
                       }}
                     >
