@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
@@ -171,9 +172,11 @@ function MyNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+            </Link>
               <li className="breadcrumb-item active">NFTs</li>
             </ul>
           </div>
