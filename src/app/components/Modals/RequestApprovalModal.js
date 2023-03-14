@@ -12,7 +12,9 @@ const RequestApprovalModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header>Approval Required</Modal.Header>
+      <Modal.Header closeButton className="custom-header">
+        Approval Required
+      </Modal.Header>
       <Modal.Body>
         <div
           style={{
@@ -38,6 +40,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
@@ -64,6 +67,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
