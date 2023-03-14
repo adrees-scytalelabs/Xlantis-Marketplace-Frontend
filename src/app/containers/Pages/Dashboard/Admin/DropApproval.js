@@ -1,21 +1,9 @@
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -25,17 +13,12 @@ import { Scrollbars } from "react-custom-scrollbars";
 import DateTimePicker from "react-datetime-picker";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
+import { useHistory, Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,14 +60,14 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
   },
   approveBtn: {
-    backgroundColor:'transparent',
+    backgroundColor: "transparent",
     color: "#fff",
     padding: "6px 24px",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
-    '&:hover': {
+    "&:hover": {
       background: "#f00",
-   },
+    },
   },
 }));
 
@@ -262,85 +245,93 @@ function DropApproval(props) {
 
   let giveFixedPriceApproval = async (i) => {
     console.log(i);
-    console.log("Contract Type",i.contractType);
-    try{
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShow();
-    } else {
-      setApprovingFixedPrice(true);
+    console.log("Contract Type", i.contractType);
+    try {
+      await loadWeb3();
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      const network = await web3.eth.net.getNetworkType();
+      if (network !== "private") {
+        setNetwork(network);
+        setIsSaving(false);
+        handleShow();
+      } else {
+        setApprovingFixedPrice(true);
 
-      const addressNft = i.nftContractAddress;
-      let addressDropFactory;
-      let abiNft;
-      if (i.contractType === "1155") {
-        console.log("1155 enter")
-        abiNft = CreateNFTContract1155;
-        addressDropFactory = Addresses.FactoryDrop1155;
-      } else if (i.contractType === "721") {
-        console.log("721 enter")
-        abiNft = CreateNFTContract721;
-        addressDropFactory = Addresses.FactoryDrop721;
-      }
+        const addressNft = i.nftContractAddress;
+        let addressDropFactory;
+        let abiNft;
+        if (i.contractType === "1155") {
+          console.log("1155 enter");
+          abiNft = CreateNFTContract1155;
+          addressDropFactory = Addresses.FactoryDrop1155;
+        } else if (i.contractType === "721") {
+          console.log("721 enter");
+          abiNft = CreateNFTContract721;
+          addressDropFactory = Addresses.FactoryDrop721;
+        }
 
-      console.log("Contract Address: ", i.nftContractAddress);
-      var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-      console.log("myContractInstance", myContractInstance);
+        console.log("Contract Address: ", i.nftContractAddress);
+        var myContractInstance = await new web3.eth.Contract(
+          abiNft,
+          addressNft
+        );
+        console.log("myContractInstance", myContractInstance);
 
-      await myContractInstance.methods
-        .setApprovalForAll(addressDropFactory, true)
-        .send({ from: accounts[0] }, (err, response) => {
-          console.log("get transaction", err, response);
+        await myContractInstance.methods
+          .setApprovalForAll(addressDropFactory, true)
+          .send({ from: accounts[0] }, (err, response) => {
+            console.log("get transaction", err, response);
 
-          if (err !== null) {
-            console.log("err", err);
-            let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
-            setApprovingFixedPrice(false);
-            handleCloseBackdrop();
-            setIsSaving(false);
-          }
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-
-          //sending call on backend
-
-          let approvalData = {
-            collectionId: i._id,
-            factoryType: "fixed-price",
-          };
-
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
-              console.log("Response from approval of Fixed Price: ", response);
-              let variant = "success";
-              enqueueSnackbar('Collection Approved For Fixed Price Successfully', { variant });
-              setIsFixedPriceApproved(true);
-              setApprovingFixedPrice(false);
-            },
-            (err) => {
+            if (err !== null) {
+              console.log("err", err);
               let variant = "error";
-              enqueueSnackbar('Unable to approve collection', { variant });
-              console.log("Err from approval Fixed-price: ", err);
-              console.log(
-                "Err response from approval Fixed-price: ",
-                err.response
-              );
+              enqueueSnackbar("User Canceled Transaction", { variant });
               setApprovingFixedPrice(false);
+              handleCloseBackdrop();
+              setIsSaving(false);
             }
-          );
-        });
+          })
+          .on("receipt", (receipt) => {
+            console.log("receipt", receipt);
+
+            //sending call on backend
+
+            let approvalData = {
+              collectionId: i._id,
+              factoryType: "fixed-price",
+            };
+
+            axios.put(`/collection/approve`, approvalData).then(
+              (response) => {
+                console.log(
+                  "Response from approval of Fixed Price: ",
+                  response
+                );
+                let variant = "success";
+                enqueueSnackbar(
+                  "Collection Approved For Fixed Price Successfully",
+                  { variant }
+                );
+                setIsFixedPriceApproved(true);
+                setApprovingFixedPrice(false);
+              },
+              (err) => {
+                let variant = "error";
+                enqueueSnackbar("Unable to approve collection", { variant });
+                console.log("Err from approval Fixed-price: ", err);
+                console.log(
+                  "Err response from approval Fixed-price: ",
+                  err.response
+                );
+                setApprovingFixedPrice(false);
+              }
+            );
+          });
+      }
+    } catch (e) {
+      console.log("Fixed drop issue", e);
     }
-  }
-  catch(e){
-    console.log("Fixed drop issue",e)
-  }
   };
 
   let getCollections = (start, end) => {
@@ -369,7 +360,6 @@ function DropApproval(props) {
             Cookies.remove("Version");
 
             window.location.reload(false);
-
           }
         }
         setOpen(false);
@@ -384,9 +374,11 @@ function DropApproval(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Drop Approval</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Drop Approval</li>
             </ul>
           </div>
@@ -466,7 +458,14 @@ function DropApproval(props) {
                       </div>
                     ) : (
                       <div className="row no-gutters justify-content-center align-items-center">
-                        <Button className={classes.approveBtn} onClick={(e) => {giveFixedPriceApproval(i)}}>Approve</Button>
+                        <Button
+                          className={classes.approveBtn}
+                          onClick={(e) => {
+                            giveFixedPriceApproval(i);
+                          }}
+                        >
+                          Approve
+                        </Button>
                       </div>
                     )}
                   </td>
