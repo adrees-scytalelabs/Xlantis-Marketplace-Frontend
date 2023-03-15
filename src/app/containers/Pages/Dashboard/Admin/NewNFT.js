@@ -155,6 +155,9 @@ const useStyles = makeStyles((theme) => ({
   nftInput: {
     fontFamily: "orbitron",
   },
+  tooltip: {
+    fontSize: "16px", 
+  },
 }));
 
 function NewNFT(props) {
@@ -2900,7 +2903,8 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <Tooltip title={Text721}>
+                          <Tooltip title={Text721}
+                          classes={{ tooltip: classes.tooltip }}>
                             <FormControlLabel
                               style={{ color: "white" }}
                               disabled
@@ -2922,7 +2926,8 @@ function NewNFT(props) {
                             />
                           </Tooltip>
 
-                          <Tooltip title={Text1155}>
+                          <Tooltip title={Text1155}
+                          classes={{ tooltip: classes.tooltip }}>
                             <FormControlLabel
                               style={{ color: "white" }}
                               disabled
@@ -2958,7 +2963,8 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <Tooltip title={Text721}>
+                          <Tooltip title={Text721}
+                          classes={{ tooltip: classes.tooltip }}>
                             <FormControlLabel
                               style={{ color: "black" }}
                               value="ERC721"
@@ -2981,7 +2987,8 @@ function NewNFT(props) {
                             />
                           </Tooltip>
 
-                          <Tooltip title={Text1155}>
+                          <Tooltip title={Text1155}
+                          classes={{ tooltip: classes.tooltip }}>
                             <FormControlLabel
                               style={{ color: "black", marginLeft: ".8rem" }}
                               value="ERC1155"

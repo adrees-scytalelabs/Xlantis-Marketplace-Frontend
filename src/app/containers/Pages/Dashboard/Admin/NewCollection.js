@@ -70,6 +70,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  tooltip: {
+    fontSize: "16px",
+  },
 }));
 
 function NewCollection(props) {
@@ -120,8 +123,10 @@ function NewCollection(props) {
   let [version, setVersion] = useState("");
   let [royaltyFee, setRoyaltyFee] = useState(0);
   let [approvalFlag, setApprovalFlag] = useState(false);
-  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
+  const Text721 =
+    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 =
+    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -700,7 +705,7 @@ function NewCollection(props) {
             let variant = "error";
             enqueueSnackbar("User Canceled Transaction", { variant });
             setApprovingAuction(false);
-            setApprovalFlag(false)
+            setApprovalFlag(false);
             handleCloseBackdrop();
             setIsSaving(false);
           }
@@ -786,7 +791,10 @@ function NewCollection(props) {
                         <img src={fileURL} alt="Collection Thumb" />
                       </div>
                       <div className="co-12 col-md-auto">
-                        <label htmlFor="uploadPreviewImg" className="uploadLabel">
+                        <label
+                          htmlFor="uploadPreviewImg"
+                          className="uploadLabel"
+                        >
                           {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
                         </label>
                         <input
@@ -885,35 +893,52 @@ function NewCollection(props) {
                       name="position"
                       defaultValue="top"
                     >
-                      <Tooltip title={Text721}>
-                      <FormControlLabel
-                        style={{ color: "white" }}
-                        value="ERC721"
-                        onChange={() => {
-                          setNftType("ERC721");
-                          // checked={saleType === 'auction'}
-                        }}
-                        checked={nftType === "ERC721"}
-                        control={<Radio style={{ color: "#fff" }} />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>Single <i className="fa fa-info-circle" aria-hidden="true"></i></span>
-                        }
-                      />
+                      <Tooltip
+                        title={Text721}
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="ERC721"
+                          onChange={() => {
+                            setNftType("ERC721");
+                            // checked={saleType === 'auction'}
+                          }}
+                          checked={nftType === "ERC721"}
+                          control={<Radio style={{ color: "#fff" }} />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>
+                              Single{" "}
+                              <i
+                                className="fa fa-info-circle"
+                                aria-hidden="true"
+                              ></i>
+                            </span>
+                          }
+                        />
                       </Tooltip>
-                      <Tooltip title={Text1155}>
-
-                      <FormControlLabel
-                        style={{ color: "white" }}
-                        value="ERC1155"
-                        onChange={() => {
-                          setNftType("ERC1155");
-                        }}
-                        checked={nftType === "ERC1155"}
-                        control={<Radio style={{ color: "#fff" }} />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>Multiple <i className="fa fa-info-circle" aria-hidden="true"></i></span>
-                        }
-                      />
+                      <Tooltip
+                        title={Text1155}
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="ERC1155"
+                          onChange={() => {
+                            setNftType("ERC1155");
+                          }}
+                          checked={nftType === "ERC1155"}
+                          control={<Radio style={{ color: "#fff" }} />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>
+                              Multiple{" "}
+                              <i
+                                className="fa fa-info-circle"
+                                aria-hidden="true"
+                              ></i>
+                            </span>
+                          }
+                        />
                       </Tooltip>
                     </RadioGroup>
                   </FormControl>

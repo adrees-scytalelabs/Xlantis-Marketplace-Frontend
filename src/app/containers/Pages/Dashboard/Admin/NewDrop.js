@@ -64,6 +64,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
+  tooltip: {
+    fontSize: "16px",
+  },
 }));
 
 const makeTheme = createMuiTheme({
@@ -759,7 +762,10 @@ function NewDrop(props) {
                         name="position"
                         defaultValue="top"
                       >
-                        <Tooltip title={Text721}>
+                        <Tooltip
+                          title={Text721}
+                          classes={{ tooltip: classes.tooltip }}
+                        >
                           <FormControlLabel
                             style={{ color: "black" }}
                             value="ERC721"
@@ -773,14 +779,17 @@ function NewDrop(props) {
                               <span style={{ fontSize: "0.9rem" }}>
                                 Single{" "}
                                 <i
-                                  class="fa fa-info-circle"
+                                  className="fa fa-info-circle"
                                   aria-hidden="true"
                                 ></i>
                               </span>
                             }
                           />
                         </Tooltip>
-                        <Tooltip title={Text1155}>
+                        <Tooltip
+                          title={Text1155}
+                          classes={{ tooltip: classes.tooltip }}
+                        >
                           <FormControlLabel
                             style={{ color: "black" }}
                             value="ERC1155"
@@ -793,7 +802,7 @@ function NewDrop(props) {
                               <span style={{ fontSize: "0.9rem" }}>
                                 Multiple{" "}
                                 <i
-                                  class="fa fa-info-circle"
+                                  className="fa fa-info-circle"
                                   aria-hidden="true"
                                 ></i>
                               </span>
