@@ -22,10 +22,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -116,11 +113,21 @@ function Enabled(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
+  const [modalData, setModalData] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -316,6 +323,11 @@ function Enabled(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
+                    Details
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
                     Login Type
                   </div>
                 </th>
@@ -344,6 +356,14 @@ function Enabled(props) {
                     ) : (
                       <label>N/A</label>
                     )}
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>SSO</label>
@@ -388,6 +408,14 @@ function Enabled(props) {
                     >
                       <span>{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                   <td className={classes.collectionTitle}>
                     <label style={{ marginLeft: "10%" }}>Wallet</label>
@@ -439,6 +467,11 @@ function Enabled(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }
