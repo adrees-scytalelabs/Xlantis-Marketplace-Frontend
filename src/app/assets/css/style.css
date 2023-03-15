@@ -557,6 +557,10 @@ form.checkoutForm label {
   border: 1px solid var(--border);
 }
 
+.custom-header .close{
+  color: white
+}
+
 .page-height {
   min-height: 70vh;
 }

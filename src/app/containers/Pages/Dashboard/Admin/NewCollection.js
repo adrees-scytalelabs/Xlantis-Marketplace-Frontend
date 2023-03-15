@@ -119,10 +119,9 @@ function NewCollection(props) {
   let [nftType, setNftType] = useState("ERC721");
   let [version, setVersion] = useState("");
   let [royaltyFee, setRoyaltyFee] = useState(0);
-  const Text721 =
-    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 =
-    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  let [approvalFlag, setApprovalFlag] = useState(false);
+  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -593,6 +592,7 @@ function NewCollection(props) {
       setIsSaving(false);
       handleShow();
     } else {
+      setApprovalFlag(true);
       setApprovingFixedPrice(true);
 
       const addressNft = nftContractAddress;
@@ -644,6 +644,7 @@ function NewCollection(props) {
               );
               setIsFixedPriceApproved(true);
               setApprovingFixedPrice(false);
+              setApprovalFlag(false);
             },
             (err) => {
               let variant = "error";
@@ -654,6 +655,7 @@ function NewCollection(props) {
                 err.response
               );
               setApprovingFixedPrice(false);
+              setApprovalFlag(false);
             }
           );
         });
@@ -671,6 +673,7 @@ function NewCollection(props) {
       handleShow();
     } else {
       setApprovingAuction(true);
+      setApprovalFlag(true);
 
       const addressNft = nftContractAddress;
       let addressDropFactory;
@@ -697,6 +700,7 @@ function NewCollection(props) {
             let variant = "error";
             enqueueSnackbar("User Canceled Transaction", { variant });
             setApprovingAuction(false);
+            setApprovalFlag(false)
             handleCloseBackdrop();
             setIsSaving(false);
           }
@@ -720,6 +724,7 @@ function NewCollection(props) {
               });
               setIsAuctionApproved(true);
               setApprovingAuction(false);
+              setApprovalFlag(false);
             },
             (err) => {
               let variant = "error";
@@ -727,6 +732,7 @@ function NewCollection(props) {
               console.log("Err from auction approval: ", err);
               console.log("Err response from auction approval: ", err.response);
               setApprovingAuction(false);
+              setApprovalFlag(false);
             }
           );
         });
@@ -780,7 +786,7 @@ function NewCollection(props) {
                         <img src={fileURL} alt="Collection Thumb" />
                       </div>
                       <div className="co-12 col-md-auto">
-                        <label for="uploadPreviewImg" className="uploadLabel">
+                        <label htmlFor="uploadPreviewImg" className="uploadLabel">
                           {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
                         </label>
                         <input
@@ -867,12 +873,12 @@ function NewCollection(props) {
                   </div>
 
                   <FormControl component="fieldset">
-                    <lable
+                    <label
                       component="legend"
                       style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                     >
                       Select NFT Type
-                    </lable>
+                    </label>
                     <RadioGroup
                       row
                       aria-label="position"
@@ -880,45 +886,34 @@ function NewCollection(props) {
                       defaultValue="top"
                     >
                       <Tooltip title={Text721}>
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC721"
-                          onChange={() => {
-                            setNftType("ERC721");
-                            // checked={saleType === 'auction'}
-                          }}
-                          checked={nftType === "ERC721"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Single{" "}
-                              <i
-                                class="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
+                      <FormControlLabel
+                        style={{ color: "white" }}
+                        value="ERC721"
+                        onChange={() => {
+                          setNftType("ERC721");
+                          // checked={saleType === 'auction'}
+                        }}
+                        checked={nftType === "ERC721"}
+                        control={<Radio style={{ color: "#fff" }} />}
+                        label={
+                          <span style={{ fontSize: "0.9rem" }}>Single <i className="fa fa-info-circle" aria-hidden="true"></i></span>
+                        }
+                      />
                       </Tooltip>
                       <Tooltip title={Text1155}>
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC1155"
-                          onChange={() => {
-                            setNftType("ERC1155");
-                          }}
-                          checked={nftType === "ERC1155"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Multiple{" "}
-                              <i
-                                class="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
+
+                      <FormControlLabel
+                        style={{ color: "white" }}
+                        value="ERC1155"
+                        onChange={() => {
+                          setNftType("ERC1155");
+                        }}
+                        checked={nftType === "ERC1155"}
+                        control={<Radio style={{ color: "#fff" }} />}
+                        label={
+                          <span style={{ fontSize: "0.9rem" }}>Multiple <i className="fa fa-info-circle" aria-hidden="true"></i></span>
+                        }
+                      />
                       </Tooltip>
                     </RadioGroup>
                   </FormControl>
@@ -961,6 +956,7 @@ function NewCollection(props) {
         isFixedPriceApproved={isFixedPriceApproved}
         done={handleDoneButton}
         doneLoader={doneLoader}
+        approvalFlag={approvalFlag}
       ></RequestApprovalModal>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
