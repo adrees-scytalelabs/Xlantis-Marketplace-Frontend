@@ -15,7 +15,7 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -32,10 +32,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,22 +89,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
 
 function VerifiedAccountsWalletScreen(props) {
   const classes = useStyles();
@@ -124,6 +105,7 @@ function VerifiedAccountsWalletScreen(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
+  const [modalData, setModalData] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -154,7 +136,15 @@ function VerifiedAccountsWalletScreen(props) {
       saved:"",
     }); // eslint-disable-next-line
   }, []);
-
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -255,6 +245,11 @@ function VerifiedAccountsWalletScreen(props) {
                     Wallet Address
                   </div>
                 </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Details
+                  </div>
+                </th>
 
                 {/* <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
@@ -278,6 +273,14 @@ function VerifiedAccountsWalletScreen(props) {
                         >
                           <span>{i.walletAddress.slice(0, 8)}...</span>
                         </Tooltip>
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <button
+                          className="btn submit-btn propsActionBtn "
+                          onClick={(e) => handleModalOpen(e, i)}
+                        >
+                          View
+                        </button>
                       </td>
                     </tr>
                   </tbody>
@@ -305,6 +308,11 @@ function VerifiedAccountsWalletScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }
