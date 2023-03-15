@@ -13,6 +13,7 @@ import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import DropsPage from "./DropsPage";
+import { Link } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -119,9 +120,11 @@ const MyDrops = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">My Drops</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">My Drops</li>
             </ul>
           </div>

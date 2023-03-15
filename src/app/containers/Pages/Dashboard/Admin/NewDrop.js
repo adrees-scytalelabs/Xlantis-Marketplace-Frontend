@@ -1,6 +1,7 @@
 import { Avatar, CardHeader, Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -33,7 +34,6 @@ import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Tooltip from "@material-ui/core/Tooltip";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -65,7 +65,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
   tooltip: {
-    fontSize: "16px", 
+    fontSize: "16px",
   },
 }));
 
@@ -120,8 +120,10 @@ function NewDrop(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
-  const Text721 = "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 = "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually."
+  const Text721 =
+    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 =
+    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -586,9 +588,11 @@ function NewDrop(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New Drop</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">New Drop</li>
             </ul>
           </div>
@@ -758,40 +762,52 @@ function NewDrop(props) {
                         name="position"
                         defaultValue="top"
                       >
-                        <Tooltip title={Text721}
-                        classes={{ tooltip: classes.tooltip }}>
-                        
-
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          value="ERC721"
-                          onChange={() => {
-                            setNftType("721");
-                            // checked={saleType === 'auction'}
-                          }}
-                          checked={nftType === "721"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>Single <i class="fa fa-info-circle" aria-hidden="true"></i></span>
-                          }
-                        />
+                        <Tooltip
+                          title={Text721}
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <FormControlLabel
+                            style={{ color: "black" }}
+                            value="ERC721"
+                            onChange={() => {
+                              setNftType("721");
+                              // checked={saleType === 'auction'}
+                            }}
+                            checked={nftType === "721"}
+                            control={<Radio style={{ color: "#fff" }} />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>
+                                Single{" "}
+                                <i
+                                  className="fa fa-info-circle"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            }
+                          />
                         </Tooltip>
-                        <Tooltip title={Text1155}
-                          classes={{ tooltip: classes.tooltip }}>
-                          
-
-                        <FormControlLabel
-                          style={{ color: "black" }}
-                          value="ERC1155"
-                          onChange={() => {
-                            setNftType("1155");
-                          }}
-                          checked={nftType === "1155"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>Multiple <i class="fa fa-info-circle" aria-hidden="true"></i></span>
-                          }
-                        />
+                        <Tooltip
+                          title={Text1155}
+                          classes={{ tooltip: classes.tooltip }}
+                        >
+                          <FormControlLabel
+                            style={{ color: "black" }}
+                            value="ERC1155"
+                            onChange={() => {
+                              setNftType("1155");
+                            }}
+                            checked={nftType === "1155"}
+                            control={<Radio style={{ color: "#fff" }} />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>
+                                Multiple{" "}
+                                <i
+                                  className="fa fa-info-circle"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            }
+                          />
                         </Tooltip>
                       </RadioGroup>
                     </FormControl>
