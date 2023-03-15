@@ -33,10 +33,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,6 +117,7 @@ function VerifiedAccountsDefaultScreen(props) {
 
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [modalData, setModalData] = useState();
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -152,9 +150,9 @@ function VerifiedAccountsDefaultScreen(props) {
       verifiedAccounts: "active",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
   const handleChangePage = (event, newPage) => {
@@ -167,7 +165,15 @@ function VerifiedAccountsDefaultScreen(props) {
       newPage * rowsPerPage + rowsPerPage
     );
   };
-
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     getUnverifiedAdmins(0, parseInt(event.target.value, 10));
@@ -290,6 +296,11 @@ function VerifiedAccountsDefaultScreen(props) {
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
+                    Details
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
                     Login Type
                   </div>
                 </th>
@@ -322,6 +333,14 @@ function VerifiedAccountsDefaultScreen(props) {
                         )}
                       </td>
                       <td className={classes.collectionTitle}>
+                        <button
+                          className="btn submit-btn propsActionBtn "
+                          onClick={(e) => handleModalOpen(e, i)}
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className={classes.collectionTitle}>
                         <label style={{ marginLeft: "10%" }}>SSO</label>
                       </td>
                     </tr>
@@ -345,6 +364,14 @@ function VerifiedAccountsDefaultScreen(props) {
                         >
                           <span>{i.walletAddress.slice(0, 8)}...</span>
                         </Tooltip>
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <button
+                          className="btn submit-btn propsActionBtn "
+                          onClick={(e) => handleModalOpen(e, i)}
+                        >
+                          View
+                        </button>
                       </td>
                       <td className={classes.collectionTitle}>
                         <label style={{ marginLeft: "10%" }}>Wallet</label>
@@ -375,6 +402,11 @@ function VerifiedAccountsDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

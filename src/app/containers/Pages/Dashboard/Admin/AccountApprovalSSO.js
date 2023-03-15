@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,23 +68,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
-
 function AccountApprovalSSO(props) {
   const classes = useStyles();
 
@@ -93,7 +77,7 @@ function AccountApprovalSSO(props) {
   let [admins, setAdmins] = useState([]);
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
-
+  const [modalData, setModalData] = useState();
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -105,6 +89,15 @@ function AccountApprovalSSO(props) {
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -124,9 +117,9 @@ function AccountApprovalSSO(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -234,6 +227,11 @@ function AccountApprovalSSO(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Details
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Approval Status
                   </div>
@@ -259,6 +257,14 @@ function AccountApprovalSSO(props) {
                     ) : (
                       <label>N/A</label>
                     )}
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
@@ -311,6 +317,11 @@ function AccountApprovalSSO(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }
