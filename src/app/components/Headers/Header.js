@@ -266,17 +266,17 @@ function HeaderHome(props) {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
+        // if (error.response.data !== undefined) {
+        //   if (
+        //     error.response.data === "Unauthorized access (invalid token) !!"
+        //   ) {
+        //     // sessionStorage.removeItem("Authorization");
+        //     // sessionStorage.removeItem("Address");
+        //     // Cookies.remove("Version");
 
-            // window.location.reload(false);
-          }
-        }
+        //     // window.location.reload(false);
+        //   }
+        // }
       }
     );
   }
