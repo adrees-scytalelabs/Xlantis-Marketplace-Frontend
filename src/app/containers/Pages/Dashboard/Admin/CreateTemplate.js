@@ -20,10 +20,42 @@ const useStyles = makeStyles((theme) => ({
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-
+  let [valid, setValid] = useState("");
   let [title, setTitle] = useState("");
   let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const [open, setOpen] = useState(false);
+
+  let handleAvailibility = (e) => {
+    e.preventDefault();
+    let name = e.target.value;
+
+
+    axios.get(`/nft-properties/template/is-available/${name}`).then(
+      (response) => {
+        console.log("response", response);
+        console.log("Check response",response.data.isAvailable)
+        if(response.data.isAvailable){
+          setValid("is-valid")
+        }
+        else{
+          setValid("is-invalid")
+        }
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          setValid("is-invalid")
+          console.log(error);
+          console.log(error.response);
+        }
+
+
+      }
+    );
+    // setTimeout(() => {
+    //   setChecking(false);
+    // }, 2000);
+  }
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -143,11 +175,13 @@ function CreateTemplate(props) {
                 placeholder="Enter title of the Template"
                 required
                 value={title}
-                className="newNftProps"
+                className={`newNftProps form-control ${valid}`}
                 onChange={(e) => {
                   console.log("title", e.target.value);
+                  handleAvailibility(e);
                   setTitle(e.target.value);
                 }}
+                style={{backgroundColor:'transparent',color:'white'}}
               />
             </div>
           </div>
