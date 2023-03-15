@@ -34,7 +34,7 @@ function CreateTemplate(props) {
       (response) => {
         console.log("response", response);
         console.log("Check response",response.data.isAvailable)
-        if(response.data.isAvailable){
+        if(!response.data.isAvailable){
           setValid("is-valid")
         }
         else{
@@ -104,12 +104,12 @@ function CreateTemplate(props) {
       axios.post("/super-admin/template", templateData).then(
         (response) => {
           console.log("response", response);
-
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
           handleCloseBackdrop();
           let variant = "success";
           enqueueSnackbar("New Template Created Successfully", { variant });
+          setValid("");
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
