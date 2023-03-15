@@ -161,9 +161,11 @@ function MyCollection(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Collections</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+            <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Collections</li>
             </ul>
           </div>

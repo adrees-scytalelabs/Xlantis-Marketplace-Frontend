@@ -1,4 +1,4 @@
-import { CardContent, CardHeader, CardMedia, Grid } from "@material-ui/core/";
+import { CardContent, CardMedia, Grid } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import {
   makeStyles,
@@ -426,12 +426,16 @@ function MyNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Market Place Drops</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Market Place
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/dashboard/marketPlace`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Market Place
+                </li>
+              </Link>
               <li className="breadcrumb-item active">Market Place Drops</li>
             </ul>
           </div>
@@ -534,6 +538,8 @@ function MyNFTs(props) {
                               nftDetail: i,
                               startTime: location.state.startTime,
                               endTime: location.state.endTime,
+                              nftId: location.state.nftId,
+                              dropId: location.state.dropId
                             },
                           }}
                         >

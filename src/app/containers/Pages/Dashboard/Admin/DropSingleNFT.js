@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionDetails,
@@ -548,11 +549,31 @@ const DropSingleNFT = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">NFT</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>Drop Nfts</li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/dashboard/myDrops`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  My Drops
+                </li>
+              </Link>
+              <Link
+                to={{
+                  pathname: `/dashboard/myDrops/nfts`,
+                  state: {
+                    nftId: location.state.nftId,
+                    dropId: location.state.dropId,
+                    saleType: location.state.saleType,
+                    status: location.state.status,
+                  },
+                }}
+              >
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Drop Nfts
+                </li>
+              </Link>
               <li className="breadcrumb-item active">NFT Detail</li>
             </ul>
           </div>

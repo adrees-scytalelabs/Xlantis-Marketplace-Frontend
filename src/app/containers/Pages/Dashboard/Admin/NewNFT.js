@@ -15,8 +15,7 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
+import { Link } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
@@ -27,7 +26,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 // import ReactTooltip from "react-tooltip";
 
@@ -2025,9 +2023,11 @@ function NewNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+            </Link>
               <li className="breadcrumb-item active">New NFT</li>
             </ul>
           </div>

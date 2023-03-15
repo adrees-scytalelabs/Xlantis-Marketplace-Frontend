@@ -15,7 +15,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Col, Row, Table } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
@@ -161,10 +161,14 @@ const SingleNftDetail = (props) => {
           <div className="col-sm-12">
             <h3 className="page-title">NFT Details</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+            </Link>
+            <Link to={`/dashboard/myNFTs`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>NFTs</li>
+            </Link>
               <li className="breadcrumb-item active">NFT Details</li>
             </ul>
           </div>
