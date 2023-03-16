@@ -102,7 +102,7 @@ function AdminInformationModal(props) {
               </Row>
             </div>
           </Modal.Body>
-          <Modal.Footer className="" style={{backgroundColor:"black",border:"1px solid white",borderTop:'none'}}>
+          <Modal.Footer style={{backgroundColor:"black",border:"1px solid white",borderTop:'none'}}>
             <button
               className="newTemplateBtn mb-3"
               onClick={props.handleClose}
