@@ -241,7 +241,7 @@ function SSOEnabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
@@ -251,7 +251,7 @@ function SSOEnabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
                     Details
                   </div>
                 </th>
@@ -275,10 +275,10 @@ function SSOEnabled(props) {
                         title={i.walletAddress}
                         arrow
                       >
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                        <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-4">N/A</label>
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
@@ -292,7 +292,7 @@ function SSOEnabled(props) {
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
+                      <div className="row no-gutters justify-content-center align-items-center ml-4">
                         <Button
                           className={classes.approveBtn}
                           // style={{
