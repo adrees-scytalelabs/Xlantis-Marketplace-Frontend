@@ -300,7 +300,7 @@ function AccountApprovalDefaultScreen(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-3">
                     Email
                   </div>
                 </th>
@@ -310,7 +310,7 @@ function AccountApprovalDefaultScreen(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
                     Details
                   </div>
                 </th>
@@ -339,10 +339,12 @@ function AccountApprovalDefaultScreen(props) {
                         title={i.walletAddress}
                         arrow
                       >
-                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-4">N/A</label>
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
@@ -354,7 +356,9 @@ function AccountApprovalDefaultScreen(props) {
                     </button>
                   </td>
                   <td className={`${classes.collectionTitle}`}>
-                    <label style={{ marginLeft: "10%" }}>SSO</label>
+                    <span className="ml-1">
+                      <label className="ml-5">SSO</label>
+                    </span>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
@@ -396,7 +400,7 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>
-                    <label>N/A</label>
+                    <label className="ml-4">N/A</label>
                   </td>
                   <td className={classes.collectionTitle}>
                     <Tooltip
@@ -405,7 +409,9 @@ function AccountApprovalDefaultScreen(props) {
                       title={i.walletAddress}
                       arrow
                     >
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
+                      <span className="ml-4">
+                        {i.walletAddress.slice(0, 8)}...
+                      </span>
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>
@@ -417,7 +423,7 @@ function AccountApprovalDefaultScreen(props) {
                     </button>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>Wallet</label>
+                    <label className="ml-5">Wallet</label>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}

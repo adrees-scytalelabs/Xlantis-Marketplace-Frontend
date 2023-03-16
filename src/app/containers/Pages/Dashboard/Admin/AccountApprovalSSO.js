@@ -217,7 +217,7 @@ function AccountApprovalSSO(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
@@ -227,7 +227,7 @@ function AccountApprovalSSO(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
                     Details
                   </div>
                 </th>
@@ -252,10 +252,10 @@ function AccountApprovalSSO(props) {
                         title={i.walletAddress}
                         arrow
                       >
-                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                        <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-5">N/A</label>
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
