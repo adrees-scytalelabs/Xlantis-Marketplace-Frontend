@@ -216,7 +216,7 @@ function MyNFTs(props) {
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
-                  <NFTCard data={i} image={nftImage[index]} />
+                  <NFTCard data={i}/>
                 </Grid>
               ))}
             </Grid>
