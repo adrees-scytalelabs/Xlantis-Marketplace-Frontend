@@ -300,7 +300,7 @@ function AccountApprovalDefaultScreen(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-3">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
@@ -335,7 +335,7 @@ function AccountApprovalDefaultScreen(props) {
                     {i.walletAddress != undefined ? (
                       <Tooltip
                         classes={{ tooltip: classes.noMaxWidth }}
-                        leaveDelay={1500}
+                        leaveDelay={800}
                         title={i.walletAddress}
                         arrow
                       >
@@ -405,7 +405,7 @@ function AccountApprovalDefaultScreen(props) {
                   <td className={classes.collectionTitle}>
                     <Tooltip
                       classes={{ tooltip: classes.noMaxWidth }}
-                      leaveDelay={1500}
+                      leaveDelay={800}
                       title={i.walletAddress}
                       arrow
                     >

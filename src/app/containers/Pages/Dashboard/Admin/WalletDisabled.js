@@ -257,7 +257,7 @@ function WalletDisabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
                     Details
                   </div>
                 </th>
@@ -277,11 +277,11 @@ function WalletDisabled(props) {
                   <td className={classes.collectionTitle}>
                     <Tooltip
                       classes={{ tooltip: classes.noMaxWidth }}
-                      leaveDelay={1500}
+                      leaveDelay={800}
                       title={i.walletAddress}
                       arrow
                     >
-                      <span>{i.walletAddress.slice(0, 8)}...</span>
+                      <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>

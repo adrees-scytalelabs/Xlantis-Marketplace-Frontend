@@ -250,7 +250,7 @@ function SSODisabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
@@ -260,7 +260,7 @@ function SSODisabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
                     Details
                   </div>
                 </th>
@@ -284,10 +284,10 @@ function SSODisabled(props) {
                         title={i.walletAddress}
                         arrow
                       >
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                        <span >{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-4">N/A</label>
                     )}
                   </td>
                   <td className={classes.collectionTitle}>
@@ -303,7 +303,7 @@ function SSODisabled(props) {
                     {i.isEnabled === false ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
-                          className={classes.approveBtn}
+                          className={`${classes.approveBtn} ml-4`}
                           // style={{
                           //   backgroundColor: "#000",
                           //   color: "#fff",
