@@ -1,7 +1,17 @@
 import React, {useEffect} from "react";
 import { Col, Modal, Row } from "react-bootstrap";
+import { makeStyles } from "@material-ui/core/styles";
 
+const useStyles = makeStyles((theme) => ({
+  
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+ 
+}));
 function AdminInformationModal(props) {
+  const classes = useStyles();
   useEffect(() => {
     console.log(props.adminData);
     console.log("Reach Template Data", props);
@@ -14,96 +24,87 @@ function AdminInformationModal(props) {
           centered
           backdrop="static"
         >
-          <Modal.Header>Admin Details</Modal.Header>
+          <Modal.Header className="NewTemplateHeader">Admin Details</Modal.Header>
   
-          <Modal.Body>
+          <Modal.Body className="NewTemplateBody" style={{borderBottom:"none"}}>
             <div style={{ margin: "10px" }}>
               <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+                <Col >
                   Username
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.username}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+              <Row className="justify-content-center align-items-center no-gutters mt-1">
+                <Col >
                   Company Name
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.companyName}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+              <Row className="justify-content-center align-items-center no-gutters mt-1">
+                <Col>
                   Designation
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.designation}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+              <Row className="justify-content-center align-items-center no-gutters mt-1">
+                <Col>
                   Domain
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.domain}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+              <Row className="justify-content-center align-items-center no-gutters mt-1">
+                <Col>
                   Industry Type
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.industryType}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col style={{ color: "#000" }}>
+              <Row className="justify-content-center align-items-center no-gutters mt-1">
+                <Col>
                   Reason of Interest
                   <input
                     name="title"
                     type="text"
                     disabled
                     value={props.adminData.reasonForInterest}
-                    className="newNftProps"
+                    className="newNftProps mt-1"
                   />
                 </Col>
               </Row>
             </div>
           </Modal.Body>
-          <Modal.Footer>
+          <Modal.Footer className="" style={{backgroundColor:"black",border:"1px solid white",borderTop:'none'}}>
             <button
-              className="btn"
-              type="button"
-              style={{
-                margin: "10px",
-                marginRight: 0,
-                backgroundColor: "black",
-                border: "1px solid #fff",
-                borderRadius: 0,
-                padding: 10,
-              }}
+              className="newTemplateBtn mb-3"
               onClick={props.handleClose}
             >
               Close
