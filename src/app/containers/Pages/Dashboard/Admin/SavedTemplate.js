@@ -132,7 +132,7 @@ function SavedTemplate(props) {
         (response) => {
           setTemplateData(response.data.templates);
           console.log("response", response);
-          console.log("size", response.data.templates[0].properties[0].key);
+          //console.log("size", response.data.templates[0].properties[0].key);
           console.log("Data of the state", templateData);
           handleCloseBackdrop();
           let variant = "success";

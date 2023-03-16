@@ -352,7 +352,7 @@ function AccountsDefaultScreen(props) {
               <tbody>
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}><lable className="ml-4">N/A</lable></td>
+                  <td className={classes.collectionTitle}><label className="ml-4">N/A</label></td>
                   <td className={classes.collectionTitle}>
                     <Tooltip
                       title={i.walletAddress}
