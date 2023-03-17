@@ -653,10 +653,8 @@ function MyNFTs(props) {
                                     className="nftPrice mb-0 p-0"
                                     style={{ lineHeight: "1.6" }}
                                   >
-                                    {Web3.utils.fromWei(
-                                      i.currentMarketplaceId.price
-                                    )}{" "}
-                                    WMATIC
+                                    {i.currentMarketplaceId.price}{" "}
+                                    USD
                                   </p>
                                 </div>
                               </div>
@@ -670,7 +668,7 @@ function MyNFTs(props) {
                                 {Web3.utils.fromWei(
                                   i.currentMarketplaceId.price
                                 )}{" "}
-                                WMATIC
+                                USD
                               </Typography> */}
                               {/* <Typography
                                 variant="body2"
@@ -807,11 +805,8 @@ function MyNFTs(props) {
                                     className="nftPrice mb-0 p-0"
                                     style={{ lineHeight: "1.6" }}
                                   >
-                                    {Web3.utils.fromWei(
-                                      i.currentMarketplaceId.price,
-                                      "ether"
-                                    )}{" "}
-                                    WMATIC
+                                    {i.currentMarketplaceId.price}{" "}
+                                    USD
                                   </p>
                                 </div>
                               </div>

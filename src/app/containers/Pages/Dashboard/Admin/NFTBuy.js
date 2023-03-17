@@ -513,16 +513,12 @@ const NFTBuy = (props) => {
     setVersionB(Cookies.get("Version"));
 
     // getNftDetail();
-    console.log("hehe", location.state.nftDetail);
+    console.log("NFT Details", location.state.nftDetail);
     setNftDetail(location.state.nftDetail);
     console.log(location.state.nftDetail.currentMarketplaceId.isSold);
     console.log("states", location.state);
-    let priceCal = Web3.utils.fromWei(
-      location.state.nftDetail.currentMarketplaceId.price,
-      "ether"
-    );
-    console.log("price is", priceCal);
-    setPrice(priceCal);
+    console.log("price is", location.state.nftDetail.currentMarketplaceId.price);
+    setPrice(location.state.nftDetail.currentMarketplaceId.price);
 
     props.setActiveTab({
       dashboard: "",
@@ -780,7 +776,7 @@ const NFTBuy = (props) => {
                       </Typography>
                     </Col>
                     <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {price} WMATIC
+                      {price} USD
                     </Col>
                   </Row>
 
