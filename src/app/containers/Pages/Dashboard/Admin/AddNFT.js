@@ -42,7 +42,6 @@ import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
 import Tooltip from "@material-ui/core/Tooltip";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -201,7 +200,7 @@ function AddNFT(props) {
   const [isDisabled, setIsDisabled] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
   let [price, setPrice] = useState(0);
-  let [supply, setSupply] = useState(0);
+  let [supply, setSupply] = useState(1);
   let [saleType, setSaleType] = useState("");
   let [nftType, setNftType] = useState("");
   let [versionB, setVersionB] = useState("");
@@ -592,7 +591,12 @@ function AddNFT(props) {
     console.log("drop", dropInfo);
     try {
       await myContractInstance.methods
-        .createDrop(dropCloneId, Math.round(startTimeStamp), endTimeStamp, dropInfo)
+        .createDrop(
+          dropCloneId,
+          Math.round(startTimeStamp),
+          endTimeStamp,
+          dropInfo
+        )
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
           let data = {
@@ -660,7 +664,12 @@ function AddNFT(props) {
     console.log("drop", dropInfo);
     try {
       await myContractInstance.methods
-        .createAuctionDrop(dropCloneId, Math.round(startTimeStamp), endTimeStamp, dropInfo)
+        .createAuctionDrop(
+          dropCloneId,
+          Math.round(startTimeStamp),
+          endTimeStamp,
+          dropInfo
+        )
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
           let data = {
@@ -1220,13 +1229,14 @@ function AddNFT(props) {
               {collection === "" ||
               nftName === 0 ||
               price === "" ||
-              supply <=  0 ||
+              supply <= 0 ||
               supply === "" ? (
-                <Tooltip title= { supply <= 0 ? ("Supply Cannot Be Less Than 1") : (null)}>
-
-                <button className="bttn" type="submit" disabled>
-                  <i className="fa fa-plus"></i> Add NFT To Drop
-                </button>
+                <Tooltip
+                  title={supply <= 0 ? "Supply Cannot Be Less Than 1" : null}
+                >
+                  <button className="bttn" type="submit" disabled>
+                    <i className="fa fa-plus"></i> Add NFT To Drop
+                  </button>
                 </Tooltip>
               ) : (
                 <button
@@ -1247,7 +1257,7 @@ function AddNFT(props) {
               <form>
                 {/* <Scrollbars style={{ height: 1500 }}> */}
 
-                <div className="form-group">
+                <div className="form-group mt-3 mt-lg-0">
                   <div>
                     <Grid
                       container
