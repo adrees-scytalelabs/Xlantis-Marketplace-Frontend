@@ -446,11 +446,8 @@ function MyDropNFTs(props) {
               <div className="col-4 align-self-end text-right p-0">
              
                             <p className="nftPrice mb-0 p-0">
-                            {Web3.utils.fromWei(
-                              i.currentMarketplaceId.price,
-                              "ether"
-                            )}{" "}
-                            WMATIC
+                            {i.currentMarketplaceId.price}{" "}
+                            USD
                             </p>
               </div>
             </div>

@@ -345,9 +345,8 @@ const handleOpenModal = async (e) => {
     setContractType(location.state.contractType);
     getNftDetail();
     getDropCloneAddress();
-    let priceCal = Web3.utils.fromWei(location.state.price, "ether");
-    console.log("price is", priceCal);
-    setPrice(priceCal);
+    console.log("price is", location.state.price);
+    setPrice(location.state.price);
     getBidList(nftId);
 
     props.setActiveTab({
@@ -819,7 +818,7 @@ const handleOpenModal = async (e) => {
                       </Typography>
                     </Col>
                     <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {price} WMATIC
+                      {price} USD
                     </Col>
                   </Row>
                   {nftDetail.nftType === "1155" ? (
