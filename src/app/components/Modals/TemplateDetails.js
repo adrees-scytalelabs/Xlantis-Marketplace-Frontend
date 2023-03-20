@@ -16,7 +16,7 @@ function TemplateDetails(props) {
         centered
         backdrop="static"
       >
-        <Modal.Header className="NewTemplateHeader">Template Details</Modal.Header>
+        <Modal.Header className="NewTemplateHeader" closeButton>Template Details</Modal.Header>
 
         <Modal.Body className="NewTemplateBody" style={{borderBottom:"none"}}>
           <div style={{ margin: "10px" }}>
