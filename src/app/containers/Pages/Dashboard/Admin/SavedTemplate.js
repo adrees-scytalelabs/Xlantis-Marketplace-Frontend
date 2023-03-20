@@ -100,7 +100,7 @@ function SavedTemplate(props) {
   const [modalState, setModalState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
-  const [updateModal, setUpdateModal] = useState(false);
+  const [updateModal, setUpdateModal] = useState(true);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -110,6 +110,7 @@ function SavedTemplate(props) {
   const handleOpen = (e, data) => {
     e.preventDefault();
     setModalData(data);
+    setUpdateModal(true);
     setModalState(true);
   };
   const handleClose = () => {
@@ -162,8 +163,8 @@ function SavedTemplate(props) {
           //console.log("size", response.data.templates[0].properties[0].key);
           console.log("Data of the state", templateData);
           handleCloseBackdrop();
-          let variant = "success";
-          enqueueSnackbar("Template loaded successfully", { variant });
+          // let variant = "success";
+          // enqueueSnackbar("Template loaded successfully", { variant });
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -183,7 +184,7 @@ function SavedTemplate(props) {
   const handleUpdatedData = (e,data) => {
       e.preventDefault();
       setModalData(data);
-      setUpdateModal(true)
+      setUpdateModal(false)
       setModalState(true);
       try{
         console.log("data updated");
@@ -194,9 +195,10 @@ function SavedTemplate(props) {
   }
   useEffect(() => {
     console.log("Saved Template")
+    console.log("Modal Data",modalData)
     setDeleteState("");
-    setModalState("");
-    setUpdateModal(false);
+    //setModalState("");
+    //setUpdateModal(true);
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -209,7 +211,7 @@ function SavedTemplate(props) {
       template: "",
       saved: "active",
     }); // eslint-disable-next-line
-  }, []);
+  }, [modalData]);
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
@@ -307,6 +309,7 @@ function SavedTemplate(props) {
         show={modalState}
         handleClose={handleClose}
         templateData={modalData}
+        setTemplateData = {setModalData}
         updateEnabled ={updateModal}
         handleUpdateData ={handleUpdatedData}
       ></TemplateDetails>
