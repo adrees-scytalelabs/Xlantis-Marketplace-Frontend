@@ -2014,7 +2014,8 @@ function NewNFT(props) {
     if (signature) {
       return signature;
     } else {
-      alert("Signature");
+      // alert("Signature");
+      console.log("Signature issue")
     }
   };
 
