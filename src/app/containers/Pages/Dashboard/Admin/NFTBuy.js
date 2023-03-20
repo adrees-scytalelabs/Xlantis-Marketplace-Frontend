@@ -519,6 +519,7 @@ const NFTBuy = (props) => {
     console.log("states", location.state);
     console.log("price is", location.state.nftDetail.currentMarketplaceId.price);
     setPrice(location.state.nftDetail.currentMarketplaceId.price);
+    setProperties(location.state.nftDetail.properties);
 
     props.setActiveTab({
       dashboard: "",
@@ -835,10 +836,10 @@ const NFTBuy = (props) => {
                           </tr>
                         </thead>
                         <tbody>
-                          {keys?.map((j, index) => (
+                          {Object.keys(properties).map((key, index) => (
                             <tr key={index}>
-                              <td>{j}</td>
-                              <td>{properties[j]}</td>
+                              <td>{key}</td>
+                              <td ><label className="ml-2">{properties[key]}</label></td>
                             </tr>
                           ))}
                         </tbody>
