@@ -95,8 +95,10 @@ function SavedTemplate(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [templateData, setTemplateData] = useState([]);
+  const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
+  const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -111,7 +113,29 @@ function SavedTemplate(props) {
   };
   const handleClose = () => {
     setModalState(false);
+    setDeleteState(false);
   };
+  //This function open the delete modal
+  const handleDeleteModal = (e,data) => {
+    e.preventDefault();
+    setDeleteData(data);
+    setDeleteState(true);
+  }
+  //Call the endpoint of the delete template
+  const deleteResponse = async(data) => {
+    try{
+        console.log("Template deleted successfully")
+        handleClose();
+    }
+    catch(e){
+      console.log("Error during deletion",e)
+    }
+  }
+  //This function delete the template
+  const handleDeleteTemplate = async (e) => {
+    e.preventDefault();
+    await deleteResponse(deleteData);
+  }
 
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -166,6 +190,8 @@ function SavedTemplate(props) {
   };
   useEffect(() => {
     console.log("Saved Template")
+    setDeleteState("");
+    setModalState("");
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -250,7 +276,7 @@ function SavedTemplate(props) {
                     <DeleteIcon
                       color="action"
                       style={{ color: "red" }}
-                      onClick={(e) => handleDelete(e, i)}
+                      onClick={(e) => handleDeleteModal(e, i)}
                     ></DeleteIcon>
                   </span>
                   <span className="ml-2">
@@ -273,6 +299,11 @@ function SavedTemplate(props) {
         handleClose={handleClose}
         templateData={modalData}
       ></TemplateDetails>
+      <DeleteModal
+        show={deleteState}
+        handleClose={handleClose}
+        handleDelete={handleDeleteTemplate}
+      ></DeleteModal>
     </div>
   );
 }
