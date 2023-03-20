@@ -12,6 +12,7 @@ import Table from "react-bootstrap/Table";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
+import DeleteModal from "../../../../components/Modals/DeleteModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,6 +165,7 @@ function SavedTemplate(props) {
     enqueueSnackbar("Template updated successfully", { variant });
   };
   useEffect(() => {
+    console.log("Saved Template")
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
