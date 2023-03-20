@@ -8,7 +8,7 @@ function DeleteModal(props) {
     <Modal
       show={props.show}
       onHide={props.handleClose}
-      style={{ border: "1px solid black" }}
+      style={{  }}
       centered
       backdrop="static"
     >
@@ -16,22 +16,22 @@ function DeleteModal(props) {
         closeButton
         style={{
           backgroundColor: "white",
-          borderTop: "1px solid black",
-          borderLeft: "none",
-          borderRight: "none",
         }}
       >
-        <Modal.Title style={{ color: "black" }} centered> Delete Template</Modal.Title>
+        <Modal.Title style={{ color: "black"}} >Delete Template</Modal.Title>
       </Modal.Header>
       <Modal.Body
         style={{
           border: "1px solid black",
           borderTop: "none",
           borderBottom: "none",
-          backgroundColor:'black'
+          backgroundColor:'black',
+          justifyContent:'center',
+          border: "1px solid white",
+          borderBottom:'none'
         }}
       >
-        <h3>Are You Sure? </h3>
+        <h3 style={{textAlign:'center'}}>Are You Sure? </h3>
         <Row className="mt-3">
           <Col>
             Do you really want to delete this template. You cannot undo this
@@ -39,7 +39,7 @@ function DeleteModal(props) {
           </Col>
         </Row>
       </Modal.Body>
-      <Modal.Footer style={{backgroundColor:'black'}}>
+      <Modal.Footer style={{backgroundColor:'black',border:'1px solid white', borderTop:'none'}}>
       <button
             className="newTemplateBtn mb-3"
             onClick={props.handleClose}

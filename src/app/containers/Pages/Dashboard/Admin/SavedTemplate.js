@@ -272,18 +272,22 @@ function SavedTemplate(props) {
                   </button>
                 </td>
                 <td className={classes.collectionTitle}>
-                  <span className="ml-5">
+                  <span className="ml-4">
+                    <button style={{background:'transparent',border:'none'}}>
                     <DeleteIcon
                       color="action"
                       style={{ color: "red" }}
                       onClick={(e) => handleDeleteModal(e, i)}
                     ></DeleteIcon>
+                    </button>
                   </span>
-                  <span className="ml-2">
+                  <span className="ml-1">
+                  <button style={{background:'transparent',border:'none'}}>
                     <EditIcon
                       style={{ color: `green` }}
                       onClick={(e) => handleUpdate(e, i)}
                     ></EditIcon>
+                    </button>
                   </span>
                 </td>
               </tr>
