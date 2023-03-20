@@ -100,6 +100,7 @@ function SavedTemplate(props) {
   const [modalState, setModalState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
+  const [updateModal, setUpdateModal] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -114,6 +115,7 @@ function SavedTemplate(props) {
   const handleClose = () => {
     setModalState(false);
     setDeleteState(false);
+    setUpdateModal(false);
   };
   //This function open the delete modal
   const handleDeleteModal = (e,data) => {
@@ -178,20 +180,23 @@ function SavedTemplate(props) {
       console.log("Error in axios request to create template", e);
     }
   };
-  let handleDelete = (e, data) => {
-    e.preventDefault();
-    let variant = "success";
-    enqueueSnackbar("Template deleted successfully", { variant });
-  };
-  let handleUpdate = (e, data) => {
-    e.preventDefault();
-    let variant = "success";
-    enqueueSnackbar("Template updated successfully", { variant });
-  };
+  const handleUpdatedData = (e,data) => {
+      e.preventDefault();
+      setModalData(data);
+      setUpdateModal(true)
+      setModalState(true);
+      try{
+        console.log("data updated");
+      }
+      catch(e){
+        console.log("Something wrong with updation",e)
+      }
+  }
   useEffect(() => {
     console.log("Saved Template")
     setDeleteState("");
     setModalState("");
+    setUpdateModal(false);
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -285,7 +290,7 @@ function SavedTemplate(props) {
                   <button style={{background:'transparent',border:'none'}}>
                     <EditIcon
                       style={{ color: `green` }}
-                      onClick={(e) => handleUpdate(e, i)}
+                      onClick={(e) => handleUpdatedData(e, i)}
                     ></EditIcon>
                     </button>
                   </span>
@@ -302,6 +307,8 @@ function SavedTemplate(props) {
         show={modalState}
         handleClose={handleClose}
         templateData={modalData}
+        updateEnabled ={updateModal}
+        handleUpdateData ={handleUpdatedData}
       ></TemplateDetails>
       <DeleteModal
         show={deleteState}
