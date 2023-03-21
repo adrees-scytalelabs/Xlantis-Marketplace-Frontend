@@ -100,6 +100,7 @@ function SavedTemplate(props) {
   const [modalState, setModalState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
+  const [updateModal, setUpdateModal] = useState(true);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -109,11 +110,13 @@ function SavedTemplate(props) {
   const handleOpen = (e, data) => {
     e.preventDefault();
     setModalData(data);
+    setUpdateModal(true);
     setModalState(true);
   };
   const handleClose = () => {
     setModalState(false);
     setDeleteState(false);
+    setUpdateModal(false);
   };
   //This function open the delete modal
   const handleDeleteModal = (e,data) => {
@@ -160,8 +163,8 @@ function SavedTemplate(props) {
           //console.log("size", response.data.templates[0].properties[0].key);
           console.log("Data of the state", templateData);
           handleCloseBackdrop();
-          let variant = "success";
-          enqueueSnackbar("Template loaded successfully", { variant });
+          // let variant = "success";
+          // enqueueSnackbar("Template loaded successfully", { variant });
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -178,20 +181,24 @@ function SavedTemplate(props) {
       console.log("Error in axios request to create template", e);
     }
   };
-  let handleDelete = (e, data) => {
-    e.preventDefault();
-    let variant = "success";
-    enqueueSnackbar("Template deleted successfully", { variant });
-  };
-  let handleUpdate = (e, data) => {
-    e.preventDefault();
-    let variant = "success";
-    enqueueSnackbar("Template updated successfully", { variant });
-  };
+  const handleUpdatedData = (e,data) => {
+      e.preventDefault();
+      setModalData(data);
+      setUpdateModal(false)
+      setModalState(true);
+      try{
+        console.log("data updated");
+      }
+      catch(e){
+        console.log("Something wrong with updation",e)
+      }
+  }
   useEffect(() => {
     console.log("Saved Template")
+    console.log("Modal Data",modalData)
     setDeleteState("");
-    setModalState("");
+    //setModalState("");
+    //setUpdateModal(true);
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -204,7 +211,7 @@ function SavedTemplate(props) {
       template: "",
       saved: "active",
     }); // eslint-disable-next-line
-  }, []);
+  }, [modalData]);
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
@@ -285,7 +292,7 @@ function SavedTemplate(props) {
                   <button style={{background:'transparent',border:'none'}}>
                     <EditIcon
                       style={{ color: `green` }}
-                      onClick={(e) => handleUpdate(e, i)}
+                      onClick={(e) => handleUpdatedData(e, i)}
                     ></EditIcon>
                     </button>
                   </span>
@@ -302,6 +309,9 @@ function SavedTemplate(props) {
         show={modalState}
         handleClose={handleClose}
         templateData={modalData}
+        setTemplateData = {setModalData}
+        updateEnabled ={updateModal}
+        handleUpdateData ={handleUpdatedData}
       ></TemplateDetails>
       <DeleteModal
         show={deleteState}
