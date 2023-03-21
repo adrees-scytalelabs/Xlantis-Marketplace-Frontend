@@ -60,6 +60,7 @@ import { io } from "socket.io-client";
 import zIndex from "@material-ui/core/styles/zIndex";
 import NotificationList from "../Cards/NotificationList Card";
 import Badge from "@material-ui/core/Badge";
+import WorkInProgressModal from "../Modals/WorkInProgressModal";
 
 const customTheme = createMuiTheme({
   overrides: {
@@ -98,6 +99,7 @@ function HeaderHome(props) {
   const [notificationsList, setNotificationsList ] = useState();
   let [isSaving, setIsSaving] = useState(false);
   let [notificationCount, setNotificationCount] = useState(0);
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
 
   const handleCloseBackdrop = () => {
@@ -910,7 +912,10 @@ function HeaderHome(props) {
                 <span
                       className={hoverClassStyle.Community}
                       style={selectedNavStyle.Community}
-                      onClick={handleLogin}
+                      // onClick={handleLogin}
+                      onClick={() => {
+                        setWorkProgressModalShow(true);
+                      }}
                     >
                       Sign in with wallet
                       {/* Connect Wallet */}
@@ -1016,6 +1021,14 @@ function HeaderHome(props) {
         handleClose={handleCloseModal}
         open={modalOpen}
         metamaskLogin={handleLogin}
+        openWorkProgressModal={() => {
+          setMOdalOpen(false);
+          setWorkProgressModalShow(true);
+        }}
+      />
+      <WorkInProgressModal
+       show={workProgressModalShow} 
+       handleClose={() => setWorkProgressModalShow(false)} 
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
    

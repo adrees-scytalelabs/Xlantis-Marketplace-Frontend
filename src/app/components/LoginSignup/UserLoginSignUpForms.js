@@ -30,6 +30,7 @@ import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
 import { useCookies } from "react-cookie";
 import Cookies from "js-cookie";
+import WorkInProgressModal from "../Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
   signInOptionLabel: {
@@ -56,6 +57,7 @@ const AdminLoginSignupForms = () => {
   const [phoneNum, setPhoneNum] = useState();
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const classes = useStyles();
 
   // Variables
@@ -85,9 +87,12 @@ const AdminLoginSignupForms = () => {
           if (response.status === 200) {
             Cookies.set("Version", "v1-sso", {});
             response.data.raindropToken &&
-            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+              sessionStorage.setItem(
+                "Authorization",
+                response.data.raindropToken,
+                {}
+              );
             setAdminSignInData(response.data);
-            
           }
         })
         .catch((error) => {
@@ -103,7 +108,7 @@ const AdminLoginSignupForms = () => {
 
   useEffect(() => {
     const controller = new AbortController();
-    
+
     if (adminSignInData !== null) {
       history.push("/");
       history.go(0);
@@ -112,11 +117,14 @@ const AdminLoginSignupForms = () => {
     return () => {
       controller.abort();
     };
-
   }, [adminSignInData]);
 
-  adminSignInData && console.log("user token before refresh /// ", sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {}));
-  console.log(Cookies.get("Version"), " /// Version for user")
+  adminSignInData &&
+    console.log(
+      "user token before refresh /// ",
+      sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {})
+    );
+  console.log(Cookies.get("Version"), " /// Version for user");
 
   // Content
   return (
@@ -172,7 +180,14 @@ const AdminLoginSignupForms = () => {
                         />
                       </div>
                     </div>
-                    <button type="submit">Sign In</button>
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        setWorkProgressModalShow(true);
+                      }}
+                    >
+                      Sign In
+                    </button>
                     <div className="text-center">
                       <Typography
                         variant="body2"
@@ -181,21 +196,24 @@ const AdminLoginSignupForms = () => {
                         OR
                       </Typography>
                     </div>
-                      <GoogleOAuthProvider clientId={clientID}>
-                        <GoogleLogin
-                          onSuccess={handleSuccess}
-                          onError={() => {
-                            console.log("Login Failed");
-                          }}
-                          width="258px"
-                        />
-                      </GoogleOAuthProvider>
+                    <GoogleOAuthProvider clientId={clientID}>
+                      <GoogleLogin
+                        onSuccess={handleSuccess}
+                        onError={() => {
+                          console.log("Login Failed");
+                        }}
+                        width="258px"
+                      />
+                    </GoogleOAuthProvider>
                     <div className="signUp-link">
                       <p>
                         Don’t have an account?{" "}
                         <button
                           className="signUpBtn-link"
-                          onClick={handleSetActive}
+                          // onClick={handleSetActive}
+                          onClick={() => {
+                            setWorkProgressModalShow(true);
+                          }}
                           type="button"
                         >
                           Sign Up
@@ -334,6 +352,10 @@ const AdminLoginSignupForms = () => {
         </div>
         {/* <Alert severity="error">This is an error message!</Alert> */}
       </div>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
     </>
   );
 };
