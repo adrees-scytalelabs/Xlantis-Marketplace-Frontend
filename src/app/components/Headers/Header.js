@@ -266,17 +266,17 @@ function HeaderHome(props) {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
+        // if (error.response.data !== undefined) {
+        //   if (
+        //     error.response.data === "Unauthorized access (invalid token) !!"
+        //   ) {
+        //     // sessionStorage.removeItem("Authorization");
+        //     // sessionStorage.removeItem("Address");
+        //     // Cookies.remove("Version");
 
-            // window.location.reload(false);
-          }
-        }
+        //     // window.location.reload(false);
+        //   }
+        // }
       }
     );
   }
@@ -387,6 +387,7 @@ function HeaderHome(props) {
               response.data.isInfoAdded === true &&
               response.data.isVerified === true
             ) {
+              // console.log("In the conditions");
               sessionStorage.setItem("Address", accounts[0]);
               window.location.reload(false);
             }
@@ -516,7 +517,19 @@ function HeaderHome(props) {
   }
   
 
-if(adminSignInData !== null) {
+// if(adminSignInData !== null) {
+//       if (
+//         adminSignInData.isInfoAdded === true &&
+//         adminSignInData.isVerified === false
+//       ) {
+//          // Case 2
+//          let variant = "info";
+//          enqueueSnackbar("Your request is under process aaa. Waiting for approval by the Super Admin", { variant })
+//       }
+// }
+
+  useEffect(() => {
+    if(adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
@@ -525,7 +538,8 @@ if(adminSignInData !== null) {
          let variant = "info";
          enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
-}
+    }  
+  }, [adminSignInData])
 
   adminSignInData &&
   console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
