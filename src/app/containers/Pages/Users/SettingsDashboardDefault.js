@@ -128,6 +128,10 @@ function SettingDashboardDefault(props) {
   let [selectedImage, setSelectedImage] = useState("");
   let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
   let [imageCounter, setImageCounter] = useState(0);
+  let [adminName, setAdminName] = useState("");
+  let [adminCompanyName, setAdminCompanyName] = useState("");
+  let [adminDomain, setAdminDomain] = useState("");
+  let [adminDesignation, setAdminDesignation] = useState("");
 
   const classes = useStyles();
 
@@ -344,8 +348,9 @@ function SettingDashboardDefault(props) {
     axios
       .get(`${version}/user/profile`)
       .then((response) => {
-        console.log("profile data id:", response.data.userData);
-        console.log("profile data name:", response.data.userData.imageURL);
+        console.log("Response from getting user: ", response);
+        // console.log("profile data id:", response.data.userData);
+        // console.log("profile data name:", response.data.userData.imageURL);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -560,7 +565,103 @@ function SettingDashboardDefault(props) {
           </div>
         </div>
       </div>
-      {isAdmin ? null : (
+      {isAdmin ? (
+        <>
+          <div className="row pt-5">
+            <h1 className="profileDetailHeading">Profile Details</h1>
+          </div>
+          <div className="card-body">
+            <div className="row">
+              <div className="col-md-12 col-lg-6">
+                <form>
+                  <div className="form-group">
+                    <label>Name</label>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        required
+                        value={adminName}
+                        placeholder="Enter Name"
+                        className="form-control"
+                        onChange={(e) => {
+                          setAdminName(e.target.value);
+                        }}
+                      />
+                    </div>
+                    <label>Company Name</label>
+                    <div className="form-group">
+                      {/* <label>About the Art</label> */}
+                      <textarea
+                        type="text"
+                        value={adminCompanyName}
+                        required
+                        // rows="4"
+                        // value={description}
+                        placeholder="Enter Company Name"
+                        className="form-control"
+                        onChange={(e) => {
+                          setAdminCompanyName(e.target.value);
+                        }}
+                      />
+                    </div>
+                    {/* {Cookies.get("Version") != "v2-wallet-login" && ( */}
+                    <>
+                      <label>Domain</label>
+                      <div className="form-group">
+                        <input
+                          type="text"
+                          required
+                          value={adminDomain}
+                          placeholder="Enter Domain"
+                          className="form-control"
+                          onChange={(e) => {
+                            setAdminDomain(e.target.value);
+                          }}
+                        />
+                      </div>
+                    </>
+                    <label>Designation</label>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        readOnly="true"
+                        value={adminDesignation}
+                        placeholder="Enter Designation"
+                        className="form-control"
+                        onChange={(e) => {
+                          setAdminDesignation(e.target.value);
+                        }}
+                      />
+                    </div>
+                    {isSaving ? (
+                      <div className="text-center">
+                        <Spinner
+                          animation="border"
+                          role="status"
+                          style={{ color: "#ff0000" }}
+                        >
+                          <span className="sr-only">Loading...</span>
+                        </Spinner>
+                      </div>
+                    ) : (
+                      <div className="submit-section">
+                        <button
+                          type="button"
+                          // onClick={(e) => handleSubmitEvent(e)}
+                          className="btn submit-btn"
+                          id="save-profile-btn"
+                        >
+                          Save
+                        </button>
+                      </div>
+                    )}
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </>
+      ) : (
         <>
           <div className="row pt-5">
             <h1 className="profileDetailHeading">Profile Details</h1>
