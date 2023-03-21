@@ -127,6 +127,7 @@ function SettingDashboardDefault(props) {
   let [resultImage, setResultImage] = useState();
   let [selectedImage, setSelectedImage] = useState("");
   let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  let [imageCounter, setImageCounter] = useState(0);
 
   const classes = useStyles();
 
@@ -401,7 +402,7 @@ function SettingDashboardDefault(props) {
       return new Promise((resolve, reject) => {
         canvas.toBlob(
           (blob) => {
-            const file = new File([blob], "cropped-image.png", {
+            const file = new File([blob], `cropped-image-${imageCounter}.png`, {
               type: "image/png",
             });
             // file.name = "image";
@@ -420,6 +421,7 @@ function SettingDashboardDefault(props) {
     try {
       setIsUploadingCroppedImage(true);
       let blobImage = await getCroppedImage();
+      setImageCounter(imageCounter + 1);
 
       console.log("Blob Image", blobImage);
 
