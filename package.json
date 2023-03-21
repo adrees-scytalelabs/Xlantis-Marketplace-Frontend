@@ -53,6 +53,7 @@
     "react-google-button": "^0.7.2",
     "react-h5-audio-player": "3.7.0",
     "react-icons": "^4.7.1",
+    "react-image-crop": "^10.0.9",
     "react-intl-tel-input": "^8.0.4",
     "react-multi-carousel": "^2.8.2",
     "react-number-format": "^4.4.4",
