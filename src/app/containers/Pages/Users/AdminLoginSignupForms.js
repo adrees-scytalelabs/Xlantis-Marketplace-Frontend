@@ -31,6 +31,7 @@ import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
 import { useCookies } from "react-cookie";
 import Cookies from "js-cookie";
+import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
   signInOptionLabel: {
@@ -61,14 +62,14 @@ const customTheme = createMuiTheme({
         },
       },
     },
-    MuiSvgIcon : {
+    MuiSvgIcon: {
       root: {
-        '&:hover': {
-          color: "red"
-        }
-      }
+        "&:hover": {
+          color: "red",
+        },
+      },
+    },
   },
-} 
 });
 
 // COMPONENT FUNCTION
@@ -80,6 +81,7 @@ const AdminLoginSignupForms = () => {
   const [phoneNum, setPhoneNum] = useState();
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
@@ -130,13 +132,17 @@ const AdminLoginSignupForms = () => {
               Cookies.set("Verified", response.data.isVerified, {});
             console.log("3");
             response.data.raindropToken &&
-              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-              if (
-                response.data.isInfoAdded === true &&
-                response.data.isVerified === true
-              ) {
-                window.location.reload(false);
-              }
+              sessionStorage.setItem(
+                "Authorization",
+                response.data.raindropToken,
+                {}
+              );
+            if (
+              response.data.isInfoAdded === true &&
+              response.data.isVerified === true
+            ) {
+              window.location.reload(false);
+            }
           }
         })
         .catch((error) => {
@@ -158,7 +164,10 @@ const AdminLoginSignupForms = () => {
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
+        enqueueSnackbar(
+          "Your request is under process. Waiting for approval by the Super Admin",
+          { variant }
+        );
       }
     }
   }, [adminSignInData]);
@@ -222,7 +231,14 @@ const AdminLoginSignupForms = () => {
                         />
                       </div>
                     </div>
-                    <button type="submit">Sign In</button>
+                    <button
+                      type="submit"
+                      onClick={() => {
+                        setWorkProgressModalShow(true);
+                      }}
+                    >
+                      Sign In
+                    </button>
                     <div className="text-center">
                       <Typography
                         variant="body2"
@@ -255,7 +271,10 @@ const AdminLoginSignupForms = () => {
                         Don’t have an account?{" "}
                         <button
                           className="signUpBtn-link"
-                          onClick={handleSetActive}
+                          // onClick={handleSetActive}
+                          onClick={() => {
+                            setWorkProgressModalShow(true);
+                          }}
                           type="button"
                         >
                           Sign Up
@@ -395,6 +414,10 @@ const AdminLoginSignupForms = () => {
         </div>
         {/* <Alert severity="error">This is an error message!</Alert> */}
       </div>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
     </>
   );
 };
