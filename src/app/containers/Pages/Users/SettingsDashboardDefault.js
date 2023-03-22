@@ -624,7 +624,7 @@ function SettingDashboardDefault(props) {
                     <div className="form-group">
                       <input
                         type="text"
-                        readOnly="true"
+                        required
                         value={adminDesignation}
                         placeholder="Enter Designation"
                         className="form-control"
