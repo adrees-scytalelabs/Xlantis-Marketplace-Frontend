@@ -867,6 +867,13 @@ input[type='file'] {
   object-fit: cover;
 }
 
+.drop-banner-img img {
+  border-radius: 5px;
+  height: 250px;
+  width: 468px;
+  object-fit: cover;
+}
+
 /* MY NFTS */
 
 .nftSaleDetail {

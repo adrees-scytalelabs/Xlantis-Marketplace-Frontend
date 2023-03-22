@@ -26,6 +26,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import DateTimePicker from "react-datetime-picker";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
 import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
@@ -99,6 +100,8 @@ function NewDrop(props) {
   let [name, setName] = useState("");
   let [description, setDescription] = useState("");
   let [image, setImage] = useState(r1);
+  let [bannerImage, setBannerImage] = useState(DropBanner);
+  let [isUploadingBanner, setIsUploadingBanner] = useState(false);
   let [dropId, setDropId] = useState("");
 
   let [isUploading, setIsUploading] = useState();
@@ -244,6 +247,7 @@ function NewDrop(props) {
           // dropId: dropId,
           // MinimumBid: minimumBid * 10 ** 18,
           // bidDelta: bidDelta * 10 ** 18,
+          bannerImage: bannerImage,
           title: name,
           image: image,
           description: description,
@@ -374,6 +378,7 @@ function NewDrop(props) {
             // dropId: dropId,
             // MinimumBid: minimumBid * 10 ** 18,
             // bidDelta: bidDelta * 10 ** 18,
+            bannerImage: bannerImage,
             title: name,
             image: image,
             description: description,
@@ -508,7 +513,60 @@ function NewDrop(props) {
     }
   };
 
+  let onChangeBannerFile = async (e) => {
+    console.log("In banner change function");
+    setIsUploadingBanner(true);
+    const reader = new window.FileReader();
+    let imageNFT = e.target.files[0];
+    setImageType(e.target.files[0].type.split("/")[1]);
+    console.log("e.target.files[0]", e.target.files[0]);
+    // console.log("Image type: ", imageType);
+    reader.readAsArrayBuffer(e.target.files[0]);
+    reader.onloadend = () => {
+      console.log("reader.result", reader.result);
+      // setBuffer(Buffer(reader.result));
+      ipfs.add(Buffer(reader.result), async (err, result) => {
+        if (err) {
+          console.log("err", err);
+          setIsUploadingBanner(false);
+          let variant = "error";
+          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+          return;
+        }
+        console.log("HASH", result[0].hash);
+
+        setIpfsHash(result[0].hash);
+        setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded to IPFS", { variant });
+        //
+      });
+    };
+    // setIsUploadingIPFS(true);
+    let fileData = new FormData();
+    fileData.append("image", imageNFT);
+    axios.post(`/upload/image`, fileData).then(
+      (response) => {
+        console.log("response", response);
+        setBannerImage(response.data.url);
+        setIsUploadingBanner(false);
+        let variant = "success";
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        setIsUploadingBanner(false);
+        let variant = "error";
+        enqueueSnackbar("Unable to Upload Image", { variant });
+      }
+    );
+  };
+
   let onChangeFile = (e) => {
+    console.log("In change file function");
     setIsUploadingIPFS(true);
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
@@ -635,6 +693,49 @@ function NewDrop(props) {
                                     />
                                 </div> */}
                 <div className="form-group">
+                  {/* BANNER IMAGE */}
+                  <div className="form-group">
+                    <label>Select Banner Image</label>
+                    <div className="filter-widget">
+                      <div className="form-group">
+                        <div className="row no-gutters align-items-end justify-content-start">
+                          <div className="co-12 col-md-auto drop-banner-img mr-3">
+                            <img src={bannerImage} alt="Selfie" />
+                          </div>
+                          <div className="co-12 col-md-auto">
+                            <label
+                              htmlFor="uploadBannerImg"
+                              className="uploadLabel"
+                            >
+                              {isUploadingBanner ? (
+                                <div className="text-center">
+                                  <Spinner
+                                    animation="border"
+                                    role="status"
+                                    style={{ color: "#fbfeff" }}
+                                  ></Spinner>
+                                </div>
+                              ) : (
+                                "Choose File"
+                              )}
+                            </label>
+                            <input
+                              name="sampleFile"
+                              type="file"
+                              id="uploadBannerImg"
+                              accept=".png,.jpg,.jpeg"
+                              onChange={onChangeBannerFile}
+                              hidden
+                            />
+                            <small className="form-text text-muted">
+                              Allowed JPG, JPEG, PNG Max size of 5MB
+                            </small>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* TITLE IMAGE */}
                   <div className="form-group">
                     {/* Upload Image */}
                     <label>Select Title Image</label>
@@ -646,7 +747,7 @@ function NewDrop(props) {
                           </div>
                           <div className="co-12 col-md-auto">
                             <label
-                              for="uploadPreviewImg"
+                              htmlFor="uploadPreviewImg"
                               className="uploadLabel"
                             >
                               {isUploadingIPFS ? (
@@ -711,12 +812,12 @@ function NewDrop(props) {
                   </div>
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
-                      <lable
+                      <label
                         component="legend"
                         style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                       >
                         Select Sale Type
-                      </lable>
+                      </label>
                       <RadioGroup
                         row
                         aria-label="position"
@@ -752,12 +853,12 @@ function NewDrop(props) {
                       </RadioGroup>
                       {/* </FormControl>
                                 <FormControl component="fieldset"> */}
-                      <lable
+                      <label
                         component="legend"
                         style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                       >
                         Select Drop Type
-                      </lable>
+                      </label>
                       <RadioGroup
                         row
                         aria-label="position"
