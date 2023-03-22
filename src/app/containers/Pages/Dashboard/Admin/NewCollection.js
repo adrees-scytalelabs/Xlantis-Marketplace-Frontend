@@ -35,6 +35,7 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import Cookies from "js-cookie";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -119,10 +120,11 @@ function NewCollection(props) {
   let [isAuctionApproved, setIsAuctionApproved] = useState(false);
   let [approvingAuction, setApprovingAuction] = useState(false);
   let [doneLoader, setDoneLoader] = useState(false);
-  let [nftType, setNftType] = useState("ERC721");
+  let [nftType, setNftType] = useState("ERC1155");
   let [version, setVersion] = useState("");
   let [royaltyFee, setRoyaltyFee] = useState(0);
   let [approvalFlag, setApprovalFlag] = useState(false);
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const Text721 =
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
@@ -900,9 +902,12 @@ function NewCollection(props) {
                         <FormControlLabel
                           style={{ color: "white" }}
                           value="ERC721"
+                          // onChange={() => {
+                          //   setNftType("ERC721");
+                          //   // checked={saleType === 'auction'}
+                          // }}
                           onChange={() => {
-                            setNftType("ERC721");
-                            // checked={saleType === 'auction'}
+                            setWorkProgressModalShow(true);
                           }}
                           checked={nftType === "ERC721"}
                           control={<Radio style={{ color: "#fff" }} />}
@@ -983,6 +988,10 @@ function NewCollection(props) {
         doneLoader={doneLoader}
         approvalFlag={approvalFlag}
       ></RequestApprovalModal>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

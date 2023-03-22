@@ -33,6 +33,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Tooltip from "@material-ui/core/Tooltip";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -115,8 +116,9 @@ function NewDrop(props) {
   let [imageType, setImageType] = useState("");
   let [ipfsURI, setIpfsURI] = useState("");
   let [ipfsHash, setIpfsHash] = useState(null);
-  let [nftType, setNftType] = useState("721");
+  let [nftType, setNftType] = useState("1155");
   let [versionB, setVersionB] = useState("");
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
@@ -769,9 +771,12 @@ function NewDrop(props) {
                           <FormControlLabel
                             style={{ color: "black" }}
                             value="ERC721"
+                            // onChange={() => {
+                            //   setNftType("721");
+                            //   // checked={saleType === 'auction'}
+                            // }}
                             onChange={() => {
-                              setNftType("721");
-                              // checked={saleType === 'auction'}
+                              setWorkProgressModalShow(true);
                             }}
                             checked={nftType === "721"}
                             control={<Radio style={{ color: "#fff" }} />}
@@ -948,6 +953,10 @@ function NewDrop(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
