@@ -12,14 +12,15 @@ function TopUpModal(props) {
       <Modal.Header
         closeButton
         style={{
-          backgroundColor: "white",
+          backgroundColor: "black",
+          
         }}
       >
-        <Modal.Title style={{ color: "black" }}>Top Up</Modal.Title>
+        <Modal.Title style={{background:'black', color: "white" }}>Top Up</Modal.Title>
       </Modal.Header>
       <Modal.Body
         style={{
-          border: "1px solid black",
+          border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
           backgroundColor: "black",
@@ -63,14 +64,14 @@ function TopUpModal(props) {
         <button
           className="newTemplateBtn mb-3"
           onClick={props.handleClose}
-          style={{ backgroundColor: "gray" }}
+          style={{ backgroundColor: "black" }}
         >
           Close
         </button>
         <button
           className="newTemplateBtn mb-3"
           onClick={props.handleData}
-          style={{ backgroundColor: "green" }}
+          style={{ backgroundColor: "black" }}
         >
           Proceed
         </button>
