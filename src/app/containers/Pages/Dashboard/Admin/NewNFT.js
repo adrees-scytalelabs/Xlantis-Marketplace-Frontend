@@ -611,7 +611,7 @@ function NewNFT(props) {
   const Text1155 =
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
   const SupplyTypeText =
-    "Single supply refers to a fixed supply of tokens that cannot be changed, while variable supply allows for the creation of additional tokens over time, making it a more flexible option.";
+    "Single supply in ERC-1155 refers to a collection of NFTs that have a predetermined, only one copy of NFTs available, while variable supply allows for the creation of multiple and identical NFTs copies, depending on demand.";
 
   // let [executiveProducerId, setExecutiveProducerId] = useState('');
   // let [executiveProducer, setExecutiveProducer] = useState('');
