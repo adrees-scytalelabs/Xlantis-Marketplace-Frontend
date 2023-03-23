@@ -869,7 +869,7 @@ input[type='file'] {
 
 .drop-banner-img img {
   border-radius: 5px;
-  height: 250px;
+  height: 200px;
   width: 468px;
   object-fit: cover;
 }
