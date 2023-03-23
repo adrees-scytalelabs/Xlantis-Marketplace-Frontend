@@ -128,7 +128,8 @@ function NewDrop(props) {
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
   const AuctionText =
     "Auction will have bidding for NFTs and after some time NFT will be sold to best bidder.";
-  const FixedPriceText = "Fixed-Price sale will sold NFT to buyer on the spot.";
+  const FixedPriceText =
+    "In Fixed-Price sale NFT will be sold to buyer on the spot.";
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
