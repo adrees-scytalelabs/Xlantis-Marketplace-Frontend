@@ -95,7 +95,7 @@ function NewDrop(props) {
   const [endTime, setEndTime] = useState(new Date());
   // const [inputList, setInputList] = useState([]);
   // const [imageData, setImageData] = useState([]);
-  let [saleType, setSaleType] = useState("auction");
+  let [saleType, setSaleType] = useState("fixed-price");
   let [name, setName] = useState("");
   let [description, setDescription] = useState("");
   let [image, setImage] = useState(r1);
@@ -736,8 +736,11 @@ function NewDrop(props) {
                           <FormControlLabel
                             style={{ color: "white" }}
                             value="auction"
+                            // onChange={() => {
+                            //   setSaleType("auction");
+                            // }}
                             onChange={() => {
-                              setSaleType("auction");
+                              setWorkProgressModalShow(true);
                             }}
                             checked={saleType === "auction"}
                             control={<Radio style={{ color: "#fff" }} />}
