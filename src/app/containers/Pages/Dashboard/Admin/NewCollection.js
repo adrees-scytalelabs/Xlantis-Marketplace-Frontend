@@ -1031,6 +1031,8 @@ function NewCollection(props) {
         show={topUp}
         handleClose={handleCloseTopUpModal}
         handleData={handleTopUpData}
+        amount ={royaltyFee}
+        setAmount = {setRoyaltyFee}
       >  
       </TopUpModal> */}
     </div>

@@ -36,21 +36,19 @@ function TopUpModal(props) {
         </Row>
         <Row>
           <Col>
-            <select
-              name="type"
-              id="valueType"
-              className="templatesSelect"
-              placeholder="Select a Type"
-              // value={i.type}
-              // onChange={(e) => handlePropertyChange(index, e)}
-              style={{ padding: "10px" }}
-            >
-              <option value="5" defaultValue>
-                $5
-              </option>
-              <option value="10">$10</option>
-              <option value="15">$15</option>
-            </select>
+          <input
+                      type="number"
+                      required
+                      value={props.amount}
+                      placeholder="Enter Top Up Amount"
+                      className="form-control newNftInput"
+                      min={5}
+                      style={{backgroundColor:'black',color:'white'}}
+                      onChange={(e) => {
+                        props.setAmount(e.target.value);
+                      }}
+                    />
+         
           </Col>
         </Row>
       </Modal.Body>
