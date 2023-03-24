@@ -65,8 +65,10 @@ function TemplateDetails(props) {
         centered
         backdrop="static"
       >
-        <Modal.Header className="NewTemplateHeader" closeButton>
-          Template Details
+        <Modal.Header className="NewTemplateHeader"  style={{ background: "black"}}>
+          <Modal.Title style={{color: "white" }}>
+            Template Details
+          </Modal.Title>
         </Modal.Header>
 
         <Modal.Body
@@ -122,9 +124,15 @@ function TemplateDetails(props) {
                     <option value="number">Number</option>
                   </select>
                 </Col>
-                <Col xs={12} lg={2} md={4} sm={12} className="ml-4 mt-2 mt-lg-0">
-                <h4>Action</h4>
-                <Tooltip title="Remove a property" placement="bottom">
+                <Col
+                  xs={12}
+                  lg={2}
+                  md={4}
+                  sm={12}
+                  className="ml-4 mt-2 mt-lg-0"
+                >
+                  <h4>Action</h4>
+                  <Tooltip title="Remove a property" placement="bottom">
                     <button
                       className="btn btn-submit btn-lg propsActionBtn"
                       onClick={(e) => handleRemoveProperty(e, index)}

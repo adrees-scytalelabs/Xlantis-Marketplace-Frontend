@@ -13,10 +13,11 @@ function TopUpModal(props) {
         closeButton
         style={{
           backgroundColor: "black",
-          
         }}
       >
-        <Modal.Title style={{background:'black', color: "white" }}>Top Up</Modal.Title>
+        <Modal.Title style={{ background: "black", color: "white" }}>
+          Top Up
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body
         style={{
@@ -36,19 +37,18 @@ function TopUpModal(props) {
         </Row>
         <Row>
           <Col>
-          <input
-                      type="number"
-                      required
-                      value={props.amount}
-                      placeholder="Enter Top Up Amount"
-                      className="form-control newNftInput"
-                      min={5}
-                      style={{backgroundColor:'black',color:'white'}}
-                      onChange={(e) => {
-                        props.setAmount(e.target.value);
-                      }}
-                    />
-         
+            <input
+              type="number"
+              required
+              value={props.amount}
+              placeholder="Enter Top Up Amount"
+              className="form-control newNftInput"
+              min={5}
+              style={{ backgroundColor: "black", color: "white" }}
+              onChange={(e) => {
+                props.setAmount(e.target.value);
+              }}
+            />
           </Col>
         </Row>
       </Modal.Body>
