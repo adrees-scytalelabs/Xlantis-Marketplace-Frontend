@@ -52,6 +52,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { ethers } from "ethers";
 import Alert from "@material-ui/lab/Alert";
 import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 
 // STYLES
 
@@ -156,7 +157,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "orbitron",
   },
   tooltip: {
-    fontSize: "16px", 
+    fontSize: "16px",
   },
 }));
 
@@ -600,7 +601,8 @@ function NewNFT(props) {
   let [isUploadingPreview, setIsUploadingPreview] = useState(false);
   let [isMp3File, setIsMp3File] = useState(false);
   let [contractType, setContractType] = useState("");
-  let [NFTType, setNFTType] = useState("721");
+  let [NFTType, setNFTType] = useState("1155");
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
   let [previewImage, setPreviewImage] = useState(r1);
   let [versionB, setVersionB] = useState("");
@@ -2015,7 +2017,7 @@ function NewNFT(props) {
       return signature;
     } else {
       // alert("Signature");
-      console.log("Signature issue")
+      console.log("Signature issue");
     }
   };
 
@@ -2027,11 +2029,11 @@ function NewNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-            </Link>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">New NFT</li>
             </ul>
           </div>
@@ -2904,16 +2906,21 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <Tooltip title={Text721}
-                          classes={{ tooltip: classes.tooltip }}>
+                          <Tooltip
+                            title={Text721}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
                             <FormControlLabel
                               style={{ color: "white" }}
                               disabled
                               value="ERC721"
+                              // onChange={() => {
+                              //   setNFTType("721");
+                              //   getCollections("721");
+                              //   // checked={saleType === 'auction'}
+                              // }}
                               onChange={() => {
-                                setNFTType("721");
-                                getCollections("721");
-                                // checked={saleType === 'auction'}
+                                setWorkProgressModalShow(true);
                               }}
                               checked={NFTType === "721"}
                               control={<Radio />}
@@ -2927,8 +2934,10 @@ function NewNFT(props) {
                             />
                           </Tooltip>
 
-                          <Tooltip title={Text1155}
-                          classes={{ tooltip: classes.tooltip }}>
+                          <Tooltip
+                            title={Text1155}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
                             <FormControlLabel
                               style={{ color: "white" }}
                               disabled
@@ -2964,15 +2973,20 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <Tooltip title={Text721}
-                          classes={{ tooltip: classes.tooltip }}>
+                          <Tooltip
+                            title={Text721}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
                             <FormControlLabel
                               style={{ color: "black" }}
                               value="ERC721"
+                              // onChange={() => {
+                              //   setNFTType("721");
+                              //   getCollections("721");
+                              //   // checked={saleType === 'auction'}
+                              // }}
                               onChange={() => {
-                                setNFTType("721");
-                                getCollections("721");
-                                // checked={saleType === 'auction'}
+                                setWorkProgressModalShow(true);
                               }}
                               checked={NFTType === "721"}
                               control={<Radio color="secondary" />}
@@ -2988,8 +3002,10 @@ function NewNFT(props) {
                             />
                           </Tooltip>
 
-                          <Tooltip title={Text1155}
-                          classes={{ tooltip: classes.tooltip }}>
+                          <Tooltip
+                            title={Text1155}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
                             <FormControlLabel
                               style={{ color: "black", marginLeft: ".8rem" }}
                               value="ERC1155"
@@ -3451,6 +3467,10 @@ function NewNFT(props) {
         updateChangeCollection={updateChangeCollection}
         isUploading={isUploadingData}
       ></ChangeCollectionConfirmationModal>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
