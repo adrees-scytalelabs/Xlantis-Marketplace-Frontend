@@ -698,7 +698,7 @@ function NewDrop(props) {
                     <label>Select Banner Image</label>
                     <div className="filter-widget">
                       <div className="form-group">
-                        <div className="row no-gutters align-items-end justify-content-start">
+                        <div className="no-gutters align-items-end justify-content-start">
                           <div className="co-12 col-md-auto drop-banner-img mr-3">
                             <img src={bannerImage} alt="Selfie" />
                           </div>
@@ -741,7 +741,7 @@ function NewDrop(props) {
                     <label>Select Title Image</label>
                     <div className="filter-widget">
                       <div className="form-group">
-                        <div className="row no-gutters align-items-end justify-content-start">
+                        <div className="no-gutters align-items-end justify-content-start">
                           <div className="co-12 col-md-auto profile-img mr-3">
                             <img src={image} alt="Selfie" />
                           </div>
