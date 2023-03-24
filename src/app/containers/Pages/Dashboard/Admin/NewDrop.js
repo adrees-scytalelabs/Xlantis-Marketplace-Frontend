@@ -126,6 +126,10 @@ function NewDrop(props) {
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const AuctionText =
+    "Auction will have bidding for NFTs and after some time NFT will be sold to best bidder.";
+  const FixedPriceText =
+    "In Fixed-Price sale NFT will be sold to buyer on the spot.";
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -723,35 +727,59 @@ function NewDrop(props) {
                         name="position"
                         defaultValue="top"
                       >
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="auction"
-                          // onChange={() => {
-                          //   setSaleType("auction");
-                          // }}
-                          onChange={() => {
-                            setWorkProgressModalShow(true);
-                          }}
-                          checked={saleType === "auction"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>Auction</span>
-                          }
-                        />
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="fixed-price"
-                          onChange={() => {
-                            setSaleType("fixed-price");
-                          }}
-                          checked={saleType === "fixed-price"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Fixed-Price
-                            </span>
-                          }
-                        />
+                        <Tooltip
+                          title={AuctionText}
+                          classes={{ tooltip: classes.tooltip }}
+                          placement="top-start"
+                          arrow={true}
+                        >
+                          <FormControlLabel
+                            style={{ color: "white" }}
+                            value="auction"
+                            // onChange={() => {
+                            //   setSaleType("auction");
+                            // }}
+                            onChange={() => {
+                              setWorkProgressModalShow(true);
+                            }}
+                            checked={saleType === "auction"}
+                            control={<Radio style={{ color: "#fff" }} />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>
+                                Auction{" "}
+                                <i
+                                  className="fa fa-info-circle"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            }
+                          />
+                        </Tooltip>
+                        <Tooltip
+                          title={FixedPriceText}
+                          classes={{ tooltip: classes.tooltip }}
+                          placement="top-start"
+                          arrow={true}
+                        >
+                          <FormControlLabel
+                            style={{ color: "white" }}
+                            value="fixed-price"
+                            onChange={() => {
+                              setSaleType("fixed-price");
+                            }}
+                            checked={saleType === "fixed-price"}
+                            control={<Radio style={{ color: "#fff" }} />}
+                            label={
+                              <span style={{ fontSize: "0.9rem" }}>
+                                Fixed-Price{" "}
+                                <i
+                                  className="fa fa-info-circle"
+                                  aria-hidden="true"
+                                ></i>
+                              </span>
+                            }
+                          />
+                        </Tooltip>
                       </RadioGroup>
                       {/* </FormControl>
                                 <FormControl component="fieldset"> */}
