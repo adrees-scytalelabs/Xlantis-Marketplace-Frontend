@@ -1179,18 +1179,29 @@ function AddNFT(props) {
                     <div className="form-group">
                       <div className="filter-widget newNftWrapper">
                         <input
+                          style={{
+                            border:
+                              nftTokenSupply === 0
+                                ? "none"
+                                : nftTokenSupply >= supply
+                                ? "3px solid green"
+                                : "3px solid red",
+                          }}
                           type="number"
                           required
                           disabled={isDisabled}
                           value={supply}
                           className="form-control"
                           onChange={(e) => {
-                            if (e.target.value > nftTokenSupply) {
-                              setAlertMessage(true);
-                              setTimeout(() => {
+                            if (e.target.value >= 0) {
+                              if (e.target.value > nftTokenSupply) {
+                                setAlertMessage(true);
+                                // setTimeout(() => {
+                                //   setAlertMessage(false);
+                                // }, 5000);
+                              } else {
                                 setAlertMessage(false);
-                              }, 5000);
-                            } else {
+                              }
                               setSupply(e.target.value);
                             }
                           }}
