@@ -650,7 +650,7 @@ function NewDrop(props) {
                           </div>
                           <div className="co-12 col-md-auto">
                             <label
-                              for="uploadPreviewImg"
+                              htmlFor="uploadPreviewImg"
                               className="uploadLabel"
                             >
                               {isUploadingIPFS ? (
@@ -715,12 +715,12 @@ function NewDrop(props) {
                   </div>
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
-                      <lable
+                      <label
                         component="legend"
                         style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                       >
                         Select Sale Type
-                      </lable>
+                      </label>
                       <RadioGroup
                         row
                         aria-label="position"
@@ -783,12 +783,12 @@ function NewDrop(props) {
                       </RadioGroup>
                       {/* </FormControl>
                                 <FormControl component="fieldset"> */}
-                      <lable
+                      <label
                         component="legend"
                         style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                       >
                         Select Drop Type
-                      </lable>
+                      </label>
                       <RadioGroup
                         row
                         aria-label="position"
