@@ -24,9 +24,9 @@ function AdminInformationModal(props) {
       >
         <Modal.Header
           className="NewTemplateHeader"
-          style={{ background: "black", color: "white" }}
+          style={{ background: "black"}}
         >
-          <Modal.Title style={{ background: "black", color: "white" }}>
+          <Modal.Title style={{color: "white" }}>
             Admin Details
           </Modal.Title>
         </Modal.Header>
