@@ -35,7 +35,9 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import Cookies from "js-cookie";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -746,6 +748,27 @@ function NewCollection(props) {
     }
   };
 
+  //Testing purpose of top up modal
+  // const [topUp,setTopUp] = useState(false);
+  // let handleTopUpData = (e) => {
+  //   e.preventDefault();
+  //   try{
+  //     console.log("You balance updated Sunccessfully");
+  //     handleCloseTopUpModal();
+  //   }
+  //   catch(e){
+  //     console.log("Error during top up",e);
+  //   }
+
+  // }
+  // let handleCloseTopUpModal = () => {
+  //   setTopUp(false);
+  // }
+  // let handleTopUpModal = (e) => {
+  //   e.preventDefault();
+  //   setTopUp(true);
+  // }
+  //...............................................
   let handleDoneButton = () => {
     if (isFixedPriceApproved === false) {
       let variant = "error";
@@ -956,6 +979,15 @@ function NewCollection(props) {
           <WhiteSpinner />
         ) : (
           <div className="submit-section">
+            {/* Testing */}
+             {/* <button
+              type="button"
+              onClick={(e) => {handleTopUpModal(e)}}
+              className="btn submit-btn propsActionBtn"
+            >
+              Open Top Up Modal
+            </button> */}
+            {/* {......} */}
             <button
               type="button"
               onClick={(e) => {
@@ -995,6 +1027,12 @@ function NewCollection(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      {/* <TopUpModal
+        show={topUp}
+        handleClose={handleCloseTopUpModal}
+        handleData={handleTopUpData}
+      >  
+      </TopUpModal> */}
     </div>
   );
 }
