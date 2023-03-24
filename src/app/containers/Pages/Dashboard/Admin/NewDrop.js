@@ -244,6 +244,13 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
+      } else if (bannerImage === DropBanner) {
+        let variant = "error";
+        enqueueSnackbar("Please select banner image for drop to continue.", {
+          variant,
+        });
+        setIsSaving(false);
+        handleCloseBackdrop();
       } else {
         let dropID;
         let DropData = {
@@ -251,7 +258,7 @@ function NewDrop(props) {
           // dropId: dropId,
           // MinimumBid: minimumBid * 10 ** 18,
           // bidDelta: bidDelta * 10 ** 18,
-          bannerImage: bannerImage,
+          bannerURL: bannerImage,
           title: name,
           image: image,
           description: description,
