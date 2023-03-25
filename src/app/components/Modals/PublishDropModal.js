@@ -527,79 +527,7 @@ const PublishDropModal = (props) => {
                 </AccordionDetails>
               </Accordion>
               <Divider />
-              {/* APPROVAL */}
-              {/* <Accordion
-                expanded={expanded === "panel3"}
-                onChange={handleChange("panel3")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>Approval</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        Number of Transactions:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.noOfTxs}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost in wei:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-              </Accordion> */}
+             
               {/* DROP */}
               <Accordion
                 expanded={expanded === "panel4"}
@@ -629,7 +557,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (data.drop.noOfTxs)}
+                        {/* {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (props.dropData.drop.noOfTxs)} */}
 
                       </p>
                     </div>
