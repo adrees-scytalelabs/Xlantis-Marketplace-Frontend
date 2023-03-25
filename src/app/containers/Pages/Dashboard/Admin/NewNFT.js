@@ -1289,6 +1289,7 @@ function NewNFT(props) {
             title: name,
             description: description,
             nftURI: nftURI,
+            previewImageURI: previewImageURI,
             metadataURI: nftURI,
             nftFormat: imageType,
             // type: rarity,

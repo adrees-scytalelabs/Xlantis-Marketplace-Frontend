@@ -1320,7 +1320,7 @@ function AddNFT(props) {
               // onClick={(e) => handleSubmitEvent(e)}
               onClick={(e) => {
                 versionB === "v1-sso"
-                  ? handleOpenModal(e)
+                  ? handleSubmitEvent(e)
                   : handleSubmitEvent(e);
               }}
               style={{ float: "right", marginBottom: "5%" }}
@@ -1397,7 +1397,12 @@ function AddNFT(props) {
                   type="button"
                   className="bttn"
                   style={{ float: "right" }}
-                  onClick={handlePublishEvent}
+                  onClick={(e) => {
+                    versionB === "v1-sso"
+                      ? handleOpenModal(e)
+                      : handlePublishEvent(e);
+                  }}
+                  // onClick={handlePublishEvent}
                 >
                   Publish Drop
                 </button>

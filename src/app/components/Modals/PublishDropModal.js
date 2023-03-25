@@ -196,19 +196,19 @@ const PublishDropModal = (props) => {
   };
 
   const getTxSummary = (dropId) => {
-    
+
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
         console.log("response", response);
-        data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-        
-        
-      
+        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
+        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
+        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
+        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
+        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
+
+
+
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -450,7 +450,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {props.isOpen ? (props.dropData.NFTsTxSummary.txsCount) : (data.nfts.noOfTxs)} 
+                        {props.isOpen ? (props.dropData.NFTsTxSummary.txsCount) : (data.nfts.noOfTxs)}
                       </p>
                     </div>
                   </div>
@@ -473,7 +473,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {props.isOpen ? (props.dropData.NFTsTxSummary.NFTCount) : (data.nfts.totalNftsToMint)} 
+                        {props.isOpen ? (props.dropData.NFTsTxSummary.NFTCount) : (data.nfts.totalNftsToMint)}
 
                       </p>
                     </div>
@@ -629,7 +629,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (data.drop.noOfTxs)} 
+                        {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (data.drop.noOfTxs)}
 
                       </p>
                     </div>
