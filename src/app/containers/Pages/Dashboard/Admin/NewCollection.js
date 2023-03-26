@@ -131,6 +131,8 @@ function NewCollection(props) {
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const RoyaltyFeeText =
+    "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -889,7 +891,18 @@ function NewCollection(props) {
                   </div>
 
                   <div>
-                    <label>Royalty Fee</label>
+                    <Tooltip
+                      title={RoyaltyFeeText}
+                      classes={{ tooltip: classes.tooltip }}
+                      placement="top-start"
+                      arrow={true}
+                    >
+                      <label>
+                        Royalty Fee{" "}
+                        <i className="fa fa-info-circle" aria-hidden="true"></i>
+                      </label>
+                    </Tooltip>
+
                     <small style={{ marginLeft: "5px" }}></small>
                   </div>
 

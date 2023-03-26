@@ -610,6 +610,8 @@ function NewNFT(props) {
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const SupplyTypeText =
+    "Single supply in ERC-1155 refers to a collection of NFTs that have a predetermined, only one copy of NFTs available, while variable supply allows for the creation of multiple and identical NFTs copies, depending on demand.";
 
   // let [executiveProducerId, setExecutiveProducerId] = useState('');
   // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -3127,12 +3129,26 @@ function NewNFT(props) {
                   {NFTType === "1155" ? (
                     <div>
                       <FormControl component="fieldset">
-                        <label
-                          component="legend"
-                          style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                        <Tooltip
+                          title={SupplyTypeText}
+                          classes={{ tooltip: classes.tooltip }}
+                          placement="top-start"
+                          arrow={true}
                         >
-                          Select Supply Type
-                        </label>
+                          <label
+                            component="legend"
+                            style={{
+                              fontWeight: "bold",
+                              fontFamily: "poppins",
+                            }}
+                          >
+                            Select Supply Type{" "}
+                            <i
+                              className="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                          </label>
+                        </Tooltip>
                         <RadioGroup
                           row
                           aria-label="position"
