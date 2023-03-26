@@ -1430,6 +1430,7 @@ function AddNFT(props) {
         handlePay={openTransak}
         dropData={data}
         isOpen={modalOpen}
+        dropStatus={e => dropStatus(e)}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
