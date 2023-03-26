@@ -204,6 +204,7 @@ function AddNFT(props) {
   let [saleType, setSaleType] = useState("");
   let [nftType, setNftType] = useState("");
   let [versionB, setVersionB] = useState("");
+  let [AlertMessage, setAlertMessage] = useState(false);
   const [startTimeStamp, setStartTimeStamp] = useState(
     Math.round(startTime.getTime() / 1000)
   );
@@ -1141,7 +1142,7 @@ function AddNFT(props) {
                         if (value == null) setNftName("");
                         else {
                           console.log("hereee");
-
+                          console.log("Selected NFT values: ", value);
                           // value =
                           setNftName(value.title);
                           setNftId(value._id);
@@ -1172,23 +1173,44 @@ function AddNFT(props) {
                 {nftType === "1155" ? (
                   <span>
                     <label>Supply</label>
+                    <span style={{ float: "right", fontSize: "12px" }}>
+                      Out of ({nftTokenSupply})
+                    </span>
                     <div className="form-group">
                       <div className="filter-widget newNftWrapper">
                         <input
+                          style={{
+                            border:
+                              nftTokenSupply === 0
+                                ? "none"
+                                : nftTokenSupply >= supply
+                                ? "3px solid green"
+                                : "3px solid red",
+                          }}
                           type="number"
                           required
                           disabled={isDisabled}
                           value={supply}
                           className="form-control"
                           onChange={(e) => {
-                            // if (e.target.value > 0) {
-                            //   setSupply(e.target.value);
-                            // } else {
-                            //   setSupply(0);
-                            // }
-                            setSupply(e.target.value);
+                            if (e.target.value >= 0) {
+                              if (e.target.value > nftTokenSupply) {
+                                setAlertMessage(true);
+                                // setTimeout(() => {
+                                //   setAlertMessage(false);
+                                // }, 5000);
+                              } else {
+                                setAlertMessage(false);
+                              }
+                              setSupply(e.target.value);
+                            }
                           }}
                         />
+                        {AlertMessage ? (
+                          <span style={{ fontSize: "10px", color: "red" }}>
+                            Limit of supply is {nftTokenSupply}
+                          </span>
+                        ) : null}
                       </div>
                     </div>
                   </span>
