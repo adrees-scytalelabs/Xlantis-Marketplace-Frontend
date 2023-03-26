@@ -215,6 +215,7 @@ function AddNFT(props) {
   const [data, setData] = useState();
 
   const handleOpenModal = async (e) => {
+    await handleTimeEvent(e);
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
         console.log("response of tx-cost summary", response);
