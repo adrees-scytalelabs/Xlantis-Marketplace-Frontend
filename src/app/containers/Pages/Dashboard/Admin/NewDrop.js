@@ -536,26 +536,26 @@ function NewDrop(props) {
       console.log("e.target.files[0]", e.target.files[0]);
       // console.log("Image type: ", imageType);
       reader.readAsArrayBuffer(e.target.files[0]);
-      reader.onloadend = () => {
-        console.log("reader.result", reader.result);
-        // setBuffer(Buffer(reader.result));
-        ipfs.add(Buffer(reader.result), async (err, result) => {
-          if (err) {
-            console.log("err", err);
-            setIsUploadingBanner(false);
-            let variant = "error";
-            enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-            return;
-          }
-          console.log("HASH", result[0].hash);
+      // reader.onloadend = () => {
+      //   console.log("reader.result", reader.result);
+      //   // setBuffer(Buffer(reader.result));
+      //   ipfs.add(Buffer(reader.result), async (err, result) => {
+      //     if (err) {
+      //       console.log("err", err);
+      //       setIsUploadingBanner(false);
+      //       let variant = "error";
+      //       enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+      //       return;
+      //     }
+      //     console.log("HASH", result[0].hash);
 
-          setIpfsHash(result[0].hash);
-          setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to IPFS", { variant });
-          //
-        });
-      };
+      //     setIpfsHash(result[0].hash);
+      //     setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+      //     let variant = "success";
+      //     enqueueSnackbar("Image Uploaded to IPFS", { variant });
+      //     //
+      //   });
+      // };
       // setIsUploadingIPFS(true);
       let fileData = new FormData();
       fileData.append("image", imageNFT);
@@ -589,26 +589,26 @@ function NewDrop(props) {
     console.log("e.target.files[0]", e.target.files[0]);
     // console.log("Image type: ", imageType);
     reader.readAsArrayBuffer(e.target.files[0]);
-    reader.onloadend = () => {
-      console.log("reader.result", reader.result);
-      // setBuffer(Buffer(reader.result));
-      ipfs.add(Buffer(reader.result), async (err, result) => {
-        if (err) {
-          console.log("err", err);
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-          return;
-        }
-        console.log("HASH", result[0].hash);
+    // reader.onloadend = () => {
+    //   console.log("reader.result", reader.result);
+    //   // setBuffer(Buffer(reader.result));
+    //   ipfs.add(Buffer(reader.result), async (err, result) => {
+    //     if (err) {
+    //       console.log("err", err);
+    //       setIsUploadingIPFS(false);
+    //       let variant = "error";
+    //       enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+    //       return;
+    //     }
+    //     console.log("HASH", result[0].hash);
 
-        setIpfsHash(result[0].hash);
-        setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-        let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS", { variant });
-        //
-      });
-    };
+    //     setIpfsHash(result[0].hash);
+    //     setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+    //     let variant = "success";
+    //     enqueueSnackbar("Image Uploaded to IPFS", { variant });
+    //     //
+    //   });
+    // };
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
