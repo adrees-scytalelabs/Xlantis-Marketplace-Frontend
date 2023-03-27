@@ -213,6 +213,7 @@ function AddNFT(props) {
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
+  const [costInfo,setCostInfo] = useState({});
 
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
@@ -758,7 +759,38 @@ function AddNFT(props) {
       }
     }
   };
-
+  const handleBuyDetail = async() => {
+    try{
+    axios.get(`/drop/validate-admin-balance/${dropId}`).then(
+      (response) => {
+        setCostInfo(response.data);
+        console.log("Admin Balance and Buy Detail", response);
+        // if (costInfo!=undefined){
+        //   TotalCost();
+        // }
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+    }
+    catch(e){
+      console.log("Cost detail end point not work properly",e)
+    }
+  };
   const handleDropData = async (event, web3, accounts) => {
     event.preventDefault();
     handleResponse(event, web3, accounts);
@@ -876,6 +908,7 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           (response) => {
             console.log("nft drop add response: ", response);
+            handleBuyDetail();
             console.log("time", startTime, endTime);
 
             setIsAdded(true);
@@ -1431,6 +1464,8 @@ function AddNFT(props) {
         dropData={data}
         isOpen={modalOpen}
         dropStatus={e => dropStatus(e)}
+        dropId={dropId}
+        cost={costInfo}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />

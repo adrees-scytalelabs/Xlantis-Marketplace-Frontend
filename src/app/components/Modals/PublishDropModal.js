@@ -15,6 +15,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Badge from "@material-ui/core/Badge";
 import axios from "axios";
+import Web3 from "web3";
 
 // CUSTOM MATERIAL UI STYLING
 const useStyles = makeStyles((theme) => ({
@@ -139,95 +140,24 @@ const makeTheme = createMuiTheme({
   },
 });
 
-let data = {
-  gasPriceInGwei: "20",
-  totalCostInWei: "20000000000",
-  estimatedTimeInSec: 123654,
-  slippage: 10, // in percentage
-  collections: {
-    noOfTxs: 1,
-    totalCollectionsToCreate: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  nfts: {
-    noOfTxs: 0,
-    totalNftsToMint: 1,
-    MuiAccordion: {
-      root: {},
-    },
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  approval: {
-    noOfTxs: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  drop: {
-    noOfTxs: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-};
-
-console.log("json: ", data);
-
 //   COMPONENT FUNCTION
 const PublishDropModal = (props) => {
   // States
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
+  const [costInfo,setCostInfo] = useState({});
+  const [totalCost,setTotalCost] = useState(0);
   const classes = useStyles();
 
   // Handlers
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
-  const handleBuyCrypto = () => {
-    if (disabled) {
-      console.log("Buy Crypto!");
-      setTimeout(() => {
-        setDisabled(false);
-      }, 10000);
-    } else console.log("why are you so greedy?");
-  };
-
-  const getTxSummary = (dropId) => {
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
-        console.log("response", response);
-        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
-      }
-    );
-  };
-
   useEffect(() => {
     clearTimeout();
     if (props.open === true) {
       console.log("tx-summary", props.dropData);
+      console.log("cost info",props.cost);
     }
     console.log("Props : ", props);
     // getTxSummary(props.dropId);
@@ -262,52 +192,6 @@ const PublishDropModal = (props) => {
                     </Typography>
                   </div>
                 </div>
-                {/* Gas Price */}
-                {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    Gas Price in Gwei:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.gasPriceInGwei}
-                  </p>
-                </div>
-              </div> */}
-                {/* <Divider /> */}
-                {/* Slippage */}
-                {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    Slippage:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.slippage}
-                  </p>
-                </div>
-              </div>
-              <Divider /> */}
                 {/* COLLECTIONS */}
                 <Accordion
                   expanded={expanded === "panel1"}
@@ -374,30 +258,6 @@ const PublishDropModal = (props) => {
                       </div>
                     </div>
                   </AccordionDetails>
-                  {/* <Divider /> */}
-                  {/* Gas Used */}
-                  {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}
-                  {/* <Divider /> */}
                   {/* Total Cost in Wei */}
                   <AccordionDetails>
                     <div className="row no-gutters justify-content-between w-100">
@@ -407,7 +267,7 @@ const PublishDropModal = (props) => {
                           //   component="h6"
                           className={classes.cardTitle}
                         >
-                          Total cost
+                          Cost
                         </Typography>
                       </div>
                       <div className="col-4 align-self-center text-right p-0">
@@ -415,7 +275,7 @@ const PublishDropModal = (props) => {
                           className={classes.cardTitle}
                           //   style={{ lineHeight: "1.6" }}
                         >
-                          ${data.collections.totalCostInWei}
+                          ${props.cost.estimates.collection}
                         </p>
                       </div>
                     </div>
@@ -494,7 +354,7 @@ const PublishDropModal = (props) => {
                           //   component="h6"
                           className={classes.cardTitle}
                         >
-                          Total cost
+                          Cost
                         </Typography>
                       </div>
                       <div className="col-4 align-self-center text-right p-0">
@@ -502,7 +362,7 @@ const PublishDropModal = (props) => {
                           className={classes.cardTitle}
                           //   style={{ lineHeight: "1.6" }}
                         >
-                          ${data.collections.totalCostInWei}
+                          ${props.cost.estimates.nftMint}
                         </p>
                       </div>
                     </div>
@@ -583,7 +443,7 @@ const PublishDropModal = (props) => {
                           //   component="h6"
                           className={classes.cardTitle}
                         >
-                          Total cost
+                          Cost
                         </Typography>
                       </div>
                       <div className="col-4 align-self-center text-right p-0">
@@ -591,7 +451,7 @@ const PublishDropModal = (props) => {
                           className={classes.cardTitle}
                           //   style={{ lineHeight: "1.6" }}
                         >
-                          ${data.collections.totalCostInWei}
+                          ${props.cost.estimates.superAdminApproval}
                         </p>
                       </div>
                     </div>
@@ -610,7 +470,7 @@ const PublishDropModal = (props) => {
                         //   component="h6"
                         className={classes.cardTitle}
                       >
-                        total cost
+                        Total cost
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
@@ -618,7 +478,7 @@ const PublishDropModal = (props) => {
                         className={classes.cardTitle}
                         //   style={{ lineHeight: "1.6" }}
                       >
-                        $115,780.00
+                        {props.cost.estimates.totalCostInDollars}
                         {/* {response.totalCostInWei} */}
                       </p>
                     </div>
