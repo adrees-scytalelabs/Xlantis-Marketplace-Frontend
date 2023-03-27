@@ -41,6 +41,7 @@ import crypto from "crypto";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
 import Tooltip from "@material-ui/core/Tooltip";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -214,11 +215,18 @@ function AddNFT(props) {
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
+  const [costInfo,setCostInfo] = useState({});
+  const [amount, setAmount] = useState(5);
+  const [topUpModal, setTopUpModal] = useState(false);
 
+  const handleCloseTopUpModal = () => {
+    setTopUpModal(false);
+  };
   const handleOpenModal = async (e) => {
+    await handleTimeEvent(e);
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
-        console.log("response", response);
+        console.log("response of tx-cost summary", response);
         console.log("responeee", response.data.data.collectionTxSummary);
         setData(response.data.data);
         setMOdalOpen(true);
@@ -338,6 +346,38 @@ function AddNFT(props) {
     console.log("conversion to hex: ", hex);
     return hex;
   };
+
+  const handleTopUpAmount = () => {
+    let data = {
+      amount: amount,
+    };
+    axios.post(`/usd-payments/admin/topup`,data).then(
+      (response) => {
+        console.log("response of top up amount", response);
+        let variant = "success";
+        enqueueSnackbar(
+          "Balance Updated",
+          { variant }
+        );
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar(
+            "Something went wrong",
+            { variant }
+          );
+        }
+        let variant = "error";
+        enqueueSnackbar(
+          "Something went wrong",
+          { variant }
+        );
+      }
+    );
+  }
 
   let getNfts = (id) => {
     axios.get(`/nft/${id}`).then(
@@ -758,7 +798,38 @@ function AddNFT(props) {
       }
     }
   };
-
+  const handleBuyDetail = async() => {
+    try{
+    axios.get(`/drop/validate-admin-balance/${dropId}`).then(
+      (response) => {
+        setCostInfo(response.data);
+        console.log("Admin Balance and Buy Detail", response);
+        // if (costInfo!=undefined){
+        //   TotalCost();
+        // }
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+    }
+    catch(e){
+      console.log("Cost detail end point not work properly",e)
+    }
+  };
   const handleDropData = async (event, web3, accounts) => {
     event.preventDefault();
     handleResponse(event, web3, accounts);
@@ -876,6 +947,7 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           (response) => {
             console.log("nft drop add response: ", response);
+            handleBuyDetail();
             console.log("time", startTime, endTime);
 
             setIsAdded(true);
@@ -1342,7 +1414,7 @@ function AddNFT(props) {
               // onClick={(e) => handleSubmitEvent(e)}
               onClick={(e) => {
                 versionB === "v1-sso"
-                  ? handleOpenModal(e)
+                  ? handleSubmitEvent(e)
                   : handleSubmitEvent(e);
               }}
               style={{ float: "right", marginBottom: "5%" }}
@@ -1419,7 +1491,12 @@ function AddNFT(props) {
                   type="button"
                   className="bttn"
                   style={{ float: "right" }}
-                  onClick={handlePublishEvent}
+                  onClick={(e) => {
+                    versionB === "v1-sso"
+                      ? handleOpenModal(e)
+                      : handlePublishEvent(e);
+                  }}
+                  // onClick={handlePublishEvent}
                 >
                   Publish Drop
                 </button>
@@ -1446,7 +1523,20 @@ function AddNFT(props) {
         handlePay={openTransak}
         dropData={data}
         isOpen={modalOpen}
+        dropStatus={e => dropStatus(e)}
+        dropId={dropId}
+        cost={costInfo}
+        setOpen={setMOdalOpen}
+        setTopUpModal={setTopUpModal}
       />
+       <TopUpModal
+          show={topUpModal}
+          handleClose={handleCloseTopUpModal}
+          amount={amount}
+          setAmount={setAmount}
+          topUp={handleTopUpAmount}
+          setOpen={setMOdalOpen}
+        ></TopUpModal>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

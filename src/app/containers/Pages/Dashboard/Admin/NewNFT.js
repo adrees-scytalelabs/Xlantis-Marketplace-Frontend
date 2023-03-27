@@ -1291,6 +1291,7 @@ function NewNFT(props) {
             title: name,
             description: description,
             nftURI: nftURI,
+            previewImageURI: previewImageURI,
             metadataURI: nftURI,
             nftFormat: imageType,
             // type: rarity,
@@ -1312,20 +1313,26 @@ function NewNFT(props) {
                 setTokenList([
                   ...tokenList,
                   {
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    nftURI: nftURI,
+                    collectionId: collectionId,
                     title: name,
                     description: description,
+                    nftURI: nftURI,
+                    previewImageURI: previewImageURI,
+                    nftFormat: imageType,
+                    properties: properties,
+                    ipfsHash: ipfsHash,
+                    
+                    
+                    
                     // rarity: rarity,
                     tokensupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
-                    collectionId: collectionId,
+                    
                     nftId: response.data.nftId,
-                    nftContractAddress: nftContractAddress,
-                    previewImageURI: previewImageURI,
-                    nftFormat: imageType,
+                    
+                    
+                    
                   },
                 ]);
 
@@ -1342,7 +1349,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    nftContractAddress: nftContractAddress,
+                    
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -1381,7 +1388,7 @@ function NewNFT(props) {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-                    nftContractAddress: nftContractAddress,
+                    
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -1399,7 +1406,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    nftContractAddress: nftContractAddress,
+                    
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },

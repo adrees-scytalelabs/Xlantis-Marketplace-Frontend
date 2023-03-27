@@ -204,13 +204,15 @@ function NewCollection(props) {
             enqueueSnackbar("New Collection Created Successfully.", {
               variant,
             });
-            handleCloseBackdrop();
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");
             setFileURL(r1);
             setRoyaltyFee(0);
             setIsSaving(false);
+            handleCloseBackdrop();
+            setApprovalModalShow(true);
+            
             // setCollectionName("");
             // setCollectionSymbol("");
             // setCollectionDescription("");

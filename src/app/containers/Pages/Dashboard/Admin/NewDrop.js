@@ -185,6 +185,7 @@ function NewDrop(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
+      topUp:"",
     }); // eslint-disable-next-line
   }, []);
   // const handleRemoveClick = (index, newCube) => {
