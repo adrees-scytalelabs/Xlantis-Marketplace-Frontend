@@ -41,6 +41,7 @@ import crypto from "crypto";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
 import Tooltip from "@material-ui/core/Tooltip";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -214,7 +215,12 @@ function AddNFT(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const [costInfo,setCostInfo] = useState({});
+  const [amount, setAmount] = useState(5);
+  const [topUpModal, setTopUpModal] = useState(false);
 
+  const handleCloseTopUpModal = () => {
+    setTopUpModal(false);
+  };
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
@@ -339,6 +345,38 @@ function AddNFT(props) {
     console.log("conversion to hex: ", hex);
     return hex;
   };
+
+  const handleTopUpAmount = () => {
+    let data = {
+      amount: amount,
+    };
+    axios.post(`/usd-payments/admin/topup`,data).then(
+      (response) => {
+        console.log("response of top up amount", response);
+        let variant = "success";
+        enqueueSnackbar(
+          "Balance Updated",
+          { variant }
+        );
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar(
+            "Something went wrong",
+            { variant }
+          );
+        }
+        let variant = "error";
+        enqueueSnackbar(
+          "Something went wrong",
+          { variant }
+        );
+      }
+    );
+  }
 
   let getNfts = (id) => {
     axios.get(`/nft/${id}`).then(
@@ -1466,7 +1504,17 @@ function AddNFT(props) {
         dropStatus={e => dropStatus(e)}
         dropId={dropId}
         cost={costInfo}
+        setOpen={setMOdalOpen}
+        setTopUpModal={setTopUpModal}
       />
+       <TopUpModal
+          show={topUpModal}
+          handleClose={handleCloseTopUpModal}
+          amount={amount}
+          setAmount={setAmount}
+          topUp={handleTopUpAmount}
+          setOpen={setMOdalOpen}
+        ></TopUpModal>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

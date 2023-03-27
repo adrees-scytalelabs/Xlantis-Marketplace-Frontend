@@ -40,6 +40,7 @@ import AuctionNFT from "./Admin/AuctionNFT";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import transakSDK from "@transak/transak-sdk";
+import TopUp from "./Admin/TopUp";
 
 axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
   "Authorization"
@@ -93,6 +94,7 @@ function AdminDashboard(props) {
     myCubes: "",
     newRandomDrop: "",
     marketPlace: "",
+    topUp:""
   });
 
   function openTransak() {
@@ -291,6 +293,9 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/dropApproval`}>
               <DropApproval setActiveTab={setActiveTab} />
+            </Route>
+            <Route exact path={`${path}/topUp`}>
+              <TopUp setActiveTab={setActiveTab} />
             </Route>
 
             <Route exact path={`${path}/newDrop`}>

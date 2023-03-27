@@ -101,6 +101,11 @@ function AdminSidebar(props) {
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
+            <li className={props.activeTab.topUp}>
+              <Link to={`${props.match.url}/topUp`}>
+                <i className="fas fa-plus"></i> <span>Top Up</span>
+              </Link>
+            </li>
             <li className={props.activeTab.myDrops}>
               <Link to={`${props.match.url}/myDrops`}>
                 <StorageIcon></StorageIcon> <span>My Drops</span>

@@ -1,12 +1,28 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Col, Modal, Row, Button } from "react-bootstrap";
+import { makeStyles } from "@material-ui/core/styles";
 function TopUpModal(props) {
+  const handleClose = () => {
+      props.setOpen(true);
+      props.handleClose();
+  }
+  const handleProceed = () => {
+    props.topUp();
+    props.handleClose();
+  }
+  // useEffect(() => {
+  //   if(props.show ===true){
+  //     props.setOpen(false);
+  //   }
+  //   // getTxSummary(props.dropId);
+  // },[props]);
   return (
     <Modal
       show={props.show}
       onHide={props.handleClose}
       style={{}}
       centered
+      
       backdrop="static"
     >
       <Modal.Header
@@ -61,14 +77,14 @@ function TopUpModal(props) {
       >
         <button
           className="newTemplateBtn mb-3"
-          onClick={props.handleClose}
+          onClick={handleClose}
           style={{ backgroundColor: "black" }}
         >
           Close
         </button>
         <button
           className="newTemplateBtn mb-3"
-          onClick={props.handleData}
+          onClick={(e) => handleProceed()}
           style={{ backgroundColor: "black" }}
         >
           Proceed
