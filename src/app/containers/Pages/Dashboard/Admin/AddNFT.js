@@ -215,7 +215,7 @@ function AddNFT(props) {
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
-  const [costInfo,setCostInfo] = useState({});
+  const [costInfo, setCostInfo] = useState({});
   const [amount, setAmount] = useState(5);
   const [topUpModal, setTopUpModal] = useState(false);
 
@@ -261,7 +261,6 @@ function AddNFT(props) {
     setMOdalOpen(false);
   };
 
-  
   let getCollections = () => {
     const version = Cookies.get("Version");
     console.log("version", version);
@@ -320,33 +319,24 @@ function AddNFT(props) {
     let data = {
       amount: amount,
     };
-    axios.post(`/usd-payments/admin/topup`,data).then(
+    axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
         console.log("response of top up amount", response);
         let variant = "success";
-        enqueueSnackbar(
-          "Balance Updated",
-          { variant }
-        );
+        enqueueSnackbar("Balance Updated", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
           let variant = "error";
-          enqueueSnackbar(
-            "Something went wrong",
-            { variant }
-          );
+          enqueueSnackbar("Something went wrong", { variant });
         }
         let variant = "error";
-        enqueueSnackbar(
-          "Something went wrong",
-          { variant }
-        );
+        enqueueSnackbar("Something went wrong", { variant });
       }
     );
-  }
+  };
 
   let getNfts = (id) => {
     axios.get(`/nft/${id}`).then(
@@ -767,36 +757,35 @@ function AddNFT(props) {
       }
     }
   };
-  const handleBuyDetail = async() => {
-    try{
-    axios.get(`/drop/validate-admin-balance/${dropId}`).then(
-      (response) => {
-        setCostInfo(response.data);
-        console.log("Admin Balance and Buy Detail", response);
-        // if (costInfo!=undefined){
-        //   TotalCost();
-        // }
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
+  const handleBuyDetail = async () => {
+    try {
+      axios.get(`/drop/validate-admin-balance/${dropId}`).then(
+        (response) => {
+          setCostInfo(response.data);
+          console.log("Admin Balance and Buy Detail", response);
+          // if (costInfo!=undefined){
+          //   TotalCost();
+          // }
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          if (error.response !== undefined) {
+            if (error.response.status === 400) {
+              // setMsg(error.response.data.message);
+            } else {
+              // setMsg("Unknown Error Occured, try again.");
+            }
           } else {
             // setMsg("Unknown Error Occured, try again.");
           }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
+          // setIsLoading(false);
         }
-        // setIsLoading(false);
-      }
-    );
-    }
-    catch(e){
-      console.log("Cost detail end point not work properly",e)
+      );
+    } catch (e) {
+      console.log("Cost detail end point not work properly", e);
     }
   };
   const handleDropData = async (event, web3, accounts) => {
@@ -864,7 +853,14 @@ function AddNFT(props) {
       } else if (nftName === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Nft", { variant });
-      } else if (supply === 0 || supply === undefined || supply === null) {
+      } else if (
+        supply === 0 ||
+        supply === undefined ||
+        supply === null ||
+        supply === "" ||
+        supply < 0 ||
+        supply === "0"
+      ) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be 0 or empty", { variant });
       } else if (supply < 0) {
@@ -1288,8 +1284,7 @@ function AddNFT(props) {
                   </div>
                 </div>
               </div>
-
-              {collection === "" ||
+              {/* {collection === "" ||
               nftName === 0 ||
               price === "" ||
               supply <= 0 ||
@@ -1301,16 +1296,16 @@ function AddNFT(props) {
                     <i className="fa fa-plus"></i> Add NFT To Drop
                   </button>
                 </Tooltip>
-              ) : (
-                <button
-                  className="bttn"
-                  type="button"
-                  disabled={isDisabled}
-                  onClick={(e) => handleAddClick(e)}
-                >
-                  <i className="fa fa-plus"></i> Add NFT To Drop
-                </button>
-              )}
+              ) : ( */}
+              <button
+                className="bttn"
+                type="button"
+                disabled={isDisabled}
+                onClick={(e) => handleAddClick(e)}
+              >
+                <i className="fa fa-plus"></i> Add NFT To Drop
+              </button>
+              {/* // )} */}
             </form>
           </div>
 
@@ -1492,20 +1487,20 @@ function AddNFT(props) {
         handlePay={openTransak}
         dropData={data}
         isOpen={modalOpen}
-        dropStatus={e => dropStatus(e)}
+        dropStatus={(e) => dropStatus(e)}
         dropId={dropId}
         cost={costInfo}
         setOpen={setMOdalOpen}
         setTopUpModal={setTopUpModal}
       />
-       <TopUpModal
-          show={topUpModal}
-          handleClose={handleCloseTopUpModal}
-          amount={amount}
-          setAmount={setAmount}
-          topUp={handleTopUpAmount}
-          setOpen={setMOdalOpen}
-        ></TopUpModal>
+      <TopUpModal
+        show={topUpModal}
+        handleClose={handleCloseTopUpModal}
+        amount={amount}
+        setAmount={setAmount}
+        topUp={handleTopUpAmount}
+        setOpen={setMOdalOpen}
+      ></TopUpModal>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
