@@ -261,38 +261,7 @@ function AddNFT(props) {
     setMOdalOpen(false);
   };
 
-  const getTxSummary = (dropId) => {
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
-        console.log("response", response);
-        setData(response.data);
-
-        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
-      }
-    );
-  };
-
+  
   let getCollections = () => {
     const version = Cookies.get("Version");
     console.log("version", version);

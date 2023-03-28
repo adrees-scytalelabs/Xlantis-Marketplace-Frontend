@@ -171,7 +171,7 @@ const PublishDropModal = (props) => {
       );
     }
     else {
-      props.dropStatus(e);
+      props.handlePublish();
     }
   };
   useEffect(() => {
