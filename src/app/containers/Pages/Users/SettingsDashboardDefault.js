@@ -1,60 +1,18 @@
 // eslint-disable-next-line
 import axios from "axios"; // eslint-disable-next-line
-import React, { useEffect, useState } from "react";
-import Typography from "@material-ui/core/Typography";
-import { Link } from "react-router-dom";
-// import React, { useEffect } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import Edit from "@material-ui/icons/Edit";
-import Tooltip from "@material-ui/core/Tooltip";
-import InfoOutlined from "@material-ui/icons/InfoOutlined";
-import StorageIcon from "@material-ui/icons/Storage";
 import Cookies from "js-cookie";
 import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import { isUndefined } from "lodash";
 import { useSnackbar } from "notistack";
-import { Col, Row, Spinner } from "react-bootstrap";
-import ReactCrop, {
-  centerCrop,
-  makeAspectCrop,
-  Crop,
-  PixelCrop,
-} from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import { Spinner } from "react-bootstrap";
 // import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
-
-// import ipfs from 'src/app/components/IPFS/ipfs.js';
-import ipfs from "../../../components/IPFS/ipfs";
-
-import { Scrollbars } from "react-custom-scrollbars";
-import { useHistory } from "react-router-dom";
-import Web3 from "web3";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
+import getCroppedImg from "../../../components/Utils/Crop";
 
-// import CreateNFTContract from '../../../../components/blockchain/Abis/Collectible1155.json';
-// import * as Addresses from '../../../../components/blockchain/Addresses/Addresses';
-// import ipfs from '../../../../components/IPFS/ipfs';
-// import ChangeCollectionConfirmationModal from '../../../../components/Modals/ChangeCollectionConfirmationModal';
-// import NetworkErrorModal from '../../../../components/Modals/NetworkErrorModal';
-// import NFTDetailModal from '../../../../components/Modals/NFTDetailModal';
-// import NFTEditModal from '../../../../components/Modals/NFTEditModal';
-// import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
-// import AudioPlayer from "react-h5-audio-player";
-// import "react-h5-audio-player/lib/styles.css";
-// import { ethers } from "ethers";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -91,22 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function centerAspectCrop(mediaWidth, mediaHeight, aspect) {
-  return centerCrop(
-    makeAspectCrop(
-      {
-        unit: "%",
-        width: 90,
-      },
-      aspect,
-      mediaWidth,
-      mediaHeight
-    ),
-    mediaWidth,
-    mediaHeight
-  );
-}
-
 function SettingDashboardDefault(props) {
   let [isAdmin, setIsAdmin] = useState(false);
   let [name, setName] = useState("");
@@ -121,10 +63,10 @@ function SettingDashboardDefault(props) {
   let [isBannerSelected, setIsBannerSelected] = useState(false);
   let [isProfileSelected, setIsProfileSelected] = useState(false);
   let [imageSrc, setImageSrc] = useState("");
-  let [crop, setCrop] = useState({ aspect: 1 });
+  let [crop, setCrop] = useState({ x: 0, y: 0 });
+  let [zoom, setZoom] = useState(1);
+  let [aspect, setAspect] = useState(1 / 1);
   let [showCropModal, setShowCropModal] = useState(false);
-  let [image, setImage] = useState();
-  let [resultImage, setResultImage] = useState();
   let [selectedImage, setSelectedImage] = useState("");
   let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
   let [imageCounter, setImageCounter] = useState(0);
@@ -132,6 +74,8 @@ function SettingDashboardDefault(props) {
   let [adminCompanyName, setAdminCompanyName] = useState("");
   let [adminDomain, setAdminDomain] = useState("");
   let [adminDesignation, setAdminDesignation] = useState("");
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("round");
 
   const classes = useStyles();
 
@@ -141,7 +85,6 @@ function SettingDashboardDefault(props) {
   let [bannerImage, setBannerImage] = useState(
     "http://www.mub.eps.manchester.ac.uk/graphene/wp-content/themes/uom-theme/assets/images/default-banner.jpg"
   );
-  let [ipfsHash, setIpfsHash] = useState(null);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -163,19 +106,6 @@ function SettingDashboardDefault(props) {
     event.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // if (name === "") {
-    //     let variant = "error";
-    //     enqueueSnackbar("Username field cannot be empty.", { variant });
-    //     setIsSaving(false);
-    //     handleCloseBackdrop();
-    //     setIsUploadingData(true);
-    // }else if (bio === "") {
-    //     let variant = "error";
-    //     enqueueSnackbar("Bio field cannot be empty.", { variant });
-    //     setIsSaving(false);
-    //     handleCloseBackdrop();
-    //     setIsUploadingData(true);
-    // }
 
     let data = {
       walletAddress: sessionStorage.getItem("Address"),
@@ -213,132 +143,35 @@ function SettingDashboardDefault(props) {
     setIsSaving(false);
   };
 
-  let onChangeFile = (e) => {
-    setIsUploadingIPFS(true);
-
-    setSelectedImage("profile");
-    console.log("In the on change function and file is: ", e.target.files[0]);
-
-    if (e.target.files && e.target.files.length > 0) {
-      // SettingsInputComponentSharp(undefined);
-      console.log("In the condition");
-      const reader = new FileReader();
-      reader.onload = () => {
-        // console.log("In onload listener", reader.result);
-        setImageSrc(reader.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
-    }
-    setShowCropModal(true);
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setIsUploadingBannerIPFS(false);
     setIsUploadingIPFS(false);
+    setImageSrc("");
+  };
 
-    //OLD CODE
-    // if (e.target.files[0] !== undefined || e.target.files[0] !== null) {
-    //   const reader = new window.FileReader();
-    //   let imageNFT = e.target.files[0];
-    //   // reader.readAsArrayBuffer(e.target.files[0]);
-    //   // reader.onloadend = () => {
-    //   //     // setBuffer(Buffer(reader.result));
-    //   //     ipfs.add(Buffer(reader.result), async (err, result) => {
-    //   //         if (err) {
-    //   //             console.log(err);
-    //   //             setIsUploadingIPFS(false);
-    //   //             let variant = "error";
-    //   //             enqueueSnackbar('Unable to Upload Image to IPFS ', { variant });
-    //   //             return
-    //   //         }
-    //   //         console.log("HASH", result[0].hash);
-    //   //         setIpfsHash(result[0].hash);
-    //   //         let variant = "success";
-    //   //         enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
-    //   //     })
-    //   // }
-    //   let fileData = new FormData();
-    //   fileData.append("image", imageNFT);
-    //   axios.post(`/${Cookies.get("Version")}/upload/uploadtos3`, fileData).then(
-    //     (response) => {
-    //       console.log("response", response);
-    //       setProfileImage(response.data.url);
-    //       setIsUploadingIPFS(false);
-    //       let variant = "success";
-    //       enqueueSnackbar("Image Uploaded Successfully", { variant });
-    //     },
-    //     (error) => {
-    //       if (process.env.NODE_ENV === "development") {
-    //         console.log(error);
-    //         console.log(error.response);
-    //       }
-    //       setIsUploadingIPFS(false);
-    //       let variant = "error";
-    //       enqueueSnackbar("Unable to Upload Image .", { variant });
-    //     }
-    //   );
-    // } else {
-    //   setIsUploadingIPFS(false);
-    // }
+  let onChangeFile = async (e) => {
+    let file = e.target.files[0];
+    if (file) {
+      setCropShape("round");
+      setIsUploadingIPFS(true);
+      setSelectedImage("profile");
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
+    }
   };
 
   let onChangeBannerFile = async (e) => {
-    setIsUploadingBannerIPFS(true);
-    setSelectedImage("banner");
-    console.log("In the on change function and file is: ", e.target.files[0]);
-
-    if (e.target.files && e.target.files.length > 0) {
-      // SettingsInputComponentSharp(undefined);
-      console.log("In the condition");
-      const reader = new FileReader();
-      reader.onload = () => {
-        // console.log("In onload listener", reader.result);
-        setImageSrc(reader.result);
-      };
-      reader.readAsDataURL(e.target.files[0]);
+    let file = e.target.files[0];
+    if (file) {
+      setAspect(16 / 9);
+      setCropShape("rect");
+      setIsUploadingBannerIPFS(true);
+      setSelectedImage("banner");
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
     }
-    setShowCropModal(true);
-    setIsUploadingBannerIPFS(false);
-
-    // if (e.target.files[0] !== undefined || e.target.files[0] !== null) {
-    //   const reader = new window.FileReader();
-    //   let imageNFT = e.target.files[0];
-    //   // reader.readAsArrayBuffer(e.target.files[0]);
-    //   // reader.onloadend = () => {
-    //   //     // setBuffer(Buffer(reader.result));
-    //   //     ipfs.add(Buffer(reader.result), async (err, result) => {
-    //   //         if (err) {
-    //   //             console.log(err);
-    //   //             setIsUploadingIPFS(false);
-    //   //             let variant = "error";
-    //   //             enqueueSnackbar('Unable to Upload Image to IPFS ', { variant });
-    //   //             return
-    //   //         }
-    //   //         console.log("HASH", result[0].hash);
-    //   //         setIpfsHash(result[0].hash);
-    //   //         let variant = "success";
-    //   //         enqueueSnackbar('Image Uploaded to IPFS Successfully', { variant });
-    //   //     })
-    //   // }
-    //   let fileData = new FormData();
-    //   fileData.append("image", imageNFT);
-    //   axios.post(`/${Cookies.get("Version")}/upload/uploadtos3`, fileData).then(
-    //     (response) => {
-    //       console.log("response", response);
-    //       setBannerImage(response.data.url);
-    //       setIsUploadingBannerIPFS(false);
-    //       let variant = "success";
-    //       enqueueSnackbar("Image Uploaded Successfully", { variant });
-    //     },
-    //     (error) => {
-    //       if (process.env.NODE_ENV === "development") {
-    //         console.log(error);
-    //         console.log(error.response);
-    //       }
-    //       setIsUploadingBannerIPFS(false);
-    //       let variant = "error";
-    //       enqueueSnackbar("Unable to Upload Image .", { variant });
-    //     }
-    //   );
-    // } else {
-    //   setIsUploadingIPFS(false);
-    // }
   };
 
   let getProfile = () => {
@@ -349,8 +182,6 @@ function SettingDashboardDefault(props) {
       .get(`${version}/user/profile`)
       .then((response) => {
         console.log("Response from getting user: ", response);
-        // console.log("profile data id:", response.data.userData);
-        // console.log("profile data name:", response.data.userData.imageURL);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -364,108 +195,38 @@ function SettingDashboardDefault(props) {
       });
   };
 
-  // const onCropComplete = (croppedArea, croppedAreaPixels) => {
-  //   // use croppedAreaPixels to get the cropped image data
-  //   console.log(croppedAreaPixels);
-  // };
-  const onCropComplete = (c) => {
-    // use croppedAreaPixels to get the cropped image data
-    console.log(c);
-  };
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
-  const onImageLoad = (e) => {
-    console.log("Crop is: ", crop);
-    console.log("Current target: ", e.currentTarget);
-    setImage(e.currentTarget);
-    const { width, height } = e.currentTarget;
-    setCrop(centerAspectCrop(width, height, 16 / 9));
-  };
-
-  const getCroppedImage = async () => {
-    try {
-      const canvas = document.createElement("canvas");
-      const scaleX = image.naturalWidth / image.width;
-      const scaleY = image.naturalHeight / image.height;
-      canvas.width = crop.width;
-      canvas.height = crop.height;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(
-        image,
-        crop.x * scaleX,
-        crop.y * scaleY,
-        crop.width * scaleX,
-        crop.height * scaleY,
-        0,
-        0,
-        crop.width,
-        crop.height
-      );
-      const base64Image = canvas.toDataURL("image/jpeg", 1);
-      setResultImage(base64Image);
-
-      // As a blob
-      return new Promise((resolve, reject) => {
-        canvas.toBlob(
-          (blob) => {
-            const file = new File([blob], `cropped-image-${imageCounter}.png`, {
-              type: "image/png",
-            });
-            // file.name = "image";
-            resolve(file);
-          },
-          "image/jpeg",
-          1
-        );
-      });
-    } catch (e) {
-      console.log("crop the image");
-    }
-  };
-
-  const getBlobImage = async () => {
+  const showCroppedImage = useCallback(async () => {
     try {
       setIsUploadingCroppedImage(true);
-      let blobImage = await getCroppedImage();
-      setImageCounter(imageCounter + 1);
-
-      console.log("Blob Image", blobImage);
-
+      const croppedImage = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      console.log("Done: ", { croppedImage });
       let formData = new FormData();
-
-      formData.append("image", blobImage);
-
-      console.log("Form data to upload image", formData);
-      const reader = new window.FileReader();
-
-      console.log("Before onload call");
-      reader.readAsArrayBuffer(blobImage);
-      reader.onloadend = () => {
-        // setBuffer(Buffer(reader.result));
-        ipfs.add(Buffer(reader.result), async (err, result) => {
-          if (err) {
-            console.log(err);
-            setIsUploadingIPFS(false);
-            let variant = "error";
-            enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-            return;
-          }
-          console.log("HASH", result[0].hash);
-          setIpfsHash(result[0].hash);
-          let variant = "success";
-          enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
-        });
-      };
-
+      formData.append("image", croppedImage);
       await axios.post("/upload/image/", formData).then(
         (response) => {
           console.log("Response from uploading Image", response);
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
+            setIsUploadingBannerIPFS(false);
           } else if (selectedImage === "profile") {
             setProfileImage(response.data.url);
+            setIsUploadingIPFS(false);
           }
+          setImageSrc("");
+          setSelectedImage("");
+          setAspect(1 / 1);
           setIsUploadingCroppedImage(false);
           setShowCropModal(false);
+          setImageCounter(imageCounter + 1);
           let variant = "success";
           enqueueSnackbar("Image uploaded successfully", { variant });
         },
@@ -473,12 +234,10 @@ function SettingDashboardDefault(props) {
           console.log("Error from uploading image", error);
         }
       );
-    } catch {
-      setIsUploadingCroppedImage(false);
-      let variant = "error";
-      enqueueSnackbar("Error uploading Image", { variant });
+    } catch (e) {
+      console.log("Error: ", e);
     }
-  };
+  });
 
   useEffect(() => {
     if (props.user === "admin") {
@@ -590,7 +349,6 @@ function SettingDashboardDefault(props) {
                     </div>
                     <label>Company Name</label>
                     <div className="form-group">
-                      {/* <label>About the Art</label> */}
                       <textarea
                         type="text"
                         value={adminCompanyName}
@@ -666,13 +424,6 @@ function SettingDashboardDefault(props) {
           <div className="row pt-5">
             <h1 className="profileDetailHeading">Profile Details</h1>
           </div>
-
-          {/* <ul className="breadcrumb" style={{ backgroundColor: "rgb(167,0,0)" }}>
-                <li className="breadcrumb-item">
-                    <a href="/">Dashboard</a>
-                </li>
-                <li className="breadcrumb-item active">New NFT</li>
-            </ul> */}
           <div className="card-body">
             <div className="row">
               <div className="col-md-12 col-lg-6">
@@ -693,13 +444,11 @@ function SettingDashboardDefault(props) {
                     </div>
                     <label>Bio</label>
                     <div className="form-group">
-                      {/* <label>About the Art</label> */}
                       <textarea
                         type="text"
                         value={bio}
                         required
                         rows="4"
-                        // value={description}
                         placeholder="Tell the world your story!"
                         className="form-control"
                         onChange={(e) => {
@@ -724,25 +473,11 @@ function SettingDashboardDefault(props) {
                         </div>
                       </>
                     )}
-
-                    {/* <label>Link</label>
-                                <div className="form-group">
-                                    <input
-                                        type="text"
-                                        required
-                                        
-                                        placeholder="yoursite.io"
-                                        className="form-control"
-                                        // onChange={(e) => {
-                                        //     setName(e.target.value)
-                                        // }}
-                                    />
-                                </div> */}
                     <label>Wallet Address</label>
                     <div className="form-group">
                       <input
                         type="text"
-                        readOnly="true"
+                        readOnly={true}
                         value={sessionStorage.getItem("Address")}
                         placeholder="Wallet Address"
                         className="form-control"
@@ -773,171 +508,6 @@ function SettingDashboardDefault(props) {
                         </button>
                       </div>
                     )}
-
-                    {/* {
-                                    isSaving ? (
-                                        <div className="text-center">
-                                            <Spinner
-                                                animation="border"
-                                                role="status"
-                                                style={{ color: "#ff0000" }}
-                                            >
-                                                <span className="sr-only">Loading...</span>
-                                            </Spinner>
-                                        </div>
-                                    ) : (
-
-                                        <div className="submit-section">
-                                            <button type="button" onClick={(e) => handleSubmitEvent(e)} className="btn submit-btn">
-                                                Add Collection
-                                            </button>
-                                        </div>
-
-                                    )
-                                } */}
-                  </div>
-                </form>
-              </div>
-              <div className="col-md-12 col-lg-4">
-                {/* <!-- Change Password Form --> */}
-                <form>
-                  {/* <Scrollbars style={{ height: 1500 }}> */}
-
-                  <div className="form-group">
-                    {/* <label>Profile Image </label>
-                                    <span  title = "TOOLTIP">
-                                        <i class="fa fa-info-circle fa-fw" ></i>
-                                    </span>
-                                {isUploadingIPFS ? (
-                                                <div className="text-center">
-                                                    <Spinner
-                                                        animation="border"
-                                                        role="status"
-                                                        style={{ color: "#fff" }}
-                                                    >
-                                                    </Spinner>
-                                                </div>
-                                    ):(
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar" >
-                                        <div style = {{position : 'relative' }} >
-                                            <div className="profile-img"
-                                            >
-                                                <div
-                                                    style={{
-                                                    
-                                                        width: "100px",
-                                                        height: "100px",
-                                                       
-                                                        
-                                                        borderRadius : "50px"
-                                                    
-                                                    }}
-                                                >
-                                                    <img  />
-                                                </div>
-                                            </div>
-                                            <div style = {{ position: "absolute" , top: "0",
-                                                bottom: "0",
-                                                left: "0",
-                                                right: "0",
-                                                height: "100px",
-                                                width: "100px",
-                                                opacity: "0",
-                                                transition: ".3s ease",
-                                                backgroundColor: "rgba(0,0,0,.5)" }}  onMouseEnter={handleOverlay} onMouseLeave={handleRemoveOverlay} >
-                                     
-                                                   <div style={{
-                                                        color : "white",
-                                                        position: "absolute",
-                                                        top: "50%",
-                                                        left: "50%",
-                                                        transform: "translate(-50%, -50%)",
-                                                        msTransform: "translate(-50%, -50%)",
-                                                        textAlign: "center",}}
-                                                        
-                                                        >
-                                                        <i className="fa fa-pen"></i>
-                                                        <input
-                                                            name="sampleFile"
-                                                            type="file"
-                                                            className="upload"
-                                                            accept=".png,.jpg,.jpeg,.gif"
-                                                            style={{display: "none"}}
-                                                            onChange={onChangeFile}
-                                                        />
-                                                    </div> 
-                                                              
-                                             </div>    
-                                                         
-                                                       
-                                                           
-                                                       
-                                        </div>
-                                                    
-                                            
-                                           
-
-                                        </div>
-                                    </div>
-                                </div>
-                                )} */}
-
-                    {/* <span  title = "TOOLTIP">
-                                        <i class="fa fa-info-circle fa-fw" ></i>
-                                </span>
-                                <div className="filter-widget">
-                                    <div className="form-group">
-                                        <div className="change-avatar" >
-                                        <div style = {{position : 'relative' }} >
-                                            <div className="profile-img"
-                                            >
-                                                <div
-                                                    style={{
-                                                    
-                                                        width: "100px",
-                                                        height: "100px",
-                                                       
-                                                        
-                                                        borderRadius : "50px"
-                                                    
-                                                    }}
-                                                >
-                                                    <img  />
-                                                </div>
-                                            </div>
-                                            <div style = {{ position: "absolute" , top: "0",
-                                                bottom: "0",
-                                                left: "0",
-                                                right: "0",
-                                                height: "100px",
-                                                width: "100px",
-                                                opacity: "0",
-                                                transition: ".3s ease",
-                                                backgroundColor: "rgba(0,0,0,.5)" }}  onMouseEnter={handleOverlay} onMouseLeave={handleRemoveOverlay} >
-                                     
-                                                   <div style={{
-                                                        color : "white",
-                                                        position: "absolute",
-                                                        top: "50%",
-                                                        left: "50%",
-                                                        transform: "translate(-50%, -50%)",
-                                                        msTransform: "translate(-50%, -50%)",
-                                                        textAlign: "center",}}><i className="fa fa-pen"></i>
-                                                    </div> 
-                                                              
-                                             </div>    
-                                                         
-                                                       
-                                                           
-                                                       
-                                        </div>
-                                            
-
-                                        </div>
-                                    </div>
-                                </div> */}
                   </div>
                 </form>
               </div>
@@ -945,42 +515,19 @@ function SettingDashboardDefault(props) {
           </div>
         </>
       )}
-      {/* {imageSrc ? (
-        <React.Fragment
-        // style={{
-        //   marginTop: "200px",
-        //   display: "flex",
-        //   flexDirection: "column",
-        //   marginBottom: "200px",
-        // }}
-        >
-          <span>Hello it has to place here</span>
-          <ReactCrop
-            // src={imageSrc}
-            crop={crop}
-            onChange={(newCrop) => setCrop(newCrop)}
-            onComplete={onCropComplete}
-            aspect={1 / 1}
-          >
-            <img
-              src={imageSrc}
-              onLoad={onImageLoad}
-              // style={{ transform: `scale(3) rotate(0deg)` }}
-            />
-          </ReactCrop>
-        </React.Fragment>
-      ) : null} */}
       <ImageCropModal
         show={showCropModal}
-        handleClose={() => setShowCropModal(false)}
+        handleClose={handleCloseImageCropModal}
         crop={crop}
         setCrop={setCrop}
         onCropComplete={onCropComplete}
         imageSrc={imageSrc}
-        onImageLoad={onImageLoad}
-        resultImage={resultImage}
-        getCroppedImage={getBlobImage}
+        uploadImage={showCroppedImage}
         isUploadingCroppedImage={isUploadingCroppedImage}
+        zoom={zoom}
+        setZoom={setZoom}
+        aspect={aspect}
+        cropShape={cropShape}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />

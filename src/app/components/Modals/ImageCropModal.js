@@ -1,14 +1,12 @@
-import React from "react";
+import { CircularProgress } from "@material-ui/core";
+import React, { useEffect } from "react";
 import { Modal } from "react-bootstrap";
-import ReactCrop, {
-  centerCrop,
-  makeAspectCrop,
-  Crop,
-  PixelCrop,
-} from "react-image-crop";
-import "react-image-crop/dist/ReactCrop.css";
+import Cropper from "react-easy-crop";
 
 const ImageCropModal = (props) => {
+  useEffect(() => {
+    console.log("Props are: ", props);
+  }, [props.aspect]);
   return (
     <Modal
       show={props.show}
@@ -21,42 +19,55 @@ const ImageCropModal = (props) => {
       </Modal.Header>
       <Modal.Body>
         {props.imageSrc ? (
-          <ReactCrop
-            // src={imageSrc}
-            crop={props.crop}
-            onChange={(newCrop) => props.setCrop(newCrop)}
-            onComplete={(c) => props.onCropComplete(c)}
-            aspect={16 / 9}
-          >
-            <img
-              src={props.imageSrc}
-              onLoad={props.onImageLoad}
-              // style={{ transform: `scale(3) rotate(0deg)` }}
+          <div className="crop-container">
+            <Cropper
+              image={props.imageSrc}
+              crop={props.crop}
+              onCropChange={props.setCrop}
+              aspect={props.aspect}
+              cropShape={props.cropShape}
+              zoom={props.zoom}
+              showGrid={true}
+              rotation={0}
+              onCropComplete={props.onCropComplete}
             />
-          </ReactCrop>
-        ) : null}
-        {/* {props.resultImage && (
-          <div>
-            <img src={props.resultImage} alt="Cropped Image" />
           </div>
-        )} */}
+        ) : null}
       </Modal.Body>
       <Modal.Footer>
-        <button
-          className="btn"
-          type="button"
-          style={{
-            margin: "10px",
-            marginRight: 0,
-            backgroundColor: "black",
-            border: "1px solid #fff",
-            borderRadius: 0,
-            padding: 10,
-          }}
-          onClick={() => props.getCroppedImage()}
-        >
-          Upload
-        </button>
+        {props.isUploadingCroppedImage ? (
+          <button
+            className="btn"
+            type="button"
+            style={{
+              width: "25px !important",
+              margin: "10px",
+              marginRight: 0,
+              backgroundColor: "black",
+              border: "1px solid #fff",
+              borderRadius: 0,
+              padding: 10,
+            }}
+          >
+            <CircularProgress color="white" />
+          </button>
+        ) : (
+          <button
+            className="btn"
+            type="button"
+            style={{
+              margin: "10px",
+              marginRight: 0,
+              backgroundColor: "black",
+              border: "1px solid #fff",
+              borderRadius: 0,
+              padding: 10,
+            }}
+            onClick={() => props.uploadImage()}
+          >
+            Upload
+          </button>
+        )}
       </Modal.Footer>
     </Modal>
   );
