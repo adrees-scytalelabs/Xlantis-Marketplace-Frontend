@@ -480,9 +480,14 @@ function AddNFT(props) {
     }
   };
   const handleSubmitEvent = async (event) => {
-    event.preventDefault();
-    setIsDisabled(true);
-    setEnableTime(true);
+    if (isAdded) {
+      event.preventDefault();
+      setIsDisabled(true);
+      setEnableTime(true);
+    } else {
+      let variant = "error";
+      enqueueSnackbar("Please Add NFT to drop first", { variant });
+    }
   };
   const handleTimeEvent = async (event) => {
     event.preventDefault();
@@ -1370,36 +1375,36 @@ function AddNFT(props) {
             ) : null}
           </div>
         </div>
-        {isAdded ? (
-          <div className="submit-section col-md-12 col-lg-6 col-sm-12">
-            <button
-              type="button"
-              disabled={isDisabled}
-              // onClick={(e) => handleSubmitEvent(e)}
-              onClick={(e) => {
-                versionB === "v1-sso"
-                  ? handleSubmitEvent(e)
-                  : handleSubmitEvent(e);
-              }}
-              style={{ float: "right", marginBottom: "5%" }}
-              // onClick={handleOpenModal}
-              className="bttn"
-            >
-              Update Drop
-            </button>
-          </div>
-        ) : (
-          <div className="submit-section col-md-12 col-sm-12 col-lg-6">
-            <button
-              type="button"
-              disabled
-              className="bttn"
-              style={{ float: "right" }}
-            >
-              Update Drop
-            </button>
-          </div>
-        )}
+        {/* {isAdded ? ( */}
+        <div className="submit-section col-md-12 col-lg-6 col-sm-12">
+          <button
+            type="button"
+            disabled={isDisabled}
+            // onClick={(e) => handleSubmitEvent(e)}
+            onClick={(e) => {
+              versionB === "v1-sso"
+                ? handleSubmitEvent(e)
+                : handleSubmitEvent(e);
+            }}
+            style={{ float: "right", marginBottom: "5%" }}
+            // onClick={handleOpenModal}
+            className="bttn"
+          >
+            Update Drop
+          </button>
+        </div>
+        {/* // ) : (
+        //   <div className="submit-section col-md-12 col-sm-12 col-lg-6">
+        //     <button
+        //       type="button"
+        //       disabled
+        //       className="bttn"
+        //       style={{ float: "right" }}
+        //     >
+        //       Update Drop
+        //     </button>
+        //   </div>
+        // )} */}
         {enableTime && (
           <div
             className="datePicker col-md-12 col-lg-6 col-sm-12"
