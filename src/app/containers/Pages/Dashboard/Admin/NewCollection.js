@@ -212,7 +212,7 @@ function NewCollection(props) {
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
-            setApprovalModalShow(true);
+            //setApprovalModalShow(true);
             
             // setCollectionName("");
             // setCollectionSymbol("");
