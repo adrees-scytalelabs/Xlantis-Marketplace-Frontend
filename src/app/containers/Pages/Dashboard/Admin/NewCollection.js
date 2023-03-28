@@ -212,7 +212,7 @@ function NewCollection(props) {
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
-            //setApprovalModalShow(true);
+            setApprovalModalShow(true);
             
             // setCollectionName("");
             // setCollectionSymbol("");
@@ -597,83 +597,84 @@ function NewCollection(props) {
 
   //approval
   let giveFixedPriceApproval = async () => {
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShow();
-    } else {
-      setApprovalFlag(true);
-      setApprovingFixedPrice(true);
+    // await loadWeb3();
+    // const web3 = window.web3;
+    // const accounts = await web3.eth.getAccounts();
+    // const network = await web3.eth.net.getNetworkType();
+    // if (network !== "private") {
+    //   setNetwork(network);
+    //   setIsSaving(false);
+    //   handleShow();
+    // } else {
+    //   setApprovalFlag(true);
+    //   setApprovingFixedPrice(true);
 
-      const addressNft = nftContractAddress;
-      let addressDropFactory;
-      let abiNft;
-      if (nftType === "1155") {
-        abiNft = CreateNFTContract1155;
-        addressDropFactory = Addresses.FactoryDrop1155;
-      } else if (nftType === "721") {
-        abiNft = CreateNFTContract721;
-        addressDropFactory = Addresses.FactoryDrop721;
+    //   const addressNft = nftContractAddress;
+    //   let addressDropFactory;
+    //   let abiNft;
+    //   if (nftType === "1155") {
+    //     abiNft = CreateNFTContract1155;
+    //     addressDropFactory = Addresses.FactoryDrop1155;
+    //   } else if (nftType === "721") {
+    //     abiNft = CreateNFTContract721;
+    //     addressDropFactory = Addresses.FactoryDrop721;
+    //   }
+
+    //   console.log("Contract Address: ", nftContractAddress);
+    //   var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+    //   console.log("myContractInstance", myContractInstance);
+
+    //   await myContractInstance.methods
+    //     .setApprovalForAll(addressDropFactory, true)
+    //     .send({ from: accounts[0] }, (err, response) => {
+    //       console.log("get transaction", err, response);
+
+    //       if (err !== null) {
+    //         console.log("err", err);
+    //         let variant = "error";
+    //         enqueueSnackbar("User Canceled Transaction", { variant });
+    //         setApprovingFixedPrice(false);
+    //         handleCloseBackdrop();
+    //         setIsSaving(false);
+    //       }
+    //     })
+    //     .on("receipt", (receipt) => {
+    //       console.log("receipt", receipt);
+
+    //    });
+    //}
+
+    //sending call on backend
+
+    let approvalData = {
+      collectionId: collectionId,
+      factoryType: "fixed-price",
+    };
+
+    axios.put(`/collection/approve`, approvalData).then(
+      (response) => {
+        console.log("Response from approval of Fixed Price: ", response);
+        let variant = "success";
+        enqueueSnackbar(
+          "Collection Approved For Fixed Price Successfully",
+          { variant }
+        );
+        setIsFixedPriceApproved(true);
+        setApprovingFixedPrice(false);
+        setApprovalFlag(false);
+      },
+      (err) => {
+        let variant = "error";
+        enqueueSnackbar("Unable to approve collection", { variant });
+        console.log("Err from approval Fixed-price: ", err);
+        console.log(
+          "Err response from approval Fixed-price: ",
+          err.response
+        );
+        setApprovingFixedPrice(false);
+        setApprovalFlag(false);
       }
-
-      console.log("Contract Address: ", nftContractAddress);
-      var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-      console.log("myContractInstance", myContractInstance);
-
-      await myContractInstance.methods
-        .setApprovalForAll(addressDropFactory, true)
-        .send({ from: accounts[0] }, (err, response) => {
-          console.log("get transaction", err, response);
-
-          if (err !== null) {
-            console.log("err", err);
-            let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
-            setApprovingFixedPrice(false);
-            handleCloseBackdrop();
-            setIsSaving(false);
-          }
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-
-          //sending call on backend
-
-          let approvalData = {
-            collectionId: collectionId,
-            factoryType: "fixed-price",
-          };
-
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
-              console.log("Response from approval of Fixed Price: ", response);
-              let variant = "success";
-              enqueueSnackbar(
-                "Collection Approved For Fixed Price Successfully",
-                { variant }
-              );
-              setIsFixedPriceApproved(true);
-              setApprovingFixedPrice(false);
-              setApprovalFlag(false);
-            },
-            (err) => {
-              let variant = "error";
-              enqueueSnackbar("Unable to approve collection", { variant });
-              console.log("Err from approval Fixed-price: ", err);
-              console.log(
-                "Err response from approval Fixed-price: ",
-                err.response
-              );
-              setApprovingFixedPrice(false);
-              setApprovalFlag(false);
-            }
-          );
-        });
-    }
+    );
   };
 
   let giveAuctionApproval = async () => {
@@ -752,38 +753,20 @@ function NewCollection(props) {
         });
     }
   };
-
-  //Testing purpose of top up modal
-  // const [topUp,setTopUp] = useState(false);
-  // let handleTopUpData = (e) => {
-  //   e.preventDefault();
-  //   try{
-  //     console.log("You balance updated Sunccessfully");
-  //     handleCloseTopUpModal();
-  //   }
-  //   catch(e){
-  //     console.log("Error during top up",e);
-  //   }
-
-  // }
-  // let handleCloseTopUpModal = () => {
-  //   setTopUp(false);
-  // }
-  // let handleTopUpModal = (e) => {
-  //   e.preventDefault();
-  //   setTopUp(true);
-  // }
-  //...............................................
   let handleDoneButton = () => {
     if (isFixedPriceApproved === false) {
       let variant = "error";
       enqueueSnackbar("Approve For Fixed Price First", { variant });
     }
-    if (isAuctionApproved === false) {
-      let variant = "error";
-      enqueueSnackbar("Approve For Auction First", { variant });
-    }
-    if (isAuctionApproved === true && isFixedPriceApproved === true) {
+    // if (isAuctionApproved === false) {
+    //   let variant = "error";
+    //   enqueueSnackbar("Approve For Auction First", { variant });
+    // }
+    // if (isAuctionApproved === true && isFixedPriceApproved === true) {
+    //   setDoneLoader(true);
+    //   handleApprovalModalClose();
+    // }
+    if(isFixedPriceApproved === true){
       setDoneLoader(true);
       handleApprovalModalClose();
     }
@@ -995,15 +978,6 @@ function NewCollection(props) {
           <WhiteSpinner />
         ) : (
           <div className="submit-section">
-            {/* Testing */}
-             {/* <button
-              type="button"
-              onClick={(e) => {handleTopUpModal(e)}}
-              className="btn submit-btn propsActionBtn"
-            >
-              Open Top Up Modal
-            </button> */}
-            {/* {......} */}
             <button
               type="button"
               onClick={(e) => {
@@ -1043,14 +1017,6 @@ function NewCollection(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      {/* <TopUpModal
-        show={topUp}
-        handleClose={handleCloseTopUpModal}
-        handleData={handleTopUpData}
-        amount ={royaltyFee}
-        setAmount = {setRoyaltyFee}
-      >  
-      </TopUpModal> */}
     </div>
   );
 }
