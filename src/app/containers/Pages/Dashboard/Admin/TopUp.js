@@ -71,7 +71,7 @@ function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
   let { path } = useRouteMatch();
   const [open, setOpen] = useState(false);
-  const [amount, setAmount] = useState(5);
+  const [amount, setAmount] = useState(1);
 
   const classes = useStyles();
   useEffect(() => {
@@ -113,8 +113,8 @@ function TopUp(props) {
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
-        let variant = "error";
-        enqueueSnackbar("Something went wrong", { variant });
+        // let variant = "error";
+        // enqueueSnackbar("Something went wrong", { variant });
       }
     );
   };
@@ -152,7 +152,7 @@ function TopUp(props) {
               value={amount}
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
-              min={5}
+              min={1}
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
                 setAmount(e.target.value);

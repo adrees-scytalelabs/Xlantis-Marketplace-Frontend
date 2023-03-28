@@ -166,7 +166,7 @@ const PublishDropModal = (props) => {
       // props.setOpen(false);
       let variant = "error";
       enqueueSnackbar(
-        "Insufficient Balance",
+        "Your account has insufficient funds for this transaction. Kindly top up your account.",
         { variant }
       );
     }
