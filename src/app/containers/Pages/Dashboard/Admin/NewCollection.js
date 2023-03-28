@@ -122,7 +122,7 @@ function NewCollection(props) {
   let [isAuctionApproved, setIsAuctionApproved] = useState(false);
   let [approvingAuction, setApprovingAuction] = useState(false);
   let [doneLoader, setDoneLoader] = useState(false);
-  let [nftType, setNftType] = useState("ERC1155");
+  let [nftType, setNftType] = useState("1155");
   let [version, setVersion] = useState("");
   let [royaltyFee, setRoyaltyFee] = useState(0);
   let [approvalFlag, setApprovalFlag] = useState(false);
@@ -190,10 +190,11 @@ function NewCollection(props) {
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
       fileData.append("royaltyFee", royaltyFee);
+      fileData.append("contractType", nftType);
 
       let royaltyBlockchain = royaltyFee * 10000;
 
-      if (nftType === "ERC1155") {
+      if (nftType === "1155") {
         axios.post(`/collection/`, fileData).then(
           async (response) => {
             console.log("collection creation response", response);
@@ -211,7 +212,7 @@ function NewCollection(props) {
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
-            setApprovalModalShow(true);
+            //setApprovalModalShow(true);
             
             // setCollectionName("");
             // setCollectionSymbol("");
@@ -235,7 +236,7 @@ function NewCollection(props) {
             setIsSaving(false);
           }
         );
-      } else if (nftType === "ERC721") {
+      } else if (nftType === "721") {
         await loadWeb3();
         const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
@@ -366,7 +367,7 @@ function NewCollection(props) {
 
             setIsSaving(false);
             let CloneId = getHash(collectionID);
-            if (nftType === "ERC1155") {
+            if (nftType === "1155") {
               console.log("ERC1155 COLLECTION CREATION");
               const abi = Factory1155Contract;
               const address = Addresses.Factory1155Address;
@@ -431,7 +432,7 @@ function NewCollection(props) {
                   setFileURL(r1);
                   handleCloseBackdrop();
                 });
-            } else if (nftType === "ERC721") {
+            } else if (nftType === "721") {
               console.log("ERC721 COLLECTION CREATION");
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
@@ -611,10 +612,10 @@ function NewCollection(props) {
       const addressNft = nftContractAddress;
       let addressDropFactory;
       let abiNft;
-      if (nftType === "ERC1155") {
+      if (nftType === "1155") {
         abiNft = CreateNFTContract1155;
         addressDropFactory = Addresses.FactoryDrop1155;
-      } else if (nftType === "ERC721") {
+      } else if (nftType === "721") {
         abiNft = CreateNFTContract721;
         addressDropFactory = Addresses.FactoryDrop721;
       }
@@ -691,10 +692,10 @@ function NewCollection(props) {
       const addressNft = nftContractAddress;
       let addressDropFactory;
       let abiNft;
-      if (nftType === "ERC1155") {
+      if (nftType === "1155") {
         abiNft = CreateNFTContract1155;
         addressDropFactory = Addresses.AuctionDropFactory1155;
-      } else if (nftType === "ERC721") {
+      } else if (nftType === "721") {
         abiNft = CreateNFTContract721;
         addressDropFactory = Addresses.AuctionDropFactory721;
       }
@@ -941,13 +942,13 @@ function NewCollection(props) {
                           style={{ color: "white" }}
                           value="ERC721"
                           // onChange={() => {
-                          //   setNftType("ERC721");
+                          //   setNftType("721");
                           //   // checked={saleType === 'auction'}
                           // }}
                           onChange={() => {
                             setWorkProgressModalShow(true);
                           }}
-                          checked={nftType === "ERC721"}
+                          checked={nftType === "721"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>
@@ -968,9 +969,9 @@ function NewCollection(props) {
                           style={{ color: "white" }}
                           value="ERC1155"
                           onChange={() => {
-                            setNftType("ERC1155");
+                            setNftType("1155");
                           }}
-                          checked={nftType === "ERC1155"}
+                          checked={nftType === "1155"}
                           control={<Radio style={{ color: "#fff" }} />}
                           label={
                             <span style={{ fontSize: "0.9rem" }}>
