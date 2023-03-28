@@ -54,6 +54,7 @@ function UserSettings(props) {
             <Route exact path={`${path}`}>
               <SettingDashboardDefault
                 // match={props.match}
+                user="user"
                 setActiveTab={setActiveTab}
                 updateProfile={updateProfile} 
                 setUpdateProfile={setUpdateProfile}
