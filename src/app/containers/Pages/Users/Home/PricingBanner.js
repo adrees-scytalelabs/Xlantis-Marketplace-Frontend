@@ -118,10 +118,6 @@ function PricingBanner() {
                     <div style={{ paddingTop: "80px" }}>
                       <button
                         className="btn btn-block btn-lg login-btn"
-                        // style={{
-                        //     borderColor: "rgb(167,0,0)", color: "rgb(167,0,0)",
-                        //     backgroundColor: "#ffffff"
-                        // }}
                       >
                         Create a Cluster
                       </button>
@@ -209,8 +205,8 @@ function PricingBanner() {
             </div>
           </div>
         </div>
-        {/* </div> */}
-        {/* </div> */}
+        
+        
       </div>
 
       {/* </div>

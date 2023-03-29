@@ -1,9 +1,7 @@
-// REACT
 import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
 // AXIOS
 import axios from "axios";
-// COMPONENTS
 import IntlTelInput from "react-intl-tel-input";
 import GoogleButton from "react-google-button";
 import { useSnackbar } from "notistack";
@@ -26,7 +24,7 @@ import { UserAuth } from "../../../components/context/AuthContext";
 // GOOGLE
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
-// STYLESHEETS
+
 import "react-intl-tel-input/dist/main.css";
 import { async } from "@firebase/util";
 import { useCookies } from "react-cookie";

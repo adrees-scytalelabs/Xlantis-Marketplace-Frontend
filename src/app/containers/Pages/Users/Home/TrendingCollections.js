@@ -50,7 +50,6 @@ function TrendingCollections() {
                 spacing={2}
                 direction="row"
                 justify="flex-start"
-                // alignItems="flex-start"
               >
                 <CollectionCard />
                 <CollectionCard />

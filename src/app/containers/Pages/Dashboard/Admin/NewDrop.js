@@ -168,7 +168,6 @@ function NewDrop(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -657,7 +656,7 @@ function NewDrop(props) {
   };
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

@@ -168,16 +168,7 @@ const NFTBuy = (props) => {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
+        
       }
     );
   };
@@ -589,7 +580,7 @@ const NFTBuy = (props) => {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -623,7 +614,7 @@ const NFTBuy = (props) => {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           <div className="row">

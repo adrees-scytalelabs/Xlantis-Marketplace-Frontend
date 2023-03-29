@@ -6,7 +6,6 @@ import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
@@ -75,7 +74,6 @@ function UserCubes(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios.get(`/token/TokenIds/${props.userId}/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
@@ -181,7 +179,6 @@ function UserCubes(props) {
                             <CardActionArea>
                               <CardMedia
                                 className={classes.media}
-                                // image={img}
                                 title=""
                               >
                                 <CubeComponent1

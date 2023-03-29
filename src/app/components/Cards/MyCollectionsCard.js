@@ -1,8 +1,6 @@
-// REACT
 import React from "react";
 // REACT ROUTER
 import { Link } from "react-router-dom";
-// MUI
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";

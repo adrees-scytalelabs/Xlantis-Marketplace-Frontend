@@ -287,8 +287,6 @@ function HeaderHome(props) {
     // e.preventDefault();
     // setIsSaving(true);
     // handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       notificationId
@@ -302,13 +300,10 @@ function HeaderHome(props) {
         // handleCloseBackdrop();
         // setIsSaving(false);
         // getNotifications(0, 10);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-
-        // setIsUploadingData(false);
 
         // handleCloseBackdrop();
 
@@ -837,7 +832,7 @@ function HeaderHome(props) {
                   <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
                   <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
                 </Menu> */}
-                {/* </div> */}
+                
               {/* // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
               //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
               // </a> */}

@@ -294,7 +294,7 @@ function NewNFT(props) {
                 setDescription("");
                 // setRarity("");
                 // setTokenSupply(1);
-                // setImageArtist("");
+                
                 // setAboutTheArt("");
                 // setWebsite("");
                 // setArtistImage(r1);
@@ -455,7 +455,7 @@ function NewNFT(props) {
       setDescription("");
       // setRarity("");
       setTokenSupply(1);
-      // setImageArtist("");
+      
       // setAboutTheArt("");
       // setWebsite("");
       // setArtistImage(r1);

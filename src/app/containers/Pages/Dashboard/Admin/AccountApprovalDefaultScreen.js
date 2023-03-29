@@ -127,7 +127,6 @@ function AccountApprovalDefaultScreen(props) {
   useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
     getUnverifiedAdminsSSO(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -146,19 +145,17 @@ function AccountApprovalDefaultScreen(props) {
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    // getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
+    
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    // getCollections(0, parseInt(event.target.value, 10));
+    
     setPage(0);
   };
 
   let getUnverifiedAdminsSSO = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/unverified/${start}/${end}?userType=v1`)
@@ -184,9 +181,7 @@ function AccountApprovalDefaultScreen(props) {
   };
 
   let getUnverifiedAdminsWallet = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
@@ -215,8 +210,6 @@ function AccountApprovalDefaultScreen(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
@@ -232,13 +225,10 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         setIsSaving(false);
         getUnverifiedAdminsSSO(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -252,8 +242,6 @@ function AccountApprovalDefaultScreen(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
@@ -269,13 +257,10 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         setIsSaving(false);
         getUnverifiedAdminsWallet(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -287,10 +272,10 @@ function AccountApprovalDefaultScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Content */}
+      
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -361,7 +346,7 @@ function AccountApprovalDefaultScreen(props) {
                     </span>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    
                     {i.isVerified ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button disabled>
@@ -376,13 +361,7 @@ function AccountApprovalDefaultScreen(props) {
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+                          
                           onClick={(e) => {
                             handleVerify(e, i._id);
                           }}
@@ -392,7 +371,7 @@ function AccountApprovalDefaultScreen(props) {
                       </div>
                     )}
 
-                    {/* </div> */}
+                    
                   </td>
                 </tr>
               ))}
@@ -426,7 +405,7 @@ function AccountApprovalDefaultScreen(props) {
                     <label className="ml-5">Wallet</label>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    
                     {i.isVerified ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button disabled>
@@ -441,13 +420,7 @@ function AccountApprovalDefaultScreen(props) {
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+                          
                           onClick={(e) => {
                             handleVerifyWallet(e, i._id);
                           }}
@@ -457,7 +430,7 @@ function AccountApprovalDefaultScreen(props) {
                       </div>
                     )}
 
-                    {/* </div> */}
+                    
                   </td>
                 </tr>
               ))}
@@ -465,7 +438,7 @@ function AccountApprovalDefaultScreen(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

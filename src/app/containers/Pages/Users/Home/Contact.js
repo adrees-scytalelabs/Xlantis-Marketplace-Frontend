@@ -10,10 +10,7 @@ function Contact() {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row" style={{ justifyContent: "center" }}>
           <div className="col-12 col-md-7">
-            {/* <!-- Contact Form --> */}
-            <div
-            // className="contact-form-area m-top-30"
-            >
+            <div>
               <div className="card" style={{ paddingBottom: "18px" }}>
                 <div className="card-body">
                   {" "}
@@ -84,7 +81,6 @@ function Contact() {
                 </div>
               </div>
             </div>
-            {/* <!--/ End contact Form --> */}
           </div>
 
           <div className="col-lg-5 col-md-5 col-12">
@@ -96,7 +92,6 @@ function Contact() {
                   pharetra, id aliquam metus venenatis. Donec sollicit
                 </p>
               </div>
-              {/* <!-- Single Contact --> */}
               <div className="single-contact-box">
                 <div className="c-icon">
                   <i className="fa fa-clock-o"></i>
@@ -110,8 +105,6 @@ function Contact() {
                   </p>
                 </div>
               </div>
-              {/* <!--/ End Single Contact --> */}
-              {/* <!-- Single Contact --> */}
               <div className="single-contact-box">
                 <div className="c-icon">
                   <i className="fa fa-phone"></i>
@@ -124,8 +117,6 @@ function Contact() {
                   </p>
                 </div>
               </div>
-              {/* <!--/ End Single Contact --> */}
-              {/* <!-- Single Contact --> */}
               <div className="single-contact-box">
                 <div className="c-icon">
                   <i className="fa fa-envelope-o"></i>
@@ -139,13 +130,11 @@ function Contact() {
                   </p>
                 </div>
               </div>
-              {/* <!--/ End Single Contact --> */}
             </div>
           </div>
         </div>
       </div>
     </div>
-    // {/* <!--/ End Contact Us --> */ }
   );
 }
 

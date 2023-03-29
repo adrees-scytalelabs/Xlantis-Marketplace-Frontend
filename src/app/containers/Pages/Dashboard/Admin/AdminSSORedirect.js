@@ -1,11 +1,8 @@
-// REACT
 import React, { useState } from "react";
-// COMPONENTS
 import HeaderHome from "../../../../components/Headers/Header";
 import Select from "react-select";
 // AXIOS
 import axios from "axios";
-// MUI
 import { Grid } from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
 import { useCookies } from "react-cookie";

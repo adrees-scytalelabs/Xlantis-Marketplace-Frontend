@@ -156,10 +156,10 @@ function AccountsWallet(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Content */}
+      
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -209,7 +209,7 @@ function AccountsWallet(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

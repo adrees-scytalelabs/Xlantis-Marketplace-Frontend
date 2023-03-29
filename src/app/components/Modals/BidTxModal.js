@@ -1,4 +1,3 @@
-// REACT
 import React, { useEffect, useState } from "react";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -215,16 +214,7 @@ const BidTxModal = (props) => {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
+        
       }
     );
   };

@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
-    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
@@ -63,7 +62,6 @@ const cardStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "1rem",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -72,13 +70,11 @@ const cardStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));

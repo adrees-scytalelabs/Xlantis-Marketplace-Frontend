@@ -214,7 +214,7 @@ function SavedTemplate(props) {
   }, [modalData]);
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -236,7 +236,7 @@ function SavedTemplate(props) {
         </div>
       </div>
       <div className="row no-gutters">
-        {/* <div className="col-md-12 col-lg-6"> */}
+        
         <Table responsive>
           <thead>
             <tr>

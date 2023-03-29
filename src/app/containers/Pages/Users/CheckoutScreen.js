@@ -1,4 +1,3 @@
-// REACT
 import React, { useEffect, useState } from "react";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +15,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import TableFooter from "@material-ui/core/TableFooter";
 import TablePagination from "@material-ui/core/TablePagination";
-// COMPONENTS
 import HeaderHome from "../../../components/Headers/Header";
 import { CountryDropdown } from "react-country-region-selector";
 import { Link } from "react-router-dom";
@@ -403,7 +401,7 @@ const CheckoutScreen = () => {
                             terms and conditions*
                           </Link>
                         </label>
-                        {/* </div> */}
+                        
                       </div>
                       <div className="row no-gutters justify-content-center align-items-center mt-3">
                         <div className="col-12">

@@ -146,17 +146,14 @@ function DropCubes(props) {
                                     spacing={2}
                                     direction="row"
                                     justify="flex-start"
-                                // alignItems="flex-start"
                                 >
                                     {cubeData.map((i, index) => (
                                         <Grid item xs={12} sm={6} md={3} key={index}>
                                             <Link to={"/auctionDrops/DropCubes/Nfts/" + dropId + "/" + i._id}>
                                                 <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
-                                                    {/* style={{ height: "100%" }} variant="outlined" */}
                                                     <CardActionArea>
                                                         <CardMedia
                                                             className={classes.media}
-                                                            // image={img}
                                                             title=""
                                                         >
                                                             <div className="mainDiv">

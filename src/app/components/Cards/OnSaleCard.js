@@ -1,7 +1,5 @@
-// REACT
 import React from "react";
 import { Link } from "react-router-dom";
-// MUI
 import { Avatar, Button, CardHeader, Grid, Paper } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -25,11 +23,9 @@ import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
-    // borderRadius: "12px",
     boxShadow: "none",
   },
   media: {
-    // height: 0,
     width: "100%",
     paddingTop: "100%", // 16:9
   },
@@ -46,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "12px",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -55,18 +50,15 @@ const useStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "1rem",
   },
   textAlertMd: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "12px",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
@@ -130,13 +122,7 @@ const OnSaleCard = (props) => {
                   </div>
                   {/* Explore Button */}
                   <div className="col-8 w-100 text-right align-self-end">
-                    {/* <CardActions
-                        style={{
-                          marginTop: "5px",
-                          // padding: "12px 0px",
-                          justifyContent: "end",
-                        }}
-                      > */}
+                    
                     <Link
                       to={{
                         pathname: `/fixdropnft/${props.i._id}`,
@@ -154,7 +140,7 @@ const OnSaleCard = (props) => {
                         </span>
                       </button>
                     </Link>
-                    {/* </CardActions> */}
+                    
                   </div>
                 </div>
               </div>
@@ -195,7 +181,7 @@ const OnSaleCard = (props) => {
                 </p>
               </div>
             </div>
-            {/* Alerts */}
+            
             <Typography
               variant="h6"
               gutterBottom
@@ -257,13 +243,11 @@ const OnSaleCard = (props) => {
                   variant="body2"
                   style={{
                     marginTop: "1rem",
-                    // marginBottom: "1.25rem",
                   }}
                   component="p"
                 >
                   <Alert
                     severity="error"
-                    // variant="filled"
                     className={
                       matchScrn ? styles.textAlertMd : styles.textAlert
                     }

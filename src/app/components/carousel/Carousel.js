@@ -1,6 +1,5 @@
-// REACT
 import React, { useEffect, useState } from "react";
-// STYLESHEETS
+
 import "../../assets/css/carousel.css";
 
 const Carousel = (props) => {

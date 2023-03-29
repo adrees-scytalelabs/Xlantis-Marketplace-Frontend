@@ -1,12 +1,10 @@
-// REACT
 import React from "react";
 import { Link } from "react-router-dom";
-// STYLESHEETS
+
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-// COMPONENTS
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import Drops from "./Home/Drops";

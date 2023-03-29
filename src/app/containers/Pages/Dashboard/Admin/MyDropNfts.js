@@ -43,7 +43,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "1rem",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -244,7 +243,7 @@ function MyDropNFTs(props) {
   };
   return (
     <div className="backgroundDefault">
-    {/* Page Header */}
+    
     <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

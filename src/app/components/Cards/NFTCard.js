@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    // height: 0,
     paddingTop: "100%", // 16:9
     width: "100%",
   },
@@ -62,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "0.875rem",
-    // marginTop: "0.15rem",
   },
 }));
 

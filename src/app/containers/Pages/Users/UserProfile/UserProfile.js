@@ -18,7 +18,6 @@ function UserProfile(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios.get(`/profile/getuserprofile/${props.userId}`).then(
       (response) => {
         console.log("response", response);

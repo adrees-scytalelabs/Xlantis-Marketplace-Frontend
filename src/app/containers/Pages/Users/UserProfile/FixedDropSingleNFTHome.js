@@ -1,17 +1,13 @@
-// REACT
 import React, { useEffect, useState } from "react";
-// REACT ROUTER
-import { useParams, useHistory, useLocation,Redirect} from "react-router-dom";
+import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
 
 import axios from "axios";
 import Cookies from "js-cookie";
 import transakSDK from "@transak/transak-sdk";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
-
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import Collectible721 from "../../../../components/blockchain/Abis/Collectible721.json";
-
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import { useSnackbar } from "notistack";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
@@ -23,8 +19,6 @@ import ReactTooltip from "react-tooltip";
 import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 
-
-// MUI
 import {
   createMuiTheme,
   ThemeProvider,
@@ -47,7 +41,6 @@ import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import Grid from "@material-ui/core/Grid";
 import { Col, Row, Table } from "react-bootstrap";
-// COMPONENTS
 import HeaderHome from "../../../../components/Headers/Header";
 import Web3 from "web3";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
@@ -137,9 +130,7 @@ const customTheme = createMuiTheme({
   },
 });
 
-// COMPONENT FUNCTION
 const FixedDropSingleNFTHome = () => {
-  // Sates
   const [nftData, setNftData] = useState();
   const [theDrop, setTheDrop] = useState();
   const [biddingValue, setBiddingValue] = useState(0);
@@ -160,7 +151,7 @@ const FixedDropSingleNFTHome = () => {
 
   const [data, setData] = useState();
   const [dataBid, setDataBid] = useState();
-  let [ dropCloneAddress, setDropCloneAddress] = useState("");
+  let [dropCloneAddress, setDropCloneAddress] = useState("");
   const [open, setOpen] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [openDialog, setOpenDialog] = useState(false);
@@ -172,19 +163,9 @@ const FixedDropSingleNFTHome = () => {
   let [startTime, setStartTime] = useState();
   let [endTime, setEndTime] = useState();
   const [nftBlockChainId, setNftBlockChainId] = useState("");
-
-
   let account = sessionStorage.getItem("Authorization");
-
-
-  console.log(dropID, " /// dropID")
-  console.log(account, " /// JWT")
-
-  // Variables
   const { singleNFTid } = useParams();
   console.log(singleNFTid, " /// NFT ID")
-
-  // Handlers
   const handleGoBack = () => {
     history.push({
       pathname: `/fixdropnft/${dropID}`,
@@ -256,61 +237,36 @@ const FixedDropSingleNFTHome = () => {
     }
   };
 
-  const handleOpenModalBid = async(e) => {
-    if(e) {
-        e.preventDefault();
+  const handleOpenModalBid = async (e) => {
+    if (e) {
+      e.preventDefault();
     }
-    
+
 
     const dropId = nftData.dropId;
     const nftId = nftData._id;
     console.log("version", versionB);
     console.log("NFTDETAIL");
-    // if(bidExpiryTimeStamp > dropExpiryTimeStamp || new Date(bidExpiryTime) > new Date(dropExpiryTime)) {
-    //     let variant = 'error';
-    //     enqueueSnackbar("Bid Expiry Time cannot be more than Drop's Expiry Time.", { variant });
-    // }
     if (biddingValue === 0) {
-        let variant = "error";
-        enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+      let variant = "error";
+      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
     }
     else {
 
-        axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
-            (response) => {
-            console.log("response", response);
-            console.log("responeee", response.data.data.data[0]);
-            setData(response.data.data);
-            setMOdalOpen(true);
-
-            
-            // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-            // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-            // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-            // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-            // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-            // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-            
-            
-            
-            },
-            (error) => {
-            if (process.env.NODE_ENV === "development") {
-                console.log(error);
-                console.log(error.response);
-            }
-            if (error.response !== undefined) {
-                if (error.response.status === 400) {
-                // setMsg(error.response.data.message);
-                } else {
-                // setMsg("Unknown Error Occured, try again.");
-                }
-            } else {
-            //   setMsg("Unknown Error Occured, try again.");
-            }
-            // setIsLoading(false);
-            }
-        );
+      axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
+        (response) => {
+          console.log("response", response);
+          console.log("responeee", response.data.data.data[0]);
+          setData(response.data.data);
+          setMOdalOpen(true);
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+        }
+      );
     }
 
   };
@@ -331,330 +287,244 @@ const FixedDropSingleNFTHome = () => {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
       }
     );
   };
-//   let getDropCloneAddress = () => {
-//     console.log("Drop ID: ", dropId);
-//     let version = Cookies.get("Version");
-//     axios.get(`/${version}/drop/${dropId}`).then(
-//         (response) => {
-//             console.log("Response from getting drop details: ", response);
-//             console.log("Response from getting drop details: ", response.data.dropData.dropCloneAddress);
-//             //set contract type when its done at backend
-//             setDropCloneAddress(response.data.dropData.dropCloneAddress);
-//         },
-//         (err) => {
-//             console.log("Err from getting drop details: ", err);
-//             console.log("Err response from getting drop details: ", err.response);
-//         }
-//     )
-//   }
-//   let giveAuctionErc20Approval = async () => {
-//     await loadWeb3();
-//     const web3 = window.web3
-//     const accounts = await web3.eth.getAccounts();
-//     console.log("Account 0: ", accounts[0]);
-//     const network = await web3.eth.net.getNetworkType()
-//     if (network !== 'private') {
-//         setNetwork(network);
-//         // handleShow();
-//     }
-//     else{
-
-//         const addressErc20Auction = Addresses.AuctionERC20;
-//         const addressDropClone = dropCloneAddress;            
-//         const abiERC20 = ERC20Abi;
-
-//         let bidValue = web3.utils.toWei(biddingValue, 'ether');
-
-        
-
-//         console.log("Contract Address: ", addressErc20Auction);
-//         var myContractInstance = await new web3.eth.Contract(abiERC20, addressErc20Auction);
-//         console.log("myContractInstance", myContractInstance)
-        
-
-//         await myContractInstance.methods.approve(addressDropClone, bidValue).send({from : accounts[0]}, (err, response) => {
-//             console.log('get transaction', err, response);
-            
-//             if (err !== null) {
-//                 console.log("err", err);
-//                 let variant = "error";
-//                 enqueueSnackbar('User Canceled Transaction', { variant });
-//                 handleCloseBackdrop();
-
-//             }
-        
-//         }
-//     )
-//         .on('receipt', (receipt) => {
-//             console.log("receipt", receipt);
-//         })
-//     }
-// }
-let handleBidSubmit = async (event) => {
-  event.preventDefault();
-
-  //conditions checking
+  
+  let handleBidSubmit = async (event) => {
+    event.preventDefault();
   console.log("Bid Expiry Timestamp: ", bidExpiryTime);
-  // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
-  // console.log("Bid Expiry Time: ", bidExpiryTime);
-  console.log("Drop Expiry Time: ", endTime);
+    console.log("Drop Expiry Time: ", endTime);
 
-  if (
-    bidExpiryTime > endTime ||
-    new Date(bidExpiryTime) > new Date(endTime)
-  ) {
-    let variant = "error";
-    enqueueSnackbar(
-      "Bid Expiry Time cannot be more than Drop's Expiry Time.",
-      { variant }
-    );
-  }
-  if (biddingValue === 0) {
-    let variant = "error";
-    enqueueSnackbar("Bidding Value cannot be zero.", { variant });
-  } else {
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    console.log("Accounts[0]: ", accounts[[0]]);
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      // handleShow();
+    if (
+      bidExpiryTime > endTime ||
+      new Date(bidExpiryTime) > new Date(endTime)
+    ) {
+      let variant = "error";
+      enqueueSnackbar(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time.",
+        { variant }
+      );
+    }
+    if (biddingValue === 0) {
+      let variant = "error";
+      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+    } else {
+      await loadWeb3();
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      console.log("Accounts[0]: ", accounts[[0]]);
+      const network = await web3.eth.net.getNetworkType();
+      if (network !== "private") {
+        setNetwork(network);
+      } else {
+        handleShowBackdrop();
+        await giveAuctionErc20Approval();
+
+        //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
+        let bidData = {
+          nftId: nftData._id,
+          bidAmount: biddingValue.toString(),
+          bidderAddress: accounts[0],
+          expiryTime: bidExpiryTime,
+        };
+
+        console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
+        console.log("Bid data: ", bidData);
+
+        let dropIdHash = getHash(theDrop._id);
+        let nftId = nftBlockChainId;
+        let bidValue = web3.utils.toWei(biddingValue, "ether");
+
+        console.log("NFT id type: ", typeof nftId);
+        console.log("Bid Value type: ", typeof bidValue, bidValue);
+        console.log("Drop Id Hash: ", dropIdHash);
+
+        let contractAddress;
+        let contractAbi;
+
+        if (nftData.collectionId.contractType === "1155") {
+          contractAddress = Addresses.AuctionDropFactory1155;
+          contractAbi = AuctionDropFactory1155ABI;
+          console.log("hello", contractAddress, nftData.collectionId.contractType);
+        } else if (nftData.collectionId.contractType === "721") {
+          contractAddress = Addresses.AuctionDropFactory721;
+          contractAbi = AuctionDropFactory721ABI;
+        }
+
+        let myContractInstance = await new web3.eth.Contract(
+          contractAbi,
+          contractAddress
+        );
+        let trxHash;
+
+        axios.post(`/auction/bid`, bidData).then(
+          (response) => {
+            console.log(
+              "Response from sending bid data to backend: ",
+              response
+            );
+            let bidIdHash = getHash(response.data.bidId);
+            let bidId = response.data.bidId;
+           console.log("Bid data for blockchain: ");
+            console.log("drop id hash: ", dropIdHash);
+            console.log("bid id hash: ", bidIdHash);
+            console.log("nft address: ", location.state.nftContractAddress);
+            console.log("nft id: ", nftId);
+            console.log("bid Value: ", bidValue);
+
+            myContractInstance.methods
+              .bid(
+                dropIdHash,
+                bidIdHash,
+                location.state.nftContractAddress,
+                nftId,
+                bidValue
+              )
+              .send({ from: accounts[0] }, (err, response) => {
+                console.log("get transaction: ", err, response);
+                if (err !== null) {
+                  console.log("err: ", err);
+                  handleCloseBackdrop();
+                }
+                trxHash = response;
+              })
+              .on("receipt", (receipt) => {
+                console.log("receipt: ", receipt);
+
+                //sending finalize call on backend
+                let finalizeBidData = {
+                  bidId: bidId,
+                  txHash: trxHash,
+                };
+
+                axios.put(`/auction/bid/finalize`, finalizeBidData).then(
+                  (response) => {
+                    console.log("Response from finalize bid: ", response);
+                    let variant = "success";
+                    enqueueSnackbar("Bid Placed Successfully", { variant });
+                  },
+                  (err) => {
+                    let variant = "error";
+                    enqueueSnackbar("Unable To Bid", { variant });
+                    console.log("Err from finalize bid: ", err);
+                    console.log("Err response from finalize bid: ", err);
+                  }
+                );
+                handleCloseBackdrop();
+              });
+          },
+          (error) => {
+            console.log("Error from sending bid data to backend: ", error);
+            handleCloseBackdrop();
+          }
+        );
+      }
+    }
+  };
+
+  let handleBidSubmitSSO = async (event) => {
+    event.preventDefault();
+    if (
+      bidExpiryTime > endTime ||
+      new Date(bidExpiryTime) > new Date(endTime)
+    ) {
+      let variant = "error";
+      enqueueSnackbar(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time.",
+        { variant }
+      );
+    }
+    if (biddingValue === 0) {
+      let variant = "error";
+      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
     } else {
       handleShowBackdrop();
-      await giveAuctionErc20Approval();
+      let bidAmountInWei = Web3.utils.toWei(biddingValue);
 
-      //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
       let bidData = {
         nftId: nftData._id,
-        bidAmount: biddingValue.toString(),
-        bidderAddress: accounts[0],
+        bidAmount: bidAmountInWei,
         expiryTime: bidExpiryTime,
       };
 
       console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
       console.log("Bid data: ", bidData);
 
-      let dropIdHash = getHash(theDrop._id);
-      let nftId = nftBlockChainId;
-      let bidValue = web3.utils.toWei(biddingValue, "ether");
-
-      console.log("NFT id type: ", typeof nftId);
-      console.log("Bid Value type: ", typeof bidValue, bidValue);
-      console.log("Drop Id Hash: ", dropIdHash);
-
-      let contractAddress;
-      let contractAbi;
-
-      if (nftData.collectionId.contractType === "1155") {
-        contractAddress = Addresses.AuctionDropFactory1155;
-        contractAbi = AuctionDropFactory1155ABI;
-        console.log("hello", contractAddress, nftData.collectionId.contractType);
-      } else if (nftData.collectionId.contractType === "721") {
-        contractAddress = Addresses.AuctionDropFactory721;
-        contractAbi = AuctionDropFactory721ABI;
-      }
-
-      let myContractInstance = await new web3.eth.Contract(
-        contractAbi,
-        contractAddress
-      );
-      let trxHash;
-
-      axios.post(`/auction/bid`, bidData).then(
+      axios.post(`/${versionB}/auction/bid`, bidData).then(
         (response) => {
-          console.log(
-            "Response from sending bid data to backend: ",
-            response
+          console.log("nft bid response", response.data);
+          let variant = "success";
+          enqueueSnackbar(
+            "Bid Is Being Finalized. Transactions Are In Process",
+            { variant }
           );
-          let bidIdHash = getHash(response.data.bidId);
-          let bidId = response.data.bidId;
-
-          //sending call on blockchain
-
-          console.log("Bid data for blockchain: ");
-          console.log("drop id hash: ", dropIdHash);
-          console.log("bid id hash: ", bidIdHash);
-          console.log("nft address: ", location.state.nftContractAddress);
-          console.log("nft id: ", nftId);
-          console.log("bid Value: ", bidValue);
-
-          myContractInstance.methods
-            .bid(
-              dropIdHash,
-              bidIdHash,
-              location.state.nftContractAddress,
-              nftId,
-              bidValue
-            )
-            .send({ from: accounts[0] }, (err, response) => {
-              console.log("get transaction: ", err, response);
-              if (err !== null) {
-                console.log("err: ", err);
-                handleCloseBackdrop();
-              }
-              trxHash = response;
-            })
-            .on("receipt", (receipt) => {
-              console.log("receipt: ", receipt);
-
-              //sending finalize call on backend
-              let finalizeBidData = {
-                bidId: bidId,
-                txHash: trxHash,
-              };
-
-              axios.put(`/auction/bid/finalize`, finalizeBidData).then(
-                (response) => {
-                  console.log("Response from finalize bid: ", response);
-                  let variant = "success";
-                  enqueueSnackbar("Bid Placed Successfully", { variant });
-                },
-                (err) => {
-                  let variant = "error";
-                  enqueueSnackbar("Unable To Bid", { variant });
-                  console.log("Err from finalize bid: ", err);
-                  console.log("Err response from finalize bid: ", err);
-                }
-              );
-              handleCloseBackdrop();
-            });
+          handleCloseModal();
         },
         (error) => {
-          console.log("Error from sending bid data to backend: ", error);
-          handleCloseBackdrop();
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+            let variant = "error";
+            enqueueSnackbar("Unable To Bid On NFT.", { variant });
+            handleCloseModal();
+          }
+          if (error.response.data !== undefined) {
+            if (
+              error.response.data === "Unauthorized access (invalid token) !!"
+            ) {
+              sessionStorage.removeItem("Authorization");
+              Cookies.remove("Version");
+
+              sessionStorage.removeItem("Address");
+              window.location.reload();
+            }
+          }
         }
       );
     }
-  }
-};
+  };
 
-let handleBidSubmitSSO = async (event) => {
-  event.preventDefault();
+  let giveAuctionErc20Approval = async () => {
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    console.log("Account 0: ", accounts[0]);
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+    } else {
+      const addressErc20Auction = Addresses.AuctionERC20;
+      const addressDropClone = dropCloneAddress;
+      const abiERC20 = ERC20Abi;
 
-  //conditions checking
-  // console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
-  // console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
-  // console.log("Bid Expiry Time: ", bidExpiryTime);
-  // console.log("Drop Expiry Time: ", dropExpiryTime);
+      let bidValue = web3.utils.toWei(biddingValue, "ether");
 
-  if (
-    bidExpiryTime > endTime ||
-    new Date(bidExpiryTime) > new Date(endTime)
-  ) {
-    let variant = "error";
-    enqueueSnackbar(
-      "Bid Expiry Time cannot be more than Drop's Expiry Time.",
-      { variant }
-    );
-  }
-  if (biddingValue === 0) {
-    let variant = "error";
-    enqueueSnackbar("Bidding Value cannot be zero.", { variant });
-  } else {
-    handleShowBackdrop();
-    let bidAmountInWei = Web3.utils.toWei(biddingValue);
+      console.log("Contract Address: ", addressErc20Auction);
+      console.log("drop clone address", dropCloneAddress);
+      var myContractInstance = await new web3.eth.Contract(
+        abiERC20,
+        addressErc20Auction
+      );
+      console.log("myContractInstance", myContractInstance);
 
-    //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
-    let bidData = {
-      nftId: nftData._id,
-      bidAmount: bidAmountInWei,
-      // bidderAddress: accounts[0],
-      expiryTime: bidExpiryTime,
-    };
+      await myContractInstance.methods
+        .approve(addressDropClone, bidValue)
+        .send({ from: accounts[0] }, (err, response) => {
+          console.log("get transaction", err, response);
 
-    console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
-    console.log("Bid data: ", bidData);
-
-    axios.post(`/${versionB}/auction/bid`, bidData).then(
-      (response) => {
-        console.log("nft bid response", response.data);
-        let variant = "success";
-        enqueueSnackbar(
-          "Bid Is Being Finalized. Transactions Are In Process",
-          { variant }
-        );
-        handleCloseModal();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-          let variant = "error";
-          enqueueSnackbar("Unable To Bid On NFT.", { variant });
-          handleCloseModal();
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            Cookies.remove("Version");
-
-            sessionStorage.removeItem("Address");
-            window.location.reload();
+          if (err !== null) {
+            console.log("err", err);
+            let variant = "error";
+            enqueueSnackbar("User Canceled Transaction", { variant });
+            handleCloseBackdrop();
           }
-        }
-      }
-    );
-  }
-};
-
-let giveAuctionErc20Approval = async () => {
-  await loadWeb3();
-  const web3 = window.web3;
-  const accounts = await web3.eth.getAccounts();
-  console.log("Account 0: ", accounts[0]);
-  const network = await web3.eth.net.getNetworkType();
-  if (network !== "private") {
-    setNetwork(network);
-    // handleShow();
-  } else {
-    const addressErc20Auction = Addresses.AuctionERC20;
-    const addressDropClone = dropCloneAddress;
-    const abiERC20 = ERC20Abi;
-
-    let bidValue = web3.utils.toWei(biddingValue, "ether");
-
-    console.log("Contract Address: ", addressErc20Auction);
-    console.log("drop clone address",dropCloneAddress);
-    var myContractInstance = await new web3.eth.Contract(
-      abiERC20,
-      addressErc20Auction
-    );
-    console.log("myContractInstance", myContractInstance);
-
-    await myContractInstance.methods
-      .approve(addressDropClone, bidValue)
-      .send({ from: accounts[0] }, (err, response) => {
-        console.log("get transaction", err, response);
-
-        if (err !== null) {
-          console.log("err", err);
-          let variant = "error";
-          enqueueSnackbar("User Canceled Transaction", { variant });
-          handleCloseBackdrop();
-        }
-      })
-      .on("receipt", (receipt) => {
-        console.log("receipt", receipt);
-      });
-  }
-};
+        })
+        .on("receipt", (receipt) => {
+          console.log("receipt", receipt);
+        });
+    }
+  };
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
@@ -676,17 +546,17 @@ let giveAuctionErc20Approval = async () => {
     console.log("conversion to hex: ", hex);
     return hex;
   };
-  let handlePurchase =async() =>{
+  let handlePurchase = async () => {
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-    console.log("Authorization",sessionStorage.getItem("Authorization"))
+    console.log("Authorization", sessionStorage.getItem("Authorization"))
     console.log("Nft detail: ", nftData);
     let data = {
       dropId: nftData.dropId,
       nftId: nftData._id,
     };
-    console.log("Data",data)
+    console.log("Data", data)
     console.log("Purchase Function Called");
     console.log("NFT ID")
     axios.post(`marketplace/buy`, data).then(
@@ -695,8 +565,7 @@ let giveAuctionErc20Approval = async () => {
           "Transaction Hash sending on backend response: ",
           response
         );
-        console.log("Stripe Url",response.data.stripeSession)
-        // history.push(response.data.stripeSession)
+        console.log("Stripe Url", response.data.stripeSession)
         window.location.replace(response.data.stripeSession)
       },
       (error) => {
@@ -881,10 +750,8 @@ let giveAuctionErc20Approval = async () => {
 
   function SSOBuy() {
     console.log("SSO BUY");
-    // setnftData(nftObject);
     console.log("Nft detail: ", nftData);
     console.log("Price", nftData);
-    // setnftData(nftData);
     console.log("Nft detail id: ", nftData.collectionId._id)
     setOpenDialog(false);
     setIsSaving(true);
@@ -935,8 +802,7 @@ let giveAuctionErc20Approval = async () => {
     if (version === undefined) {
       endpoint = `/drop/nft/${singleNFTid}`
     }
-    else
-    {
+    else {
       endpoint = `/drop/nft/${singleNFTid}`
     }
     axios.get(endpoint).then(
@@ -944,7 +810,6 @@ let giveAuctionErc20Approval = async () => {
         console.log(endpoint, " /// Endpoint for V2")
         console.log("finding the price: ... ", res);
         setNftData(res.data.data);
-        // setNftProperties(Object.entries(res.data.data[0].properties));
       },
       (err) => console.log("Could not get NFT details: ", err.response)
     );
@@ -956,8 +821,7 @@ let giveAuctionErc20Approval = async () => {
     if (version === undefined) {
       endpoint = `/drop/${dropID}`
     }
-    else
-    {
+    else {
       endpoint = `/drop/${dropID}`
     }
     axios.get(endpoint).then(
@@ -982,11 +846,7 @@ let giveAuctionErc20Approval = async () => {
     setNftData(location.state.nftDetails);
     setNftBlockChainId(location.state.nftDetails.nftId);
     setNftProperties(Object.entries(location.state.nftDetails.properties));
-    console.log("properties", location.state.nftDetails.properties );
-
-
-    // getDropCloneAddress();
-    // getNFTDetails();
+    console.log("properties", location.state.nftDetails.properties);
     getTheDrop();
     let priceCal = location.state.nftDetails.currentMarketplaceId.price;
     setPrice(priceCal);
@@ -1003,11 +863,8 @@ let giveAuctionErc20Approval = async () => {
   if (nftData !== undefined) {
     console.log(nftData, " /// nftData")
   }
-
-  // jsx
   return (
     <>
-      {/* Header */}
       <div style={{ minHeight: "95px" }}>
         <HeaderHome selectedNav={"Market"} role={null} />
       </div>
@@ -1114,55 +971,55 @@ let giveAuctionErc20Approval = async () => {
                         </Col>
                       </Row>
                       {nftData.supplyType ?
-                      (
-                      <Row>
-                        <Col>
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            style={{
-                              color: "#F64D04",
-                              fontFamily: "orbitron",
-                            }}
-                          >
-                            <strong>Supply Type </strong>
-                          </Typography>
-                        </Col>
-                        <Col
-                          style={{
-                            color: "white",
-                            fontFamily: "inter",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {nftData.supplyType ? nftData.supplyType : null}
-                        </Col>
-                      </Row>
-                      ) : (null)}
+                        (
+                          <Row>
+                            <Col>
+                              <Typography
+                                variant="body1"
+                                component="p"
+                                style={{
+                                  color: "#F64D04",
+                                  fontFamily: "orbitron",
+                                }}
+                              >
+                                <strong>Supply Type </strong>
+                              </Typography>
+                            </Col>
+                            <Col
+                              style={{
+                                color: "white",
+                                fontFamily: "inter",
+                                fontSize: "1rem",
+                              }}
+                            >
+                              {nftData.supplyType ? nftData.supplyType : null}
+                            </Col>
+                          </Row>
+                        ) : (null)}
                       {nftData.tokenSupply ? (
-                      <Row>
-                        <Col>
-                          <Typography
-                            variant="body1"
-                            component="p"
+                        <Row>
+                          <Col>
+                            <Typography
+                              variant="body1"
+                              component="p"
+                              style={{
+                                color: "#F64D04",
+                                fontFamily: "orbitron",
+                              }}
+                            >
+                              <strong>Token Supply </strong>
+                            </Typography>
+                          </Col>
+                          <Col
                             style={{
-                              color: "#F64D04",
-                              fontFamily: "orbitron",
+                              color: "white",
+                              fontFamily: "inter",
+                              fontSize: "1rem",
                             }}
                           >
-                            <strong>Token Supply </strong>
-                          </Typography>
-                        </Col>
-                        <Col
-                          style={{
-                            color: "white",
-                            fontFamily: "inter",
-                            fontSize: "1rem",
-                          }}
-                        >
-                          {nftData.tokenSupply}
-                        </Col>
-                      </Row>
+                            {nftData.tokenSupply}
+                          </Col>
+                        </Row>
                       ) : (null)}
                     </CardContent>
                   </Card>
@@ -1211,57 +1068,55 @@ let giveAuctionErc20Approval = async () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters" >
                       {account &&
-                      nftData.currentMarketplaceId.isSold === false &&
-                      new Date() >= startTime &&
-                      new Date() < endTime ?
-                      (
-                        <div className="col-12 col-md-4 mt-2 mt-md-0">
-                          <button
-                            className="bidBtn w-100"
-                            type="button"
-                            // onClick={(e) => handleBuy(e)}
-                            onClick={(e) => { versionB === "v1-sso" ? (handlePurchase(e)) : (handleBuy(e)) }}
-                          >
-                            Buy
-                          </button>
-                        </div>
-                      ) : (
-                        <div
-                          className="col-12 col-md-4 mt-2 mt-md-0"
-                          data-tip
-                          data-for="registerTip"
-                        >
-                          <button
-                            className="bidBtn-disabled w-100"
-                            type="button"
+                        nftData.currentMarketplaceId.isSold === false &&
+                        new Date() >= startTime &&
+                        new Date() < endTime ?
+                        (
+                          <div className="col-12 col-md-4 mt-2 mt-md-0">
+                            <button
+                              className="bidBtn w-100"
+                              type="button"
+                              onClick={(e) => { versionB === "v1-sso" ? (handlePurchase(e)) : (handleBuy(e)) }}
+                            >
+                              Buy
+                            </button>
+                          </div>
+                        ) : (
+                          <div
+                            className="col-12 col-md-4 mt-2 mt-md-0"
                             data-tip
                             data-for="registerTip"
-                            disabled
-                            // onClick={(e) => handleBuy(e)}
-                            onClick={(e) => console.log(e)}
                           >
-                            Buy
-                          </button>
-                          
-                      {!account ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
-                        Please Login First! 
-                      </ReactTooltip>
-                    ) :  nftData?.currentMarketplaceId.isSold === true ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
-                        NFT has been sold out
-                      </ReactTooltip>
-                    ) : new Date() < startTime ? (                      
-                      <ReactTooltip id="registerTip" place="top" effect="solid" style={{color: "white"}}>
-                        Sale Has Not Started Yet
-                      </ReactTooltip>
-                    ) : new Date() > endTime ? (
-                      <ReactTooltip id="registerTip" place="top" effect="solid">
-                        Sale Has Ended
-                      </ReactTooltip>
-                    ) : null}
-                        </div>
-                      )}
+                            <button
+                              className="bidBtn-disabled w-100"
+                              type="button"
+                              data-tip
+                              data-for="registerTip"
+                              disabled
+                              onClick={(e) => console.log(e)}
+                            >
+                              Buy
+                            </button>
+
+                            {!account ? (
+                              <ReactTooltip id="registerTip" place="top" effect="solid">
+                                Please Login First!
+                              </ReactTooltip>
+                            ) : nftData?.currentMarketplaceId.isSold === true ? (
+                              <ReactTooltip id="registerTip" place="top" effect="solid">
+                                NFT has been sold out
+                              </ReactTooltip>
+                            ) : new Date() < startTime ? (
+                              <ReactTooltip id="registerTip" place="top" effect="solid" style={{ color: "white" }}>
+                                Sale Has Not Started Yet
+                              </ReactTooltip>
+                            ) : new Date() > endTime ? (
+                              <ReactTooltip id="registerTip" place="top" effect="solid">
+                                Sale Has Ended
+                              </ReactTooltip>
+                            ) : null}
+                          </div>
+                        )}
                     </div>
                   ) : theDrop.saleType === "auction" ? (
                     <div className="col-12">
@@ -1313,7 +1168,7 @@ let giveAuctionErc20Approval = async () => {
                                 <div className="col-12 col-md-4 col-xl-3 mt-3 mt-md-0 pl-md-2">
                                   <button
                                     className="bidBtn w-100 ml-0"
-                                    onClick = {(e) => {versionB === "v1-sso" ? (handleOpenModalBid(e)) : (handleBidSubmit(e))} }
+                                    onClick={(e) => { versionB === "v1-sso" ? (handleOpenModalBid(e)) : (handleBidSubmit(e)) }}
                                   >
                                     Bid
                                   </button>
@@ -1410,7 +1265,6 @@ let giveAuctionErc20Approval = async () => {
                   <Typography
                     variant="body2"
                     className="text-center"
-                    // color="textSecondary"
                     component="p"
                     style={{ color: "#fff" }}
                   >
@@ -1444,9 +1298,9 @@ let giveAuctionErc20Approval = async () => {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid = {handleBidSubmitSSO}  handlePay = {openTransak} dropData = {dataBid} isOpen = {modalOpenBid} />
-      
-      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy = {SSOBuy}  handlePay = {openTransak} dropData = {data} isOpen = {modalOpen} />
+      <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid={handleBidSubmitSSO} handlePay={openTransak} dropData={dataBid} isOpen={modalOpenBid} />
+
+      <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy={SSOBuy} handlePay={openTransak} dropData={data} isOpen={modalOpen} />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

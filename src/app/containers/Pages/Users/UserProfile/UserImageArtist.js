@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import { Grid } from "@material-ui/core/";
+import Card from "@material-ui/core/Card";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
-import Cookies from "js-cookie";
 import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { useHistory } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
 
 function UserImageArtist(props) {
   let history = useHistory();
@@ -42,7 +41,6 @@ function UserImageArtist(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios
       .get(
         `/nft/getprofileusernft/${props.userId}/Image Artist/${start}/${end}`

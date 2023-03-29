@@ -169,7 +169,7 @@ const ManageAccountsSSO = (props) => {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -190,7 +190,7 @@ const ManageAccountsSSO = (props) => {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">

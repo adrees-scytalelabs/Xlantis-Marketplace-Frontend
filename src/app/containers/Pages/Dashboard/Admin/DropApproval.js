@@ -127,7 +127,6 @@ function DropApproval(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollections(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -337,9 +336,7 @@ function DropApproval(props) {
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
     console.log("version", version);
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/collection/myCollections/${start}/${end}`)
@@ -368,7 +365,7 @@ function DropApproval(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -384,10 +381,10 @@ function DropApproval(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className="card-body">
         <div className="row">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -413,7 +410,7 @@ function DropApproval(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.name}</td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    
                     {i.isAuctionDropVerified ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button disabled>
@@ -428,13 +425,7 @@ function DropApproval(props) {
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+                          
                           onClick={(e) => {
                             giveAuctionApproval(i);
                           }}
@@ -443,7 +434,7 @@ function DropApproval(props) {
                         </Button>
                       </div>
                     )}
-                    {/* </div> */}
+                    
                   </td>
                   <td>
                     {i.isFixedPriceDropVerified ? (
@@ -475,7 +466,7 @@ function DropApproval(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

@@ -45,7 +45,6 @@ const useStyles = makeStyles((theme) => ({
     height: 300,
   },
   media: {
-    // height: 0,
     width: "100%",
     paddingTop: "100%", // 16:9
   },
@@ -155,7 +154,7 @@ const SingleNftDetail = (props) => {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -174,7 +173,7 @@ const SingleNftDetail = (props) => {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <ThemeProvider theme={makeTheme}>
         <div className="card-body p-0">
           <div className="row">

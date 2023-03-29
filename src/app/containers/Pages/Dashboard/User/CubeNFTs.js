@@ -988,7 +988,7 @@ function CubeNFTs(props) {
                       </Accordion>
                     </div>
                   ) : null}
-                  {/* </div> */}
+                  
                 </div>
               </div>
             )}

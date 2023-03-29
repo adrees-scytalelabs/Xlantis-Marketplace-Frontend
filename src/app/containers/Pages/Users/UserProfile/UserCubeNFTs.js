@@ -64,7 +64,6 @@ function UserCubeNFTs(props) {
   let jwtDecoded;
   if (jwt) {
     console.log(jwtDecode(jwt));
-    // setjwtDecoded(jwtDecode(jwt));
     jwtDecoded = jwtDecode(jwt);
   }
   console.log("jwtDecoded", jwtDecoded);
@@ -370,8 +369,6 @@ function UserCubeNFTs(props) {
                           </AccordionDetails>
                         </Accordion>
                       </div>
-
-                      {/* </div> */}
                     </div>
                   </div>
                 )}

@@ -42,7 +42,6 @@ function UserFan(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios
       .get(`/nft/getprofileusernft/${props.userId}/Fan/${start}/${end}`)
       .then(

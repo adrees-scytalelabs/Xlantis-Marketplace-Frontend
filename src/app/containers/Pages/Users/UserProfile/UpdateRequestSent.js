@@ -1,14 +1,9 @@
-// REACT
 import React from "react";
-// MUI
 import { makeStyles } from "@material-ui/core/styles";
 import { Typography } from "@material-ui/core";
-// MUI ICONS
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
 import InfoIcon from "@material-ui/icons/Info";
 import { Link } from "react-router-dom";
-
-// CUSTOM STYLING
 const useStyles = makeStyles((theme) => ({
   mainInfoHeading: {
     fontFamily: "orbitron",
@@ -30,12 +25,8 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: "5px",
   },
 }));
-
-// COMPONENT FUNCTION
 const UpdateRequestSent = () => {
   const classes = useStyles();
-
-  // Content
   return (
     <div className="main-wrapper">
       <div className="container px-md-0">

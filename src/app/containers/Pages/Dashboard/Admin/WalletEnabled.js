@@ -135,13 +135,7 @@ function WalletEnabled(props) {
 
   useEffect(() => {
     getEnabledWalletAdmins();
-    // getMyCubes();
-    // props.setActiveTab({
-    //   dashboard: "",
-    //   manageAccounts : "",
-    //   accountApproval : "active",
-    //   accounts: "",
-    // }); // eslint-disable-next-line
+     // eslint-disable-next-line
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -149,19 +143,17 @@ function WalletEnabled(props) {
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    // getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
+    
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    // getCollections(0, parseInt(event.target.value, 10));
+    
     setPage(0);
   };
 
   let getEnabledWalletAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v2`)
@@ -190,8 +182,6 @@ function WalletEnabled(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
@@ -207,13 +197,10 @@ function WalletEnabled(props) {
         handleCloseBackdrop();
         setIsSaving(false);
         getEnabledWalletAdmins(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -225,12 +212,9 @@ function WalletEnabled(props) {
 
   return (
     <div>
-      {/* Page Header */}
-
-      {/* Page Content */}
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -281,18 +265,12 @@ function WalletEnabled(props) {
                     </button>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+                    
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+                          
                           onClick={(e) => {
                             handleWalletDisable(e, i._id);
                           }}
@@ -301,7 +279,7 @@ function WalletEnabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    {/* </div> */}
+                    
                   </td>
                 </tr>
               </tbody>
@@ -309,7 +287,7 @@ function WalletEnabled(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

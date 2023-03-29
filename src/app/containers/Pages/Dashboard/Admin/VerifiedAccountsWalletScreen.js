@@ -122,7 +122,6 @@ function VerifiedAccountsWalletScreen(props) {
 
   useEffect(() => {
     getUnverifiedWallet(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -163,9 +162,7 @@ function VerifiedAccountsWalletScreen(props) {
   };
 
   let getUnverifiedWallet = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v2`)
@@ -194,8 +191,6 @@ function VerifiedAccountsWalletScreen(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
@@ -210,13 +205,10 @@ function VerifiedAccountsWalletScreen(props) {
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on status pending nft: ", error);
         console.log("Error on status pending nft: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -228,10 +220,10 @@ function VerifiedAccountsWalletScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Content */}
+      
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -290,7 +282,7 @@ function VerifiedAccountsWalletScreen(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

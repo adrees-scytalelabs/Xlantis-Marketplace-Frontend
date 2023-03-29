@@ -14,7 +14,6 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// COMPONENTS
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
@@ -62,9 +61,7 @@ function MyCollection(props) {
     const version = Cookies.get("Version");
     console.log("version", version);
 
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     const url = `/collection/myCollections/${start}/${end}`;
     axios
@@ -155,7 +152,7 @@ function MyCollection(props) {
   }, []);
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

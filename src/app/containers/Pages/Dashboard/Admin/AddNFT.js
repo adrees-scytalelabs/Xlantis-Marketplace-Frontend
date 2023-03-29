@@ -63,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    // height: 0,
     width: "100%",
     paddingTop: "100%", // 16:9
   },
@@ -91,7 +90,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "0.875rem",
-    // marginTop: "0.15rem",
   },
 }));
 
@@ -243,16 +241,7 @@ function AddNFT(props) {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
+        
       }
     );
   };
@@ -432,7 +421,7 @@ function AddNFT(props) {
   }
 
   useEffect(() => {
-    // getProfileData();
+    
     setIsDisabled(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
@@ -1099,7 +1088,7 @@ function AddNFT(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -1113,7 +1102,7 @@ function AddNFT(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       {/* <ThemeProvider theme={makeTheme}> */}
       <div className="card-body p-0">
         <div className="row">

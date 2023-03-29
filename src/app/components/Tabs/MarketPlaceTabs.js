@@ -1,8 +1,6 @@
-// REACT
 import React, { useState } from "react";
-// STYLESHEETS
+
 import "../../assets/css/mediaQueries.css";
-// MUI
 import PropTypes from "prop-types";
 import {
   createMuiTheme,
@@ -17,7 +15,6 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { Card, Grid } from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
-// COMPONENTS
 // import SwipeableViews from "react-swipeable-views";
 import { Spinner } from "react-bootstrap";
 import Carousel from "react-multi-carousel";

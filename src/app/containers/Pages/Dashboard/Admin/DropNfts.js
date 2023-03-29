@@ -59,7 +59,6 @@ const useStyles = makeStyles((theme) => ({
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
-    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
@@ -73,7 +72,6 @@ const cardStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "1rem",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -82,13 +80,11 @@ const cardStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
@@ -420,7 +416,7 @@ function MyNFTs(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -441,7 +437,7 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className="card-body page-height px-0">
         {/* Banner and Thumb */}
         <div className="row no-gutters">

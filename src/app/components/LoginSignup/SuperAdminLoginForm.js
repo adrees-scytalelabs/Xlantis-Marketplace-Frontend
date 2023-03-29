@@ -1,11 +1,9 @@
-// REACT
 import React, { useState } from "react";
-// COMPONENTS
 import axios from "axios";
 import Cookies from "js-cookie";
 import { Link, useHistory } from "react-router-dom";
 import { useSnackbar } from 'notistack';
-// STYLESHEETS
+
 import "react-intl-tel-input/dist/main.css";
 // MATERIAL UI
 import { makeStyles } from "@material-ui/core/styles";
