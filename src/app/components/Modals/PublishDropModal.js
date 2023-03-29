@@ -494,9 +494,10 @@ const PublishDropModal = (props) => {
                       <div className="col-4 align-self-center text-right p-0">
                         <p
                           className={classes.cardTitle}
+                          style={{ wordWrap: "break-word" }}
                           //   style={{ lineHeight: "1.6" }}
                         >
-                          {props.cost.balance}
+                          ${props.cost.balance.dollar}
                           {/* {response.totalCostInWei} */}
                         </p>
                       </div>
@@ -521,7 +522,7 @@ const PublishDropModal = (props) => {
                           style={{ wordWrap: "break-word" }}
                           //   style={{ lineHeight: "1.6" }}
                         >
-                          {props.cost.estimates.totalCostInDollars}
+                          ${props.cost.estimates.totalCostInDollars}
                           {/* {response.totalCostInWei} */}
                         </p>
                       </div>
