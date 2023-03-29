@@ -481,9 +481,14 @@ function AddNFT(props) {
     }
   };
   const handleSubmitEvent = async (event) => {
-    event.preventDefault();
-    setIsDisabled(true);
-    setEnableTime(true);
+    if (isAdded) {
+      event.preventDefault();
+      setIsDisabled(true);
+      setEnableTime(true);
+    } else {
+      let variant = "error";
+      enqueueSnackbar("Please Add NFT to drop first", { variant });
+    }
   };
   const handleTimeEvent = async (event) => {
     event.preventDefault();
@@ -856,7 +861,14 @@ function AddNFT(props) {
       } else if (nftName === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Nft", { variant });
-      } else if (supply === 0 || supply === undefined || supply === null) {
+      } else if (
+        supply === 0 ||
+        supply === undefined ||
+        supply === null ||
+        supply === "" ||
+        supply < 0 ||
+        supply === "0"
+      ) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be 0 or empty", { variant });
       } else if (supply < 0) {
@@ -1281,8 +1293,7 @@ function AddNFT(props) {
                   </div>
                 </div>
               </div>
-
-              {collection === "" ||
+              {/* {collection === "" ||
               nftName === 0 ||
               price === "" ||
               supply <= 0 ||
@@ -1294,16 +1305,16 @@ function AddNFT(props) {
                     <i className="fa fa-plus"></i> Add NFT To Drop
                   </button>
                 </Tooltip>
-              ) : (
-                <button
-                  className="bttn"
-                  type="button"
-                  disabled={isDisabled}
-                  onClick={(e) => handleAddClick(e)}
-                >
-                  <i className="fa fa-plus"></i> Add NFT To Drop
-                </button>
-              )}
+              ) : ( */}
+              <button
+                className="bttn"
+                type="button"
+                disabled={isDisabled}
+                onClick={(e) => handleAddClick(e)}
+              >
+                <i className="fa fa-plus"></i> Add NFT To Drop
+              </button>
+              {/* // )} */}
             </form>
           </div>
 
@@ -1368,36 +1379,36 @@ function AddNFT(props) {
             ) : null}
           </div>
         </div>
-        {isAdded ? (
-          <div className="submit-section col-md-12 col-lg-6 col-sm-12">
-            <button
-              type="button"
-              disabled={isDisabled}
-              // onClick={(e) => handleSubmitEvent(e)}
-              onClick={(e) => {
-                versionB === "v1-sso"
-                  ? handleSubmitEvent(e)
-                  : handleSubmitEvent(e);
-              }}
-              style={{ float: "right", marginBottom: "5%" }}
-              // onClick={handleOpenModal}
-              className="bttn"
-            >
-              Update Drop
-            </button>
-          </div>
-        ) : (
-          <div className="submit-section col-md-12 col-sm-12 col-lg-6">
-            <button
-              type="button"
-              disabled
-              className="bttn"
-              style={{ float: "right" }}
-            >
-              Update Drop
-            </button>
-          </div>
-        )}
+        {/* {isAdded ? ( */}
+        <div className="submit-section col-md-12 col-lg-6 col-sm-12">
+          <button
+            type="button"
+            disabled={isDisabled}
+            // onClick={(e) => handleSubmitEvent(e)}
+            onClick={(e) => {
+              versionB === "v1-sso"
+                ? handleSubmitEvent(e)
+                : handleSubmitEvent(e);
+            }}
+            style={{ float: "right", marginBottom: "5%" }}
+            // onClick={handleOpenModal}
+            className="bttn"
+          >
+            Update Drop
+          </button>
+        </div>
+        {/* // ) : (
+        //   <div className="submit-section col-md-12 col-sm-12 col-lg-6">
+        //     <button
+        //       type="button"
+        //       disabled
+        //       className="bttn"
+        //       style={{ float: "right" }}
+        //     >
+        //       Update Drop
+        //     </button>
+        //   </div>
+        // )} */}
         {enableTime && (
           <div
             className="datePicker col-md-12 col-lg-6 col-sm-12"
