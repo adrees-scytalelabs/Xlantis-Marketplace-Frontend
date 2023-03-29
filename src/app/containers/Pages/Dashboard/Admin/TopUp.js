@@ -15,7 +15,6 @@ import React, { useEffect, useState } from "react";
 
 import { useHistory, useRouteMatch } from "react-router-dom";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -102,7 +101,7 @@ function TopUp(props) {
     axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
         console.log("response of top up amount", response);
-        window.location.replace(response.data.sessionUrl)
+        window.location.replace(response.data.sessionUrl);
         // let variant = "success";
         // enqueueSnackbar("Balance Updated", { variant });
       },
@@ -153,6 +152,7 @@ function TopUp(props) {
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={0.1}
+              step={0.1}
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
                 setAmount(e.target.value);
@@ -165,7 +165,7 @@ function TopUp(props) {
             <button
               className="newTemplateBtn mb-3"
               onClick={(e) => handleTopUpAmount(e)}
-              style={{ backgroundColor: "black",float:'right' }}
+              style={{ backgroundColor: "black", float: "right" }}
             >
               Proceed
             </button>

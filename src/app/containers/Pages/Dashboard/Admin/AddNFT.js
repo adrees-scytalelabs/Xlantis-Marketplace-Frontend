@@ -19,6 +19,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import DateTimePicker from "react-datetime-picker";
+import { Link } from "react-router-dom";
 import axios from "axios";
 // import { response } from 'express';
 import Cookies from "js-cookie";
@@ -768,6 +769,7 @@ function AddNFT(props) {
         (response) => {
           setCostInfo(response.data);
           console.log("Admin Balance and Buy Detail", response);
+          handleCloseBackdrop();
           // if (costInfo!=undefined){
           //   TotalCost();
           // }
@@ -849,6 +851,7 @@ function AddNFT(props) {
 
   // handle click event of the Add button
   const handleAddClick = async (e) => {
+    handleShowBackdrop();
     e.preventDefault();
     console.log("HANDLE ADD");
     if (nftType === "1155") {
@@ -915,9 +918,9 @@ function AddNFT(props) {
         console.log("new obj", newObject);
 
         axios.put(`/drop/nft`, data).then(
-          (response) => {
+          async (response) => {
             console.log("nft drop add response: ", response);
-            handleBuyDetail();
+            await handleBuyDetail();
             console.log("time", startTime, endTime);
 
             setIsAdded(true);
@@ -960,7 +963,6 @@ function AddNFT(props) {
             console.log(dropInfo);
 
             setIsUploadingData(false);
-            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
@@ -1116,10 +1118,12 @@ function AddNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">New NFT</li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">Add NFT</li>
             </ul>
           </div>
         </div>
@@ -1485,19 +1489,21 @@ function AddNFT(props) {
         nftDetail={nftDetail}
         handleEdit={handleEdit}
       ></NFTDetailModal>
-      <PublishDropModal
-        handleClose={handleCloseModal}
-        open={modalOpen}
-        handlePublish={handlePublish}
-        handlePay={openTransak}
-        dropData={data}
-        isOpen={modalOpen}
-        dropStatus={(e) => dropStatus(e)}
-        dropId={dropId}
-        cost={costInfo}
-        setOpen={setMOdalOpen}
-        setTopUpModal={setTopUpModal}
-      />
+      {modalOpen === true && (
+        <PublishDropModal
+          handleClose={handleCloseModal}
+          open={modalOpen}
+          handlePublish={handlePublish}
+          handlePay={openTransak}
+          dropData={data}
+          isOpen={modalOpen}
+          dropStatus={(e) => dropStatus(e)}
+          dropId={dropId}
+          cost={costInfo}
+          setOpen={setMOdalOpen}
+          setTopUpModal={setTopUpModal}
+        />
+      )}
       <TopUpModal
         show={topUpModal}
         handleClose={handleCloseTopUpModal}
