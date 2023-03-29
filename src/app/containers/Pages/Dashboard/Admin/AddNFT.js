@@ -19,6 +19,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import DateTimePicker from "react-datetime-picker";
+import { Link } from "react-router-dom";
 import axios from "axios";
 // import { response } from 'express';
 import Cookies from "js-cookie";
@@ -1105,10 +1106,12 @@ function AddNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">New NFT</li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">Add NFT</li>
             </ul>
           </div>
         </div>
