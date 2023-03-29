@@ -153,6 +153,7 @@ function TopUp(props) {
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={0.1}
+              step={0.1}
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
                 setAmount(e.target.value);
