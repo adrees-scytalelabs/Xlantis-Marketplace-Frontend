@@ -12,6 +12,7 @@ import { Spinner } from "react-bootstrap";
 // import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import getCroppedImg from "../../../components/Utils/Crop";
+import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,8 @@ function SettingDashboardDefault(props) {
   let [adminCompanyName, setAdminCompanyName] = useState("");
   let [adminDomain, setAdminDomain] = useState("");
   let [adminDesignation, setAdminDesignation] = useState("");
+  let [adminOldData, setAdminOldData] = useState({});
+  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
 
@@ -195,6 +198,67 @@ function SettingDashboardDefault(props) {
       });
   };
 
+  const getAdminProfile = async () => {
+    await axios.get(`/v1-sso/user/admin/profile`).then(
+      (response) => {
+        console.log("Response from getting admin profile", response);
+        setAdminOldData(response.data.userData);
+        setProfileImage(response.data.userData.imageURL);
+        setAdminCompanyName(response.data.userData.companyName);
+        setAdminDesignation(response.data.userData.designation);
+        setAdminDomain(response.data.userData.domain);
+        setAdminName(response.data.userData.username);
+      },
+      (error) => {
+        console.log("Error from getting Admin profile", error);
+      }
+    );
+  };
+
+  const handleSubmitAdminProfile = (e) => {
+    e.preventDefault();
+    if (
+      adminCompanyName === adminOldData.companyName &&
+      adminDomain === adminOldData.domain &&
+      profileImage === adminOldData.imageURL &&
+      adminName === adminOldData.username
+    ) {
+      let variant = "info";
+      enqueueSnackbar("No updation in data", { variant });
+    } else if (
+      adminName === "" ||
+      adminCompanyName === "" ||
+      adminDomain === "" ||
+      adminDesignation === ""
+    ) {
+      let variant = "error";
+      enqueueSnackbar("Please fill all fields", { variant });
+    } else {
+      setShowConfirmationModal(true);
+    }
+  };
+
+  const updateData = async () => {
+    let data = {
+      companyName: adminCompanyName,
+      bio: adminDomain,
+      imageURL: profileImage,
+      bannerURL: bannerImage,
+      username: adminName,
+    };
+    await axios.put(`/v1-sso/user/admin/update-info`, data).then(
+      (response) => {
+        console.log("Response from updating admin data: ", response);
+        setShowConfirmationModal(false);
+        let variant = "success";
+        enqueueSnackbar("Data updated successfully", { variant });
+      },
+      (error) => {
+        console.log("Error from updating admin data: ", error);
+      }
+    );
+  };
+
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -240,14 +304,16 @@ function SettingDashboardDefault(props) {
   });
 
   useEffect(() => {
-    if (props.user === "admin") {
-      setIsAdmin(true);
-    }
     props.setActiveTab({
       profile: "active",
       offer: "",
     });
-    getProfile();
+    if (props.user === "admin") {
+      setIsAdmin(true);
+      getAdminProfile();
+    } else if (props.user === "user") {
+      getProfile();
+    }
   }, []);
 
   return (
@@ -405,7 +471,7 @@ function SettingDashboardDefault(props) {
                       <div className="submit-section">
                         <button
                           type="button"
-                          // onClick={(e) => handleSubmitEvent(e)}
+                          onClick={(e) => handleSubmitAdminProfile(e)}
                           className="btn submit-btn"
                           id="save-profile-btn"
                         >
@@ -528,6 +594,11 @@ function SettingDashboardDefault(props) {
         setZoom={setZoom}
         aspect={aspect}
         cropShape={cropShape}
+      />
+      <ProfileUpdationConfirmationModal
+        show={showConfirmationModal}
+        handleClose={() => setShowConfirmationModal(false)}
+        updateData={updateData}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />

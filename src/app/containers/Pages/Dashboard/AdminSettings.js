@@ -136,13 +136,13 @@ function UserSettings(props) {
                   style={{ backgroundColor: "black" }}
                 >
                   <Dropdown.Item>
-                    <Link to="/admin/settings" style={{ width: "100%" }}>
-                      Profile Settings
+                    <Link to="/dashboard" style={{ width: "100%" }}>
+                      Dashboard
                     </Link>
                   </Dropdown.Item>
                   <Dropdown.Item>
-                    <Link to="/dashboard" style={{ width: "100%" }}>
-                      Dashboard
+                    <Link to="/admin/settings" style={{ width: "100%" }}>
+                      Profile Settings
                     </Link>
                   </Dropdown.Item>
                   {/* <Dropdown.Item>
