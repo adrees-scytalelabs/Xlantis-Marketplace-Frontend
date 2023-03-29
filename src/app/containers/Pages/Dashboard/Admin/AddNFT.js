@@ -1105,10 +1105,12 @@ function AddNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-              <li className="breadcrumb-item active">New NFT</li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <li className="breadcrumb-item active">Add NFT</li>
             </ul>
           </div>
         </div>
