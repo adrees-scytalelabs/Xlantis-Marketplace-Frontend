@@ -76,6 +76,8 @@ function SettingDashboardDefault(props) {
   let [adminDomain, setAdminDomain] = useState("");
   let [adminDesignation, setAdminDesignation] = useState("");
   let [adminOldData, setAdminOldData] = useState({});
+  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  let [adminIndustry, setAdminIndustry] = useState("");
   let [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
@@ -204,10 +206,13 @@ function SettingDashboardDefault(props) {
         console.log("Response from getting admin profile", response);
         setAdminOldData(response.data.userData);
         setProfileImage(response.data.userData.imageURL);
+        setBannerImage(response.data.userData.bannerURL);
         setAdminCompanyName(response.data.userData.companyName);
         setAdminDesignation(response.data.userData.designation);
         setAdminDomain(response.data.userData.domain);
         setAdminName(response.data.userData.username);
+        setAdminReasonForInterest(response.data.userData.reasonForInterest);
+        setAdminIndustry(response.data.userData.industryType);
       },
       (error) => {
         console.log("Error from getting Admin profile", error);
@@ -221,18 +226,14 @@ function SettingDashboardDefault(props) {
       adminCompanyName === adminOldData.companyName &&
       adminDomain === adminOldData.domain &&
       profileImage === adminOldData.imageURL &&
-      adminName === adminOldData.username
+      adminName === adminOldData.username &&
+      bannerImage === adminOldData.bannerURL
     ) {
       let variant = "info";
       enqueueSnackbar("No updation in data", { variant });
-    } else if (
-      adminName === "" ||
-      adminCompanyName === "" ||
-      adminDomain === "" ||
-      adminDesignation === ""
-    ) {
+    } else if (adminName === "" || adminCompanyName === "") {
       let variant = "error";
-      enqueueSnackbar("Please fill all fields", { variant });
+      enqueueSnackbar("Please fill all editable fields", { variant });
     } else {
       setShowConfirmationModal(true);
     }
@@ -241,7 +242,7 @@ function SettingDashboardDefault(props) {
   const updateData = async () => {
     let data = {
       companyName: adminCompanyName,
-      bio: adminDomain,
+      // bio: adminDomain,
       imageURL: profileImage,
       bannerURL: bannerImage,
       username: adminName,
@@ -415,7 +416,7 @@ function SettingDashboardDefault(props) {
                     </div>
                     <label>Company Name</label>
                     <div className="form-group">
-                      <textarea
+                      <input
                         type="text"
                         value={adminCompanyName}
                         required
@@ -435,12 +436,13 @@ function SettingDashboardDefault(props) {
                         <input
                           type="text"
                           required
+                          disabled
                           value={adminDomain}
                           placeholder="Enter Domain"
                           className="form-control"
-                          onChange={(e) => {
-                            setAdminDomain(e.target.value);
-                          }}
+                          // onChange={(e) => {
+                          //   setAdminDomain(e.target.value);
+                          // }}
                         />
                       </div>
                     </>
@@ -449,12 +451,36 @@ function SettingDashboardDefault(props) {
                       <input
                         type="text"
                         required
+                        disabled
                         value={adminDesignation}
                         placeholder="Enter Designation"
                         className="form-control"
-                        onChange={(e) => {
-                          setAdminDesignation(e.target.value);
-                        }}
+                        // onChange={(e) => {
+                        //   setAdminDesignation(e.target.value);
+                        // }}
+                      />
+                    </div>
+                    <label>Industry</label>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        required
+                        disabled
+                        value={adminIndustry}
+                        // placeholder="Enter Designation"
+                        className="form-control"
+                      />
+                    </div>
+                    <label>Reason For Interest</label>
+                    <div className="form-group">
+                      <textarea
+                        type="text"
+                        required
+                        rows="4"
+                        disabled
+                        value={adminReasonForInterest}
+                        // placeholder="Enter Designation"
+                        className="form-control"
                       />
                     </div>
                     {isSaving ? (
