@@ -360,7 +360,8 @@ const MarketPlaceTabs = (props) => {
                       component="p"
                       style={{ color: "#fff" }}
                     >
-                      <strong>No items to display </strong>
+                      {/* <strong>No items to display </strong> */}
+                      <strong>This feature is coming soon</strong>
                     </Typography>
                   </Card>
                 )}
