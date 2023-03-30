@@ -384,7 +384,7 @@ function NewNFT(props) {
 
   const handleTemplateChange = (e) => {
     setExtractedDataProps(null);
-    console.log(e.target.value, " template change");
+    //console.log(e.target.value, " template change");
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
     if (e.target.value === "default") {
@@ -394,13 +394,13 @@ function NewNFT(props) {
 
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    console.log(e.target.value, " Template selected!");
+    //console.log(e.target.value, " Template selected!");
     if (templateData) {
       for (let i = 0; i < templateData.length; i++) {
         if (e.target.value === templateData[i].name) {
           handleSetProperties(templateData[i].properties);
 
-          console.log("values matched");
+         // console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < templateData[i].properties.length; p++) {
             dynamicField.push({
@@ -419,12 +419,12 @@ function NewNFT(props) {
 
   const handleStandardSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    console.log(e.target.value, " Template selected!");
+    //console.log(e.target.value, " Template selected!");
     if (standardTemplates) {
       for (let i = 0; i < standardTemplates.length; i++) {
         if (e.target.value === standardTemplates[i].name) {
           handleSetProperties(standardTemplates[i].properties);
-          console.log("values matched");
+          //console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < standardTemplates[i].properties.length; p++) {
             dynamicField.push({
@@ -443,15 +443,15 @@ function NewNFT(props) {
   };
 
   if (extractedDataProps) {
-    console.log(extractedDataProps, " Extracted Properties");
+   // console.log(extractedDataProps, " Extracted Properties");
   }
 
   const handleTemplatePropertyChange = (index, e) => {
-    console.log(properties, " /// properties");
+    //console.log(properties, " /// properties");
     let data = [...properties];
 
     data[index].value = e.target.value;
-    console.log("change", data[index]);
+   // console.log("change", data[index]);
     setProperties(data);
   };
 
@@ -641,15 +641,15 @@ function NewNFT(props) {
   // }
   let getCollections = (collectionType) => {
     setCollection("");
-    console.log("get collections");
-    console.log("collectionType", collectionType);
-    console.log("VERSION", Cookies.get("Version"));
+   // console.log("get collections");
+   // console.log("collectionType", collectionType);
+   // console.log("VERSION", Cookies.get("Version"));
     const url = `/collection/collections/${collectionType}`;
-    console.log("url", url);
+   // console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
       (response) => {
-        console.log("response", response);
+       // console.log("response", response);
 
         if (collectionType === "1155") {
           setChangeCollectionList(response.data.collectionData);
@@ -661,11 +661,11 @@ function NewNFT(props) {
         //   },
         //   ...response.data.collectionData,
         // ];
-        console.log(
-          "response.data.collectionData",
-          response
+       // console.log(
+         // "response.data.collectionData",
+         // response
           // response.data.collectionData[0].nftContractAddress
-        );
+       // );
         setCollectionTypes(response.data.collectionData);
       },
       (error) => {
@@ -690,7 +690,7 @@ function NewNFT(props) {
   };
 
   const handleSetProperties = (availableProperties) => {
-    console.log("avail prop", availableProperties);
+   // console.log("avail prop", availableProperties);
     let prop = [];
 
     availableProperties.map((property) => {
@@ -706,18 +706,18 @@ function NewNFT(props) {
 
       let newData = { key: property.key, value: val };
       prop.push(newData);
-      console.log("property", property);
+      //console.log("property", property);
     });
 
-    console.log("prop", prop);
-    console.log("properties from def", prop);
+   // console.log("prop", prop);
+   // console.log("properties from def", prop);
     setProperties(prop);
   };
 
   const getDefaultTemplate = () => {
     axios.get(`/nft-properties/admin/default`).then(
       (response) => {
-        console.log("default template response", response);
+       // console.log("default template response", response);
 
         setDefaultTemplates(response.data.defaultTemplate);
         if (response.data.defaultTemplate != null) {
@@ -749,10 +749,10 @@ function NewNFT(props) {
     axios.get(`/nft-properties/${role}`).then(
       (response) => {
         if (role === "admin") {
-          console.log("saved template response", response);
+        //  console.log("saved template response", response);
           setTemplateData(response.data.templates);
         } else {
-          console.log("standard template response", response);
+         // console.log("standard template response", response);
           setStandardTemplates(response.data.templates);
         }
       },
@@ -778,23 +778,23 @@ function NewNFT(props) {
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
     let batchMintId = Cookies.get("Batch-ID");
-    console.log("data", data);
+   // console.log("data", data);
     if (
       (data && batchMintId) !== null &&
       (typeof data || typeof batchMintId) !== "undefined" &&
       (data && batchMintId) !== ""
     ) {
-      console.log("Data: ", data);
-      console.log("Batch ID: ", batchMintId);
-      console.log("Type is: ", typeof data);
-      console.log("Type is: ", typeof batchMintId);
+     // console.log("Data: ", data);
+     // console.log("Batch ID: ", batchMintId);
+     // console.log("Type is: ", typeof data);
+     // console.log("Type is: ", typeof batchMintId);
       setTokenList(JSON.parse(data));
       setBatchId(batchMintId);
       setCollection(JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
     } else {
-      console.log("No data in cookies");
+     // console.log("No data in cookies");
     }
   };
 
@@ -802,12 +802,12 @@ function NewNFT(props) {
     // getProfileData();
 
     setVersionB(Cookies.get("Version"));
-    console.log("version", Cookies.get("Version"));
+    //console.log("version", Cookies.get("Version"));
     getCollections(NFTType);
     getDefaultTemplate();
     getSavedTemplate("admin");
     getSavedTemplate("super-admin");
-    console.log("default valu", defaultTemplates);
+    //console.log("default valu", defaultTemplates);
 
     // setTokenList(Cookies.get("NFT-Detail"));
     getDataFromCookies();
@@ -1061,22 +1061,22 @@ function NewNFT(props) {
           AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
           IPFsURIs.push(tokenList[i].nftURI);
         }
-        console.log("AmountofNFTs", AmountofNFTs);
-        console.log("IPFsHashes", IPFsURIs);
+       // console.log("AmountofNFTs", AmountofNFTs);
+       // console.log("IPFsHashes", IPFsURIs);
 
-        console.log("Contract Address: ", address);
+       // console.log("Contract Address: ", address);
         var myContractInstance = await new web3.eth.Contract(abi, address);
-        console.log("myContractInstance", myContractInstance);
-        console.log("Name: ", name);
-        console.log("Description: ", description);
-        console.log("nftURI: ", nftURI);
-        console.log("tokenSupply: ", tokenSupply);
-        console.log("Account address: ", accounts[0]);
-        console.log("Image Type: ", imageType);
+       // console.log("myContractInstance", myContractInstance);
+       // console.log("Name: ", name);
+      //  console.log("Description: ", description);
+      //  console.log("nftURI: ", nftURI);
+        // console.log("tokenSupply: ", tokenSupply);
+        // console.log("Account address: ", accounts[0]);
+        // console.log("Image Type: ", imageType);
         await myContractInstance.methods
           .mintBatch(accounts[0], AmountofNFTs, IPFsURIs)
           .send({ from: accounts[0] }, (err, response) => {
-            console.log("get transaction", err, response);
+            //console.log("get transaction", err, response);
             if (err !== null) {
               console.log("err", err);
               let variant = "error";
@@ -1086,12 +1086,12 @@ function NewNFT(props) {
             }
           })
           .on("receipt", (receipt) => {
-            console.log("receipt", receipt);
+           // console.log("receipt", receipt);
             Cookies.remove("NFT-Detail");
-            console.log(
-              "receipt",
-              receipt.events.TransferBatch.returnValues.ids
-            );
+            // console.log(
+            //   "receipt",
+            //   receipt.events.TransferBatch.returnValues.ids
+            // );
             let ids = receipt.events.TransferBatch.returnValues.ids;
             // for (let i = 0; i < tokenList.length; i++) {
             //     tokenList[i].nftId = ids[i];
@@ -1123,7 +1123,7 @@ function NewNFT(props) {
             // console.log("Data", Data);
             axios.put(`/batch-mint/minted/${batchId}`, data).then(
               (response) => {
-                console.log("response", response);
+                //console.log("response", response);
                 let variant = "success";
                 enqueueSnackbar("Nfts Created Successfully.", { variant });
                 Cookies.remove("Batch-ID");
@@ -1186,7 +1186,7 @@ function NewNFT(props) {
     if (tokenList.length === 1) {
       axios.delete(`/batch-mint/${batchId}`).then(
         (response) => {
-          console.log("deleting batch response: ", response);
+         // console.log("deleting batch response: ", response);
           Cookies.remove("NFT-Detail");
           Cookies.remove("Batch-ID");
           setTokenList([]);
@@ -1199,7 +1199,7 @@ function NewNFT(props) {
     } else {
       axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
         (response) => {
-          console.log("Response for delete nft from batch: ", response);
+         // console.log("Response for delete nft from batch: ", response);
           const list = [...tokenList];
           list.splice(index, 1);
           Cookies.remove("NFT-Detail");
@@ -1216,7 +1216,7 @@ function NewNFT(props) {
   // handle click event of the Add button
   const handleAddClick = (e) => {
     e.preventDefault();
-    console.log("token supply", tokenSupply);
+   // console.log("token supply", tokenSupply);
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
@@ -1262,7 +1262,7 @@ function NewNFT(props) {
       const blob = new Blob([JSON.stringify(metaData, null, 2)], {
         type: "application/json",
       });
-      console.log("blob", blob);
+     // console.log("blob", blob);
       var dataIpfsHash;
       reader.readAsArrayBuffer(blob);
       reader.onloadend = () => {
@@ -1274,16 +1274,16 @@ function NewNFT(props) {
             enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
             return;
           }
-          console.log("HASH: ", result[0].hash);
+          //console.log("HASH: ", result[0].hash);
           ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
           setMetaDataURI(ipfsMetaData);
-          console.log("Meta Data URI: ", ipfsMetaData);
+         // console.log("Meta Data URI: ", ipfsMetaData);
 
           let propertiesObject = {};
           properties.map((property) => {
             propertiesObject[property.key] = property.value;
           });
-          console.log("Properties are: ", propertiesObject);
+          //console.log("Properties are: ", propertiesObject);
 
           //sending data to backend
           let data = {
@@ -1307,7 +1307,7 @@ function NewNFT(props) {
           if (batchId === "") {
             axios.post(`/batch-mint/`, data).then(
               (response) => {
-                console.log("Response on batch mint: ", response);
+                //console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
                 setNftId(response.data.nftId);
                 setTokenList([
@@ -1366,13 +1366,13 @@ function NewNFT(props) {
             );
           } else {
             data["batchId"] = batchId;
-            console.log("data: ", data);
+           // console.log("data: ", data);
             axios.post(`/batch-mint/nft`, data).then(
               (response) => {
-                console.log(
-                  "Batch minting into existing batch response: ",
-                  response
-                );
+                // console.log(
+                //   "Batch minting into existing batch response: ",
+                //   response
+                // );
                 setNftId(response.data.nftId);
                 setTokenList([
                   ...tokenList,
@@ -1439,7 +1439,7 @@ function NewNFT(props) {
           let variant = "success";
           enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
 
-          console.log("Token list length: ", tokenList.length);
+          //console.log("Token list length: ", tokenList.length);
           setIsUploadingData(false);
 
           handleCloseBackdrop();
@@ -1483,12 +1483,12 @@ function NewNFT(props) {
       // setIsGlbFile(false);
     }
 
-    console.log("Image Type: ", typeImage);
-    console.log("e.target.files[0]", e.target.files[0]);
+    // console.log("Image Type: ", typeImage);
+    // console.log("e.target.files[0]", e.target.files[0]);
     // console.log("Image type: ", imageType);
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
-      console.log("reader.result", reader.result);
+     // console.log("reader.result", reader.result);
       // setBuffer(Buffer(reader.result));
       ipfs.add(Buffer(reader.result), async (err, result) => {
         if (err) {
@@ -1498,7 +1498,7 @@ function NewNFT(props) {
           enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
           return;
         }
-        console.log("HASH", result[0].hash);
+       // console.log("HASH", result[0].hash);
 
         setIpfsHash(result[0].hash);
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
@@ -1515,7 +1515,7 @@ function NewNFT(props) {
     fileData.append("image", imageNFT);
     axios.post(`/upload/image`, fileData).then(
       (response) => {
-        console.log("response", response);
+      //  console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
@@ -1640,15 +1640,15 @@ function NewNFT(props) {
     e.preventDefault();
     let newData = { key: "", value: "" };
     setProperties([...properties, newData]);
-    console.log("Add button pressed.");
-    console.log("Properties: ", properties);
+   // console.log("Add button pressed.");
+   // console.log("Properties: ", properties);
   };
 
   let handlePropertyChange = (index, event) => {
-    console.log(properties, " /// properties");
+  //  console.log(properties, " /// properties");
     let data = [...properties];
-    console.log("the datat change: ", event.target);
-    console.log("the data index /// ", data[index][event.target.name]);
+    // console.log("the datat change: ", event.target);
+    // console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -1661,13 +1661,13 @@ function NewNFT(props) {
   let handleCloseNFTDetailModal = () => {
     // setTokenList([...tempTokenList]);
     // setTempTokenList([]);
-    console.log("Close button called from modal.");
+   // console.log("Close button called from modal.");
     setOpenDialog(false);
   };
 
   let handleEdit = () => {
     // setNftDetail(nftObject);
-    console.log("Nft detail: ", nftDetail);
+  //  console.log("Nft detail: ", nftDetail);
     // setNftDetail(nftDetail);
     setOpenDialog(false);
     setOpenEditModal(true);
@@ -1678,7 +1678,7 @@ function NewNFT(props) {
   };
 
   let onUpdateEditModal = (obj) => {
-    console.log("object in new nft screen: ", obj);
+   // console.log("object in new nft screen: ", obj);
     setIsUploadingData(true);
     handleShowBackdrop();
     let data = [...tokenList];
@@ -1698,7 +1698,7 @@ function NewNFT(props) {
     const blob = new Blob([JSON.stringify(metaData, null, 2)], {
       type: "application/json",
     });
-    console.log("blob", blob);
+   // console.log("blob", blob);
     reader.readAsArrayBuffer(blob);
     reader.onloadend = () => {
       // setBuffer(Buffer(reader.result));
@@ -1710,7 +1710,7 @@ function NewNFT(props) {
           enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
           return;
         }
-        console.log("HASH: ", result[0].hash);
+      //  console.log("HASH: ", result[0].hash);
         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
 
         let updatedObject = {
@@ -1731,14 +1731,14 @@ function NewNFT(props) {
 
         axios.put(`/nft/${data[editObjectIndex].nftId}`, updatedObject).then(
           (response) => {
-            console.log("Response of updated nft: ", response);
+          //  console.log("Response of updated nft: ", response);
           },
           (error) => {
             console.log("Error of updated nft: ", error);
           }
         );
 
-        console.log("Data: ", data);
+       // console.log("Data: ", data);
         setTokenList(data);
         setIsUploadingData(false);
         setOpenEditModal(false);
@@ -1787,7 +1787,7 @@ function NewNFT(props) {
     };
     axios.put(`/batch-mint/collection`, updatedCollectionID).then(
       (response) => {
-        console.log("Response after updating collection id: ", response);
+        // console.log("Response after updating collection id: ", response);
       },
       (error) => {
         console.log("Error on updating collection id: ", error);
@@ -3060,11 +3060,11 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                                console.log(value);
+                               // console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
-                                console.log("Value: ", value);
+                               // console.log("Value: ", value);
                               }
                             }
                           }}
@@ -3102,12 +3102,12 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                                console.log(value);
+                              //  console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
                                 setContractType(value.contractType);
-                                console.log("Value: ", value);
+                              //  console.log("Value: ", value);
                               }
                             }
                           }}
@@ -3310,10 +3310,10 @@ function NewNFT(props) {
                       <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
                         <CardActionArea
                           onClick={() => {
-                            console.log("nftDetailObject: ", i);
+                           // console.log("nftDetailObject: ", i);
                             handleOpenNFTDetailModal(i);
                             setEditObjectIndex(index);
-                            console.log("Open Dialog Value: ", openDialog);
+                          //  console.log("Open Dialog Value: ", openDialog);
                           }}
                         >
                           <Card id="nftCardProps">

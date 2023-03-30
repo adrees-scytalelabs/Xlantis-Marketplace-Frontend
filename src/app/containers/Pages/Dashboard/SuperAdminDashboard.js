@@ -264,7 +264,7 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/manageAccounts/SSO`}>
-              {console.log(setActiveTab)}
+              {/* {console.log(setActiveTab)} */}
               <ManageAccountsSSO
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -272,7 +272,7 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/manageAccounts/Wallet`}>
-              {console.log(setActiveTab)}
+              {/* {console.log(setActiveTab)} */}
               <ManageAccountsWallet
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -290,7 +290,7 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/properties/createTemplate`}>
-              {console.log(setActiveTab)}
+              {/* {console.log(setActiveTab)} */}
               <CreateTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -298,7 +298,7 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/properties/savedTemplate`}>
-              {console.log(setActiveTab)}
+              {/* {console.log(setActiveTab)} */}
               <SavedTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}

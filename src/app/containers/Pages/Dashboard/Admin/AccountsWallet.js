@@ -124,7 +124,7 @@ function AccountsWallet(props) {
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v2`)
       .then((response) => {
-        console.log("response.data", response.data);
+       // console.log("response.data", response.data);
         setWalletAdmins(response.data.Admins);
         setWalletAdminCount(response.data.Admins.length);
         setOpen(false);

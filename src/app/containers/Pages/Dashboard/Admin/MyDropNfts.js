@@ -108,9 +108,9 @@ function MyDropNFTs(props) {
   let getNFTs = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    console.log("nftids", location.state.nftId);
-    console.log("dropId", location.state.dropId);
-    console.log("saleType", location.state.saleType);
+    //console.log("nftids", location.state.nftId);
+    //console.log("dropId", location.state.dropId);
+    //console.log("saleType", location.state.saleType);
 
     let data = {
       nftIds: location.state.nftId,
@@ -122,13 +122,13 @@ function MyDropNFTs(props) {
       )
       .then(
         (response) => {
-          console.log("response", response);
+         // console.log("response", response);
           let nfts = response.data.data;
           let newState = nfts.map((obj) => {
             return { ...obj, isPlaying: false };
           });
-          console.log("NFTS", nfts);
-          console.log("Updated", newState);
+         // console.log("NFTS", nfts);
+         // console.log("Updated", newState);
           setTokenList(newState);
           setTotalNfts(response.data.data.length);
 
@@ -158,7 +158,7 @@ function MyDropNFTs(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-    console.log("Location state: ", location);
+  //  console.log("Location state: ", location);
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
     // getCollections();?

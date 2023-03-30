@@ -29,7 +29,7 @@ function MyNFTs(props) {
     )}`;
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+        //console.log("response", response);
         setTokenList(response.data.NFTdata);
         setTotalNfts(response.data.Nftcount);
 
@@ -79,8 +79,8 @@ function MyNFTs(props) {
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+    //console.log("Start", newPage * rowsPerPage);
+    //console.log("End", newPage * rowsPerPage + rowsPerPage);
     getMyNFTs(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -90,7 +90,7 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  console.log("token list: ", tokenList);
+  //onsole.log("token list: ", tokenList);
 
   return (
     <div className="backgroundDefault">

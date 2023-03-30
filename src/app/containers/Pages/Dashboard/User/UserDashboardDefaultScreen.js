@@ -25,7 +25,7 @@ function UserDashboardDefaultScreen(props) {
     axios
       .get("user/getcounts")
       .then((response) => {
-        console.log(response);
+       // console.log(response);
         // setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
         // setTotalDrops(response.data.Dropscount);
@@ -42,8 +42,8 @@ function UserDashboardDefaultScreen(props) {
     if (userLogin != "undefined") {
       let version = Cookies.get("Version");
 
-      console.log("userLogin", userLogin);
-      console.log("version", version);
+      //console.log("userLogin", userLogin);
+     // console.log("version", version);
       axios
         .get(`${version}/user/profile`)
         .then((response) => {

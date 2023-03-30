@@ -155,10 +155,10 @@ function SSODisabled(props) {
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+   // console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+  //  console.log("Start", newPage * rowsPerPage);
+   // console.log("End", newPage * rowsPerPage + rowsPerPage);
     // getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -176,7 +176,7 @@ function SSODisabled(props) {
     axios
       .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
-        console.log("response.data", response.data);
+      //  console.log("response.data", response.data);
         setAdmins(response.data.admins);
         setAdminCount(response.data.admins.length);
         setOpen(false);
@@ -207,11 +207,11 @@ function SSODisabled(props) {
       adminId: verifyAdminId,
     };
 
-    console.log("data", data);
+  //  console.log("data", data);
 
     axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
-        console.log("admin verify response: ", response);
+       // console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();

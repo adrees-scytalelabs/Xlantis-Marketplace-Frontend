@@ -148,11 +148,11 @@ const NFTBuy = (props) => {
   const handleOpenModal = async (e) => {
     const dropId = nftDetail.dropId;
     const nftId = nftDetail._id;
-    console.log("NFTDETAIL", nftDetail);
+    //console.log("NFTDETAIL", nftDetail);
     axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
       (response) => {
-        console.log("response", response);
-        console.log("responeee", response.data.data.data[0]);
+      //  console.log("response", response);
+       // console.log("responeee", response.data.data.data[0]);
         setData(response.data.data);
         setMOdalOpen(true);
 
@@ -513,11 +513,11 @@ const NFTBuy = (props) => {
     setVersionB(Cookies.get("Version"));
 
     // getNftDetail();
-    console.log("NFT Details", location.state.nftDetail);
+    //console.log("NFT Details", location.state.nftDetail);
     setNftDetail(location.state.nftDetail);
-    console.log(location.state.nftDetail.currentMarketplaceId.isSold);
-    console.log("states", location.state);
-    console.log("price is", location.state.nftDetail.currentMarketplaceId.price);
+    //console.log(location.state.nftDetail.currentMarketplaceId.isSold);
+    //console.log("states", location.state);
+    //console.log("price is", location.state.nftDetail.currentMarketplaceId.price);
     setPrice(location.state.nftDetail.currentMarketplaceId.price);
     setProperties(location.state.nftDetail.properties);
 

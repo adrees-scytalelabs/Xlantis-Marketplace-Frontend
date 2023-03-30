@@ -55,7 +55,7 @@ const FixedPriceDropNFTs = () => {
     handleShowBackdrop();
 
     const version = Cookies.get("Version");
-    console.log("version", version);
+    //console.log("version", version);
     let endpoint;
     if (version === undefined) {
       endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
@@ -64,7 +64,7 @@ const FixedPriceDropNFTs = () => {
     }
     axios.get(endpoint).then(
       (response) => {
-        console.log("getting a nft", response);
+        //console.log("getting a nft", response);
         setDropData(response.data.data);
         handleCloseBackdrop();
       },
@@ -81,7 +81,7 @@ const FixedPriceDropNFTs = () => {
   const getDropData = async (dropId) => {
     await axios.get(`/drop/${dropId}`).then(
       (response) => {
-        console.log("Response from getting drop data: ", response);
+        //console.log("Response from getting drop data: ", response);
         setTitleImage(response.data.dropData.image);
         setBannerImage(response.data.dropData.bannerURL);
         setDropTitle(response.data.dropData.title);

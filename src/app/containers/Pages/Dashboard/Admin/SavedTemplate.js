@@ -127,7 +127,7 @@ function SavedTemplate(props) {
   //Call the endpoint of the delete template
   const deleteResponse = async(data) => {
     try{
-        console.log("Template deleted successfully")
+        //console.log("Template deleted successfully")
         handleClose();
     }
     catch(e){
@@ -141,10 +141,10 @@ function SavedTemplate(props) {
   }
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+   // console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+   // console.log("Start", newPage * rowsPerPage);
+   // console.log("End", newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -159,9 +159,9 @@ function SavedTemplate(props) {
       axios.get("/super-admin/template").then(
         (response) => {
           setTemplateData(response.data.templates);
-          console.log("response", response);
+         // console.log("response", response);
           //console.log("size", response.data.templates[0].properties[0].key);
-          console.log("Data of the state", templateData);
+         // console.log("Data of the state", templateData);
           handleCloseBackdrop();
           // let variant = "success";
           // enqueueSnackbar("Template loaded successfully", { variant });
@@ -187,15 +187,15 @@ function SavedTemplate(props) {
       setUpdateModal(false)
       setModalState(true);
       try{
-        console.log("data updated");
+       // console.log("data updated");
       }
       catch(e){
         console.log("Something wrong with updation",e)
       }
   }
   useEffect(() => {
-    console.log("Saved Template")
-    console.log("Modal Data",modalData)
+   // console.log("Saved Template")
+   // console.log("Modal Data",modalData)
     setDeleteState("");
     //setModalState("");
     //setUpdateModal(true);

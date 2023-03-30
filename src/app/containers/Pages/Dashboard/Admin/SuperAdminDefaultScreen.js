@@ -79,11 +79,11 @@ function SuperAdminDefaultScreen(props) {
     axios
       .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
-        console.log(response);
+      //  console.log(response);
         axios
           .get(`/super-admin/admins/counts?userType=v2`)
           .then((response1) => {
-            console.log(response1);
+           // console.log(response1);
             setTotalAdmins(
               response1.data.counts.totalAdmins +
                 response.data.counts.totalAdmins
@@ -133,7 +133,7 @@ function SuperAdminDefaultScreen(props) {
     // eslint-disable-next-line
   }, []);
 
-  console.log("props in super admin dashboard: ", props);
+ // console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
