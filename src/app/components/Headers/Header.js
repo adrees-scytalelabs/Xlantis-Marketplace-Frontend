@@ -109,8 +109,8 @@ function HeaderHome(props) {
     setOpen(true);
   };
   useEffect(() => {
-    // setSocket(io("https://raindrop-backend.herokuapp.com/"));
-    setSocket(io("http://localhost:3002"));
+     setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    //setSocket(io("http://localhost:3002"));
     console.log("socket was set");
   }, []);
   useEffect(() => {
