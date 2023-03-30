@@ -9,9 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { isUndefined } from "lodash";
 import { useSnackbar } from "notistack";
 import { Spinner } from "react-bootstrap";
-// import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
+import r1 from "../../../assets/img/patients/patient.jpg";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import getCroppedImg from "../../../components/Utils/Crop";
+import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -74,6 +75,10 @@ function SettingDashboardDefault(props) {
   let [adminCompanyName, setAdminCompanyName] = useState("");
   let [adminDomain, setAdminDomain] = useState("");
   let [adminDesignation, setAdminDesignation] = useState("");
+  let [adminOldData, setAdminOldData] = useState({});
+  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  let [adminIndustry, setAdminIndustry] = useState("");
+  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
 
@@ -82,9 +87,7 @@ function SettingDashboardDefault(props) {
   let [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(
-    "http://www.mub.eps.manchester.ac.uk/graphene/wp-content/themes/uom-theme/assets/images/default-banner.jpg"
-  );
+  let [bannerImage, setBannerImage] = useState(r1);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -195,6 +198,67 @@ function SettingDashboardDefault(props) {
       });
   };
 
+  const getAdminProfile = async () => {
+    await axios.get(`/v1-sso/user/admin/profile`).then(
+      (response) => {
+        console.log("Response from getting admin profile", response);
+        setAdminOldData(response.data.userData);
+        setProfileImage(response.data.userData.imageURL);
+        response.data.userData.bannerURL &&
+          setBannerImage(response.data.userData.bannerURL);
+        setAdminCompanyName(response.data.userData.companyName);
+        setAdminDesignation(response.data.userData.designation);
+        setAdminDomain(response.data.userData.domain);
+        setAdminName(response.data.userData.username);
+        setAdminReasonForInterest(response.data.userData.reasonForInterest);
+        setAdminIndustry(response.data.userData.industryType);
+      },
+      (error) => {
+        console.log("Error from getting Admin profile", error);
+      }
+    );
+  };
+
+  const handleSubmitAdminProfile = (e) => {
+    e.preventDefault();
+    if (
+      adminCompanyName === adminOldData.companyName &&
+      adminDomain === adminOldData.domain &&
+      profileImage === adminOldData.imageURL &&
+      adminName === adminOldData.username &&
+      bannerImage === adminOldData.bannerURL
+    ) {
+      let variant = "info";
+      enqueueSnackbar("No updation in data", { variant });
+    } else if (adminName === "" || adminCompanyName === "") {
+      let variant = "error";
+      enqueueSnackbar("Please fill all editable fields", { variant });
+    } else {
+      setShowConfirmationModal(true);
+    }
+  };
+
+  const updateData = async () => {
+    let data = {
+      companyName: adminCompanyName,
+      // bio: adminDomain,
+      imageURL: profileImage,
+      bannerURL: bannerImage,
+      username: adminName,
+    };
+    await axios.put(`/v1-sso/user/admin/update-info`, data).then(
+      (response) => {
+        console.log("Response from updating admin data: ", response);
+        setShowConfirmationModal(false);
+        let variant = "success";
+        enqueueSnackbar("Data updated successfully", { variant });
+      },
+      (error) => {
+        console.log("Error from updating admin data: ", error);
+      }
+    );
+  };
+
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -240,14 +304,16 @@ function SettingDashboardDefault(props) {
   });
 
   useEffect(() => {
-    if (props.user === "admin") {
-      setIsAdmin(true);
-    }
     props.setActiveTab({
       profile: "active",
       offer: "",
     });
-    getProfile();
+    if (props.user === "admin") {
+      setIsAdmin(true);
+      getAdminProfile();
+    } else if (props.user === "user") {
+      getProfile();
+    }
   }, []);
 
   return (
@@ -349,7 +415,7 @@ function SettingDashboardDefault(props) {
                     </div>
                     <label>Company Name</label>
                     <div className="form-group">
-                      <textarea
+                      <input
                         type="text"
                         value={adminCompanyName}
                         required
@@ -369,12 +435,13 @@ function SettingDashboardDefault(props) {
                         <input
                           type="text"
                           required
+                          disabled
                           value={adminDomain}
                           placeholder="Enter Domain"
                           className="form-control"
-                          onChange={(e) => {
-                            setAdminDomain(e.target.value);
-                          }}
+                          // onChange={(e) => {
+                          //   setAdminDomain(e.target.value);
+                          // }}
                         />
                       </div>
                     </>
@@ -383,12 +450,36 @@ function SettingDashboardDefault(props) {
                       <input
                         type="text"
                         required
+                        disabled
                         value={adminDesignation}
                         placeholder="Enter Designation"
                         className="form-control"
-                        onChange={(e) => {
-                          setAdminDesignation(e.target.value);
-                        }}
+                        // onChange={(e) => {
+                        //   setAdminDesignation(e.target.value);
+                        // }}
+                      />
+                    </div>
+                    <label>Industry</label>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        required
+                        disabled
+                        value={adminIndustry}
+                        // placeholder="Enter Designation"
+                        className="form-control"
+                      />
+                    </div>
+                    <label>Reason For Interest</label>
+                    <div className="form-group">
+                      <textarea
+                        type="text"
+                        required
+                        rows="4"
+                        disabled
+                        value={adminReasonForInterest}
+                        // placeholder="Enter Designation"
+                        className="form-control"
                       />
                     </div>
                     {isSaving ? (
@@ -405,7 +496,7 @@ function SettingDashboardDefault(props) {
                       <div className="submit-section">
                         <button
                           type="button"
-                          // onClick={(e) => handleSubmitEvent(e)}
+                          onClick={(e) => handleSubmitAdminProfile(e)}
                           className="btn submit-btn"
                           id="save-profile-btn"
                         >
@@ -528,6 +619,11 @@ function SettingDashboardDefault(props) {
         setZoom={setZoom}
         aspect={aspect}
         cropShape={cropShape}
+      />
+      <ProfileUpdationConfirmationModal
+        show={showConfirmationModal}
+        handleClose={() => setShowConfirmationModal(false)}
+        updateData={updateData}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
