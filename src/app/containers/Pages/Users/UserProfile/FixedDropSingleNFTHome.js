@@ -177,12 +177,12 @@ const FixedDropSingleNFTHome = () => {
   let account = sessionStorage.getItem("Authorization");
 
 
-  console.log(dropID, " /// dropID")
-  console.log(account, " /// JWT")
+  //console.log(dropID, " /// dropID")
+  //console.log(account, " /// JWT")
 
   // Variables
   const { singleNFTid } = useParams();
-  console.log(singleNFTid, " /// NFT ID")
+  //console.log(singleNFTid, " /// NFT ID")
 
   // Handlers
   const handleGoBack = () => {
@@ -577,8 +577,8 @@ let handleBidSubmitSSO = async (event) => {
       expiryTime: bidExpiryTime,
     };
 
-    console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
-    console.log("Bid data: ", bidData);
+    //console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
+    //console.log("Bid data: ", bidData);
 
     axios.post(`/${versionB}/auction/bid`, bidData).then(
       (response) => {
@@ -978,11 +978,11 @@ let giveAuctionErc20Approval = async () => {
 
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
-    console.log("nftdetails props", location.state);
+    //console.log("nftdetails props", location.state);
     setNftData(location.state.nftDetails);
     setNftBlockChainId(location.state.nftDetails.nftId);
     setNftProperties(Object.entries(location.state.nftDetails.properties));
-    console.log("properties", location.state.nftDetails.properties );
+    //console.log("properties", location.state.nftDetails.properties );
 
 
     // getDropCloneAddress();
@@ -997,11 +997,11 @@ let giveAuctionErc20Approval = async () => {
   }, []);
 
   if (theDrop !== undefined) {
-    console.log("bidding response: ... ", theDrop);
+    //console.log("bidding response: ... ", theDrop);
   }
 
   if (nftData !== undefined) {
-    console.log(nftData, " /// nftData")
+   // console.log(nftData, " /// nftData")
   }
 
   // jsx

@@ -177,10 +177,10 @@ const PublishDropModal = (props) => {
   useEffect(() => {
     clearTimeout();
     if (props.open === true) {
-      console.log("tx-summary", props.dropData);
-      console.log("cost info", props.cost);
+     // console.log("tx-summary", props.dropData);
+     // console.log("cost info", props.cost);
     }
-    console.log("Props : ", props);
+    //console.log("Props : ", props);
     // getTxSummary(props.dropId);
   }, [props]);
 

@@ -172,7 +172,7 @@ let data = {
   },
 };
 
-console.log("json: ", data);
+//console.log("json: ", data);
 
 //   COMPONENT FUNCTION
 const BuyTxModal = (props) => {
@@ -199,7 +199,7 @@ const BuyTxModal = (props) => {
     
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
-        console.log("response", response);
+        //console.log("response", response);
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
         data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
         data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
@@ -231,7 +231,7 @@ const BuyTxModal = (props) => {
 
   useEffect(() => {
     clearTimeout();
-    console.log("Props : ", props);
+    //console.log("Props : ", props);
     // getTxSummary(props.dropId);
   }, []);
 

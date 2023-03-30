@@ -172,7 +172,7 @@ let data = {
   },
 };
 
-console.log("json: ", data);
+//console.log("json: ", data);
 
 //   COMPONENT FUNCTION
 const AcceptBidTxModal = (props) => {
@@ -231,7 +231,7 @@ const AcceptBidTxModal = (props) => {
 
   useEffect(() => {
     clearTimeout();
-    console.log("Props : ", props);
+  //  console.log("Props : ", props);
     // getTxSummary(props.dropId);
   }, []);
 

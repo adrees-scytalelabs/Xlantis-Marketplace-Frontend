@@ -149,10 +149,10 @@ function DropApproval(props) {
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+   // console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+   // console.log("Start", newPage * rowsPerPage);
+   // console.log("End", newPage * rowsPerPage + rowsPerPage);
     getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -229,7 +229,7 @@ function DropApproval(props) {
 
           axios.put(`/collection/approve`, approvalData).then(
             (response) => {
-              console.log("Response from Auction approval: ", response);
+             // console.log("Response from Auction approval: ", response);
               setIsAuctionApproved(true);
               setApprovingAuction(false);
             },
@@ -244,8 +244,8 @@ function DropApproval(props) {
   };
 
   let giveFixedPriceApproval = async (i) => {
-    console.log(i);
-    console.log("Contract Type", i.contractType);
+   // console.log(i);
+   // console.log("Contract Type", i.contractType);
     try {
       await loadWeb3();
       const web3 = window.web3;
@@ -304,10 +304,10 @@ function DropApproval(props) {
 
             axios.put(`/collection/approve`, approvalData).then(
               (response) => {
-                console.log(
-                  "Response from approval of Fixed Price: ",
-                  response
-                );
+                // console.log(
+                //   "Response from approval of Fixed Price: ",
+                //   response
+                // );
                 let variant = "success";
                 enqueueSnackbar(
                   "Collection Approved For Fixed Price Successfully",
@@ -336,7 +336,7 @@ function DropApproval(props) {
 
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
-    console.log("version", version);
+   // console.log("version", version);
     // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
     //     "Authorization"
     // )}`;
@@ -344,7 +344,7 @@ function DropApproval(props) {
     axios
       .get(`/collection/myCollections/${start}/${end}`)
       .then((response) => {
-        console.log("response.data", response.data);
+      //  console.log("response.data", response.data);
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
         setOpen(false);

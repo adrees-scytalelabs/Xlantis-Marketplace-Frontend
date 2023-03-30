@@ -355,14 +355,14 @@ const DropSingleNFT = (props) => {
     // getNftDetail();
     // console.log("hehe",location.state.nftDetail);
     setNftDetail(location.state.nftDetail);
-    console.log("NFT detail: ", location.state.nftDetail);
+  //  console.log("NFT detail: ", location.state.nftDetail);
     setContractType(location.state.nftDetail.collectionId.contractType);
     setKeys(Object.keys(location.state.nftDetail.properties));
     setProperties(location.state.nftDetail.properties);
     if (location.state.saleType === "auction") {
       getBidList(location.state.nftDetail._id);
     }
-    console.log("saleType", location.state.saleType);
+//    console.log("saleType", location.state.saleType);
 
     props.setActiveTab({
       dashboard: "",

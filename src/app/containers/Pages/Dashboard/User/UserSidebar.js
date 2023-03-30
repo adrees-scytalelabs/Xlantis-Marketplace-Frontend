@@ -8,7 +8,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 
 import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 function AdminSidebar(props) {
-  console.log(props);
+  //console.log(props);
   let history = useHistory();
   let handleLogout = (e) => {
     sessionStorage.clear();

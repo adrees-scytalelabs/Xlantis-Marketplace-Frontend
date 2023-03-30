@@ -159,7 +159,7 @@ const TrendingAndTop = (props) => {
   if (props.fixedPriceDrop) {
     for (let i = 0; i < props.fixedPriceDrop.length; i++) {
       if (props.fixedPriceDrop[i].status === "active") {
-        console.log(`index ${props.fixedPriceDrop[i].status}`);
+       // console.log(`index ${props.fixedPriceDrop[i].status}`);
         activeFixedDrop = [...activeFixedDrop, props.fixedPriceDrop[i]];
       } else if (props.fixedPriceDrop[i].status === "pending") {
         pendingFixedDrop = [...pendingFixedDrop, props.fixedPriceDrop[i]];
@@ -194,7 +194,7 @@ const TrendingAndTop = (props) => {
     getWindowWidth();
 
     const container = ref.current;
-    console.log("container: ", container);
+    //console.log("container: ", container);
     setCntWidth(container);
 
     return () => {

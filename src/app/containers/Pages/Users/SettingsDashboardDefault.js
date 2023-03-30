@@ -119,11 +119,11 @@ function SettingDashboardDefault(props) {
       bannerURL: bannerImage,
     };
 
-    console.log("data", data);
+    //console.log("data", data);
 
     axios.put(`/${Cookies.get("Version")}/user/profile`, data).then(
       (response) => {
-        console.log("profile update response: ", response);
+        //console.log("profile update response: ", response);
         let variant = "success";
         enqueueSnackbar("Profile Updated Succesfully", { variant });
         setIsUploadingData(false);
@@ -179,12 +179,12 @@ function SettingDashboardDefault(props) {
 
   let getProfile = () => {
     let version = Cookies.get("Version");
-    console.log("Version: ", version);
-    console.log("UserId:", sessionStorage.getItem("Authorization"));
+   // console.log("Version: ", version);
+    //console.log("UserId:", sessionStorage.getItem("Authorization"));
     axios
       .get(`${version}/user/profile`)
       .then((response) => {
-        console.log("Response from getting user: ", response);
+      //  console.log("Response from getting user: ", response);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -201,7 +201,7 @@ function SettingDashboardDefault(props) {
   const getAdminProfile = async () => {
     await axios.get(`/v1-sso/user/admin/profile`).then(
       (response) => {
-        console.log("Response from getting admin profile", response);
+        //console.log("Response from getting admin profile", response);
         setAdminOldData(response.data.userData);
         setProfileImage(response.data.userData.imageURL);
         response.data.userData.bannerURL &&
@@ -248,7 +248,7 @@ function SettingDashboardDefault(props) {
     };
     await axios.put(`/v1-sso/user/admin/update-info`, data).then(
       (response) => {
-        console.log("Response from updating admin data: ", response);
+        //console.log("Response from updating admin data: ", response);
         setShowConfirmationModal(false);
         let variant = "success";
         enqueueSnackbar("Data updated successfully", { variant });
@@ -272,12 +272,12 @@ function SettingDashboardDefault(props) {
         imageCounter,
         0
       );
-      console.log("Done: ", { croppedImage });
+     // console.log("Done: ", { croppedImage });
       let formData = new FormData();
       formData.append("image", croppedImage);
       await axios.post("/upload/image/", formData).then(
         (response) => {
-          console.log("Response from uploading Image", response);
+         // console.log("Response from uploading Image", response);
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
             setIsUploadingBannerIPFS(false);

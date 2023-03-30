@@ -109,9 +109,9 @@ function HeaderHome(props) {
     setOpen(true);
   };
   useEffect(() => {
-    // setSocket(io("https://raindrop-backend.herokuapp.com/"));
-    setSocket(io("http://localhost:3002"));
-    console.log("socket was set");
+     setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    //setSocket(io("http://localhost:3002"));
+    //console.log("socket was set");
   }, []);
   useEffect(() => {
     if (userId !== "" && socket !== null) {
@@ -258,7 +258,7 @@ function HeaderHome(props) {
     
     axios.get(`/notifications/${start}/${end}`).then(
       (response) => {
-        console.log("notification response", response);
+        //console.log("notification response", response);
         setNotificationsList(response.data.notifications);
         setNotificationCount(response.data.notifications.length);
 
@@ -326,9 +326,9 @@ function HeaderHome(props) {
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
 
-    console.log(network);
-    console.log("role", props.role);
-    console.log("Account test: ", accounts[0], network);
+//    console.log(network);
+ //   console.log("role", props.role);
+   // console.log("Account test: ", accounts[0], network);
 
     if (network !== "private") {
       setNetwork(network);
@@ -551,13 +551,13 @@ function HeaderHome(props) {
     if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
-      console.log("userLogin", userLogin);
-      console.log("version", version);
-      console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
+      //console.log("userLogin", userLogin);
+      //console.log("version", version);
+      //console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
-          console.log("profile data image:", response.data.userData.imageURL);
+          //console.log("profile data image:", response.data.userData.imageURL);
           response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
         })
         .catch((error) => {
@@ -572,7 +572,7 @@ function HeaderHome(props) {
   useEffect(() => {
     getProfile();
     getNotifications(0,10);
-    console.log("In Hook");
+   // console.log("In Hook");
   },[]);
 
   return (

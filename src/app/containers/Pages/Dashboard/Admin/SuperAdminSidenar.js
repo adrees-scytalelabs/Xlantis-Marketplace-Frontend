@@ -82,7 +82,7 @@ function SuperAdminSidebar(props) {
     } if (props.activeTab.template === "" && props.activeTab.saved === "") {
       setPropertiesStyle("dropdown-container3");
     }
-    console.log("Active Tab", props.activeTab);
+    //console.log("Active Tab", props.activeTab);
     // eslint-disable-next-line
   },[props.activeTab]);
 
