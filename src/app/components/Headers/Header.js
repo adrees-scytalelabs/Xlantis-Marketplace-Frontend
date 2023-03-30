@@ -951,7 +951,8 @@ function HeaderHome(props) {
           </li>
           <li className="header-item-rht">
             <ShoppingCartIcon
-              onClick={handleOpenCart}
+              // onClick={handleOpenCart}
+              onClick={() => setWorkProgressModalShow(true)}        
               style={{ cursor: "pointer" }}
             />
           </li>

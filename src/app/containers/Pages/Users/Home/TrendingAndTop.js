@@ -367,7 +367,8 @@ const TrendingAndTop = (props) => {
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No Drops On Auction</strong>
+                        {/* <strong>No Drops On Auction</strong> */}
+                        <strong>This feature is coming soon</strong>
                       </Typography>
                     </Card>
                   ) : (
