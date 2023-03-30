@@ -34,7 +34,7 @@ function UserSettings(props) {
         
       });
       const [updateProfile,setUpdateProfile]=useState("");
-    console.log("hello");
+    //console.log("hello");
     return(
         <div className="main-wrapper">
         <div className="home-section home-full-height">

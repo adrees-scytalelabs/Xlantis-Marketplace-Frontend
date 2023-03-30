@@ -100,7 +100,7 @@ function TopUp(props) {
     };
     axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
-        console.log("response of top up amount", response);
+        //console.log("response of top up amount", response);
         window.location.replace(response.data.sessionUrl);
         // let variant = "success";
         // enqueueSnackbar("Balance Updated", { variant });

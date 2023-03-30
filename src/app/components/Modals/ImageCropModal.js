@@ -5,7 +5,7 @@ import Cropper from "react-easy-crop";
 
 const ImageCropModal = (props) => {
   useEffect(() => {
-    console.log("Props are: ", props);
+    //console.log("Props are: ", props);
   }, [props.aspect]);
   return (
     <Modal

@@ -11,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
 function AdminInformationModal(props) {
   const classes = useStyles();
   useEffect(() => {
-    console.log(props.adminData);
-    console.log("Reach Template Data", props);
+    //console.log(props.adminData);
+    //console.log("Reach Template Data", props);
   }, [props]);
   return (
     props.show == true && (

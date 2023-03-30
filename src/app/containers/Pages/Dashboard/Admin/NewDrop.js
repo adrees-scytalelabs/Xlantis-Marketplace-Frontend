@@ -526,14 +526,14 @@ function NewDrop(props) {
   };
 
   let onChangeBannerFile = async (e) => {
-    console.log("In banner change function: ", e.target.files[0]);
+    //console.log("In banner change function: ", e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       setIsUploadingBanner(true);
       const reader = new window.FileReader();
       let imageNFT = e.target.files[0];
       setImageType(e.target.files[0].type.split("/")[1]);
-      console.log("e.target.files[0]", e.target.files[0]);
+    //  console.log("e.target.files[0]", e.target.files[0]);
       // console.log("Image type: ", imageType);
       reader.readAsArrayBuffer(e.target.files[0]);
       // reader.onloadend = () => {
@@ -561,7 +561,7 @@ function NewDrop(props) {
       fileData.append("image", imageNFT);
       axios.post(`/upload/image`, fileData).then(
         (response) => {
-          console.log("response", response);
+         // console.log("response", response);
           setBannerImage(response.data.url);
           setIsUploadingBanner(false);
           let variant = "success";
@@ -581,12 +581,12 @@ function NewDrop(props) {
   };
 
   let onChangeFile = (e) => {
-    console.log("In change file function");
+   // console.log("In change file function");
     setIsUploadingIPFS(true);
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
     setImageType(e.target.files[0].type.split("/")[1]);
-    console.log("e.target.files[0]", e.target.files[0]);
+   // console.log("e.target.files[0]", e.target.files[0]);
     // console.log("Image type: ", imageType);
     reader.readAsArrayBuffer(e.target.files[0]);
     // reader.onloadend = () => {
@@ -614,7 +614,7 @@ function NewDrop(props) {
     fileData.append("image", imageNFT);
     axios.post(`/upload/image`, fileData).then(
       (response) => {
-        console.log("response", response);
+       // console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";

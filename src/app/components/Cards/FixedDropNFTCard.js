@@ -108,11 +108,11 @@ const defaultStyles = {
 
 // COMPONENT FUNCTION
 function FixedDropNFTCard(props) {
-  console.log("props nftCrad", props);
+  //console.log("props nftCrad", props);
   const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
-  console.log("NFT id for fixed drop: ", singleNFTid);
+  //console.log("NFT id for fixed drop: ", singleNFTid);
 
   // Styling
   const selectedRarity = {

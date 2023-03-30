@@ -321,30 +321,30 @@ function MyNFTs(props) {
 
   let getNFTs = (start, end) => {
     handleShowBackdrop();
-    console.log("nftids", location.state.nftId);
-    console.log("dropId", location.state.dropId);
+   // console.log("nftids", location.state.nftId);
+   // console.log("dropId", location.state.dropId);
 
-    console.log("len", location.state.nftId.length);
+   // console.log("len", location.state.nftId.length);
 
     let data = {
       nftIds: location.state.nftId,
     };
     const version = Cookies.get("Version");
-    console.log("version", version);
+  //  console.log("version", version);
 
     if (nftIdLen != 0) {
       axios
         .get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data)
         .then(
           (response) => {
-            console.log("response", response.data.data);
+         //   console.log("response", response.data.data);
 
             let nfts = response.data.data;
             let newState = nfts.map((obj) => {
               return { ...obj, isPlaying: false };
             });
-            console.log("NFTS", nfts);
-            console.log("Updated", newState);
+            // console.log("NFTS", nfts);
+            // console.log("Updated", newState);
             setTokenList(newState);
             // setTokenList(tokenList.map())
             // setTokenList(...tokenList, isPlaying : false);
@@ -382,7 +382,7 @@ function MyNFTs(props) {
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
-    console.log("width", window.innerWidth);
+   // console.log("width", window.innerWidth);
     // getCollections();?
 
     props.setActiveTab({

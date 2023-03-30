@@ -16,10 +16,10 @@ function TemplateDetails(props) {
     }));
   };
   let handlePropertyChange = (index, event) => {
-    console.log(properties, " /// properties");
+   // console.log(properties, " /// properties");
     let data = [...properties];
-    console.log("the datat change: ", event.target);
-    console.log("the data index /// ", data[index][event.target.name]);
+   // console.log("the datat change: ", event.target);
+    //console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
     props.setTemplateData((existingValues) => ({
@@ -33,8 +33,8 @@ function TemplateDetails(props) {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
     setProperties([...properties, newData]);
-    console.log("Add button pressed.");
-    console.log("Properties: ", properties);
+  //  console.log("Add button pressed.");
+   // console.log("Properties: ", properties);
   };
   let handleRemoveProperty = (e, index) => {
     e.preventDefault();
@@ -49,13 +49,13 @@ function TemplateDetails(props) {
     }));
   };
   useEffect(() => {
-    console.log(props);
+    //console.log(props);
     if (props.show === true) {
-      console.log(props.templateData);
+      //console.log(props.templateData);
       setTitle(props.templateData.name);
       setProperties(props.templateData.properties);
     }
-    console.log("Reach Template Data", props);
+   // console.log("Reach Template Data", props);
   }, [props]);
   return (
     props.show == true && (
