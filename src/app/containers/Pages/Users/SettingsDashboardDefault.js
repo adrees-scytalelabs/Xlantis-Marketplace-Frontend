@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { isUndefined } from "lodash";
 import { useSnackbar } from "notistack";
 import { Spinner } from "react-bootstrap";
-// import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
+import r1 from "../../../assets/img/patients/patient.jpg";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
@@ -87,9 +87,7 @@ function SettingDashboardDefault(props) {
   let [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(
-    "http://www.mub.eps.manchester.ac.uk/graphene/wp-content/themes/uom-theme/assets/images/default-banner.jpg"
-  );
+  let [bannerImage, setBannerImage] = useState(r1);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -206,7 +204,8 @@ function SettingDashboardDefault(props) {
         console.log("Response from getting admin profile", response);
         setAdminOldData(response.data.userData);
         setProfileImage(response.data.userData.imageURL);
-        setBannerImage(response.data.userData.bannerURL);
+        response.data.userData.bannerURL &&
+          setBannerImage(response.data.userData.bannerURL);
         setAdminCompanyName(response.data.userData.companyName);
         setAdminDesignation(response.data.userData.designation);
         setAdminDomain(response.data.userData.domain);
