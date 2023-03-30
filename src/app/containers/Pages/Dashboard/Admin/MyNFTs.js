@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
@@ -87,7 +88,7 @@ function MyNFTs(props) {
     handleShowBackdrop();
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`/${version}/nft/myNFTs/${start}/${end}`).then(
+    axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         let nfts = response.data.NFTdata;
@@ -171,10 +172,12 @@ function MyNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
-              <li className="breadcrumb-item active">My NFTs</li>
+            </Link>
+              <li className="breadcrumb-item active">NFTs</li>
             </ul>
           </div>
         </div>
@@ -213,7 +216,7 @@ function MyNFTs(props) {
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
-                  <NFTCard data={i} image={nftImage[index]} />
+                  <NFTCard data={i}/>
                 </Grid>
               ))}
             </Grid>

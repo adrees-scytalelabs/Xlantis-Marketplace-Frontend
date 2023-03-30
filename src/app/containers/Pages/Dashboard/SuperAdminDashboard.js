@@ -20,6 +20,9 @@ import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
 
 import transakSDK from "@transak/transak-sdk";
 import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
+import TemplateProperties from "./Admin/TemplateProperties";
+import CreateTemplate from "./Admin/CreateTemplate";
+import SavedTemplate from "./Admin/SavedTemplate";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -57,6 +60,9 @@ function SuperAdminDashboard(props) {
     manageAccountsSSO: "",
     accountApproval: "",
     accounts: "",
+    properties:"",
+    template:"",
+    saved:"",
   });
   let [tab, setTab] = useState(0);
 
@@ -182,7 +188,7 @@ function SuperAdminDashboard(props) {
                     Dashboard
                   </Link>
                 </Dropdown.Item>
-                <Dropdown.Item>
+                {/* <Dropdown.Item>
                   <span
                     style={{ color: "white" }}
                     onClick={openTransak}
@@ -190,7 +196,7 @@ function SuperAdminDashboard(props) {
                   >
                     Buy Crypto
                   </span>
-                </Dropdown.Item>
+                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
@@ -276,7 +282,29 @@ function SuperAdminDashboard(props) {
             <Route exact path={`${path}/accounts`}>
               <Accounts setActiveTab={setActiveTab} tab={tab} setTab={setTab} />
             </Route>
-
+            <Route exact path={`${path}/properties`}>
+              <TemplateProperties
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
+            </Route>
+            <Route exact path={`${path}/properties/createTemplate`}>
+              {console.log(setActiveTab)}
+              <CreateTemplate
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
+            </Route>
+            <Route exact path={`${path}/properties/savedTemplate`}>
+              {console.log(setActiveTab)}
+              <SavedTemplate
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />
+            </Route>
             <Route path={`${path}`}>
               <SuperAdminDashboardDefaultScreen
                 match={props.match}

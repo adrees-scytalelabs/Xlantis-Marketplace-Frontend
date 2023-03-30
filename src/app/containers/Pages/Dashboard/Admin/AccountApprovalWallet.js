@@ -10,6 +10,7 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory } from "react-router-dom";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import Table from "react-bootstrap/Table";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +19,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -97,11 +101,21 @@ function AccountApprovalWallet(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
+  const [modalData, setModalData] = useState();
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -119,8 +133,11 @@ function AccountApprovalWallet(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -144,9 +161,7 @@ function AccountApprovalWallet(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.unverifiedAdmins);
@@ -181,7 +196,7 @@ function AccountApprovalWallet(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -225,6 +240,11 @@ function AccountApprovalWallet(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
+                    Details
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Approval Status
                   </div>
@@ -235,16 +255,25 @@ function AccountApprovalWallet(props) {
               {walletAdmins.map((i, index) => (
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
-                 
+
                   <td className={classes.collectionTitle}>
                     <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={1500}
                       title={i.walletAddress}
-                      
+                      arrow
                     >
-                      <span>{i.walletAddress.slice(0, 6)}...</span>
+                      <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
                     </Tooltip>
                   </td>
-                 
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isVerified ? (
@@ -303,6 +332,11 @@ function AccountApprovalWallet(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

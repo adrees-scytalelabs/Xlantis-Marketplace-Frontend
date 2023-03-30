@@ -14,6 +14,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 // import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import Tooltip from "@material-ui/core/Tooltip";
+import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 // import { Scrollbars } from 'react-custom-scrollbars';
@@ -33,6 +35,9 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import Cookies from "js-cookie";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,6 +72,9 @@ const useStyles = makeStyles((theme) => ({
   },
   pos: {
     marginBottom: 12,
+  },
+  tooltip: {
+    fontSize: "16px",
   },
 }));
 
@@ -114,8 +122,17 @@ function NewCollection(props) {
   let [isAuctionApproved, setIsAuctionApproved] = useState(false);
   let [approvingAuction, setApprovingAuction] = useState(false);
   let [doneLoader, setDoneLoader] = useState(false);
-  let [nftType, setNftType] = useState("ERC721");
+  let [nftType, setNftType] = useState("1155");
   let [version, setVersion] = useState("");
+  let [royaltyFee, setRoyaltyFee] = useState(0);
+  let [approvalFlag, setApprovalFlag] = useState(false);
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const Text721 =
+    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 =
+    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const RoyaltyFeeText =
+    "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
@@ -161,9 +178,9 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    setIsSaving(true);
+    if (royaltyFee > 0) {
+      setIsSaving(true);
 
-    
       handleShowBackdrop();
       let collectionID;
 
@@ -172,25 +189,31 @@ function NewCollection(props) {
       fileData.append("name", collectionName);
       fileData.append("symbol", collectionSymbol);
       fileData.append("description", collectionDescription);
-      fileData.append("royaltyFee", 1);
+      fileData.append("royaltyFee", royaltyFee);
+      fileData.append("contractType", nftType);
 
-    
+      let royaltyBlockchain = royaltyFee * 10000;
 
-      if (nftType === "ERC1155") {
-        axios.post(`/${version}/collection/`, fileData).then(
+      if (nftType === "1155") {
+        axios.post(`/collection/`, fileData).then(
           async (response) => {
             console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
-  
+
             let variant = "success";
-            enqueueSnackbar('New Collection Created Successfully.', { variant });
-            handleCloseBackdrop();
+            enqueueSnackbar("New Collection Created Successfully.", {
+              variant,
+            });
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");
             setFileURL(r1);
+            setRoyaltyFee(0);
             setIsSaving(false);
+            handleCloseBackdrop();
+            //setApprovalModalShow(true);
+            
             // setCollectionName("");
             // setCollectionSymbol("");
             // setCollectionDescription("");
@@ -202,7 +225,7 @@ function NewCollection(props) {
               console.log(error);
               console.log(error.response);
             }
-  
+
             let variant = "error";
             enqueueSnackbar("Unable to Create New Collection.", { variant });
             handleCloseBackdrop();
@@ -211,9 +234,9 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setIsSaving(false);
-          })
-      }
-      else if(nftType === "ERC721") {
+          }
+        );
+      } else if (nftType === "721") {
         await loadWeb3();
         const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
@@ -223,7 +246,7 @@ function NewCollection(props) {
           setIsSaving(false);
           handleShow();
         } else {
-          axios.post(`${version}/collection/`, fileData).then(
+          axios.post(`/collection/`, fileData).then(
             async (response) => {
               console.log("collection creation response", response);
               setCollectionId(response.data.collection._id);
@@ -234,16 +257,19 @@ function NewCollection(props) {
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
               var cloneContractAddress;
-              var myContractInstance = await new web3.eth.Contract(abi, address);
+              var myContractInstance = await new web3.eth.Contract(
+                abi,
+                address
+              );
               console.log("ERC721 Contract", myContractInstance);
               await myContractInstance.methods
-                .createNFT721(CloneId, 250000)
+                .createNFT721(CloneId, royaltyBlockchain)
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
                   // console.log("Collection ID: ", collectionId);
                   axios
-                    .put(`${version}/collection/txHash/${collectionID}`, {
+                    .put(`/collection/txHash/${collectionID}`, {
                       txHash: response,
                     })
                     .then(
@@ -254,7 +280,10 @@ function NewCollection(props) {
                         );
                       },
                       (error) => {
-                        console.log("Transaction hash on backend error: ", error);
+                        console.log(
+                          "Transaction hash on backend error: ",
+                          error
+                        );
                       }
                     );
                   if (err !== null) {
@@ -287,233 +316,270 @@ function NewCollection(props) {
                 console.log(error);
                 console.log(error.response);
               }
-    
+
               let variant = "error";
               enqueueSnackbar("Unable to Create New Collection.", { variant });
               handleCloseBackdrop();
               setIsSaving(false);
-            })
-          }
+            }
+          );
+        }
       }
-      
+    } else {
+      let variant = "error";
+      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+    }
+
     // }
   };
 
   const handleSubmitEventMetamask = async (event) => {
     event.preventDefault();
-    setIsSaving(true);
+    if (royaltyFee > 0) {
+      setIsSaving(true);
 
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShow();
+      await loadWeb3();
+      const web3 = window.web3;
+      const accounts = await web3.eth.getAccounts();
+      const network = await web3.eth.net.getNetworkType();
+      if (network !== "private") {
+        setNetwork(network);
+        setIsSaving(false);
+        handleShow();
+      } else {
+        handleShowBackdrop();
+        let collectionID;
+
+        let fileData = new FormData();
+        fileData.append("thumbnail", imageFile);
+        fileData.append("name", collectionName);
+        fileData.append("symbol", collectionSymbol);
+        fileData.append("description", collectionDescription);
+        fileData.append("royaltyFee", royaltyFee);
+
+        let royaltyBlockchain = royaltyFee * 10000;
+
+        axios.post(`/collection/`, fileData).then(
+          async (response) => {
+            console.log("collection creation response", response);
+            setCollectionId(response.data.collection._id);
+            collectionID = response.data.collection._id;
+
+            setIsSaving(false);
+            let CloneId = getHash(collectionID);
+            if (nftType === "1155") {
+              console.log("ERC1155 COLLECTION CREATION");
+              const abi = Factory1155Contract;
+              const address = Addresses.Factory1155Address;
+              var cloneContractAddress;
+              var myContractInstance = await new web3.eth.Contract(
+                abi,
+                address
+              );
+              console.log("ERC1155 Contract", myContractInstance);
+              await myContractInstance.methods
+                .createNFT1155(CloneId, true, royaltyBlockchain)
+                .send({ from: accounts[0] }, (err, response) => {
+                  console.log("Get transaction ", err, response);
+                  console.log(typeof response);
+                  // console.log("Collection ID: ", collectionId);
+                  let variant = "success";
+                  enqueueSnackbar(
+                    "Sending transaction on blockchain to deploy a collection (1155)",
+                    {
+                      variant,
+                    }
+                  );
+                  axios
+                    .put(`/collection/txHash/${collectionID}`, {
+                      txHash: response,
+                    })
+                    .then(
+                      (response) => {
+                        console.log(
+                          "Transaction Hash sending on backend response: ",
+                          response
+                        );
+                      },
+                      (error) => {
+                        console.log(
+                          "Transaction hash on backend error: ",
+                          error
+                        );
+                      }
+                    );
+                  if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+                  }
+                })
+                .on("receipt", (receipt) => {
+                  console.log("receipt", receipt);
+                  cloneContractAddress =
+                    receipt.events.CloneCreated.returnValues.cloneAddress;
+                  let variant = "success";
+                  enqueueSnackbar("New Collection Created Successfully.", {
+                    variant,
+                  });
+                  setApprovalModalShow(true);
+                  setNftContractAddress(cloneContractAddress);
+                  setCollectionName("");
+                  setCollectionSymbol("");
+                  setCollectionDescription("");
+                  setFileURL(r1);
+                  handleCloseBackdrop();
+                });
+            } else if (nftType === "721") {
+              console.log("ERC721 COLLECTION CREATION");
+              const abi = Factory721Contract;
+              const address = Addresses.Factory721Address;
+              var cloneContractAddress;
+              var myContractInstance = await new web3.eth.Contract(
+                abi,
+                address
+              );
+              console.log("ERC721 Contract", myContractInstance);
+              await myContractInstance.methods
+                .createNFT721(CloneId, royaltyBlockchain)
+                .send({ from: accounts[0] }, (err, response) => {
+                  console.log("Get transaction ", err, response);
+                  console.log(typeof response);
+                  let variant = "success";
+                  enqueueSnackbar(
+                    "Sending transaction on blockchain to deploy a collection (ERC721)",
+                    {
+                      variant,
+                    }
+                  );
+                  // console.log("Collection ID: ", collectionId);
+                  axios
+                    .put(`/collection/txHash/${collectionID}`, {
+                      txHash: response,
+                    })
+                    .then(
+                      (response) => {
+                        console.log(
+                          "Transaction Hash sending on backend response: ",
+                          response
+                        );
+                      },
+                      (error) => {
+                        console.log(
+                          "Transaction hash on backend error: ",
+                          error
+                        );
+                      }
+                    );
+                  if (err !== null) {
+                    console.log("err", err);
+                    let variant = "error";
+                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    handleCloseBackdrop();
+                    setIsSaving(false);
+                  }
+                })
+                .on("receipt", (receipt) => {
+                  console.log("receipt", receipt);
+                  cloneContractAddress =
+                    receipt.events.CloneCreated.returnValues.cloneAddress;
+                  let variant = "success";
+                  enqueueSnackbar("New Collection Created Successfully.", {
+                    variant,
+                  });
+                  setApprovalModalShow(true);
+                  setNftContractAddress(cloneContractAddress);
+                  setCollectionName("");
+                  setCollectionSymbol("");
+                  setCollectionDescription("");
+                  setFileURL(r1);
+                  handleCloseBackdrop();
+                });
+            }
+          },
+          (error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+
+            let variant = "error";
+            enqueueSnackbar("Unable to Create New Collection.", { variant });
+            handleCloseBackdrop();
+            setIsSaving(false);
+          }
+        );
+
+        // const address = Addresses.CreateNftAddress;
+        // const abi = CreateNFTContract;
+        // let totalImages = tokenList.length;
+        // let AmountofNFTs = [];
+        // let IPFsHashes = [];
+        // for (let i = 0; i < tokenList.length; i++) {
+        //     AmountofNFTs.push(tokenList[i].tokensupply);
+        //     IPFsHashes.push(tokenList[i].ipfsHash);
+        // }
+        // console.log("AmountofNFTs", AmountofNFTs);
+        // console.log("IPFsHashes", IPFsHashes);
+
+        // var myContractInstance = await new web3.eth.Contract(abi, address);
+        // console.log("myContractInstance", myContractInstance);
+        // await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
+        //     console.log('get transaction', err, response);
+        //     if (err !== null) {
+        //         console.log("err", err);
+        //         let variant = "error";
+        //         enqueueSnackbar('User Canceled Transaction', { variant });
+        //         handleCloseBackdrop();
+        //         setIsSaving(false);
+        //     }
+        // })
+        //     .on('receipt', (receipt) => {
+        //         console.log("receipt", receipt);
+        //         console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
+        //         let ids = receipt.events.TransferBatch.returnValues.ids;
+        //         for (let i = 0; i < tokenList.length; i++) {
+        //             tokenList[i].nftId = ids[i];
+        //         }
+
+        //         let Data = {
+        //             nftdata: tokenList
+        //         }
+        //         console.log("Data", Data);
+        //         axios.post("/nft/createnft", Data).then(
+        //             (response) => {
+        //                 console.log("response", response);
+        //                 let variant = "success";
+        //                 enqueueSnackbar('Nfts Created Successfully.', { variant });
+        //                 setTokenList([]);
+        //                 setIpfsHash("");
+        //                 setImage(r1);
+        //                 setCollectionName("");
+        //                 setCollectionDescription("");
+        //                 setAboutTheArt("");
+        //                 setWebsite("");
+        //                 handleCloseBackdrop();
+        //                 setIsSaving(false);
+        //             },
+        //             (error) => {
+        //                 if (process.env.NODE_ENV === "development") {
+        //                     console.log(error);
+        //                     console.log(error.response);
+        //                 }
+
+        //                 let variant = "error";
+        //                 enqueueSnackbar('Unable to Create Nfts.', { variant });
+
+        //                 handleCloseBackdrop();
+        //                 setIsSaving(false);
+        //             })
+        //     })
+      }
     } else {
-      handleShowBackdrop();
-      let collectionID;
-
-      let fileData = new FormData();
-      fileData.append("thumbnail", imageFile);
-      fileData.append("name", collectionName);
-      fileData.append("symbol", collectionSymbol);
-      fileData.append("description", collectionDescription);
-
-      
-
-      axios.post(`/${version}/collection/`, fileData).then(
-        async (response) => {
-          console.log("collection creation response", response);
-          setCollectionId(response.data.collection._id);
-          collectionID = response.data.collection._id;
-
-          setIsSaving(false);
-          let CloneId = getHash(collectionID);
-          if (nftType === "ERC1155") {
-            console.log("ERC1155 COLLECTION CREATION");
-            const abi = Factory1155Contract;
-            const address = Addresses.Factory1155Address;
-            var cloneContractAddress;
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            console.log("ERC1155 Contract", myContractInstance);
-            await myContractInstance.methods
-              .createNFT1155(CloneId, true, 250000)
-              .send({ from: accounts[0] }, (err, response) => {
-                console.log("Get transaction ", err, response);
-                console.log(typeof response);
-                // console.log("Collection ID: ", collectionId);
-                axios
-                  .put(`/${version}/collection/txHash/${collectionID}`, {
-                    txHash: response,
-                  })
-                  .then(
-                    (response) => {
-                      console.log(
-                        "Transaction Hash sending on backend response: ",
-                        response
-                      );
-                    },
-                    (error) => {
-                      console.log("Transaction hash on backend error: ", error);
-                    }
-                  );
-                if (err !== null) {
-                  console.log("err", err);
-                  let variant = "error";
-                  enqueueSnackbar("User Canceled Transaction", { variant });
-                  handleCloseBackdrop();
-                  setIsSaving(false);
-                }
-              })
-              .on("receipt", (receipt) => {
-                console.log("receipt", receipt);
-                cloneContractAddress =
-                  receipt.events.CloneCreated.returnValues.cloneAddress;
-                let variant = "success";
-                enqueueSnackbar("New Collection Created Successfully.", {
-                  variant,
-                });
-                setApprovalModalShow(true);
-                setNftContractAddress(cloneContractAddress);
-                setCollectionName("");
-                setCollectionSymbol("");
-                setCollectionDescription("");
-                setFileURL(r1);
-                handleCloseBackdrop();
-              });
-          } else if (nftType === "ERC721") {
-            console.log("ERC721 COLLECTION CREATION");
-            const abi = Factory721Contract;
-            const address = Addresses.Factory721Address;
-            var cloneContractAddress;
-            var myContractInstance = await new web3.eth.Contract(abi, address);
-            console.log("ERC721 Contract", myContractInstance);
-            await myContractInstance.methods
-              .createNFT721(CloneId, 250000)
-              .send({ from: accounts[0] }, (err, response) => {
-                console.log("Get transaction ", err, response);
-                console.log(typeof response);
-                // console.log("Collection ID: ", collectionId);
-                axios
-                  .put(`/${version}/collection/txHash/${collectionID}`, {
-                    txHash: response,
-                  })
-                  .then(
-                    (response) => {
-                      console.log(
-                        "Transaction Hash sending on backend response: ",
-                        response
-                      );
-                    },
-                    (error) => {
-                      console.log("Transaction hash on backend error: ", error);
-                    }
-                  );
-                if (err !== null) {
-                  console.log("err", err);
-                  let variant = "error";
-                  enqueueSnackbar("User Canceled Transaction", { variant });
-                  handleCloseBackdrop();
-                  setIsSaving(false);
-                }
-              })
-              .on("receipt", (receipt) => {
-                console.log("receipt", receipt);
-                cloneContractAddress =
-                  receipt.events.CloneCreated.returnValues.cloneAddress;
-                let variant = "success";
-                enqueueSnackbar("New Collection Created Successfully.", {
-                  variant,
-                });
-                setApprovalModalShow(true);
-                setNftContractAddress(cloneContractAddress);
-                setCollectionName("");
-                setCollectionSymbol("");
-                setCollectionDescription("");
-                setFileURL(r1);
-                handleCloseBackdrop();
-              });
-          }
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-
-          let variant = "error";
-          enqueueSnackbar("Unable to Create New Collection.", { variant });
-          handleCloseBackdrop();
-          setIsSaving(false);
-        }
-      );
-
-      // const address = Addresses.CreateNftAddress;
-      // const abi = CreateNFTContract;
-      // let totalImages = tokenList.length;
-      // let AmountofNFTs = [];
-      // let IPFsHashes = [];
-      // for (let i = 0; i < tokenList.length; i++) {
-      //     AmountofNFTs.push(tokenList[i].tokensupply);
-      //     IPFsHashes.push(tokenList[i].ipfsHash);
-      // }
-      // console.log("AmountofNFTs", AmountofNFTs);
-      // console.log("IPFsHashes", IPFsHashes);
-
-      // var myContractInstance = await new web3.eth.Contract(abi, address);
-      // console.log("myContractInstance", myContractInstance);
-      // await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
-      //     console.log('get transaction', err, response);
-      //     if (err !== null) {
-      //         console.log("err", err);
-      //         let variant = "error";
-      //         enqueueSnackbar('User Canceled Transaction', { variant });
-      //         handleCloseBackdrop();
-      //         setIsSaving(false);
-      //     }
-      // })
-      //     .on('receipt', (receipt) => {
-      //         console.log("receipt", receipt);
-      //         console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
-      //         let ids = receipt.events.TransferBatch.returnValues.ids;
-      //         for (let i = 0; i < tokenList.length; i++) {
-      //             tokenList[i].nftId = ids[i];
-      //         }
-
-      //         let Data = {
-      //             nftdata: tokenList
-      //         }
-      //         console.log("Data", Data);
-      //         axios.post("/nft/createnft", Data).then(
-      //             (response) => {
-      //                 console.log("response", response);
-      //                 let variant = "success";
-      //                 enqueueSnackbar('Nfts Created Successfully.', { variant });
-      //                 setTokenList([]);
-      //                 setIpfsHash("");
-      //                 setImage(r1);
-      //                 setCollectionName("");
-      //                 setCollectionDescription("");
-      //                 setAboutTheArt("");
-      //                 setWebsite("");
-      //                 handleCloseBackdrop();
-      //                 setIsSaving(false);
-      //             },
-      //             (error) => {
-      //                 if (process.env.NODE_ENV === "development") {
-      //                     console.log(error);
-      //                     console.log(error.response);
-      //                 }
-
-      //                 let variant = "error";
-      //                 enqueueSnackbar('Unable to Create Nfts.', { variant });
-
-      //                 handleCloseBackdrop();
-      //                 setIsSaving(false);
-      //             })
-      //     })
+      let variant = "error";
+      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
     }
   };
 
@@ -524,81 +590,91 @@ function NewCollection(props) {
 
   let handleApprovalModalClose = () => {
     setApprovalModalShow(false);
+    setDoneLoader(false);
+    setIsAuctionApproved(false);
+    setIsFixedPriceApproved(false);
   };
 
   //approval
   let giveFixedPriceApproval = async () => {
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShow();
-    } else {
-      setApprovingFixedPrice(true);
+    // await loadWeb3();
+    // const web3 = window.web3;
+    // const accounts = await web3.eth.getAccounts();
+    // const network = await web3.eth.net.getNetworkType();
+    // if (network !== "private") {
+    //   setNetwork(network);
+    //   setIsSaving(false);
+    //   handleShow();
+    // } else {
+    //   setApprovalFlag(true);
+    //   setApprovingFixedPrice(true);
 
-      const addressNft = nftContractAddress;
-      let addressDropFactory;
-      let abiNft;
-      if (nftType === "ERC1155") {
-        abiNft = CreateNFTContract1155;
-        addressDropFactory = Addresses.FactoryDrop1155;
-      } else if (nftType === "ERC721") {
-        abiNft = CreateNFTContract721;
-        addressDropFactory = Addresses.FactoryDrop721;
+    //   const addressNft = nftContractAddress;
+    //   let addressDropFactory;
+    //   let abiNft;
+    //   if (nftType === "1155") {
+    //     abiNft = CreateNFTContract1155;
+    //     addressDropFactory = Addresses.FactoryDrop1155;
+    //   } else if (nftType === "721") {
+    //     abiNft = CreateNFTContract721;
+    //     addressDropFactory = Addresses.FactoryDrop721;
+    //   }
+
+    //   console.log("Contract Address: ", nftContractAddress);
+    //   var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
+    //   console.log("myContractInstance", myContractInstance);
+
+    //   await myContractInstance.methods
+    //     .setApprovalForAll(addressDropFactory, true)
+    //     .send({ from: accounts[0] }, (err, response) => {
+    //       console.log("get transaction", err, response);
+
+    //       if (err !== null) {
+    //         console.log("err", err);
+    //         let variant = "error";
+    //         enqueueSnackbar("User Canceled Transaction", { variant });
+    //         setApprovingFixedPrice(false);
+    //         handleCloseBackdrop();
+    //         setIsSaving(false);
+    //       }
+    //     })
+    //     .on("receipt", (receipt) => {
+    //       console.log("receipt", receipt);
+
+    //    });
+    //}
+
+    //sending call on backend
+
+    let approvalData = {
+      collectionId: collectionId,
+      factoryType: "fixed-price",
+    };
+
+    axios.put(`/collection/approve`, approvalData).then(
+      (response) => {
+        console.log("Response from approval of Fixed Price: ", response);
+        let variant = "success";
+        enqueueSnackbar(
+          "Collection Approved For Fixed Price Successfully",
+          { variant }
+        );
+        setIsFixedPriceApproved(true);
+        setApprovingFixedPrice(false);
+        setApprovalFlag(false);
+      },
+      (err) => {
+        let variant = "error";
+        enqueueSnackbar("Unable to approve collection", { variant });
+        console.log("Err from approval Fixed-price: ", err);
+        console.log(
+          "Err response from approval Fixed-price: ",
+          err.response
+        );
+        setApprovingFixedPrice(false);
+        setApprovalFlag(false);
       }
-
-      console.log("Contract Address: ", nftContractAddress);
-      var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-      console.log("myContractInstance", myContractInstance);
-
-      await myContractInstance.methods
-        .setApprovalForAll(addressDropFactory, true)
-        .send({ from: accounts[0] }, (err, response) => {
-          console.log("get transaction", err, response);
-
-          if (err !== null) {
-            console.log("err", err);
-            let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
-            setApprovingFixedPrice(false);
-            handleCloseBackdrop();
-            setIsSaving(false);
-          }
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-
-          //sending call on backend
-
-          let approvalData = {
-            collectionId: collectionId,
-            factoryType: "fixed-price",
-          };
-
-          axios.put(`/${version}/collection/approve`, approvalData).then(
-            (response) => {
-              console.log("Response from approval of Fixed Price: ", response);
-              let variant = "success";
-              enqueueSnackbar('Collection Approved For Fixed Price Successfully', { variant });
-              setIsFixedPriceApproved(true);
-              setApprovingFixedPrice(false);
-            },
-            (err) => {
-              let variant = "error";
-              enqueueSnackbar('Unable to approve collection', { variant });
-              console.log("Err from approval Fixed-price: ", err);
-              console.log(
-                "Err response from approval Fixed-price: ",
-                err.response
-              );
-              setApprovingFixedPrice(false);
-            }
-          );
-        });
-    }
+    );
   };
 
   let giveAuctionApproval = async () => {
@@ -612,14 +688,15 @@ function NewCollection(props) {
       handleShow();
     } else {
       setApprovingAuction(true);
+      setApprovalFlag(true);
 
       const addressNft = nftContractAddress;
       let addressDropFactory;
       let abiNft;
-      if (nftType === "ERC1155") {
+      if (nftType === "1155") {
         abiNft = CreateNFTContract1155;
         addressDropFactory = Addresses.AuctionDropFactory1155;
-      } else if (nftType === "ERC721") {
+      } else if (nftType === "721") {
         abiNft = CreateNFTContract721;
         addressDropFactory = Addresses.AuctionDropFactory721;
       }
@@ -638,6 +715,7 @@ function NewCollection(props) {
             let variant = "error";
             enqueueSnackbar("User Canceled Transaction", { variant });
             setApprovingAuction(false);
+            setApprovalFlag(false);
             handleCloseBackdrop();
             setIsSaving(false);
           }
@@ -652,52 +730,44 @@ function NewCollection(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/${version}/collection/approve`, approvalData).then(
+          axios.put(`/collection/approve`, approvalData).then(
             (response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";
-              enqueueSnackbar('Collection Approved For Auction Successfully', { variant });
+              enqueueSnackbar("Collection Approved For Auction Successfully", {
+                variant,
+              });
               setIsAuctionApproved(true);
               setApprovingAuction(false);
+              setApprovalFlag(false);
             },
             (err) => {
               let variant = "error";
-              enqueueSnackbar('Unable to approve collection', { variant });
+              enqueueSnackbar("Unable to approve collection", { variant });
               console.log("Err from auction approval: ", err);
               console.log("Err response from auction approval: ", err.response);
               setApprovingAuction(false);
+              setApprovalFlag(false);
             }
           );
         });
     }
   };
-
   let handleDoneButton = () => {
     if (isFixedPriceApproved === false) {
       let variant = "error";
       enqueueSnackbar("Approve For Fixed Price First", { variant });
     }
-    if (isAuctionApproved === false) {
-      let variant = "error";
-      enqueueSnackbar("Approve For Auction First", { variant });
-    }
-    if (isAuctionApproved === true && isFixedPriceApproved === true) {
+    // if (isAuctionApproved === false) {
+    //   let variant = "error";
+    //   enqueueSnackbar("Approve For Auction First", { variant });
+    // }
+    // if (isAuctionApproved === true && isFixedPriceApproved === true) {
+    //   setDoneLoader(true);
+    //   handleApprovalModalClose();
+    // }
+    if(isFixedPriceApproved === true){
       setDoneLoader(true);
-      // axios.put(`/collection/approve/${collectionId}`).then(
-      //     (response) => {
-      //         console.log("Response from collection approval: ", response);
-      //         let variant = "success";
-      //         enqueueSnackbar("Collection Approval Successful", { variant });
-      //         setDoneLoader(false);
-      //     },
-      //     (error) => {
-      //         console.log("Error from collection approval: ", error);
-      //         let variant = "error";
-      //         enqueueSnackbar("Collection Approval Unsuccessful", { variant });
-      //         setDoneLoader(false);
-      //     }
-      // );
-
       handleApprovalModalClose();
     }
   };
@@ -710,9 +780,11 @@ function NewCollection(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New Collection</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">New Collection</li>
             </ul>
           </div>
@@ -732,7 +804,10 @@ function NewCollection(props) {
                         <img src={fileURL} alt="Collection Thumb" />
                       </div>
                       <div className="co-12 col-md-auto">
-                        <label for="uploadPreviewImg" className="uploadLabel">
+                        <label
+                          htmlFor="uploadPreviewImg"
+                          className="uploadLabel"
+                        >
                           {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
                         </label>
                         <input
@@ -799,158 +874,101 @@ function NewCollection(props) {
                     />
                   </div>
 
+                  <div>
+                    <Tooltip
+                      title={RoyaltyFeeText}
+                      classes={{ tooltip: classes.tooltip }}
+                      placement="top-start"
+                      arrow={true}
+                    >
+                      <label>
+                        Royalty Fee{" "}
+                        <i className="fa fa-info-circle" aria-hidden="true"></i>
+                      </label>
+                    </Tooltip>
+
+                    <small style={{ marginLeft: "5px" }}></small>
+                  </div>
+
+                  <div className="form-group newNftWrapper">
+                    {/* <label>About the Art</label> */}
+                    <input
+                      type="number"
+                      required
+                      value={royaltyFee}
+                      placeholder="Enter Royalty Fee"
+                      className="form-control newNftInput"
+                      onChange={(e) => {
+                        setRoyaltyFee(e.target.value);
+                      }}
+                    />
+                  </div>
+
                   <FormControl component="fieldset">
-                    <lable
+                    <label
                       component="legend"
                       style={{ fontWeight: "bold", fontFamily: "orbitron" }}
                     >
                       Select NFT Type
-                    </lable>
+                    </label>
                     <RadioGroup
                       row
                       aria-label="position"
                       name="position"
                       defaultValue="top"
                     >
-                      <FormControlLabel
-                        style={{ color: "white" }}
-                        value="ERC721"
-                        onChange={() => {
-                          setNftType("ERC721");
-                          // checked={saleType === 'auction'}
-                        }}
-                        checked={nftType === "ERC721"}
-                        control={<Radio style={{ color: "#fff" }} />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                        }
-                      />
-                      <FormControlLabel
-                        style={{ color: "white" }}
-                        value="ERC1155"
-                        onChange={() => {
-                          setNftType("ERC1155");
-                        }}
-                        checked={nftType === "ERC1155"}
-                        control={<Radio style={{ color: "#fff" }} />}
-                        label={
-                          <span style={{ fontSize: "0.9rem" }}>ERC1155</span>
-                        }
-                      />
+                      <Tooltip
+                        title={Text721}
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="ERC721"
+                          // onChange={() => {
+                          //   setNftType("721");
+                          //   // checked={saleType === 'auction'}
+                          // }}
+                          onChange={() => {
+                            setWorkProgressModalShow(true);
+                          }}
+                          checked={nftType === "721"}
+                          control={<Radio style={{ color: "#fff" }} />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>
+                              Single{" "}
+                              <i
+                                className="fa fa-info-circle"
+                                aria-hidden="true"
+                              ></i>
+                            </span>
+                          }
+                        />
+                      </Tooltip>
+                      <Tooltip
+                        title={Text1155}
+                        classes={{ tooltip: classes.tooltip }}
+                      >
+                        <FormControlLabel
+                          style={{ color: "white" }}
+                          value="ERC1155"
+                          onChange={() => {
+                            setNftType("1155");
+                          }}
+                          checked={nftType === "1155"}
+                          control={<Radio style={{ color: "#fff" }} />}
+                          label={
+                            <span style={{ fontSize: "0.9rem" }}>
+                              Multiple{" "}
+                              <i
+                                className="fa fa-info-circle"
+                                aria-hidden="true"
+                              ></i>
+                            </span>
+                          }
+                        />
+                      </Tooltip>
                     </RadioGroup>
                   </FormControl>
-                  {/* <div>
-                                        <label>Add Properties</label><small style={{ marginLeft: "5px" }}>(optional)</small>
-                                    </div>
-                                    <div>
-                                        <button
-                                            className="btn btn-submit"
-                                            color="primary"
-                                            // className="btn submit-btn"
-                                            onClick={onDialogOpenClick}
-                                        >
-                                            Add Properties
-                                        </button>
-                                        <Dialog
-                                            fullWidth={true}
-                                            maxWidth={true}
-                                            open={openDialog}
-                                            onClose={onDialogCloseClick}
-                                            aria-labelledby="max-width-dialog-title"
-                                        >
-                                            <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
-                                            <DialogContent>
-                                                <DialogContentText>Enter Properties in key value pair</DialogContentText>
-                                                <form>
-                                                    <TextField
-                                                        label="Key"
-                                                        value={propertyKey}
-                                                        onChange={(e) => setPropertyKey(e.target.value)}
-                                                    />
-                                                    <TextField
-                                                        label="Value"
-                                                        value={propertyValue}
-                                                        onChange={(e) => setPropertyValue(e.target.value)}
-                                                        style={{ marginLeft: "5px" }}
-                                                    />
-                                                    <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
-                                                </form>
-                                            </DialogContent>
-                                        </Dialog>
-                                    </div> */}
-                  {/* <div>
-                                        <div>
-                                            {properties.map((property, index) => {
-                                                return (
-                                                    <Card>
-                                                        <CardHeader
-                                                            title={property.key}
-                                                            subheader={property.value}
-                                                        />
-                                                    </Card>
-                                                )
-                                            })}
-                                        </div>
-                                    </div> */}
-                  {/* <div style={{marginTop: "5px"}}>
-                                        <label>Add Level</label>
-                                    </div> */}
-                  {/* {levelValues.map((level, index)=> {
-                                      return (
-                                        <div>
-                                            <div 
-                                                style={{
-                                                float: "left",
-                                                width: "55%"
-                                                }}
-                                            >
-                                                <div>
-                                                    <small><label>Name</label></small>
-                                                </div>
-                                                <div>
-                                                    <input 
-                                                        name= "name"
-                                                        type= "text"
-                                                        placeholder='Name'
-                                                        value={ level.name }
-                                                        className= "form-control"
-                                                        onChange = { (e) => handleOnChangeLevel(index, e)} 
-                                                        // style={{width: "30%"}}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <div style={{ float: "left", width: "45%" }} >
-                                                <div>
-                                                    <small><label>Value</label></small>
-                                                </div>
-                                                <div style={{ float: "left", width: "33.33%" }}>
-                                                    <input 
-                                                        name= "lowLevel"
-                                                        type= "number"
-                                                        value= { level.lowLevel } 
-                                                        className= "form-control"
-                                                        onChange= { (e) => handleOnChangeLevel(index, e)}
-                                                    />
-                                                </div>
-                                                <div style={{ width: "33.33%", border: "thin black", float: "left", marginTop: "10px" }} >Of</div>
-                                                <div style={{ float: "left", width: "33.33%" }}>
-                                                    <input 
-                                                        name= "highLevel"
-                                                        type= "number"
-                                                        value= { level.highLevel } 
-                                                        className= "form-control"
-                                                        onChange= { (e) => handleOnChangeLevel(index, e)}
-                                                    />
-                                                </div>
-                                            </div>
-                                            <IconButton onClick={() => onRemoveLevels(index)} >
-                                                <Clear />
-                                            </IconButton>
-                                        </div>
-                                      )      
-                                    })} */}
-                  {/* <button className= "btn" onClick={addLevels} >Add more</button> */}
-                  {/* <button onClick={ onSubmit }>Submit</button> */}
                 </div>
               </div>
             </form>
@@ -962,7 +980,11 @@ function NewCollection(props) {
           <div className="submit-section">
             <button
               type="button"
-              onClick={(e) => {version === "v1-sso" ? (handleSubmitEvent(e)) : (handleSubmitEventMetamask(e))} }
+              onClick={(e) => {
+                version === "v1-sso"
+                  ? handleSubmitEvent(e)
+                  : handleSubmitEventMetamask(e);
+              }}
               className="btn submit-btn propsActionBtn"
             >
               Add Collection
@@ -986,7 +1008,12 @@ function NewCollection(props) {
         isFixedPriceApproved={isFixedPriceApproved}
         done={handleDoneButton}
         doneLoader={doneLoader}
+        approvalFlag={approvalFlag}
       ></RequestApprovalModal>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

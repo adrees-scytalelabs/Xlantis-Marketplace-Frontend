@@ -495,7 +495,7 @@ function NewNFT(props) {
           console.log("HASH", result[0].hash);
           setIpfsHash(result[0].hash);
           let variant = "success";
-          enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
+          enqueueSnackbar("Image Uploaded to IPFS", { variant });
         });
       };
       let fileData = new FormData();
@@ -506,7 +506,7 @@ function NewNFT(props) {
           setImage(response.data.url);
           setIsUploadingIPFS(false);
           let variant = "success";
-          enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+          enqueueSnackbar("Image Uploaded Successfully", { variant });
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -515,7 +515,7 @@ function NewNFT(props) {
           }
           setIsUploadingIPFS(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+          enqueueSnackbar("Unable to Upload Image", { variant });
         }
       );
     } else {

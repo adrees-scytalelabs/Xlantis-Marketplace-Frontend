@@ -117,7 +117,7 @@ function MyDropNFTs(props) {
     };
     axios
       .get(
-        `/${version}/drop/nfts/${location.state.dropId}/${start}/${end}`,
+        `/drop/nfts/${location.state.dropId}/${start}/${end}`,
         data
       )
       .then(
@@ -250,9 +250,14 @@ function MyDropNFTs(props) {
           <div className="col-sm-12">
             <h3 className="page-title">Drop Nfts</h3>
             <ul className="breadcrumb">
+            <Link to={`/dashboard`}>
               <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                 Dashboard
               </li>
+              </Link>
+              <Link to={`/dashboard/myDrops`}>
+              <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
+              </Link>
               <li className="breadcrumb-item active">Drop Nfts</li>
             </ul>
           </div>
@@ -303,6 +308,8 @@ function MyDropNFTs(props) {
                           nftDetail: i,
                           saleType: location.state.saleType,
                           status: location.state.status,
+                          nftId: location.state.nftId,
+                          dropId:location.state.dropId
                         },
                       }}
                     >
@@ -439,11 +446,8 @@ function MyDropNFTs(props) {
               <div className="col-4 align-self-end text-right p-0">
              
                             <p className="nftPrice mb-0 p-0">
-                            {Web3.utils.fromWei(
-                              i.currentMarketplaceId.price,
-                              "ether"
-                            )}{" "}
-                            WMATIC
+                            {i.currentMarketplaceId.price}{" "}
+                            USD
                             </p>
               </div>
             </div>

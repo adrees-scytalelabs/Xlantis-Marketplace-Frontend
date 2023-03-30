@@ -77,11 +77,11 @@ function SuperAdminDefaultScreen(props) {
     )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/counts`)
+      .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
         console.log(response);
         axios
-          .get(`/v2-wallet-login/super-admin/admins/counts`)
+          .get(`/super-admin/admins/counts?userType=v2`)
           .then((response1) => {
             console.log(response1);
             setTotalAdmins(
@@ -124,7 +124,10 @@ function SuperAdminDefaultScreen(props) {
       accountApproval: "",
       accounts: "",
       sso:"",
-      wallet:""
+      wallet:"",
+      properties:"",
+      template:"",
+      saved:"",
     });
     getCounts();
     // eslint-disable-next-line

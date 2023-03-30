@@ -3,8 +3,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import LibraryBooksIcon from "@material-ui/icons/LibraryBooks";
 import BusinessIcon from "@material-ui/icons/Business";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -50,7 +50,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.newCollection}>
               <Link
-                to={`${props.match.url}/newCollection`}
+                to={`${props.match.url}/myCollection`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -99,6 +99,11 @@ function AdminSidebar(props) {
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match.url}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topUp}>
+              <Link to={`${props.match.url}/topUp`}>
+                <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
               </Link>
             </li>
             <li className={props.activeTab.myDrops}>

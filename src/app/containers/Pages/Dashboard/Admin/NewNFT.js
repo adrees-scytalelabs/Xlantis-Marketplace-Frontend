@@ -6,14 +6,16 @@ import {
   DialogContentText,
   DialogTitle,
   Grid,
+  InputLabel,
+  MenuItem,
+  Select,
 } from "@material-ui/core/";
 import Avatar from "@material-ui/core/Avatar";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
+import { Link } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
@@ -24,11 +26,12 @@ import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+// import ReactTooltip from "react-tooltip";
+
 import axios from "axios";
 import Cookies from "js-cookie";
-import { isUndefined } from "lodash";
+import { isUndefined, templateSettings } from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Spinner } from "react-bootstrap";
@@ -47,8 +50,19 @@ import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { ethers } from "ethers";
+import Alert from "@material-ui/lab/Alert";
+import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 
 // STYLES
+
+const themeTemplate = createMuiTheme({
+  overrides: {
+    Mui: {
+      focused: {},
+    },
+  },
+});
 
 const makeTheme = createMuiTheme({
   overrides: {
@@ -82,7 +96,7 @@ const makeTheme = createMuiTheme({
         "&$focused": {},
       },
       underline: {
-        "&$before": {},
+        "&:$before": {},
         "&::after": {
           border: "none !important",
         },
@@ -142,6 +156,9 @@ const useStyles = makeStyles((theme) => ({
   nftInput: {
     fontFamily: "orbitron",
   },
+  tooltip: {
+    fontSize: "16px",
+  },
 }));
 
 function NewNFT(props) {
@@ -161,6 +178,353 @@ function NewNFT(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
+  let [defaultTemplates, setDefaultTemplates] = useState({
+    name: "",
+    properties: [],
+  });
+  let [templateData, setTemplateData] = useState([]);
+  let [standardTemplates, setStandardTemplates] = useState([]);
+
+  // let defaultTemplates =
+  // {
+  //   "_id": "63a17fdbdf852a1017aa2ccc",
+  //   "name": "Tables",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Material",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2cab"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Wooden",
+  //       "type": "Boolean",
+  //       "_id": "63a17fdbdf852a1017aa2cbc"
+  //     }
+  //   ],
+  //   "__v": 0
+  // };
+
+  // let standardTemplates = [{
+  //   "_id": "63a17fdbdf852a1017aa298c",
+  //   "name": "Pens",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Type",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Eraseable",
+  //       "type": "Boolean",
+  //       "_id": "63a17fdbdf852a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }, {
+  //   "_id": "63a17fdbdfacac3017aa298c",
+  //   "name": "Paints",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Container Capacity (L)",
+  //       "type": "Number",
+  //       "_id": "63a17fdbbebe2a2017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17f0f4a852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Token",
+  //       "type": "Boolean",
+  //       "_id": "63a17ffffff52a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }, {
+  //   "_id": "00a00fdbdfacac3017aa298c",
+  //   "name": "Bread",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Baker",
+  //       "type": "String",
+  //       "_id": "600a00dbbebe2a2017aa2bb9"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Type",
+  //       "type": "String",
+  //       "_id": "63a00a004a852a1017aa2aaa"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Large",
+  //       "type": "Boolean",
+  //       "_id": "00a00ffffff52a1bb7aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // }];
+
+  // let templateData = [{
+  //   "_id": "63a17fdbdf854d1017aa2c98",
+  //   "name": "Cars",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Suspension",
+  //       "type": "String",
+  //       "_id": "63a17fdbdfc32a1017aa2c99"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Engine",
+  //       "type": "String",
+  //       "_id": "63a17fdbb4da2a1017aa2c9a"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Color",
+  //       "type": "String",
+  //       "_id": "63a17fdbdf856c1017aa2c9b"
+  //     }
+  //   ],
+  //   "__v": 0
+  // },
+  // {
+  //   "_id": "63a1805e5cb0ae01bffe1378",
+  //   "name": "Bikes",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "Hybrid",
+  //       "type": "Boolean",
+  //       "_id": "63ee805e5cb0ae01ba9e1379"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "EngineType",
+  //       "type": "String",
+  //       "_id": "63a1805e5cb0aeeeba9e137a"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Gears",
+  //       "type": "Number",
+  //       "_id": "63a18bae5cb0ae01ba9e137b"
+  //     }
+  //   ]
+  // },
+  // {
+  //   "_id": "63a1805e5cb0ae01baae4471",
+  //   "name": "Laptop",
+  //   "properties": [
+  //     {
+  //       "value": "",
+  //       "key": "SSD",
+  //       "type": "Boolean",
+  //       "_id": "63a1805e5cccce01ba9e137e"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Graphic Card",
+  //       "type": "Boolean",
+  //       "_id": "63a4ac5e5cb0ae01ba9e13ba"
+  //     },
+  //     {
+  //       "value": "",
+  //       "key": "Mechanical Keyboard",
+  //       "type": "Boolean",
+  //       "_id": "63a1805e5cb0ae01ba96c6cb"
+  //     }
+  //   ]
+  // }];
+
+  // const [templateOptions, setTemplateOptions] = useState(null);
+  // const [savedData, setSavedData] = useState(null);
+  // const [savedDataProps, setSavedDataProps] = useState(null)
+  // const [defaultPropNum, setDefaultPropNum] = useState()
+  // const [defaultPropValueYes, setDefaultPropValueYes] = useState("Yes")
+  const [defaultPropValue, setDefaultPropValue] = useState("default");
+  const [defaultPropValueNo, setDefaultPropValueNo] = useState("No");
+  const [dataStringProp, setDataStringProp] = useState("");
+  const [dataNumProp, setDataNumProp] = useState("");
+  const [dataBoolProp, setDataBoolProp] = useState("");
+  const [standardDataProps, setStandardDataProps] = useState(null);
+
+  const [extractedDataProps, setExtractedDataProps] = useState(null);
+  const [newTemplateModalShow, setNewTemplateModalShow] = useState(false);
+  const [template, setTemplate] = useState("default");
+
+  let handleNewTemplateModalClose = () => {
+    setNewTemplateModalShow(false);
+    getDefaultTemplate();
+    getSavedTemplate("admin");
+    setTemplate("default");
+  };
+
+  let handleNewTemplateModalOpen = () => {
+    setNewTemplateModalShow(true);
+  };
+
+  const handleTemplateChange = (e) => {
+    setExtractedDataProps(null);
+    console.log(e.target.value, " template change");
+    if (e.target.value === "new") handleNewTemplateModalOpen();
+    setTemplate(e.target.value);
+    if (e.target.value === "default") {
+      handleSetProperties(defaultTemplates.properties);
+    }
+  };
+
+  const handleSelectTemplate = (e) => {
+    setExtractedDataProps(null);
+    console.log(e.target.value, " Template selected!");
+    if (templateData) {
+      for (let i = 0; i < templateData.length; i++) {
+        if (e.target.value === templateData[i].name) {
+          handleSetProperties(templateData[i].properties);
+
+          console.log("values matched");
+          let dynamicField = [];
+          for (let p = 0; p < templateData[i].properties.length; p++) {
+            dynamicField.push({
+              key: templateData[i].properties[p].key,
+              value: "",
+              type: templateData[i].properties[p].type,
+              id: templateData[i].properties[p]._id,
+            });
+            setExtractedDataProps(dynamicField);
+          }
+        }
+      }
+      if (e.target.value === "none") setExtractedDataProps(null);
+    }
+  };
+
+  const handleStandardSelectTemplate = (e) => {
+    setExtractedDataProps(null);
+    console.log(e.target.value, " Template selected!");
+    if (standardTemplates) {
+      for (let i = 0; i < standardTemplates.length; i++) {
+        if (e.target.value === standardTemplates[i].name) {
+          handleSetProperties(standardTemplates[i].properties);
+          console.log("values matched");
+          let dynamicField = [];
+          for (let p = 0; p < standardTemplates[i].properties.length; p++) {
+            dynamicField.push({
+              key: standardTemplates[i].properties[p].key,
+              value: "",
+              type: standardTemplates[i].properties[p].type,
+              id: standardTemplates[i].properties[p]._id,
+            });
+
+            setExtractedDataProps(dynamicField);
+          }
+        }
+      }
+      if (e.target.value === "none") setExtractedDataProps(null);
+    }
+  };
+
+  if (extractedDataProps) {
+    console.log(extractedDataProps, " Extracted Properties");
+  }
+
+  const handleTemplatePropertyChange = (index, e) => {
+    console.log(properties, " /// properties");
+    let data = [...properties];
+
+    data[index].value = e.target.value;
+    console.log("change", data[index]);
+    setProperties(data);
+  };
+
+  // const handleSavedPropertyChange = (index, e, check) => {
+
+  //   let data = [...savedDataProps]
+  //   if (check === null) {
+  //     data[index].value = e.target.value;
+  //   } else if (check === true) {
+  //     data[index].value = "yes"
+  //   } else data[index].value = "no"
+  //   console.log(data[index].value)
+  //   console.log(data)
+  //   setSavedDataProps(data)
+  // }
+
+  // useEffect(() => {
+  //   if (template === "") {
+  //     console.log(template, "template is null")
+  //     setTemplate("default")
+  //   } else if (template === "new") {
+  //     handleNewTemplateModalOpen();
+  //   }
+  // });
+
+  // useEffect(() => {
+  //   const controller = new AbortController();
+  //   if (templateOptions) {
+  //     console.log(templateOptions)
+  //     for (let i = 0; i < defaultTemplates.length; i++) {
+  //       if (templateOptions === defaultTemplates[i].name) {
+  //         setDefaultPropValue(templateOptions);
+  //         let dynamicField = [];
+  //         for (let p = 0; p < defaultTemplates[i].properties.length; p++) {
+  //           dynamicField.push({
+  //             key: defaultTemplates[i].properties[p].key,
+  //             value: "",
+  //             type: defaultTemplates[i].properties[p].type,
+  //             id: defaultTemplates[i].properties[p]._id
+  //           });
+  //           setTemplateDataProps(dynamicField);
+  //         }
+  //       }
+  //     }
+  //   } else if (savedData) {
+  //     console.log(savedData)
+  //     for (let i = 0; i < defaultTemplates.length; i++) {
+  //       if (savedData === defaultTemplates[i].name) {
+  //         let dynamicField = [];
+  //         for (let p = 0; p < defaultTemplates[i].properties.length; p++) {
+  //           dynamicField.push({
+  //             key: defaultTemplates[i].properties[p].key,
+  //             value: "",
+  //             type: defaultTemplates[i].properties[p].type,
+  //             id: defaultTemplates[i].properties[p]._id
+  //           });
+  //           setSavedDataProps(dynamicField);
+  //         }
+  //       }
+  //     }
+  //   }
+  //   return () => {
+  //     controller.abort();
+  //   };
+  //}, [templateOptions, savedData, template])
+
+  // useEffect(() => {
+  // if (document.getElementById('selectTemplate').getAttribute('listener') !== 'true') {
+  //   document.getElementById('selectTemplate').addEventListener('change', function () {
+  //     alert('changed');
+  //   });
+  // }
+  // }, [template])
 
   const [tokenList, setTokenList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
@@ -200,7 +564,7 @@ function NewNFT(props) {
 
   // let [producerId, setProducerId] = useState('');
   // let [producer, setProducer] = useState('');
-  let [tokenSupply, setTokenSupply] = useState("1");
+  let [tokenSupply, setTokenSupply] = useState(1);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   // let [isUploadingExecutiveProducer, setIsUploadingExecutiveProducer] = useState(false);
   // let [isUploadingProducer, setIsUploadingProducer] = useState(false);
@@ -237,10 +601,17 @@ function NewNFT(props) {
   let [isUploadingPreview, setIsUploadingPreview] = useState(false);
   let [isMp3File, setIsMp3File] = useState(false);
   let [contractType, setContractType] = useState("");
-  let [NFTType, setNFTType] = useState("721");
+  let [NFTType, setNFTType] = useState("1155");
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
   let [previewImage, setPreviewImage] = useState(r1);
   let [versionB, setVersionB] = useState("");
+  const Text721 =
+    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
+  const Text1155 =
+    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const SupplyTypeText =
+    "Single supply in ERC-1155 refers to a collection of NFTs that have a predetermined, only one copy of NFTs available, while variable supply allows for the creation of multiple and identical NFTs copies, depending on demand.";
 
   // let [executiveProducerId, setExecutiveProducerId] = useState('');
   // let [executiveProducer, setExecutiveProducer] = useState('');
@@ -273,7 +644,7 @@ function NewNFT(props) {
     console.log("get collections");
     console.log("collectionType", collectionType);
     console.log("VERSION", Cookies.get("Version"));
-    const url = `${Cookies.get("Version")}/collection/collections/${collectionType}`;
+    const url = `/collection/collections/${collectionType}`;
     console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
@@ -318,6 +689,92 @@ function NewNFT(props) {
     );
   };
 
+  const handleSetProperties = (availableProperties) => {
+    console.log("avail prop", availableProperties);
+    let prop = [];
+
+    availableProperties.map((property) => {
+      let val;
+      if (property.type === "boolean") {
+        val = true;
+      } else if (property.type === "number") {
+        val = 0;
+      } else {
+        val = "";
+      }
+      // property.type ==="boolean" ? true : property.type === "number" ? 0 :
+
+      let newData = { key: property.key, value: val };
+      prop.push(newData);
+      console.log("property", property);
+    });
+
+    console.log("prop", prop);
+    console.log("properties from def", prop);
+    setProperties(prop);
+  };
+
+  const getDefaultTemplate = () => {
+    axios.get(`/nft-properties/admin/default`).then(
+      (response) => {
+        console.log("default template response", response);
+
+        setDefaultTemplates(response.data.defaultTemplate);
+        if (response.data.defaultTemplate != null) {
+          handleSetProperties(response.data.defaultTemplate.properties);
+        }
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
+  const getSavedTemplate = (role) => {
+    if (role === "admin") {
+    }
+    axios.get(`/nft-properties/${role}`).then(
+      (response) => {
+        if (role === "admin") {
+          console.log("saved template response", response);
+          setTemplateData(response.data.templates);
+        } else {
+          console.log("standard template response", response);
+          setStandardTemplates(response.data.templates);
+        }
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  };
+
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
     let batchMintId = Cookies.get("Batch-ID");
@@ -347,6 +804,10 @@ function NewNFT(props) {
     setVersionB(Cookies.get("Version"));
     console.log("version", Cookies.get("Version"));
     getCollections(NFTType);
+    getDefaultTemplate();
+    getSavedTemplate("admin");
+    getSavedTemplate("super-admin");
+    console.log("default valu", defaultTemplates);
 
     // setTokenList(Cookies.get("NFT-Detail"));
     getDataFromCookies();
@@ -660,7 +1121,7 @@ function NewNFT(props) {
 
             // let Data = new FormData();
             // console.log("Data", Data);
-            axios.put(`/${versionB}/batch-mint/minted/${batchId}`, data).then(
+            axios.put(`/batch-mint/minted/${batchId}`, data).then(
               (response) => {
                 console.log("response", response);
                 let variant = "success";
@@ -723,7 +1184,7 @@ function NewNFT(props) {
   };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
-      axios.delete(`/${versionB}/batch-mint/${batchId}`).then(
+      axios.delete(`/batch-mint/${batchId}`).then(
         (response) => {
           console.log("deleting batch response: ", response);
           Cookies.remove("NFT-Detail");
@@ -736,27 +1197,26 @@ function NewNFT(props) {
         }
       );
     } else {
-      axios
-        .delete(`/${versionB}/batch-mint/nft/${tokenList[index].nftId}`)
-        .then(
-          (response) => {
-            console.log("Response for delete nft from batch: ", response);
-            const list = [...tokenList];
-            list.splice(index, 1);
-            Cookies.remove("NFT-Detail");
-            Cookies.set("NFT-Detail", list, {});
-            setTokenList(list);
-          },
-          (error) => {
-            console.log("Error for delete nft from batch: ", error);
-          }
-        );
+      axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
+        (response) => {
+          console.log("Response for delete nft from batch: ", response);
+          const list = [...tokenList];
+          list.splice(index, 1);
+          Cookies.remove("NFT-Detail");
+          Cookies.set("NFT-Detail", list, {});
+          setTokenList(list);
+        },
+        (error) => {
+          console.log("Error for delete nft from batch: ", error);
+        }
+      );
     }
   };
 
   // handle click event of the Add button
   const handleAddClick = (e) => {
     e.preventDefault();
+    console.log("token supply", tokenSupply);
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
@@ -772,7 +1232,7 @@ function NewNFT(props) {
     //   enqueueSnackbar("Please Select Artwork Rarity", { variant });
     // }
     else if (
-      tokenSupply === "" ||
+      tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
     ) {
@@ -831,6 +1291,7 @@ function NewNFT(props) {
             title: name,
             description: description,
             nftURI: nftURI,
+            previewImageURI: previewImageURI,
             metadataURI: nftURI,
             nftFormat: imageType,
             // type: rarity,
@@ -844,7 +1305,7 @@ function NewNFT(props) {
           }
 
           if (batchId === "") {
-            axios.post(`/${versionB}/batch-mint`, data).then(
+            axios.post(`/batch-mint/`, data).then(
               (response) => {
                 console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
@@ -852,20 +1313,26 @@ function NewNFT(props) {
                 setTokenList([
                   ...tokenList,
                   {
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    nftURI: nftURI,
+                    collectionId: collectionId,
                     title: name,
                     description: description,
+                    nftURI: nftURI,
+                    previewImageURI: previewImageURI,
+                    nftFormat: imageType,
+                    properties: properties,
+                    ipfsHash: ipfsHash,
+                    
+                    
+                    
                     // rarity: rarity,
                     tokensupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
-                    collectionId: collectionId,
+                    
                     nftId: response.data.nftId,
-                    nftContractAddress: nftContractAddress,
-                    previewImageURI: previewImageURI,
-                    nftFormat: imageType,
+                    
+                    
+                    
                   },
                 ]);
 
@@ -882,7 +1349,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    nftContractAddress: nftContractAddress,
+                    
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -900,7 +1367,7 @@ function NewNFT(props) {
           } else {
             data["batchId"] = batchId;
             console.log("data: ", data);
-            axios.post(`/${versionB}/batch-mint/nft`, data).then(
+            axios.post(`/batch-mint/nft`, data).then(
               (response) => {
                 console.log(
                   "Batch minting into existing batch response: ",
@@ -921,7 +1388,7 @@ function NewNFT(props) {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-                    nftContractAddress: nftContractAddress,
+                    
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -939,7 +1406,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    nftContractAddress: nftContractAddress,
+                    
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },
@@ -1036,7 +1503,7 @@ function NewNFT(props) {
         setIpfsHash(result[0].hash);
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS Successfully", { variant });
+        enqueueSnackbar("Image Uploaded to IPFS", { variant });
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -1046,13 +1513,13 @@ function NewNFT(props) {
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`${versionB}/upload/uploadtos3`, fileData).then(
+    axios.post(`/upload/image`, fileData).then(
       (response) => {
         console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to S3 Successfully", { variant });
+        enqueueSnackbar("Image Uploaded Successfully", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -1061,7 +1528,7 @@ function NewNFT(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image to S3 .", { variant });
+        enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
   };
@@ -1178,7 +1645,10 @@ function NewNFT(props) {
   };
 
   let handlePropertyChange = (index, event) => {
+    console.log(properties, " /// properties");
     let data = [...properties];
+    console.log("the datat change: ", event.target);
+    console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -1259,16 +1729,14 @@ function NewNFT(props) {
 
         Cookies.set("NFT-Detail", data, {});
 
-        axios
-          .put(`/${versionB}/nft/${data[editObjectIndex].nftId}`, updatedObject)
-          .then(
-            (response) => {
-              console.log("Response of updated nft: ", response);
-            },
-            (error) => {
-              console.log("Error of updated nft: ", error);
-            }
-          );
+        axios.put(`/nft/${data[editObjectIndex].nftId}`, updatedObject).then(
+          (response) => {
+            console.log("Response of updated nft: ", response);
+          },
+          (error) => {
+            console.log("Error of updated nft: ", error);
+          }
+        );
 
         console.log("Data: ", data);
         setTokenList(data);
@@ -1317,7 +1785,7 @@ function NewNFT(props) {
       batchId: batchId,
       collectionId: collectionObj._id,
     };
-    axios.put(`/${versionB}/batch-mint/collection`, updatedCollectionID).then(
+    axios.put(`/batch-mint/collection`, updatedCollectionID).then(
       (response) => {
         console.log("Response after updating collection id: ", response);
       },
@@ -1356,7 +1824,7 @@ function NewNFT(props) {
         // setIpfsHash(result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS Successfully", {
+        enqueueSnackbar("Preview Image Uploaded to IPFS", {
           variant,
         });
         setIsUploadingPreview(false);
@@ -1431,7 +1899,7 @@ function NewNFT(props) {
         }
 
         console.log("NFT Data: ", nftData);
-        await axios.post(`/${versionB}/lazy-mint/NFT`, nftData).then(
+        await axios.post(`/lazy-mint/NFT`, nftData).then(
           async (response) => {
             console.log("Response from backend on free mint: ", response);
             lazyMintId = response.data.nftObjectId;
@@ -1465,7 +1933,7 @@ function NewNFT(props) {
           signature: signature,
         };
 
-        await axios.patch(`/${versionB}/lazy-mint/voucher`, voucherData).then(
+        await axios.patch(`/lazy-mint/voucher`, voucherData).then(
           (response) => {
             console.log("Response from sending voucher sign: ", response);
           },
@@ -1556,6 +2024,9 @@ function NewNFT(props) {
 
     if (signature) {
       return signature;
+    } else {
+      // alert("Signature");
+      console.log("Signature issue");
     }
   };
 
@@ -1567,9 +2038,11 @@ function NewNFT(props) {
           <div className="col-sm-12">
             <h3 className="page-title">New NFT</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">New NFT</li>
             </ul>
           </div>
@@ -1894,116 +2367,532 @@ function NewNFT(props) {
                     />
                   </div> */}
 
+                  {/* Templates */}
                   <div>
-                    <label>Properties</label>
+                    <label>Templates</label>
                     <small style={{ marginLeft: "5px" }}>(optional)</small>
                   </div>
-                  <div>
-                    {properties.map((property, index) => {
-                      return (
-                        <div key={index}>
-                          <div className="row no-gutters justify-content-md-between align-items-center">
-                            <div className="col-12 col-md-5">
-                              <div className="form-group w-100">
-                                <label>Key</label>
-                                <div className="filter-widget">
-                                  <input
-                                    name="key"
-                                    type="text"
-                                    placeholder="Enter key of the property"
-                                    required
-                                    value={property.key}
-                                    className="newNftProps"
-                                    onChange={(e) =>
-                                      handlePropertyChange(index, e)
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-5">
-                              <div className="form-group w-100">
-                                <label>Value</label>
-                                <div className="filter-widget">
-                                  <input
-                                    name="value"
-                                    type="text"
-                                    placeholder="Enter Value of the property"
-                                    required
-                                    value={property.value}
-                                    className="newNftProps"
-                                    onChange={(e) =>
-                                      handlePropertyChange(index, e)
-                                    }
-                                  />
-                                </div>
-                              </div>
-                            </div>
-                            <div className="col-12 col-md-auto text-right">
-                              <div className="form-group">
-                                <label>Action</label>
-                                <div className="filter-widget">
-                                  <Tooltip
-                                    title="Remove a property"
-                                    placement="bottom"
-                                  >
-                                    <button
-                                      className="btn btn-submit btn-lg propsActionBtn"
-                                      onClick={(e) =>
-                                        handleRemoveProperty(e, index)
+                  <div className="w-100 position-relative mb-4">
+                    <select
+                      name="templates"
+                      id="selectTemplate"
+                      className="templatesSelect"
+                      placeholder="Select a Template"
+                      onChange={handleTemplateChange}
+                      value={template}
+                    >
+                      <option value="default">Default</option>
+                      <option value="none">None</option>
+                      <option value="saved">Saved</option>
+                      <option value="standard">Standard</option>
+                      <option value="new">Create New</option>
+                    </select>
+                    {template === "default" ? (
+                      defaultTemplates !== null ? (
+                        <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                          <div className="filter-widget col-12">
+                            <input
+                              name={defaultTemplates.name}
+                              type="text"
+                              placeholder={defaultTemplates.name}
+                              required
+                              value={defaultTemplates.name}
+                              className="newNftProps"
+                              disabled
+                              style={{
+                                color: "#696969",
+                                borderColor: "#626262",
+                              }}
+                            />
+                          </div>
+                          {defaultTemplates.properties.map((p, index) => (
+                            <div className="col-12 col-md-5" key={index}>
+                              <div className="w-100">
+                                <label>{p.key}</label>
+                                {p.type === "string" ? (
+                                  <div className="filter-widget">
+                                    <input
+                                      name={p.key}
+                                      type="text"
+                                      placeholder="value"
+                                      required
+                                      value={properties[index].value}
+                                      className="newNftProps"
+                                      onChange={(e) =>
+                                        handleTemplatePropertyChange(index, e)
                                       }
+                                    />
+                                  </div>
+                                ) : p.type === "number" ? (
+                                  <div className="filter-widget">
+                                    <input
+                                      name={p.key}
+                                      type="number"
+                                      placeholder="0"
+                                      required
+                                      // value={properties[index].value}
+                                      className="newNftProps"
+                                      onChange={(e) =>
+                                        handleTemplatePropertyChange(index, e)
+                                      }
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="filter-widget">
+                                    <input
+                                      name={p.key}
+                                      type="radio"
+                                      id="templateYes"
+                                      required
+                                      value={true}
+                                      className="newNftProps"
+                                      style={{
+                                        width: "auto",
+                                        margin: "0.5rem",
+                                      }}
+                                      onChange={(e) =>
+                                        handleTemplatePropertyChange(index, e)
+                                      }
+                                    />
+                                    <label
+                                      for="templateYes"
+                                      style={{
+                                        width: "calc(100% - 55px)",
+                                        fontFamily: "inter",
+                                        fontWeight: "normal",
+                                      }}
                                     >
-                                      -
-                                    </button>
-                                  </Tooltip>
-                                </div>
+                                      Yes
+                                    </label>
+                                    <input
+                                      name={p.key}
+                                      type="radio"
+                                      id="templateNo"
+                                      required
+                                      value={false}
+                                      className="newNftProps"
+                                      style={{
+                                        width: "auto",
+                                        margin: "0.5rem",
+                                      }}
+                                      onChange={(e) =>
+                                        handleTemplatePropertyChange(index, e)
+                                      }
+                                    />
+                                    <label
+                                      for="templateNo"
+                                      style={{
+                                        width: "calc(100% - 55px)",
+                                        fontFamily: "inter",
+                                        fontWeight: "normal",
+                                      }}
+                                    >
+                                      No
+                                    </label>
+                                  </div>
+                                )}
                               </div>
                             </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="mt-2 mb-4">
+                          <div
+                            className="alert alert-info"
+                            role="alert"
+                            style={{ fontFamily: "inter" }}
+                          >
+                            You have not set Default Template
                           </div>
                         </div>
-                      );
-                    })}
-                    <div className="row no-gutters align-items-center justify-content-end">
-                      <div className="col-auto">
-                        <Tooltip title="Add a property" placement="right">
-                          <button
-                            className="btn btn-submit btn-lg propsActionBtn mb-4"
-                            // className="btn submit-btn"
-                            onClick={(e) => handleAddProperty(e)}
-                          >
-                            +
-                          </button>
-                        </Tooltip>
-                      </div>
-                    </div>
-                    {/* <Dialog
-                                            fullWidth={true}
-                                            maxWidth={true}
-                                            open={openDialog}
-                                            onClose={onDialogCloseClick}
-                                            aria-labelledby="max-width-dialog-title"
+                      )
+                    ) : template === "none" ? (
+                      <div className="w-100 my-3">
+                        {properties.map((property, index) => {
+                          return (
+                            <div key={index}>
+                              <div className="row no-gutters justify-content-md-between align-items-center">
+                                <div className="col-12 col-md-5">
+                                  <div className="form-group w-100">
+                                    <label>Key</label>
+                                    <div className="filter-widget">
+                                      <input
+                                        name="key"
+                                        type="text"
+                                        placeholder="Enter key of the property"
+                                        required
+                                        value={property.key}
+                                        className="newNftProps"
+                                        onChange={(e) =>
+                                          handlePropertyChange(index, e)
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-12 col-md-5">
+                                  <div className="form-group w-100">
+                                    <label>Value</label>
+                                    <div className="filter-widget">
+                                      <input
+                                        name="value"
+                                        type="text"
+                                        placeholder="Enter Value of the property"
+                                        required
+                                        value={property.value}
+                                        className="newNftProps"
+                                        onChange={(e) =>
+                                          handlePropertyChange(index, e)
+                                        }
+                                      />
+                                    </div>
+                                  </div>
+                                </div>
+                                <div className="col-12 col-md-auto text-right">
+                                  <div className="form-group">
+                                    <label>Action</label>
+                                    <div className="filter-widget">
+                                      <Tooltip
+                                        title="Remove a property"
+                                        placement="bottom"
+                                      >
+                                        <button
+                                          className="btn btn-submit btn-lg propsActionBtn"
+                                          onClick={(e) =>
+                                            handleRemoveProperty(e, index)
+                                          }
                                         >
-                                            <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
-                                            <DialogContent>
-                                                <DialogContentText>Enter Properties in key value pair</DialogContentText>
-                                                <form>
-                                                    <TextField
-                                                        label="Key"
-                                                        value={propertyKey}
-                                                        onChange={(e) => setPropertyKey(e.target.value)}
-                                                    />
-                                                    <TextField
-                                                        label="Value"
-                                                        value={propertyValue}
-                                                        onChange={(e) => setPropertyValue(e.target.value)}
-                                                        style={{ marginLeft: "5px" }}
-                                                    />
-                                                    <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
-                                                </form>
-                                            </DialogContent>
-                                        </Dialog> */}
+                                          -
+                                        </button>
+                                      </Tooltip>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                        <div className="row no-gutters align-items-center justify-content-end">
+                          <div className="col-auto">
+                            <Tooltip title="Add a property" placement="right">
+                              <button
+                                className="btn btn-submit btn-lg propsActionBtn mb-4"
+                                // className="btn submit-btn"
+                                onClick={(e) => handleAddProperty(e)}
+                              >
+                                +
+                              </button>
+                            </Tooltip>
+                          </div>
+                        </div>
+                      </div>
+                    ) : template === "saved" ? (
+                      templateData !== null ? (
+                        <div className="w-100 my-3">
+                          <select
+                            name="savedTemplate"
+                            id="savedTemplate"
+                            className="templatesSelect"
+                            onChange={handleSelectTemplate}
+                          >
+                            <option value="none" defaultValue>
+                              None
+                            </option>
+                            {templateData.map((data, index) => (
+                              <option
+                                value={data.name}
+                                id={data.id}
+                                key={index + 100}
+                              >
+                                {data.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                            {extractedDataProps !== null ? (
+                              extractedDataProps.map((p, index) => (
+                                <div
+                                  className="col-12 col-md-5"
+                                  key={index + 200}
+                                >
+                                  <div className="w-100">
+                                    <label>{p.key}</label>
+                                    {p.type === "string" ? (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="text"
+                                          placeholder="value"
+                                          required
+                                          value={properties[index].value}
+                                          className="newNftProps"
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    ) : p.type === "number" ? (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="number"
+                                          placeholder="0"
+                                          required
+                                          value={properties[index].value}
+                                          className="newNftProps"
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="radio"
+                                          id="savedTemplateYes"
+                                          required
+                                          value={true}
+                                          style={{
+                                            width: "auto",
+                                            margin: "0.5rem",
+                                          }}
+                                          className="newNftProps"
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                        <label
+                                          for="savedTemplateYes"
+                                          style={{
+                                            width: "calc(100% - 55px)",
+                                            fontFamily: "inter",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          Yes
+                                        </label>
+                                        <input
+                                          name={p.key}
+                                          type="radio"
+                                          id="savedTemplateNo"
+                                          required
+                                          value={false}
+                                          className="newNftProps"
+                                          style={{
+                                            width: "auto",
+                                            margin: "0.5rem",
+                                          }}
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                        <label
+                                          for="savedTemplateNo"
+                                          style={{
+                                            width: "calc(100% - 55px)",
+                                            fontFamily: "inter",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          No
+                                        </label>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="mt-2 mb-4 w-100">
+                                <div
+                                  className="alert alert-info"
+                                  role="alert"
+                                  style={{ fontFamily: "inter" }}
+                                >
+                                  There are no Properties in this Template
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-2 mb-4">
+                          <div
+                            className="alert alert-info"
+                            role="alert"
+                            style={{ fontFamily: "inter" }}
+                          >
+                            You have not saved any Template
+                          </div>
+                        </div>
+                      )
+                    ) : (
+                      template === "standard" &&
+                      (standardTemplates !== null ? (
+                        <div className="w-100 my-3">
+                          <select
+                            name="savedTemplate"
+                            id="savedTemplate"
+                            className="templatesSelect"
+                            onChange={handleStandardSelectTemplate}
+                          >
+                            <option value="none" defaultValue>
+                              None
+                            </option>
+                            {standardTemplates.map((data, index) => (
+                              <option
+                                value={data.name}
+                                id={data.id}
+                                key={index + 300}
+                              >
+                                {data.name}
+                              </option>
+                            ))}
+                          </select>
+                          <div className="w-100 my-3 row no-gutters justify-content-md-between">
+                            {extractedDataProps !== null ? (
+                              extractedDataProps.map((p, index) => (
+                                <div
+                                  className="col-12 col-md-5"
+                                  key={index + 400}
+                                >
+                                  <div className="w-100">
+                                    <label>{p.key}</label>
+                                    {p.type === "string" ? (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="text"
+                                          placeholder="value"
+                                          required
+                                          value={properties[index].value}
+                                          className="newNftProps"
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    ) : p.type === "number" ? (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="number"
+                                          placeholder="0"
+                                          required
+                                          value={properties[index].value}
+                                          className="newNftProps"
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                      </div>
+                                    ) : (
+                                      <div className="filter-widget">
+                                        <input
+                                          name={p.key}
+                                          type="radio"
+                                          id="standardTemplateYes"
+                                          required
+                                          value={true}
+                                          className="newNftProps"
+                                          style={{
+                                            width: "auto",
+                                            margin: "0.5rem",
+                                          }}
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                        <label
+                                          for="standardTemplateYes"
+                                          style={{
+                                            width: "calc(100% - 55px)",
+                                            fontFamily: "inter",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          Yes
+                                        </label>
+                                        <input
+                                          name={p.key}
+                                          type="radio"
+                                          id="standardTemplateNo"
+                                          required
+                                          value={false}
+                                          className="newNftProps"
+                                          style={{
+                                            width: "auto",
+                                            margin: "0.5rem",
+                                          }}
+                                          onChange={(e) =>
+                                            handleTemplatePropertyChange(
+                                              index,
+                                              e
+                                            )
+                                          }
+                                        />
+                                        <label
+                                          for="standardTemplateNo"
+                                          style={{
+                                            width: "calc(100% - 55px)",
+                                            fontFamily: "inter",
+                                            fontWeight: "normal",
+                                          }}
+                                        >
+                                          No
+                                        </label>
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="mt-2 mb-4 w-100">
+                                <div
+                                  className="alert alert-info"
+                                  role="alert"
+                                  style={{ fontFamily: "inter" }}
+                                >
+                                  There are no Properties in this Template
+                                </div>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      ) : (
+                        <div className="mt-2 mb-4">
+                          <div
+                            className="alert alert-info"
+                            role="alert"
+                            style={{ fontFamily: "inter" }}
+                          >
+                            Standard Properties not set
+                          </div>
+                        </div>
+                      ))
+                    )}
                   </div>
-
                   <ThemeProvider theme={makeTheme}>
                     {tokenList.length > 0 ? (
                       <FormControl
@@ -2026,88 +2915,126 @@ function NewNFT(props) {
                           name="position"
                           defaultValue="top"
                         >
-                          <FormControlLabel
-                            style={{ color: "white" }}
-                            disabled
-                            value="ERC721"
-                            onChange={() => {
-                              setNFTType("721");
-                              getCollections("721");
-                              // checked={saleType === 'auction'}
-                            }}
-                            checked={NFTType === "721"}
-                            control={<Radio />}
-                            label={
-                              <span
-                                style={{ fontSize: "0.9rem", color: "white" }}
-                              >
-                                ERC721
-                              </span>
-                            }
-                          />
-                          <FormControlLabel
-                            style={{ color: "white" }}
-                            disabled
-                            value="ERC1155"
-                            onChange={() => {
-                              setNFTType("1155");
-                              getCollections("1155");
-                            }}
-                            checked={NFTType === "1155"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span
-                                style={{ fontSize: "0.9rem", color: "white" }}
-                              >
-                                ERC1155
-                              </span>
-                            }
-                          />
+                          <Tooltip
+                            title={Text721}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <FormControlLabel
+                              style={{ color: "white" }}
+                              disabled
+                              value="ERC721"
+                              // onChange={() => {
+                              //   setNFTType("721");
+                              //   getCollections("721");
+                              //   // checked={saleType === 'auction'}
+                              // }}
+                              onChange={() => {
+                                setWorkProgressModalShow(true);
+                              }}
+                              checked={NFTType === "721"}
+                              control={<Radio />}
+                              label={
+                                <span
+                                  style={{ fontSize: "0.9rem", color: "white" }}
+                                >
+                                  Single
+                                </span>
+                              }
+                            />
+                          </Tooltip>
+
+                          <Tooltip
+                            title={Text1155}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <FormControlLabel
+                              style={{ color: "white" }}
+                              disabled
+                              value="ERC1155"
+                              onChange={() => {
+                                setNFTType("1155");
+                                getCollections("1155");
+                              }}
+                              checked={NFTType === "1155"}
+                              control={<Radio color="secondary" />}
+                              label={
+                                <span
+                                  style={{ fontSize: "0.9rem", color: "white" }}
+                                >
+                                  Multiple
+                                </span>
+                              }
+                            />
+                          </Tooltip>
                         </RadioGroup>
                       </FormControl>
                     ) : (
                       <FormControl component="fieldset">
-                        <lable
+                        <label
                           component="legend"
                           style={{ fontWeight: "bold", fontFamily: "poppins" }}
                         >
                           Select NFT Type
-                        </lable>
+                        </label>
                         <RadioGroup
                           row
                           aria-label="position"
                           name="position"
                           defaultValue="top"
                         >
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC721"
-                            onChange={() => {
-                              setNFTType("721");
-                              getCollections("721");
-                              // checked={saleType === 'auction'}
-                            }}
-                            checked={NFTType === "721"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>ERC721</span>
-                            }
-                          />
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC1155"
-                            onChange={() => {
-                              setNFTType("1155");
-                              getCollections("1155");
-                            }}
-                            checked={NFTType === "1155"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                ERC1155
-                              </span>
-                            }
-                          />
+                          <Tooltip
+                            title={Text721}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <FormControlLabel
+                              style={{ color: "black" }}
+                              value="ERC721"
+                              // onChange={() => {
+                              //   setNFTType("721");
+                              //   getCollections("721");
+                              //   // checked={saleType === 'auction'}
+                              // }}
+                              onChange={() => {
+                                setWorkProgressModalShow(true);
+                              }}
+                              checked={NFTType === "721"}
+                              control={<Radio color="secondary" />}
+                              label={
+                                <span style={{ fontSize: "0.9rem" }}>
+                                  Single{" "}
+                                  <i
+                                    class="fa fa-info-circle"
+                                    aria-hidden="true"
+                                  ></i>
+                                </span>
+                              }
+                            />
+                          </Tooltip>
+
+                          <Tooltip
+                            title={Text1155}
+                            classes={{ tooltip: classes.tooltip }}
+                          >
+                            <FormControlLabel
+                              style={{ color: "black", marginLeft: ".8rem" }}
+                              value="ERC1155"
+                              onChange={() => {
+                                setNFTType("1155");
+                                getCollections("1155");
+                              }}
+                              checked={NFTType === "1155"}
+                              control={<Radio color="secondary" />}
+                              label={
+                                <span style={{ fontSize: "0.9rem" }}>
+                                  Multiple{" "}
+                                  <i
+                                    class="fa fa-info-circle"
+                                    aria-hidden="true"
+                                  ></i>
+                                </span>
+                              }
+                            />
+                          </Tooltip>
                         </RadioGroup>
                       </FormControl>
                     )}
@@ -2202,12 +3129,26 @@ function NewNFT(props) {
                   {NFTType === "1155" ? (
                     <div>
                       <FormControl component="fieldset">
-                        <label
-                          component="legend"
-                          style={{ fontWeight: "bold", fontFamily: "poppins" }}
+                        <Tooltip
+                          title={SupplyTypeText}
+                          classes={{ tooltip: classes.tooltip }}
+                          placement="top-start"
+                          arrow={true}
                         >
-                          Select Supply Type
-                        </label>
+                          <label
+                            component="legend"
+                            style={{
+                              fontWeight: "bold",
+                              fontFamily: "poppins",
+                            }}
+                          >
+                            Select Supply Type{" "}
+                            <i
+                              className="fa fa-info-circle"
+                              aria-hidden="true"
+                            ></i>
+                          </label>
+                        </Tooltip>
                         <RadioGroup
                           row
                           aria-label="position"
@@ -2295,11 +3236,11 @@ function NewNFT(props) {
                               value={tokenSupply}
                               className="form-control"
                               onChange={(e) => {
-                                if (e.target.value > 0)
-                                  setTokenSupply(e.target.value);
-                                else {
-                                  setTokenSupply(1);
-                                }
+                                // if (e.target.value > 0)
+                                setTokenSupply(e.target.value);
+                                // else {
+                                // setTokenSupply(1);
+                                // }
                               }}
                             />
                           </div>
@@ -2315,21 +3256,30 @@ function NewNFT(props) {
                     description === "" ||
                     tokenSupply === "" ||
                     collection === "" ||
+                    tokenSupply <= 0 ||
                     isUploadingData === true ? (
-                      <button
-                        className="btn propsActionBtn"
-                        type="submit"
-                        disabled
+                      <Tooltip
+                        title={
+                          tokenSupply <= 0
+                            ? "Token Supply Cannot Be Less Than 1"
+                            : null
+                        }
                       >
-                        <i className="fa fa-plus"></i> Add NFT to queue
-                      </button>
+                        <button
+                          className="btn propsActionBtn"
+                          type="submit"
+                          disabled
+                        >
+                          <i className="fa fa-plus"></i> Add NFT to Queue
+                        </button>
+                      </Tooltip>
                     ) : (
                       <button
                         className="btn propsActionBtn"
                         type="button"
                         onClick={(e) => handleAddClick(e)}
                       >
-                        <i className="fa fa-plus"></i> Add NFT to queue
+                        <i className="fa fa-plus"></i> Add NFT to Queue
                       </button>
                     )}
                   </div>
@@ -2337,50 +3287,55 @@ function NewNFT(props) {
               </div>
             </form>
           </div>
-          
-            <div className="col-sm-12 col-md-6 col-lg-5" style={{marginLeft:'10px'}}>
-              {/* <!-- Change Password Form --> */}
-              <form>
-                {/* <Scrollbars style={{ height: 1500 }}> */}
 
-                {/* CARD */}
-                <div className="form-group">
-                  <div>
-                    <Grid
-                      container
-                      spacing={2}
-                      direction="row"
-                      justify="flex-start"
-                      // alignItems="flex-start"
-                    >
-                      {tokenList.map((i, index) => (
-                        <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
-                          <CardActionArea
-                            onClick={() => {
-                              console.log("nftDetailObject: ", i);
-                              handleOpenNFTDetailModal(i);
-                              setEditObjectIndex(index);
-                              console.log("Open Dialog Value: ", openDialog);
-                            }}
-                          >
-                            <Card id="nftCardProps">
-                              {/* <CardHeader
+          <div
+            className="col-sm-12 col-md-6 col-lg-5"
+            style={{ marginLeft: "10px" }}
+          >
+            {/* <!-- Change Password Form --> */}
+            <form>
+              {/* <Scrollbars style={{ height: 1500 }}> */}
+
+              {/* CARD */}
+              <div className="form-group">
+                <div>
+                  <Grid
+                    container
+                    spacing={2}
+                    direction="row"
+                    justify="flex-start"
+                    // alignItems="flex-start"
+                  >
+                    {tokenList.map((i, index) => (
+                      <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
+                        <CardActionArea
+                          onClick={() => {
+                            console.log("nftDetailObject: ", i);
+                            handleOpenNFTDetailModal(i);
+                            setEditObjectIndex(index);
+                            console.log("Open Dialog Value: ", openDialog);
+                          }}
+                        >
+                          <Card id="nftCardProps">
+                            {/* <CardHeader
                                 className="text-center"
                                 title={i.title}
                               /> */}
-                              <CardMedia className={classes.media} image={i.nftURI}>
-                                
-                                {/* className={classes.media}
+                            <CardMedia
+                              className={classes.media}
+                              image={i.nftURI}
+                            >
+                              {/* className={classes.media}
                                 image={
                                   i.previewImageURI === ""
                                     ? i.nftURI
                                     : i.previewImageURI
                                 }
                                 title="NFT Image" */}
-                                {/* /> */}
-                              </CardMedia>
-                            </Card>
-                            {/* <Dialog
+                              {/* /> */}
+                            </CardMedia>
+                          </Card>
+                          {/* <Dialog
                                                         fullWidth={true}
                                                         maxWidth={true}
                                                         open={openDialog}
@@ -2417,19 +3372,19 @@ function NewNFT(props) {
                                                             </form>
                                                         </DialogContent>
                                                     </Dialog> */}
-                          </CardActionArea>
-                          <CardActions>
-                            <Button
-                              onClick={(e) => {
-                                e.preventDefault();
-                                handleRemoveClick(index);
-                              }}
-                              className="btn btn-sm btn-block propsActionBtn"
-                            >
-                              Remove NFT
-                            </Button>
-                          </CardActions>
-                          {/* <NFTDetailModal 
+                        </CardActionArea>
+                        <CardActions>
+                          <Button
+                            onClick={(e) => {
+                              e.preventDefault();
+                              handleRemoveClick(index);
+                            }}
+                            className="btn btn-sm btn-block propsActionBtn"
+                          >
+                            Remove NFT
+                          </Button>
+                        </CardActions>
+                        {/* <NFTDetailModal 
                                                     show={openDialog} 
                                                     handleClose={handleCloseNFTDetailModal}
                                                     nftDetail={tokenList[index]}
@@ -2444,16 +3399,15 @@ function NewNFT(props) {
                                                     onUpdate={onUpdateEditModal}
                                                 >
                                                 </NFTEditModal> */}
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
+                      </Grid>
+                    ))}
+                  </Grid>
                 </div>
+              </div>
 
-                {/* </Scrollbars> */}
-              </form>
-            </div>
-          
+              {/* </Scrollbars> */}
+            </form>
+          </div>
         </div>
         {isSaving ? (
           <div className="text-center">
@@ -2525,6 +3479,10 @@ function NewNFT(props) {
         handleChangeCollection={handleChangeCollectionOpen}
         isUploadingData={isUploadingData}
       ></NFTEditModal>
+      <NewTamplateModal
+        handleClose={handleNewTemplateModalClose}
+        show={newTemplateModalShow}
+      />
       <ChangeCollectionConfirmationModal
         show={changeCollection}
         handleClose={handleChangeCollectionClose}
@@ -2532,6 +3490,10 @@ function NewNFT(props) {
         updateChangeCollection={updateChangeCollection}
         isUploading={isUploadingData}
       ></ChangeCollectionConfirmationModal>
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

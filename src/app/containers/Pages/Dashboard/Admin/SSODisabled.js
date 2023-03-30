@@ -32,10 +32,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -121,7 +121,7 @@ function SSODisabled(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
-
+  const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -132,7 +132,15 @@ function SSODisabled(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const history = useHistory();
 
   useEffect(() => {
@@ -166,7 +174,7 @@ function SSODisabled(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/disabled?userType=v1`)
+      .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.admins);
@@ -188,8 +196,6 @@ function SSODisabled(props) {
       });
   };
 
-  
-
   let handleEnableSSO = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -203,7 +209,7 @@ function SSODisabled(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/enable?userType=v1`, data).then(
+    axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -244,7 +250,7 @@ function SSODisabled(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
@@ -253,7 +259,11 @@ function SSODisabled(props) {
                     Wallet Address
                   </div>
                 </th>
-               
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
+                    Details
+                  </div>
+                </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-center align-items-center">
                     Status
@@ -268,19 +278,32 @@ function SSODisabled(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
+                        <span >{i.walletAddress.slice(0, 8)}...</span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-4">N/A</label>
                     )}
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
                     {i.isEnabled === false ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
-                          className={classes.approveBtn}
+                          className={`${classes.approveBtn} ml-4`}
                           // style={{
                           //   backgroundColor: "#000",
                           //   color: "#fff",
@@ -322,6 +345,11 @@ function SSODisabled(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

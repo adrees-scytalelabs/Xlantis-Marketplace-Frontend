@@ -89,7 +89,7 @@ function SuperAdminSSOScreen(props) {
     setOpen(true);
     axios
 
-      .get(`/v1-sso/super-admin/admins/counts`)
+      .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
         console.log(response);
         setTotalAdmins(response.data.counts.totalAdmins);
@@ -113,6 +113,9 @@ function SuperAdminSSOScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     });
     getCounts();
     // eslint-disable-next-line

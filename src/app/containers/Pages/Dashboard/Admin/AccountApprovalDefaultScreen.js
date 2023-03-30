@@ -5,11 +5,11 @@ import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory } from "react-router-dom";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import Table from "react-bootstrap/Table";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,6 +18,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -96,12 +99,22 @@ function AccountApprovalDefaultScreen(props) {
   const [page, setPage] = useState(0); // eslint-disable-next-line
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
+  const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -120,8 +133,11 @@ function AccountApprovalDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "active",
       accounts: "",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -145,7 +161,7 @@ function AccountApprovalDefaultScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/unverified/${start}/${end}?userType=v1`)
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.unverifiedAdmins);
@@ -173,9 +189,7 @@ function AccountApprovalDefaultScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(
-        `/v2-wallet-login/super-admin/admins/unverified/${start}/${end}?userType=v2`
-      )
+      .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.unverifiedAdmins);
@@ -210,7 +224,7 @@ function AccountApprovalDefaultScreen(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -247,7 +261,7 @@ function AccountApprovalDefaultScreen(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v2-wallet-login/super-admin/admin/verify?userType=v2`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -286,13 +300,18 @@ function AccountApprovalDefaultScreen(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-4">
                     Email
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
+                    Details
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
@@ -314,16 +333,32 @@ function AccountApprovalDefaultScreen(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        
-                        <span>{i.walletAddress.slice(0, 6)}...</span>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={800}
+                        title={i.walletAddress}
+                        arrow
+                      >
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-4">N/A</label>
                     )}
                   </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
                   <td className={`${classes.collectionTitle}`}>
-                    <label style={{ marginLeft: "10%" }}>SSO</label>
+                    <span className="ml-1">
+                      <label className="ml-5">SSO</label>
+                    </span>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
@@ -365,15 +400,30 @@ function AccountApprovalDefaultScreen(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
                   <td className={classes.collectionTitle}>
-                    <label>N/A</label>
+                    <label className="ml-4">N/A</label>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <Tooltip title={i.walletAddress}>
-                      <span>{i.walletAddress.slice(0, 6)}...</span>
+                    <Tooltip
+                      classes={{ tooltip: classes.noMaxWidth }}
+                      leaveDelay={800}
+                      title={i.walletAddress}
+                      arrow
+                    >
+                      <span className="ml-4">
+                        {i.walletAddress.slice(0, 8)}...
+                      </span>
                     </Tooltip>
                   </td>
                   <td className={classes.collectionTitle}>
-                    <label style={{ marginLeft: "10%" }}>Wallet</label>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <label className="ml-5">Wallet</label>
                   </td>
                   <td>
                     {/* <div style={{backgroundColor : "#28a760"}}> */}
@@ -433,6 +483,11 @@ function AccountApprovalDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

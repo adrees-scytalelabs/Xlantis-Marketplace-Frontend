@@ -40,10 +40,11 @@ import AuctionNFT from "./Admin/AuctionNFT";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import transakSDK from "@transak/transak-sdk";
+import TopUp from "./Admin/TopUp";
 
-axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+axios.defaults.headers.common[
   "Authorization"
-)}`;
+] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function AdminDashboard(props) {
   let { path } = useRouteMatch();
@@ -93,6 +94,7 @@ function AdminDashboard(props) {
     myCubes: "",
     newRandomDrop: "",
     marketPlace: "",
+    topUp:""
   });
 
   function openTransak() {
@@ -207,7 +209,7 @@ function AdminDashboard(props) {
 
               <Dropdown.Menu
                 alignRight="true"
-                style={{ backgroundColor: "rgb(167, 0, 0)" }}
+                style={{ backgroundColor: "black" }}
               >
                 <Dropdown.Item>
                   <Link to="/dashboard" style={{ width: "100%" }}>
@@ -215,10 +217,15 @@ function AdminDashboard(props) {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
+                  <Link to="/admin/settings" style={{ width: "100%" }}>
+                    Profile Settings
+                  </Link>
+                </Dropdown.Item>
+                {/* <Dropdown.Item>
                   <span style={{ color: "white" }} onClick={openTransak}>
                     Buy Crypto
                   </span>
-                </Dropdown.Item>
+                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
@@ -292,6 +299,9 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/dropApproval`}>
               <DropApproval setActiveTab={setActiveTab} />
             </Route>
+            <Route exact path={`${path}/topUp`}>
+              <TopUp setActiveTab={setActiveTab} />
+            </Route>
 
             <Route exact path={`${path}/newDrop`}>
               <NewDrop setActiveTab={setActiveTab} />
@@ -324,7 +334,7 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/createNewCollection`}>
               <NewCollection setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/newCollection`}>
+            <Route exact path={`${path}/myCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
 
@@ -356,6 +366,9 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>
+            {/* <Route exact path={`${path}/admin/profileSettings`}>
+              <ProfileSetting setActiveTab={setActiveTab} />
+            </Route> */}
 
             <Route path={`${path}`}>
               <AdminDashboardDefaultScreen

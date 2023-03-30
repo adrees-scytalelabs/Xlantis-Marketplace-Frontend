@@ -122,6 +122,9 @@ function Accounts(props) {
       accounts: "active",
       sso: "",
       wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
     }); // eslint-disable-next-line
   }, []);
 

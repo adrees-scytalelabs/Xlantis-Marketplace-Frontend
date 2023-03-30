@@ -115,7 +115,7 @@ function MarketPlacePage(props) {
     handleShowBackdrop();
     const version = Cookies.get("Version");
     console.log("version", version);
-    axios.get(`/${version}/drop/saleType/${saleType}/${start}/${end}`).then(
+    axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
         setTokenList(response.data.data);

@@ -30,6 +30,8 @@ import money from "../../assets/img/wallet.png";
 import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import { useSnackbar } from "notistack";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import jwtDecode from "jwt-decode";
 import {
   createMuiTheme,
@@ -48,7 +50,17 @@ import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import CartModal from "../Modals/CartModal";
 import BusinessIcon from "@material-ui/icons/Business";
 import ListAltIcon from "@material-ui/icons/ListAlt";
+import List from "@material-ui/core/List";
+import ListItem from "@material-ui/core/ListItem";
 
+import ListItemText from "@material-ui/core/ListItemText";
+import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import { io } from "socket.io-client";
+import zIndex from "@material-ui/core/styles/zIndex";
+import NotificationList from "../Cards/NotificationList Card";
+import Badge from "@material-ui/core/Badge";
+import WorkInProgressModal from "../Modals/WorkInProgressModal";
 
 const customTheme = createMuiTheme({
   overrides: {
@@ -80,6 +92,34 @@ function HeaderHome(props) {
   const [tokenVerification, setTokenVerification] = useState(true);
   let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
   let location = useLocation();
+  const [userId, setUserId] = useState("");
+  const [socket, setSocket] = useState(null);
+  const [anchorElPopper, setAnchorElPopper] = React.useState(null);
+  const openPopper = Boolean(anchorElPopper);
+  const [notificationsList, setNotificationsList ] = useState();
+  let [isSaving, setIsSaving] = useState(false);
+  let [notificationCount, setNotificationCount] = useState(0);
+  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+  useEffect(() => {
+    // setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    setSocket(io("http://localhost:3002"));
+    console.log("socket was set");
+  }, []);
+  useEffect(() => {
+    if (userId !== "" && socket !== null) {
+      socket.emit("user-logged-in", userId);
+    } else if (userId === "" && socket !== null) {
+      socket.emit("user-logged-out", userId);
+    }
+  }, [socket, userId]);
 
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
@@ -188,6 +228,98 @@ function HeaderHome(props) {
     }
   };
 
+  function getNotifications(start, end) {
+    // let data = {
+    //   message : "Bid on Single NFT accepted by the owner.",
+    //   userId
+    // }
+    // axios.post('/notifications/generate', data).then(
+    //   (response) => {
+    //     console.log("notifications generated");
+    //   },
+    //   (error) => {
+    //     if (process.env.NODE_ENV === "development") {
+    //       console.log(error);
+    //       console.log(error.response);
+    //     }
+    //     if (error.response.data !== undefined) {
+    //       if (
+    //         error.response.data === "Unauthorized access (invalid token) !!"
+    //       ) {
+    //         sessionStorage.removeItem("Authorization");
+    //         sessionStorage.removeItem("Address");
+    //         Cookies.remove("Version");
+
+    //         // window.location.reload(false);
+    //       }
+    //     }
+    //   }
+    // );
+    
+    axios.get(`/notifications/${start}/${end}`).then(
+      (response) => {
+        console.log("notification response", response);
+        setNotificationsList(response.data.notifications);
+        setNotificationCount(response.data.notifications.length);
+
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        // if (error.response.data !== undefined) {
+        //   if (
+        //     error.response.data === "Unauthorized access (invalid token) !!"
+        //   ) {
+        //     // sessionStorage.removeItem("Authorization");
+        //     // sessionStorage.removeItem("Address");
+        //     // Cookies.remove("Version");
+
+        //     // window.location.reload(false);
+        //   }
+        // }
+      }
+    );
+  }
+
+  function readNotification(notificationId) {
+    // e.preventDefault();
+    // setIsSaving(true);
+    // handleShowBackdrop();
+    // setIsUploadingData(true);
+
+    //sending data to backend
+    let data = {
+      notificationId
+    };
+
+    console.log("data", data);
+
+    axios.patch("/notifications/hide", data).then(
+      (response) => {
+        console.log("notification hide response: ", response);
+        // handleCloseBackdrop();
+        // setIsSaving(false);
+        // getNotifications(0, 10);
+        // setIsUploadingData(false);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+
+        // setIsUploadingData(false);
+
+        // handleCloseBackdrop();
+
+        // let variant = "error";
+        // enqueueSnackbar("Unable to Verify Admin.", { variant });
+      }
+    );
+
+    // getNotifications(0,10);
+    
+  }
   async function handleLogin() {
     await loadWeb3();
     const web3 = window.web3;
@@ -246,24 +378,30 @@ function HeaderHome(props) {
         (response) => {
           console.log("response", response);
           if (props.role === "admin") {
-            setAdminSignInData(response.data);
+            console.log("admin sett");
+            console.log("admin data set");
             Cookies.set("Version", "v2-wallet-login", {});
-              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-              Cookies.set("Verified", response.data.isVerified, {});
-              sessionStorage.setItem("Authorization", response.data.raindropToken, {});
-              if (
-                response.data.isInfoAdded === true &&
-                response.data.isVerified === true
-              ) {
-                sessionStorage.setItem("Address", accounts[0]);
-                window.location.reload(false);
-              }
+            console.log("version set");
+            Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+            Cookies.set("Verified", response.data.isVerified, {});
+            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+            if (
+              response.data.isInfoAdded === true &&
+              response.data.isVerified === true
+            ) {
+              // console.log("In the conditions");
+              sessionStorage.setItem("Address", accounts[0]);
+              window.location.reload(false);
+            }
+            setAdminSignInData(response.data);
+
           } 
           else {
             console.log("Running user", response.data)
             Cookies.set("Version", "v2-wallet-login", {});
             sessionStorage.setItem("Authorization", response.data.raindropToken, {});
             sessionStorage.setItem("Address", accounts[0]);
+            setUserId(accounts[0]);
             window.location.reload(); 
           // }
         }},
@@ -291,6 +429,12 @@ function HeaderHome(props) {
 
     setMOdalOpen(false);
     // contract = new web3.eth.Contract(ABI, ADDRESS);
+  }
+
+  function handleNotificationsIcon(event) {
+    console.log("I was called");
+    setAnchorElPopper(anchorElPopper ? null : event.currentTarget);
+    console.log("event", event);
   }
   
   const selectedStyling = {
@@ -342,6 +486,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     // web3Modal.clearCachedProvider();
+    setUserId("");
      history.push({ pathname: '/' });
     window.location.reload(false);
 
@@ -374,7 +519,19 @@ function HeaderHome(props) {
   }
   
 
-if(adminSignInData !== null) {
+// if(adminSignInData !== null) {
+//       if (
+//         adminSignInData.isInfoAdded === true &&
+//         adminSignInData.isVerified === false
+//       ) {
+//          // Case 2
+//          let variant = "info";
+//          enqueueSnackbar("Your request is under process aaa. Waiting for approval by the Super Admin", { variant })
+//       }
+// }
+
+  useEffect(() => {
+    if(adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
@@ -383,7 +540,8 @@ if(adminSignInData !== null) {
          let variant = "info";
          enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
-}
+    }  
+  }, [adminSignInData])
 
   adminSignInData &&
   console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
@@ -413,6 +571,7 @@ if(adminSignInData !== null) {
 
   useEffect(() => {
     getProfile();
+    getNotifications(0,10);
     console.log("In Hook");
   },[]);
 
@@ -584,7 +743,7 @@ if(adminSignInData !== null) {
             ):
             null
            }
-            <li
+            {/* <li
               className="login-link"
               style={{ padding: "15px 20px" }}
               onClick={openTransak}
@@ -598,7 +757,7 @@ if(adminSignInData !== null) {
               >
                 Buy Crypto
               </span>
-            </li>
+            </li> */}
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -753,7 +912,10 @@ if(adminSignInData !== null) {
                 <span
                       className={hoverClassStyle.Community}
                       style={selectedNavStyle.Community}
-                      onClick={handleLogin}
+                      // onClick={handleLogin}
+                      onClick={() => {
+                        setWorkProgressModalShow(true);
+                      }}
                     >
                       Sign in with wallet
                       {/* Connect Wallet */}
@@ -777,11 +939,11 @@ if(adminSignInData !== null) {
             }
           </li>
 
-          <li className="header-item-rht">
+          {/* <li className="header-item-rht">
             <span style={{ color: "#fff" }} onClick={openTransak}>
               <span style={{ cursor: "pointer" }}>Buy Crypto</span>
             </span>
-          </li>
+          </li> */}
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
@@ -792,6 +954,61 @@ if(adminSignInData !== null) {
               onClick={handleOpenCart}
               style={{ cursor: "pointer" }}
             />
+          </li>
+          <li>
+            {sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <div>
+                <Badge color="secondary" badgeContent={1}>
+                  <NotificationsIcon
+                    type="button"
+                    onClick={(event) => {
+                      setAnchorElPopper(
+                        anchorElPopper ? null : event.currentTarget
+                      );
+                    }}
+                  />
+                </Badge>
+                <Popper
+                  id={openPopper ? "simple-popper" : undefined}
+                  open={openPopper}
+                  anchorEl={anchorElPopper}
+                  placement="bottom-end"
+                  style={{
+                    zIndex: 2500,
+                    paddingTop: 15,
+                  }}
+                >
+                  <div>
+                    <Paper elevation={3} variant="outlined" square>
+                      <NotificationList itemCount={notificationCount}  notifications = {notificationsList} close = {readNotification} />
+                      {/* <ul
+                        style={{
+                          listStyleType: "none",
+                          padding: 10,
+                          margin: 0,
+                        }}
+                      >
+                        <li>
+                          <div>Congratulations! John accepted your bid</div>
+                        </li>
+                        {/* <Divider />
+                        <li>
+                          <div style={{ padding: 2 }}>
+                            Congratulations! Amy accepted your bid
+                          </div>
+                        </li>
+                        <Divider />
+                        <li>
+                          <div style={{ padding: 2 }}>
+                            Congratulations! Amy accepted your bid
+                          </div>
+                        </li>
+                      </ul> */}
+                    </Paper>
+                  </div>
+                </Popper>
+              </div>
+            ) : null}
           </li>
         </ul>
         <NetworkErrorModal
@@ -804,8 +1021,17 @@ if(adminSignInData !== null) {
         handleClose={handleCloseModal}
         open={modalOpen}
         metamaskLogin={handleLogin}
+        openWorkProgressModal={() => {
+          setMOdalOpen(false);
+          setWorkProgressModalShow(true);
+        }}
+      />
+      <WorkInProgressModal
+       show={workProgressModalShow} 
+       handleClose={() => setWorkProgressModalShow(false)} 
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
+   
     </header>
   );
 }

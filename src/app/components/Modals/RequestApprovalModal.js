@@ -12,7 +12,9 @@ const RequestApprovalModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header>Approval Required</Modal.Header>
+      <Modal.Header closeButton className="custom-header">
+        Approval Required
+      </Modal.Header>
       <Modal.Body>
         <div
           style={{
@@ -38,6 +40,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
@@ -53,7 +56,7 @@ const RequestApprovalModal = (props) => {
               )}
             </Col>
           </Row>
-          <Row className="justify-content-end align-items-center no-gutters">
+          {/* <Row className="justify-content-end align-items-center no-gutters">
             <Col style={{ color: "#000" }}>Give Approval to Auction Drop.</Col>
             <Col className="text-right">
               {props.approvingAuction ? (
@@ -64,6 +67,7 @@ const RequestApprovalModal = (props) => {
                 <button
                   className="btn"
                   type="button"
+                  disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
                     marginRight: 0,
@@ -78,7 +82,7 @@ const RequestApprovalModal = (props) => {
                 </button>
               )}
             </Col>
-          </Row>
+          </Row> */}
         </div>
       </Modal.Body>
       <Modal.Footer>

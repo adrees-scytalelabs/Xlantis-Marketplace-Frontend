@@ -35,6 +35,9 @@ import { AuthContextProvider } from "../../components/context/AuthContext";
 import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
 import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
 import Testt from "../Pages/Users/Testt";
+import Success from "../Pages/Users/UserProfile/Success";
+import Failed from "../Pages/Users/UserProfile/Failed";
+import AdminSettings from "../Pages/Dashboard/AdminSettings";
 
 function App() {
   const [reload, setReload] = useState();
@@ -49,9 +52,9 @@ function App() {
     jwt !== null && console.log("jwt in application: ", jwt);
     if (jwtDecoded) {
       isLoggedIn = true;
-      if(Cookies.get("Verified") === 'true') {
-        isVerified = true
-      } else if(Cookies.get("Verified") === 'false') isVerified = false;
+      if (Cookies.get("Verified") === "true") {
+        isVerified = true;
+      } else if (Cookies.get("Verified") === "false") isVerified = false;
       version = Cookies.get("Version");
       console.log("isLoggedIn", isLoggedIn);
       console.log("isVerified", isVerified);
@@ -68,10 +71,9 @@ function App() {
     return () => {
       controller.abort();
     };
-
   }, [jwt]);
 
- jwt !== null && console.log("jwtDecoded", jwtDecoded.role);
+  jwt !== null && console.log("jwtDecoded", jwtDecoded.role);
 
   const PrivateRoute = ({ path, ...rest }) => {
     if (jwtDecoded && isLoggedIn) {
@@ -87,7 +89,9 @@ function App() {
                   <Redirect to="/" />
                 )
               ) : version === "v2-wallet-login" ? (
-                isLoggedIn && isVerified ? <AdminDashboard {...props} jwtDecoded={jwtDecoded} /> : (
+                isLoggedIn && isVerified ? (
+                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                ) : (
                   <Redirect to="/" />
                 )
               ) : isLoggedIn ? (
@@ -178,6 +182,10 @@ function App() {
       return <Route component={AuctionDrops} />;
     } else if (path === "/fixedDropNFTHome") {
       return <Route component={FixedDropSingleNFTHome} />;
+    } else if (path === "/usd_payment/success") {
+      return <Route component={Success} />;
+    } else if (path === "/usd_payment/failed") {
+      return <Route component={Failed} />;
     } else if (path === "/test") {
       return <Route component={Testt} />;
     } else if (path === "/auctionDrops/DropCubes/:dropId") {
@@ -254,6 +262,8 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/checkout" />
             <LoginRegisterRedirectCheck exact path="/admin-signup-details" />
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
+            <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
+            <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
             {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
             <LoginRegisterRedirectCheck
@@ -308,11 +318,28 @@ function App() {
 
             <PrivateRoute path="/dashboard" />
             <PrivateRoute path="/superAdminDashboard" />
+            {/* <PrivateRoute path="/admin/settings" /> */}
             <Route
               exact
               path="/user/settings"
               render={(routeProps) =>
-                (isLoggedIn && jwtDecoded.role === "user") ? <UserSettings {...routeProps} /> : <Redirect to="/" />}
+                isLoggedIn && jwtDecoded.role === "user" ? (
+                  <UserSettings {...routeProps} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
+            />
+            <Route
+              exact
+              path="/admin/settings"
+              render={(routeProps) =>
+                isLoggedIn && jwtDecoded.role === "admin" ? (
+                  <AdminSettings {...routeProps} />
+                ) : (
+                  <Redirect to="/" />
+                )
+              }
             />
           </Switch>
         </BrowserRouter>

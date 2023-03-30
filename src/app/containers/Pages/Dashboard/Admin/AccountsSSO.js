@@ -36,6 +36,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -111,10 +115,9 @@ function AccountsSSO(props) {
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
+  const [modalData, setModalData] = useState();
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
-
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -143,8 +146,11 @@ function AccountsSSO(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "active",
-      sso:"",
-      wallet:"",
+      sso: "",
+      wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
 
@@ -171,7 +177,7 @@ function AccountsSSO(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/${start}/${end}`)
+      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.Admins);
@@ -206,27 +212,31 @@ function AccountsSSO(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on status pending nft: ", error);
         console.log("Error on status pending nft: ", error.response);
-
-        // setIsUploadingData(false);
-
         handleCloseBackdrop();
-
         let variant = "error";
         enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
     );
+  };
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
   };
 
   return (
@@ -234,30 +244,17 @@ function AccountsSSO(props) {
       {/* Page Content */}
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
           <Table responsive>
             <thead>
               <tr>
+                <th className={classes.tableHeader}>Username</th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
+                  <span className="ml-4"> Email</span>
                 </th>
+                <th className={classes.tableHeader}>Wallet Address</th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Email
-                  </div>
+                  <div className="ml-5">Details</div>
                 </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
-                </th>
-                {/* <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
-                  </div>
-                </th> */}
               </tr>
             </thead>
             {admins.map((i, index) => (
@@ -267,12 +264,27 @@ function AccountsSSO(props) {
                   <td className={classes.collectionTitle}>{i.email}</td>
                   <td className={classes.collectionTitle}>
                     {i.walletAddress != undefined ? (
-                      <Tooltip title={i.walletAddress}>
-                        <span>{i.walletAddress.slice(0, 8)}...</span>
+                      <Tooltip
+                        classes={{ tooltip: classes.noMaxWidth }}
+                        leaveDelay={1500}
+                        title={i.walletAddress}
+                        arrow
+                      >
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
                       </Tooltip>
                     ) : (
-                      <label>N/A</label>
+                      <label className="ml-5">N/A</label>
                     )}
+                  </td>
+                  <td className={classes.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) => handleModalOpen(e, i)}
+                    >
+                      View
+                    </button>
                   </td>
                 </tr>
               </tbody>
@@ -298,6 +310,11 @@ function AccountsSSO(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { TablePagination } from "@material-ui/core/";
+import { Grow, TablePagination, Zoom } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -15,7 +15,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { createMuiTheme, Tooltip, Fade } from "@material-ui/core";
+// import { styled,tooltipClasses} from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -32,10 +33,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import { useHistory, useRouteMatch } from "react-router-dom";
 import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +41,9 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 300,
+  },
+  noMaxWidth: {
+    maxWidth: "none",
   },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
@@ -111,12 +112,12 @@ function VerifiedAccountsDefaultScreen(props) {
 
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
 
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [modalData, setModalData] = useState();
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); // eslint-disable-next-line
@@ -149,9 +150,11 @@ function VerifiedAccountsDefaultScreen(props) {
       verifiedAccounts: "active",
       sso: "",
       wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
     }); // eslint-disable-next-line
   }, []);
-
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -162,7 +165,15 @@ function VerifiedAccountsDefaultScreen(props) {
       newPage * rowsPerPage + rowsPerPage
     );
   };
-
+  const handleModalOpen = (e, data) => {
+    e.preventDefault();
+    handleShow();
+    setModalData(data);
+  };
+  const handleModalClose = (e, data) => {
+    e.preventDefault();
+    handleClose();
+  };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     getUnverifiedAdmins(0, parseInt(event.target.value, 10));
@@ -175,7 +186,7 @@ function VerifiedAccountsDefaultScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v1-sso/super-admin/admins/${start}/${end}`)
+      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
         console.log("response.data", response.data);
         setAdmins(response.data.Admins);
@@ -202,7 +213,7 @@ function VerifiedAccountsDefaultScreen(props) {
     // )}`;
     setOpen(true);
     axios
-      .get(`/v2-wallet-login/super-admin/admins/${start}/${end}`)
+      .get(`/super-admin/admins/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log("response.data", response.data);
         setWalletAdmins(response.data.Admins);
@@ -223,7 +234,6 @@ function VerifiedAccountsDefaultScreen(props) {
         setOpen(false);
       });
   };
-
   let handleVerify = (e, verifyAdminId) => {
     e.preventDefault();
     setIsSaving(true);
@@ -237,7 +247,7 @@ function VerifiedAccountsDefaultScreen(props) {
 
     console.log("data", data);
 
-    axios.patch(`/v1-sso/super-admin/admin/verify?userType=v1`, data).then(
+    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         console.log("admin verify response: ", response);
         let variant = "success";
@@ -275,13 +285,18 @@ function VerifiedAccountsDefaultScreen(props) {
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
+                  <div className="row no-gutters justify-content-start align-items-center ml-3">
                     Email
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
                   <div className="row no-gutters justify-content-start align-items-center">
                     Wallet Address
+                  </div>
+                </th>
+                <th className={classes.tableHeader}>
+                  <div className="row no-gutters justify-content-start align-items-center ml-5">
+                    Details
                   </div>
                 </th>
                 <th className={classes.tableHeader}>
@@ -305,15 +320,32 @@ function VerifiedAccountsDefaultScreen(props) {
                       <td className={classes.collectionTitle}>{i.email}</td>
                       <td className={classes.collectionTitle}>
                         {i.walletAddress != undefined ? (
-                          <Tooltip title={i.walletAddress}>
-                            <span>{i.walletAddress.slice(0, 8)}...</span>
+                          <Tooltip
+                            classes={{ tooltip: classes.noMaxWidth }}
+                            leaveDelay={1500}
+                            title={i.walletAddress}
+                            arrow
+                          >
+                            <span className="ml-4">
+                              {i.walletAddress.slice(0, 8)}...
+                            </span>
                           </Tooltip>
                         ) : (
-                          <label>N/A</label>
+                          <label className="ml-4">N/A</label>
                         )}
                       </td>
                       <td className={classes.collectionTitle}>
-                        <label style={{ marginLeft: "10%" }}>SSO</label>
+                        <button
+                          className="btn submit-btn propsActionBtn "
+                          onClick={(e) => handleModalOpen(e, i)}
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <span className="ml-1">
+                          <label className="ml-5">SSO</label>
+                        </span>
                       </td>
                     </tr>
                   </tbody>
@@ -326,14 +358,27 @@ function VerifiedAccountsDefaultScreen(props) {
                   <tbody>
                     <tr>
                       <td className={classes.collectionTitle}>{i.username}</td>
-                      <td className={classes.collectionTitle}>N/A</td>
+                      <td className={classes.collectionTitle}><label className="ml-4">N/A</label></td>
                       <td className={classes.collectionTitle}>
-                        <Tooltip title={i.walletAddress}>
-                          <span>{i.walletAddress.slice(0, 8)}...</span>
+                        <Tooltip
+                          classes={{ tooltip: classes.noMaxWidth }}
+                          leaveDelay={1500}
+                          title={i.walletAddress}
+                          arrow
+                        >
+                          <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
                         </Tooltip>
                       </td>
                       <td className={classes.collectionTitle}>
-                        <label style={{ marginLeft: "10%" }}>Wallet</label>
+                        <button
+                          className="btn submit-btn propsActionBtn "
+                          onClick={(e) => handleModalOpen(e, i)}
+                        >
+                          View
+                        </button>
+                      </td>
+                      <td className={classes.collectionTitle}>
+                        <label className="ml-5">Wallet</label>
                       </td>
                     </tr>
                   </tbody>
@@ -361,6 +406,11 @@ function VerifiedAccountsDefaultScreen(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
+      <AdminInformationModal
+        show={show}
+        handleClose={handleModalClose}
+        adminData={modalData}
+      ></AdminInformationModal>
     </div>
   );
 }

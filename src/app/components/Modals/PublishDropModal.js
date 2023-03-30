@@ -14,7 +14,8 @@ import Divider from "@material-ui/core/Divider";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Badge from "@material-ui/core/Badge";
-import axios from "axios";
+import { useSnackbar } from "notistack";
+import Box from "@material-ui/core/Box";
 
 
 // CUSTOM MATERIAL UI STYLING
@@ -140,641 +141,423 @@ const makeTheme = createMuiTheme({
   },
 });
 
-let data = {
-  gasPriceInGwei: "20",
-  totalCostInWei: "20000000000",
-  estimatedTimeInSec: 123654,
-  slippage: 10, // in percentage
-  collections: {
-    noOfTxs: 1,
-    totalCollectionsToCreate: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  nfts: {
-    noOfTxs: 0,
-    totalNftsToMint: 1,
-    MuiAccordion: {
-      root: {},
-    },
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  approval: {
-    noOfTxs: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-  drop: {
-    noOfTxs: 1,
-    gasUsed: 123456,
-    totalCostInWei: "20000000000",
-  },
-};
-
-console.log("json: ", data);
-
 //   COMPONENT FUNCTION
 const PublishDropModal = (props) => {
   // States
+  const { enqueueSnackbar } = useSnackbar();
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
+  const [costInfo, setCostInfo] = useState({});
+  const [amount, setAmount] = useState(5);
+  const [topUpModal, setTopUpModal] = useState(false);
   const classes = useStyles();
 
   // Handlers
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
-
-  const handleBuyCrypto = () => {
-    if (disabled) {
-      console.log("Buy Crypto!");
-      setTimeout(() => {
-        setDisabled(false);
-      }, 10000);
-    } else console.log("why are you so greedy?");
+  const handleCloseTopUpModal = () => {
+   // props.setTopUpModal(false);
   };
-
-  const getTxSummary = (dropId) => {
-    
-    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
-        console.log("response", response);
-        data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-        
-        
-      
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
-      }
-    );
+  const handleConfirm = (e) => {
+    e.preventDefault();
+    if (props.cost.isTopupRequired === true) {
+      // props.setTopUpModal(true);
+      // props.setOpen(false);
+      let variant = "error";
+      enqueueSnackbar(
+        "Your account has insufficient funds for this transaction. Kindly top up your account.",
+        { variant }
+      );
+    }
+    else {
+      props.handlePublish();
+    }
   };
-
   useEffect(() => {
     clearTimeout();
+    if (props.open === true) {
+      console.log("tx-summary", props.dropData);
+      console.log("cost info", props.cost);
+    }
     console.log("Props : ", props);
     // getTxSummary(props.dropId);
-  }, []);
+  }, [props]);
 
   return (
-    <div>
-      <ThemeProvider theme={makeTheme}>
-        <Modal
-          aria-labelledby="transition-modal-title"
-          aria-describedby="transition-modal-description"
-          className={classes.modal}
-          open={props.open}
-          onClose={props.handleClose}
-          closeAfterTransition
-          BackdropComponent={Backdrop}
-          BackdropProps={{
-            timeout: 500,
-          }}
-        >
-          <Fade in={props.open}>
-            <div className={classes.paper}>
-              <div className="row no-gutters mb-3">
-                <div className="col-12 align-self-center">
-                  <Typography
-                    variant="h4"
-                    //   component="h6"
-                    className={classes.cardHeading}
-                  >
-                    Purchase Summary
-                  </Typography>
-                </div>
-              </div>
-              {/* Gas Price */}
-              {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    Gas Price in Gwei:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.gasPriceInGwei}
-                  </p>
-                </div>
-              </div> */}
-              {/* <Divider /> */}
-              {/* Slippage */}
-              {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    //   component="h6"
-                    className={classes.cardTitle}
-                  >
-                    Slippage:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    //   style={{ lineHeight: "1.6" }}
-                  >
-                    {response.slippage}
-                  </p>
-                </div>
-              </div>
-              <Divider /> */}
-              {/* COLLECTIONS */}
-              <Accordion
-                expanded={expanded === "panel1"}
-                onChange={handleChange("panel1")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>
-                    Collections
-                    <Badge badgeContent={4} color="primary" />
-                    {/* </Badge> */}
-                  </Typography>
-                </AccordionSummary>
-                {/* Number of Tx */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
+    props.open === true && (
+      <div>
+        <ThemeProvider theme={makeTheme}>
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={classes.modal}
+            open={props.open}
+            onClose={props.handleClose}
+            closeAfterTransition
+          >
+            <Box>
+              <Fade in={props.open}>
+                <div className={classes.paper}>
+                  <div className="row no-gutters mb-3">
+                    <div className="col-12 align-self-center">
                       <Typography
-                        variant="h6"
+                        variant="h4"
                         //   component="h6"
-                        className={classes.cardTitle}
+                        className={classes.cardHeading}
                       >
-                        Number of Transactions
+                        Purchase Summary
                       </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {props.isOpen ? (props.dropData.collectionTxSummary.txsCount) : (data.collections.noOfTxs)}
-                      </p>
                     </div>
                   </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-                {/* Total Collections to Create */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        Total Collection(s) To Create
+                  {/* COLLECTIONS */}
+                  <Accordion
+                    expanded={expanded === "panel1"}
+                    onChange={handleChange("panel1")}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography className={classes.heading}>
+                        Collections
+                        <Badge
+                          badgeContent={
+                            props.dropData.collectionTxSummary.collectionCount
+                          }
+                          color="primary"
+                        />
+                        {/* </Badge> */}
                       </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {props.isOpen ? (props.dropData.collectionTxSummary.collectionCount) : (data.collections.totalCollectionsToCreate)}
+                    </AccordionSummary>
+                    {/* Number of Tx */}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Number of Transactions
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.collectionTxSummary.txsCount}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* <Divider /> */}
+                    {/* Total Collections to Create */}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Total Collection(s) To Create
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.collectionTxSummary.collectionCount}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* Total Cost in Wei */}
+                    <AccordionDetails>
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Cost
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            ${props.cost.estimates.collection}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Divider />
+                  {/* NFTs */}
+                  <Accordion
+                    expanded={expanded === "panel2"}
+                    onChange={handleChange("panel2")}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography className={classes.heading}>
+                        NFTs{" "}
+                        <Badge
+                          badgeContent={props.dropData.NFTsTxSummary.NFTCount}
+                          color="primary"
+                        />
+                      </Typography>
+                    </AccordionSummary>
+                    {/* Number of Tx */}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Number of Transactions
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.NFTsTxSummary.txsCount}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* <Divider /> */}
+                    {/* Total NFTs to Mint */}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Total NFTs To Mint
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.NFTsTxSummary.NFTCount}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* Total Cost in Wei */}
+                    <AccordionDetails>
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Cost
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            ${props.cost.estimates.nftMint}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                  </Accordion>
+                  <Divider />
 
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-                {/* Gas Used */}
-                {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
+                  {/* Approval */}
+                  <Accordion
+                    expanded={expanded === "panel4"}
+                    onChange={handleChange("panel4")}
+                  >
+                    <AccordionSummary
+                      expandIcon={<ExpandMoreIcon />}
+                      aria-controls="panel1a-content"
+                      id="panel1a-header"
+                    >
+                      <Typography className={classes.heading}>
+                        Approval{" "}
+                        <Badge
+                          badgeContent={props.dropData.approvalSummary.NFTCount}
+                          color="primary"
+                        />
                       </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}
-                {/* <Divider /> */}
-                {/* Total Cost in Wei */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        ${data.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-              <Divider />
-              {/* NFTs */}
-              <Accordion
-                expanded={expanded === "panel2"}
-                onChange={handleChange("panel2")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>
-                    NFTs <Badge badgeContent={4} color="primary" />
-                  </Typography>
-                </AccordionSummary>
-                {/* Number of Tx */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        Number of Transactions
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {props.isOpen ? (props.dropData.NFTsTxSummary.txsCount) : (data.nfts.noOfTxs)} 
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-                {/* Total NFTs to Mint */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        Total NFTs To Mint
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {props.isOpen ? (props.dropData.NFTsTxSummary.NFTCount) : (data.nfts.totalNftsToMint)} 
+                    </AccordionSummary>
+                    {/* Number of Tx */}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Number of Transactions
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.approvalSummary.txsCount}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* <Divider /> */}
 
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-                {/* Gas Used */}
-                {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}
-                {/* <Divider /> */}
-                {/* Total Cost in Wei */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        ${data.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-              </Accordion>
-              <Divider />
-              {/* APPROVAL */}
-              {/* <Accordion
-                expanded={expanded === "panel3"}
-                onChange={handleChange("panel3")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>Approval</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        Number of Transactions:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.noOfTxs}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost in wei:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-              </Accordion> */}
-              {/* DROP */}
-              <Accordion
-                expanded={expanded === "panel4"}
-                onChange={handleChange("panel4")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>Drop</Typography>
-                </AccordionSummary>
-                {/* Number of Tx */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        Number of Transactions
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {props.isOpen ? (props.dropData.dropTxSummary.txCount) : (data.drop.noOfTxs)} 
-
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-                {/* Gas Used */}
-                {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}
-                {/* <Divider /> */}
-                {/* Total Cost in Wei */}
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        //   component="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        //   style={{ lineHeight: "1.6" }}
-                      >
-                        ${data.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                {/* <Divider /> */}
-              </Accordion>
-              <Divider />
-              <div className="mt-5">
-                {/* Total Cost */}
-                <div
-                  className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-                >
-                  <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-                      //   component="h6"
-                      className={classes.cardTitle}
+                    <AccordionDetails>
+                      <div className="row no-gutters justify-content-between w-100">
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Nft's for approval
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0">
+                          <p
+                            className={classes.cardTitle}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            {props.dropData.approvalSummary.superAdminApprovalPending}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* <Divider /> */}
+                    {/* Total Cost in Wei */}
+                    <AccordionDetails>
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                        <div className="col-8 align-self-center">
+                          <Typography
+                            variant="h6"
+                            //   component="h6"
+                            className={classes.cardTitle}
+                          >
+                            Cost
+                          </Typography>
+                        </div>
+                        <div className="col-4 align-self-center text-right p-0" >
+                          <p
+                            className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
+                            //   style={{ lineHeight: "1.6" }}
+                          >
+                            ${props.cost.estimates.superAdminApproval}
+                          </p>
+                        </div>
+                      </div>
+                    </AccordionDetails>
+                    {/* <Divider /> */}
+                  </Accordion>
+                  <Divider />
+                  <div className="mt-5">
+                    {/* Total Cost */}
+                    <div
+                      className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                     >
-                      total cost
-                    </Typography>
-                  </div>
-                  <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      className={classes.cardTitle}
-                      //   style={{ lineHeight: "1.6" }}
+                      <div className="col-8 align-self-center">
+                        <Typography
+                          variant="h6"
+                          //   component="h6"
+                          className={classes.cardTitle}
+                        >
+                          Your Balance
+                        </Typography>
+                      </div>
+                      <div className="col-4 align-self-center text-right p-0">
+                        <p
+                          className={classes.cardTitle}
+                          style={{ wordWrap: "break-word" }}
+                          //   style={{ lineHeight: "1.6" }}
+                        >
+                          ${props.cost.balance.dollar}
+                          {/* {response.totalCostInWei} */}
+                        </p>
+                      </div>
+                    </div>
+                    <div
+                      className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                     >
-                      $115,780.00
-                      {/* {response.totalCostInWei} */}
-                    </p>
+                      <div className="col-8 align-self-center">
+                        <Typography
+                          variant="h6"
+                          //   component="h6"
+                          className={classes.cardTitle}
+                        >
+                          Total cost
+                        </Typography>
+                      </div>
+                      <div
+                        className={`col-4 align-self-center text-right p-0 ${classes.wrapper}`}
+                      >
+                        <p
+                          className={classes.cardTitle}
+                          style={{ wordWrap: "break-word" }}
+                          //   style={{ lineHeight: "1.6" }}
+                        >
+                          ${props.cost.estimates.totalCostInDollars}
+                          {/* {response.totalCostInWei} */}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <Divider />
+                  <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
+                    <div className="col-12 col-sm-6 pr-sm-2">
+                      <button
+                        className={classes.buttons}
+                        onClick={props.handleClose}
+                      >
+                        Reject
+                      </button>
+                    </div>
+                    <div className="col-12 col-sm-6 pl-sm-2">
+                      <button
+                        className={classes.buttons}
+                        onClick={(e) => handleConfirm(e)}
+                      >
+                        Confirm
+                      </button>
+                    </div>
                   </div>
                 </div>
-
-                {/* Estimated Time in Sec */}
-                <div
-                  className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-                >
-                  <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-                      //   component="h6"
-                      className={classes.cardTitle}
-                    >
-                      Estimated Time
-                    </Typography>
-                  </div>
-                  <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      className={classes.cardTitle}
-                      //   style={{ lineHeight: "1.6" }}
-                    >
-                      1min 30sec
-                      {/* {response.estimatedTimeInSec} */}
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <Divider />
-              <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
-                <div className="col-12 col-sm-6 pr-sm-2">
-                  <button className={classes.buttons} onClick={props.handlePay}>
-                    Pay
-                  </button>
-                </div>
-                <div className="col-12 col-sm-6 pl-sm-2">
-                  {disabled ? (
-                    <button
-                      className={classes.buttonDisabled}
-                      onClick={() => console.log("Active!")}
-                      disabled
-                    >
-                      Publish Drop
-                    </button>
-                  ) : (
-                    <button
-                      className={classes.buttons}
-                      onClick={(e) => {props.handlePublish(e)}}
-                    >
-                      Publish Drop
-                    </button>
-                  )}
-                </div>
-                <div className="col-12 mt-2 text-center">
-                  {disabled && (
-                    <Alert
-                      variant="outlined"
-                      severity="warning"
-                      style={{ border: "none", justifyContent: "center" }}
-                    >
-                      You do not have enough Crypto!
-                    </Alert>
-                  )}
-                </div>
-              </div>
-            </div>
-          </Fade>
-        </Modal>
-      </ThemeProvider>
-    </div>
+              </Fade>
+            </Box>
+          </Modal>
+        </ThemeProvider>
+       
+      </div>
+    )
   );
 };
 
