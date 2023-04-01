@@ -1,18 +1,17 @@
 // eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
-import React, { useCallback, useEffect, useState } from "react";
-import Edit from "@material-ui/icons/Edit";
-import Cookies from "js-cookie";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { isUndefined } from "lodash";
+import Edit from "@material-ui/icons/Edit";
+import axios from "axios"; // eslint-disable-next-line
+import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import r1 from "../../../assets/img/patients/patient.jpg";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
-import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
+import getCroppedImg from "../../../components/Utils/Crop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -179,12 +178,12 @@ function SettingDashboardDefault(props) {
 
   let getProfile = () => {
     let version = Cookies.get("Version");
-   // console.log("Version: ", version);
+    // console.log("Version: ", version);
     //console.log("UserId:", sessionStorage.getItem("Authorization"));
     axios
       .get(`${version}/user/profile`)
       .then((response) => {
-      //  console.log("Response from getting user: ", response);
+        //  console.log("Response from getting user: ", response);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -272,12 +271,12 @@ function SettingDashboardDefault(props) {
         imageCounter,
         0
       );
-     // console.log("Done: ", { croppedImage });
+      // console.log("Done: ", { croppedImage });
       let formData = new FormData();
       formData.append("image", croppedImage);
       await axios.post("/upload/image/", formData).then(
         (response) => {
-         // console.log("Response from uploading Image", response);
+          // console.log("Response from uploading Image", response);
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
             setIsUploadingBannerIPFS(false);
