@@ -160,6 +160,7 @@ const SSOWalletModal = (props) => {
         open={props.open}
         onClose={props.handleClose}
         closeAfterTransition
+        disableScrollLock={true}
         BackdropComponent={Backdrop}
         BackdropProps={{
           timeout: 500,

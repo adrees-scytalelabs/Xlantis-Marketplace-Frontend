@@ -3,7 +3,7 @@ import { Modal } from "react-bootstrap";
 
 const WorkInProgressModal = (props) => {
   return (
-    <Modal show={props.show} onHide={props.handleClose} centered>
+    <Modal show={props.show} onHide={props.handleClose} centered scrollable>
       <Modal.Header closeButton className="custom-header">
         Feature Coming soon!
       </Modal.Header>
