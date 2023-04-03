@@ -41,7 +41,7 @@ function CollectionNfts(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollectionNfts();
-    // getCollections();?
+    
 
     props.setActiveTab({
       dashboard: "",
@@ -59,7 +59,7 @@ function CollectionNfts(props) {
       newCube: "",
       newCollection: "active",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

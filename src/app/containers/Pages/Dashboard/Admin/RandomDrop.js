@@ -1,6 +1,5 @@
 import { Grid } from '@material-ui/core/';
 import axios from "axios";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from 'notistack';
 import React, { useEffect, useState } from "react";
@@ -17,7 +16,7 @@ function RandomDrop(props) {
     let [isSaving, setIsSaving] = useState(false);
     let [salePrice, setSalePrice] = useState();
     let [minimumBid, setMinimumBid] = useState();
-    // eslint-disable-next-line
+    
     let [type, setType] = useState();
     let [types, setTypes] = useState([]);
 
@@ -39,7 +38,7 @@ function RandomDrop(props) {
             termsandconditions: "",
             changePassword: "",
             newCube: "",
-        });// eslint-disable-next-line
+        });
     }, []);
     const handleRemoveClick = (index) => {
         console.log("index", index);
@@ -106,37 +105,6 @@ function RandomDrop(props) {
                     <div className="col-md-12 col-lg-6">
                         <form onSubmit={handleSubmitEvent}>
                             <div className="form-group">
-
-                                {/* <label>Select NFTs</label>
-                                <div className="filter-widget">
-                                    <Autocomplete
-                                        id="combo-dox-demo"
-                                        required
-                                        options={inputList}
-                                        value={type}
-                                        // disabled={isDisabledImporter}
-                                        getOptionLabel={(option) =>
-                                            option.name
-                                        }
-                                        onChange={(event, value) => {
-                                            if (value == null)
-                                                setType("");
-                                            else {
-                                                console.log(value);
-                                                setType(value.name)
-                                                handleAddClick(value);
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="NFTs"
-                                                variant="outlined"
-                                            />
-                                        )}
-                                    />
-                                </div>
- */}
                                 <div className="form-group">
                                     <label>Sale Price (ETH)</label>
                                     <div className="filter-widget">
@@ -155,33 +123,6 @@ function RandomDrop(props) {
                                         />
                                     </div>
                                 </div>
-                                {/* <label>Select Supply Type</label>
-                                <div className="filter-widget">
-                                    <Autocomplete
-                                        id="combo-dox-demo"
-                                        required
-                                        // options={supplies}
-                                        // disabled={isDisabledImporter}
-                                        getOptionLabel={(option) =>
-                                            option
-                                        }
-                                        onChange={(event, value) => {
-                                            if (value == null) setType("");
-                                            else {
-                                                console.log(value);
-                                                // setSupply(value)
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="Supply Type"
-                                                variant="outlined"
-                                            />
-                                        )}
-                                    />
-                                </div> */}
-
                                 <div className="form-group">
                                     <label>Auction Starts At</label>
                                     <div className="form-group">
@@ -226,9 +167,6 @@ function RandomDrop(props) {
                     <div className="col-md-12 col-lg-6">
                         {types.length > 0 ? (
                             <Scrollbars style={{ height: 600 }}>
-
-
-                                {/* <!-- Change Password Form --> */}
                                 <div className="form-group">
                                     <div >
                                         <Grid

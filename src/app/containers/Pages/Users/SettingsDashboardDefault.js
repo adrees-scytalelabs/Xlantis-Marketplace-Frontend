@@ -1,9 +1,8 @@
-// eslint-disable-next-line
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import Edit from "@material-ui/icons/Edit";
-import axios from "axios"; // eslint-disable-next-line
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -54,14 +53,11 @@ function SettingDashboardDefault(props) {
   let [name, setName] = useState("");
   let [bio, setBio] = useState("");
   let [email, setEmail] = useState("");
-  let [editProfile, setEditProfile] = useState(false);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
   let [isSaving, setIsSaving] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
-  let [isBannerSelected, setIsBannerSelected] = useState(false);
-  let [isProfileSelected, setIsProfileSelected] = useState(false);
   let [imageSrc, setImageSrc] = useState("");
   let [crop, setCrop] = useState({ x: 0, y: 0 });
   let [zoom, setZoom] = useState(1);
@@ -118,11 +114,8 @@ function SettingDashboardDefault(props) {
       bannerURL: bannerImage,
     };
 
-    //console.log("data", data);
-
     axios.put(`/${Cookies.get("Version")}/user/profile`, data).then(
       (response) => {
-        //console.log("profile update response: ", response);
         let variant = "success";
         enqueueSnackbar("Profile Updated Succesfully", { variant });
         setIsUploadingData(false);
@@ -178,12 +171,9 @@ function SettingDashboardDefault(props) {
 
   let getProfile = () => {
     let version = Cookies.get("Version");
-    // console.log("Version: ", version);
-    //console.log("UserId:", sessionStorage.getItem("Authorization"));
     axios
       .get(`${version}/user/profile`)
       .then((response) => {
-        //  console.log("Response from getting user: ", response);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -200,7 +190,6 @@ function SettingDashboardDefault(props) {
   const getAdminProfile = async () => {
     await axios.get(`/v1-sso/user/admin/profile`).then(
       (response) => {
-        //console.log("Response from getting admin profile", response);
         setAdminOldData(response.data.userData);
         setProfileImage(response.data.userData.imageURL);
         response.data.userData.bannerURL &&
@@ -240,14 +229,12 @@ function SettingDashboardDefault(props) {
   const updateData = async () => {
     let data = {
       companyName: adminCompanyName,
-      // bio: adminDomain,
       imageURL: profileImage,
       bannerURL: bannerImage,
       username: adminName,
     };
     await axios.put(`/v1-sso/user/admin/update-info`, data).then(
       (response) => {
-        //console.log("Response from updating admin data: ", response);
         setShowConfirmationModal(false);
         let variant = "success";
         enqueueSnackbar("Data updated successfully", { variant });
@@ -271,12 +258,10 @@ function SettingDashboardDefault(props) {
         imageCounter,
         0
       );
-      // console.log("Done: ", { croppedImage });
       let formData = new FormData();
       formData.append("image", croppedImage);
       await axios.post("/upload/image/", formData).then(
         (response) => {
-          // console.log("Response from uploading Image", response);
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
             setIsUploadingBannerIPFS(false);
@@ -323,7 +308,6 @@ function SettingDashboardDefault(props) {
             className="banner-img"
             style={{ backgroundImage: `url(${bannerImage})` }}
           >
-            {/* banner */}
             {isUploadingBannerIPFS ? (
               <div
                 className="text-center"
@@ -349,9 +333,6 @@ function SettingDashboardDefault(props) {
               onChange={onChangeBannerFile}
             />
           </div>
-
-          {/* profile pic */}
-
           <div
             style={{
               backgroundImage: `url(${profileImage})`,
@@ -418,8 +399,6 @@ function SettingDashboardDefault(props) {
                         type="text"
                         value={adminCompanyName}
                         required
-                        // rows="4"
-                        // value={description}
                         placeholder="Enter Company Name"
                         className="form-control"
                         onChange={(e) => {
@@ -427,7 +406,6 @@ function SettingDashboardDefault(props) {
                         }}
                       />
                     </div>
-                    {/* {Cookies.get("Version") != "v2-wallet-login" && ( */}
                     <>
                       <label>Domain</label>
                       <div className="form-group">
@@ -438,9 +416,6 @@ function SettingDashboardDefault(props) {
                           value={adminDomain}
                           placeholder="Enter Domain"
                           className="form-control"
-                          // onChange={(e) => {
-                          //   setAdminDomain(e.target.value);
-                          // }}
                         />
                       </div>
                     </>
@@ -453,9 +428,6 @@ function SettingDashboardDefault(props) {
                         value={adminDesignation}
                         placeholder="Enter Designation"
                         className="form-control"
-                        // onChange={(e) => {
-                        //   setAdminDesignation(e.target.value);
-                        // }}
                       />
                     </div>
                     <label>Industry</label>
@@ -465,7 +437,6 @@ function SettingDashboardDefault(props) {
                         required
                         disabled
                         value={adminIndustry}
-                        // placeholder="Enter Designation"
                         className="form-control"
                       />
                     </div>
@@ -477,7 +448,6 @@ function SettingDashboardDefault(props) {
                         rows="4"
                         disabled
                         value={adminReasonForInterest}
-                        // placeholder="Enter Designation"
                         className="form-control"
                       />
                     </div>
@@ -571,9 +541,6 @@ function SettingDashboardDefault(props) {
                         value={sessionStorage.getItem("Address")}
                         placeholder="Wallet Address"
                         className="form-control"
-                        // onChange={(e) => {
-                        //     setName(e.target.value)
-                        // }}
                       />
                     </div>
                     {isSaving ? (

@@ -27,9 +27,7 @@ function TemplateDetails(props) {
   };
   let handleChangeTile = (e) => {
     props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the value
       name: e.target.value,
     }));
   };
@@ -38,9 +36,7 @@ function TemplateDetails(props) {
     data[index][event.target.name] = event.target.value;
     setProperties(data);
     props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the value
       properties: properties,
     }));
   };
@@ -54,12 +50,8 @@ function TemplateDetails(props) {
     let data = [...properties];
     data.splice(index, 1);
     setProperties(data);
-    console.log("check remove property",data);
-    console.log("check remove property after set",properties);
      props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the value
       properties: data,
     }));
   };
@@ -96,13 +88,11 @@ function TemplateDetails(props) {
     }
   };
   useEffect(() => {
-    //console.log(props);
     if (props.show === true) {
       console.log(props.templateData);
       setTitle(props.templateData.name);
       setProperties(props.templateData.properties);
     }
-    // console.log("Reach Template Data", props);
   }, [props]);
   return (
     props.show == true && (

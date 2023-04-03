@@ -37,7 +37,6 @@ function VirtailWorlds() {
   return (
     <>
       <div className="container-fluid">
-        {/* <!-- Page Header --> */}
         <div className="page-header mt-4 mt-lg-2 pt-lg-2">
           <Container>
             <h3>
@@ -50,19 +49,12 @@ function VirtailWorlds() {
                 spacing={2}
                 direction="row"
                 justify="flex-start"
-                // alignItems="flex-start"
               >
-                {/* <NFTCard />
-                  <NFTCard />
-                  <NFTCard />
-                  <NFTCard /> */}
                 <NFTCube />
                 <NFTCube />
                 <NFTCube />
                 <NFTCube />
               </Grid>
-
-              {/* </Grid> */}
             </div>
           </Container>
         </div>

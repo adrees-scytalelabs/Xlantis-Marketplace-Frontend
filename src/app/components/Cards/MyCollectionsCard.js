@@ -1,8 +1,6 @@
-// REACT
 import React from "react";
 // REACT ROUTER
 import { Link } from "react-router-dom";
-// MUI
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -17,7 +15,7 @@ import { truncate } from "../../assets/js/utils";
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   cardTitle: {
     color: "#fff",
@@ -36,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT FUNCTION
+
 const MyCollectionsCard = (props) => {
-  // States
+  
   const classes = useStyles();
 
   //console.log(props.i, "props in card");

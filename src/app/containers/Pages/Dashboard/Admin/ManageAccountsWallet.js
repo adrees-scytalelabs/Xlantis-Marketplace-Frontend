@@ -1,28 +1,21 @@
 import {
-  AppBar,
   Box,
-  Card,
-  CardHeader,
-  Grid,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { makeStyles, useTheme } from "@material-ui/styles";
-import { useLocation } from "react-router-dom";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import MarketPlacePage from "./MarketPlacePage";
-import { Link } from "react-router-dom";
-import WalletEnabled from "./WalletEnabled";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import WalletDisabled from "./WalletDisabled";
+import WalletEnabled from "./WalletEnabled";
 
-// STYLING
+
 const paginationStyles = makeStyles({
   base: {
-    // borderRadius: 12,
+    
     border: 0,
     color: "#fff",
     padding: "0 30px",
@@ -42,8 +35,8 @@ const paginationStyles = makeStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
+    
+    
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -132,7 +125,7 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 const ManageAccountsWallet = (props) => {
   const location = useLocation();
   const classes = useStyles();
@@ -163,12 +156,12 @@ const ManageAccountsWallet = (props) => {
       properties:"",
       template:"",
       saved:"",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -189,7 +182,7 @@ const ManageAccountsWallet = (props) => {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">

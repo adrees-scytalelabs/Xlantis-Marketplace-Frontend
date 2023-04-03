@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -10,8 +10,8 @@ import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
+    
+    
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -99,7 +99,7 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 function SuperAdminDashboardDefaultScreen(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
@@ -121,7 +121,7 @@ function SuperAdminDashboardDefaultScreen(props) {
       saved:"",
 
     });
-    // eslint-disable-next-line
+    
   }, []);
 
  // console.log("props in super admin dashboard: ", props);
@@ -129,7 +129,7 @@ function SuperAdminDashboardDefaultScreen(props) {
   return (
     <>
       <div className="backgroundDefault">
-        {/* <!-- Page Header --> */}
+        
         <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
           <div className="row">
             <div className="col-sm-12">

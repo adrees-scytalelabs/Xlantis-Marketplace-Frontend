@@ -1,22 +1,15 @@
-// REACT
-import React, { useState, useEffect } from "react";
-// REACT ROUTER
-import { useHistory, useParams, useLocation } from "react-router-dom";
-// MUI
 import { Grid } from "@material-ui/core/";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-// COMPONENTS
-import HeaderHome from "../../../components/Headers/Header";
-import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
-import Footer from "../../../components/Footers/Footer";
-// AXIOS
 import axios from "axios";
 import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
+import Footer from "../../../components/Footers/Footer";
+import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 
-// COMPONENT FUNCTION
 const FixedPriceDropNFTs = () => {
-  // States
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
@@ -38,7 +31,6 @@ const FixedPriceDropNFTs = () => {
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
 
-  // Handlers
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -49,8 +41,6 @@ const FixedPriceDropNFTs = () => {
   const handleGoBack = () => {
     history.push(`/marketPlace`);
   };
-
-  // Queries
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
 
@@ -64,7 +54,6 @@ const FixedPriceDropNFTs = () => {
     }
     axios.get(endpoint).then(
       (response) => {
-        //console.log("getting a nft", response);
         setDropData(response.data.data);
         handleCloseBackdrop();
       },
@@ -81,7 +70,6 @@ const FixedPriceDropNFTs = () => {
   const getDropData = async (dropId) => {
     await axios.get(`/drop/${dropId}`).then(
       (response) => {
-        //console.log("Response from getting drop data: ", response);
         setTitleImage(response.data.dropData.image);
         setBannerImage(response.data.dropData.bannerURL);
         setDropTitle(response.data.dropData.title);
@@ -91,22 +79,17 @@ const FixedPriceDropNFTs = () => {
       }
     );
   };
-
-  // Side Effects
   useEffect(() => {
     getDropData(dropID.dropId);
-    getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
+    getNFTs(dropID.dropId, 0, 4);
   }, []);
 
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        {/* Header */}
         <div style={{ minHeight: "95px" }}>
           <HeaderHome selectedNav={"Market"} role={null} />
         </div>
-        {/* Body */}
-        {/* Banner and Thumb */}
         {!dropData ? (
           <div
             className="row no-gutters w-100 justify-content-center align-items-center"
@@ -121,21 +104,16 @@ const FixedPriceDropNFTs = () => {
             <div className="row no-gutters">
               <div className="col-12">
                 <div className="bannerWrapper">
-                  {/* banner */}
                   <img src={bannerImage} className="bannerImg" />
 
-                  {/* thumbg */}
                   <div className="dropThumbWrapper">
                     <img src={titleImage} className="thumbImg" />
                   </div>
                 </div>
               </div>
             </div>
-            {/* NFTs */}
             <div className="container-fluid mt-5">
-              {/* Heading */}
               <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
-                {/* On Sale */}
                 <div className="col-12">
                   <h1 className="marketCatHeadings">NFTs inside {dropTitle}</h1>
                 </div>
@@ -163,7 +141,6 @@ const FixedPriceDropNFTs = () => {
                   </button>
                 </div>
               </div>
-              {/* NFT Cards */}
               <div className="row no-gutters w-100">
                 <Grid container spacing={3}>
                   {dropData &&
@@ -194,7 +171,6 @@ const FixedPriceDropNFTs = () => {
           </>
         )}
       </div>
-      {/* FOOTER */}
       <div className="row no-gutters">
         <div className="col-12">
           <Footer />

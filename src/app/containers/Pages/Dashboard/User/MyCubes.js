@@ -105,7 +105,7 @@ function MyCubes(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -174,7 +174,7 @@ function MyCubes(props) {
                         <CardActionArea>
                           <CardMedia
                             className={classes.media}
-                            // image={img}
+                            
                             title=""
                           >
                             <CubeComponent1 data={imageData} index={index} />

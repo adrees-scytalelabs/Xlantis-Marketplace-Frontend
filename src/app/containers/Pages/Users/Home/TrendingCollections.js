@@ -37,7 +37,7 @@ function TrendingCollections() {
   return (
     <>
       <div className="container-fluid" style={{ marginTop: "20px" }}>
-        {/* <!-- Page Header --> */}
+        
         <div className="page-header mt-4 mt-lg-2 pt-lg-2">
           <Container>
             <h3>
@@ -50,7 +50,6 @@ function TrendingCollections() {
                 spacing={2}
                 direction="row"
                 justify="flex-start"
-                // alignItems="flex-start"
               >
                 <CollectionCard />
                 <CollectionCard />

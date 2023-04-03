@@ -42,7 +42,6 @@ function UserNfts(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
@@ -70,7 +69,7 @@ function UserNfts(props) {
   };
   useEffect(() => {
     getUserData(0, rowsPerPage);
-    // eslint-disable-next-line
+    
   }, []);
 
   return (

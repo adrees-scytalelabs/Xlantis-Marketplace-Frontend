@@ -1,66 +1,39 @@
-import Person from "@material-ui/icons/Person";
-import Avatar from "@material-ui/core/Avatar";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import { ethers } from "ethers";
 import Cookies from "js-cookie";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, matchPath, Redirect,useLocation } from "react-router-dom";
+import { Link, Redirect, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import Web3 from "web3";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
-import Popper from "@material-ui/core/Popper";
-import Typography from "@material-ui/core/Typography";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import MenuItem from "@material-ui/core/MenuItem";
-import MenuList from "@material-ui/core/MenuList";
-import Menu from "@material-ui/core/Menu";
-import Settings from "@material-ui/icons/Settings";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import Web3 from "web3";
-import { providers, ethers } from "ethers";
-import money from "../../assets/img/wallet.png";
-import man from "../../assets/img/man.png";
 import SSOWalletModal from "../Modals/SSOWalletModal";
-import { useSnackbar } from "notistack";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
-import jwtDecode from "jwt-decode";
 import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-  useTheme,
+  createMuiTheme
 } from "@material-ui/core/styles";
+import jwtDecode from "jwt-decode";
 
-import Web3Modal from "web3modal";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import WalletLink from "walletlink";
-import axios from "axios";
-import transakSDK from "@transak/transak-sdk";
-import { UserAuth } from "../context/AuthContext";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import transakSDK from "@transak/transak-sdk";
+import WalletConnectProvider from "@walletconnect/web3-provider";
+import axios from "axios";
+import WalletLink from "walletlink";
+import Web3Modal from "web3modal";
 import CartModal from "../Modals/CartModal";
-import BusinessIcon from "@material-ui/icons/Business";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
 
-import ListItemText from "@material-ui/core/ListItemText";
-import ListItemAvatar from "@material-ui/core/ListItemAvatar";
+import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { io } from "socket.io-client";
-import zIndex from "@material-ui/core/styles/zIndex";
 import NotificationList from "../Cards/NotificationList Card";
-import Badge from "@material-ui/core/Badge";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
+import { hoverClassStyleTest } from "../Utils/CustomStyling";
 
 const customTheme = createMuiTheme({
   overrides: {
@@ -96,7 +69,7 @@ function HeaderHome(props) {
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
   const openPopper = Boolean(anchorElPopper);
-  const [notificationsList, setNotificationsList ] = useState();
+  const [notificationsList, setNotificationsList] = useState();
   let [isSaving, setIsSaving] = useState(false);
   let [notificationCount, setNotificationCount] = useState(0);
   let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
@@ -110,8 +83,6 @@ function HeaderHome(props) {
   };
   useEffect(() => {
      setSocket(io("https://raindrop-backend.herokuapp.com/"));
-    //setSocket(io("http://localhost:3002"));
-    //console.log("socket was set");
   }, []);
   useEffect(() => {
     if (userId !== "" && socket !== null) {
@@ -135,10 +106,10 @@ function HeaderHome(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     defaultCryptoCurrency: "ETH",
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -195,19 +166,13 @@ function HeaderHome(props) {
     const transak = new transakSDK(settings);
 
     transak.init();
-
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
-
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
     });
-
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -229,33 +194,6 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
-    // let data = {
-    //   message : "Bid on Single NFT accepted by the owner.",
-    //   userId
-    // }
-    // axios.post('/notifications/generate', data).then(
-    //   (response) => {
-    //     console.log("notifications generated");
-    //   },
-    //   (error) => {
-    //     if (process.env.NODE_ENV === "development") {
-    //       console.log(error);
-    //       console.log(error.response);
-    //     }
-    //     if (error.response.data !== undefined) {
-    //       if (
-    //         error.response.data === "Unauthorized access (invalid token) !!"
-    //       ) {
-    //         sessionStorage.removeItem("Authorization");
-    //         sessionStorage.removeItem("Address");
-    //         Cookies.remove("Version");
-
-    //         // window.location.reload(false);
-    //       }
-    //     }
-    //   }
-    // );
-    
     axios.get(`/notifications/${start}/${end}`).then(
       (response) => {
         //console.log("notification response", response);
@@ -268,28 +206,11 @@ function HeaderHome(props) {
           console.log(error);
           console.log(error.response);
         }
-        // if (error.response.data !== undefined) {
-        //   if (
-        //     error.response.data === "Unauthorized access (invalid token) !!"
-        //   ) {
-        //     // sessionStorage.removeItem("Authorization");
-        //     // sessionStorage.removeItem("Address");
-        //     // Cookies.remove("Version");
-
-        //     // window.location.reload(false);
-        //   }
-        // }
       }
     );
   }
 
   function readNotification(notificationId) {
-    // e.preventDefault();
-    // setIsSaving(true);
-    // handleShowBackdrop();
-    // setIsUploadingData(true);
-
-    //sending data to backend
     let data = {
       notificationId
     };
@@ -299,26 +220,12 @@ function HeaderHome(props) {
     axios.patch("/notifications/hide", data).then(
       (response) => {
         console.log("notification hide response: ", response);
-        // handleCloseBackdrop();
-        // setIsSaving(false);
-        // getNotifications(0, 10);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-
-        // setIsUploadingData(false);
-
-        // handleCloseBackdrop();
-
-        // let variant = "error";
-        // enqueueSnackbar("Unable to Verify Admin.", { variant });
       }
     );
-
-    // getNotifications(0,10);
-    
   }
   async function handleLogin() {
     await loadWeb3();
@@ -326,20 +233,11 @@ function HeaderHome(props) {
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
 
-//    console.log(network);
- //   console.log("role", props.role);
-   // console.log("Account test: ", accounts[0], network);
-
     if (network !== "private") {
       setNetwork(network);
       setIsLoading(false);
       handleShow();
     } else {
-      // var provider = await web3Modal.connect();
-      // var web3 = new Web3(provider);
-      // const newProvider = new providers.Web3Provider(provider)
-      // await newProvider.send('eth_requestAccounts');
-      // var accounts = await web3.eth.getAccounts();
       let account = accounts[0];
       const provider = new ethers.providers.Web3Provider(
         window.ethereum,
@@ -366,10 +264,10 @@ function HeaderHome(props) {
       };
       let route;
       if (props.role === "admin") {
-        
+
         route = "v2-wallet-login/user/auth/admin-login";
       } else {
-        
+
         route = "v2-wallet-login/user/auth/login";
       }
 
@@ -389,46 +287,32 @@ function HeaderHome(props) {
               response.data.isInfoAdded === true &&
               response.data.isVerified === true
             ) {
-              // console.log("In the conditions");
               sessionStorage.setItem("Address", accounts[0]);
               window.location.reload(false);
             }
             setAdminSignInData(response.data);
 
-          } 
+          }
           else {
             console.log("Running user", response.data)
             Cookies.set("Version", "v2-wallet-login", {});
             sessionStorage.setItem("Authorization", response.data.raindropToken, {});
             sessionStorage.setItem("Address", accounts[0]);
             setUserId(accounts[0]);
-            window.location.reload(); 
-          // }
-        }},
+            window.location.reload();
+          }
+        },
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
             if (error) setTokenVerification(false);
           }
-          if (error.response !== undefined) {
-            if (error.response.status === 400) {
-              let variant = "error";
-              enqueueSnackbar(error.response.data.message, { variant });
-              // setMsg(error.response.data.message);
-            } else {
-              // setMsg("Unknown Error Occured, try again.");
-            }
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-          // setIsLoading(false);
         }
       );
     }
 
     setMOdalOpen(false);
-    // contract = new web3.eth.Contract(ABI, ADDRESS);
   }
 
   function handleNotificationsIcon(event) {
@@ -436,7 +320,7 @@ function HeaderHome(props) {
     setAnchorElPopper(anchorElPopper ? null : event.currentTarget);
     console.log("event", event);
   }
-  
+
   const selectedStyling = {
     border: "1px solid #F64D04",
     padding: "10px 20px",
@@ -446,9 +330,6 @@ function HeaderHome(props) {
     fontWeight: "bold",
     backgroundColor: "#F64D04",
     cursor: "pointer",
-    // backgroundImage:
-    //   "linear-gradient(90deg, hsla(350, 93%, 61%, 1) 0%, hsla(8, 98%, 59%, 1) 100%)",
-    // boxShadow: "0 10px 6px -6px #777",
   };
   const defaultStyling = {
     padding: "10px 20px",
@@ -468,14 +349,7 @@ function HeaderHome(props) {
       props.selectedNav === "Community" ? selectedStyling : defaultStyling,
     create: props.selectedNav === "create" ? selectedStyling : defaultStyling,
   };
-  const hoverClassStyle = {
-    Market: props.selectedNav === "Market" ? "" : "headerNavLinks",
-    Drops: props.selectedNav === "Drops" ? "" : "headerNavLinks",
-    Home: props.selectedNav === "Home" ? "" : "headerNavLinks",
-    Blog: props.selectedNav === "Blog" ? "" : "headerNavLinks",
-    Community: props.selectedNav === "Community" ? "" : "headerNavLinks",
-    Create: props.selectedNav === "Create" ? "" : "headerNavLinks",
-  };
+  
 
   let Logout = (e) => {
     console.log("akjdf");
@@ -485,12 +359,9 @@ function HeaderHome(props) {
     Cookies.remove("Verified");
     Cookies.remove("Version");
     sessionStorage.clear();
-    // web3Modal.clearCachedProvider();
     setUserId("");
-     history.push({ pathname: '/' });
+    history.push({ pathname: '/' });
     window.location.reload(false);
-
-    // setTimeout(() => { }, 1);
   };
 
   function handleClick(event) {
@@ -512,52 +383,37 @@ function HeaderHome(props) {
   };
 
   let jwtDecoded, jwt;
-    if(props.role === null) {
-      jwt = sessionStorage.getItem("Authorization");
-      if (jwt !== null) {jwtDecoded = jwtDecode(jwt)
+  if (props.role === null) {
+    jwt = sessionStorage.getItem("Authorization");
+    if (jwt !== null) {
+      jwtDecoded = jwtDecode(jwt)
     };
   }
-  
-
-// if(adminSignInData !== null) {
-//       if (
-//         adminSignInData.isInfoAdded === true &&
-//         adminSignInData.isVerified === false
-//       ) {
-//          // Case 2
-//          let variant = "info";
-//          enqueueSnackbar("Your request is under process aaa. Waiting for approval by the Super Admin", { variant })
-//       }
-// }
 
   useEffect(() => {
-    if(adminSignInData !== null) {
+    if (adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
-         // Case 2
-         let variant = "info";
-         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
+        
+        let variant = "info";
+        enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
-    }  
+    }
   }, [adminSignInData])
 
   adminSignInData &&
-  console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
+    console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
 
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
-      //console.log("userLogin", userLogin);
-      //console.log("version", version);
-      //console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
-          //console.log("profile data image:", response.data.userData.imageURL);
           response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
         })
         .catch((error) => {
@@ -572,15 +428,14 @@ function HeaderHome(props) {
   useEffect(() => {
     getProfile();
     getNotifications(0,10);
-   // console.log("In Hook");
   },[]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
-    {adminSignInData !== null &&
-                        adminSignInData.isInfoAdded === false && (
-                          <Redirect to="/admin-signup-details" />
-                        )}
+      {adminSignInData !== null &&
+        adminSignInData.isInfoAdded === false && (
+          <Redirect to="/admin-signup-details" />
+        )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -618,19 +473,11 @@ function HeaderHome(props) {
                 padding: "5px 15px",
               }}
             />
-            {/* Robot Drop */}
           </Link>
-
-          {/* <Link style={{ color: 'rgb(167,0,0)' }} to="/kyc" className="navbar-brand">
-            KYC
-          </Link> */}
         </div>
 
         <div className="main-menu-wrapper">
           <div className="menu-header">
-            {/* <a style={{ color: 'rgb(167,0,0)' }} href="/" className="menu-logo">
-              <img src={Logo} alt="Logo" width="100" height="60" />
-            </a> */}
             <a
               id="menu_close"
               className="menu-close"
@@ -651,45 +498,18 @@ function HeaderHome(props) {
             }}
           >
 
-            {/* <a
-                href="/"
-                style={{ paddingLeft: "5px" }}
-                onClick={(e) => {
-                  e.preventDefault();
-                  setMenuOpenedClass("");
-                }}
-              >
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
-              </a> */}
-
-
             <li className="login-link" style={{ padding: "10px 35px" }}>
-              {/* <Link to="/dashboard" style={{ color: 'rgb(167,0,0)' }} > */}
 
               {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                //   <a
-                //   href={
-                //     "https://ropsten.etherscan.io/address/" +
-                //     sessionStorage.getItem("Address")
-                //   }
-                //   target="_blank"
-                //   rel="noopener noreferrer"
-                //   style={{ color: "#fff" }}
-                // >
-                //   <span style={{ cursor: "pointer" }}>
-                //     {sessionStorage.getItem("Address").substr(0, 10)}. . .
-                //   </span>
-                // </a>
                 <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}></div>
 
-              ) : ( null
+              ) : (null
               )}
-              {/* </Link> */}
             </li>
             <li>
               <a href="/" style={{ color: "#fff" }}>
                 <span
-                  className={hoverClassStyle.Home}
+                  className={hoverClassStyleTest(props.selectedNav).Home}
                   style={selectedNavStyle.Home}
                 >
                   Home
@@ -699,7 +519,7 @@ function HeaderHome(props) {
             <li>
               <Link to="/marketPlace" style={{ color: "#fff" }}>
                 <span
-                  className={hoverClassStyle.Market}
+                  className={hoverClassStyleTest(props.selectedNav).Market}
                   style={selectedNavStyle.Market}
                 >
                   Market
@@ -707,18 +527,18 @@ function HeaderHome(props) {
               </Link>
             </li>
             <li className="login-link">
-                  <Link to={`/dashboard`}>
-                    <span style={{
-                      padding: "10px 20px",
-                      cursor: "pointer",
-                    }}>Dashboard</span>
-                  </Link>
-                </li>
+              <Link to={`/dashboard`}>
+                <span style={{
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                }}>Dashboard</span>
+              </Link>
+            </li>
 
             {
-             location.pathname.match("/dashboard") || location.pathname.match("/user/settings")
-           ?(
-              <><li className="sidebar-items">
+              location.pathname.match("/dashboard") || location.pathname.match("/user/settings")
+                ? (
+                  <><li className="sidebar-items">
                     <Link to={`/dashboard/myNFTs`}>
                       <span style={{
                         padding: "10px 20px",
@@ -726,38 +546,23 @@ function HeaderHome(props) {
                       }}>My NFTs</span>
                     </Link>
                   </li><li className="sidebar-items">
-                    <Link to={`/dashboard/marketPlace`}>
-                      <span style={{
-                        padding: "10px 20px",
-                        cursor: "pointer",
-                      }}>MarketPlace</span>
-                    </Link>
-                  </li><li className="sidebar-items">
-                    <Link to={`/user/settings`}>
-                      <span style={{
-                        padding: "10px 20px",
-                        cursor: "pointer",
-                      }}>Profile</span>
-                    </Link>
-                  </li></>
-            ):
-            null
-           }
-            {/* <li
-              className="login-link"
-              style={{ padding: "15px 20px" }}
-              onClick={openTransak}
-            >
-              <span
-                style={{
-                  padding: "10px 20px",
-                  color: "white",
-                  cursor: "pointer",
-                }}
-              >
-                Buy Crypto
-              </span>
-            </li> */}
+                      <Link to={`/dashboard/marketPlace`}>
+                        <span style={{
+                          padding: "10px 20px",
+                          cursor: "pointer",
+                        }}>MarketPlace</span>
+                      </Link>
+                    </li><li className="sidebar-items">
+                      <Link to={`/user/settings`}>
+                        <span style={{
+                          padding: "10px 20px",
+                          cursor: "pointer",
+                        }}>Profile</span>
+                      </Link>
+                    </li></>
+                ) :
+                null
+            }
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -791,7 +596,7 @@ function HeaderHome(props) {
                   </span>
                 </li>
               ) : null
-            }   
+            }
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "5px" }}>
@@ -809,149 +614,58 @@ function HeaderHome(props) {
                 </div>
               ) : sessionStorage.getItem("Address") && props.role === "admin" ? (
                 null
-                
+
               ) : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`, cursor: "pointer" }}>
-                  {/* <Avatar
-                    aria-owns={anchorEl ? "simple-menu" : undefined}
-                    aria-haspopup="true"
-                    onClick={handleClick}
-                    // onMouseOver={handleClick}
-                    alt="Remy Sharp"
-                    src={man}
-                    sx={{ width: 24, height: 24 }}
-                  /> */}
 
-                  {/* <Menu
-                  id="simple-menu"
-                  anchorEl={anchorEl}
-                  open={Boolean(anchorEl)}
-                  onClose={handleMenuClose}
-                  MenuListProps={{ onMouseLeave: handleMenuClose }}
-                >
-                  <MenuItem>
-                    <div>
-                      <Link to = "/profilesettings"></Link><Person /><span>Profile</span>
-                    </div>
-                  </MenuItem>
-                  <MenuItem component={Link} to="/user/settings">Settings</MenuItem>
-                  <MenuItem onClick={handleMenuClose}>Logout</MenuItem>
-                </Menu> */}
-                {/* </div> */}
-              {/* // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
-              //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
-              // </a> */}
                 </div>
-              ) : // <a href={"https://ropsten.etherscan.io/address/" + localStorage.getItem("Address")} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
-                //   <span style={{ cursor: 'pointer' }}>{localStorage.getItem("Address").substr(0, 10)}. . .</span>
-                // </a>
+              ) :
                 null
-              //   <>
-              //     <div>
-              //       <Avatar
-              //       aria-owns={anchorEl ? "simple-menu" : undefined}
-              //       aria-haspopup="true"
-              //       onClick={handleLogin}
-              //       // onMouseOver={handleClick}
-              //       alt="Remy Sharp"
-              //       src="/static/images/avatar/1.jpg"
-              //       sx={{ width: 24, height: 24 }}
-              //     />
-              //     </div>
-              //     <span  style={{ color: 'rgb(167,0,0)' }} onClick = {handleLogin} >
-              //       <span style={{ cursor: 'pointer' }}>
-              //         Login/Signup
-              // </span>
-              //     </span>
-              //     </>
-           }
+            }
           </li>
           <li className="header-item-rht">
             {
-              sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <>
-                  {/* <div>
-                  <Avatar
-                  aria-owns={anchorEl ? "simple-menu" : undefined}
-                  aria-haspopup="true"
-                  onClick={handleLogin}
-                  // onMouseOver={handleClick}
-                  alt="Remy Sharp"
-                  src={money}
-                  sx={{ width: 24, height: 24 }}
-                />
-                </div> */}
-                  {/* <span style={{ color: "#fff" }} onClick={handleLogin}> */}
-                  {/* <Link to="/login" style={{ color: "#fff" }}> */}
-                  
                   <Link to="/dashboard" style={{ color: "#fff" }}>
-                  Dashboard
-                </Link>
-                  {/* (
+                    Dashboard
+                  </Link>
+                </>
+              ) : props.role === "admin" ? (
+                <>
                   <span
-                    className={hoverClassStyle.Community}
+                    className={hoverClassStyleTest(props.selectedNav).Community}
+                    style={selectedNavStyle.Community}
+                    onClick={() => {
+                      setWorkProgressModalShow(true);
+                    }}
+                  >
+                    Sign in with wallet
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span
+                    className={hoverClassStyleTest(props.selectedNav).Community}
                     style={selectedNavStyle.Community}
                     onClick={handleOpenModal}
                   >
                     Login/SignUp
-                    Connect Wallet
                   </span>
-                )} */}
-                {/* <span
-                  style={{ cursor: "pointer", color: "#fff" }}
-                  onClick={handleOpenModal}
-                >
-                  Login/SignUp */}
-                  {/* Connect Wallet */}
-                  {/* </span> */}
-                  {/* </Link> */}
-                  {/* </span> */}
+                  {userSignOut && <Redirect to="/" />}
                 </>
-              ) : props.role === "admin" ? (
-                <>
-                <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                      // onClick={handleLogin}
-                      onClick={() => {
-                        setWorkProgressModalShow(true);
-                      }}
-                    >
-                      Sign in with wallet
-                      {/* Connect Wallet */}
-                    </span>
-                </>
-              ) : (
-                <>
-                    <span
-                      className={hoverClassStyle.Community}
-                      style={selectedNavStyle.Community}
-                      onClick={handleOpenModal}
-                    >
-                      Login/SignUp
-                      {/* Connect Wallet */}
-                    </span>
-                    {userSignOut && <Redirect to="/" />}
-                  </>
-                
-              ) 
-              // <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" />
+
+              )
             }
           </li>
 
-          {/* <li className="header-item-rht">
-            <span style={{ color: "#fff" }} onClick={openTransak}>
-              <span style={{ cursor: "pointer" }}>Buy Crypto</span>
-            </span>
-          </li> */}
           <li className="header-item-rht">
-            {sessionStorage.getItem("Address") && props.role === "admin" ? null  : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
-                Logout
-              </span>) : null }
+            {sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+              Logout
+            </span>) : null}
           </li>
           <li className="header-item-rht">
             <ShoppingCartIcon
-              // onClick={handleOpenCart}
               onClick={() => setWorkProgressModalShow(true)}        
               style={{ cursor: "pointer" }}
             />
@@ -981,30 +695,7 @@ function HeaderHome(props) {
                 >
                   <div>
                     <Paper elevation={3} variant="outlined" square>
-                      <NotificationList itemCount={notificationCount}  notifications = {notificationsList} close = {readNotification} />
-                      {/* <ul
-                        style={{
-                          listStyleType: "none",
-                          padding: 10,
-                          margin: 0,
-                        }}
-                      >
-                        <li>
-                          <div>Congratulations! John accepted your bid</div>
-                        </li>
-                        {/* <Divider />
-                        <li>
-                          <div style={{ padding: 2 }}>
-                            Congratulations! Amy accepted your bid
-                          </div>
-                        </li>
-                        <Divider />
-                        <li>
-                          <div style={{ padding: 2 }}>
-                            Congratulations! Amy accepted your bid
-                          </div>
-                        </li>
-                      </ul> */}
+                      <NotificationList itemCount={notificationCount} notifications={notificationsList} close={readNotification} />
                     </Paper>
                   </div>
                 </Popper>
@@ -1012,27 +703,16 @@ function HeaderHome(props) {
             ) : null}
           </li>
         </ul>
-        <NetworkErrorModal
-          show={show}
-          handleClose={handleClose}
-          network={network}
-        ></NetworkErrorModal>
+        <NetworkErrorModal show={show} handleClose={handleClose} network={network} ></NetworkErrorModal>
       </nav>
-      <SSOWalletModal
-        handleClose={handleCloseModal}
-        open={modalOpen}
-        metamaskLogin={handleLogin}
+      <SSOWalletModal handleClose={handleCloseModal} open={modalOpen} metamaskLogin={handleLogin}
         openWorkProgressModal={() => {
           setMOdalOpen(false);
-          setWorkProgressModalShow(true);
-        }}
+          setWorkProgressModalShow(true);}}
       />
-      <WorkInProgressModal
-       show={workProgressModalShow} 
-       handleClose={() => setWorkProgressModalShow(false)} 
-      />
+      <WorkInProgressModal show={workProgressModalShow} handleClose={() => setWorkProgressModalShow(false)}/>
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
-   
+
     </header>
   );
 }

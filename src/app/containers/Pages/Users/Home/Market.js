@@ -1,21 +1,10 @@
-import { Avatar, CardHeader, Grid, Paper } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import Countdown from "react-countdown";
-import { Link } from "react-router-dom";
-// COMPONENTS
-import TrendingAndTop from "./TrendingAndTop";
-import OnSaleCard from "../../../../components/Cards/OnSaleCard";
-import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
 import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import TrendingAndTop from "./TrendingAndTop";
+import "../../../../assets/css/style.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -111,21 +100,17 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
-    getCubes(0, 4); // eslint-disable-next-line
+    getCubes(0, 4); 
     getBidableDrops(0, 4);
   }, []);
 
   return (
     <div className="container-fluid">
-      {/* <!-- Page Header --> */}
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
-        {/* Section 1 - ON SALE */}
         <div className="row no-gutters justify-content-between align-items-end mt-4 pt-3">
-          {/* On Sale */}
           <div className="col-12 col-md-6">
             <h1 className="marketCatHeadings">Fixed Price Drops</h1>
           </div>
-          {/* View Market Place */}
           <div className="col-12 col-md-6 text-md-right">
             <Link to="/marketPlace">
               <h4 className="marketLinkLeads">View All</h4>
@@ -143,13 +128,10 @@ function MarketPlace(props) {
             />
           ) : null}
         </div>
-        {/* Section 2 ON AUCTION */}
         <div className="row no-gutters justify-content-between align-items-end mt-4 pt-3">
-          {/* On Auction */}
           <div className="col-12 col-md-6">
             <h1 className="marketCatHeadings">Bidable Drops</h1>
           </div>
-          {/* View Market Place */}
           <div className="col-12 col-md-6 text-md-right">
             <Link to="/marketPlace">
               <h4 className="marketLinkLeads">View All</h4>
@@ -157,7 +139,6 @@ function MarketPlace(props) {
           </div>
         </div>
         <hr className="m-0"></hr>
-        {/* On Auction */}
         <div className="row no-gutters w-100">
           {bidableDrop ? (
             <TrendingAndTop

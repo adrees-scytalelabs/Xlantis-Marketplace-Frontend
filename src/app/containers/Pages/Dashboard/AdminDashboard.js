@@ -232,7 +232,7 @@ function AdminDashboard(props) {
                       sessionStorage.clear();
                       // Cookies.remove("Authorization");
                       sessionStorage.removeItem("Address");
-                      // web3Modal.clearCachedProvider();
+                      
 
                       Cookies.remove("PNT");
                       window.location.reload(false);

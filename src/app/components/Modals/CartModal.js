@@ -1,7 +1,6 @@
-// REACT
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// MATERIAL UI
+
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -21,7 +20,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 
-// CUSTOM MATERIAL UI STYLING
+
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -29,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   paper: {
-    // backgroundColor: theme.palette.background.paper,
+    
     border: "1px solid #fff",
     borderRadius: 5,
     boxShadow: theme.shadows[5],
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   wrapper: {
-    // padding: "8px 16px 16px",
+    
     padding: "4px 0px",
   },
   buttons: {
@@ -191,14 +190,13 @@ const rows = [
 ];
 
 const CartModal = (props) => {
-  // States
+  
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(true);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const classes = useStyles();
 
-  // Handlers
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };

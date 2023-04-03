@@ -1,8 +1,6 @@
-// REACT
 import React, { useState } from "react";
 // BOOTSTRAP
 import { Col, Modal, Row } from "react-bootstrap";
-// MUI
 import { Button } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -19,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT FUNCTION
+
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();

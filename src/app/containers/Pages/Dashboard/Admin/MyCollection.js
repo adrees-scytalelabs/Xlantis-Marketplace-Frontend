@@ -1,20 +1,15 @@
 import {
   Card,
-  CardContent,
-  CardMedia,
   Grid,
   TablePagination,
-  Typography,
+  Typography
 } from "@material-ui/core/";
-import CardActionArea from "@material-ui/core/CardActionArea";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-// COMPONENTS
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
@@ -38,19 +33,18 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    // height: 140,
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
 });
 
 function MyCollection(props) {
-  // eslint-disable-next-line
+  
   const { enqueueSnackbar } = useSnackbar();
-  let [collections, setCollections] = useState([]); // eslint-disable-next-line
+  let [collections, setCollections] = useState([]); 
   let [collection, setCollection] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0); 
   let [isCreating, setIsCreating] = useState(false);
   let [open, setOpen] = useState(false);
 
@@ -62,9 +56,7 @@ function MyCollection(props) {
     const version = Cookies.get("Version");
     //console.log("version", version);
 
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+
     setOpen(true);
     const url = `/collection/myCollections/${start}/${end}`;
     axios
@@ -91,30 +83,6 @@ function MyCollection(props) {
         setOpen(false);
       });
   };
-
-  // let createCollections = () => {
-  //     setIsCreating(true);
-  //     let CollectionData = {
-  //         collectiontitle: collection
-  //     }
-  //     axios
-  //         .post(`/collection/createcollection`, CollectionData)
-  //         .then((response) => {
-  //             setIsCreating(false);
-  //             console.log("response.data", response);
-  //             setCollection("response.data.Collectiondata");
-
-  //             let variant = "success";
-  //             enqueueSnackbar('Collection Created Successfully .', { variant });
-  //             getCollections()
-  //         })
-  //         .catch((error) => {
-  //             console.log(error.response);
-  //             setIsCreating(false);
-  //             let variant = "error";
-  //             enqueueSnackbar('Unable to Create Collection .', { variant });
-  //         });
-  // };
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -151,17 +119,17 @@ function MyCollection(props) {
       settings: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">Collections</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
+              <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                   Dashboard
                 </li>
@@ -172,38 +140,6 @@ function MyCollection(props) {
         </div>
       </div>
 
-      {/* <div className="container">
-                <Row>
-                    <Col>
-                        <Row>
-                            <Col>
-                                <input type='text' onChange={(e) => setCollection(e.target.value)} value={collection} placeholder="Collection Name" className="form-control" />
-
-                            </Col>
-                            <div class="input-group-prepend">
-                                {collection !== "" ? (
-                                    isCreating ? (
-                                        <div className="text-center">
-                                            <Spinner
-                                                animation="border"
-                                                role="status"
-                                                style={{ color: "#ff0000" }}
-                                            >
-                                                <span className="sr-only">Loading...</span>
-                                            </Spinner>
-                                        </div>
-                                    ) : (
-                                        <button type="button" onClick={() => createCollections()} className="btn submit-btn">Create New Collection</button>
-                                    )
-                                ) : (<button type="button" disabled className="btn submit-btn">Create New Collection</button>)}
-
-                            </div>
-                        </Row>
-                    </Col>
-                    <Col>
-                    </Col>
-                </Row>
-            </div> */}
       <div className="card-body page-height">
         <div className={classes.root}>
           {open ? (
@@ -226,7 +162,6 @@ function MyCollection(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
                 component="p"
                 style={{ color: "#fff" }}
               >
@@ -236,22 +171,21 @@ function MyCollection(props) {
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (
-               
-                   <Grid
-                    item
-                    xs={12}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    // xl={2}
-                    direction="row"
-                    key={index}
-                  >
-                    <Link to={"/dashboard/collection/nfts/" + i._id}>
+
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  lg={2}
+                  direction="row"
+                  key={index}
+                >
+                  <Link to={"/dashboard/collection/nfts/" + i._id}>
                     <MyCollectionsCard i={i} />
-                    </Link>
-                  </Grid>
-               
+                  </Link>
+                </Grid>
+
               ))}
             </Grid>
           )}

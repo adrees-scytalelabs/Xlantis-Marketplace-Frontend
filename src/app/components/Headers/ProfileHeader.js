@@ -4,7 +4,6 @@ import Dropdown from "react-bootstrap/Dropdown";
 import { connect } from "react-redux";
 import { Link, withRouter } from "react-router-dom";
 import "../../assets/css/adminStyle.css";
-// import {  } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import patient from "../../assets/img/patients/patient.jpg";
@@ -33,11 +32,8 @@ function ProfileHeader(props) {
   };
   return (
     <div
-    //  className={`main-wrapper ${slideNavClass}`}
     >
-      {/* <!-- Header --> */}
       <div className={`admin-header ${menuOpenedClass}`}>
-        {/* <!-- Logo --> */}
         <div className="header-left">
           <a
             href="/"
@@ -45,7 +41,6 @@ function ProfileHeader(props) {
             onClick={(e) => e.preventDefault()}
             style={{ color: "rgb(167,0,0)" }}
           >
-            {/* <img src={logo} alt="Logo" /> */}
             Robot Drop
           </a>
           <a
@@ -54,13 +49,9 @@ function ProfileHeader(props) {
             onClick={(e) => e.preventDefault()}
             style={{ color: "rgb(167,0,0)" }}
           >
-            {/* <img src={logoSmall} alt="Logo" width="30" height="30" /> */}
             Robot Drop
           </a>
         </div>
-        {/* <!-- /Logo --> */}
-
-        {/* <!-- Mobile Menu Toggle --> */}
 
         <a
           href="/"
@@ -70,11 +61,7 @@ function ProfileHeader(props) {
         >
           <i className="fa fa-bars"></i>
         </a>
-        {/* <!-- /Mobile Menu Toggle --> */}
-
-        {/* <!-- Header Right Menu --> */}
         <ul className="nav user-menu">
-          {/* <!-- User Menu --> */}
 
           <li className="nav-item dropdown has-arrow"></li>
 
@@ -87,14 +74,11 @@ function ProfileHeader(props) {
                 style={{
                   backgroundColor: "transparent",
                   border: "0",
-                  // padding: "0"
                 }}
               >
                 <span className="admin-img">
-                  {/* {props.userData.pictureURL !== undefined ? ( */}
                   <img
                     className="avatar-sm rounded-circle"
-                    // src={props.userData.pictureURL}
                     width="50"
                     alt="Ryan Taylor"
                   />
@@ -113,24 +97,14 @@ function ProfileHeader(props) {
                 <Dropdown.Item>
                   <div className="admin-header">
                     <div className="avatar avatar-sm">
-                      {/* {props.userData.pictureURL !== undefined ? ( */}
-                      {/* <img
-                        // src={props.userData.pictureURL}
-                        alt="Image"
-                        className="avatar-img rounded-circle"
-                      /> */}
-                      {/* ) : ( */}
                       <img
                         className="avatar-sm rounded-circle"
                         src={patient}
                         width="50"
                         alt="Ryan Taylor"
                       />
-
-                      {/* )} */}
                     </div>
                     <div className="Admin-text">
-                      {/* <h6>{props.userData.name}</h6> */}
                       <p className="text-muted mb-0">Admin</p>
                     </div>
                   </div>
@@ -162,11 +136,8 @@ function ProfileHeader(props) {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          {/* <!-- /User Menu --> */}
         </ul>
-        {/* <!-- /Header Right Menu --> */}
       </div>
-      {/* <!-- /Header --> */}
     </div>
   );
 }

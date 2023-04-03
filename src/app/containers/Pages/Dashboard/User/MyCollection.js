@@ -35,9 +35,8 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    // height: 140,
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
 });
 
@@ -60,9 +59,7 @@ function MyCollection(props) {
 
   const classes = useStyles();
   let getCollections = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+
     setOpen(true);
     axios
       .get(`/collection/myCollections/${start}/${end}`)
@@ -80,7 +77,7 @@ function MyCollection(props) {
           ) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
-    Cookies.remove("Version");
+            Cookies.remove("Version");
 
             window.location.reload(false);
           }
@@ -164,7 +161,7 @@ function MyCollection(props) {
       settings: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    });
   }, []);
   return (
     <div className="card">

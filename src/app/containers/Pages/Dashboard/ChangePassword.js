@@ -69,7 +69,7 @@ function ChangePassword(props) {
       kyc: "",
       requestAccountApproval: "",
       changePassword: "active",
-    });// eslint-disable-next-line
+    });
   }, []);
   return (
     <div className="card">

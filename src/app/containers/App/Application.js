@@ -1,18 +1,21 @@
 import Cookies from "js-cookie";
-import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { AuthContextProvider } from "../../components/context/AuthContext";
+import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
-import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import AdminSettings from "../Pages/Dashboard/AdminSettings";
 import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
+import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
 import AuctionDrops from "../Pages/Users/AuctionDrops";
+import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
 import DropCubes from "../Pages/Users/Drops/DropCubes";
-// import ExporterDashboard from "../Pages/Dashboard/ExporterDashboard";
-// import ImporterDashboard from "../Pages/Dashboard/ImporterDashboard";
 import EmailVerification from "../Pages/Users/EmailVerification";
+import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import ForgotPassword from "../Pages/Users/ForgotPassword";
 import HomeScreen from "../Pages/Users/HomeScreen";
 import LoginScreen from "../Pages/Users/LoginScreen";
@@ -23,21 +26,14 @@ import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
 import RegisterScreen from "../Pages/Users/RegisterScreen";
 import TermsAndConditions from "../Pages/Users/TermsAndConditions";
 import UserLoginScreen from "../Pages/Users/UserLoginScreen";
+import Failed from "../Pages/Users/UserProfile/Failed";
+import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
+import Success from "../Pages/Users/UserProfile/Success";
+import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
+import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
+import UserLoginSignup from "../Pages/Users/UserProfile/UserLoginSignup";
 import UserProfileScreen from "../Pages/Users/UserProfileScreen";
 import UserSettings from "../Pages/Users/UserSettings";
-import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
-import CheckoutScreen from "../Pages/Users/CheckoutScreen";
-import UserLoginSignup from "../Pages/Users/UserProfile/UserLoginSignup";
-import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
-import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
-import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
-import { AuthContextProvider } from "../../components/context/AuthContext";
-import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
-import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
-import Testt from "../Pages/Users/Testt";
-import Success from "../Pages/Users/UserProfile/Success";
-import Failed from "../Pages/Users/UserProfile/Failed";
-import AdminSettings from "../Pages/Dashboard/AdminSettings";
 
 function App() {
   const [reload, setReload] = useState();
@@ -46,7 +42,6 @@ function App() {
   let version;
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
-  //console.log("jwtjwt", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     jwt !== null && console.log();
@@ -56,8 +51,6 @@ function App() {
         isVerified = true;
       } else if (Cookies.get("Verified") === "false") isVerified = false;
       version = Cookies.get("Version");
-    //  console.log("isLoggedIn", isLoggedIn);
-     // console.log("isVerified", isVerified);
     } else {
       isLoggedIn = false;
     }
@@ -65,9 +58,7 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-
-    checkLoginStatus(); // eslint-disable-next-line
-
+    checkLoginStatus();
     return () => {
       controller.abort();
     };
@@ -143,8 +134,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      // if (cookies.Verified && cookies.InfoAdded) {
-     // console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (
       jwtDecoded &&
@@ -153,8 +142,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      // if (cookies.Verified && cookies.InfoAdded) {
-     // console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
       return <Redirect to="/superAdminDashboard" />;
@@ -186,8 +173,6 @@ function App() {
       return <Route component={Success} />;
     } else if (path === "/usd_payment/failed") {
       return <Route component={Failed} />;
-    } else if (path === "/test") {
-      return <Route component={Testt} />;
     } else if (path === "/auctionDrops/DropCubes/:dropId") {
       return (
         <Route
@@ -251,7 +236,6 @@ function App() {
         <BrowserRouter>
           <Switch>
             <LoginRegisterRedirectCheck exact path="/" />
-            {/* <LoginRegisterRedirectCheck exact path="/login" /> */}
             <LoginRegisterRedirectCheck exact path="/register" />
             <LoginRegisterRedirectCheck exact path="/marketPlace" />
             <LoginRegisterRedirectCheck exact path="/admin-login" />
@@ -264,19 +248,11 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
             <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
             <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
-            {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixedDropNFTHome/:singleNFTid"
-            />
+            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid"/>
             <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />
             <LoginRegisterRedirectCheck exact path="/test" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixdropnft/:dropId"
-              component={FixedPriceDropNFTs}
-            />
+            <LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" component={FixedPriceDropNFTs} />
             <LoginRegisterRedirectCheck
               exact
               path="/auctionDrops/DropCubes/:dropId"
@@ -303,7 +279,6 @@ function App() {
               path="/users/emailverification/:email/:token"
               render={(routeProps) => <EmailVerification {...routeProps} />}
             />
-            {/* <Route exact path="/admin-login"component={LoginScreen} /> */}
             <Route path="/termsandconditions" component={TermsAndConditions} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
 
@@ -312,13 +287,9 @@ function App() {
               path="/User/Profile/Detail/:userRole/:userId/:cubeId"
               render={(routeProps) => <UserProfileScreen {...routeProps} />}
             />
-            {/* <Route path="/user/settings" >
-            <UserSettings></UserSettings>
-          </Route> */}
 
             <PrivateRoute path="/dashboard" />
             <PrivateRoute path="/superAdminDashboard" />
-            {/* <PrivateRoute path="/admin/settings" /> */}
             <Route
               exact
               path="/user/settings"

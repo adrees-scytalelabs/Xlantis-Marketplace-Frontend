@@ -1,42 +1,27 @@
-// import Avatar from '@material-ui/core/Avatar';
 import Backdrop from "@material-ui/core/Backdrop";
-// import Button from '@material-ui/core/Button';
-// import CardActions from '@material-ui/core/CardActions';
-// import CardMedia from '@material-ui/core/CardMedia';
 import CircularProgress from "@material-ui/core/CircularProgress";
-// import FormControl from '@material-ui/core/FormControl';
-// import FormControlLabel from '@material-ui/core/FormControlLabel';
-// import Radio from '@material-ui/core/Radio';
-// import RadioGroup from '@material-ui/core/RadioGroup';
-import { makeStyles } from "@material-ui/core/styles";
-// import Typography from '@material-ui/core/Typography';
-// import Autocomplete from "@material-ui/lab/Autocomplete";
-import axios from "axios";
-// import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
-import Tooltip from "@material-ui/core/Tooltip";
-import { Link } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-// import { Scrollbars } from 'react-custom-scrollbars';
-// import { Icon } from 'semantic-ui-react';
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import Tooltip from "@material-ui/core/Tooltip";
+import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
 import Cookies from "js-cookie";
-import TopUpModal from "../../../../components/Modals/TopUpModal";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import Web3 from "web3";
+import r1 from "../../../../assets/img/patients/patient.jpg";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
+import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
+import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
+import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -60,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -154,7 +139,7 @@ function NewCollection(props) {
       createNewCollection: "active",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   let loadWeb3 = async () => {
@@ -212,12 +197,6 @@ function NewCollection(props) {
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
-            //setApprovalModalShow(true);
-            
-            // setCollectionName("");
-            // setCollectionSymbol("");
-            // setCollectionDescription("");
-            // handleCloseBackdrop();
             setIsSaving(false);
           },
           (error) => {
@@ -267,7 +246,6 @@ function NewCollection(props) {
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
-                  // console.log("Collection ID: ", collectionId);
                   axios
                     .put(`/collection/txHash/${collectionID}`, {
                       txHash: response,
@@ -329,8 +307,6 @@ function NewCollection(props) {
       let variant = "error";
       enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
     }
-
-    // }
   };
 
   const handleSubmitEventMetamask = async (event) => {
@@ -382,7 +358,6 @@ function NewCollection(props) {
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
-                  // console.log("Collection ID: ", collectionId);
                   let variant = "success";
                   enqueueSnackbar(
                     "Sending transaction on blockchain to deploy a collection (1155)",
@@ -454,7 +429,6 @@ function NewCollection(props) {
                       variant,
                     }
                   );
-                  // console.log("Collection ID: ", collectionId);
                   axios
                     .put(`/collection/txHash/${collectionID}`, {
                       txHash: response,
@@ -511,71 +485,6 @@ function NewCollection(props) {
             setIsSaving(false);
           }
         );
-
-        // const address = Addresses.CreateNftAddress;
-        // const abi = CreateNFTContract;
-        // let totalImages = tokenList.length;
-        // let AmountofNFTs = [];
-        // let IPFsHashes = [];
-        // for (let i = 0; i < tokenList.length; i++) {
-        //     AmountofNFTs.push(tokenList[i].tokensupply);
-        //     IPFsHashes.push(tokenList[i].ipfsHash);
-        // }
-        // console.log("AmountofNFTs", AmountofNFTs);
-        // console.log("IPFsHashes", IPFsHashes);
-
-        // var myContractInstance = await new web3.eth.Contract(abi, address);
-        // console.log("myContractInstance", myContractInstance);
-        // await myContractInstance.methods.new_batch(totalImages, AmountofNFTs, IPFsHashes).send({ from: accounts[0] }, (err, response) => {
-        //     console.log('get transaction', err, response);
-        //     if (err !== null) {
-        //         console.log("err", err);
-        //         let variant = "error";
-        //         enqueueSnackbar('User Canceled Transaction', { variant });
-        //         handleCloseBackdrop();
-        //         setIsSaving(false);
-        //     }
-        // })
-        //     .on('receipt', (receipt) => {
-        //         console.log("receipt", receipt);
-        //         console.log("receipt", receipt.events.TransferBatch.returnValues.ids);
-        //         let ids = receipt.events.TransferBatch.returnValues.ids;
-        //         for (let i = 0; i < tokenList.length; i++) {
-        //             tokenList[i].nftId = ids[i];
-        //         }
-
-        //         let Data = {
-        //             nftdata: tokenList
-        //         }
-        //         console.log("Data", Data);
-        //         axios.post("/nft/createnft", Data).then(
-        //             (response) => {
-        //                 console.log("response", response);
-        //                 let variant = "success";
-        //                 enqueueSnackbar('Nfts Created Successfully.', { variant });
-        //                 setTokenList([]);
-        //                 setIpfsHash("");
-        //                 setImage(r1);
-        //                 setCollectionName("");
-        //                 setCollectionDescription("");
-        //                 setAboutTheArt("");
-        //                 setWebsite("");
-        //                 handleCloseBackdrop();
-        //                 setIsSaving(false);
-        //             },
-        //             (error) => {
-        //                 if (process.env.NODE_ENV === "development") {
-        //                     console.log(error);
-        //                     console.log(error.response);
-        //                 }
-
-        //                 let variant = "error";
-        //                 enqueueSnackbar('Unable to Create Nfts.', { variant });
-
-        //                 handleCloseBackdrop();
-        //                 setIsSaving(false);
-        //             })
-        //     })
       }
     } else {
       let variant = "error";
@@ -595,56 +504,7 @@ function NewCollection(props) {
     setIsFixedPriceApproved(false);
   };
 
-  //approval
   let giveFixedPriceApproval = async () => {
-    // await loadWeb3();
-    // const web3 = window.web3;
-    // const accounts = await web3.eth.getAccounts();
-    // const network = await web3.eth.net.getNetworkType();
-    // if (network !== "private") {
-    //   setNetwork(network);
-    //   setIsSaving(false);
-    //   handleShow();
-    // } else {
-    //   setApprovalFlag(true);
-    //   setApprovingFixedPrice(true);
-
-    //   const addressNft = nftContractAddress;
-    //   let addressDropFactory;
-    //   let abiNft;
-    //   if (nftType === "1155") {
-    //     abiNft = CreateNFTContract1155;
-    //     addressDropFactory = Addresses.FactoryDrop1155;
-    //   } else if (nftType === "721") {
-    //     abiNft = CreateNFTContract721;
-    //     addressDropFactory = Addresses.FactoryDrop721;
-    //   }
-
-    //   console.log("Contract Address: ", nftContractAddress);
-    //   var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-    //   console.log("myContractInstance", myContractInstance);
-
-    //   await myContractInstance.methods
-    //     .setApprovalForAll(addressDropFactory, true)
-    //     .send({ from: accounts[0] }, (err, response) => {
-    //       console.log("get transaction", err, response);
-
-    //       if (err !== null) {
-    //         console.log("err", err);
-    //         let variant = "error";
-    //         enqueueSnackbar("User Canceled Transaction", { variant });
-    //         setApprovingFixedPrice(false);
-    //         handleCloseBackdrop();
-    //         setIsSaving(false);
-    //       }
-    //     })
-    //     .on("receipt", (receipt) => {
-    //       console.log("receipt", receipt);
-
-    //    });
-    //}
-
-    //sending call on backend
 
     let approvalData = {
       collectionId: collectionId,
@@ -722,9 +582,6 @@ function NewCollection(props) {
         })
         .on("receipt", (receipt) => {
           console.log("receipt", receipt);
-
-          //sending call on backend
-
           let approvalData = {
             collectionId: collectionId,
             factoryType: "auction",
@@ -758,15 +615,7 @@ function NewCollection(props) {
       let variant = "error";
       enqueueSnackbar("Approve For Fixed Price First", { variant });
     }
-    // if (isAuctionApproved === false) {
-    //   let variant = "error";
-    //   enqueueSnackbar("Approve For Auction First", { variant });
-    // }
-    // if (isAuctionApproved === true && isFixedPriceApproved === true) {
-    //   setDoneLoader(true);
-    //   handleApprovalModalClose();
-    // }
-    if(isFixedPriceApproved === true){
+    if (isFixedPriceApproved === true) {
       setDoneLoader(true);
       handleApprovalModalClose();
     }
@@ -774,7 +623,7 @@ function NewCollection(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -891,7 +740,6 @@ function NewCollection(props) {
                   </div>
 
                   <div className="form-group newNftWrapper">
-                    {/* <label>About the Art</label> */}
                     <input
                       type="number"
                       required
@@ -924,10 +772,6 @@ function NewCollection(props) {
                         <FormControlLabel
                           style={{ color: "white" }}
                           value="ERC721"
-                          // onChange={() => {
-                          //   setNftType("721");
-                          //   // checked={saleType === 'auction'}
-                          // }}
                           onChange={() => {
                             setWorkProgressModalShow(true);
                           }}

@@ -1,24 +1,18 @@
-// REACT
-import React, { useEffect, useState } from "react";
-// MATERIAL UI
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Badge from "@material-ui/core/Badge";
+import Box from "@material-ui/core/Box";
+import Divider from "@material-ui/core/Divider";
+import Fade from "@material-ui/core/Fade";
+import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import Badge from "@material-ui/core/Badge";
 import { useSnackbar } from "notistack";
-import Box from "@material-ui/core/Box";
+import React, { useEffect, useState } from "react";
 
-
-// CUSTOM MATERIAL UI STYLING
 const useStyles = makeStyles((theme) => ({
   modal: {
     display: "flex",
@@ -26,7 +20,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   paper: {
-    // backgroundColor: theme.palette.background.paper,
     border: "1px solid #fff",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -60,7 +53,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   wrapper: {
-    // padding: "8px 16px 16px",
     padding: "4px 0px",
   },
   buttons: {
@@ -111,7 +103,6 @@ const makeTheme = createMuiTheme({
     },
     MuiAccordionSummary: {
       root: {
-        // borderBottom: "1px solid #fff",
         padding: 0,
       },
       content: {
@@ -141,9 +132,7 @@ const makeTheme = createMuiTheme({
   },
 });
 
-//   COMPONENT FUNCTION
 const PublishDropModal = (props) => {
-  // States
   const { enqueueSnackbar } = useSnackbar();
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
@@ -152,18 +141,12 @@ const PublishDropModal = (props) => {
   const [topUpModal, setTopUpModal] = useState(false);
   const classes = useStyles();
 
-  // Handlers
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
-  };
-  const handleCloseTopUpModal = () => {
-   // props.setTopUpModal(false);
   };
   const handleConfirm = (e) => {
     e.preventDefault();
     if (props.cost.isTopupRequired === true) {
-      // props.setTopUpModal(true);
-      // props.setOpen(false);
       let variant = "error";
       enqueueSnackbar(
         "Your account has insufficient funds for this transaction. Kindly top up your account.",
@@ -176,12 +159,6 @@ const PublishDropModal = (props) => {
   };
   useEffect(() => {
     clearTimeout();
-    if (props.open === true) {
-     // console.log("tx-summary", props.dropData);
-     // console.log("cost info", props.cost);
-    }
-    //console.log("Props : ", props);
-    // getTxSummary(props.dropId);
   }, [props]);
 
   return (
@@ -203,14 +180,12 @@ const PublishDropModal = (props) => {
                     <div className="col-12 align-self-center">
                       <Typography
                         variant="h4"
-                        //   component="h6"
                         className={classes.cardHeading}
                       >
                         Purchase Summary
                       </Typography>
                     </div>
                   </div>
-                  {/* COLLECTIONS */}
                   <Accordion
                     expanded={expanded === "panel1"}
                     onChange={handleChange("panel1")}
@@ -228,16 +203,13 @@ const PublishDropModal = (props) => {
                           }
                           color="primary"
                         />
-                        {/* </Badge> */}
                       </Typography>
                     </AccordionSummary>
-                    {/* Number of Tx */}
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Number of Transactions
@@ -246,21 +218,17 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.collectionTxSummary.txsCount}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* <Divider /> */}
-                    {/* Total Collections to Create */}
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Total Collection(s) To Create
@@ -269,20 +237,17 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.collectionTxSummary.collectionCount}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* Total Cost in Wei */}
                     <AccordionDetails>
                       <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Cost
@@ -292,7 +257,6 @@ const PublishDropModal = (props) => {
                           <p
                             className={classes.cardTitle}
                             style={{ wordWrap: "break-word" }}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             ${props.cost.estimates.collection}
                           </p>
@@ -301,7 +265,6 @@ const PublishDropModal = (props) => {
                     </AccordionDetails>
                   </Accordion>
                   <Divider />
-                  {/* NFTs */}
                   <Accordion
                     expanded={expanded === "panel2"}
                     onChange={handleChange("panel2")}
@@ -319,13 +282,11 @@ const PublishDropModal = (props) => {
                         />
                       </Typography>
                     </AccordionSummary>
-                    {/* Number of Tx */}
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Number of Transactions
@@ -334,21 +295,17 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.NFTsTxSummary.txsCount}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* <Divider /> */}
-                    {/* Total NFTs to Mint */}
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Total NFTs To Mint
@@ -357,20 +314,17 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.NFTsTxSummary.NFTCount}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* Total Cost in Wei */}
                     <AccordionDetails>
                       <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Cost
@@ -380,7 +334,6 @@ const PublishDropModal = (props) => {
                           <p
                             className={classes.cardTitle}
                             style={{ wordWrap: "break-word" }}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             ${props.cost.estimates.nftMint}
                           </p>
@@ -389,8 +342,6 @@ const PublishDropModal = (props) => {
                     </AccordionDetails>
                   </Accordion>
                   <Divider />
-
-                  {/* Approval */}
                   <Accordion
                     expanded={expanded === "panel4"}
                     onChange={handleChange("panel4")}
@@ -408,13 +359,11 @@ const PublishDropModal = (props) => {
                         />
                       </Typography>
                     </AccordionSummary>
-                    {/* Number of Tx */}
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Number of Transactions
@@ -423,21 +372,18 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.approvalSummary.txsCount}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* <Divider /> */}
 
                     <AccordionDetails>
                       <div className="row no-gutters justify-content-between w-100">
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Nft's for approval
@@ -446,21 +392,17 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             {props.dropData.approvalSummary.superAdminApprovalPending}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* <Divider /> */}
-                    {/* Total Cost in Wei */}
                     <AccordionDetails>
                       <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            //   component="h6"
                             className={classes.cardTitle}
                           >
                             Cost
@@ -470,25 +412,21 @@ const PublishDropModal = (props) => {
                           <p
                             className={classes.cardTitle}
                             style={{ wordWrap: "break-word" }}
-                            //   style={{ lineHeight: "1.6" }}
                           >
                             ${props.cost.estimates.superAdminApproval}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
-                    {/* <Divider /> */}
                   </Accordion>
                   <Divider />
                   <div className="mt-5">
-                    {/* Total Cost */}
                     <div
                       className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                     >
                       <div className="col-8 align-self-center">
                         <Typography
                           variant="h6"
-                          //   component="h6"
                           className={classes.cardTitle}
                         >
                           Your Balance
@@ -498,10 +436,8 @@ const PublishDropModal = (props) => {
                         <p
                           className={classes.cardTitle}
                           style={{ wordWrap: "break-word" }}
-                          //   style={{ lineHeight: "1.6" }}
                         >
                           ${props.cost.balance.dollar}
-                          {/* {response.totalCostInWei} */}
                         </p>
                       </div>
                     </div>
@@ -511,7 +447,6 @@ const PublishDropModal = (props) => {
                       <div className="col-8 align-self-center">
                         <Typography
                           variant="h6"
-                          //   component="h6"
                           className={classes.cardTitle}
                         >
                           Total cost
@@ -523,10 +458,8 @@ const PublishDropModal = (props) => {
                         <p
                           className={classes.cardTitle}
                           style={{ wordWrap: "break-word" }}
-                          //   style={{ lineHeight: "1.6" }}
                         >
                           ${props.cost.estimates.totalCostInDollars}
-                          {/* {response.totalCostInWei} */}
                         </p>
                       </div>
                     </div>

@@ -62,8 +62,6 @@ function a11yProps(index) {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    //   backgroundColor: theme.palette.background.paper,
-    // width: 500,
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -109,12 +107,12 @@ const MyDrops = (props) => {
       changePassword: "",
       newRandomDrop: "",
       marketPlace: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -132,7 +130,6 @@ const MyDrops = (props) => {
       </div>
       <ThemeProvider theme={customTheme}>
         <div>
-          {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
           <Tabs
             value={value}
             onChange={handleChange}
@@ -161,7 +158,6 @@ const MyDrops = (props) => {
               {...a11yProps(3)}
             />
           </Tabs>
-          {/* </AppBar> */}
           <TabPanel value={value} index={0}>
             <DropsPage status="draft" />
           </TabPanel>

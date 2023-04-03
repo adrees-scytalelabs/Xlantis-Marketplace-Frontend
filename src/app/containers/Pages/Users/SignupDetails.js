@@ -1,8 +1,5 @@
-// PersonalDetails.jsx
 import React, { Component } from "react";
-
 import { Form } from "semantic-ui-react";
-
 import logo from "../../../assets/img/img-04.jpg";
 
 class SignupDetails extends Component {
@@ -24,19 +21,12 @@ class SignupDetails extends Component {
   }
   componentDidMount = () => {
     const { values } = this.props;
-
-    // if (values.passportPhoto !== '' && values.selfiePassportPhoto !== '') {
     this.setState({
-      // selfiePassportPhotoBlob: URL.createObjectURL(values.selfiePassportPhoto),
-      // passportPhotoBlob: URL.createObjectURL(values.passportPhoto),
-      // selfiePassportPhoto: values.selfiePassportPhoto,
-      // passportPhoto: values.passportPhoto,
       email: values.email,
       userName: values.userName,
       address: values.address,
       factoryName: values.factoryName,
     });
-    // }
   };
   saveAndContinue = (e) => {
     e.preventDefault();
@@ -53,21 +43,12 @@ class SignupDetails extends Component {
       this.setState({ msg: "Password does not match with Confirm Password" });
       return;
     }
-    // else if (this.state.passportPhoto === "") {
-    //     this.setState({ msg: 'Please Select Passport Photo' });
-    //     return;
-    // } else if (this.state.selfiePassportPhoto === "") {
-    //     this.setState({ msg: 'Please Select a Selfie with Passport Photo' });
-    //     return;
-    // }
     else {
       this.props.handleStepTwo({
         userName: this.state.userName,
         email: this.state.email,
         address: this.state.address,
         factoryName: this.state.factoryName,
-        // passportPhoto: this.state.passportPhoto,
-        // selfiePassportPhoto: this.state.selfiePassportPhoto
       });
       this.props.nextStep();
     }
@@ -88,7 +69,6 @@ class SignupDetails extends Component {
           <div className="col-12 col-md-12">
             <div className="form-group form-focus focused">
               <input
-                // placeholder='City'
                 onChange={(e) => {
                   this.setState({ userName: e.target.value });
                 }}
@@ -126,7 +106,6 @@ class SignupDetails extends Component {
                     password: e.target.value,
                   });
                 }}
-                // defaultValue={values.password}
                 minLength="4"
                 required
               />
@@ -144,7 +123,6 @@ class SignupDetails extends Component {
                     confirmPassword: e.target.value,
                   });
                 }}
-                // defaultValue={values.password}
                 minLength="4"
                 required
               />

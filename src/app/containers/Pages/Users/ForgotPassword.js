@@ -35,7 +35,6 @@ function ForgotPassword() {
         (response) => {
           setIsClicked(false);
           setForgot(true);
-          // console.log(response);
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -109,7 +108,6 @@ function ForgotPassword() {
   };
 
   return (
-    // <!-- Page Content -->
     <div className="account-page" style={{ height: "inherit" }}>
       <div className="main-wrapper" style={{ height: "inherit" }}>
         <Header />
@@ -125,7 +123,6 @@ function ForgotPassword() {
                 className="col-lg-12 login-screen"
                 style={{ paddingBottom: "8%" }}
               >
-                {/* <!-- Login Tab Content --> */}
                 <div className="account-content">
                   <div className="row align-items-center justify-content-center">
                     <div
@@ -166,8 +163,8 @@ function ForgotPassword() {
                               {isError ? (
                                 <p style={{ color: "red" }}>{msg}</p>
                               ) : (
-                                  <></>
-                                )}
+                                <></>
+                              )}
                             </div>
                             <div className="text-right">
                               <Link to="/login" className="forgot-link">
@@ -185,13 +182,13 @@ function ForgotPassword() {
                                 </Spinner>
                               </div>
                             ) : (
-                                <button
-                                  className="btn btn-block btn-lg login-btn"
-                                  type="submit"
-                                >
-                                  Reset Password
-                                </button>
-                              )}
+                              <button
+                                className="btn btn-block btn-lg login-btn"
+                                type="submit"
+                              >
+                                Reset Password
+                              </button>
+                            )}
                           </form>
                         </>
                       ) : !pinEntered ? (
@@ -222,8 +219,8 @@ function ForgotPassword() {
                               {isError ? (
                                 <p style={{ color: "red" }}>{msg}</p>
                               ) : (
-                                  <></>
-                                )}
+                                <></>
+                              )}
                             </div>
                             <div className="text-right">
                               <Link to="/login" className="forgot-link">
@@ -241,78 +238,78 @@ function ForgotPassword() {
                                 </Spinner>
                               </div>
                             ) : (
-                                <button
-                                  className="btn btn-block btn-lg login-btn"
-                                  type="submit"
-                                >
-                                  Submit
-                                </button>
-                              )}
+                              <button
+                                className="btn btn-block btn-lg login-btn"
+                                type="submit"
+                              >
+                                Submit
+                              </button>
+                            )}
                           </form>
                         </>
                       ) : (
-                            <>
-                              <div className="login-header">
-                                <h3>Reset Password</h3>
-                              </div>
-                              <form onSubmit={handlePasswordSubmitEvent}>
-                                <div className="form-group form-focus focused">
-                                  <input
-                                    required
-                                    type="password"
-                                    className="form-control floating"
-                                    onChange={(e) => setPassword(e.target.value)}
-                                  />
-                                  <label className="focus-label">
-                                    New Password
+                        <>
+                          <div className="login-header">
+                            <h3>Reset Password</h3>
+                          </div>
+                          <form onSubmit={handlePasswordSubmitEvent}>
+                            <div className="form-group form-focus focused">
+                              <input
+                                required
+                                type="password"
+                                className="form-control floating"
+                                onChange={(e) => setPassword(e.target.value)}
+                              />
+                              <label className="focus-label">
+                                New Password
                               </label>
-                                </div>
-                                <div className="form-group form-focus  focused">
-                                  <input
-                                    required
-                                    type="password"
-                                    className="form-control floating"
-                                    onChange={(e) =>
-                                      setConfirmPassword(e.target.value)
-                                    }
-                                  />
-                                  <label className="focus-label">
-                                    Confirm Password
+                            </div>
+                            <div className="form-group form-focus  focused">
+                              <input
+                                required
+                                type="password"
+                                className="form-control floating"
+                                onChange={(e) =>
+                                  setConfirmPassword(e.target.value)
+                                }
+                              />
+                              <label className="focus-label">
+                                Confirm Password
                               </label>
+                            </div>
+                            <div
+                              className="text-center"
+                              style={{ margin: "30px" }}
+                            >
+                              {isError ? (
+                                <p style={{ color: "red" }}>{msg}</p>
+                              ) : (
+                                <></>
+                              )}
+                            </div>
+                            <div className="submit-section">
+                              {isClicked ? (
+                                <div className="text-center">
+                                  <Spinner
+                                    animation="border"
+                                    role="status"
+                                    style={{ color: "#ff0000" }}
+                                  >
+                                    <span className="sr-only">Loading...</span>
+                                  </Spinner>
                                 </div>
-                                <div
-                                  className="text-center"
-                                  style={{ margin: "30px" }}
+                              ) : (
+                                <button
+                                  type="submit"
+                                  className="btn btn-block btn-lg login-btn"
                                 >
-                                  {isError ? (
-                                    <p style={{ color: "red" }}>{msg}</p>
-                                  ) : (
-                                      <></>
-                                    )}
-                                </div>
-                                <div className="submit-section">
-                                  {isClicked ? (
-                                    <div className="text-center">
-                                      <Spinner
-                                        animation="border"
-                                        role="status"
-                                        style={{ color: "#ff0000" }}
-                                      >
-                                        <span className="sr-only">Loading...</span>
-                                      </Spinner>
-                                    </div>
-                                  ) : (
-                                      <button
-                                        type="submit"
-                                        className="btn btn-block btn-lg login-btn"
-                                      >
-                                        Save Changes
-                                      </button>
-                                    )}
-                                </div>
-                              </form>
-                            </>
-                          )}
+                                  Save Changes
+                                </button>
+                              )}
+                            </div>
+                          </form>
+                        </>
+                      )}
                       {done ? <Redirect to="/login" /> : <></>}
                     </div>
                   </div>

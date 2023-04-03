@@ -14,15 +14,12 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { useRouteMatch } from "react-router-dom";
-// COMPONENTS
 import Countdown from "react-countdown";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-// UTILS
 import { truncate } from "../../../../assets/js/utils";
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
-    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
@@ -37,7 +34,6 @@ const cardStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "0.875rem",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -46,25 +42,22 @@ const cardStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 345,
     borderRadius: 0,
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   badge: {
     "& > *": {
@@ -86,12 +79,6 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
-  // overflowWithDots: {
-  //     textOverflow: 'ellipsis',
-  //     whiteSpace: 'nowrap',
-  //     overflow: 'hidden',
-  //     width: "80%"
-  // }
 }));
 
 function MarketPlacePage(props) {
@@ -147,26 +134,7 @@ function MarketPlacePage(props) {
     setVersionB(Cookies.get("Version"));
 
     getMyDrops(props.saleType, 0, rowsPerPage);
-    // getCollections();?
-
-    // props.setActiveTab({
-    //     dashboard: "",
-    //     newNFT: "",
-    //     orders: "",
-    //     myNFTs: "",
-    //     myCubes: "",
-    //     myDrops: "active",
-    //     mySeason: "",
-    //     settings: "",
-    //     privacyPolicy: "",
-    //     termsandconditions: "",
-    //     changePassword: "",
-    //     newDrop: "",
-    //     newCube: "",
-    //     newCollection: "",
-    //     newRandomDrop: "",
-    // });
-    // eslint-disable-next-line
+    
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -204,7 +172,6 @@ function MarketPlacePage(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
                 component="div"
                 style={{ color: "#fff" }}
               >
@@ -217,7 +184,6 @@ function MarketPlacePage(props) {
               spacing={2}
               direction="row"
               justify="flex-start"
-              // alignItems="flex-start"
             >
               {tokenList.map((i, index) => (
                 <Grid
@@ -227,7 +193,6 @@ function MarketPlacePage(props) {
                   md={6}
                   lg={4}
                   xl={3}
-                  // xl={3}
                   direction="row"
                   key={index}
                 >
@@ -256,7 +221,6 @@ function MarketPlacePage(props) {
                           title="Drop Image"
                         ></CardMedia>
                         <CardContent>
-                          {/* Title, Description and Price */}
                           <div
                             className="row no-gutters justify-content-between"
                             style={{ minHeight: "60px" }}
@@ -286,26 +250,11 @@ function MarketPlacePage(props) {
                               </p>
                             </div>
                           </div>
-                          {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Description: </strong>{i.description}
-                                                    </Typography> */}
-
                           <br></br>
-                          {/* {(i.saleType === "auction") ? 
-                                                    (<Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Minimum Bid: </strong>{i.price} WETH
-                                                    </Typography>
-                                                    ) : (
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Price: </strong>{i.price} WETH
-                                                        </Typography>
-                                                    )} */}
-
                           {i.saleType === "auction" ? (
                             <Typography
                               variant="h6"
                               gutterBottom
-                              // color="textSecondary"
                               className="text-center mb-0"
                             >
                               {new Date() < new Date(i.startTime) ? (
@@ -334,7 +283,6 @@ function MarketPlacePage(props) {
                               ) : new Date() > new Date(i.startTime) &&
                                 new Date() < new Date(i.endTime) ? (
                                 <div style={{ marginTop: "1rem" }}>
-                                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                   <Alert
                                     severity="warning"
                                     className={cardClasses.textAlert}
@@ -361,13 +309,11 @@ function MarketPlacePage(props) {
                                   variant="body2"
                                   style={{
                                     marginTop: "1rem",
-                                    // marginBottom: "1.25rem",
                                   }}
                                   component="p"
                                 >
                                   <Alert
                                     severity="error"
-                                    // variant="filled"
                                     className={cardClasses.textAlert}
                                     style={{ fontWeight: "bold" }}
                                   >
@@ -380,7 +326,6 @@ function MarketPlacePage(props) {
                             <Typography
                               variant="h6"
                               gutterBottom
-                              // color="textSecondary"
                               className="text-center mb-0"
                             >
                               {new Date() < new Date(i.startTime) ? (
@@ -409,7 +354,6 @@ function MarketPlacePage(props) {
                               ) : new Date() > new Date(i.startTime) &&
                                 new Date() < new Date(i.endTime) ? (
                                 <div style={{ marginTop: "1rem" }}>
-                                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                   <Alert
                                     severity="warning"
                                     className={cardClasses.textAlert}
@@ -436,13 +380,11 @@ function MarketPlacePage(props) {
                                   variant="body2"
                                   style={{
                                     marginTop: "1rem",
-                                    // marginBottom: "1.25rem",
                                   }}
                                   component="p"
                                 >
                                   <Alert
                                     severity="error"
-                                    // variant="filled"
                                     className={cardClasses.textAlert}
                                     style={{ fontWeight: "bold" }}
                                   >
@@ -453,35 +395,9 @@ function MarketPlacePage(props) {
                             </Typography>
                           )}
 
-                          {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                        {new Date() < new Date(i.startTime) ? (
-                                                            <div style={{ color: "#00FF00" }} >
-
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Starts At:</strong>
-                                                                </Typography>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
-                                                                <Countdown daysInHours date={new Date(i.startTime)}>
-                                                                </Countdown>
-                                                            </div>
-                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
-                                                            <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Ends At:</strong>
-                                                                </Typography>
-                                                                <Countdown daysInHours date={new Date(i.endTime)}>
-                                                                </Countdown>
-                                                            </div>) : (
-                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                <strong>Auction Ended</strong>
-                                                            </Typography>
-                                                        )}
-                                                    </Typography> */}
-                        </CardContent>
+                          </CardContent>
                       </CardActionArea>
-                      {/* <CardActions></CardActions> */}
-                    </Card>
+                      </Card>
                   </Link>
                 </Grid>
               ))}

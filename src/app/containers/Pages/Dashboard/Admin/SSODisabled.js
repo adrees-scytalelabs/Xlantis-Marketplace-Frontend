@@ -1,38 +1,16 @@
+import { createMuiTheme, Tooltip } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,7 +95,7 @@ function SSODisabled(props) {
 
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -145,38 +123,25 @@ function SSODisabled(props) {
 
   useEffect(() => {
     getDisableSSOAdmins();
-    // getMyCubes();
-    // props.setActiveTab({
-    //   dashboard: "",
-    //   manageAccounts : "",
-    //   accountApproval : "active",
-    //   accounts: "",
-    // }); // eslint-disable-next-line
+
   }, []);
 
   const handleChangePage = (event, newPage) => {
-   // console.log("newPage", newPage);
     setPage(newPage);
-  //  console.log("Start", newPage * rowsPerPage);
-   // console.log("End", newPage * rowsPerPage + rowsPerPage);
-    // getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    // getCollections(0, parseInt(event.target.value, 10));
+
     setPage(0);
   };
 
   let getDisableSSOAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/disabled?userType=v1`)
       .then((response) => {
-      //  console.log("response.data", response.data);
         setAdmins(response.data.admins);
         setAdminCount(response.data.admins.length);
         setOpen(false);
@@ -200,30 +165,21 @@ function SSODisabled(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
 
-  //  console.log("data", data);
-
     axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
-       // console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
         getDisableSSOAdmins(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on status pending nft: ", error);
         console.log("Error on status pending nft: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -235,12 +191,9 @@ function SSODisabled(props) {
 
   return (
     <div className="">
-      {/* Page Header */}
-
-      {/* Page Content */}
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+
           <Table responsive>
             <thead>
               <tr>
@@ -299,18 +252,12 @@ function SSODisabled(props) {
                     </button>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+
                     {i.isEnabled === false ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={`${classes.approveBtn} ml-4`}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+
                           onClick={(e) => {
                             handleEnableSSO(e, i._id);
                           }}
@@ -319,7 +266,7 @@ function SSODisabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    {/* </div> */}
+
                   </td>
                 </tr>
               </tbody>
@@ -327,7 +274,7 @@ function SSODisabled(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

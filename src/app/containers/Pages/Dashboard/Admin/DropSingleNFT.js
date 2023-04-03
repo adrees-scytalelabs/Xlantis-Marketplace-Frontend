@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -178,29 +178,13 @@ const DropSingleNFT = (props) => {
         console.log("responeee", response.data.data);
         setData(response.data.data);
         setMOdalOpen(true);
-
-        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
+        
       }
     );
   };
@@ -260,10 +244,7 @@ const DropSingleNFT = (props) => {
   };
 
   let handleBuy = async () => {
-    // setNftDetail(nftObject);
     console.log("Nft detail: ", nftDetail);
-    // setNftDetail(nftDetail);
-    // console.log("Nft detail id: ", nftDetail.collectionId._id);
     let dropIdHex = getHash(nftDetail.dropId);
     console.log(dropIdHex);
     setOpenDialog(false);
@@ -351,9 +332,6 @@ const DropSingleNFT = (props) => {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
-    // getNftDetail();
-    // console.log("hehe",location.state.nftDetail);
     setNftDetail(location.state.nftDetail);
   //  console.log("NFT detail: ", location.state.nftDetail);
     setContractType(location.state.nftDetail.collectionId.contractType);
@@ -399,8 +377,6 @@ const DropSingleNFT = (props) => {
       setIsSaving(false);
       handleShowNetworkModal();
     } else {
-      // if (contractType === "1155"){
-      //sending call on blockchain
       let abiAuctionFactory;
       let addressAuctionFactory;
 
@@ -418,7 +394,7 @@ const DropSingleNFT = (props) => {
       let tokenId = nftDetail.nftId;
       let uri = nftDetail.nftURI;
       let signature = nftDetail.voucherSignature;
-      let bidIdHash = getHash(bidIdd); //get bid object id and get hash to send to blockchain
+      let bidIdHash = getHash(bidIdd); 
       let trxHash;
 
       let myContractInstance = await new web3.eth.Contract(
@@ -426,8 +402,6 @@ const DropSingleNFT = (props) => {
         addressAuctionFactory
       );
       console.log("My auction drop factory instance: ", myContractInstance);
-
-      //Call for auction drop factory 1155
       if (contractType === "1155") {
         await myContractInstance.methods
           .acceptBid(dropIdHash, nftAddress, tokenId, bidIdHash)
@@ -443,7 +417,6 @@ const DropSingleNFT = (props) => {
             console.log("receipt: ", receipt);
           });
       }
-      //Call for auction drop factory 721
       else if (contractType === "721") {
         await myContractInstance.methods
           .acceptBidLazyMint(
@@ -467,8 +440,6 @@ const DropSingleNFT = (props) => {
           });
       }
 
-      //sending call on backend to update data
-
       let data = {
         bidId: bidIdd,
         txHash: trxHash,
@@ -482,24 +453,6 @@ const DropSingleNFT = (props) => {
           console.log("Error: ", error);
         }
       );
-
-      // }
-      // else if (contractType === "721") {
-      //     //sending call on backend to update data
-
-      //     let data = {
-      //         "bidId": bidId
-      //     }
-
-      //     axios.post("/auction/bid/accept", data).then(
-      //         (response) => {
-      //             console.log("response", response);
-      //         },
-      //         (error) => {
-      //             console.log("Error: ", error);
-      //         }
-      //     )
-      // }
     }
   };
 
@@ -543,7 +496,7 @@ const DropSingleNFT = (props) => {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -652,7 +605,7 @@ const DropSingleNFT = (props) => {
                         ></CardMedia>
                         <div>
                           <AudioPlayer
-                            // style={{ width: "300px" }}
+                            
                             style={{ borderRadius: "1rem" }}
                             autoPlay={false}
                             layout="horizontal"

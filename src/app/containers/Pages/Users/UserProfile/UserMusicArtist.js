@@ -74,7 +74,6 @@ function UserMusicArtist(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios
       .get(`/token/getprofileusercubes/${props.userId}/${start}/${end}`)
       .then(
@@ -105,7 +104,7 @@ function UserMusicArtist(props) {
   };
   useEffect(() => {
     getUserData(0, rowsPerPage);
-    // eslint-disable-next-line
+    
   }, []);
   return (
     <div className="page-wrapper">
@@ -181,7 +180,6 @@ function UserMusicArtist(props) {
                             <CardActionArea>
                               <CardMedia
                                 className={classes.media}
-                                // image={img}
                                 title=""
                               >
                                 <CubeComponent1

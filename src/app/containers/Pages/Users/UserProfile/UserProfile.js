@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+
 import CardActionArea from "@material-ui/core/CardActionArea";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -18,7 +18,6 @@ function UserProfile(props) {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
       "Authorization"
     )}`;
-    // nft/getnft/{userId}/{start}/{end}
     axios.get(`/profile/getuserprofile/${props.userId}`).then(
       (response) => {
         console.log("response", response);
@@ -50,14 +49,14 @@ function UserProfile(props) {
   };
   useEffect(() => {
     getUserData();
-    // eslint-disable-next-line
+    
   }, []);
 
   return (
     <>
       <div className="page-wrapper">
         <div className="content container-fluid">
-          {/* <!-- Page Header --> */}
+          
           <div className="page-header mt-4 mt-lg-2 pt-lg-2">
             <div className="row">
               <div className="col-sm-6">
@@ -86,7 +85,7 @@ function UserProfile(props) {
               </div>
             </div>
           </div>
-          {/* <!-- /Page Header --> */}
+          
 
           <div className="container-fluid">
             <div className="row">

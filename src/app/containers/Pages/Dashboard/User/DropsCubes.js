@@ -81,7 +81,7 @@ function DropCubes(props) {
 
     useEffect(() => {
         getDropCubes();
-        // getCollections();?
+        
 
         props.setActiveTab({
             dashboard: "",
@@ -99,7 +99,7 @@ function DropCubes(props) {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });// eslint-disable-next-line
+        });
     }, []);
 
     return (
@@ -165,17 +165,17 @@ function DropCubes(props) {
                             spacing={2}
                             direction="row"
                             justify="flex-start"
-                        // alignItems="flex-start"
+                        
                         >
                             {cubeData.map((i, index) => (
                                 <Grid item xs={12} sm={6} md={3} key={index}>
                                     <Link to={"/dashboard/myCubes/Nfts/" + dropId + "/" + i._id}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
-                                            {/* style={{ height: "100%" }} variant="outlined" */}
+                                            
                                             <CardActionArea>
                                                 <CardMedia
                                                     className={classes.media}
-                                                    // image={img}
+                                                    
                                                     title=""
                                                 >
                                                     <CubeComponent1 data={imageData} index={index} />

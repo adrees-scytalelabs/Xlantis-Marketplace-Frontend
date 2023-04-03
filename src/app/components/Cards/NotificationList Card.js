@@ -11,12 +11,9 @@ import "../../assets/css/notificationStyle.css";
 
 export default function NotificationList(props) {
   function handleNotificationClick(event) {
-    //move to a different link
     console.log("clicked");
   }
   function handleIconClick(id) {
-    //delete notifications
-    // event.stopPropagation();
     console.log("id", id);
     props.close(id);
     console.log("Icon clicked");
@@ -25,23 +22,10 @@ export default function NotificationList(props) {
     let arr = props.notifications;
     console.log("array", arr);
     console.log("message", arr[index]);
-    // let arr = [
-    //   "Shabnam",
-    //   "Altaf",
-    //   "Nawaz",
-    //   "Billo",
-    //   "Parveen",
-    //   "Papa ki Pari",
-    //   "Bubbly",
-    //   "PrinceMughal",
-    //   "Princess32",
-    //   "HansMukh",
-    // ];
     let read = [true, true, false, true, false, true, true, false, false, true];
     return (
       <ListItem
         divider
-        // className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
   
         className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
         style={style}
@@ -49,7 +33,6 @@ export default function NotificationList(props) {
         onClick={handleNotificationClick}
       >
         <ListItemText
-          // secondary={`Congratulations! ${arr[index]} accepted your bid`}
           secondary={arr[index].message}
   
         />

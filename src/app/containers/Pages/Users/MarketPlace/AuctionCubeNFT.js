@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -86,7 +86,7 @@ function AuctionCubeNFTs(props) {
   }
   const [ownerAudio, setOwnerAudio] = useState(new Audio());
   const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio());
-  const [isClaiming, setIsClaiming] = useState(false); // eslint-disable-next-line
+  const [isClaiming, setIsClaiming] = useState(false); 
   const [isClaimingWeth, setIsClaimingWeth] = useState(false);
   const [weth, setWeth] = useState(0);
   const [enableWethButton, setEnableWethButton] = useState(false);
@@ -100,7 +100,7 @@ function AuctionCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -120,8 +120,6 @@ function AuctionCubeNFTs(props) {
   const [bidHistory, setBidHistory] = useState([]);
   const [isRemoving, setIsRemoving] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
-  // if(bidHistory.length!==0)
-  // console.log("bidHistory.findIndex(i => i.userId === jwtDecoded.userId)",);
   const [openWeth, setOpenWeth] = useState(false);
   const handleCloseWeth = () => {
     setOpenWeth(false);
@@ -182,7 +180,6 @@ function AuctionCubeNFTs(props) {
 
     let jwt = sessionStorage.getItem("Authorization");
     if (jwt) {
-      //   console.log(jwtDecode(jwt));
       await loadWeb3();
       const web3 = window.web3;
       const accounts = await web3.eth.getAccounts();
@@ -284,8 +281,6 @@ function AuctionCubeNFTs(props) {
       (response) => {
         console.log("response", response);
         setIsRemoving(false);
-
-        // getAuctionCubeNFTs();
         let variant = "success";
         enqueueSnackbar("Removed from Auction Successfully.", { variant });
         history.push("/");
@@ -518,7 +513,6 @@ function AuctionCubeNFTs(props) {
         handleShowBackdrop();
         const wethAddress = Addresses.WethAddress;
         const wethAbi = WethContract;
-        // const address = Addresses.AuctionAddress;
         var myWethContractInstance = await new web3.eth.Contract(
           wethAbi,
           wethAddress
@@ -635,12 +629,6 @@ function AuctionCubeNFTs(props) {
         console.log("res", res);
         if (res.data.success) {
           setBidHistory(res.data.UsercubeshistoryData);
-          // console.log("jwtDecoded.userId", jwtDecoded.userId);
-          // for (let i = 0; i < res.data.Dropcubeshistorydata.length; i++) {
-          //     console.log("res.data.Dropcubeshistorydata", res.data.Dropcubeshistorydata[i].userId);
-          // }
-          // let index = res.data.Dropcubeshistorydata.findIndex(i => i.userId === jwtDecoded.userId);
-          // console.log(index, "index");
         }
         handleCloseSpinner();
       },
@@ -661,7 +649,6 @@ function AuctionCubeNFTs(props) {
         console.log("response", response);
         setTokenList(response.data.nftdata);
         setCubeData(response.data.tokensdata);
-        // setOwnerAudio(response.data.tokensdata.ownermusicfile)
         setOwnerAudio(new Audio(response.data.tokensdata.ownermusicfile));
         setNonOwnerAudio(new Audio(response.data.tokensdata.nonownermusicfile));
         setAuctionData(response.data.UserAuctiondata);
@@ -692,8 +679,6 @@ function AuctionCubeNFTs(props) {
               10 ** 18
           );
         }
-        // setBid((response.data.UserAuctiondata.minimumBid) / 10 ** 18)
-
         axios
           .get(
             `/transaction/tokenTransaction/${response.data.tokensdata.tokenId}`
@@ -743,10 +728,9 @@ function AuctionCubeNFTs(props) {
 
       console.log("balance", (balance / 10 ** 18).toString());
       setBalance(balance);
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getWeth = () => {
-    // console.log("GET");
     handleShowWeth();
   };
   let confirmGetWeth = async () => {

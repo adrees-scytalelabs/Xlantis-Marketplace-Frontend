@@ -15,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   badge: {
     "& > *": {
@@ -62,7 +62,7 @@ function Drops() {
     );
   };
   useEffect(() => {
-    getMyDrops(0, rowsPerPage); // eslint-disable-next-line
+    getMyDrops(0, rowsPerPage); 
   }, []);
   return (
     <>

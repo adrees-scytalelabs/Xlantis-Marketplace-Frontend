@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Col, Row } from "react-bootstrap";
-// MUI
 import { Button } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
@@ -138,11 +137,11 @@ function CreateTemplate(props) {
       properties: "active",
       template: "active",
       saved: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

@@ -74,7 +74,7 @@ function MyNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -94,7 +94,7 @@ function MyNFTs(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -108,7 +108,7 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         {/* <form> */}
         <div className="form-group">
@@ -127,7 +127,7 @@ function MyNFTs(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
+
                 component="p"
                 style={{ color: "#fff" }}
               >

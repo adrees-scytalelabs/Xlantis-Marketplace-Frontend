@@ -1,6 +1,4 @@
-// REACT
 import React from "react";
-// COMPONENTS
 import HeaderHome from "../../../components/Headers/Header";
 import AdminLoginSignupForms from "./AdminLoginSignupForms";
 

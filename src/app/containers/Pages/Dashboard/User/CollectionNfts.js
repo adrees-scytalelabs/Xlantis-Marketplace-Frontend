@@ -51,7 +51,7 @@ function CollectionNfts(props) {
             newCube: "",
             newCollection: "active",
             newRandomDrop: "",
-        });// eslint-disable-next-line
+        });
     }, []);
 
     return (
@@ -86,7 +86,7 @@ function CollectionNfts(props) {
                                 spacing={2}
                                 direction="row"
                                 justify="flex-start"
-                            // alignItems="flex-start"
+                            
                             >
                                 {tokenList.map((i, index) => (
                                     <NFTCard data={i[0]} key={index}></NFTCard>
