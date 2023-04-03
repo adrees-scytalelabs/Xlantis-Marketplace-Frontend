@@ -41,6 +41,7 @@ import MyDropNFTs from "./Admin/MyDropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import transakSDK from "@transak/transak-sdk";
 import TopUp from "./Admin/TopUp";
+import AllTransactions from "./Admin/AllTransactions";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -95,6 +96,7 @@ function AdminDashboard(props) {
     newRandomDrop: "",
     marketPlace: "",
     topUp:""
+    allTransactions : ""
   });
 
   function openTransak() {
@@ -270,6 +272,14 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/newNFT`}>
               <NewNFT setActiveTab={setActiveTab} />
             </Route>
+           
+            
+            
+            
+            <Route exact path={`${path}/allTransactions`}>
+              <AllTransactions setActiveTab={setActiveTab} />
+            </Route>
+            
             <Route exact path={`${path}/myNFTs`}>
               <MyNFTs setActiveTab={setActiveTab} />
             </Route>

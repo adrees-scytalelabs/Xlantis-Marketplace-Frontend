@@ -7,9 +7,10 @@ import BusinessIcon from "@material-ui/icons/Business";
 import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 import { useState } from "react";
 import { useEffect } from "react";
-
+import AllTransactions from "./AllTransactions";
 function AdminSidebar(props) {
   let [versionB, setVersionB] = useState("");
+
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");
@@ -67,6 +68,13 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
+
+            <li className={props.activeTab.allTransactions}>
+              <Link to={`${props.match.url}/allTransactions`} className="sidebarLink">
+                <ListAltIcon /> <span>All Transactions</span>
+              </Link>
+            </li>
+            
             <li className={props.activeTab.marketPlace}>
               <Link
                 to={`${props.match.url}/marketPlace`}
