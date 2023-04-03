@@ -95,7 +95,7 @@ function AdminDashboard(props) {
     myCubes: "",
     newRandomDrop: "",
     marketPlace: "",
-    topUp:""
+    topUp:"",
     allTransactions : ""
   });
 
