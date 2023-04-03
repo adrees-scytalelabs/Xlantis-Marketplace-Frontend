@@ -69,28 +69,32 @@ const makeTheme = createMuiTheme({
 function PlatformFee(props) {
   const { enqueueSnackbar } = useSnackbar();
   let { path } = useRouteMatch();
+  const [value, setValue] = useState(0);
+
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
 
   const classes = useStyles();
   useEffect(() => {
+    if (props.tab === 1) {
+      setValue(1);
+      props.setTab(0);
+    }
+    if (props.tab === 2) {
+      setValue(2);
+      props.setTab(0);
+    }
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      newDrop: "",
-      newCube: "",
-      mySeason: "",
-      myCubes: "",
-      myDrops: "",
-      myNFTs: "",
-      newCollection: "",
-      orders: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newRandomDrop: "",
-      topUp: "",
+      manageAccounts: "",
+      accountApproval: "",
+      accounts: "",
+      sso: "",
+      wallet: "",
+      properties:"",
+      template:"",
+      saved:"",
+      platformFee:"active",
     }); 
   }, []);
   
@@ -129,6 +133,7 @@ function PlatformFee(props) {
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={1}
+
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
                 setAmount(e.target.value);
