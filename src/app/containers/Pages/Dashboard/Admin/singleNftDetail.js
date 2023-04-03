@@ -112,11 +112,11 @@ const SingleNftDetail = (props) => {
 
     axios.get(`/nft/getSingleNFT/${nftId}`).then(
       (response) => {
-        console.log("Response: ", response);
+     //   console.log("Response: ", response);
         setNftDetail(response.data.data[0]);
         setProperties(response.data.data[0].properties);
         const keys = Object.keys(response.data.data[0].properties);
-        console.log("Keys: ", keys);
+      // console.log("Keys: ", keys);
         setKeys(keys);
       },
       (error) => {

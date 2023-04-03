@@ -23,7 +23,7 @@ function AdminDashboardDefaultScreen(props) {
     axios
       .get(`${version}/user/getcounts`)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
         setTotalDrops(response.data.Dropscount);

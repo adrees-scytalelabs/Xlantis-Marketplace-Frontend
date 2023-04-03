@@ -124,7 +124,7 @@ function SuperAdminDashboardDefaultScreen(props) {
     
   }, []);
 
-  console.log("props in super admin dashboard: ", props);
+ // console.log("props in super admin dashboard: ", props);
 
   return (
     <>

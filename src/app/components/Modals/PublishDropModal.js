@@ -159,11 +159,6 @@ const PublishDropModal = (props) => {
   };
   useEffect(() => {
     clearTimeout();
-    if (props.open === true) {
-      console.log("tx-summary", props.dropData);
-      console.log("cost info", props.cost);
-    }
-    console.log("Props : ", props);
   }, [props]);
 
   return (
@@ -249,7 +244,7 @@ const PublishDropModal = (props) => {
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className="row no-gutters justify-content-between w-100">
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
@@ -261,6 +256,7 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.collection}
                           </p>
@@ -325,7 +321,7 @@ const PublishDropModal = (props) => {
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className="row no-gutters justify-content-between w-100">
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
@@ -337,6 +333,7 @@ const PublishDropModal = (props) => {
                         <div className="col-4 align-self-center text-right p-0">
                           <p
                             className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.nftMint}
                           </p>
@@ -396,13 +393,13 @@ const PublishDropModal = (props) => {
                           <p
                             className={classes.cardTitle}
                           >
-                            {props.dropData.approvalSummary.NFTCount}
+                            {props.dropData.approvalSummary.superAdminApprovalPending}
                           </p>
                         </div>
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className="row no-gutters justify-content-between w-100">
+                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
@@ -411,9 +408,10 @@ const PublishDropModal = (props) => {
                             Cost
                           </Typography>
                         </div>
-                        <div className="col-4 align-self-center text-right p-0">
+                        <div className="col-4 align-self-center text-right p-0" >
                           <p
                             className={classes.cardTitle}
+                            style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.superAdminApproval}
                           </p>
@@ -437,8 +435,9 @@ const PublishDropModal = (props) => {
                       <div className="col-4 align-self-center text-right p-0">
                         <p
                           className={classes.cardTitle}
+                          style={{ wordWrap: "break-word" }}
                         >
-                          {props.cost.balance}
+                          ${props.cost.balance.dollar}
                         </p>
                       </div>
                     </div>
@@ -460,7 +459,7 @@ const PublishDropModal = (props) => {
                           className={classes.cardTitle}
                           style={{ wordWrap: "break-word" }}
                         >
-                          {props.cost.estimates.totalCostInDollars}
+                          ${props.cost.estimates.totalCostInDollars}
                         </p>
                       </div>
                     </div>

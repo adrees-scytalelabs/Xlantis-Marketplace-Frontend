@@ -161,7 +161,6 @@ const FixedDropSingleNFTHome = () => {
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
   const { singleNFTid } = useParams();
-  console.log(singleNFTid, " /// NFT ID")
   const handleGoBack = () => {
     history.push({
       pathname: `/fixdropnft/${dropID}`,
@@ -487,14 +486,10 @@ const FixedDropSingleNFTHome = () => {
       const abiERC20 = ERC20Abi;
 
       let bidValue = web3.utils.toWei(biddingValue, "ether");
-
-      console.log("Contract Address: ", addressErc20Auction);
-      console.log("drop clone address", dropCloneAddress);
       var myContractInstance = await new web3.eth.Contract(
         abiERC20,
         addressErc20Auction
       );
-      console.log("myContractInstance", myContractInstance);
 
       await myContractInstance.methods
         .approve(addressDropClone, bidValue)
@@ -515,15 +510,15 @@ const FixedDropSingleNFTHome = () => {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -830,11 +825,9 @@ const FixedDropSingleNFTHome = () => {
 
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
-    console.log("nftdetails props", location.state);
     setNftData(location.state.nftDetails);
     setNftBlockChainId(location.state.nftDetails.nftId);
     setNftProperties(Object.entries(location.state.nftDetails.properties));
-    console.log("properties", location.state.nftDetails.properties);
     getTheDrop();
     let priceCal = location.state.nftDetails.currentMarketplaceId.price;
     setPrice(priceCal);
@@ -844,13 +837,6 @@ const FixedDropSingleNFTHome = () => {
     };
   }, []);
 
-  if (theDrop !== undefined) {
-    console.log("bidding response: ... ", theDrop);
-  }
-
-  if (nftData !== undefined) {
-    console.log(nftData, " /// nftData")
-  }
   return (
     <>
       <div style={{ minHeight: "95px" }}>
@@ -890,9 +876,7 @@ const FixedDropSingleNFTHome = () => {
                     </Card>
                   </Paper>
                 </div>
-                {/* NFT Details */}
                 <div className="col-md-12 col-lg-8 pl-md-3">
-                  {/* Details */}
                   <Card style={{ backgroundColor: "black" }}>
                     <CardContent>
                       <Row>
@@ -1011,7 +995,6 @@ const FixedDropSingleNFTHome = () => {
                       ) : (null)}
                     </CardContent>
                   </Card>
-                  {/* Porperties */}
                   <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                     <Col>
                       <Accordion>
@@ -1039,12 +1022,6 @@ const FixedDropSingleNFTHome = () => {
                                   <td>{i[1]}</td>
                                 </tr>
                               ))}
-                              {/* {keys?.map((j, index) => (
-                          <tr key={index}>
-                            <td>{j}</td>
-                            <td>{properties[j]}</td>
-                          </tr>
-                        ))} */}
                             </tbody>
                           </Table>
                         </AccordionDetails>
@@ -1052,7 +1029,6 @@ const FixedDropSingleNFTHome = () => {
                     </Col>
                   </Row>
                   <br></br>
-                  {/* Buttons */}
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters" >
                       {account &&
@@ -1194,28 +1170,9 @@ const FixedDropSingleNFTHome = () => {
                                       Bidder
                                     </th>
                                     <th style={{ padding: "0.75rem" }}>Bid</th>
-                                    {/* <th colSpan={2}></th> */}
-                                    {/* <th>
-                                                            <button className="btn" onClick={props.acceptBid}>
-                                                                Accept
-                                                            </button>
-                                                        </th> */}
+
                                   </tr>
                                 </thead>
-                                {/* <tbody>
-                                                    {bidDetail?.map((bid, index) => (
-                                                        <tr key={index}>
-                                                            <td style={{padding: "0.75rem"}}>{index+1}</td>
-                                                            <td style={{padding: "0.75rem"}}>
-                                                                <Tooltip title={bid.bidderAddress}>
-                                                                    <span>{bid.bidderAddress.slice(0,6)}...</span>
-                                                                </Tooltip>
-                                                            </td>
-                                                            <td style={{padding: "0.75rem"}}>{bid.bidAmount}</td>
-                                                            
-                                                        </tr>
-                                                    ))}
-                                                </tbody> */}
                               </Table>
                             </AccordionDetails>
                           </Accordion>

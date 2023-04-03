@@ -54,7 +54,7 @@ function MyCollection(props) {
   const classes = useStyles();
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
-    console.log("version", version);
+    //console.log("version", version);
 
 
     setOpen(true);
@@ -62,7 +62,7 @@ function MyCollection(props) {
     axios
       .get(url)
       .then((response) => {
-        console.log("response.data", response.data);
+       // console.log("response.data", response.data);
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
         setOpen(false);
@@ -100,7 +100,7 @@ function MyCollection(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-    console.log("Entered in my collection tab");
+   // console.log("Entered in my collection tab");
     getCollections(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",

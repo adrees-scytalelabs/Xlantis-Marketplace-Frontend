@@ -31,7 +31,7 @@ const NFTEditModal = (props) => {
 
     useEffect(() => {
         setIsGlbFile(false);
-        console.log("nft edit Props: ", props);
+       // console.log("nft edit Props: ", props);
         if(props.show === true) {
             setNftDetail(props.nftDetail);
             if(props.nftDetail.nftFormat === "glb") {

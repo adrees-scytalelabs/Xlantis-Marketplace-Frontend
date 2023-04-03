@@ -141,11 +141,7 @@ function AccountApprovalWallet(props) {
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -160,7 +156,7 @@ function AccountApprovalWallet(props) {
     axios
       .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
       .then((response) => {
-        console.log("response.data", response.data);
+        //console.log("response.data", response.data);
         setWalletAdmins(response.data.unverifiedAdmins);
         setAdminCount(response.data.unverifiedAdmins.length);
         setOpen(false);
@@ -184,16 +180,11 @@ function AccountApprovalWallet(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
-
-    console.log("data", data);
-
     axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
-        console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();

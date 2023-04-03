@@ -9,16 +9,6 @@ import {
   Paper,
   Typography
 } from "@material-ui/core";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
-import { Link, useLocation, useParams } from "react-router-dom";
-import Web3 from "web3";
-import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
-import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
-
-import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
-
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import {
@@ -27,12 +17,20 @@ import {
 } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import transakSDK from "@transak/transak-sdk";
+import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { Col, Row, Table } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import { Link, useLocation, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
+import Web3 from "web3";
+import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
+import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
+import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
@@ -130,11 +128,8 @@ const NFTBuy = (props) => {
   const handleOpenModal = async (e) => {
     const dropId = nftDetail.dropId;
     const nftId = nftDetail._id;
-    console.log("NFTDETAIL", nftDetail);
     axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
       (response) => {
-        console.log("response", response);
-        console.log("responeee", response.data.data.data[0]);
         setData(response.data.data);
         setMOdalOpen(true);
       },
@@ -143,7 +138,7 @@ const NFTBuy = (props) => {
           console.log(error);
           console.log(error.response);
         }
-        
+
       }
     );
   };
@@ -174,15 +169,15 @@ const NFTBuy = (props) => {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", 
-    environment: "STAGING", 
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", 
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -363,7 +358,7 @@ const NFTBuy = (props) => {
       function handleSSOBuy() {
         console.log("Nft detail: ", nftDetail);
         console.log("Price", nftDetail);
-        
+
       }
 
     }
@@ -391,11 +386,7 @@ const NFTBuy = (props) => {
   }
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-    console.log("NFT Details", location.state.nftDetail);
     setNftDetail(location.state.nftDetail);
-    console.log(location.state.nftDetail.currentMarketplaceId.isSold);
-    console.log("states", location.state);
-    console.log("price is", location.state.nftDetail.currentMarketplaceId.price);
     setPrice(location.state.nftDetail.currentMarketplaceId.price);
     setProperties(location.state.nftDetail.properties);
 
@@ -465,7 +456,7 @@ const NFTBuy = (props) => {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -499,7 +490,7 @@ const NFTBuy = (props) => {
           </div>
         </div>
       </div>
-      
+
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           <div className="row">
@@ -508,7 +499,7 @@ const NFTBuy = (props) => {
                 <Card className={classes.root}>
                   <div>
                     {nftDetail.nftFormat === "glb" ||
-                    nftDetail.nftFormat === "gltf" ? (
+                      nftDetail.nftFormat === "gltf" ? (
                       <div>
                         <div
                           style={{
@@ -710,8 +701,8 @@ const NFTBuy = (props) => {
               </Row>
               <br></br>
               {location.state.nftDetail.currentMarketplaceId.isSold === false &&
-              new Date() >= new Date(location.state.startTime) &&
-              new Date() < new Date(location.state.endTime) ? (
+                new Date() >= new Date(location.state.startTime) &&
+                new Date() < new Date(location.state.endTime) ? (
                 <Row>
                   <Col
                     style={{
@@ -750,7 +741,7 @@ const NFTBuy = (props) => {
                         Buy
                       </button>
                       {location.state.nftDetail.currentMarketplaceId.isSold ===
-                      true ? (
+                        true ? (
                         <ReactTooltip
                           id="registerTip"
                           place="top"

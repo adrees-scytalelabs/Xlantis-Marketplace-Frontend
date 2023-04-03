@@ -31,8 +31,8 @@ function CreateTemplate(props) {
 
     axios.get(`/nft-properties/template/is-available/${name}`).then(
       (response) => {
-        console.log("response", response);
-        console.log("Check response",response.data.isAvailable)
+        // console.log("response", response);
+        // console.log("Check response",response.data.isAvailable)
         if(!response.data.isAvailable){
           setValid("is-valid")
         }
@@ -66,8 +66,8 @@ function CreateTemplate(props) {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
     setProperties([...properties, newData]);
-    console.log("Add button pressed.");
-    console.log("Properties: ", properties);
+    // console.log("Add button pressed.");
+    // console.log("Properties: ", properties);
   };
 
   let handleRemoveProperty = (e, index) => {
@@ -78,10 +78,10 @@ function CreateTemplate(props) {
   };
 
   let handlePropertyChange = (index, event) => {
-    console.log(properties, " /// properties");
+   // console.log(properties, " /// properties");
     let data = [...properties];
-    console.log("the datat change: ", event.target);
-    console.log("the data index /// ", data[index][event.target.name]);
+  //  console.log("the datat change: ", event.target);
+  //  console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -90,19 +90,19 @@ function CreateTemplate(props) {
     e.preventDefault();
     handleShowBackdrop();
 
-    console.log("Properties : ", properties);
-    console.log("Title", title);
+  //  console.log("Properties : ", properties);
+  //  console.log("Title", title);
 
     let templateData = {
       name: title,
       data: properties,
     };
 
-    console.log("Template Data", templateData);
+  //  console.log("Template Data", templateData);
     try {
       axios.post("/super-admin/template", templateData).then(
         (response) => {
-          console.log("response", response);
+       //   console.log("response", response);
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
           handleCloseBackdrop();
@@ -176,7 +176,7 @@ function CreateTemplate(props) {
                 value={title}
                 className={`newNftProps form-control ${valid}`}
                 onChange={(e) => {
-                  console.log("title", e.target.value);
+                //  console.log("title", e.target.value);
                   handleAvailibility(e);
                   setTitle(e.target.value);
                 }}

@@ -5,24 +5,14 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme, ThemeProvider, Tooltip } from "@material-ui/core";
+import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,11 +129,7 @@ function WalletEnabled(props) {
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -158,7 +144,6 @@ function WalletEnabled(props) {
     axios
       .get(`/super-admin/admins/enabled?userType=v2`)
       .then((response) => {
-        console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
         setWalletAdminCount(response.data.admins.length);
         setOpen(false);
@@ -182,16 +167,11 @@ function WalletEnabled(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
-
-    console.log("data", data);
-
     axios.patch("/super-admin/disable?userType=v2", data).then(
       (response) => {
-        console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();

@@ -71,16 +71,13 @@ function SuperAdminSidebar(props) {
       setStyle("dropdown-container2");
     } else if (props.activeTab.sso === "" && props.activeTab.wallet === "") {
       setStyle("dropdown-container1");
-    }
-    if (props.activeTab.template === "active") {
+    }if (props.activeTab.template === "active") {
       setPropertiesStyle("dropdown-container4");
     } if (props.activeTab.saved === "active") {
       setPropertiesStyle("dropdown-container4");
     } if (props.activeTab.template === "" && props.activeTab.saved === "") {
       setPropertiesStyle("dropdown-container3");
     }
-    console.log("Active Tab", props.activeTab);
-    
   },[props.activeTab]);
 
   return (
@@ -158,15 +155,6 @@ function SuperAdminSidebar(props) {
                 </div>
               </div>
             </li>
-            {/* <li className={props.activeTab.manageAccounts}>
-              <Link
-                to={`${props.match.url}/manageAccounts`}
-                className="sidebarLink"
-              >
-                <i className="fas fa-layer-group"></i>
-                <span>Manage Accounts</span>
-              </Link>
-            </li> */}
             <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>

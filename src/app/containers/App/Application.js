@@ -42,18 +42,15 @@ function App() {
   let version;
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
-  console.log("jwtjwt", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
-    jwt !== null && console.log("jwt in application: ", jwt);
+    jwt !== null && console.log();
     if (jwtDecoded) {
       isLoggedIn = true;
       if (Cookies.get("Verified") === "true") {
         isVerified = true;
       } else if (Cookies.get("Verified") === "false") isVerified = false;
       version = Cookies.get("Version");
-      console.log("isLoggedIn", isLoggedIn);
-      console.log("isVerified", isVerified);
     } else {
       isLoggedIn = false;
     }
@@ -67,7 +64,7 @@ function App() {
     };
   }, [jwt]);
 
-  jwt !== null && console.log("jwtDecoded", jwtDecoded.role);
+  jwt !== null && console.log();
 
   const PrivateRoute = ({ path, ...rest }) => {
     if (jwtDecoded && isLoggedIn) {
@@ -137,7 +134,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (
       jwtDecoded &&
@@ -146,7 +142,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
       return <Redirect to="/superAdminDashboard" />;

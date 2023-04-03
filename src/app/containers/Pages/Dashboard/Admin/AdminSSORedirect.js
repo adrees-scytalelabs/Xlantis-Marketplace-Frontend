@@ -21,7 +21,7 @@ const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
   const [success, setSucess] = useState();
   let version = Cookies.get("Version");
-  console.log(version, " is the version")
+ // console.log(version, " is the version")
 
   const handleChangeValues = (event) => {
     const name = event.target.name;
@@ -65,7 +65,7 @@ const AdminSSORedirect = () => {
     await axios
       .put(route, inputs, config)
       .then((response) => {
-        console.log("The response of axios post: ", response.data.success);
+      //  console.log("The response of axios post: ", response.data.success);
         setSucess(response.data.success);
       })
       .catch((error) => {

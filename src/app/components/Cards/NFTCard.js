@@ -99,7 +99,7 @@ const defaultStyles = {
 };
 
 function NFTCard(props) {
-  console.log("props", props);
+  //console.log("props", props);
   const classes = useStyles();
 
   // Styling

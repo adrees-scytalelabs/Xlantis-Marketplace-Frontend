@@ -171,7 +171,7 @@ let data = {
   },
 };
 
-console.log("json: ", data);
+//console.log("json: ", data);
 
 
 const BuyTxModal = (props) => {
@@ -197,7 +197,6 @@ const BuyTxModal = (props) => {
     
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
-        console.log("response", response);
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
         data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
         data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
@@ -220,8 +219,6 @@ const BuyTxModal = (props) => {
 
   useEffect(() => {
     clearTimeout();
-    console.log("Props : ", props);
-    
   }, []);
 
   return (
@@ -252,53 +249,7 @@ const BuyTxModal = (props) => {
                   </Typography>
                 </div>
               </div>
-              
-              {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    
-                    className={classes.cardTitle}
-                  >
-                    Gas Price in Gwei:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    
-                  >
-                    {response.gasPriceInGwei}
-                  </p>
-                </div>
-              </div> */}
-              
-              {/* Slippage */}
-              {/* <div
-                className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
-              >
-                <div className="col-8 align-self-center">
-                  <Typography
-                    variant="h6"
-                    
-                    className={classes.cardTitle}
-                  >
-                    Slippage:
-                  </Typography>
-                </div>
-                <div className="col-4 align-self-center text-right p-0">
-                  <p
-                    className={classes.cardTitle}
-                    
-                  >
-                    {response.slippage}
-                  </p>
-                </div>
-              </div>
-              <Divider /> */}
-              
+             
               
               <Divider />
               
@@ -357,27 +308,7 @@ const BuyTxModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}{/* Total Cost in Wei */}
+               
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
@@ -402,80 +333,7 @@ const BuyTxModal = (props) => {
                 </AccordionDetails>
               </Accordion>
               <Divider />
-              {/* APPROVAL */}
-              {/* <Accordion
-                expanded={expanded === "panel3"}
-                onChange={handleChange("panel3")}
-              >
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography className={classes.heading}>Approval</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        Number of Transactions:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.noOfTxs}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-                <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        className={classes.cardTitle}
-                      >
-                        total cost in wei:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                      >
-                        {response.collections.totalCostInWei}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
-                <Divider />
-              </Accordion> */}
-              {/* DROP */}
+             
               <Accordion
                 expanded={expanded === "panel4"}
                 onChange={handleChange("panel4")}
@@ -508,27 +366,7 @@ const BuyTxModal = (props) => {
                     </div>
                   </div>
                 </AccordionDetails>
-                {/* <AccordionDetails>
-                  <div className="row no-gutters justify-content-between w-100">
-                    <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        
-                        className={classes.cardTitle}
-                      >
-                        gas used:
-                      </Typography>
-                    </div>
-                    <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        
-                      >
-                        {response.collections.gasUsed}
-                      </p>
-                    </div>
-                  </div>
-                </AccordionDetails> */}{/* Total Cost in Wei */}
+              
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">

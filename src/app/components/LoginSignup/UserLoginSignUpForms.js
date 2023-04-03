@@ -121,7 +121,7 @@ const AdminLoginSignupForms = () => {
       "user token before refresh /// ",
       sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {})
     );
-  console.log(Cookies.get("Version"), " /// Version for user");
+  //console.log(Cookies.get("Version"), " /// Version for user");
 
   
   return (

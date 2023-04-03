@@ -64,7 +64,7 @@ const makeTheme = createMuiTheme({
   },
 });
 
-console.log("nft images: ", nftImage);
+//console.log("nft images: ", nftImage);
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -83,16 +83,16 @@ function MyNFTs(props) {
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    console.log("version", version);
+    //console.log("version", version);
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+       // console.log("response", response);
         let nfts = response.data.NFTdata;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
         });
-        console.log("NFTS", nfts);
-        console.log("Updated", newState);
+        //console.log("NFTS", nfts);
+        //console.log("Updated", newState);
         setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
@@ -156,8 +156,8 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  console.log("the tokenList length: ", tokenList.length);
-  console.log(tokenList.length !== 0 && "page-height");
+  //console.log("the tokenList length: ", tokenList.length);
+  //console.log(tokenList.length !== 0 && "page-height");
 
   return (
     <div className="backgroundDefault position-relative">

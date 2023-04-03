@@ -82,8 +82,7 @@ function HeaderHome(props) {
     setOpen(true);
   };
   useEffect(() => {
-    setSocket(io("http://localhost:3002"));
-    console.log("socket was set");
+     setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   useEffect(() => {
     if (userId !== "" && socket !== null) {
@@ -107,10 +106,10 @@ function HeaderHome(props) {
   const { enqueueSnackbar } = useSnackbar();
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     defaultCryptoCurrency: "ETH",
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -197,7 +196,7 @@ function HeaderHome(props) {
   function getNotifications(start, end) {
     axios.get(`/notifications/${start}/${end}`).then(
       (response) => {
-        console.log("notification response", response);
+        //console.log("notification response", response);
         setNotificationsList(response.data.notifications);
         setNotificationCount(response.data.notifications.length);
 
@@ -233,10 +232,6 @@ function HeaderHome(props) {
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
     const network = await web3.eth.net.getNetworkType();
-
-    console.log(network);
-    console.log("role", props.role);
-    console.log("Account test: ", accounts[0], network);
 
     if (network !== "private") {
       setNetwork(network);
@@ -292,7 +287,6 @@ function HeaderHome(props) {
               response.data.isInfoAdded === true &&
               response.data.isVerified === true
             ) {
-              // console.log("In the conditions");
               sessionStorage.setItem("Address", accounts[0]);
               window.location.reload(false);
             }
@@ -417,13 +411,9 @@ function HeaderHome(props) {
     if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
-      console.log("userLogin", userLogin);
-      console.log("version", version);
-      console.log(sessionStorage.getItem("Authorization"), " --- Authorization from user")
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
-          console.log("profile data image:", response.data.userData.imageURL);
           response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
         })
         .catch((error) => {
@@ -437,9 +427,8 @@ function HeaderHome(props) {
 
   useEffect(() => {
     getProfile();
-    getNotifications(0, 10);
-    console.log("In Hook");
-  }, []);
+    getNotifications(0,10);
+  },[]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -677,7 +666,7 @@ function HeaderHome(props) {
           </li>
           <li className="header-item-rht">
             <ShoppingCartIcon
-              onClick={handleOpenCart}
+              onClick={() => setWorkProgressModalShow(true)}        
               style={{ cursor: "pointer" }}
             />
           </li>

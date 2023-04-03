@@ -99,10 +99,10 @@ function DropsPage(props) {
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    console.log("version", version);
+   // console.log("version", version);
     axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+      //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();
@@ -173,7 +173,7 @@ function DropsPage(props) {
   };
   return (
     <div className="backgroundDefault">
-      <div className="card-body" style={{ minHeight: "60vh" }}>
+      <div className="card-body" style={{ }}>
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
@@ -209,7 +209,8 @@ function DropsPage(props) {
                   item
                   xs={12}
                   sm={6}
-                  lg={4}
+                  md={4}
+                  lg={3}
                   spacing={1}
                   direction="row"
                   key={index}

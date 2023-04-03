@@ -101,10 +101,10 @@ function MarketPlacePage(props) {
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    console.log("version", version);
+   // console.log("version", version);
     axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+      //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();

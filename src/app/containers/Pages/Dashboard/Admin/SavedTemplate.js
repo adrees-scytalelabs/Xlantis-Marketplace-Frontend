@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { createMuiTheme, Tooltip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import axios from "axios";
-import { TablePagination } from "@material-ui/core/";
+import { createMuiTheme } from "@material-ui/core";
 import Backdrop from "@material-ui/core/Backdrop";
-import { useSnackbar } from "notistack";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import Table from "react-bootstrap/Table";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
-import TemplateDetails from "../../../../components/Modals/TemplateDetails";
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import Table from "react-bootstrap/Table";
+import { Link } from "react-router-dom";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
+import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,34 +115,27 @@ function SavedTemplate(props) {
     setModalState(false);
     setDeleteState(false);
     setUpdateModal(false);
+    handleSavedTemplate();
   };
-
   const handleDeleteModal = (e, data) => {
     e.preventDefault();
     setDeleteData(data);
     setDeleteState(true);
-  }
-
+  };
   const deleteResponse = async (data) => {
     try {
-      console.log("Template deleted successfully")
       handleClose();
+    } catch (e) {
+      console.log("Error during deletion", e);
     }
-    catch (e) {
-      console.log("Error during deletion", e)
-    }
-  }
-
+  };
   const handleDeleteTemplate = async (e) => {
     e.preventDefault();
     await deleteResponse(deleteData);
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -159,12 +150,7 @@ function SavedTemplate(props) {
       axios.get("/super-admin/template").then(
         (response) => {
           setTemplateData(response.data.templates);
-          console.log("response", response);
-
-          console.log("Data of the state", templateData);
           handleCloseBackdrop();
-
-
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -184,20 +170,11 @@ function SavedTemplate(props) {
   const handleUpdatedData = (e, data) => {
     e.preventDefault();
     setModalData(data);
-    setUpdateModal(false)
+    setUpdateModal(false);
     setModalState(true);
-    try {
-      console.log("data updated");
-    }
-    catch (e) {
-      console.log("Something wrong with updation", e)
-    }
-  }
+  };
   useEffect(() => {
-    console.log("Saved Template")
-    console.log("Modal Data", modalData)
     setDeleteState("");
-
 
     handleSavedTemplate();
     props.setActiveTab({
@@ -280,7 +257,9 @@ function SavedTemplate(props) {
                 </td>
                 <td className={classes.collectionTitle}>
                   <span className="ml-4">
-                    <button style={{ background: 'transparent', border: 'none' }}>
+                    <button
+                      style={{ background: "transparent", border: "none" }}
+                    >
                       <DeleteIcon
                         color="action"
                         style={{ color: "red" }}
@@ -289,7 +268,9 @@ function SavedTemplate(props) {
                     </button>
                   </span>
                   <span className="ml-1">
-                    <button style={{ background: 'transparent', border: 'none' }}>
+                    <button
+                      style={{ background: "transparent", border: "none" }}
+                    >
                       <EditIcon
                         style={{ color: `green` }}
                         onClick={(e) => handleUpdatedData(e, i)}
@@ -305,14 +286,16 @@ function SavedTemplate(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <TemplateDetails
-        show={modalState}
-        handleClose={handleClose}
-        templateData={modalData}
-        setTemplateData={setModalData}
-        updateEnabled={updateModal}
-        handleUpdateData={handleUpdatedData}
-      ></TemplateDetails>
+      {modalState === true && (
+        <TemplateDetails
+          show={modalState}
+          handleClose={handleClose}
+          templateData={modalData}
+          setTemplateData={setModalData}
+          updateEnabled={updateModal}
+          handleUpdateData={handleUpdatedData}
+        ></TemplateDetails>
+      )}
       <DeleteModal
         show={deleteState}
         handleClose={handleClose}

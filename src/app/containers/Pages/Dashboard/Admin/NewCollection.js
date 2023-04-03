@@ -182,7 +182,7 @@ function NewCollection(props) {
       if (nftType === "1155") {
         axios.post(`/collection/`, fileData).then(
           async (response) => {
-            console.log("collection creation response", response);
+            //console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
 
