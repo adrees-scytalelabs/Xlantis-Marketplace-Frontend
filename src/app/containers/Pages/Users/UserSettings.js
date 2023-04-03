@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
@@ -10,7 +10,7 @@ import SettingDashboardDefault from "./SettingsDashboardDefault";
 
 
 function UserSettings(props) {
-
+  let { path } = useRouteMatch();
   let [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: ""
