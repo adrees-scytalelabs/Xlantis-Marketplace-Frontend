@@ -1,4 +1,4 @@
-import { Avatar, CardHeader, Grid } from "@material-ui/core/";
+import {Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -23,6 +23,7 @@ import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -608,14 +609,8 @@ function NewDrop(props) {
                                   }
                                   style={{ color: "#000" }}
                                 >
-                                  <CardHeader
-                                    avatar={
-                                      <Avatar
-                                        src={i.MusicArtistProfile}
-                                        aria-label="Artist"
-                                        className={classes.avatar}
-                                      />
-                                    }
+                                  <CardHeaderWithAvatar
+                                    src={i.MusicArtistProfile}
                                     title={i.MusicArtistName}
                                     subheader={i.MusicArtistAbout}
                                   />

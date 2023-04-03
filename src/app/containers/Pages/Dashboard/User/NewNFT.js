@@ -28,6 +28,7 @@ import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract from "../../../../components/blockchain/Abis/CreateNFTContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -890,14 +891,8 @@ function NewNFT(props) {
                               >
                                 Image Artist
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ImageArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ImageArtistProfile}
                                 title={i.ImageArtistName}
                                 subheader={i.ImageArtistAbout}
                               />
@@ -917,14 +912,8 @@ function NewNFT(props) {
                               >
                                 Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ProducerProfile}
-                                    aria-label="Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ProducerProfile}
                                 title={i.ProducerName}
                                 subheader={i.ProducerInspiration}
                               />
@@ -936,14 +925,8 @@ function NewNFT(props) {
                               >
                                 Executive Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ExecutiveProducerProfile}
-                                    aria-label="Executive Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ExecutiveProducerProfile}
                                 title={i.ExecutiveProducerName}
                                 subheader={i.ExecutiveProducerInspiration}
                               />
@@ -955,14 +938,9 @@ function NewNFT(props) {
                               >
                                 Fan
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.FanProfile}
-                                    aria-label="Fan"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.FanProfile}
+                                  
                                 title={i.FanName}
                                 subheader={i.FanInspiration}
                               />

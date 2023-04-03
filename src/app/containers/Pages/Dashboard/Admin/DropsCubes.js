@@ -1,4 +1,4 @@
-import { Avatar, CardHeader, Grid } from '@material-ui/core/';
+import {Grid } from '@material-ui/core/';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
@@ -12,6 +12,7 @@ import { Spinner } from "react-bootstrap";
 import Countdown from 'react-countdown';
 import { Link, useParams } from 'react-router-dom';
 import r1 from '../../../../assets/img/patients/patient.jpg';
+import CardHeaderWithAvatar from '../../../../components/CardHeader/CardHeaderWithAvatar';
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
@@ -200,8 +201,8 @@ function DropCubes(props) {
                                                         <strong>Sale Price: </strong>{i.SalePrice / 10 ** 18} ETH
                                                     </Typography>
                                                     <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Music Artist</Typography>
-                                                    <CardHeader
-                                                        avatar={<Avatar src={i.MusicArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                                                    <CardHeaderWithAvatar
+                                                        src={i.MusicArtistProfile} 
                                                         title={i.MusicArtistName}
                                                         subheader={i.MusicArtistAbout}
                                                     />

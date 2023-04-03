@@ -1,5 +1,4 @@
 import { Card, CardContent, Grid } from "@material-ui/core/";
-import Avatar from "@material-ui/core/Avatar";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
@@ -24,6 +23,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -691,14 +691,8 @@ function NewCube(props) {
                               >
                                 Image Artist
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ImageArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ImageArtistProfile}
                                 title={i.ImageArtistName}
                                 subheader={i.ImageArtistAbout}
                               />
@@ -718,14 +712,8 @@ function NewCube(props) {
                               >
                                 Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ProducerProfile}
-                                    aria-label="Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ProducerProfile}
                                 title={i.ProducerName}
                                 subheader={i.ProducerInspiration}
                               />
@@ -737,14 +725,8 @@ function NewCube(props) {
                               >
                                 Executive Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ExecutiveProducerProfile}
-                                    aria-label="Executive Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ExecutiveProducerProfile}
                                 title={i.ExecutiveProducerName}
                                 subheader={i.ExecutiveProducerInspiration}
                               />
@@ -756,14 +738,8 @@ function NewCube(props) {
                               >
                                 Fan
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.FanProfile}
-                                    aria-label="Fan"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar 
+                                src={i.FanProfile}
                                 title={i.FanName}
                                 subheader={i.FanInspiration}
                               />
