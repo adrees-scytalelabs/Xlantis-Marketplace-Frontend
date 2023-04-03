@@ -2,6 +2,8 @@ import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../../../assets/css/superAdmin.css";
+import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+
 
 function SuperAdminSidebar(props) {
   const [style, setStyle] = useState("dropdown-container1");
@@ -197,6 +199,13 @@ function SuperAdminSidebar(props) {
                   </li>
                 </div>
               </div>
+            </li>
+            <li className={props.activeTab.platformFee}>
+              <Link to={`${props.match.url}/platformFee`}
+                className="sidebarLink"
+              >
+                <AttachMoneyIcon></AttachMoneyIcon> <span>Platform Fee</span>
+              </Link>
             </li>
             <li className="menu-title mt-5">
               <span>Settings</span>

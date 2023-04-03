@@ -23,6 +23,7 @@ import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 import TemplateProperties from "./Admin/TemplateProperties";
 import CreateTemplate from "./Admin/CreateTemplate";
 import SavedTemplate from "./Admin/SavedTemplate";
+import PlatformFee from "./Admin/PlatformFee";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -243,6 +244,14 @@ function SuperAdminDashboard(props) {
             </Route>
             <Route exact path={`${path}/verifiedAccounts`}>
               <VerifiedAccounts
+                match={props.match}
+                tab={tab}
+                setTab={setTab}
+                setActiveTab={setActiveTab}
+              />
+            </Route>
+            <Route exact path={`${path}/platformFee`}>
+              <PlatformFee
                 match={props.match}
                 tab={tab}
                 setTab={setTab}
