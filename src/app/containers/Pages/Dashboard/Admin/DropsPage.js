@@ -177,7 +177,7 @@ function DropsPage(props) {
   };
   return (
     <div className="backgroundDefault">
-      <div className="card-body" style={{ minHeight: "60vh" }}>
+      <div className="card-body" style={{ }}>
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
@@ -213,7 +213,8 @@ function DropsPage(props) {
                   item
                   xs={12}
                   sm={6}
-                  lg={4}
+                  md={4}
+                  lg={3}
                   spacing={1}
                   direction="row"
                   key={index}
