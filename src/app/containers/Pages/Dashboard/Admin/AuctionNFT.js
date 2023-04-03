@@ -50,10 +50,6 @@ const customTheme = createMuiTheme({
         borderBottom: "1px solid white",
         backgroundColor: "black",
       },
-      // content: {
-      //     borderBottom: "1px solid white",
-      //     paddingBottom: "12px"
-      // },
       expandIcon: {
         color: "white",
       },
@@ -71,16 +67,7 @@ const customTheme = createMuiTheme({
         borderRadius: "5px",
         padding: "16px 14px",
       },
-    },
-    // MuiIconButton: {
-    //     root: {
-    //         padding: 0
-    //     },
-    //     label: {
-    //         borderBottom: "1px solid white",
-    //         padding: "12px",
-    //     }
-    // }
+    }
   },
 });
 
@@ -111,7 +98,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -736,7 +723,7 @@ const handleOpenModal = async (e) => {
                         ></CardMedia>
                         <div>
                           <AudioPlayer
-                            // style={{ width: "300px" }}
+                            
                             style={{ borderRadius: "1rem" }}
                             autoPlay={false}
                             layout="horizontal"

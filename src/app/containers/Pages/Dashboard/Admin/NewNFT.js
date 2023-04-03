@@ -1,60 +1,42 @@
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import {
   CardActionArea,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  Grid,
-  InputLabel,
-  MenuItem,
-  Select,
+  Grid
 } from "@material-ui/core/";
-import Avatar from "@material-ui/core/Avatar";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
-import { Link } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Tooltip from "@material-ui/core/Tooltip";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
-// import ReactTooltip from "react-tooltip";
-
 import axios from "axios";
+import { ethers } from "ethers";
 import Cookies from "js-cookie";
-import { isUndefined, templateSettings } from "lodash";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import { useHistory } from "react-router-dom";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import ipfs from "../../../../components/IPFS/ipfs";
-import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
-import NFTEditModal from "../../../../components/Modals/NFTEditModal";
-import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { Spinner } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { ethers } from "ethers";
-import Alert from "@material-ui/lab/Alert";
+import { Link, useHistory } from "react-router-dom";
+import Web3 from "web3";
+import r1 from "../../../../assets/img/patients/patient.jpg";
+import ipfs from "../../../../components/IPFS/ipfs";
+import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
+import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
+import NFTEditModal from "../../../../components/Modals/NFTEditModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-
-// STYLES
+import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 
 const themeTemplate = createMuiTheme({
   overrides: {
@@ -139,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -330,7 +312,7 @@ function NewNFT(props) {
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
   const SupplyTypeText =
     "Single supply in ERC-1155 refers to a collection of NFTs that have a predetermined, only one copy of NFTs available, while variable supply allows for the creation of multiple and identical NFTs copies, depending on demand.";
-let getCollections = (collectionType) => {
+  let getCollections = (collectionType) => {
     setCollection("");
     console.log("get collections");
     console.log("collectionType", collectionType);
@@ -410,7 +392,7 @@ let getCollections = (collectionType) => {
           console.log(error);
           console.log(error.response);
         }
-        
+
       }
     );
   };
@@ -433,7 +415,7 @@ let getCollections = (collectionType) => {
           console.log(error);
           console.log(error.response);
         }
-        
+
       }
     );
   };
@@ -487,7 +469,7 @@ let getCollections = (collectionType) => {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   let loadWeb3 = async () => {
     if (window.ethereum) {
@@ -523,14 +505,14 @@ let getCollections = (collectionType) => {
       setDescription("");
       setRarity("");
       setTokenSupply(1);
-    
+
       setCollection("");
-   
+
       setSupplyType("Single");
       setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
-     
+
     }
   };
 
@@ -715,7 +697,6 @@ let getCollections = (collectionType) => {
       var dataIpfsHash;
       reader.readAsArrayBuffer(blob);
       reader.onloadend = () => {
-        // setBuffer(Buffer(reader.result));
         ipfs.add(Buffer(reader.result), async (err, result) => {
           if (err) {
             console.log("Error: ", err);
@@ -733,8 +714,6 @@ let getCollections = (collectionType) => {
             propertiesObject[property.key] = property.value;
           });
           console.log("Properties are: ", propertiesObject);
-
-          //sending data to backend
           let data = {
             collectionId: collectionId,
             title: name,
@@ -772,11 +751,11 @@ let getCollections = (collectionType) => {
                     tokensupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
-                    
+
                     nftId: response.data.nftId,
-                    
-                    
-                    
+
+
+
                   },
                 ]);
 
@@ -792,7 +771,7 @@ let getCollections = (collectionType) => {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    
+
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -830,7 +809,7 @@ let getCollections = (collectionType) => {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-                    
+
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -847,7 +826,7 @@ let getCollections = (collectionType) => {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    
+
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },
@@ -1143,7 +1122,6 @@ let getCollections = (collectionType) => {
           variant,
         });
         setIsUploadingPreview(false);
-        //
       });
     };
   };
@@ -1242,8 +1220,6 @@ let getCollections = (collectionType) => {
             );
           }
         );
-
-        //resetting the values
         setProperties([{ key: "", value: "" }]);
         setNftId("");
         setNftURI("");
@@ -1323,7 +1299,7 @@ let getCollections = (collectionType) => {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -1339,7 +1315,7 @@ let getCollections = (collectionType) => {
           </div>
         </div>
       </div>
-      
+
       <div className="card-body px-0">
         <div className="row no-gutters">
           <div className="col-md-12 col-lg-6">
@@ -1357,9 +1333,6 @@ let getCollections = (collectionType) => {
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
-                            {/* <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} /> */}
                             <DirectionLight
                               color={0xffffff}
                               position={{ x: 100, y: 200, z: 100 }}
@@ -1454,7 +1427,6 @@ let getCollections = (collectionType) => {
                       <div className="row no-gutters align-items-end justify-content-start">
                         <div className="co-12 col-md-auto profile-img mr-3">
                           <AudioPlayer
-                            // style={{ width: "300px" }}
                             style={{ borderRadius: "1rem" }}
                             autoPlay
                             layout="horizontal"
@@ -1464,10 +1436,6 @@ let getCollections = (collectionType) => {
                             showJumpControls={false}
                             header={`Now playing: ${name}`}
                             showDownloadProgress
-                            // onClickPrevious={handleClickPrevious}
-                            // onClickNext={handleClickNext}
-                            // onEnded={handleClickNext}
-                            // other props here
                           />
                         </div>
                         <div className="co-12 col-md-auto">
@@ -1594,7 +1562,6 @@ let getCollections = (collectionType) => {
 
                   <label>Description</label>
                   <div className="form-group newNftWrapper">
-                    {/* <label>About the Art</label> */}
                     <textarea
                       type="text"
                       required
@@ -1607,58 +1574,6 @@ let getCollections = (collectionType) => {
                       }}
                     />
                   </div>
-                  {/* <label for="rarity-select">Rarity</label>
-                  <div className="filter-widget newNftWrapper">
-                    <Autocomplete
-                      id="combo-dox-demo"
-                      required
-                      options={rarities}
-                      // disabled={isDisabledImporter}
-                      getOptionLabel={(option) => option}
-                      onChange={(event, value) => {
-                        if (value == null) setRarity("");
-                        else {
-                          console.log(value);
-                          setRarity(value);
-                        }
-                      }}
-                      inputValue={rarity}
-                      renderInput={(params) => (
-                        <div> */}
-                  {/* <select
-                        name="rarity"
-                        id="rarity-select"
-                        autocomplete="on"
-                        className="newNftInput"
-                        required
-                      >
-                        <option value="" disabled selected>
-                          Choose your pet
-                        </option>
-                        <option value="goldfish">Goldfish</option>
-                        <option value="cat">Cat</option>
-                        <option value="dog">Dog</option>
-                        <option value="parrot">Parrot</option>
-                      </select> */}
-                  {/* <ThemeProvider theme={makeTheme}>
-                            <TextField
-                              {...params}
-                              // label="Rarity"
-                              // variant="outlined"
-                              placeholder="Rarity"
-                              // style={{ borderRadius: 12 }}
-                              // InputProps={{
-                              //   className: classes.nftInput,
-                              // }}
-                              // className={classes.nftInput}
-                            />
-                          </ThemeProvider>
-                        </div>
-                      )}
-                    />
-                  </div> */}
-
-                  {/* Templates */}
                   <div>
                     <label>Templates</label>
                     <small style={{ marginLeft: "5px" }}>(optional)</small>
@@ -1721,7 +1636,6 @@ let getCollections = (collectionType) => {
                                       type="number"
                                       placeholder="0"
                                       required
-                                      // value={properties[index].value}
                                       className="newNftProps"
                                       onChange={(e) =>
                                         handleTemplatePropertyChange(index, e)
@@ -1868,7 +1782,6 @@ let getCollections = (collectionType) => {
                             <Tooltip title="Add a property" placement="right">
                               <button
                                 className="btn btn-submit btn-lg propsActionBtn mb-4"
-                                // className="btn submit-btn"
                                 onClick={(e) => handleAddProperty(e)}
                               >
                                 +
@@ -2214,11 +2127,6 @@ let getCollections = (collectionType) => {
                               style={{ color: "white" }}
                               disabled
                               value="ERC721"
-                              // onChange={() => {
-                              //   setNFTType("721");
-                              //   getCollections("721");
-                              //   // checked={saleType === 'auction'}
-                              // }}
                               onChange={() => {
                                 setWorkProgressModalShow(true);
                               }}
@@ -2280,11 +2188,6 @@ let getCollections = (collectionType) => {
                             <FormControlLabel
                               style={{ color: "black" }}
                               value="ERC721"
-                              // onChange={() => {
-                              //   setNFTType("721");
-                              //   getCollections("721");
-                              //   // checked={saleType === 'auction'}
-                              // }}
                               onChange={() => {
                                 setWorkProgressModalShow(true);
                               }}
@@ -2343,7 +2246,6 @@ let getCollections = (collectionType) => {
                           id="combo-dox-demo"
                           disabled
                           options={collectionTypes}
-                          // disabled={isDisabledImporter}
                           getOptionLabel={(option) => option.name}
                           onChange={(event, value) => {
                             if (value == null) setCollection("");
@@ -2365,8 +2267,6 @@ let getCollections = (collectionType) => {
                               <TextField
                                 {...params}
                                 placeholder="Collections"
-                                // label="Collections"
-                                // variant="outlined"
                               />
                             </ThemeProvider>
                           )}
@@ -2385,7 +2285,6 @@ let getCollections = (collectionType) => {
                           id="combo-dox-demo"
                           required
                           options={collectionTypes}
-                          // disabled={isDisabledImporter}
                           getOptionLabel={(option) => option.name}
                           onChange={(event, value) => {
                             if (value == null) setCollection("");
@@ -2407,9 +2306,7 @@ let getCollections = (collectionType) => {
                             <ThemeProvider theme={makeTheme}>
                               <TextField
                                 {...params}
-                                // label="Collections"
                                 placeholder="Collections"
-                                // variant="outlined"
                               />
                             </ThemeProvider>
                           )}
@@ -2527,11 +2424,7 @@ let getCollections = (collectionType) => {
                               value={tokenSupply}
                               className="form-control"
                               onChange={(e) => {
-                                // if (e.target.value > 0)
                                 setTokenSupply(e.target.value);
-                                // else {
-                                // setTokenSupply(1);
-                                // }
                               }}
                             />
                           </div>
@@ -2543,12 +2436,12 @@ let getCollections = (collectionType) => {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-                    name === "" ||
-                    description === "" ||
-                    tokenSupply === "" ||
-                    collection === "" ||
-                    tokenSupply <= 0 ||
-                    isUploadingData === true ? (
+                      name === "" ||
+                      description === "" ||
+                      tokenSupply === "" ||
+                      collection === "" ||
+                      tokenSupply <= 0 ||
+                      isUploadingData === true ? (
                       <Tooltip
                         title={
                           tokenSupply <= 0
@@ -2583,11 +2476,7 @@ let getCollections = (collectionType) => {
             className="col-sm-12 col-md-6 col-lg-5"
             style={{ marginLeft: "10px" }}
           >
-            {/* <!-- Change Password Form --> */}
             <form>
-              {/* <Scrollbars style={{ height: 1500 }}> */}
-
-              {/* CARD */}
               <div className="form-group">
                 <div>
                   <Grid
@@ -2595,7 +2484,6 @@ let getCollections = (collectionType) => {
                     spacing={2}
                     direction="row"
                     justify="flex-start"
-                    // alignItems="flex-start"
                   >
                     {tokenList.map((i, index) => (
                       <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
@@ -2608,61 +2496,12 @@ let getCollections = (collectionType) => {
                           }}
                         >
                           <Card id="nftCardProps">
-                            {/* <CardHeader
-                                className="text-center"
-                                title={i.title}
-                              /> */}
                             <CardMedia
                               className={classes.media}
                               image={i.nftURI}
                             >
-                              {/* className={classes.media}
-                                image={
-                                  i.previewImageURI === ""
-                                    ? i.nftURI
-                                    : i.previewImageURI
-                                }
-                                title="NFT Image" */}
-                              {/* /> */}
                             </CardMedia>
                           </Card>
-                          {/* <Dialog
-                                                        fullWidth={true}
-                                                        maxWidth={true}
-                                                        open={openDialog}
-                                                        onClose={handleClickCloseDialog}
-                                                        aria-labelledby="max-width-dialog-title"
-                                                    >
-                                                        <DialogTitle id="max-width-dialog-title">Edit NFT Details</DialogTitle>
-                                                        <DialogContent>
-                                                            <DialogContentText></DialogContentText>
-                                                            <form>
-                                                                <TextField
-                                                                    label="NFT Title"
-                                                                    variant="outlined"
-                                                                    value={tempTokenList.title}
-                                                                    onChange={(e) => {
-                                                                        let temp = [...tempTokenList];
-                                                                        temp[index].title = e.target.value;
-                                                                        console.log(tempTokenList);
-                                                                        setTempTokenList(temp);
-                                                                    }}
-                                                                />
-                                                                <TextField
-                                                                    label="NFT Description"
-                                                                    variant="outlined"
-                                                                    value={tempTokenList.description}
-                                                                    onChange={(e) => {
-                                                                        let temp = [...tempTokenList];
-                                                                        temp[index].description = e.target.value;
-                                                                        setTempTokenList(temp);
-                                                                    }}
-                                                                    style={{ marginLeft: "5px" }}
-                                                                />
-                                                                <button className="btn submit-btn" onClick={console.log("Submit clicked")} >Save</button> 
-                                                            </form>
-                                                        </DialogContent>
-                                                    </Dialog> */}
                         </CardActionArea>
                         <CardActions>
                           <Button
@@ -2675,28 +2514,11 @@ let getCollections = (collectionType) => {
                             Remove NFT
                           </Button>
                         </CardActions>
-                        {/* <NFTDetailModal 
-                                                    show={openDialog} 
-                                                    handleClose={handleCloseNFTDetailModal}
-                                                    nftDetail={tokenList[index]}
-                                                    handleEdit={handleEdit}
-                                                >
-                                                </NFTDetailModal>
-                                                <NFTEditModal
-                                                    show={openEditModal}
-                                                    handleClose={handleEditClose}
-                                                    nftDetail={i}
-                                                    index={index}
-                                                    onUpdate={onUpdateEditModal}
-                                                >
-                                                </NFTEditModal> */}
                       </Grid>
                     ))}
                   </Grid>
                 </div>
               </div>
-
-              {/* </Scrollbars> */}
             </form>
           </div>
         </div>
@@ -2744,11 +2566,7 @@ let getCollections = (collectionType) => {
               Free Mint
             </button>
           </div>
-          // )
         )}
-        {/* <button type="button" onClick={(e) => signTypedData(e)} className="btn submit-btn">
-                    Free Mint
-                </button> */}
       </div>
       <NetworkErrorModal
         show={show}
@@ -2765,7 +2583,6 @@ let getCollections = (collectionType) => {
         show={openEditModal}
         handleClose={handleEditClose}
         nftDetail={nftDetail}
-        // index={index}
         onUpdate={onUpdateEditModal}
         handleChangeCollection={handleChangeCollectionOpen}
         isUploadingData={isUploadingData}

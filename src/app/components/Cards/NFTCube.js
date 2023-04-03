@@ -30,7 +30,7 @@ function NFTCube(props) {
     return (
         <Grid item xs={12} sm={6} md={3}>
             <Card className={classes.root}>
-                {/* style={{ height: "100%" }} variant="outlined" */}
+
                 <CardActionArea>
 
                     <CardMedia
@@ -44,18 +44,10 @@ function NFTCube(props) {
                                         width: 230,
                                         height: 230,
                                         marginTop: '150px',
-                                        // marginBottom: '10px'
 
                                     }}
                                 >
-                                    {/* <Cube size={230} index="front">
-                                        <LazyLoadImage src={r1} effect="blur" alt="front" />
-                                        <LazyLoadImage src={r2} effect="blur" alt="right" />
-                                        <LazyLoadImage src={r3} effect="blur" alt="back" />
-                                        <LazyLoadImage src={r4} effect="blur" alt="left" />
-                                        <LazyLoadImage src={r5} effect="blur" alt="top" />
-                                        <LazyLoadImage src={r6} effect="blur" alt="bottom" />
-                                    </Cube> */}
+
                                 </div>
                             </div>
 
@@ -80,19 +72,13 @@ function NFTCube(props) {
                     <CardContent>
                         <Typography gutterBottom variant="h6" style={{ fontSize: '13px' }} >
                             Name : Robot
-          </Typography>
+                        </Typography>
                         <Typography variant="body2" color="textSecondary" component="p">
                             price:0.0 ETH
-          </Typography>
+                        </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
-                    {/* <Button size="small" color="primary">
-                        Share
-        </Button>
-                    <Button size="small" color="primary">
-                        Learn More
-        </Button> */}
                 </CardActions>
             </Card>
         </Grid >

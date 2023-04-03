@@ -8,7 +8,6 @@ import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 
-// CONTENT
 const useStyles = makeStyles({
   table: {
     minWidth: 650,
@@ -31,23 +30,9 @@ const headerRows = [
   { collection: "collection", floorPrice: "floor price", volume: "volume" },
 ];
 
-// HANDLERS
-
-// COMPONENT FUNCTION
 const TrendingCollectionsHome = () => {
-  // Content
   const classes = useStyles();
-
-  // jsx
   return (
-    // <table>
-    //   <tr>
-    //     <th></th>
-    //   </tr>
-    //   <tr>
-    //     <td></td>
-    //   </tr>
-    // </table>
     <TableContainer style={{ marginTop: "1.5rem", padding: "0px" }}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>

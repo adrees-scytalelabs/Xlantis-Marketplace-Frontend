@@ -137,7 +137,7 @@ function CreateTemplate(props) {
       properties: "active",
       template: "active",
       saved: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   return (
     <div className="backgroundDefault">

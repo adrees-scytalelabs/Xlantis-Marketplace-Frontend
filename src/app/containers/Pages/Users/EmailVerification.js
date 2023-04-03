@@ -42,7 +42,7 @@ function EmailVerification(props) {
   };
 
   useEffect(() => {
-    handleEmailVerification();// eslint-disable-next-line
+    handleEmailVerification();
   },[]);
   return (
     <div className="main-wrapper">

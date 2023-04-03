@@ -10,7 +10,7 @@ import AccountsWallet from "./AccountsWallet";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
+    
     // width: 500,
   },
   tabsProps: {
@@ -125,7 +125,7 @@ function Accounts(props) {
       properties:"",
       template:"",
       saved:"",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

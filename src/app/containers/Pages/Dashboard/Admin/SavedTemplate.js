@@ -91,7 +91,7 @@ function SavedTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
   let [isSaving, setIsSaving] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [templateData, setTemplateData] = useState([]);
@@ -118,23 +118,23 @@ function SavedTemplate(props) {
     setDeleteState(false);
     setUpdateModal(false);
   };
-  //This function open the delete modal
-  const handleDeleteModal = (e,data) => {
+
+  const handleDeleteModal = (e, data) => {
     e.preventDefault();
     setDeleteData(data);
     setDeleteState(true);
   }
-  //Call the endpoint of the delete template
-  const deleteResponse = async(data) => {
-    try{
-        console.log("Template deleted successfully")
-        handleClose();
+
+  const deleteResponse = async (data) => {
+    try {
+      console.log("Template deleted successfully")
+      handleClose();
     }
-    catch(e){
-      console.log("Error during deletion",e)
+    catch (e) {
+      console.log("Error during deletion", e)
     }
   }
-  //This function delete the template
+
   const handleDeleteTemplate = async (e) => {
     e.preventDefault();
     await deleteResponse(deleteData);
@@ -149,7 +149,7 @@ function SavedTemplate(props) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    // getUnverifiedAdmins(0, parseInt(event.target.value, 10));
+
     setPage(0);
   };
 
@@ -160,11 +160,11 @@ function SavedTemplate(props) {
         (response) => {
           setTemplateData(response.data.templates);
           console.log("response", response);
-          //console.log("size", response.data.templates[0].properties[0].key);
+
           console.log("Data of the state", templateData);
           handleCloseBackdrop();
-          // let variant = "success";
-          // enqueueSnackbar("Template loaded successfully", { variant });
+
+
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -181,24 +181,24 @@ function SavedTemplate(props) {
       console.log("Error in axios request to create template", e);
     }
   };
-  const handleUpdatedData = (e,data) => {
-      e.preventDefault();
-      setModalData(data);
-      setUpdateModal(false)
-      setModalState(true);
-      try{
-        console.log("data updated");
-      }
-      catch(e){
-        console.log("Something wrong with updation",e)
-      }
+  const handleUpdatedData = (e, data) => {
+    e.preventDefault();
+    setModalData(data);
+    setUpdateModal(false)
+    setModalState(true);
+    try {
+      console.log("data updated");
+    }
+    catch (e) {
+      console.log("Something wrong with updation", e)
+    }
   }
   useEffect(() => {
     console.log("Saved Template")
-    console.log("Modal Data",modalData)
+    console.log("Modal Data", modalData)
     setDeleteState("");
-    //setModalState("");
-    //setUpdateModal(true);
+
+
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -210,11 +210,11 @@ function SavedTemplate(props) {
       properties: "active",
       template: "",
       saved: "active",
-    }); // eslint-disable-next-line
+    });
   }, [modalData]);
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -236,7 +236,7 @@ function SavedTemplate(props) {
         </div>
       </div>
       <div className="row no-gutters">
-        
+
         <Table responsive>
           <thead>
             <tr>
@@ -280,20 +280,20 @@ function SavedTemplate(props) {
                 </td>
                 <td className={classes.collectionTitle}>
                   <span className="ml-4">
-                    <button style={{background:'transparent',border:'none'}}>
-                    <DeleteIcon
-                      color="action"
-                      style={{ color: "red" }}
-                      onClick={(e) => handleDeleteModal(e, i)}
-                    ></DeleteIcon>
+                    <button style={{ background: 'transparent', border: 'none' }}>
+                      <DeleteIcon
+                        color="action"
+                        style={{ color: "red" }}
+                        onClick={(e) => handleDeleteModal(e, i)}
+                      ></DeleteIcon>
                     </button>
                   </span>
                   <span className="ml-1">
-                  <button style={{background:'transparent',border:'none'}}>
-                    <EditIcon
-                      style={{ color: `green` }}
-                      onClick={(e) => handleUpdatedData(e, i)}
-                    ></EditIcon>
+                    <button style={{ background: 'transparent', border: 'none' }}>
+                      <EditIcon
+                        style={{ color: `green` }}
+                        onClick={(e) => handleUpdatedData(e, i)}
+                      ></EditIcon>
                     </button>
                   </span>
                 </td>
@@ -309,9 +309,9 @@ function SavedTemplate(props) {
         show={modalState}
         handleClose={handleClose}
         templateData={modalData}
-        setTemplateData = {setModalData}
-        updateEnabled ={updateModal}
-        handleUpdateData ={handleUpdatedData}
+        setTemplateData={setModalData}
+        updateEnabled={updateModal}
+        handleUpdateData={handleUpdatedData}
       ></TemplateDetails>
       <DeleteModal
         show={deleteState}

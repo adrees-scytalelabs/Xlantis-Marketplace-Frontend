@@ -6,7 +6,6 @@ import { red } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import React from "react";
-// import { Container } from 'react-bootstrap/lib/tab';
 import windowSize from "react-window-size";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -16,13 +15,10 @@ import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        // maxWidth: 645,
-    },
     media: {
 
         height: 0,
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '56.25%',
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -52,38 +48,21 @@ function PrivacyPolicy(props) {
                 <div className="home-section home-full-height">
                     <Header />
 
-                    <div
-                        className="content"
-                        style={{ paddingTop: "180px" }}
-                        position="absolute"
-
-                    >
+                    <div className="content" style={{ paddingTop: "180px" }} position="absolute">
                         <div className="container-fluid">
-                            <div
-                                className="row"
-                            // style={{ height: `${props.windowHeight}`, marginRight: "px" }}
-                            >
-                                <Card className={classes.root}>
+                            <div className="row">
+                                <Card >
                                     <CardHeader
-
                                         title="Privacy Policy"
                                         subheader="Last updated: March 18, 2021"
                                     />
-                                    {/* <Container></Container> */}
                                     <CardContent style={{ marginLeft: '50px', marginRight: '50px' }}>
-                                        {/* <Container>
-                                            
-                                        </Container> */
-                                        }
 
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
                                             We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy.
                                         </Typography>
-                                        {/* <Container> */}
                                         <Typography variant="h4" gutterBottom>Interpretation and Definitions</Typography>
-                                        {/* </Container>
-                                        <Container> */}
                                         <Typography variant="h5" gutterBottom>Interpretation</Typography>
                                         <Typography variant="body2" color="textSecondary" component="p">The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.</Typography>
                                         <Typography variant="h5" gutterBottom>Definitions</Typography>

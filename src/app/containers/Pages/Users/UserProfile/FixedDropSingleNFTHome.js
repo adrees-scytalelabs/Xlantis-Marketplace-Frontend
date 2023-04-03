@@ -1,53 +1,49 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useHistory, useLocation, Redirect } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
-import transakSDK from "@transak/transak-sdk";
-import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
-import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
-import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
-import Collectible721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import { useSnackbar } from "notistack";
-import BuyTxModal from "../../../../components/Modals/BuyTxModal";
-import BidTxModal from "../../../../components/Modals/BidTxModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "@material-ui/core/Backdrop";
 import ReactTooltip from "react-tooltip";
 import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
+import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
+import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
+import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import BidTxModal from "../../../../components/Modals/BidTxModal";
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
-import {
-  createMuiTheme,
-  ThemeProvider,
-  useTheme,
-} from "@material-ui/core/styles";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
   Card,
   CardContent,
-  CardHeader,
   CardMedia,
   makeStyles,
   Paper,
-  Typography,
   TextField,
+  Typography
 } from "@material-ui/core";
+import {
+  createMuiTheme,
+  ThemeProvider
+} from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import Grid from "@material-ui/core/Grid";
-import { Col, Row, Table } from "react-bootstrap";
-import HeaderHome from "../../../../components/Headers/Header";
-import Web3 from "web3";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import DateTimePicker from "react-datetime-picker";
 import ListIcon from "@material-ui/icons/List";
-import Footer from "../../../../components/Footers/Footer";
+import { Col, Row, Table } from "react-bootstrap";
+import DateTimePicker from "react-datetime-picker";
+import Web3 from "web3";
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
+import Footer from "../../../../components/Footers/Footer";
+import HeaderHome from "../../../../components/Headers/Header";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -185,22 +181,17 @@ const FixedDropSingleNFTHome = () => {
 
 
     transak.init();
-
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
 
     });
 
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
 
     });
-
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -290,10 +281,10 @@ const FixedDropSingleNFTHome = () => {
       }
     );
   };
-  
+
   let handleBidSubmit = async (event) => {
     event.preventDefault();
-  console.log("Bid Expiry Timestamp: ", bidExpiryTime);
+    console.log("Bid Expiry Timestamp: ", bidExpiryTime);
     console.log("Drop Expiry Time: ", endTime);
 
     if (
@@ -321,7 +312,6 @@ const FixedDropSingleNFTHome = () => {
         handleShowBackdrop();
         await giveAuctionErc20Approval();
 
-        //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
         let bidData = {
           nftId: nftData._id,
           bidAmount: biddingValue.toString(),
@@ -366,7 +356,7 @@ const FixedDropSingleNFTHome = () => {
             );
             let bidIdHash = getHash(response.data.bidId);
             let bidId = response.data.bidId;
-           console.log("Bid data for blockchain: ");
+            console.log("Bid data for blockchain: ");
             console.log("drop id hash: ", dropIdHash);
             console.log("bid id hash: ", bidIdHash);
             console.log("nft address: ", location.state.nftContractAddress);
@@ -391,8 +381,6 @@ const FixedDropSingleNFTHome = () => {
               })
               .on("receipt", (receipt) => {
                 console.log("receipt: ", receipt);
-
-                //sending finalize call on backend
                 let finalizeBidData = {
                   bidId: bidId,
                   txHash: trxHash,

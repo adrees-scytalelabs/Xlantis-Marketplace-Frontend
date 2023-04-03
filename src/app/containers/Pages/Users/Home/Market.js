@@ -4,6 +4,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import TrendingAndTop from "./TrendingAndTop";
+import "../../../../assets/css/style.css";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,7 +100,7 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
-    getCubes(0, 4); // eslint-disable-next-line
+    getCubes(0, 4); 
     getBidableDrops(0, 4);
   }, []);
 

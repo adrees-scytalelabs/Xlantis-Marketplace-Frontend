@@ -58,7 +58,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -86,7 +86,7 @@ function AuctionCubeNFTs(props) {
   }
   const [ownerAudio, setOwnerAudio] = useState(new Audio());
   const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio());
-  const [isClaiming, setIsClaiming] = useState(false); // eslint-disable-next-line
+  const [isClaiming, setIsClaiming] = useState(false); 
   const [isClaimingWeth, setIsClaimingWeth] = useState(false);
   const [weth, setWeth] = useState(0);
   const [enableWethButton, setEnableWethButton] = useState(false);
@@ -100,7 +100,7 @@ function AuctionCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -728,7 +728,7 @@ function AuctionCubeNFTs(props) {
 
       console.log("balance", (balance / 10 ** 18).toString());
       setBalance(balance);
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getWeth = () => {
     handleShowWeth();

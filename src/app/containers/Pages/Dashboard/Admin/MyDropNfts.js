@@ -1,21 +1,17 @@
-import { Grid } from "@material-ui/core/";
+import { CardContent, CardMedia, Grid } from "@material-ui/core/";
+import Card from "@material-ui/core/Card";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Pause from "@material-ui/icons/Pause";
+import PlayArrow from "@material-ui/icons/PlayArrow";
 import axios from "axios";
 import Cookies from "js-cookie";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Card from "@material-ui/core/Card";
-import Web3 from "web3";
-import { Link, useLocation } from "react-router-dom";
-import { CardContent, CardMedia, CardHeader } from "@material-ui/core/";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import { makeStyles } from "@material-ui/core/styles";
-import { useRouteMatch } from "react-router-dom";
-import { useSnackbar } from "notistack";
 import CornerRibbon from "react-corner-ribbon";
-import PlayArrow from "@material-ui/icons/PlayArrow";
-import Pause from "@material-ui/icons/Pause";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -55,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -160,7 +156,6 @@ function MyDropNFTs(props) {
     console.log("Location state: ", location);
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
-    // getCollections();?
 
     props.setActiveTab({
       dashboard: "",
@@ -178,7 +173,7 @@ function MyDropNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -197,8 +192,6 @@ function MyDropNFTs(props) {
   let handlePlay = async (e, token) => {
     e.preventDefault();
     let audioPlay = new Audio(token.nftURI);
-    // console.log("src", src);
-    // console.log("audi play", audioPlay);
 
     console.log("playing?", token.isPlaying);
     console.log("audio", audio);
@@ -212,7 +205,6 @@ function MyDropNFTs(props) {
       return obj;
     });
     setTokenList(updateState);
-    // setIsPlaying({myArray[i] : true});
     if (audio !== undefined) {
       audio.pause();
     }
@@ -317,23 +309,7 @@ function MyDropNFTs(props) {
                         variant="outlined"
                         className={classes.cardHeight}
                       >
-                        {/* <CardActionArea onClick={() => {
-                                                        console.log("nftDetailObject: ", i);
-                                                        handleOpenNFTDetailModal(i);
-                                                        console.log("Open Dialog Value: ", openDialog); 
-                                                }}> */}
                         <div style={{ position: "relative" }}>
-                          {/* <CardHeader
-                            className="text-center"
-                            title={
-                              i.title.length > 12 ? (
-                                <span>{i.title.slice(0, 7)}...</span>
-                              ) : (
-                                i.title
-                              )
-                            }
-                          /> */}
-
                           {i.currentMarketplaceId.isSold === true ? (
                             <CornerRibbon
                               position="top-right"
@@ -372,7 +348,6 @@ function MyDropNFTs(props) {
                           />
 
                           {i.nftFormat === "mp3" ? (
-                            // style={{ position: "absolute", top: "80%", left: "75%"  }}
                             <div
                               style={{
                                 position: "absolute",
@@ -408,15 +383,7 @@ function MyDropNFTs(props) {
                             </div>
                           ) : null}
                         </div>
-
                         <CardContent>
-                          {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Rarity: </strong>{i.type}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Supply: </strong>{i.tokenSupply}
-                                                    </Typography> */}
-                                                    {/* Title, Description and Price */}
             <div
               className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
@@ -453,7 +420,6 @@ function MyDropNFTs(props) {
                           
                           
                         </CardContent>
-                        {/* </CardActionArea> */}
                       </Card>
                     </Link>
                   </Grid>
@@ -472,22 +438,6 @@ function MyDropNFTs(props) {
           />
         </form>
       </div>
-      {/* <Backdrop className={classes.backdrop} open={open} >
-                <CircularProgress color="inherit" />
-            </Backdrop> */}
-      {/* <NetworkErrorModal
-                show={showNetworkModal}
-                handleClose={handleCloseNetworkModal}
-                network={network}
-            >
-            </NetworkErrorModal>
-            <NFTBuyModal 
-                show={openDialog} 
-                handleClose={handleCloseNFTDetailModal}
-                nftDetail={nftDetail}
-                handleBuy={handleBuy}
-            >
-            </NFTBuyModal> */}
     </div>
   );
 }

@@ -85,7 +85,7 @@ function DropCubes(props) {
     }
 
     useEffect(() => {
-        getDropCubes();// eslint-disable-next-line
+        getDropCubes();
     }, []);
 
     return (

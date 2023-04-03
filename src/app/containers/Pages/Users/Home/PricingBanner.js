@@ -4,7 +4,7 @@ function PricingBanner() {
   return (
     <>
       <div className="container-fluid">
-        {/* <!-- Page Header --> */}
+        
         <div className="page-header mt-4 mt-lg-2 pt-lg-2">
           <div className="row" style={{ justifyContent: "center" }}>
             <div className="col-12 col-md-3" style={{ paddingTop: "190px" }}>

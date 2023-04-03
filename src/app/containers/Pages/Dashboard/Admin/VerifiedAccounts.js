@@ -13,8 +13,6 @@ import VerifiedAccountsWalletScreen from "./VerifiedAccountsWalletScreen";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -129,7 +127,7 @@ function VerifiedAccounts(props) {
       properties:"",
       template:"",
       saved:"",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

@@ -159,7 +159,7 @@ function UserProfileScreen(props) {
       });
     }
 
-    // eslint-disable-next-line
+    
   }, [userRole]);
   return (
     <div className="account-page">

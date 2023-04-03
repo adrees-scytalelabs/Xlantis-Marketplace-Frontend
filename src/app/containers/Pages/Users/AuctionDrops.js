@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         height: 0,
-        paddingTop: '100%', // 16:9
+        paddingTop: '100%',
     },
     badge: {
         '& > *': {
@@ -83,7 +83,7 @@ function AuctionDrops() {
             })
     }
     useEffect(() => {
-        getMyDrops(0, rowsPerPage);// eslint-disable-next-line
+        getMyDrops(0, rowsPerPage);
     }, []);
     const handleChangePage = (event, newPage) => {
         console.log("newPage", newPage);
@@ -129,7 +129,7 @@ function AuctionDrops() {
                                     spacing={2}
                                     direction="row"
                                     justify="flex-start"
-                                // alignItems="flex-start"
+                                
                                 >
                                     {tokenList.map((i, index) => (
 

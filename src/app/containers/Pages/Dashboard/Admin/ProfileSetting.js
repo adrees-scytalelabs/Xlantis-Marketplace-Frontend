@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Spinner, Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import Cookies from "js-cookie";
 
 function ProfileSetting(props) {
   let [isImageSelected, setIsImageSelected] = useState(false);
@@ -47,7 +46,7 @@ function ProfileSetting(props) {
       resolvedDisputedOrders: "",
       settings: "active",
       changePassword: "",
-    });// eslint-disable-next-line
+    });
   }, []);
   let onSubmitHandleEvent = (event) => {
     setIsSavingChanges(true);
@@ -64,7 +63,6 @@ function ProfileSetting(props) {
           var signedRequest = returnData.signedRequest;
           var url = returnData.url;
           delete axios.defaults.headers.common["Authorization"];
-          // Put the fileType in the headers for the upload
           var options = {
             headers: {
               "Content-Type": fileType,
@@ -103,8 +101,6 @@ function ProfileSetting(props) {
               axios.defaults.headers.common[
                 "Authorization"
               ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-              // setMsg("Couldn't Upload File, try again");
-              // handleShowSuccessModal();
             });
         })
         .catch((error) => {
@@ -112,8 +108,6 @@ function ProfileSetting(props) {
             alert(JSON.stringify(error));
           }
           setIsSavingChanges(false);
-          // setMsg("Couldn't Get Signed URL ");
-          // handleShowSuccessModal();
         });
     }
     if (isFieldsChanged) {
@@ -138,7 +132,6 @@ function ProfileSetting(props) {
   };
   return (
     <>
-      {/* {props.userData.name !== undefined ? ( */}
       <div className="card">
         <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
           <li className="breadcrumb-item">
@@ -147,20 +140,12 @@ function ProfileSetting(props) {
           <li className="breadcrumb-item active">Profile Settings</li>
         </ul>
         <div className="card-body">
-          {/* // <!-- Profile Settings Form --> */}
           <form onSubmit={onSubmitHandleEvent}>
             <div className="row form-row">
               <div className="col-12 col-md-12">
                 <div className="form-group">
                   <div className="change-avatar">
                     <div className="profile-img">
-                      {/* {props.userData.pictureURL !== undefined ? ( */}
-                      {/* <img
-                      src={props.userData.pictureURL}
-                      alt="User Image"
-                      /> */}
-                      {/* ) : (
-                            <> */}
                       <div
                         style={{
                           background: "#E9ECEF",
@@ -176,11 +161,8 @@ function ProfileSetting(props) {
                             paddingTop: "33%",
                           }}
                         >
-                          {/* <strong>{props.userData.name[0]}</strong> */}
                         </p>
                       </div>
-                      {/* </>
-                          )} */}
                     </div>
                     <div className="upload-img">
                       <div
@@ -213,7 +195,6 @@ function ProfileSetting(props) {
                     disabled
                     type="text"
                     className="form-control"
-                  // defaultValue={props.userData.name}
                   />
                 </div>
               </div>
@@ -224,7 +205,6 @@ function ProfileSetting(props) {
                     disabled
                     type="email"
                     className="form-control"
-                  // defaultValue={props.userData.email}
                   />
                 </div>
               </div>
@@ -232,9 +212,7 @@ function ProfileSetting(props) {
                 <div className="form-group">
                   <label>Mobile</label>
                   <input
-                    // pattern="[+]852[0-9]{8}"
                     type="text"
-                    // defaultValue={props.userData.mobile}
                     className="form-control"
                     onChange={(e) => {
                       setMobileInput(e.target.value);
@@ -242,7 +220,6 @@ function ProfileSetting(props) {
                     }}
                     required
                   />
-                  {/* <small>Format: +852XXXXXXXX</small> */}
                 </div>
               </div>
               <div className="col-12">
@@ -273,7 +250,6 @@ function ProfileSetting(props) {
                 <div className="text-center">
                   <button
                     type="submit"
-                    // className="btn btn-primary submit-btn"
                     className="btn submit-btn"
                   >
                     Save Changes
@@ -289,9 +265,6 @@ function ProfileSetting(props) {
           </Modal>
         </div>
       </div>
-      {/* ) : (
-      <></>
-        )} */}
     </>
   );
 }

@@ -8,11 +8,10 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import { Link } from "react-router-dom";
+import r1 from "../../../../assets/img/patients/patient.jpg";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -105,7 +104,7 @@ function MyCubes(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -167,7 +166,6 @@ function MyCubes(props) {
                 spacing={2}
                 direction="row"
                 justify="flex-start"
-                // alignItems="flex-start"
               >
                 {tokenList.map((i, index) => (
                   <Grid item xs={12} sm={6} md={3} key={index}>
@@ -177,11 +175,9 @@ function MyCubes(props) {
                         variant="outlined"
                         className={classes.root}
                       >
-                        {/* style={{ height: "100%" }} variant="outlined" */}
                         <CardActionArea>
                           <CardMedia
                             className={classes.media}
-                            // image={img}
                             title=""
                           >
                             <div className="wrapper">
@@ -195,16 +191,16 @@ function MyCubes(props) {
                                         j.type === "Mastercraft"
                                           ? "4px solid #ff0000"
                                           : j.type === "Legendary"
-                                          ? "4px solid #FFD700"
-                                          : j.type === "Epic"
-                                          ? "4px solid #9400D3"
-                                          : j.type === "Rare"
-                                          ? "4px solid #0000FF"
-                                          : j.type === "Uncommon"
-                                          ? "4px solid #008000"
-                                          : j.type === "Common"
-                                          ? "4px solid #FFFFFF"
-                                          : "none",
+                                            ? "4px solid #FFD700"
+                                            : j.type === "Epic"
+                                              ? "4px solid #9400D3"
+                                              : j.type === "Rare"
+                                                ? "4px solid #0000FF"
+                                                : j.type === "Uncommon"
+                                                  ? "4px solid #008000"
+                                                  : j.type === "Common"
+                                                    ? "4px solid #FFFFFF"
+                                                    : "none",
                                     }}
                                     alt=""
                                   />

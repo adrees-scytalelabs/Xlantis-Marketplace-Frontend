@@ -74,7 +74,7 @@ function MyNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -127,7 +127,7 @@ function MyNFTs(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
+
                 component="p"
                 style={{ color: "#fff" }}
               >

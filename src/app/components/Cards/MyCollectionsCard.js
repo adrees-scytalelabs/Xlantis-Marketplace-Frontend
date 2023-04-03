@@ -15,7 +15,7 @@ import { truncate } from "../../assets/js/utils";
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   cardTitle: {
     color: "#fff",
@@ -34,9 +34,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT FUNCTION
+
 const MyCollectionsCard = (props) => {
-  // States
+  
   const classes = useStyles();
 
   console.log(props.i, "props in card");

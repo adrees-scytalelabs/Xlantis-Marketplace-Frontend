@@ -92,7 +92,7 @@ function TopUp(props) {
       changePassword: "",
       newRandomDrop: "",
       topUp: "active",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleTopUpAmount = (e) => {
     e.preventDefault();
@@ -103,8 +103,8 @@ function TopUp(props) {
       (response) => {
         console.log("response of top up amount", response);
         window.location.replace(response.data.sessionUrl)
-        // let variant = "success";
-        // enqueueSnackbar("Balance Updated", { variant });
+        
+        
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -113,8 +113,6 @@ function TopUp(props) {
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
-        // let variant = "error";
-        // enqueueSnackbar("Something went wrong", { variant });
       }
     );
   };

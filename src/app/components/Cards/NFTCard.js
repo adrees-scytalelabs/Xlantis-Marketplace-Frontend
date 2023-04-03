@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
     width: "100%",
   },
   bullet: {

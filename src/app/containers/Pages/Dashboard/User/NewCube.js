@@ -19,7 +19,6 @@ import { Spinner } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
-// import CardContent from '@material-ui/core/CardContent';
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import NewCubeComponent from "../../../../components/Cube/NewCubeComponent";
@@ -44,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   card: {
     minWidth: 250,
@@ -180,7 +179,7 @@ function NewCube(props) {
       newDrop: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   let getMyNFTs = () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(

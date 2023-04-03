@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from "react";
-// MATERIAL UI
-import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Typography from "@material-ui/core/Typography";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
-// MUI GRID
 import Grid from "@material-ui/core/Grid";
-// MUI TABLE
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-import HeaderHome from "../../../components/Headers/Header";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
 import { CountryDropdown } from "react-country-region-selector";
 import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
+import HeaderHome from "../../../components/Headers/Header";
 
-// CUSTOM STYLES
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -107,23 +101,14 @@ const makeTheme = createMuiTheme({
       item: { width: "100%" },
     },
     MuiTableRow: {
-      //   root: {
-      //     "&:last-child td": {
-      //       borderBottom: 0,
-      //     },
-      //   },
     },
   },
 });
 
-// COMPONENT FUNCTION
 const CheckoutScreen = () => {
-  // states
   const [country, setCountry] = useState("");
   const [accepted, setAccepted] = useState(false);
   const classes = useStyles();
-
-  //   Handlers
   const selectCountry = (val) => {
     setCountry(val);
   };
@@ -131,29 +116,22 @@ const CheckoutScreen = () => {
   const handleTermsAccepted = () => {
     setAccepted(!accepted);
   };
-
-  // content
   return (
     <>
       <ThemeProvider theme={makeTheme}>
         <div className="main-wrapper">
-          {/* Header */}
           <div style={{ minHeight: "95px" }}>
-            <HeaderHome selectedNav={"Market"} role={null}/>
+            <HeaderHome selectedNav={"Market"} role={null} />
           </div>
-
-          {/* Heading */}
           <div className="container py-4">
             <div className="row no-gutters justify-content-center align-items-center w-100 mt-5">
               <div className="col-12 text-center">
                 <Typography variant="h5" className={classes.mainHeading}>
                   CHECKOUT
                 </Typography>
-                {/* <Divider className={classes.divider} /> */}
               </div>
             </div>
             <Divider className={classes.divider} />
-            {/* Content */}
             <div className="row no-gutters justify-content-center mb-5 pb-5">
               <Grid container spacing={3} style={{ paddingtop: "16px" }}>
                 <Grid item xs={12} md={8}>
@@ -161,18 +139,14 @@ const CheckoutScreen = () => {
                     <h4 className={classes.formHeadings}>Billing Details</h4>
                     <Grid container spacing={1}>
                       <Grid item xs={12} md={6}>
-                        {/* 
-                          <div className="form-group"> */}
                         <label>First Name</label>
                         <div className="form-group newNftWrapper">
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -183,11 +157,9 @@ const CheckoutScreen = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -199,16 +171,6 @@ const CheckoutScreen = () => {
                             value={country}
                             onChange={(val) => selectCountry(val)}
                           />
-                          {/* <input
-                            type="text"
-                            required
-                            // value={name}
-                            placeholder="First Name"
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                              // setName(e.target.value);
-                            }}
-                          /> */}
                         </div>
                       </Grid>
                       <Grid item xs={12}>
@@ -217,11 +179,9 @@ const CheckoutScreen = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -232,11 +192,9 @@ const CheckoutScreen = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -246,12 +204,9 @@ const CheckoutScreen = () => {
                         <div className="form-group newNftWrapper">
                           <input
                             type="text"
-                            // required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -262,11 +217,9 @@ const CheckoutScreen = () => {
                           <input
                             type="number"
                             required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -276,12 +229,9 @@ const CheckoutScreen = () => {
                         <div className="form-group newNftWrapper">
                           <input
                             type="text"
-                            // required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -291,12 +241,9 @@ const CheckoutScreen = () => {
                         <div className="form-group newNftWrapper">
                           <input
                             type="text"
-                            // required
-                            // value={name}
                             placeholder=""
                             className="form-control-login -login newNftInput w-100"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -401,7 +348,7 @@ const CheckoutScreen = () => {
                             terms and conditions*
                           </Link>
                         </label>
-                        
+
                       </div>
                       <div className="row no-gutters justify-content-center align-items-center mt-3">
                         <div className="col-12">

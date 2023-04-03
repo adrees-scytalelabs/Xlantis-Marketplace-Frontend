@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    // backgroundColor: theme.palette.background.paper,
+    
   },
   badge: {
     "& > *": {
@@ -38,7 +38,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -104,7 +104,7 @@ const defaultStyles = {
   fontWeight: "bold",
 };
 
-// COMPONENT FUNCTION
+
 function FixedDropNFTCard(props) {
   console.log("props nftCrad", props);
   const classes = useStyles();

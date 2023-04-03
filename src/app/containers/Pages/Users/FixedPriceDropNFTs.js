@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
-// REACT ROUTER
-import { useHistory, useParams, useLocation } from "react-router-dom";
 import { Grid } from "@material-ui/core/";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import HeaderHome from "../../../components/Headers/Header";
-import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
-import Footer from "../../../components/Footers/Footer";
-// AXIOS
 import axios from "axios";
 import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
+import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
+import Footer from "../../../components/Footers/Footer";
+import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 
-// COMPONENT FUNCTION
 const FixedPriceDropNFTs = () => {
-  // States
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
@@ -28,7 +24,6 @@ const FixedPriceDropNFTs = () => {
   const startTime = location.state.startTime;
   const endTime = location.state.endTime;
 
-  // Handlers
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -39,8 +34,6 @@ const FixedPriceDropNFTs = () => {
   const handleGoBack = () => {
     history.push(`/marketPlace`);
   };
-
-  // Queries
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
 
@@ -50,8 +43,7 @@ const FixedPriceDropNFTs = () => {
     if (version === undefined) {
       endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
-    else
-    {
+    else {
       endpoint = `/drop/nfts/${dropId}/${start}/${end}`
     }
     axios.get(endpoint).then(
@@ -69,21 +61,16 @@ const FixedPriceDropNFTs = () => {
       }
     );
   };
-
-  // Side Effects
   useEffect(() => {
-    getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
+    getNFTs(dropID.dropId, 0, 4); 
   }, []);
 
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        {/* Header */}
         <div style={{ minHeight: "95px" }}>
           <HeaderHome selectedNav={"Market"} role={null} />
         </div>
-        {/* Body */}
-        {/* Banner and Thumb */}
         {!dropData ? (
           <div
             className="row no-gutters w-100 justify-content-center align-items-center"
@@ -98,13 +85,11 @@ const FixedPriceDropNFTs = () => {
             <div className="row no-gutters">
               <div className="col-12">
                 <div className="bannerWrapper">
-                  {/* banner */}
                   <img
                     src="https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
                     className="bannerImg"
                   />
 
-                  {/* thumbg */}
                   <div className="dropThumbWrapper">
                     <img
                       src="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
@@ -114,11 +99,8 @@ const FixedPriceDropNFTs = () => {
                 </div>
               </div>
             </div>
-            {/* NFTs */}
             <div className="container-fluid mt-5">
-              {/* Heading */}
               <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
-                {/* On Sale */}
                 <div className="col-12">
                   <h1 className="marketCatHeadings">
                     NFTs inside Sample Drop{" "}
@@ -148,7 +130,6 @@ const FixedPriceDropNFTs = () => {
                   </button>
                 </div>
               </div>
-              {/* NFT Cards */}
               <div className="row no-gutters w-100">
                 <Grid container spacing={3}>
                   {dropData &&
@@ -168,8 +149,8 @@ const FixedPriceDropNFTs = () => {
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
-                          startTime = {startTime}
-                          endTime = {endTime}
+                          startTime={startTime}
+                          endTime={endTime}
                         />
                       </Grid>
                     ))}
@@ -179,7 +160,6 @@ const FixedPriceDropNFTs = () => {
           </>
         )}
       </div>
-      {/* FOOTER */}
       <div className="row no-gutters">
         <div className="col-12">
           <Footer />

@@ -16,11 +16,10 @@ import Header from "../../../components/Headers/Header";
 
 const useStyles = makeStyles((theme) => ({
     root: {
-        // maxWidth: 645,
     },
     media: {
         height: 0,
-        paddingTop: '56.25%', // 16:9
+        paddingTop: '56.25%',
     },
     expand: {
         transform: 'rotate(0deg)',
@@ -57,10 +56,7 @@ function TermsAndConditions(props) {
 
                     >
                         <div className="container-fluid">
-                            <div
-                                className="row"
-                            // style={{ height: `${props.windowHeight}`, marginRight: "px" }}
-                            >
+                            <div className="row">
                                 <Card className={classes.root}>
                                     <CardHeader
                                         title="Terms & Conditions "
@@ -100,13 +96,13 @@ function TermsAndConditions(props) {
                                                 <Typography variant="h6" gutterBottom>Content</Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">Our Service allows you to post, link, store, share and otherwise make available certain information, text, graphics, videos, or other material (“Content”). You are responsible for Content that you post on or through Service, including its legality, reliability, and appropriateness.</Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">By posting Content on or through Service, You represent and warrant that:
-                                                 <ul>
+                                                    <ul>
                                                         <li>
                                                             Content is yours and/or you have the right to use it and the right to grant us the rights and license as provided in these Terms.
-                                                     </li>
+                                                        </li>
                                                         <li>
                                                             and that the posting of your Content on or through Service does not violate the privacy rights, publicity rights, copyrights, contract rights or any other rights of any person or entity. We reserve the right to terminate the account of anyone found to be infringing on a copyright.
-                                                     </li>
+                                                        </li>
                                                     </ul>
                                                 </Typography>
                                                 <Typography variant="body2" color="textSecondary" component="p">You retain any and all of your rights to any Content you submit, post or display on or through Service and you are responsible for protecting those rights. We take no responsibility and assume no liability for Content you or any third party posts on or through Service. However, by posting Content using Service you grant us the right and license to use, modify, publicly perform, publicly display, reproduce, and distribute such Content on and through Service. You agree that this license includes the right for us to make your Content available to other users of Service, who may also use your Content subject to these Terms.</Typography>
@@ -120,7 +116,7 @@ function TermsAndConditions(props) {
                                                 <Typography variant="body2" color="textSecondary" component="p">
                                                     You may use Service only for lawful purposes and in accordance with Terms. You agree not to use Service:
 
-                                                <ol>
+                                                    <ol>
                                                         <li>In any way that violates any applicable national or international law or regulation.</li>
                                                         <li>For the purpose of exploiting, harming, or attempting to exploit or harm minors in any way by exposing them to inappropriate content or otherwise.</li>
                                                         <li>To transmit, or procure the sending of, any advertising or promotional material, including any “junk mail”, “chain letter,” “spam,” or any other similar solicitation.</li>
@@ -249,12 +245,6 @@ function TermsAndConditions(props) {
                                         </ol>
                                     </CardContent>
                                     <CardActions disableSpacing>
-                                        {/* <IconButton aria-label="add to favorites">
-                                            <FavoriteIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="share">
-                                            <ShareIcon />
-                                        </IconButton> */}
 
                                     </CardActions>
 

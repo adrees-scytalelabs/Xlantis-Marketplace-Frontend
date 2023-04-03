@@ -25,54 +25,50 @@ import UserSidebar from "../../Pages/Dashboard/User/UserSidebar";
 
 
 function UserSettings(props) {
-   
-    let { path } = useRouteMatch();
 
-    let [activeTab, setActiveTab] = useState({
-        profile: "active",
-        offer: ""
-        
-      });
-      const [updateProfile,setUpdateProfile]=useState("");
-    console.log("hello");
-    return(
-        <div className="main-wrapper">
-        <div className="home-section home-full-height">
-            <HeaderHome  
-                selectedNav={""} role={null}
-            updateProfile={updateProfile} 
-            />
-           
-           <UserSidebar 
-              match={props.match}
-              activeTab={activeTab}
-              setActiveTab={setActiveTab} />
-             
+  let { path } = useRouteMatch();
+
+  let [activeTab, setActiveTab] = useState({
+    profile: "active",
+    offer: ""
+
+  });
+  const [updateProfile, setUpdateProfile] = useState("");
+  console.log("hello");
+  return (
+    <div className="main-wrapper">
+      <div className="home-section home-full-height">
+        <HeaderHome
+          selectedNav={""} role={null}
+          updateProfile={updateProfile}
+        />
+
+        <UserSidebar
+          match={props.match}
+          activeTab={activeTab}
+          setActiveTab={setActiveTab} />
+
         <div className="page-wrapper">
-        <div className="content container-fluid">
-          <Switch>
-            <Route exact path={`${path}`}>
-              <SettingDashboardDefault
-                // match={props.match}
-                user="user"
-                setActiveTab={setActiveTab}
-                updateProfile={updateProfile} 
-                setUpdateProfile={setUpdateProfile}
-              />
-            </Route>
-            {/* <Route exact path={`${path}/myCubes`}>
-              <MyCubes setActiveTab={setActiveTab} />
-            </Route> */}
-           
-          </Switch>
-        </div>
-        </div>
-        </div>
-        </div>
-    );
+          <div className="content container-fluid">
+            <Switch>
+              <Route exact path={`${path}`}>
+                <SettingDashboardDefault
+                  user="user"
+                  setActiveTab={setActiveTab}
+                  updateProfile={updateProfile}
+                  setUpdateProfile={setUpdateProfile}
+                />
+              </Route>
 
-   
-    
+            </Switch>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+
+
+
 }
 
 export default UserSettings;

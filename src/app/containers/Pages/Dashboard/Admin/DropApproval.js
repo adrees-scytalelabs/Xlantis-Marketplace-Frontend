@@ -99,7 +99,7 @@ function DropApproval(props) {
 
   let [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0); 
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
   let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
@@ -144,7 +144,7 @@ function DropApproval(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   const handleChangePage = (event, newPage) => {

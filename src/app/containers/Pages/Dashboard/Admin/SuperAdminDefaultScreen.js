@@ -1,5 +1,5 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
+
+import axios from "axios"; 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -130,7 +130,7 @@ function SuperAdminDefaultScreen(props) {
       saved:"",
     });
     getCounts();
-    // eslint-disable-next-line
+    
   }, []);
 
   console.log("props in super admin dashboard: ", props);

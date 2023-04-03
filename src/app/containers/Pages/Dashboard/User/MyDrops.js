@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   badge: {
     "& > *": {
@@ -108,7 +108,7 @@ function MyDrops(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);

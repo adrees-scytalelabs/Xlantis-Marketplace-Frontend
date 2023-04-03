@@ -81,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -113,7 +113,7 @@ function SaleCubeNFTs(props) {
     jwtDecoded = jwtDecode(jwt);
   }
   const [ownerAudio, setOwnerAudio] = useState(new Audio());
-  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio()); // eslint-disable-next-line
+  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio()); 
   const [isClaimingWeth, setIsClaimingWeth] = useState(false);
   const [weth, setWeth] = useState(0);
   const [enableWethButton, setEnableWethButton] = useState(false);
@@ -128,7 +128,7 @@ function SaleCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -440,7 +440,7 @@ function SaleCubeNFTs(props) {
       const balance = await web3.eth.getBalance(accounts[0]);
       console.log("balance", (balance / 10 ** 18).toString());
       setBalance(balance);
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getWeth = () => {
     handleShowWeth();

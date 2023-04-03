@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import HeaderHome from "../../../../components/Headers/Header";
 import Select from "react-select";
-// AXIOS
+
 import axios from "axios";
 import { Grid } from "@material-ui/core";
 import { Link, Redirect } from "react-router-dom";
@@ -16,14 +16,13 @@ const indsutries = [
   { industry: "Software Development" },
 ];
 
-// COMPONENT FUNCTION
+
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
   const [success, setSucess] = useState();
   let version = Cookies.get("Version");
   console.log(version, " is the version")
 
-  // Handlers
   const handleChangeValues = (event) => {
     const name = event.target.name;
     const value = event.target.value;
@@ -74,7 +73,7 @@ const AdminSSORedirect = () => {
       });
   };
 
-  // Content
+  
   return (
     <>
       <div className="main-wrapper sso-redirect-wrapper">
@@ -101,7 +100,7 @@ const AdminSSORedirect = () => {
                                 value={inputs?.fullName || ""}
                                 name="fullName"
                                 required
-                                // value={name}
+                                
                                 placeholder="Full Name"
                                 className="form-control-login -login newNftInput"
                                 onChange={handleChangeValues}

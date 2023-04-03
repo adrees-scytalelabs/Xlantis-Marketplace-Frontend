@@ -10,10 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Alert from "@material-ui/lab/Alert";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-// MUI ICONS
-// import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
-// UTILS
 import Countdown from "react-countdown";
 import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
@@ -27,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   cardTitle: {
     color: "#fff",

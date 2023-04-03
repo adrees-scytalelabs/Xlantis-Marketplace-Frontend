@@ -19,11 +19,11 @@ import { Alert } from "@material-ui/lab";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // maxWidth: 345,
+    
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   badge: {
     "& > *": {
@@ -133,26 +133,26 @@ function DropsPage(props) {
 
     getMyDrops(props.status, 0, rowsPerPage);
 
-    // getCollections();?
+    
 
-    // props.setActiveTab({
-    //     dashboard: "",
-    //     newNFT: "",
-    //     orders: "",
-    //     myNFTs: "",
-    //     myCubes: "",
-    //     myDrops: "active",
-    //     mySeason: "",
-    //     settings: "",
-    //     privacyPolicy: "",
-    //     termsandconditions: "",
-    //     changePassword: "",
-    //     newDrop: "",
-    //     newCube: "",
-    //     newCollection: "",
-    //     newRandomDrop: "",
-    // });
-    // eslint-disable-next-line
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -202,7 +202,7 @@ function DropsPage(props) {
               spacing={3}
               direction="row"
               justify="flex-start"
-              // alignItems="flex-start"
+              
             >
               {tokenList.map((i, index) => (
                 <Grid
@@ -271,21 +271,12 @@ function DropsPage(props) {
                               </div>
                             </div>
                             <br></br>
-                            {/* {(i.saleType === "auction") ? 
-                                                    (<Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Minimum Bid: </strong>{i.price} WETH
-                                                    </Typography>
-                                                    ) : (
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Price: </strong>{i.price} WETH
-                                                        </Typography>
-                                                    )} */}
 
                             {i.saleType === "auction" ? (
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                                // color="textSecondary"
+                
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -314,7 +305,6 @@ function DropsPage(props) {
                                 ) : new Date() > new Date(i.startTime) &&
                                   new Date() < new Date(i.endTime) ? (
                                   <div style={{ marginTop: "1rem" }}>
-                                    {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                     <Alert
                                       severity="warning"
                                       className={cardClasses.textAlert}
@@ -344,7 +334,7 @@ function DropsPage(props) {
                                   >
                                     <Alert
                                       severity="error"
-                                      // variant="filled"
+                                      
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -357,7 +347,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                                // color="textSecondary"
+                
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -386,7 +376,6 @@ function DropsPage(props) {
                                 ) : new Date() > new Date(i.startTime) &&
                                   new Date() < new Date(i.endTime) ? (
                                   <div style={{ marginTop: "1rem" }}>
-                                    {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                     <Alert
                                       severity="warning"
                                       className={cardClasses.textAlert}
@@ -413,13 +402,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      // marginBottom: "1.25rem",
+                                      
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      // variant="filled"
+                                      
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -429,32 +418,6 @@ function DropsPage(props) {
                                 )}
                               </Typography>
                             )}
-
-                            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                        {new Date() < new Date(i.startTime) ? (
-                                                            <div style={{ color: "#00FF00" }} >
-
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Starts At:</strong>
-                                                                </Typography>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
-                                                                <Countdown daysInHours date={new Date(i.startTime)}>
-                                                                </Countdown>
-                                                            </div>
-                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
-                                                            <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Ends At:</strong>
-                                                                </Typography>
-                                                                <Countdown daysInHours date={new Date(i.endTime)}>
-                                                                </Countdown>
-                                                            </div>) : (
-                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                <strong>Auction Ended</strong>
-                                                            </Typography>
-                                                        )}
-                                                    </Typography> */}
                           </CardContent>
                         </CardActionArea>
                         <CardActions></CardActions>
@@ -515,21 +478,12 @@ function DropsPage(props) {
                               </div>
                             </div>
                             <br></br>
-                            {/* {(i.saleType === "auction") ? 
-                                                    (<Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Minimum Bid: </strong>{i.price} WETH
-                                                    </Typography>
-                                                    ) : (
-                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Price: </strong>{i.price} WETH
-                                                        </Typography>
-                                                    )} */}
 
                             {i.saleType === "auction" ? (
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                                // color="textSecondary"
+                
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -585,13 +539,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      // marginBottom: "1.25rem",
+                                      
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      // variant="filled"
+                                      
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -604,7 +558,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                                // color="textSecondary"
+                
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -660,13 +614,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      // marginBottom: "1.25rem",
+                                      
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      // variant="filled"
+                                      
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -677,31 +631,6 @@ function DropsPage(props) {
                               </Typography>
                             )}
 
-                            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                        {new Date() < new Date(i.startTime) ? (
-                                                            <div style={{ color: "#00FF00" }} >
-
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Starts At:</strong>
-                                                                </Typography>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.startTime))}
-                                                                <Countdown daysInHours date={new Date(i.startTime)}>
-                                                                </Countdown>
-                                                            </div>
-                                                        ) : new Date() > new Date(i.startTime) && new Date() < new Date(i.endTime) ? (
-                                                            <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))}
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Ends At:</strong>
-                                                                </Typography>
-                                                                <Countdown daysInHours date={new Date(i.endTime)}>
-                                                                </Countdown>
-                                                            </div>) : (
-                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                <strong>Auction Ended</strong>
-                                                            </Typography>
-                                                        )}
-                                                    </Typography> */}
                           </CardContent>
                         </CardActionArea>
                         <CardActions></CardActions>

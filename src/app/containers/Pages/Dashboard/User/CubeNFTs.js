@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -131,15 +131,11 @@ function CubeNFTs(props) {
       return () => {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getCubeNFTs = () => {
     handleShowNFTData();
     console.log("dropId", dropId);
-    // let Data = {
-    //     tokenId: cubeId,
-    //     check: "notdrop"
-    // }
     let Data = {
       tokenId: cubeId,
       check: dropId === "notdrop" ? dropId : "drop",
@@ -172,7 +168,6 @@ function CubeNFTs(props) {
             console.log(error);
             console.log(error.response);
           }
-          // handleCloseSpinner();
         }
       );
     }
@@ -539,8 +534,6 @@ function CubeNFTs(props) {
       (response) => {
         console.log("response", response);
         setIsRemoving(false);
-
-        // getAuctionCubeNFTs();
         let variant = "success";
         enqueueSnackbar("Removed from Auction Successfully.", { variant });
         history.push("/dashboard/myDrops");
@@ -558,8 +551,6 @@ function CubeNFTs(props) {
   };
   useEffect(() => {
     getCubeNFTs();
-    // getClaimFunds();
-
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -576,7 +567,7 @@ function CubeNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

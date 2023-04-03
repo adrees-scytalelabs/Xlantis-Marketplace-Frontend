@@ -16,10 +16,10 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
 import { Link } from "react-router-dom";
 
-// STYLING
+
 const paginationStyles = makeStyles({
   base: {
-    // borderRadius: 12,
+    
     border: 0,
     color: "#fff",
     padding: "0 30px",
@@ -39,8 +39,8 @@ const paginationStyles = makeStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
+    
+    
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -129,7 +129,7 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 const MarketPlace = (props) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -162,7 +162,7 @@ const MarketPlace = (props) => {
       changePassword: "",
       newRandomDrop: "",
       marketPlace: "active",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

@@ -71,7 +71,7 @@ function UserProducer(props) {
   };
   useEffect(() => {
     getUserData(0, rowsPerPage);
-    // eslint-disable-next-line
+    
   }, []);
 
   return (

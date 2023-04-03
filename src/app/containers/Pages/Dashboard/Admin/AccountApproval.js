@@ -1,4 +1,4 @@
-// eslint-disable-next-line
+
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
@@ -11,8 +11,6 @@ import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -127,7 +125,7 @@ function AccountApproval(props) {
       template:"",
       saved:"",
     });
-    // eslint-disable-next-line
+    
   }, []);
 
   console.log("props in super admin dashboard: ", props);

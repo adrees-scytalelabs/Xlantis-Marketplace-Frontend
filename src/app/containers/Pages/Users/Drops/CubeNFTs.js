@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -98,7 +98,7 @@ function CubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -654,7 +654,7 @@ function CubeNFTs(props) {
         .call();
       console.log("balance", (wethReceipt / 10 ** 18).toString());
       setBalance(balance);
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getWeth = () => {
     handleShowWeth();

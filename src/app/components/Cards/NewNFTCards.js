@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         height: 0,
-        paddingTop: '100%', // 16:9
+        paddingTop: '100%',
     },
     bullet: {
         display: 'inline-block',

@@ -60,10 +60,7 @@ function SuperAdminSidebar(props) {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
-
-    // web3Modal.clearCachedProvider();
-
-    // setTimeout(() => { }, 1);
+    
     window.location.reload(false);
   };
   useEffect(() => {
@@ -83,7 +80,7 @@ function SuperAdminSidebar(props) {
       setPropertiesStyle("dropdown-container3");
     }
     console.log("Active Tab", props.activeTab);
-    // eslint-disable-next-line
+    
   },[props.activeTab]);
 
   return (

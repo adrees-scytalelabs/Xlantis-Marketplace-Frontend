@@ -1,19 +1,17 @@
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
+import Card from "@material-ui/core/Card";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Spinner } from "react-bootstrap";
-import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import { nftImage } from "../../../../assets/js/images";
+import NFTCard from "../../../../components/Cards/NFTCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
-// CUSTOM STYLES
 const useStyles = makeStyles({
   root: {
     borderRadius: 12,
@@ -125,7 +123,6 @@ function MyNFTs(props) {
     setVersionB(Cookies.get("Version"));
 
     getMyNFTs(0, rowsPerPage);
-    // getCollections();?
 
     props.setActiveTab({
       dashboard: "",
@@ -143,7 +140,7 @@ function MyNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -164,23 +161,23 @@ function MyNFTs(props) {
 
   return (
     <div className="backgroundDefault position-relative">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-            </Link>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
               <li className="breadcrumb-item active">NFTs</li>
             </ul>
           </div>
         </div>
       </div>
-      
+
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         {/* <form> */}
         <div className="form-group">
@@ -203,7 +200,6 @@ function MyNFTs(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
                 component="p"
                 style={{ color: "#fff" }}
               >
@@ -214,14 +210,12 @@ function MyNFTs(props) {
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
-                  <NFTCard data={i}/>
+                  <NFTCard data={i} />
                 </Grid>
               ))}
             </Grid>
           )}
         </div>
-
-        {/* </form> */}
       </div>
       <ThemeProvider theme={makeTheme}>
         <div className="row no-gutters justify-content-center paginationBg">
@@ -242,9 +236,6 @@ function MyNFTs(props) {
           />
         </div>
       </ThemeProvider>
-      {/* <Backdrop className={classes.backdrop} open={open} >
-                <CircularProgress color="inherit" />
-            </Backdrop> */}
     </div>
   );
 }

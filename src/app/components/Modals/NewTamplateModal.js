@@ -17,7 +17,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT FUNCTION
+
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();

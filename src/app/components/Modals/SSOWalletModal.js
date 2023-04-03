@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 // REACT ROUTER DOM
 import { Link } from "react-router-dom";
-// MATERIAL UI
+
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
 import Backdrop from "@material-ui/core/Backdrop";
@@ -19,7 +19,7 @@ import Grid from "@material-ui/core/Grid";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import EmailIcon from "@material-ui/icons/Email";
 
-// CUSTOM MATERIAL UI STYLING
+
 const useStyles = makeStyles((theme) => ({
   gridRoot: {
     flexGrow: 1,
@@ -139,12 +139,11 @@ const makeTheme = createMuiTheme({
 });
 
 const SSOWalletModal = (props) => {
-  // States
+  
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(true);
   const classes = useStyles();
 
-  // Handlers
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };

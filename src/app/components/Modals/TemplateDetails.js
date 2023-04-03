@@ -7,11 +7,8 @@ function TemplateDetails(props) {
   const [key, setKey] = useState("");
   let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   let handleChangeTile = (e) => {
-    // let name = e.target.value;
     props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the firstName
       name: e.target.value,
     }));
   };
@@ -23,9 +20,7 @@ function TemplateDetails(props) {
     data[index][event.target.name] = event.target.value;
     setProperties(data);
     props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the firstName
       properties: properties,
     }));
   };
@@ -42,9 +37,7 @@ function TemplateDetails(props) {
     data.splice(index, 1);
     setProperties(data);
     props.setTemplateData((existingValues) => ({
-      // Retain the existing values
       ...existingValues,
-      // update the firstName
       properties: properties,
     }));
   };

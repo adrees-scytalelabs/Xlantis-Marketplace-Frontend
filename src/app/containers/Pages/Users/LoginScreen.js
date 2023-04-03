@@ -1,5 +1,4 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import windowSize from "react-window-size";
@@ -30,7 +29,6 @@ function LoginScreen(props) {
         console.log("response", response);
 
         sessionStorage.setItem("Authorization", response.data.token, {});
-        // setData(response.data.token);
 
         setIsLoading(false);
         window.location.reload(false);

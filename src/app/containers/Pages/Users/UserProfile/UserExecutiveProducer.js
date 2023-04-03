@@ -74,7 +74,7 @@ function UserExecutiveProducer(props) {
   };
   useEffect(() => {
     getUserData(0, rowsPerPage);
-    // eslint-disable-next-line
+    
   }, []);
   return (
     <div className="page-wrapper">

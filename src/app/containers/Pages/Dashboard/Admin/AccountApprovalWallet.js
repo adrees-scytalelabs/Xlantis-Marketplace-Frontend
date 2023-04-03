@@ -97,7 +97,7 @@ function AccountApprovalWallet(props) {
 
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0); 
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -137,7 +137,7 @@ function AccountApprovalWallet(props) {
       properties: "",
       template: "",
       saved: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   const handleChangePage = (event, newPage) => {

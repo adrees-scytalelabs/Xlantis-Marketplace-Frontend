@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 import axios from "axios";
-import { Spinner, Form } from "react-bootstrap";
+import { Form, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
-import Cookies from "js-cookie";
 
 function ProfileSetting(props) {
   let [isImageSelected, setIsImageSelected] = useState(false);
@@ -45,7 +44,7 @@ function ProfileSetting(props) {
       ordersCreated: "",
       settings: "active",
       changePassword: "",
-    });// eslint-disable-next-line
+    });
   }, []);
   let onSubmitHandleEvent = (event) => {
     setIsSavingChanges(true);
@@ -62,7 +61,6 @@ function ProfileSetting(props) {
           var signedRequest = returnData.signedRequest;
           var url = returnData.url;
           delete axios.defaults.headers.common["Authorization"];
-          // Put the fileType in the headers for the upload
           var options = {
             headers: {
               "Content-Type": fileType,
@@ -101,8 +99,6 @@ function ProfileSetting(props) {
               axios.defaults.headers.common[
                 "Authorization"
               ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-              // setMsg("Couldn't Upload File, try again");
-              // handleShowSuccessModal();
             });
         })
         .catch((error) => {
@@ -110,8 +106,6 @@ function ProfileSetting(props) {
             alert(JSON.stringify(error));
           }
           setIsSavingChanges(false);
-          // setMsg("Couldn't Get Signed URL ");
-          // handleShowSuccessModal();
         });
     }
     if (isFieldsChanged) {
@@ -264,7 +258,7 @@ function ProfileSetting(props) {
                   <div className="text-center">
                     <button
                       type="submit"
-                      // className="btn btn-primary submit-btn"
+                      
                       className="btn submit-btn"
                     >
                       Save Changes

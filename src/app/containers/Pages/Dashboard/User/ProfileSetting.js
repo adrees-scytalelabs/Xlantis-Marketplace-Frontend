@@ -281,7 +281,7 @@ function ProfileSetting(props) {
       resolvedDisputedOrders: "",
       settings: "active",
       changePassword: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   let onChangeSelfieHandler = (e) => {
     setIsUploadingImageArtist(true);
@@ -533,7 +533,7 @@ function ProfileSetting(props) {
                       <div className="text-center">
                         <button
                           type="submit"
-                          // className="btn btn-primary submit-btn"
+                          
                           className="btn submit-btn"
                         >
                           Save Changes
@@ -713,7 +713,7 @@ function ProfileSetting(props) {
                       <div className="text-center">
                         <button
                           type="submit"
-                          // className="btn btn-primary submit-btn"
+                          
                           className="btn submit-btn"
                         >
                           Save Changes
@@ -1053,7 +1053,7 @@ function ProfileSetting(props) {
                       <div className="text-center">
                         <button
                           type="submit"
-                          // className="btn btn-primary submit-btn"
+                          
                           className="btn submit-btn"
                         >
                           Save Changes

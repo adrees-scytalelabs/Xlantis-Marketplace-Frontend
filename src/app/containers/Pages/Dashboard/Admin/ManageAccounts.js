@@ -1,28 +1,21 @@
 import {
-  AppBar,
   Box,
-  Card,
-  CardHeader,
-  Grid,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
-import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import MarketPlacePage from "./MarketPlacePage";
-import { Link } from "react-router-dom";
-import Enabled from "./Enabled";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Disabled from "./Disabled";
+import Enabled from "./Enabled";
 
-// STYLING
+
 const paginationStyles = makeStyles({
   base: {
-    // borderRadius: 12,
+    
     border: 0,
     color: "#fff",
     padding: "0 30px",
@@ -42,8 +35,8 @@ const paginationStyles = makeStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
+    
+    
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -132,7 +125,7 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 const ManageAccounts = (props) => {
   const classes = useStyles();
   const location = useLocation();
@@ -164,7 +157,7 @@ const ManageAccounts = (props) => {
       properties:"",
       template:"",
       saved:"",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

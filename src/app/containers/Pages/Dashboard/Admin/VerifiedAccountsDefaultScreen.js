@@ -1,39 +1,15 @@
-import { Grow, TablePagination, Zoom } from "@material-ui/core/";
+import { Tooltip, createMuiTheme } from "@material-ui/core";
+import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, Tooltip, Fade } from "@material-ui/core";
-// import { styled,tooltipClasses} from "@material-ui/core";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -120,7 +96,7 @@ function VerifiedAccountsDefaultScreen(props) {
   const [modalData, setModalData] = useState();
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -152,7 +128,7 @@ function VerifiedAccountsDefaultScreen(props) {
       properties: "",
       template: "",
       saved: "",
-    }); // eslint-disable-next-line
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -180,7 +156,7 @@ function VerifiedAccountsDefaultScreen(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
@@ -205,7 +181,7 @@ function VerifiedAccountsDefaultScreen(props) {
       });
   };
   let getUnverifiedWallet = (start, end) => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v2`)
@@ -233,7 +209,6 @@ function VerifiedAccountsDefaultScreen(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
@@ -262,10 +237,10 @@ function VerifiedAccountsDefaultScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div>
         <div className="row no-gutters">
-          
+
           <Table responsive>
             <thead>
               <tr>
@@ -294,11 +269,6 @@ function VerifiedAccountsDefaultScreen(props) {
                     Login Type
                   </div>
                 </th>
-                {/* <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Verify
-                  </div>
-                </th> */}
               </tr>
             </thead>
             {admins.map((i, index) => {
@@ -378,7 +348,7 @@ function VerifiedAccountsDefaultScreen(props) {
           </Table>
         </div>
       </div>
-      
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

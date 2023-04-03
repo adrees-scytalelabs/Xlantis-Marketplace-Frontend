@@ -15,7 +15,7 @@ function TemplateProperties(props) {
       properties: "active",
       template: "active",
       saved: "active",
-    }); // eslint-disable-next-line
+    }); 
     history.push({ pathname: "/superAdminDashboard/properties/savedTemplate" });
   }, []);
   return (

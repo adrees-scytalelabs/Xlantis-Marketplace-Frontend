@@ -3,17 +3,17 @@ import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
-import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
-import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
-import UserDashboard from "../Pages/Dashboard/UserDashboard";
-import AuctionDrops from "../Pages/Users/AuctionDrops";
-import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
-import DropCubes from "../Pages/Users/Drops/DropCubes";
 import { AuthContextProvider } from "../../components/context/AuthContext";
 import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
+import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import AdminSettings from "../Pages/Dashboard/AdminSettings";
+import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
+import UserDashboard from "../Pages/Dashboard/UserDashboard";
 import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
+import AuctionDrops from "../Pages/Users/AuctionDrops";
 import CheckoutScreen from "../Pages/Users/CheckoutScreen";
+import CubeNFTs from "../Pages/Users/Drops/CubeNFTs";
+import DropCubes from "../Pages/Users/Drops/DropCubes";
 import EmailVerification from "../Pages/Users/EmailVerification";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import ForgotPassword from "../Pages/Users/ForgotPassword";
@@ -61,9 +61,7 @@ function App() {
 
   useEffect(() => {
     const controller = new AbortController();
-
-    checkLoginStatus(); // eslint-disable-next-line
-
+    checkLoginStatus();
     return () => {
       controller.abort();
     };
@@ -139,7 +137,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (
@@ -149,7 +146,6 @@ function App() {
       isVerified &&
       jwtDecoded.role === "admin"
     ) {
-      // if (cookies.Verified && cookies.InfoAdded) {
       console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
@@ -245,7 +241,6 @@ function App() {
         <BrowserRouter>
           <Switch>
             <LoginRegisterRedirectCheck exact path="/" />
-            {/* <LoginRegisterRedirectCheck exact path="/login" /> */}
             <LoginRegisterRedirectCheck exact path="/register" />
             <LoginRegisterRedirectCheck exact path="/marketPlace" />
             <LoginRegisterRedirectCheck exact path="/admin-login" />
@@ -258,19 +253,11 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
             <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
             <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
-            {/* <LoginRegisterRedirectCheck exact path="/" /> */}
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixedDropNFTHome/:singleNFTid"
-            />
+            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid"/>
             <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />
             <LoginRegisterRedirectCheck exact path="/test" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixdropnft/:dropId"
-              component={FixedPriceDropNFTs}
-            />
+            <LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" component={FixedPriceDropNFTs} />
             <LoginRegisterRedirectCheck
               exact
               path="/auctionDrops/DropCubes/:dropId"
@@ -297,7 +284,6 @@ function App() {
               path="/users/emailverification/:email/:token"
               render={(routeProps) => <EmailVerification {...routeProps} />}
             />
-            {/* <Route exact path="/admin-login"component={LoginScreen} /> */}
             <Route path="/termsandconditions" component={TermsAndConditions} />
             <Route path="/privacy-policy" component={PrivacyPolicy} />
 
@@ -306,13 +292,9 @@ function App() {
               path="/User/Profile/Detail/:userRole/:userId/:cubeId"
               render={(routeProps) => <UserProfileScreen {...routeProps} />}
             />
-            {/* <Route path="/user/settings" >
-            <UserSettings></UserSettings>
-          </Route> */}
 
             <PrivateRoute path="/dashboard" />
             <PrivateRoute path="/superAdminDashboard" />
-            {/* <PrivateRoute path="/admin/settings" /> */}
             <Route
               exact
               path="/user/settings"

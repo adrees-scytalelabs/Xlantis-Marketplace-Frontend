@@ -6,12 +6,11 @@ import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
@@ -20,12 +19,11 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
-// import CardContent from '@material-ui/core/CardContent';
-import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
+import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -59,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
 }));
 
@@ -76,13 +74,13 @@ function NewCube(props) {
   let [artistTypes, setArtistTypes] = useState([]);
 
   let [artistType, setArtistType] = useState("New");
-  let [artist, setArtist] = useState(""); // eslint-disable-next-line
-  let [artistId, setArtistId] = useState(""); // eslint-disable-next-line
+  let [artist, setArtist] = useState(""); 
+  let [artistId, setArtistId] = useState(""); 
   let [nftName, setNFTName] = useState();
 
   let [musicOwner, setMusicOwner] = useState("");
   let [musicNonOwner, setMusicNonOwner] = useState("");
-  let [artistImage, setArtistImage] = useState(logo); // eslint-disable-next-line
+  let [artistImage, setArtistImage] = useState(logo); 
   let [isUploadingArtist, setIsUploadingArtist] = useState(false);
   let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
@@ -183,7 +181,7 @@ function NewCube(props) {
       newDrop: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   let getMyNFTs = () => {
     axios.get("/nft/createnft").then(
@@ -428,7 +426,6 @@ function NewCube(props) {
     setTokenList((tokenList) => [...tokenList, newNFT]);
   };
 
-  // handle click event of the Add button
   const handleAddClick = (nft) => {
     console.log("selectedNFTList.length", selectedNFTList.length);
     if (selectedNFTList.length + 1 <= 6) {
@@ -436,7 +433,6 @@ function NewCube(props) {
       var index = list.findIndex((i) => i._id === nft._id);
       list.splice(index, 1);
       setTokenList(list);
-      // setTokenList([...tokenList, {}]);
       setSelectedNFTList([...selectedNFTList, nft]);
     } else {
       handleShow();
@@ -461,8 +457,6 @@ function NewCube(props) {
                     id="combo-dox-demo"
                     required
                     options={tokenList}
-                    // value={nftName}
-                    // disabled={isDisabledImporter}
                     getOptionLabel={(option) =>
                       option.title +
                       "," +
@@ -562,7 +556,6 @@ function NewCube(props) {
                         id="combo-dox-demo"
                         required
                         options={artistTypes}
-                        // disabled={isDisabledImporter}
                         getOptionLabel={(option) => option.Name}
                         onChange={(event, value) => {
                           if (value == null) {
@@ -576,7 +569,6 @@ function NewCube(props) {
                             setArtist(value.Name);
                             setAboutTheTrack(value.About);
                             setArtistImage(value.Profile);
-                            // Profile
                           }
                         }}
                         renderInput={(params) => (
@@ -784,9 +776,6 @@ function NewCube(props) {
                                 <strong>Other: </strong>
                                 {i.other}
                               </Typography>
-                              {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                            <strong>Collection: </strong>{i.collectiontitle}
-                                                        </Typography> */}
                             </CardContent>
 
                             <CardActions>
@@ -821,13 +810,6 @@ function NewCube(props) {
             </Spinner>
           </div>
         ) : (
-          // selectedNFTList.length === 0 || salePrice === undefined || description === "" || name === "" || artist === "" || artistImage === logo || aboutTheTrack === "" || musicNonOwner === "" || musicOwner === "" ? (
-          //     <div className="submit-section">
-          //         <button type="button" disabled className="btn submit-btn">
-          //             Create Cube
-          // </button>
-          //     </div>
-          // ) : (
           <div className="submit-section">
             <button
               type="button"
@@ -837,7 +819,6 @@ function NewCube(props) {
               Create Cube
             </button>
           </div>
-          // )
         )}
       </div>
       <SixNFTsErrorModal show={show} handleClose={handleClose} />

@@ -13,7 +13,6 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState, useRef } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import Web3 from "web3";
 import CornerRibbon from "react-corner-ribbon";
 import PlayArrow from "@material-ui/icons/PlayArrow";
 import Pause from "@material-ui/icons/Pause";
@@ -25,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "#000 !important",
     border: "1px solid #fff",
-    // backgroundColor: theme.palette.background.paper,
   },
   badge: {
     "& > *": {
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -139,7 +137,7 @@ const customTheme = createMuiTheme({
   },
 });
 
-// COMPONENT FUNCTION
+
 function MyNFTs(props) {
   let location = useLocation();
   const classes = useStyles();
@@ -151,8 +149,6 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
-  const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   let [openDialog, setOpenDialog] = useState(false);
@@ -170,96 +166,6 @@ function MyNFTs(props) {
   const myRef = useRef();
   let [windowSize, setWindowSize] = useState(window.innerWidth);
 
-  // let loadWeb3 = async () => {
-  //     if (window.ethereum) {
-  //         window.web3 = new Web3(window.ethereum)
-  //         await window.ethereum.enable()
-  //     }
-  //     else if (window.web3) {
-  //         window.web3 = new Web3(window.web3.currentProvider)
-  //     }
-  //     else {
-  //         window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-  //     }
-  // }
-
-  // const getHash = (id) => {
-
-  //     const hex = Web3.utils.toHex(id);
-  //     console.log('conversion to hex: ', hex);
-  //     return hex;
-
-  // }
-
-  // let handleCloseNFTDetailModal = () => {
-  //     // setTokenList([...tempTokenList]);
-  //     // setTempTokenList([]);
-  //     console.log("Close button called from modal.");
-  //     setOpenDialog(false);
-  // }
-
-  // let handleBuy= async() => {
-  //     // setNftDetail(nftObject);
-  //     console.log("Nft detail: ", nftDetail);
-  //     setNftDetail(nftDetail);
-  //     // console.log("Nft detail id: ", nftDetail.collectionId._id);
-  //     let dropIdHex = getHash(nftDetail.dropId);
-  //     console.log(dropIdHex);
-  //     setOpenDialog(false);
-  //     setIsSaving(true);
-  //     await loadWeb3();
-  //     const web3 = window.web3
-  //     const accounts = await web3.eth.getAccounts();
-  //     const network = await web3.eth.net.getNetworkType()
-  //     if (network !== 'goerli') {
-  //         setNetwork(network);
-  //         setIsSaving(false);
-  //         handleShowNetworkModal();
-  //     }
-  //     else {
-  //         handleShowBackdrop();
-  //         const addressDropFactory = Addresses.FactoryDrop;
-  //         const abiDropFactory = DropFactory;
-
-  //         var myContractInstance = await new web3.eth.Contract(abiDropFactory, addressDropFactory);
-  //         console.log("myContractInstance", myContractInstance)
-
-  //         await myContractInstance.methods.executeOrder(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.tokenSupply, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
-  //             console.log('get transaction', err, response);
-  //             let data = {
-  //                 dropId : nftDetail.dropId,
-  //                 nftId : nftDetail._id,
-  //                 txHash : response
-
-  //             }
-
-  //             console.log("data",data);
-  //             axios.put(`/marketplace/buy`, data).then(
-  //                 (response) => {
-  //                     console.log("Transaction Hash sending on backend response: ", response);
-  //                 },
-  //                 (error) => {
-  //                     console.log("Transaction hash on backend error: ", error.response);
-  //                 }
-  //             )
-
-  //             if (err !== null) {
-  //                 console.log("err", err);
-  //                 let variant = "error";
-  //                 enqueueSnackbar('User Canceled Transaction', { variant });
-  //                 handleCloseBackdrop();
-  //                 setIsSaving(false);
-
-  //             }
-
-  //         })
-  //         .on('receipt', (receipt) => {
-  //             console.log("receipt", receipt);
-
-  //         })
-  //     }
-
-  // }
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -269,11 +175,6 @@ function MyNFTs(props) {
   let handlePlay = async (e, token) => {
     e.preventDefault();
     let audioPlay = new Audio(token.nftURI);
-    // console.log("src", src);
-    // console.log("audi play", audioPlay);
-
-    console.log("playing?", token.isPlaying);
-    console.log("audio", audio);
     let updateState = tokenList.map((obj) => {
       if (obj._id !== token._id) {
         return { ...obj, isPlaying: false };
@@ -379,7 +280,7 @@ function MyNFTs(props) {
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
     console.log("width", window.innerWidth);
-    // getCollections();?
+    
 
     props.setActiveTab({
       dashboard: "",
@@ -398,7 +299,7 @@ function MyNFTs(props) {
       newCollection: "",
       newRandomDrop: "",
       marketPlace: "active",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -656,7 +557,7 @@ function MyNFTs(props) {
                               </div>
                               {/* <Typography
                                 variant="body2"
-                                // color="textSecondary"
+                
                                 component="p"
                                 style={{color: "#fff"}}
                               >
