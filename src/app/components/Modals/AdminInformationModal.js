@@ -44,11 +44,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.username}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Company Name
                 <input
@@ -56,11 +56,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.companyName}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Designation
                 <input
@@ -68,11 +68,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.designation}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Domain
                 <input
@@ -80,11 +80,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.domain}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Industry Type
                 <input
@@ -92,11 +92,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.industryType}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Reason of Interest
                 <input
@@ -104,7 +104,7 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.reasonForInterest}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
