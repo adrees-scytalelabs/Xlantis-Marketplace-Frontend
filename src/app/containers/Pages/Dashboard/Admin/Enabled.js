@@ -5,24 +5,15 @@ import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme, ThemeProvider, Tooltip } from "@material-ui/core";
+import { createMuiTheme, Tooltip } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -109,7 +100,7 @@ function Enabled(props) {
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -140,38 +131,25 @@ function Enabled(props) {
   useEffect(() => {
     getEnabledSSOAdmins();
     getEnabledWalletAdmins();
-    // getMyCubes();
-    // props.setActiveTab({
-    //   dashboard: "",
-    //   manageAccounts : "",
-    //   accountApproval : "active",
-    //   accounts: "",
-    // }); // eslint-disable-next-line
+
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    // getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    // getCollections(0, parseInt(event.target.value, 10));
+
     setPage(0);
   };
 
   let getEnabledSSOAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v1`)
       .then((response) => {
-        console.log("response.data", response.data);
         setSSOAdmins(response.data.admins);
         setSSOAdminCount(response.data.admins.length);
         setOpen(false);
@@ -193,14 +171,11 @@ function Enabled(props) {
       });
   };
   let getEnabledWalletAdmins = () => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v2`)
       .then((response) => {
-        console.log("response.data", response.data);
         setWalletAdmins(response.data.admins);
         setWalletAdminCount(response.data.admins.length);
         setOpen(false);
@@ -226,30 +201,21 @@ function Enabled(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
 
-    console.log("data", data);
-
     axios.patch("/super-admin/disable?userType=v1", data).then(
       (response) => {
-        console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
         getEnabledSSOAdmins(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -262,30 +228,21 @@ function Enabled(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
-    //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
 
-    console.log("data", data);
-
     axios.patch("/super-admin/disable?userType=v2", data).then(
       (response) => {
-        console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
         getEnabledWalletAdmins(0, rowsPerPage);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -297,12 +254,9 @@ function Enabled(props) {
 
   return (
     <div>
-      {/* Page Header */}
-
-      {/* Page Content */}
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+
           <Table responsive>
             <thead>
               <tr>
@@ -373,18 +327,12 @@ function Enabled(props) {
                     </span>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+
                           onClick={(e) => {
                             handleDisable(e, i._id);
                           }}
@@ -393,7 +341,7 @@ function Enabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    {/* </div> */}
+
                   </td>
                 </tr>
               </tbody>
@@ -429,18 +377,12 @@ function Enabled(props) {
                     <label className="ml-5">Wallet</label>
                   </td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center ml-4">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+
                           onClick={(e) => {
                             handleWalletDisable(e, i._id);
                           }}
@@ -449,7 +391,7 @@ function Enabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    {/* </div> */}
+
                   </td>
                 </tr>
               </tbody>
@@ -457,7 +399,7 @@ function Enabled(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

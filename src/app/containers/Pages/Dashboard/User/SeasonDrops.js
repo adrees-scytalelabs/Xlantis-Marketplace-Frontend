@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
     },
     media: {
         height: 0,
-        paddingTop: '100%', // 16:9
+        paddingTop: '100%',
     },
     badge: {
         '& > *': {
@@ -67,7 +67,6 @@ function SeasonDrops(props) {
             (response) => {
                 console.log("response", response);
                 setTokenList(response.data.Dropdata);
-                // setImageData(response.data.nftsdata);
                 handleCloseBackdrop();
             },
             (error) => {
@@ -81,7 +80,7 @@ function SeasonDrops(props) {
 
     useEffect(() => {
         getSeasonDrops();
-        // getCollections();?
+        
 
         props.setActiveTab({
             dashboard: "",
@@ -99,7 +98,7 @@ function SeasonDrops(props) {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });// eslint-disable-next-line
+        });
     }, []);
 
     return (

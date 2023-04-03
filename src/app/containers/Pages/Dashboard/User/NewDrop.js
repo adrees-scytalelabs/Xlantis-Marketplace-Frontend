@@ -139,7 +139,7 @@ function NewDrop(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleRemoveClick = (index, newCube) => {
     console.log("index", index);
@@ -557,7 +557,7 @@ function NewDrop(props) {
                             <CardActionArea>
                               <CardMedia
                                 className={classes.media}
-                                // image={img}
+                                
                                 title=""
                               >
                                 <CubeComponent1

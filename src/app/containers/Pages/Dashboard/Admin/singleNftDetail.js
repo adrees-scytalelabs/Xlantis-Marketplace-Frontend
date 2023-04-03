@@ -4,21 +4,20 @@ import {
   AccordionSummary,
   Card,
   CardContent,
-  CardHeader,
   CardMedia,
+  createMuiTheme,
   makeStyles,
-  Typography,
+  ThemeProvider,
+  Typography
 } from "@material-ui/core";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import axios from "axios";
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { Col, Row, Table } from "react-bootstrap";
-import { useParams, Link } from "react-router-dom";
 import Cookies from "js-cookie";
-import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
+import React, { useEffect, useState } from "react";
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { Col, Row, Table } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
+import { Link, useParams } from "react-router-dom";
 
 import "react-h5-audio-player/lib/styles.css";
 
@@ -45,9 +44,8 @@ const useStyles = makeStyles((theme) => ({
     height: 300,
   },
   media: {
-    // height: 0,
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -111,14 +109,14 @@ const SingleNftDetail = (props) => {
 
   let getNftDetail = () => {
     const version = Cookies.get("Version");
-    // handleShowBackdrop();
+
     axios.get(`/nft/getSingleNFT/${nftId}`).then(
       (response) => {
-        console.log("Response: ", response);
+     //   console.log("Response: ", response);
         setNftDetail(response.data.data[0]);
         setProperties(response.data.data[0].properties);
         const keys = Object.keys(response.data.data[0].properties);
-        console.log("Keys: ", keys);
+      // console.log("Keys: ", keys);
         setKeys(keys);
       },
       (error) => {
@@ -126,9 +124,9 @@ const SingleNftDetail = (props) => {
         console.log("Error response: ", error.response);
       }
     );
-    // .catch((error) => {
-    //     console.log("Error: ", error.response.data);
-    // })
+
+
+
   };
 
   useEffect(() => {
@@ -150,31 +148,31 @@ const SingleNftDetail = (props) => {
       settings: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">NFT Details</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
-            </Link>
-            <Link to={`/dashboard/myNFTs`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>NFTs</li>
-            </Link>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
+              </Link>
+              <Link to={`/dashboard/myNFTs`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>NFTs</li>
+              </Link>
               <li className="breadcrumb-item active">NFT Details</li>
             </ul>
           </div>
         </div>
       </div>
-      {/* Page Content */}
+
       <ThemeProvider theme={makeTheme}>
         <div className="card-body p-0">
           <div className="row">
@@ -189,7 +187,7 @@ const SingleNftDetail = (props) => {
                             </CardMedia> */}
                 <div>
                   {nftDetail.nftFormat === "glb" ||
-                  nftDetail.nftFormat === "gltf" ? (
+                    nftDetail.nftFormat === "gltf" ? (
                     <div>
                       <div>
                         <GLTFModel
@@ -247,7 +245,7 @@ const SingleNftDetail = (props) => {
                       ></CardMedia>
                       <div>
                         <AudioPlayer
-                          // style={{ width: "300px" }}
+
                           style={{ borderRadius: "1rem" }}
                           autoPlay={false}
                           layout="horizontal"
@@ -255,12 +253,12 @@ const SingleNftDetail = (props) => {
                           onPlay={(e) => console.log("onPlay")}
                           showSkipControls={false}
                           showJumpControls={false}
-                          // header={`Now playing: ${name}`}
+
                           showDownloadProgress
-                          // onClickPrevious={handleClickPrevious}
-                          // onClickNext={handleClickNext}
-                          // onEnded={handleClickNext}
-                          // other props here
+
+
+
+
                         />
                       </div>
                     </div>

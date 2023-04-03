@@ -52,7 +52,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -103,7 +103,7 @@ function CubeNFTs(props) {
       return () => {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   let getCubeNFTs = () => {
@@ -333,7 +333,7 @@ function CubeNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (
@@ -518,7 +518,7 @@ function CubeNFTs(props) {
                   spacing={2}
                   direction="row"
                   justify="flex-start"
-                  // alignItems="flex-start"
+                  
                 >
                   {console.log("tokenList", tokenList)}
 

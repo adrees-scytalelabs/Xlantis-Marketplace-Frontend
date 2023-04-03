@@ -1,39 +1,32 @@
+import { ThemeProvider, createMuiTheme } from "@material-ui/core";
 import { Avatar, CardHeader, Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import Tooltip from "@material-ui/core/Tooltip";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
+import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import r1 from "../../../../assets/img/patients/patient.jpg";
 import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
-import Tooltip from "@material-ui/core/Tooltip";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -94,8 +87,6 @@ function NewDrop(props) {
   const classes = useStyles();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  // const [inputList, setInputList] = useState([]);
-  // const [imageData, setImageData] = useState([]);
   let [saleType, setSaleType] = useState("fixed-price");
   let [name, setName] = useState("");
   let [description, setDescription] = useState("");
@@ -106,10 +97,6 @@ function NewDrop(props) {
 
   let [isUploading, setIsUploading] = useState();
   let [isSaving, setIsSaving] = useState(false);
-  // let [minimumBid, setMinimumBid] = useState();
-  // let [bidDelta, setBidDelta] = useState();
-
-  // eslint-disable-next-line
   let [type, setType] = useState();
   let [types, setTypes] = useState([]);
   const [typesImages, setTypesImages] = useState([]);
@@ -144,31 +131,10 @@ function NewDrop(props) {
 
   const history = useHistory();
 
-  // let getMyCubes = () => {
-  //     axios.get("/token/TokenIdsnotonauction").then(
-  //         (response) => {
-  //             console.log("response", response);
-  //             setInputList(response.data.tokensdata);
-  //             setImageData(response.data.nftsdata);
-  //         },
-  //         (error) => {
-  //             if (process.env.NODE_ENV === "development") {
-  //                 console.log(error);
-  //                 console.log(error.response);
-  //             }
-  //             if (error.response.data !== undefined) {
-  //                 if (error.response.data === "Unauthorized access (invalid token) !!") {
-  //                     Cookies.remove("Authorization");
-  //                     localStorage.removeItem("Address")
-  //                     window.location.reload(false);
-  //                 }
-  //             }
-  //         })
-  // }
+
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -185,29 +151,10 @@ function NewDrop(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-      topUp:"",
-    }); // eslint-disable-next-line
+      topUp: "",
+    });
   }, []);
-  // const handleRemoveClick = (index, newCube) => {
-  //     console.log("index", index);
-  //     console.log("inputList", types);
 
-  //     const list = [...types];
-  //     console.log("list", list);
-  //     list.splice(index, 1);
-  //     setInputList(inputList => [...inputList, newCube])
-  //     setTypes(list);
-  // };
-  // const handleAddClick = (value) => {
-
-  //     setTypes([...types, value]);
-  //     var index = inputList.findIndex(i => i._id === value._id);
-  //     setTypesImages([...typesImages, imageData[index]])
-  //     const list = [...inputList];
-  //     list.splice(index, 1);
-  //     setInputList(list);
-  //     setType("");
-  // };
   let loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -255,10 +202,6 @@ function NewDrop(props) {
       } else {
         let dropID;
         let DropData = {
-          // tokenId: tokensId,
-          // dropId: dropId,
-          // MinimumBid: minimumBid * 10 ** 18,
-          // bidDelta: bidDelta * 10 ** 18,
           bannerURL: bannerImage,
           title: name,
           image: image,
@@ -267,16 +210,6 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        // history.push({
-        //   pathname: `${path}/addNft`,
-        //   state: {
-        //     dropId: dropID,
-        //     saleType: saleType,
-        //     startTime: `2023-02-27T02:55:00.000+00:00`,
-        //     endTime: `2023-04-27T02:55:00.000+00:00`,
-        //     nftType: nftType,
-        //   },
-        // });
         axios.post(`/drop/`, DropData).then(
           (response) => {
             console.log("drop creation response", response);
@@ -284,7 +217,6 @@ function NewDrop(props) {
             dropID = response.data.dropId;
             setIsSaving(false);
             handleCloseBackdrop();
-            // history.push(`${path}/addNft`);
             history.push({
               pathname: `${path}/addNft`,
               state: {
@@ -293,9 +225,6 @@ function NewDrop(props) {
                 nftType: nftType,
               },
             });
-
-            // let variant = "success";
-            // enqueueSnackbar('Drop Created Successfully.', { variant });
           },
           (error) => {
             if (process.env.NODE_ENV === "development") {
@@ -309,8 +238,6 @@ function NewDrop(props) {
             enqueueSnackbar("Unable to Create Drop.", { variant });
           }
         );
-
-        // })
       }
     } else if (nftType === "721") {
       e.preventDefault();
@@ -326,20 +253,6 @@ function NewDrop(props) {
         handleShowNetworkModal();
       } else {
         handleShowBackdrop();
-        // const address = Addresses.AuctionAddress;
-        // const abi = CreateAuctionContract;
-        // let tokensId = [];
-        // handleCloseBackdrop();
-        // for (let i = 0; i < types.length; i++) {
-        //     tokensId.push(types[i]._id);
-        // }
-        // if (tokensId.length === 0) {
-        //     let variant = "error";
-        //     enqueueSnackbar('Please Select Cubes to create drop', { variant });
-        //     setIsSaving(false);
-        //     handleCloseBackdrop();
-        // } else
-
         if (name === "") {
           let variant = "error";
           enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
@@ -361,35 +274,7 @@ function NewDrop(props) {
           handleCloseBackdrop();
         } else {
           let dropID;
-          // let tokenId = [];
-          // for (let i = 0; i < types.length; i++) {
-          //     tokenId.push(types[i].tokenId);
-          // }
-          // console.log("startTimeStamp", Math.round(startTimeStamp));
-          // console.log("endTimeStamp", endTimeStamp);
-          // console.log("minimumBid * 10 ** 18", minimumBid * 10 ** 18);
-          // var myContractInstance = await new web3.eth.Contract(abi, address);
-          // var receipt = await myContractInstance.methods.newAuction(startTimeStamp.toString(), endTimeStamp.toString(), (minimumBid * 10 ** 18).toString(), tokenId).send({ from: accounts[0] }, (err, response) => {
-          //     console.log('get transaction', err, response);
-          //     if (err !== null) {
-          //         console.log("err", err);
-          //         let variant = "error";
-          //         enqueueSnackbar('User Canceled Transaction', { variant });
-          //         handleCloseBackdrop();
-          //         setIsSaving(false);
-          //         return;
-          //     }
-          // })
-          // .on('receipt', (receipt) => {
-          // console.log("receipt", receipt);
-          // console.log("receipt.events.Transfer.returnValues.tokenId", receipt.events.New_Auction.returnValues.dropId);
-          // let dropId = receipt.events.New_Auction.returnValues.dropId;
-
           let DropData = {
-            // tokenId: tokensId,
-            // dropId: dropId,
-            // MinimumBid: minimumBid * 10 ** 18,
-            // bidDelta: bidDelta * 10 ** 18,
             bannerImage: bannerImage,
             title: name,
             image: image,
@@ -404,20 +289,7 @@ function NewDrop(props) {
               setDropId(response.data.dropId);
               dropID = response.data.dropId;
               setIsSaving(false);
-
-              // setStartTime(new Date());
-              // setEndTime(new Date());
-              // setName("");
-              // setMinimumBid();
-              // setDescription("");
-              // setTypes([]);
-              // setTypesImages([])
-              // setType("");
-              // setMinimumBid(0);
-              // setBidDelta(0);
-              // setImage(r1);
               handleCloseBackdrop();
-              // history.push(`${path}/addNft`);
               history.push({
                 pathname: `${path}/addNft`,
                 state: {
@@ -426,9 +298,6 @@ function NewDrop(props) {
                   nftType: nftType,
                 },
               });
-
-              // let variant = "success";
-              // enqueueSnackbar('Drop Created Successfully.', { variant });
             },
             (error) => {
               if (process.env.NODE_ENV === "development") {
@@ -526,42 +395,18 @@ function NewDrop(props) {
   };
 
   let onChangeBannerFile = async (e) => {
-    console.log("In banner change function: ", e.target.files[0]);
+    //console.log("In banner change function: ", e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       setIsUploadingBanner(true);
       const reader = new window.FileReader();
       let imageNFT = e.target.files[0];
       setImageType(e.target.files[0].type.split("/")[1]);
-      console.log("e.target.files[0]", e.target.files[0]);
-      // console.log("Image type: ", imageType);
       reader.readAsArrayBuffer(e.target.files[0]);
-      // reader.onloadend = () => {
-      //   console.log("reader.result", reader.result);
-      //   // setBuffer(Buffer(reader.result));
-      //   ipfs.add(Buffer(reader.result), async (err, result) => {
-      //     if (err) {
-      //       console.log("err", err);
-      //       setIsUploadingBanner(false);
-      //       let variant = "error";
-      //       enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-      //       return;
-      //     }
-      //     console.log("HASH", result[0].hash);
-
-      //     setIpfsHash(result[0].hash);
-      //     setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-      //     let variant = "success";
-      //     enqueueSnackbar("Image Uploaded to IPFS", { variant });
-      //     //
-      //   });
-      // };
-      // setIsUploadingIPFS(true);
       let fileData = new FormData();
       fileData.append("image", imageNFT);
       axios.post(`/upload/image`, fileData).then(
         (response) => {
-          console.log("response", response);
           setBannerImage(response.data.url);
           setIsUploadingBanner(false);
           let variant = "success";
@@ -581,40 +426,15 @@ function NewDrop(props) {
   };
 
   let onChangeFile = (e) => {
-    console.log("In change file function");
     setIsUploadingIPFS(true);
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
     setImageType(e.target.files[0].type.split("/")[1]);
-    console.log("e.target.files[0]", e.target.files[0]);
-    // console.log("Image type: ", imageType);
     reader.readAsArrayBuffer(e.target.files[0]);
-    // reader.onloadend = () => {
-    //   console.log("reader.result", reader.result);
-    //   // setBuffer(Buffer(reader.result));
-    //   ipfs.add(Buffer(reader.result), async (err, result) => {
-    //     if (err) {
-    //       console.log("err", err);
-    //       setIsUploadingIPFS(false);
-    //       let variant = "error";
-    //       enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-    //       return;
-    //     }
-    //     console.log("HASH", result[0].hash);
-
-    //     setIpfsHash(result[0].hash);
-    //     setIpfsURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-    //     let variant = "success";
-    //     enqueueSnackbar("Image Uploaded to IPFS", { variant });
-    //     //
-    //   });
-    // };
-    // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
     axios.post(`/upload/image`, fileData).then(
       (response) => {
-        console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
@@ -631,33 +451,10 @@ function NewDrop(props) {
       }
     );
 
-    // setIsUploading(true);
-    // let imageNFT = e.target.files[0]
-    // let fileData = new FormData();
-    // fileData.append("image", imageNFT);
-    // axios.post("upload/uploadtos3", fileData).then(
-    //     (response) => {
-    //         console.log("response", response);
-    //         setImage(response.data.url);
-    //         setIsUploading(false);
-    //         let variant = "success";
-    //         enqueueSnackbar('Image Uploaded to S3 Successfully', { variant });
-    //     },
-    //     (error) => {
-    //         if (process.env.NODE_ENV === "development") {
-    //             console.log(error);
-    //             console.log(error.response);
-    //         }
-    //         setIsUploading(false);
-    //         let variant = "error";
-    //         enqueueSnackbar('Unable to Upload Image to S3 .', { variant });
-
-    //     }
-    // );
   };
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -678,37 +475,7 @@ function NewDrop(props) {
           <div className="col-md-12 col-lg-6">
             <form onSubmit={handleSubmitEvent}>
               <div className="form-group">
-                {/* <label>Select Cubes</label>
-                                <div className="filter-widget">
-                                    <Autocomplete
-                                        id="combo-dox-demo"
-                                        required
-                                        options={inputList}
-                                        // value={type}
-                                        // disabled={isDisabledImporter}
-                                        getOptionLabel={(option) =>
-                                            option.title + ',' + option.SalePrice / 10 ** 18
-                                        }
-                                        onChange={(event, value) => {
-                                            if (value == null)
-                                                setType("");
-                                            else {
-                                                console.log(value, event);
-                                                setType(value.name)
-                                                handleAddClick(value);
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <TextField
-                                                {...params}
-                                                label="Cubes"
-                                                variant="outlined"
-                                            />
-                                        )}
-                                    />
-                                </div> */}
                 <div className="form-group">
-                  {/* BANNER IMAGE */}
                   <div className="form-group">
                     <label>Select Banner Image</label>
                     <div className="filter-widget">
@@ -750,9 +517,7 @@ function NewDrop(props) {
                       </div>
                     </div>
                   </div>
-                  {/* TITLE IMAGE */}
                   <div className="form-group">
-                    {/* Upload Image */}
                     <label>Select Title Image</label>
                     <div className="filter-widget">
                       <div className="form-group">
@@ -793,8 +558,6 @@ function NewDrop(props) {
                       </div>
                     </div>
                   </div>
-
-                  {/* Feilds */}
                   <div className="form-group newNftFields">
                     <label>Drop Name</label>
                     <div className="form-group newNftWrapper">
@@ -848,9 +611,6 @@ function NewDrop(props) {
                           <FormControlLabel
                             style={{ color: "white" }}
                             value="auction"
-                            // onChange={() => {
-                            //   setSaleType("auction");
-                            // }}
                             onChange={() => {
                               setWorkProgressModalShow(true);
                             }}
@@ -893,8 +653,6 @@ function NewDrop(props) {
                           />
                         </Tooltip>
                       </RadioGroup>
-                      {/* </FormControl>
-                                <FormControl component="fieldset"> */}
                       <label
                         component="legend"
                         style={{ fontWeight: "bold", fontFamily: "orbitron" }}
@@ -914,10 +672,6 @@ function NewDrop(props) {
                           <FormControlLabel
                             style={{ color: "black" }}
                             value="ERC721"
-                            // onChange={() => {
-                            //   setNftType("721");
-                            //   // checked={saleType === 'auction'}
-                            // }}
                             onChange={() => {
                               setWorkProgressModalShow(true);
                             }}
@@ -968,7 +722,6 @@ function NewDrop(props) {
           <div className="col-md-12 col-lg-6">
             {types.length > 0 ? (
               <Scrollbars style={{ height: 900 }}>
-                {/* <!-- Change Password Form --> */}
                 <div className="form-group">
                   <div>
                     <Grid
@@ -976,7 +729,6 @@ function NewDrop(props) {
                       spacing={3}
                       direction="row"
                       justify="flex-start"
-                      // alignItems="flex-start"
                     >
                       {types.map((i, index) => (
                         <Grid item xs={12} sm={6} md={6} key={index}>
@@ -985,11 +737,9 @@ function NewDrop(props) {
                             variant="outlined"
                             className={classes.root}
                           >
-                            {/* style={{ height: "100%" }} variant="outlined" */}
                             <CardActionArea>
                               <CardMedia
                                 className={classes.media}
-                                // image={img}
                                 title=""
                               >
                                 <CubeComponent1
@@ -1049,7 +799,6 @@ function NewDrop(props) {
                               <Button
                                 onClick={(e) => {
                                   e.preventDefault();
-                                  // handleRemoveClick(index, i);
                                 }}
                                 className="btn btn-sm bg-danger-light btn-block"
                               >
@@ -1059,9 +808,6 @@ function NewDrop(props) {
                           </Card>
                         </Grid>
                       ))}
-                      {/* {types.map((data, index) =>
-                                                <NewNFTCards key={index} index={index} data={data} handleRemoveClick={handleRemoveClick}></NewNFTCards>
-                                            )} */}
                     </Grid>
                   </div>
                 </div>

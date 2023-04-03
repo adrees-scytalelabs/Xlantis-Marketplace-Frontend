@@ -172,7 +172,7 @@ function UserDashboard(props) {
           {/* <!-- /User Menu --> */}
         {/* </ul> */}
         {/* <!-- /Header Right Menu --> */}
-      {/* </div> */}
+      
       {/* <!-- /Header --> */}
 
       <UserSidebar

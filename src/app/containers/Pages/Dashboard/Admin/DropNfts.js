@@ -1,22 +1,21 @@
 import { CardContent, CardMedia, Grid } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
-import {
-  makeStyles,
-  createMuiTheme,
-  ThemeProvider,
-} from "@material-ui/core/styles";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
+import {
+  ThemeProvider,
+  createMuiTheme,
+  makeStyles,
+} from "@material-ui/core/styles";
+import Pause from "@material-ui/icons/Pause";
+import PlayArrow from "@material-ui/icons/PlayArrow";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import Web3 from "web3";
 import CornerRibbon from "react-corner-ribbon";
-import PlayArrow from "@material-ui/icons/PlayArrow";
-import Pause from "@material-ui/icons/Pause";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { truncate } from "../../../../assets/js/utils";
 
 const useStyles = makeStyles((theme) => ({
@@ -25,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
     width: "100%",
     backgroundColor: "#000 !important",
     border: "1px solid #fff",
-    // backgroundColor: theme.palette.background.paper,
   },
   badge: {
     "& > *": {
@@ -42,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -59,7 +57,6 @@ const useStyles = makeStyles((theme) => ({
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
-    // borderRadius: "12px",
     boxShadow: "none",
   },
   cardTitle: {
@@ -73,7 +70,6 @@ const cardStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "1rem",
-    // marginTop: "0.15rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -82,13 +78,11 @@ const cardStyles = makeStyles((theme) => ({
   },
   textAlert: {
     justifyContent: "center",
-    // borderRadius: "12px",
     fontSize: "1rem",
   },
   exploreBtn: {
     padding: "0.75rem 2rem",
     border: "none",
-    // borderRadius: "12px",
     fontWeight: "bold",
   },
 }));
@@ -143,7 +137,7 @@ const customTheme = createMuiTheme({
   },
 });
 
-// COMPONENT FUNCTION
+
 function MyNFTs(props) {
   let location = useLocation();
   const classes = useStyles();
@@ -155,8 +149,6 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
-  const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
   let [openDialog, setOpenDialog] = useState(false);
@@ -174,96 +166,6 @@ function MyNFTs(props) {
   const myRef = useRef();
   let [windowSize, setWindowSize] = useState(window.innerWidth);
 
-  // let loadWeb3 = async () => {
-  //     if (window.ethereum) {
-  //         window.web3 = new Web3(window.ethereum)
-  //         await window.ethereum.enable()
-  //     }
-  //     else if (window.web3) {
-  //         window.web3 = new Web3(window.web3.currentProvider)
-  //     }
-  //     else {
-  //         window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
-  //     }
-  // }
-
-  // const getHash = (id) => {
-
-  //     const hex = Web3.utils.toHex(id);
-  //     console.log('conversion to hex: ', hex);
-  //     return hex;
-
-  // }
-
-  // let handleCloseNFTDetailModal = () => {
-  //     // setTokenList([...tempTokenList]);
-  //     // setTempTokenList([]);
-  //     console.log("Close button called from modal.");
-  //     setOpenDialog(false);
-  // }
-
-  // let handleBuy= async() => {
-  //     // setNftDetail(nftObject);
-  //     console.log("Nft detail: ", nftDetail);
-  //     setNftDetail(nftDetail);
-  //     // console.log("Nft detail id: ", nftDetail.collectionId._id);
-  //     let dropIdHex = getHash(nftDetail.dropId);
-  //     console.log(dropIdHex);
-  //     setOpenDialog(false);
-  //     setIsSaving(true);
-  //     await loadWeb3();
-  //     const web3 = window.web3
-  //     const accounts = await web3.eth.getAccounts();
-  //     const network = await web3.eth.net.getNetworkType()
-  //     if (network !== 'goerli') {
-  //         setNetwork(network);
-  //         setIsSaving(false);
-  //         handleShowNetworkModal();
-  //     }
-  //     else {
-  //         handleShowBackdrop();
-  //         const addressDropFactory = Addresses.FactoryDrop;
-  //         const abiDropFactory = DropFactory;
-
-  //         var myContractInstance = await new web3.eth.Contract(abiDropFactory, addressDropFactory);
-  //         console.log("myContractInstance", myContractInstance)
-
-  //         await myContractInstance.methods.executeOrder(dropIdHex, nftDetail.collectionId.nftContractAddress, nftDetail.nftId, nftDetail.tokenSupply, nftDetail.currentMarketplaceId.price).send({from : accounts[0]}, (err, response) => {
-  //             console.log('get transaction', err, response);
-  //             let data = {
-  //                 dropId : nftDetail.dropId,
-  //                 nftId : nftDetail._id,
-  //                 txHash : response
-
-  //             }
-
-  //             console.log("data",data);
-  //             axios.put(`/marketplace/buy`, data).then(
-  //                 (response) => {
-  //                     console.log("Transaction Hash sending on backend response: ", response);
-  //                 },
-  //                 (error) => {
-  //                     console.log("Transaction hash on backend error: ", error.response);
-  //                 }
-  //             )
-
-  //             if (err !== null) {
-  //                 console.log("err", err);
-  //                 let variant = "error";
-  //                 enqueueSnackbar('User Canceled Transaction', { variant });
-  //                 handleCloseBackdrop();
-  //                 setIsSaving(false);
-
-  //             }
-
-  //         })
-  //         .on('receipt', (receipt) => {
-  //             console.log("receipt", receipt);
-
-  //         })
-  //     }
-
-  // }
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -273,11 +175,6 @@ function MyNFTs(props) {
   let handlePlay = async (e, token) => {
     e.preventDefault();
     let audioPlay = new Audio(token.nftURI);
-    // console.log("src", src);
-    // console.log("audi play", audioPlay);
-
-    console.log("playing?", token.isPlaying);
-    console.log("audio", audio);
     let updateState = tokenList.map((obj) => {
       if (obj._id !== token._id) {
         return { ...obj, isPlaying: false };
@@ -288,7 +185,6 @@ function MyNFTs(props) {
       return obj;
     });
     setTokenList(updateState);
-    // setIsPlaying({myArray[i] : true});
     if (audio !== undefined) {
       audio.pause();
     }
@@ -321,33 +217,22 @@ function MyNFTs(props) {
 
   let getNFTs = (start, end) => {
     handleShowBackdrop();
-    console.log("nftids", location.state.nftId);
-    console.log("dropId", location.state.dropId);
-
-    console.log("len", location.state.nftId.length);
 
     let data = {
       nftIds: location.state.nftId,
     };
     const version = Cookies.get("Version");
-    console.log("version", version);
 
     if (nftIdLen != 0) {
       axios
         .get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data)
         .then(
           (response) => {
-            console.log("response", response.data.data);
-
             let nfts = response.data.data;
             let newState = nfts.map((obj) => {
               return { ...obj, isPlaying: false };
             });
-            console.log("NFTS", nfts);
-            console.log("Updated", newState);
             setTokenList(newState);
-            // setTokenList(tokenList.map())
-            // setTokenList(...tokenList, isPlaying : false);
             setTotalNfts(response.data.data.length);
 
             handleCloseBackdrop();
@@ -382,8 +267,6 @@ function MyNFTs(props) {
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
-    console.log("width", window.innerWidth);
-    // getCollections();?
 
     props.setActiveTab({
       dashboard: "",
@@ -402,7 +285,7 @@ function MyNFTs(props) {
       newCollection: "",
       newRandomDrop: "",
       marketPlace: "active",
-    }); // eslint-disable-next-line
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -420,7 +303,7 @@ function MyNFTs(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -441,7 +324,7 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+
       <div className="card-body page-height px-0">
         {/* Banner and Thumb */}
         <div className="row no-gutters">
@@ -551,11 +434,6 @@ function MyNFTs(props) {
                               border: "1px solid #fff",
                             }}
                           >
-                            {/* <CardActionArea onClick={() => {
-                                                         console.log("nftDetailObject: ", i);
-                                                         handleOpenNFTDetailModal(i);
-                                                         console.log("Open Dialog Value: ", openDialog); 
-                                                 }}> */}
 
                             <div style={{ position: "relative" }}>
                               <CardMedia
@@ -569,7 +447,6 @@ function MyNFTs(props) {
                               />
 
                               {i.nftFormat === "mp3" ? (
-                                // style={{ position: "absolute", top: "80%", left: "75%"  }}
                                 <div
                                   style={{
                                     position: "absolute",
@@ -617,12 +494,6 @@ function MyNFTs(props) {
                             </div>
 
                             <CardContent>
-                              {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                         <strong>Token Rarity: </strong>{i.type}
-                                                     </Typography>
-                                                     <Typography variant="body2" color="textSecondary" component="p">
-                                                         <strong>Token Supply: </strong>{i.tokenSupply}
-                                                     </Typography> */}
 
                               <div
                                 className="row no-gutters justify-content-between"
@@ -658,28 +529,7 @@ function MyNFTs(props) {
                                   </p>
                                 </div>
                               </div>
-                              {/* <Typography
-                                variant="body2"
-                                // color="textSecondary"
-                                component="p"
-                                style={{color: "#fff"}}
-                              >
-                                <strong>Price : </strong>
-                                {Web3.utils.fromWei(
-                                  i.currentMarketplaceId.price
-                                )}{" "}
-                                USD
-                              </Typography> */}
-                              {/* <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Artwork Description: </strong>
-                                {i.description}
-                              </Typography> */}
                             </CardContent>
-                            {/* </CardActionArea> */}
                           </Card>
                         </Link>
                       ) : (
@@ -701,14 +551,8 @@ function MyNFTs(props) {
                               borderRadius: 0,
                               border: "1px solid #fff",
                             }}
-                            // variant="outlined"
                             className={classes.cardHeight}
                           >
-                            {/* <CardActionArea onClick={() => {
-                                                        console.log("nftDetailObject: ", i);
-                                                        handleOpenNFTDetailModal(i);
-                                                        console.log("Open Dialog Value: ", openDialog); 
-                                                }}> */}
 
                             <div style={{ position: "relative" }}>
                               <CardMedia
@@ -722,7 +566,6 @@ function MyNFTs(props) {
                               />
 
                               {i.nftFormat === "mp3" ? (
-                                // style={{ position: "absolute", top: "80%", left: "75%"  }}
                                 <div
                                   style={{
                                     position: "absolute",
@@ -769,12 +612,6 @@ function MyNFTs(props) {
                               ) : null}
                             </div>
                             <CardContent>
-                              {/* <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Rarity: </strong>{i.type}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Token Supply: </strong>{i.tokenSupply}
-                                                    </Typography> */}
 
                               <div
                                 className="row no-gutters justify-content-between"
@@ -811,7 +648,6 @@ function MyNFTs(props) {
                                 </div>
                               </div>
                             </CardContent>
-                            {/* </CardActionArea> */}
                           </Card>
                         </Link>
                       )}
@@ -833,22 +669,6 @@ function MyNFTs(props) {
           </ThemeProvider>
         </div>
       </div>
-      {/* <Backdrop className={classes.backdrop} open={open} >
-                <CircularProgress color="inherit" />
-            </Backdrop> */}
-      {/* <NetworkErrorModal
-                show={showNetworkModal}
-                handleClose={handleCloseNetworkModal}
-                network={network}
-            >
-            </NetworkErrorModal>
-            <NFTBuyModal 
-                show={openDialog} 
-                handleClose={handleCloseNFTDetailModal}
-                nftDetail={nftDetail}
-                handleBuy={handleBuy}
-            >
-            </NFTBuyModal> */}
     </div>
   );
 }

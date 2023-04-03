@@ -120,7 +120,7 @@ function AccountsSSO(props) {
   let [isSaving, setIsSaving] = useState(false);
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0); 
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -140,7 +140,6 @@ function AccountsSSO(props) {
 
   useEffect(() => {
     getUnverifiedAdmins(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -151,7 +150,7 @@ function AccountsSSO(props) {
       properties: "",
       template: "",
       saved: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -172,14 +171,12 @@ function AccountsSSO(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
-        console.log("response.data", response.data);
+       // console.log("response.data", response.data);
         setAdmins(response.data.Admins);
         setAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -203,18 +200,16 @@ function AccountsSSO(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
 
-    console.log("data", data);
+    //console.log("data", data);
 
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
-        console.log("admin verify response: ", response);
+       // console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
@@ -241,7 +236,7 @@ function AccountsSSO(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Content */}
+      
       <div>
         <div className="row no-gutters">
           <Table responsive>
@@ -292,7 +287,7 @@ function AccountsSSO(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

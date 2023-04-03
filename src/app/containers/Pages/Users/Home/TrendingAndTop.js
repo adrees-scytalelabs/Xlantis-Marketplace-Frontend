@@ -1,35 +1,20 @@
-// REACT
-import React, { useEffect, useState, useRef } from "react";
-// MUI
-import PropTypes from "prop-types";
+import { Card } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
-  useTheme,
+  useTheme
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import { Card } from "@material-ui/core";
-import ArrowLeftIcon from "@material-ui/icons/ArrowLeft";
-import ArrowRightIcon from "@material-ui/icons/ArrowRight";
-// COMPONENTS
-import FixedPriceDrops from "./FixedPriceDrops";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-// import SwipeableViews from "react-swipeable-views";
-import TrendingCollectionsHome from "../../../../components/tables/TrendingCollectionsHome";
-import { Spinner } from "react-bootstrap";
-// import Carousel from "react-multi-carousel";
-// import "react-multi-carousel/lib/styles.css";
-import OnSaleCard from "../../../../components/Cards/OnSaleCard";
+import PropTypes from "prop-types";
+import React, { useEffect, useRef, useState } from "react";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
-import { nftImage, auctionImg } from "../../../../assets/js/images";
-import Carousel from "react-bootstrap/Carousel";
+import OnSaleCard from "../../../../components/Cards/OnSaleCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
-// CONTENT
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -64,10 +49,6 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
-  },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1rem",
@@ -118,7 +99,6 @@ const responsive = {
   },
 };
 
-// COMPONENT FUNCTIONS
 const TrendingAndTop = (props) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -128,7 +108,6 @@ const TrendingAndTop = (props) => {
   const [cntWidth, setCntWidth] = useState();
   const ref = useRef(null);
 
-  //   Handlers
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -159,11 +138,11 @@ const TrendingAndTop = (props) => {
   if (props.fixedPriceDrop) {
     for (let i = 0; i < props.fixedPriceDrop.length; i++) {
       if (props.fixedPriceDrop[i].status === "active") {
-        console.log(`index ${props.fixedPriceDrop[i].status}`);
+       // console.log(`index ${props.fixedPriceDrop[i].status}`);
         activeFixedDrop = [...activeFixedDrop, props.fixedPriceDrop[i]];
       } else if (props.fixedPriceDrop[i].status === "pending") {
         pendingFixedDrop = [...pendingFixedDrop, props.fixedPriceDrop[i]];
-      } else if(props.fixedPriceDrop[i].status === "closed") {
+      } else if (props.fixedPriceDrop[i].status === "closed") {
         closedFixedDrop = [...closedFixedDrop, props.fixedPriceDrop[i]];
       }
     }
@@ -179,7 +158,7 @@ const TrendingAndTop = (props) => {
         activeAuctionDrop = [...activeAuctionDrop, props.bidableDrop[i]];
       } else if (props.bidableDrop[i].status === "pending") {
         pendingAuctionDrop = [...pendingAuctionDrop, props.bidableDrop[i]];
-      } else if(props.bidableDrop[i].status === "closed") {
+      } else if (props.bidableDrop[i].status === "closed") {
         closedAuctionDrop = [...closedAuctionDrop, props.bidableDrop[i]];
       }
     }
@@ -194,7 +173,7 @@ const TrendingAndTop = (props) => {
     getWindowWidth();
 
     const container = ref.current;
-    console.log("container: ", container);
+    //console.log("container: ", container);
     setCntWidth(container);
 
     return () => {
@@ -207,7 +186,7 @@ const TrendingAndTop = (props) => {
   return (
     <div className="w-100">
       <ThemeProvider theme={customTheme}>
-        <div className={classes.root}>
+        <div>
           <div className="row no-gutters align-items-center justify-content-center tabsBorder">
             <div className="col-12">
               <Tabs
@@ -246,26 +225,15 @@ const TrendingAndTop = (props) => {
                 />
               </Tabs>
             </div>
-            {/* <div className="col-6 text-center">
-              <h4 className="m-0 text-info">
-                Space for adding filters and other search tools
-              </h4>
-            </div> */}
           </div>
-          {/* <SwipeableViews
-        axis={theme.direction === "rtl" ? "x-reverse" : "x"}
-        index={value}
-        onChangeIndex={handleChangeIndex}
-      > */}
+
           <TabPanel
             value={value}
             index={0}
             dir={theme.direction}
-            // style={{ paddingLeft: "0px", paddingRight: "0px" }}
           >
             <div className="row no-gutters">
               <div className="col-12">
-                {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
                     <div className="row no-gutters">
@@ -286,7 +254,6 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff" }}
                       >
@@ -309,38 +276,6 @@ const TrendingAndTop = (props) => {
                           </div>
                         ))}
                       </div>
-                      {/* <div className="d-xl-none">
-                        <div className="paddles">
-                          {isActive & (activeFixedDrop.length === 4) ? (
-                            <button
-                              className="left-paddle paddle"
-                              onClick={handleClick}
-                            >
-                              <ArrowLeftIcon style={{ color: "white" }} />
-                            </button>
-                          ) : (
-                            <button className="left-paddle paddle paddle-disabled">
-                              <ArrowLeftIcon style={{ color: "#9797977d" }} />
-                            </button>
-                          )}
-                          {isActive ? (
-                            <button
-                              className="right-paddle paddle paddle-disabled"
-                              disabled
-                              style={{ cursor: "pointer" }}
-                            >
-                              <ArrowRightIcon style={{ color: "#9797977d" }} />
-                            </button>
-                          ) : (
-                            <button
-                              className="right-paddle paddle"
-                              onClick={handleClick}
-                            >
-                              <ArrowRightIcon style={{ color: "white" }} />
-                            </button>
-                          )}
-                        </div>
-                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (
@@ -363,11 +298,11 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
-                        <strong>No Drops On Auction</strong>
+                        {/* <strong>No Drops On Auction</strong> */}
+                        <strong>This feature is coming soon</strong>
                       </Typography>
                     </Card>
                   ) : (
@@ -397,7 +332,6 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      // color="textSecondary"
                       component="p"
                       style={{ color: "#fff", backgroundColor: "black" }}
                     >
@@ -406,13 +340,11 @@ const TrendingAndTop = (props) => {
                   </Card>
                 )}
               </div>
-              {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
           <TabPanel value={value} index={1} dir={theme.direction}>
             <div className="row no-gutters w-100">
               <div className="col-12">
-                {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
                     <div className="row no-gutters">
@@ -433,7 +365,6 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
@@ -451,15 +382,6 @@ const TrendingAndTop = (props) => {
                             <OnSaleCard i={i} />
                           </div>
                         ))}
-
-                        {/* {props.fixedPriceDrop.map((i, index) => (
-                          <div
-                            className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
-                            key={index}
-                          >
-                            <OnSaleCard i={i} />
-                          </div>
-                        ))} */}
                       </div>
                     </div>
                   )
@@ -483,7 +405,6 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
@@ -517,7 +438,6 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      // color="textSecondary"
                       component="p"
                       style={{ color: "#fff", backgroundColor: "black" }}
                     >
@@ -526,13 +446,11 @@ const TrendingAndTop = (props) => {
                   </Card>
                 )}
               </div>
-              {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
           <TabPanel value={value} index={2} dir={theme.direction}>
             <div className="row no-gutters">
               <div className="col-12">
-                {/* <TrendingCollectionsHome /> */}
                 {props.type === "fixedPriceDrops" ? (
                   props.open ? (
                     <div className="row no-gutters">
@@ -553,7 +471,6 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
@@ -572,14 +489,6 @@ const TrendingAndTop = (props) => {
                           </div>
                         ))}
                       </div>
-                      {/* <div class="paddles">
-                        <button class="left-paddle paddle hidden">
-                          <ArrowLeftIcon />
-                        </button>
-                        <button class="right-paddle paddle">
-                          <ArrowRightIcon />
-                        </button>
-                      </div> */}
                     </div>
                   )
                 ) : props.type === "bidableDrops" ? (
@@ -602,7 +511,6 @@ const TrendingAndTop = (props) => {
                       <Typography
                         variant="body2"
                         className="text-center"
-                        // color="textSecondary"
                         component="p"
                         style={{ color: "#fff", backgroundColor: "black" }}
                       >
@@ -636,7 +544,6 @@ const TrendingAndTop = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      // color="textSecondary"
                       component="p"
                       style={{ color: "#fff", backgroundColor: "black" }}
                     >
@@ -645,11 +552,8 @@ const TrendingAndTop = (props) => {
                   </Card>
                 )}
               </div>
-              {/* <div className="col-6">item 1.2</div>  */}
             </div>
           </TabPanel>
-
-          {/* </SwipeableViews> */}
         </div>
       </ThemeProvider>
     </div>

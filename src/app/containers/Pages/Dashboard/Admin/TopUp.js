@@ -91,7 +91,7 @@ function TopUp(props) {
       changePassword: "",
       newRandomDrop: "",
       topUp: "active",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleTopUpAmount = (e) => {
     e.preventDefault();
@@ -100,10 +100,7 @@ function TopUp(props) {
     };
     axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
-        console.log("response of top up amount", response);
         window.location.replace(response.data.sessionUrl);
-        // let variant = "success";
-        // enqueueSnackbar("Balance Updated", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -112,15 +109,13 @@ function TopUp(props) {
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
-        // let variant = "error";
-        // enqueueSnackbar("Something went wrong", { variant });
       }
     );
   };
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   badge: {
     "& > *": {
@@ -99,8 +99,6 @@ function MySeasons(props) {
   };
   useEffect(() => {
     getMySeasons(0, rowsPerPage);
-    // getCollections();?
-
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -117,7 +115,7 @@ function MySeasons(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (
@@ -165,7 +163,6 @@ function MySeasons(props) {
               spacing={2}
               direction="row"
               justify="flex-start"
-              // alignItems="flex-start"
             >
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>

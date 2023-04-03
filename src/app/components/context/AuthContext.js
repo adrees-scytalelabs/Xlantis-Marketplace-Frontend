@@ -8,8 +8,6 @@ export const AuthContextProvider = ({ children }) => {
 
   useEffect(() => {}, []);
 
-  // if (user) console.log("Testing new type user: ", user);
-
   return <AuthContext.Provider value={{}}>{children}</AuthContext.Provider>;
 };
 

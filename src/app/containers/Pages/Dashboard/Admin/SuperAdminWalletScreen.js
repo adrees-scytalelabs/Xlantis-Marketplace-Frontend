@@ -1,5 +1,5 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
+
+import axios from "axios"; 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -80,7 +80,7 @@ function SuperAdminWalletScreen(props) {
 
       .get(`/super-admin/admins/counts?userType=v2`)
       .then((response) => {
-        console.log(response);
+       // console.log(response);
         setTotalAdmins(response.data.counts.totalAdmins);
         setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
         setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
@@ -108,10 +108,10 @@ function SuperAdminWalletScreen(props) {
       saved:"",
     });
     getCounts();
-    // eslint-disable-next-line
+    
   }, []);
 
-  console.log("props in super admin dashboard: ", props);
+ // console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">

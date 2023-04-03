@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
     width: "100%",
-    // backgroundColor: theme.palette.background.paper,
+    
   },
   badge: {
     "& > *": {
@@ -37,9 +37,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    // height: 0,
     width: "100%",
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -65,7 +64,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "0.875rem",
-    // marginTop: "0.15rem",
   },
   cardMediaImg: {
     width: "100%",
@@ -106,13 +104,13 @@ const defaultStyles = {
   fontWeight: "bold",
 };
 
-// COMPONENT FUNCTION
+
 function FixedDropNFTCard(props) {
-  console.log("props nftCrad", props);
+  //console.log("props nftCrad", props);
   const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
-  console.log("NFT id for fixed drop: ", singleNFTid);
+  //console.log("NFT id for fixed drop: ", singleNFTid);
 
   // Styling
   const selectedRarity = {

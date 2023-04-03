@@ -29,7 +29,7 @@ function MyNFTs(props) {
     )}`;
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-        console.log("response", response);
+        //console.log("response", response);
         setTokenList(response.data.NFTdata);
         setTotalNfts(response.data.Nftcount);
 
@@ -74,13 +74,13 @@ function MyNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+    //console.log("Start", newPage * rowsPerPage);
+    //console.log("End", newPage * rowsPerPage + rowsPerPage);
     getMyNFTs(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -90,11 +90,11 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  console.log("token list: ", tokenList);
+  //onsole.log("token list: ", tokenList);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -108,7 +108,7 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         {/* <form> */}
         <div className="form-group">
@@ -127,7 +127,7 @@ function MyNFTs(props) {
               <Typography
                 variant="body2"
                 className="text-center"
-                // color="textSecondary"
+
                 component="p"
                 style={{ color: "#fff" }}
               >

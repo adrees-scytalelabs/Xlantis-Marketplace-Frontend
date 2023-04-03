@@ -12,9 +12,9 @@ import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -24,10 +24,10 @@ import { Spinner } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateNFTContract from "../../../../components/blockchain/Abis/CreateNFTContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import CreateNFTContract from "../../../../components/blockchain/Abis/CreateNFTContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -204,7 +204,7 @@ function NewNFT(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    });
   }, []);
   let loadWeb3 = async () => {
     if (window.ethereum) {
@@ -292,25 +292,8 @@ function NewNFT(props) {
                 setImage(r1);
                 setName("");
                 setDescription("");
-                // setRarity("");
-                // setTokenSupply(1);
-                // setImageArtist("");
-                // setAboutTheArt("");
-                // setWebsite("");
-                // setArtistImage(r1);
-                // setProducer("");
-                // setInspirationForThePiece("");
-                // setProducerImage(r1);
-                // setExecutiveProducer("");
-                // setExecutiveInspirationForThePiece("");
-                // setExecutiveProducerImage(r1);
-                // setFan("");
-                // setFanInspirationForThePiece("");
-                // setFanImage(r1);
                 setOther("");
-                // setCollection("");
                 setSupplyType("Single");
-                // setCollectionId("");
                 handleCloseBackdrop();
                 setIsSaving(false);
               },
@@ -336,8 +319,6 @@ function NewNFT(props) {
     list.splice(index, 1);
     setTokenList(list);
   };
-
-  // handle click event of the Add button
   const handleAddClick = () => {
     if (image === r1) {
       let variant = "error";
@@ -453,25 +434,9 @@ function NewNFT(props) {
       setImage(r1);
       setName("");
       setDescription("");
-      // setRarity("");
       setTokenSupply(1);
-      // setImageArtist("");
-      // setAboutTheArt("");
-      // setWebsite("");
-      // setArtistImage(r1);
-      // setProducer("");
-      // setInspirationForThePiece("");
-      // setProducerImage(r1);
-      // setExecutiveProducer("");
-      // setExecutiveInspirationForThePiece("");
-      // setExecutiveProducerImage(r1);
-      // setFan("");
-      // setFanInspirationForThePiece("");
-      // setFanImage(r1);
       setOther("");
-      // setCollection("");
       setSupplyType("Single");
-      // setCollectionId("");
     }
   };
 
@@ -483,7 +448,7 @@ function NewNFT(props) {
       let imageNFT = e.target.files[0];
       reader.readAsArrayBuffer(e.target.files[0]);
       reader.onloadend = () => {
-        // setBuffer(Buffer(reader.result));
+        
         ipfs.add(Buffer(reader.result), async (err, result) => {
           if (err) {
             console.log(err);
@@ -620,20 +585,12 @@ function NewNFT(props) {
                     <Autocomplete
                       id="combo-dox-demo"
                       required
-                      // defaultValue={rarity}
                       options={rarities}
                       getOptionLabel={(option) => option}
                       onChange={(event, value) => {
-                        // if (value == null) setRarity("");
-                        // else {
                         console.log(value);
                         setRarity(value);
-                        // }
                       }}
-                      // inputValue={rarity}
-                      // onInputChange={(event, newInputValue) => {
-                      //     setRarity(newInputValue);
-                      // }}
                       renderInput={(params) => (
                         <TextField
                           {...params}
@@ -719,25 +676,13 @@ function NewNFT(props) {
                         options={imageArtistTypes}
                         getOptionLabel={(option) => option.Name}
                         onChange={(event, value) => {
-                          // if (value == null) {
-                          //     setImageArtist("");
-                          //     setWebsite("");
-                          //     setAboutTheArt("");
-                          //     setArtistImage("");
-                          // }
-                          // else {
                           console.log(value);
                           setImageArtistId(value.userId);
                           setImageArtist(value.Name);
                           setWebsite(value.Website);
                           setAboutTheArt(value.About);
                           setArtistImage(value.Profile);
-                          // }
                         }}
-                        // inputValue={imageArtist}
-                        // onInputChange={(event, newInputValue) => {
-                        //     setImageArtist(newInputValue);
-                        // }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -758,23 +703,12 @@ function NewNFT(props) {
                         options={producerTypes}
                         getOptionLabel={(option) => option.Name}
                         onChange={(event, value) => {
-                          // if (value == null) {
-                          //     setProducer("");
-                          //     setInspirationForThePiece("");
-                          //     setProducerImage("");
-                          // }
-                          // else {
                           console.log(value);
                           setProducerId(value.userId);
                           setProducer(value.Name);
                           setInspirationForThePiece(value.Inspiration);
                           setProducerImage(value.Profile);
-                          // }
                         }}
-                        // inputValue={producer}
-                        // onInputChange={(event, newInputValue) => {
-                        //     setProducer(newInputValue);
-                        // }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -795,19 +729,12 @@ function NewNFT(props) {
                         options={executiveProducerTypes}
                         getOptionLabel={(option) => option.Name}
                         onChange={(event, value) => {
-                          // if (value == null) setExecutiveProducer("");
-                          // else {
                           console.log(value);
                           setExecutiveProducerId(value.userId);
                           setExecutiveProducer(value.Name);
                           setExecutiveInspirationForThePiece(value.Inspiration);
                           setExecutiveProducerImage(value.Profile);
-                          // }
                         }}
-                        // inputValue={executiveProducer}
-                        // onInputChange={(event, newInputValue) => {
-                        //     setExecutiveProducer(newInputValue);
-                        // }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -827,21 +754,12 @@ function NewNFT(props) {
                         options={fans}
                         getOptionLabel={(option) => option.Name}
                         onChange={(event, value) => {
-                          // if (value == null) setFan("");
-                          // else {
                           console.log(value);
                           setFanId(value.userId);
                           setFan(value.Name);
                           setFanImage(value.Profile);
                           setFanInspirationForThePiece(value.Inspiration);
-                          // }
                         }}
-                        // inputValue={fan}
-                        // onInputChange={(event, newInputValue) => {
-                        //     console.log("event",event);
-                        //     console.log("newInputValue",newInputValue);
-                        //     setFan(newInputValue);
-                        // }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -874,17 +792,10 @@ function NewNFT(props) {
                         options={collectionTypes}
                         getOptionLabel={(option) => option.collectiontitle}
                         onChange={(event, value) => {
-                          // if (value == null) setCollection("");
-                          // else {
                           console.log(value);
                           setCollection(value.collectiontitle);
                           setCollectionId(value._id);
-                          // }
                         }}
-                        // inputValue={collection}
-                        // onInputChange={(event, newInputValue) => {
-                        //     setCollection(newInputValue);
-                        // }}
                         renderInput={(params) => (
                           <TextField
                             {...params}
@@ -931,16 +842,16 @@ function NewNFT(props) {
                                   i.type === "Mastercraft"
                                     ? "4px solid #ff0000"
                                     : i.type === "Legendary"
-                                    ? "4px solid #FFD700"
-                                    : i.type === "Epic"
-                                    ? "4px solid #9400D3"
-                                    : i.type === "Rare"
-                                    ? "4px solid #0000FF"
-                                    : i.type === "Uncommon"
-                                    ? "4px solid #008000"
-                                    : i.type === "Common"
-                                    ? "4px solid #FFFFFF"
-                                    : "none",
+                                      ? "4px solid #FFD700"
+                                      : i.type === "Epic"
+                                        ? "4px solid #9400D3"
+                                        : i.type === "Rare"
+                                          ? "4px solid #0000FF"
+                                          : i.type === "Uncommon"
+                                            ? "4px solid #008000"
+                                            : i.type === "Common"
+                                              ? "4px solid #FFFFFF"
+                                              : "none",
                               }}
                               className={classes.media}
                               image={i.artwork}

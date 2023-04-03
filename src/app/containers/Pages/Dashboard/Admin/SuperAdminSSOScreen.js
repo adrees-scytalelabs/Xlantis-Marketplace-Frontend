@@ -1,25 +1,14 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
+
+import {
+  Card
+} from "@material-ui/core";
+import Backdrop from "@material-ui/core/Backdrop";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import { makeStyles } from "@material-ui/core/styles";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import React, { useEffect } from "react";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "@material-ui/core/Backdrop";
-import { makeStyles } from "@material-ui/core/styles";
-import StorageIcon from "@material-ui/icons/Storage";
-import Cookies from "js-cookie";
-import PropTypes from "prop-types";
-import {
-  AppBar,
-  Box,
-  Card,
-  CardHeader,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -91,7 +80,6 @@ function SuperAdminSSOScreen(props) {
 
       .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
-        console.log(response);
         setTotalAdmins(response.data.counts.totalAdmins);
         setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
         setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
@@ -113,15 +101,14 @@ function SuperAdminSSOScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     });
     getCounts();
-    // eslint-disable-next-line
+
   }, []);
 
-  console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-sm-start align-items-center mt-5 mb-5">
@@ -181,7 +168,7 @@ function SuperAdminSSOScreen(props) {
             <Link
               to={{
                 pathname: `${props.match.url}/manageAccounts/SSO`,
-                state: {current:"enabled"},
+                state: { current: "enabled" },
               }}
             >
               <div className="row no-gutters justify-content-between">
@@ -226,10 +213,10 @@ function SuperAdminSSOScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-             <Link
+            <Link
               to={{
                 pathname: `${props.match.url}/manageAccounts/SSO`,
-                state: {current:"disabled"},
+                state: { current: "disabled" },
               }}
             >
               <div className="row no-gutters justify-content-between">

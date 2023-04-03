@@ -34,8 +34,7 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 250,
   },
   media: {
-    // height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
     width: "100%",
   },
   bullet: {
@@ -62,7 +61,6 @@ const useStyles = makeStyles((theme) => ({
     color: "#999",
     fontFamily: "inter",
     fontSize: "0.875rem",
-    // marginTop: "0.15rem",
   },
 }));
 
@@ -101,7 +99,7 @@ const defaultStyles = {
 };
 
 function NFTCard(props) {
-  console.log("props", props);
+  //console.log("props", props);
   const classes = useStyles();
 
   // Styling

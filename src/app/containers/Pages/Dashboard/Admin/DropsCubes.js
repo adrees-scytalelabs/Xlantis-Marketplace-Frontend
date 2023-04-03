@@ -1,19 +1,17 @@
 import { Avatar, CardHeader, Grid } from '@material-ui/core/';
 import Card from '@material-ui/core/Card';
-import Typography from '@material-ui/core/Typography';
-
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
+import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import Countdown from 'react-countdown';
+import { Link, useParams } from 'react-router-dom';
 import r1 from '../../../../assets/img/patients/patient.jpg';
-import { Link } from 'react-router-dom';
-import { useParams } from "react-router-dom";
 const useStyles = makeStyles((theme) => ({
     root: {
         maxWidth: 345,
@@ -84,7 +82,6 @@ function DropCubes(props) {
 
     useEffect(() => {
         getDropCubes();
-        // getCollections();?
 
         props.setActiveTab({
             dashboard: "",
@@ -102,7 +99,7 @@ function DropCubes(props) {
             newCube: "",
             newCollection: "",
             newRandomDrop: "",
-        });// eslint-disable-next-line
+        });
     }, []);
 
     return (
@@ -169,23 +166,22 @@ function DropCubes(props) {
                             spacing={2}
                             direction="row"
                             justify="flex-start"
-                        // alignItems="flex-start"
+
                         >
                             {cubeData.map((i, index) => (
                                 <Grid item xs={12} sm={6} md={3} key={index}>
                                     <Link to={"/dashboard/myCubes/Nfts/" + dropId + "/" + i._id}>
                                         <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
-                                            {/* style={{ height: "100%" }} variant="outlined" */}
+
                                             <CardActionArea>
                                                 <CardMedia
                                                     className={classes.media}
-                                                    // image={img}
                                                     title=""
                                                 >
                                                     <div className="wrapper">
                                                         <div className="cube-box">
                                                             {imageData[index].map((j, jindex) => (
-                                                                    <img src={j.artwork} style={{ border: j.type === "Mastercraft" ? '4px solid #ff0000' : j.type === "Legendary" ? '4px solid #FFD700' : j.type === "Epic" ? '4px solid #9400D3' : j.type === "Rare" ? '4px solid #0000FF' : j.type === "Uncommon" ? '4px solid #008000' : j.type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
+                                                                <img src={j.artwork} style={{ border: j.type === "Mastercraft" ? '4px solid #ff0000' : j.type === "Legendary" ? '4px solid #FFD700' : j.type === "Epic" ? '4px solid #9400D3' : j.type === "Rare" ? '4px solid #0000FF' : j.type === "Uncommon" ? '4px solid #008000' : j.type === "Common" ? '4px solid #FFFFFF' : 'none' }} alt="" />
                                                             ))}
                                                             {new Array(6 - imageData[index].length).fill(0).map((_, index) => (
                                                                 < img src={r1} alt="" />

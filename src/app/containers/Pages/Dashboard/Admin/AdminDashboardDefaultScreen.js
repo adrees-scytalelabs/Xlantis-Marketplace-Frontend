@@ -1,13 +1,11 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
+
+import Card from "@material-ui/core/Card";
+import ListAltIcon from "@material-ui/icons/ListAlt";
+import axios from "axios";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-// import React, { useEffect } from "react";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import StorageIcon from "@material-ui/icons/Storage";
-import Card from "@material-ui/core/Card";
-import Cookies from "js-cookie";
-// COMPONENT FUNCTION
+
 function AdminDashboardDefaultScreen(props) {
   let [totalCubes, setTotalCubes] = useState(0);
   let [totalNFTs, setTotalNFTs] = useState(0);
@@ -25,7 +23,7 @@ function AdminDashboardDefaultScreen(props) {
     axios
       .get(`${version}/user/getcounts`)
       .then((response) => {
-        console.log(response);
+        //console.log(response);
         setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
         setTotalDrops(response.data.Dropscount);
@@ -64,27 +62,11 @@ function AdminDashboardDefaultScreen(props) {
       newRandomDrop: "",
     });
     getCounts();
-    // const unloadCallback = (event) => {
-    //   event.preventDefault();
-    //   event.returnValue = Cookies.remove('Authorization');
-    //   localStorage.removeItem("Address");
-    //   return "";
-    // };
-  
-    // window.addEventListener("beforeunload", unloadCallback);
-    // return () => window.removeEventListener("beforeunload", unloadCallback);
-  //   window.addEventListener(
-  //     "beforeunload",(event) => {
-  //       event.preventDefault();
-  //       event.returnValue = Cookies.remove('Authorization');
-  //       localStorage.removeItem("Address");
-  //     }
-  // );
-    // eslint-disable-next-line
+
   }, []);
   return (
     <>
-      {/* <!-- Page Header --> */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -97,10 +79,7 @@ function AdminDashboardDefaultScreen(props) {
           </div>
         </div>
       </div>
-      {/* <!-- /Page Header --> */}
-      {/* Cards */}
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
-        {/* Total NFTs */}
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
           <Card
             style={{
@@ -144,7 +123,6 @@ function AdminDashboardDefaultScreen(props) {
             </Link>
           </Card>
         </div>
-        {/* Total Collections */}
         <div className="col-12 col-sm-5 col-xl-4 ml-sm-2 mt-2 mt-sm-0 totalCollectionsAdminDash">
           <Card
             style={{
@@ -189,74 +167,7 @@ function AdminDashboardDefaultScreen(props) {
           </Card>
         </div>
       </div>
-      {/* <div className="row mt-5">
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/myCubes`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-secondary border-secondary">
-                    <i className="fas fa-cubes" />
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalCubes}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Cubes</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-secondary w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div> 
-        <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/myDrops`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-danger border-danger">
-                    <StorageIcon />
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalDrops}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Drops</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-danger w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div> 
-         <div className="col-12 col-sm-3">
-          <Link to={`${props.match.url}/mySeason`}>
-            <div className="card">
-              <div className="card-body">
-                <div className="dash-widget-header">
-                  <span className="dash-widget-icon text-success border-success">
-                    <i className="fas fa-boxes"></i>
-                  </span>
-                  <div className="dash-count">
-                    <h3>{totalSeasons}</h3>
-                  </div>
-                </div>
-                <div className="dash-widget-info">
-                  <h6 className="text-muted">Total Seasons</h6>
-                  <div className="progress progress-sm">
-                    <div className="progress-bar bg-success w-100"></div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Link>
-        </div>
-      </div> */}
+
     </>
   );
 }

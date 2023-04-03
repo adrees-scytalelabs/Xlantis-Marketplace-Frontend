@@ -1,24 +1,20 @@
+import { createMuiTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { createMuiTheme } from "@material-ui/core";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, Link } from "react-router-dom";
 import Table from "react-bootstrap/Table";
+import { Link, useHistory } from "react-router-dom";
+import Web3 from "web3";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -99,7 +95,7 @@ function DropApproval(props) {
 
   let [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
   let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
@@ -127,7 +123,6 @@ function DropApproval(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollections(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -145,14 +140,11 @@ function DropApproval(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    });
   }, []);
 
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
     getCollections(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -219,9 +211,6 @@ function DropApproval(props) {
         })
         .on("receipt", (receipt) => {
           console.log("receipt", receipt);
-
-          //sending call on backend
-
           let approvalData = {
             collectionId: i._id,
             factoryType: "auction",
@@ -229,7 +218,6 @@ function DropApproval(props) {
 
           axios.put(`/collection/approve`, approvalData).then(
             (response) => {
-              console.log("Response from Auction approval: ", response);
               setIsAuctionApproved(true);
               setApprovingAuction(false);
             },
@@ -244,8 +232,6 @@ function DropApproval(props) {
   };
 
   let giveFixedPriceApproval = async (i) => {
-    console.log(i);
-    console.log("Contract Type", i.contractType);
     try {
       await loadWeb3();
       const web3 = window.web3;
@@ -304,10 +290,6 @@ function DropApproval(props) {
 
             axios.put(`/collection/approve`, approvalData).then(
               (response) => {
-                console.log(
-                  "Response from approval of Fixed Price: ",
-                  response
-                );
                 let variant = "success";
                 enqueueSnackbar(
                   "Collection Approved For Fixed Price Successfully",
@@ -336,15 +318,10 @@ function DropApproval(props) {
 
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
-    console.log("version", version);
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
     setOpen(true);
     axios
       .get(`/collection/myCollections/${start}/${end}`)
       .then((response) => {
-        console.log("response.data", response.data);
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
         setOpen(false);
@@ -368,7 +345,7 @@ function DropApproval(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -384,10 +361,10 @@ function DropApproval(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+
       <div className="card-body">
         <div className="row">
-          {/* <div className="col-md-12 col-lg-6"> */}
+
           <Table responsive>
             <thead>
               <tr>
@@ -413,7 +390,7 @@ function DropApproval(props) {
                 <tr>
                   <td className={classes.collectionTitle}>{i.name}</td>
                   <td>
-                    {/* <div style={{backgroundColor : "#28a760"}}> */}
+
                     {i.isAuctionDropVerified ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button disabled>
@@ -428,13 +405,7 @@ function DropApproval(props) {
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          // style={{
-                          //   backgroundColor: "#000",
-                          //   color: "#fff",
-                          //   padding: "10px 30px",
-                          //   border: "1px solid #F64D04",
-                          //   borderRadius: "0px 15px",
-                          // }}
+
                           onClick={(e) => {
                             giveAuctionApproval(i);
                           }}
@@ -443,7 +414,7 @@ function DropApproval(props) {
                         </Button>
                       </div>
                     )}
-                    {/* </div> */}
+
                   </td>
                   <td>
                     {i.isFixedPriceDropVerified ? (
@@ -475,7 +446,7 @@ function DropApproval(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

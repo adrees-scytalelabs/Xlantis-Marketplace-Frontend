@@ -23,7 +23,7 @@ function CollectionNfts(props) {
     handleShowBackdrop();
     axios.get(`/collection/${collectionId}`).then(
       (response) => {
-        console.log("response", response);
+        //console.log("response", response);
         setTokenList(response.data.nftsdata);
         handleCloseBackdrop();
       },
@@ -41,7 +41,7 @@ function CollectionNfts(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollectionNfts();
-    // getCollections();?
+    
 
     props.setActiveTab({
       dashboard: "",
@@ -59,7 +59,7 @@ function CollectionNfts(props) {
       newCube: "",
       newCollection: "active",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (

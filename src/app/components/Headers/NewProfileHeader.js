@@ -86,9 +86,9 @@ export default function HeaderMenuAppBar(props) {
     window.location.reload(false);
   };
 
-  // useEffect(() => {
-  //   console.log(props.userData);
-  // },[]);
+  
+  
+  
 
   return (
     <div className={classes.root}>

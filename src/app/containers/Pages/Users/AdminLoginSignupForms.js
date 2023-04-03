@@ -1,36 +1,20 @@
-// REACT
 import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router-dom";
-// AXIOS
 import axios from "axios";
-// COMPONENTS
-import IntlTelInput from "react-intl-tel-input";
-import GoogleButton from "react-google-button";
 import { useSnackbar } from "notistack";
-// MUI COMPONENTS
-import { Divider, Typography } from "@material-ui/core";
+import IntlTelInput from "react-intl-tel-input";
+import { Typography } from "@material-ui/core";
 import {
-  createMuiTheme,
-  makeStyles,
   ThemeProvider,
-  useTheme,
+  createMuiTheme,
+  makeStyles
 } from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
-import MuiAlert from "@material-ui/lab/Alert";
 import InfoIcon from "@material-ui/icons/Info";
-// CONTEXT
-import { UserAuth } from "../../../components/context/AuthContext";
-// GOOGLE
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
-// STYLESHEETS
-import "react-intl-tel-input/dist/main.css";
-import { async } from "@firebase/util";
-import { useCookies } from "react-cookie";
+import MuiAlert from "@material-ui/lab/Alert";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Cookies from "js-cookie";
+import "react-intl-tel-input/dist/main.css";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -72,9 +56,9 @@ const customTheme = createMuiTheme({
   },
 });
 
-// COMPONENT FUNCTION
+
 const AdminLoginSignupForms = () => {
-  // States
+
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [account, setAccount] = useState(null);
   const [isActive, setIsActive] = useState(false);
@@ -85,17 +69,15 @@ const AdminLoginSignupForms = () => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
 
-  // Variables
+
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
   let history = useHistory();
 
-  // Methods
   function Alert(props) {
     return <MuiAlert elevation={6} variant="filled" {...props} />;
   }
 
-  // Handlers
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
 
@@ -146,7 +128,6 @@ const AdminLoginSignupForms = () => {
           }
         })
         .catch((error) => {
-          // case 4
           console.log("JWT could not be submitted,", error);
           if (error) setTokenVerification(false);
         });
@@ -157,7 +138,7 @@ const AdminLoginSignupForms = () => {
   }, [account]);
 
   useEffect(() => {
-    // Case 2
+    
     if (adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
@@ -175,12 +156,12 @@ const AdminLoginSignupForms = () => {
   adminSignInData &&
     console.log("jwt after submission: //// ", adminSignInData);
 
-  // Content
+
   return (
     <>
       <div className="row no-gutters w-100">
         <div className="adminCredWrapper">
-          {/* Sign in */}
+
           <div
             className={
               isActive
@@ -189,9 +170,7 @@ const AdminLoginSignupForms = () => {
             }
           >
             <div className="adminLoginContainer">
-              <div
-              // style={{ height: "100%" }}
-              >
+              <div>
                 <form action="" autoComplete="off">
                   <div className="adminInputFormGroup">
                     <div className="col-12 text-right mb-1 px-0">
@@ -209,11 +188,11 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="email"
                           required
-                          // value={name}
+                          
                           placeholder="Email"
                           className="form-control-login -login newNftInput"
                           onChange={(e) => {
-                            // setName(e.target.value);
+                            
                           }}
                         />
                       </div>
@@ -222,11 +201,11 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="password"
                           required
-                          // value={name}
+                          
                           placeholder="Password"
                           className="form-control-login  newNftInput"
                           onChange={(e) => {
-                            // setName(e.target.value);
+                            
                           }}
                         />
                       </div>
@@ -261,17 +240,13 @@ const AdminLoginSignupForms = () => {
                         adminSignInData.isInfoAdded === false && (
                           <Redirect to="/admin-signup-details" />
                         )}
-                      {/* {adminSignInData !== null &&
-                        adminSignInData.isVerified === true && (
-                          <Redirect to="/dashboard" />
-                        )} */}
                     </ThemeProvider>
                     <div className="signUp-link">
                       <p>
                         Don’t have an account?{" "}
                         <button
                           className="signUpBtn-link"
-                          // onClick={handleSetActive}
+                          
                           onClick={() => {
                             setWorkProgressModalShow(true);
                           }}
@@ -296,9 +271,8 @@ const AdminLoginSignupForms = () => {
               </div>
             </div>
           </div>
-          {/* Sign up */}
+
           <div
-            // className="row no-gutters w-100"
             className={
               isActive
                 ? "row no-gutters justify-content-center align-items-center adminCredWrapper userSignUp w-100"
@@ -317,11 +291,9 @@ const AdminLoginSignupForms = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder="Full Name"
                             className="form-control-login  newNftInput"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -330,11 +302,9 @@ const AdminLoginSignupForms = () => {
                           <input
                             type="email"
                             required
-                            // value={name}
                             placeholder="Email"
                             className="form-control-login -login newNftInput"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -343,11 +313,9 @@ const AdminLoginSignupForms = () => {
                           <input
                             type="password"
                             required
-                            // value={name}
                             placeholder="Password"
                             className="form-control-login  newNftInput"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -360,11 +328,9 @@ const AdminLoginSignupForms = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder="Username"
                             className="form-control-login  newNftInput"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>
@@ -381,11 +347,9 @@ const AdminLoginSignupForms = () => {
                           <input
                             type="text"
                             required
-                            // value={name}
                             placeholder="Wallet Address"
                             className="form-control-login  newNftInput"
                             onChange={(e) => {
-                              // setName(e.target.value);
                             }}
                           />
                         </div>

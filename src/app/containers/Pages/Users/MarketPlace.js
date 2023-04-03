@@ -1,18 +1,8 @@
-import { Avatar, CardHeader, Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import { Grid } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import Countdown from "react-countdown";
-import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
@@ -52,7 +42,6 @@ function MarketPlace(props) {
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
 
-  // Handlers
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -61,15 +50,6 @@ function MarketPlace(props) {
     setOpen(true);
   };
 
-  // const handleChangePage = (event, newPage) => {
-  //   setPage(newPage);
-  //   // getCubes(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
-  // };
-  // const handleChangeRowsPerPage = (event) => {
-  //   setRowsPerPage(parseInt(event.target.value, 10));
-  //   // getCubes(0, parseInt(event.target.value, 10));
-  //   setPage(0);
-  // };
 
   let getCubes = (start, end) => {
     handleShowBackdrop();
@@ -124,13 +104,10 @@ function MarketPlace(props) {
     );
   };
 
-  // Side Effects
   useEffect(() => {
-    getCubes(0, 12); // eslint-disable-next-line
+    getCubes(0, 12); 
     getBidableDrops(0, 12);
   }, []);
-
-  // Jsx
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -139,10 +116,7 @@ function MarketPlace(props) {
         </div>
         <div className="row no-gutters mt-5">
           <div className="container-fluid">
-            <div
-              className="row no-gutters w-100"
-              // style={{ minHeight: "100vh" }}
-            >
+            <div className="row no-gutters w-100">
               <div className="w-100">
                 <div
                   className="row no-gutters justify-content-center w-100"

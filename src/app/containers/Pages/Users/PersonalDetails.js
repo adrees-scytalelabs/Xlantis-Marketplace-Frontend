@@ -53,7 +53,6 @@ class PersonalDetails extends Component {
             isSuccess: true,
             isPinVarified: true,
           });
-        // this.props.history.push('/login')
       })
       .catch((error) => {
         console.log(error);
@@ -147,7 +146,6 @@ class PersonalDetails extends Component {
               <input
                 type="text"
                 className="form-control floating"
-                // onChange={this.props.handleChange('name')}
                 onChange={(e) => {
                   this.setState({
                     name: e.target.value,

@@ -117,7 +117,7 @@ function VerifiedAccountsSSOScreen(props) {
 
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
+  const [page, setPage] = useState(0); 
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -135,7 +135,6 @@ function VerifiedAccountsSSOScreen(props) {
 
   useEffect(() => {
     getUnverifiedAdmins(0, rowsPerPage);
-    // getMyCubes();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -147,7 +146,7 @@ function VerifiedAccountsSSOScreen(props) {
       properties: "",
       template: "",
       saved: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleModalOpen = (e, data) => {
     e.preventDefault();
@@ -159,10 +158,10 @@ function VerifiedAccountsSSOScreen(props) {
     handleClose();
   };
   const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+   // console.log("newPage", newPage);
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
+    //console.log("Start", newPage * rowsPerPage);
+    //console.log("End", newPage * rowsPerPage + rowsPerPage);
     getUnverifiedAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
@@ -176,14 +175,12 @@ function VerifiedAccountsSSOScreen(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
+    
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
-        console.log("response.data", response.data);
+       // console.log("response.data", response.data);
         setAdmins(response.data.Admins);
         setAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -207,29 +204,24 @@ function VerifiedAccountsSSOScreen(props) {
     e.preventDefault();
     setIsSaving(true);
     handleShowBackdrop();
-    // setIsUploadingData(true);
-
     //sending data to backend
     let data = {
       adminId: verifyAdminId,
     };
 
-    console.log("data", data);
+  //  console.log("data", data);
 
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
-        console.log("admin verify response: ", response);
+     //   console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
         setIsSaving(false);
-        // setIsUploadingData(false);
       },
       (error) => {
         console.log("Error on status pending nft: ", error);
         console.log("Error on status pending nft: ", error.response);
-
-        // setIsUploadingData(false);
 
         handleCloseBackdrop();
 
@@ -241,10 +233,10 @@ function VerifiedAccountsSSOScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      {/* Page Content */}
+      
       <div>
         <div className="row no-gutters">
-          {/* <div className="col-md-12 col-lg-6"> */}
+          
           <Table responsive>
             <thead>
               <tr>
@@ -312,7 +304,7 @@ function VerifiedAccountsSSOScreen(props) {
           </Table>
         </div>
       </div>
-      {/* </div> */}
+      
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"

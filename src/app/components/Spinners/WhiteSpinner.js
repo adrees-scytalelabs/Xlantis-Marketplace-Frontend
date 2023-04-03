@@ -1,5 +1,4 @@
 import React from "react";
-// BOOTSTRAP COMPONENTS
 import { Spinner } from "react-bootstrap";
 
 const WhiteSpinner = () => {

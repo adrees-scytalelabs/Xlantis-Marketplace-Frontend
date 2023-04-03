@@ -1,6 +1,4 @@
-// REACT
 import React from "react";
-// MUI
 import Typography from "@material-ui/core/Typography";
 import { FontDownload } from "@material-ui/icons";
 import Card from "@material-ui/core/Card";
@@ -10,11 +8,8 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
-// MUI ICONS
 import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-// STYLESHEETS
 import "../../../../assets/css/mediaQueries.css";
-// MEDIA
 import videoBg from "../../../../assets/img/Seoul - 21116.mp4";
 import collectionImg from "../../../../assets/img/direWolf.jpg";
 import { Link } from "react-router-dom";
@@ -89,27 +84,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// COMPONENT FUNCTION
 function HomeBanner() {
   const styles = useStyles();
   const matchMedia = useMediaQuery("(max-width: 575px)");
-  // Jsx
   return (
     <Link to={"/dashboard"}>
       <section className="section sectionHomeBanner">
         <div className="container-fluid">
           <div className="row no-gutters justify-content-center align-items-center">
             <div className="col-12">
-              {/* <section className="text-center">
-              <h1 style={{ fontFamily: "poppins", fontWeight: "bold" }}>
-                Buy, sell and discover rare Digital Items
-              </h1>
-              <p>The Largest NFT MarketPlace</p>
-            </section> */}
               <div className="featuredContainer">
-                {/* The backdrop */}
                 <div className="featuredBackdrop"></div>
-                {/* Video Background */}
                 <video
                   src={videoBg}
                   autoPlay
@@ -120,7 +105,6 @@ function HomeBanner() {
                 />
                 <div className="videoContentText p-4">
                   <div className="row no-gutters align-items-end justify-content-sm-between justify-content-center">
-                    {/* Tile and Name */}
                     <div className="col-12 col-sm-6">
                       {/* Collection Tile */}
                       {/* <Card
@@ -131,7 +115,6 @@ function HomeBanner() {
                         <CardActionArea>
                           <CardMedia
                             component="img"
-                            // height="140"
                             image={collectionImg}
                             alt="Kangroo Robot"
                             className={

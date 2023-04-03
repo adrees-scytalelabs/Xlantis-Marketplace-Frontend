@@ -1,32 +1,23 @@
-// REACT
 import React, { useState } from "react";
-// STYLESHEETS
-import "../../assets/css/mediaQueries.css";
-// MUI
-import PropTypes from "prop-types";
+
+import { Card } from "@material-ui/core";
+import Box from "@material-ui/core/Box";
 import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
-  useTheme,
+  useTheme
 } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import Typography from "@material-ui/core/Typography";
-import Box from "@material-ui/core/Box";
-import { Card, Grid } from "@material-ui/core";
 import TablePagination from "@material-ui/core/TablePagination";
-// COMPONENTS
-// import SwipeableViews from "react-swipeable-views";
-import { Spinner } from "react-bootstrap";
-import Carousel from "react-multi-carousel";
-import OnSaleCard from "../Cards/OnSaleCard";
+import Tabs from "@material-ui/core/Tabs";
+import Typography from "@material-ui/core/Typography";
+import PropTypes from "prop-types";
+import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
-import { nftImage, auctionImg } from "../../assets/js/images.js";
+import OnSaleCard from "../Cards/OnSaleCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 
-// CONTENT
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
 
@@ -62,7 +53,6 @@ function a11yProps(index) {
 
 const paginationStyles = makeStyles({
   base: {
-    // borderRadius: 12,
     border: 0,
     color: "#fff",
     padding: "0 30px",
@@ -82,8 +72,6 @@ const paginationStyles = makeStyles({
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
   },
   tabsProps: {
     textTransform: "capitalize",
@@ -144,7 +132,6 @@ const customTheme = createMuiTheme({
   },
 });
 
-// COMPONENT FUNCTION
 const MarketPlaceTabs = (props) => {
   const classes = useStyles();
   const paginationClasses = paginationStyles();
@@ -162,7 +149,6 @@ const MarketPlaceTabs = (props) => {
       props.fixedPriceDrop.length - salePage * rowsPerSalePage
     );
 
-  //   Handlers
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -195,7 +181,6 @@ const MarketPlaceTabs = (props) => {
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{
-              // borderBottom: "1px solid rgb(251, 254, 255)",
               backgroundColor: "#000",
             }}
           >
@@ -223,13 +208,10 @@ const MarketPlaceTabs = (props) => {
               </Tabs>
             </div>
           </div>
-          {/* Tabpanels */}
-          {/* 1. Fixed Price Drops */}
           <TabPanel
             value={value}
             index={0}
             dir={theme.direction}
-            // style={{ paddingLeft: "0px", paddingRight: "0px" }}
             className={classes.tabPanelProps}
           >
             <div
@@ -237,8 +219,6 @@ const MarketPlaceTabs = (props) => {
               style={{ minHeight: "50vh" }}
             >
               <div className="col-12">
-                {/* <TrendingCollectionsHome /> */}
-                {/* props.type === "fixedPriceDrops" ? ( */}
                 {props.open ? (
                   <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
@@ -276,7 +256,6 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      // color="textSecondary"
                       component="p"
                       style={{ color: "#fff" }}
                     >
@@ -285,7 +264,6 @@ const MarketPlaceTabs = (props) => {
                   </Card>
                 )}
               </div>
-              {/* <div className="col-6">item 1.2</div>  */}
             </div>
             <div className="row no-gutters justify-content-center paginationBg mt-5">
               <TablePagination
@@ -305,7 +283,6 @@ const MarketPlaceTabs = (props) => {
               />
             </div>
           </TabPanel>
-          {/* 2. Bidable Drops */}
           <TabPanel
             value={value}
             index={1}
@@ -317,8 +294,6 @@ const MarketPlaceTabs = (props) => {
               style={{ minHeight: "50vh" }}
             >
               <div className="col-12">
-                {/* <TrendingCollectionsHome /> */}
-                {/* props.type === "bidableDrops" ? ( */}
                 {props.open ? (
                   <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
@@ -356,16 +331,15 @@ const MarketPlaceTabs = (props) => {
                     <Typography
                       variant="body2"
                       className="text-center"
-                      // color="textSecondary"
                       component="p"
                       style={{ color: "#fff" }}
                     >
-                      <strong>No items to display </strong>
+                      {/* <strong>No items to display </strong> */}
+                      <strong>This feature is coming soon</strong>
                     </Typography>
                   </Card>
                 )}
               </div>
-              {/* <div className="col-6">item 1.2</div>  */}
             </div>
             <div className="row no-gutters justify-content-center paginationBg mt-5">
               <TablePagination

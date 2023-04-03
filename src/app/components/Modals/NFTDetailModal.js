@@ -20,7 +20,7 @@ const NFTDetailModal = (props) => {
 
 
     useEffect(() => {
-        console.log("NFT detail props are: ", props);
+       // console.log("NFT detail props are: ", props);
         // if (props.nftDetail.properties.length > 0 ) {
         //     setIsProperties(true);
         // }

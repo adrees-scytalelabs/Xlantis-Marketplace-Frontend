@@ -37,7 +37,7 @@ function RandomDrop(props) {
             termsandconditions: "",
             changePassword: "",
             newCube:"",
-        });// eslint-disable-next-line
+        });
     }, []);
     const handleRemoveClick = (index) => {
         console.log("index", index);
@@ -169,7 +169,7 @@ function RandomDrop(props) {
                                             spacing={3}
                                             direction="row"
                                             justify="flex-start"
-                                        // alignItems="flex-start"
+                                        
                                         >
                                             {types.map((data, index) =>
                                                 <NewNFTCards key={index} index={index} data={data} handleRemoveClick={handleRemoveClick}></NewNFTCards>

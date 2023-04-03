@@ -44,7 +44,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -64,7 +64,6 @@ function UserCubeNFTs(props) {
   let jwtDecoded;
   if (jwt) {
     console.log(jwtDecode(jwt));
-    // setjwtDecoded(jwtDecode(jwt));
     jwtDecoded = jwtDecode(jwt);
   }
   console.log("jwtDecoded", jwtDecoded);
@@ -95,7 +94,7 @@ function UserCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getUserCubeNFTs = () => {
     handleShowNFTData();
@@ -167,7 +166,7 @@ function UserCubeNFTs(props) {
 
   useEffect(() => {
     getUserCubeNFTs();
-    // eslint-disable-next-line
+    
   }, []);
 
   return (
@@ -370,8 +369,6 @@ function UserCubeNFTs(props) {
                           </AccordionDetails>
                         </Accordion>
                       </div>
-
-                      {/* </div> */}
                     </div>
                   </div>
                 )}

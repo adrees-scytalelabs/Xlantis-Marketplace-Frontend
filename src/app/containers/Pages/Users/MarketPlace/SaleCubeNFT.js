@@ -39,10 +39,8 @@ import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
 
 const newStyles = makeStyles((theme) => ({
   dropTitle: {
-    // color: "#04111D",
     fontSize: "1rem",
     fontFamily: "poppins",
-    // fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
     backgroundImage:
@@ -83,7 +81,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -115,7 +113,7 @@ function SaleCubeNFTs(props) {
     jwtDecoded = jwtDecode(jwt);
   }
   const [ownerAudio, setOwnerAudio] = useState(new Audio());
-  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio()); // eslint-disable-next-line
+  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio()); 
   const [isClaimingWeth, setIsClaimingWeth] = useState(false);
   const [weth, setWeth] = useState(0);
   const [enableWethButton, setEnableWethButton] = useState(false);
@@ -130,7 +128,7 @@ function SaleCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -238,7 +236,6 @@ function SaleCubeNFTs(props) {
       (response) => {
         console.log("response", response);
         setIsRemoving(false);
-        // getSaleCubeNFTs();
         let variant = "success";
         enqueueSnackbar("Removed from Sale Successfully.", { variant });
         history.push("/");
@@ -319,7 +316,6 @@ function SaleCubeNFTs(props) {
               handleCloseBackdrop();
             }
           });
-        // console.log("receipt", receipt);
         let BuyData = {
           auctionId: auctionId,
           tokenId: cubeId,
@@ -394,7 +390,6 @@ function SaleCubeNFTs(props) {
         console.log("response", response);
         setTokenList(response.data.nftdata);
         setCubeData(response.data.tokensdata);
-        // setOwnerAudio(response.data.tokensdata.ownermusicfile)
         setOwnerAudio(new Audio(response.data.tokensdata.ownermusicfile));
         setNonOwnerAudio(new Audio(response.data.tokensdata.nonownermusicfile));
         axios
@@ -435,8 +430,6 @@ function SaleCubeNFTs(props) {
         handleCloseSpinner();
       }
     );
-    // /transaction/tokenTransaction/{tokenId}
-    // for Getiing Transaction History of CUbe
   };
   useEffect(() => {
     (async () => {
@@ -447,7 +440,7 @@ function SaleCubeNFTs(props) {
       const balance = await web3.eth.getBalance(accounts[0]);
       console.log("balance", (balance / 10 ** 18).toString());
       setBalance(balance);
-    })(); // eslint-disable-next-line
+    })(); 
   }, []);
   let getWeth = () => {
     handleShowWeth();
@@ -506,104 +499,10 @@ function SaleCubeNFTs(props) {
               </div>
             ) : (
               <div className="container-fluid">
-                {/* NFT Image and Pricing */}
                 <div className="row no-gutters w-100">
                   <div className="col-md-12 col-lg-5 pr-lg-3">
                     <Card className="" id="marketCardProps">
                       <CardActionArea>
-                        {/* <CardMedia
-                          className={classes.media1}
-                          title=""
-                          image=""
-                          onClick={() => {
-                            setIsPlaying(!isPlaying);
-
-                            if (!isPlaying) {
-                              console.log("jwtDecoded", jwtDecoded);
-                              if (
-                                jwtDecoded !== undefined &&
-                                jwtDecoded !== null
-                              ) {
-                                if (jwtDecoded.userId === cubeData.userId) {
-                                  console.log("Owner");
-                                  setHide(true);
-                                  ownerAudio.setAttribute(
-                                    "crossorigin",
-                                    "anonymous"
-                                  );
-                                  ownerAudio.play();
-                                } else {
-                                  console.log("NON Owner");
-                                  setHide(true);
-                                  nonOwnerAudio.setAttribute(
-                                    "crossorigin",
-                                    "anonymous"
-                                  );
-                                  nonOwnerAudio.play();
-                                  setTimeout(() => {
-                                    setHide(false);
-                                    nonOwnerAudio.pause();
-                                  }, 10000);
-                                }
-                              } else {
-                                console.log("NON Owner");
-                                setTimeout(() => {
-                                  setHide(false);
-                                  nonOwnerAudio.pause();
-                                }, 10000);
-                                nonOwnerAudio.setAttribute(
-                                  "crossorigin",
-                                  "anonymous"
-                                );
-                                nonOwnerAudio.play();
-                                setHide(true);
-                              }
-                            } else {
-                              if (
-                                jwtDecoded !== undefined &&
-                                jwtDecoded !== null
-                              ) {
-                                if (jwtDecoded.userId === cubeData.userId) {
-                                  console.log("Owner Pause");
-                                  ownerAudio.setAttribute(
-                                    "crossorigin",
-                                    "anonymous"
-                                  );
-                                  ownerAudio.pause();
-                                  setHide(false);
-                                } else {
-                                  console.log("Non Owner Pause");
-                                  nonOwnerAudio.setAttribute(
-                                    "crossorigin",
-                                    "anonymous"
-                                  );
-                                  nonOwnerAudio.pause();
-                                  setHide(false);
-                                }
-                              } else {
-                                console.log("Non Owner Pause");
-                                nonOwnerAudio.setAttribute(
-                                  "crossorigin",
-                                  "anonymous"
-                                );
-                                nonOwnerAudio.pause();
-                                setHide(false);
-                              }
-                            }
-                          }}
-                        >
-                          {hide ? (
-                            <CubeComponent data={tokenList} />
-                          ) : (
-                            <div className="mainDiv">
-                              <span>
-                                <div className="square"></div>
-                                <div className="square2"></div>
-                                <div className="square3"></div>
-                              </span>
-                            </div>
-                          )}
-                        </CardMedia> */}
                         <CardMedia>
                           <div className="nftImgWrapper">
                             <img
@@ -645,36 +544,6 @@ function SaleCubeNFTs(props) {
                       )
                     ) : null}
 
-                    {/* Alert to login */}
-                    {jwtDecoded === undefined || jwtDecoded === null ? (
-                      <Typography
-                        variant="h6"
-                        style={
-                          {
-                            // marginBottom: "1.25rem",
-                          }
-                        }
-                        component="div"
-                      >
-                        {/* <Alert
-                          severity="error"
-                          // variant="filled"
-                          className={classes.textAlert}
-                          style={{
-                            fontWeight: "bold",
-                            textAlign: "center",
-                            fontFamily: "poppins",
-                            backgroundColor: "rgb(255, 244, 229)",
-                            color: "rgb(102, 60, 0)",
-                            border: "none",
-                          }}
-                        >
-                          Login to buy Cube
-                        </Alert> */}
-                      </Typography>
-                    ) : null}
-
-                    {/* Remove From Sale  */}
                     {new Date() > new Date(expiresAt) ? (
                       jwt ? (
                         <>
@@ -706,8 +575,6 @@ function SaleCubeNFTs(props) {
                         </>
                       ) : null
                     ) : null}
-
-                    {/* Drop Title */}
                     <div className="row no-gutters">
                       <Typography
                         variant="p"
@@ -718,7 +585,6 @@ function SaleCubeNFTs(props) {
                       </Typography>
                     </div>
 
-                    {/* NFT Title and Owner */}
                     <div className="row no-gutters">
                       <div className="col-12">
                         <Typography
@@ -726,7 +592,6 @@ function SaleCubeNFTs(props) {
                           component="div"
                           className={styles.NftTitle}
                         >
-                          {/* {cubeData.title} */}
                           NFT Name
                         </Typography>
                       </div>
@@ -747,17 +612,12 @@ function SaleCubeNFTs(props) {
                         </Typography>
                       </div>
                     </div>
-
-                    {/* Views and Favorited */}
                     <div className="row no-gutters mb-4">
                       <div className="col">
                         <h4>This is Views Section</h4>
                       </div>
                     </div>
-
-                    {/* Sale Time, NFT Price and Buttons */}
                     <Card id="singleNftPriceAndTime">
-                      {/* Sale Time */}
                       <div className="border-bottom py-3">
                         <CardHeader
                           title={
@@ -769,8 +629,6 @@ function SaleCubeNFTs(props) {
                                   gutterBottom
                                   style={{
                                     fontFamily: "poppins",
-                                    // fontWeight: "bold",
-                                    // color: "rgb(102, 60, 0)",
                                     fontSize: "1.125rem",
                                     color: "#777",
                                   }}
@@ -803,7 +661,6 @@ function SaleCubeNFTs(props) {
                         />
                       </div>
                       <CardContent>
-                        {/* NFT Price */}
                         <div className="row no-gutters py-3">
                           <div className="col-12">
                             <Typography
@@ -846,28 +703,6 @@ function SaleCubeNFTs(props) {
                       </CardActions>
                     </Card>
 
-                    {/* </Typography> */}
-                    {/* <h3 className="text-muted">Music Artist</h3> */}
-                    {/* <Link
-                      to={
-                        "/User/Profile/Detail/musicArtist/" +
-                        cubeData.MusicArtistId +
-                        "/null"
-                      }
-                      style={{ color: "#000" }}
-                    >
-                      <CardHeader
-                        avatar={
-                          <Avatar
-                            src={cubeData.MusicArtistProfile}
-                            aria-label="Artist"
-                            className={classes.avatar}
-                          />
-                        }
-                        title={cubeData.MusicArtistName}
-                        subheader={cubeData.MusicArtistAbout}
-                      />
-                    </Link> */}
                     <div className="align-self-end">
                       <div className="align-self-end">
                         {cubeData.SalePrice / 10 ** 18 > balance / 10 ** 18 ? (

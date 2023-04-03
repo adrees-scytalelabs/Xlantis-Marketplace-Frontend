@@ -10,12 +10,6 @@ function TopUpModal(props) {
     props.topUp();
     props.handleClose();
   }
-  // useEffect(() => {
-  //   if(props.show ===true){
-  //     props.setOpen(false);
-  //   }
-  //   // getTxSummary(props.dropId);
-  // },[props]);
   return (
     <Modal
       show={props.show}

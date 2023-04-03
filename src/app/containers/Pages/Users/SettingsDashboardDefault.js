@@ -1,16 +1,15 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
-import React, { useCallback, useEffect, useState } from "react";
-import Edit from "@material-ui/icons/Edit";
-import Cookies from "js-cookie";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
-import { isUndefined } from "lodash";
+import Edit from "@material-ui/icons/Edit";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-// import r1 from '/home/ashba/scytalelabs/robotDropFrontend2/Robotdrop-frontend/src/app/assets/img/patients/patient.jpg';
+import r1 from "../../../assets/img/patients/patient.jpg";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
+import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
 
 const useStyles = makeStyles((theme) => ({
@@ -34,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
   bullet: {
     display: "inline-block",
@@ -54,14 +53,11 @@ function SettingDashboardDefault(props) {
   let [name, setName] = useState("");
   let [bio, setBio] = useState("");
   let [email, setEmail] = useState("");
-  let [editProfile, setEditProfile] = useState(false);
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
   let [isSaving, setIsSaving] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
-  let [isBannerSelected, setIsBannerSelected] = useState(false);
-  let [isProfileSelected, setIsProfileSelected] = useState(false);
   let [imageSrc, setImageSrc] = useState("");
   let [crop, setCrop] = useState({ x: 0, y: 0 });
   let [zoom, setZoom] = useState(1);
@@ -74,6 +70,10 @@ function SettingDashboardDefault(props) {
   let [adminCompanyName, setAdminCompanyName] = useState("");
   let [adminDomain, setAdminDomain] = useState("");
   let [adminDesignation, setAdminDesignation] = useState("");
+  let [adminOldData, setAdminOldData] = useState({});
+  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  let [adminIndustry, setAdminIndustry] = useState("");
+  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
 
@@ -82,9 +82,7 @@ function SettingDashboardDefault(props) {
   let [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(
-    "http://www.mub.eps.manchester.ac.uk/graphene/wp-content/themes/uom-theme/assets/images/default-banner.jpg"
-  );
+  let [bannerImage, setBannerImage] = useState(r1);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -116,11 +114,8 @@ function SettingDashboardDefault(props) {
       bannerURL: bannerImage,
     };
 
-    console.log("data", data);
-
     axios.put(`/${Cookies.get("Version")}/user/profile`, data).then(
       (response) => {
-        console.log("profile update response: ", response);
         let variant = "success";
         enqueueSnackbar("Profile Updated Succesfully", { variant });
         setIsUploadingData(false);
@@ -176,12 +171,9 @@ function SettingDashboardDefault(props) {
 
   let getProfile = () => {
     let version = Cookies.get("Version");
-    console.log("Version: ", version);
-    console.log("UserId:", sessionStorage.getItem("Authorization"));
     axios
       .get(`${version}/user/profile`)
       .then((response) => {
-        console.log("Response from getting user: ", response);
         setName(response.data.userData.username);
         setBio(response.data.userData.bio);
         response.data.userData.imageURL &&
@@ -193,6 +185,64 @@ function SettingDashboardDefault(props) {
         console.log(error);
         console.log(error.response);
       });
+  };
+
+  const getAdminProfile = async () => {
+    await axios.get(`/v1-sso/user/admin/profile`).then(
+      (response) => {
+        setAdminOldData(response.data.userData);
+        setProfileImage(response.data.userData.imageURL);
+        response.data.userData.bannerURL &&
+          setBannerImage(response.data.userData.bannerURL);
+        setAdminCompanyName(response.data.userData.companyName);
+        setAdminDesignation(response.data.userData.designation);
+        setAdminDomain(response.data.userData.domain);
+        setAdminName(response.data.userData.username);
+        setAdminReasonForInterest(response.data.userData.reasonForInterest);
+        setAdminIndustry(response.data.userData.industryType);
+      },
+      (error) => {
+        console.log("Error from getting Admin profile", error);
+      }
+    );
+  };
+
+  const handleSubmitAdminProfile = (e) => {
+    e.preventDefault();
+    if (
+      adminCompanyName === adminOldData.companyName &&
+      adminDomain === adminOldData.domain &&
+      profileImage === adminOldData.imageURL &&
+      adminName === adminOldData.username &&
+      bannerImage === adminOldData.bannerURL
+    ) {
+      let variant = "info";
+      enqueueSnackbar("No updation in data", { variant });
+    } else if (adminName === "" || adminCompanyName === "") {
+      let variant = "error";
+      enqueueSnackbar("Please fill all editable fields", { variant });
+    } else {
+      setShowConfirmationModal(true);
+    }
+  };
+
+  const updateData = async () => {
+    let data = {
+      companyName: adminCompanyName,
+      imageURL: profileImage,
+      bannerURL: bannerImage,
+      username: adminName,
+    };
+    await axios.put(`/v1-sso/user/admin/update-info`, data).then(
+      (response) => {
+        setShowConfirmationModal(false);
+        let variant = "success";
+        enqueueSnackbar("Data updated successfully", { variant });
+      },
+      (error) => {
+        console.log("Error from updating admin data: ", error);
+      }
+    );
   };
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -208,12 +258,10 @@ function SettingDashboardDefault(props) {
         imageCounter,
         0
       );
-      console.log("Done: ", { croppedImage });
       let formData = new FormData();
       formData.append("image", croppedImage);
       await axios.post("/upload/image/", formData).then(
         (response) => {
-          console.log("Response from uploading Image", response);
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
             setIsUploadingBannerIPFS(false);
@@ -240,14 +288,16 @@ function SettingDashboardDefault(props) {
   });
 
   useEffect(() => {
-    if (props.user === "admin") {
-      setIsAdmin(true);
-    }
     props.setActiveTab({
       profile: "active",
       offer: "",
     });
-    getProfile();
+    if (props.user === "admin") {
+      setIsAdmin(true);
+      getAdminProfile();
+    } else if (props.user === "user") {
+      getProfile();
+    }
   }, []);
 
   return (
@@ -258,7 +308,6 @@ function SettingDashboardDefault(props) {
             className="banner-img"
             style={{ backgroundImage: `url(${bannerImage})` }}
           >
-            {/* banner */}
             {isUploadingBannerIPFS ? (
               <div
                 className="text-center"
@@ -284,9 +333,6 @@ function SettingDashboardDefault(props) {
               onChange={onChangeBannerFile}
             />
           </div>
-
-          {/* profile pic */}
-
           <div
             style={{
               backgroundImage: `url(${profileImage})`,
@@ -349,12 +395,10 @@ function SettingDashboardDefault(props) {
                     </div>
                     <label>Company Name</label>
                     <div className="form-group">
-                      <textarea
+                      <input
                         type="text"
                         value={adminCompanyName}
                         required
-                        // rows="4"
-                        // value={description}
                         placeholder="Enter Company Name"
                         className="form-control"
                         onChange={(e) => {
@@ -362,19 +406,16 @@ function SettingDashboardDefault(props) {
                         }}
                       />
                     </div>
-                    {/* {Cookies.get("Version") != "v2-wallet-login" && ( */}
                     <>
                       <label>Domain</label>
                       <div className="form-group">
                         <input
                           type="text"
                           required
+                          disabled
                           value={adminDomain}
                           placeholder="Enter Domain"
                           className="form-control"
-                          onChange={(e) => {
-                            setAdminDomain(e.target.value);
-                          }}
                         />
                       </div>
                     </>
@@ -383,12 +424,31 @@ function SettingDashboardDefault(props) {
                       <input
                         type="text"
                         required
+                        disabled
                         value={adminDesignation}
                         placeholder="Enter Designation"
                         className="form-control"
-                        onChange={(e) => {
-                          setAdminDesignation(e.target.value);
-                        }}
+                      />
+                    </div>
+                    <label>Industry</label>
+                    <div className="form-group">
+                      <input
+                        type="text"
+                        required
+                        disabled
+                        value={adminIndustry}
+                        className="form-control"
+                      />
+                    </div>
+                    <label>Reason For Interest</label>
+                    <div className="form-group">
+                      <textarea
+                        type="text"
+                        required
+                        rows="4"
+                        disabled
+                        value={adminReasonForInterest}
+                        className="form-control"
                       />
                     </div>
                     {isSaving ? (
@@ -405,7 +465,7 @@ function SettingDashboardDefault(props) {
                       <div className="submit-section">
                         <button
                           type="button"
-                          // onClick={(e) => handleSubmitEvent(e)}
+                          onClick={(e) => handleSubmitAdminProfile(e)}
                           className="btn submit-btn"
                           id="save-profile-btn"
                         >
@@ -481,9 +541,6 @@ function SettingDashboardDefault(props) {
                         value={sessionStorage.getItem("Address")}
                         placeholder="Wallet Address"
                         className="form-control"
-                        // onChange={(e) => {
-                        //     setName(e.target.value)
-                        // }}
                       />
                     </div>
                     {isSaving ? (
@@ -528,6 +585,11 @@ function SettingDashboardDefault(props) {
         setZoom={setZoom}
         aspect={aspect}
         cropShape={cropShape}
+      />
+      <ProfileUpdationConfirmationModal
+        show={showConfirmationModal}
+        handleClose={() => setShowConfirmationModal(false)}
+        updateData={updateData}
       />
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />

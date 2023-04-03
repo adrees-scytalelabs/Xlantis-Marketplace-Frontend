@@ -10,7 +10,7 @@ import AccountsWallet from "./AccountsWallet";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    // backgroundColor: theme.palette.background.paper,
+    
     // width: 500,
   },
   tabsProps: {
@@ -125,12 +125,12 @@ function Accounts(props) {
       properties:"",
       template:"",
       saved:"",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -146,7 +146,7 @@ function Accounts(props) {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+      
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">

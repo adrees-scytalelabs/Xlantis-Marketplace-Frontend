@@ -31,7 +31,7 @@ const NFTEditModal = (props) => {
 
     useEffect(() => {
         setIsGlbFile(false);
-        console.log("nft edit Props: ", props);
+       // console.log("nft edit Props: ", props);
         if(props.show === true) {
             setNftDetail(props.nftDetail);
             if(props.nftDetail.nftFormat === "glb") {
@@ -68,7 +68,6 @@ const NFTEditModal = (props) => {
             setIsMp3File(true);
             setImageType("mp3");
 
-            // setImageType(e.target.files[0].type.split("/")[1]);
         }
         else {
             setImageType(e.target.files[0].type.split("/")[1]);
@@ -79,14 +78,10 @@ const NFTEditModal = (props) => {
                 data.previewImageURI = "";
             }
         }
-
-        // setImageType(e.target.files[0].type.split("/")[1]);
-        // console.log("e.target.files[0]", e.target.files[0]);
-        // console.log("Image type: ", imageType);
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onloadend = () => {
             console.log("reader.result", reader.result);
-            // setBuffer(Buffer(reader.result));
+            
             ipfs.add(Buffer(reader.result), async (err, result) => {
                 if (err) {
                     console.log("err", err);
@@ -99,26 +94,19 @@ const NFTEditModal = (props) => {
 
                 setIpfsHash(result[0].hash);
                 setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-                // let data = {...nftDetail};
                 data.nftURI = `https://ipfs.io/ipfs/${result[0].hash}`;
-                // setNftDetail(data);
                 let variant = "success";
-                enqueueSnackbar('Image Uploaded to IPFS', { variant });
-                
-                if(typeImage === "glb") {
+                enqueueSnackbar('Image Uploaded to IPFS', { variant });if(typeImage === "glb") {
                     setIsGlbFile(true);
                 }
-                // 
             })
         }
-        // setIsUploadingIPFS(true);
         let fileData = new FormData();
         fileData.append("image", imageNFT);
         axios.post("upload/uploadtos3", fileData).then(
             (response) => {
                 console.log("response", response);
                 setImage(response.data.url);
-                // let data = {...nftDetail};
                 data.nftImage = response.data.url;
                 setNftDetail(data);
                 setIsUploadingIPFS(false);
@@ -176,7 +164,7 @@ const NFTEditModal = (props) => {
         reader.readAsArrayBuffer(e.target.files[0]);
         reader.onloadend = () => {
             console.log("reader.result", reader.result);
-            // setBuffer(Buffer(reader.result));
+            
             ipfs.add(Buffer(reader.result), async (err, result) => {
                 if (err) {
                     console.log("err", err);
@@ -186,8 +174,6 @@ const NFTEditModal = (props) => {
                     return
                 }
                 console.log("HASH", result[0].hash);
-
-                // setIpfsHash(result[0].hash);
                 setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
                 let data = {...nftDetail};
                 data.previewImageURI = `https://ipfs.io/ipfs/${result[0].hash}`;
@@ -223,9 +209,6 @@ const NFTEditModal = (props) => {
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
                                                 <AmbientLight color={0xffffff} />
-                                                {/* <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} /> */}
                                                 <DirectionLight
                                                     color={0xffffff}
                                                     position={{ x: 100, y: 200, z: 100 }}
@@ -331,7 +314,7 @@ const NFTEditModal = (props) => {
                                     <div>
                                         <div>
                                             <AudioPlayer
-                                                // style={{ width: "300px" }}
+                                                
                                                 style={{ borderRadius: "1rem" }}
                                                 autoPlay = {false}
                                                 layout="horizontal"
@@ -342,10 +325,6 @@ const NFTEditModal = (props) => {
                                                 showJumpControls={false}
                                                 header={`Now playing: ${nftDetail.title}`}
                                                 showDownloadProgress
-                                                // onClickPrevious={handleClickPrevious}
-                                                // onClickNext={handleClickNext}
-                                                // onEnded={handleClickNext}
-                                                // other props here
                                             />
                                         </div>
                                         <div className="upload-img">
@@ -540,20 +519,16 @@ const NFTEditModal = (props) => {
                                 <lable component="legend">Select Supply Type</lable>
                                 <RadioGroup row aria-label="position" name="position" defaultValue="top">
                                     <FormControlLabel style={{ color: 'black' }} value="Single" onChange={() => {
-                                        // setSupplyType("Single");
-                                        // setTokenSupply(1);
                                         let data = {...nftDetail};
                                         data.supplytype = "Single";
                                         data.tokensupply = 1
                                         setNftDetail(data);
                                     }} checked={nftDetail.supplytype === 'Single'} control={<Radio color="secondary" />} label="Single" />
                                     <FormControlLabel style={{ color: 'black' }} value="Variable Supply" onChange={() => {
-                                        // setSupplyType("Variable")
                                         let data = {...nftDetail};
                                         data.supplytype = "Variable";
                                         data.tokensupply = 1
                                         setNftDetail(data);
-                                        // setTokenSupply(1);
                                     }} checked={nftDetail.supplytype === 'Variable'} control={<Radio color="secondary" />} label="Variable Supply" />
 
                                 </RadioGroup>
@@ -583,13 +558,11 @@ const NFTEditModal = (props) => {
                                             className="form-control"
                                             onChange={(e) => {
                                                 if (e.target.value > 0) {
-                                                    // setTokenSupply(e.target.value);
                                                     let data = {...nftDetail};
                                                     data.tokensupply = e.target.value;
                                                     setNftDetail(data);
                                                 }
                                                 else {
-                                                    // setTokenSupply(1);
                                                     let data = {...nftDetail};
                                                     data.tokensupply = 1;
                                                     setNftDetail(data);
@@ -646,7 +619,6 @@ const NFTEditModal = (props) => {
                                                     <button
                                                         className="btn btn-submit btn-lg"
                                                         color="primary"
-                                                    // className="btn submit-btn"
                                                         onClick={(e) => handleRemoveProperty(e, index)}
                                                     >
                                                         -
@@ -663,38 +635,11 @@ const NFTEditModal = (props) => {
                                 <button
                                     className="btn btn-submit"
                                     color="primary"
-                                // className="btn submit-btn"
                                     onClick={(e) => handleAddProperty(e)}
                                 >
                                     +
                                 </button>
-                                {/* <Dialog
-                                    fullWidth={true}
-                                    maxWidth={true}
-                                    open={openDialog}
-                                    onClose={onDialogCloseClick}
-                                    aria-labelledby="max-width-dialog-title"
-                                >
-                                    <DialogTitle id="max-width-dialog-title">Enter Properties</DialogTitle>
-                                    <DialogContent>
-                                        <DialogContentText>Enter Properties in key value pair</DialogContentText>
-                                        <form>
-                                            <TextField
-                                                label="Key"
-                                                value={propertyKey}
-                                                onChange={(e) => setPropertyKey(e.target.value)}
-                                            />
-                                            <TextField
-                                                label="Value"
-                                                value={propertyValue}
-                                                onChange={(e) => setPropertyValue(e.target.value)}
-                                                style={{ marginLeft: "5px" }}
-                                            />
-                                            <button className="btn submit-btn" onClick={onClickDialogFormSubmit} >Add</button>
-                                        </form>
-                                    </DialogContent>
-                                </Dialog> */}
-                            
+                               
                             </div>
 
                             <button style={{marginTop: "10px"}} type="button" className="btn submit-btn" onClick={props.handleChangeCollection}>
@@ -710,9 +655,6 @@ const NFTEditModal = (props) => {
                 <Button variant="sceondary" onClick={props.handleClose} >
                     Cancel
                 </Button>
-                {/* <Button variant="primary" onClick={() => updateModal(nftDetail)}>
-                    Update
-                </Button> */}
                 {props.isUploadingData ? (
                     <div className="text-center">
                         <Spinner

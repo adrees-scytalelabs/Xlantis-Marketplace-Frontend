@@ -5,12 +5,11 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -64,7 +63,6 @@ function NewSeason(props) {
       (response) => {
         console.log("response", response);
         setInputList(response.data.Dropdata);
-        // setImageData(response.data.nftsdata);
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -103,7 +101,7 @@ function NewSeason(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleRemoveClick = (index) => {
     console.log("index", index);
@@ -203,7 +201,6 @@ function NewSeason(props) {
                     required
                     options={inputList}
                     value={type}
-                    // disabled={isDisabledImporter}
                     getOptionLabel={(option) => option.title}
                     onChange={(event, value) => {
                       if (value == null) setType("");
@@ -305,7 +302,6 @@ function NewSeason(props) {
           <div className="col-md-12 col-lg-6">
             {types.length > 0 ? (
               <Scrollbars style={{ height: 600 }}>
-                {/* <!-- Change Password Form --> */}
                 <div className="form-group">
                   <div>
                     <Grid
@@ -313,11 +309,9 @@ function NewSeason(props) {
                       spacing={3}
                       direction="row"
                       justify="flex-start"
-                      // alignItems="flex-start"
                     >
                       {types.map((i, index) => (
                         <Grid item xs={12} sm={6} md={6} key={index}>
-                          {/* <Link to={"myDrops/cubes/" + i._id}> */}
                           <Card
                             style={{ height: "100%" }}
                             variant="outlined"
@@ -418,7 +412,6 @@ function NewSeason(props) {
                               </Button>
                             </CardActions>
                           </Card>
-                          {/* </Link> */}
                         </Grid>
                       ))}
                     </Grid>

@@ -102,7 +102,7 @@ function NewSeason(props) {
       termsandconditions: "",
       changePassword: "",
       newRandomDrop: "",
-    }); // eslint-disable-next-line
+    }); 
   }, []);
   const handleRemoveClick = (index) => {
     const list = [...types];

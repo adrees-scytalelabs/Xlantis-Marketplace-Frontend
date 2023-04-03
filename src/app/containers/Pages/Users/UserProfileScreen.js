@@ -159,7 +159,7 @@ function UserProfileScreen(props) {
       });
     }
 
-    // eslint-disable-next-line
+    
   }, [userRole]);
   return (
     <div className="account-page">
@@ -228,10 +228,7 @@ function UserProfileScreen(props) {
                             Cookies.remove("Version");
                             sessionStorage.removeItem("Authorization");
                             sessionStorage.removeItem("Address");
-
                             Cookies.remove("PNT");
-
-                            // web3Modal.clearCachedProvider();
                             window.location.reload(false);
                           }}
                           to="/"
