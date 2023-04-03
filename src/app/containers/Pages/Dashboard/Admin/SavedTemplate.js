@@ -117,34 +117,34 @@ function SavedTemplate(props) {
     setModalState(false);
     setDeleteState(false);
     setUpdateModal(false);
+    handleSavedTemplate();
   };
   //This function open the delete modal
-  const handleDeleteModal = (e,data) => {
+  const handleDeleteModal = (e, data) => {
     e.preventDefault();
     setDeleteData(data);
     setDeleteState(true);
-  }
+  };
   //Call the endpoint of the delete template
-  const deleteResponse = async(data) => {
-    try{
-        //console.log("Template deleted successfully")
-        handleClose();
+  const deleteResponse = async (data) => {
+    try {
+      //console.log("Template deleted successfully")
+      handleClose();
+    } catch (e) {
+      console.log("Error during deletion", e);
     }
-    catch(e){
-      console.log("Error during deletion",e)
-    }
-  }
+  };
   //This function delete the template
   const handleDeleteTemplate = async (e) => {
     e.preventDefault();
     await deleteResponse(deleteData);
-  }
+  };
 
   const handleChangePage = (event, newPage) => {
-   // console.log("newPage", newPage);
+    // console.log("newPage", newPage);
     setPage(newPage);
-   // console.log("Start", newPage * rowsPerPage);
-   // console.log("End", newPage * rowsPerPage + rowsPerPage);
+    // console.log("Start", newPage * rowsPerPage);
+    // console.log("End", newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
@@ -159,9 +159,7 @@ function SavedTemplate(props) {
       axios.get("/super-admin/template").then(
         (response) => {
           setTemplateData(response.data.templates);
-         // console.log("response", response);
-          //console.log("size", response.data.templates[0].properties[0].key);
-         // console.log("Data of the state", templateData);
+
           handleCloseBackdrop();
           // let variant = "success";
           // enqueueSnackbar("Template loaded successfully", { variant });
@@ -181,24 +179,15 @@ function SavedTemplate(props) {
       console.log("Error in axios request to create template", e);
     }
   };
-  const handleUpdatedData = (e,data) => {
-      e.preventDefault();
-      setModalData(data);
-      setUpdateModal(false)
-      setModalState(true);
-      try{
-       // console.log("data updated");
-      }
-      catch(e){
-        console.log("Something wrong with updation",e)
-      }
-  }
+  const handleUpdatedData = (e, data) => {
+    e.preventDefault();
+    setModalData(data);
+    setUpdateModal(false);
+    setModalState(true);
+  };
   useEffect(() => {
-   // console.log("Saved Template")
-   // console.log("Modal Data",modalData)
     setDeleteState("");
-    //setModalState("");
-    //setUpdateModal(true);
+
     handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
@@ -280,20 +269,24 @@ function SavedTemplate(props) {
                 </td>
                 <td className={classes.collectionTitle}>
                   <span className="ml-4">
-                    <button style={{background:'transparent',border:'none'}}>
-                    <DeleteIcon
-                      color="action"
-                      style={{ color: "red" }}
-                      onClick={(e) => handleDeleteModal(e, i)}
-                    ></DeleteIcon>
+                    <button
+                      style={{ background: "transparent", border: "none" }}
+                    >
+                      <DeleteIcon
+                        color="action"
+                        style={{ color: "red" }}
+                        onClick={(e) => handleDeleteModal(e, i)}
+                      ></DeleteIcon>
                     </button>
                   </span>
                   <span className="ml-1">
-                  <button style={{background:'transparent',border:'none'}}>
-                    <EditIcon
-                      style={{ color: `green` }}
-                      onClick={(e) => handleUpdatedData(e, i)}
-                    ></EditIcon>
+                    <button
+                      style={{ background: "transparent", border: "none" }}
+                    >
+                      <EditIcon
+                        style={{ color: `green` }}
+                        onClick={(e) => handleUpdatedData(e, i)}
+                      ></EditIcon>
                     </button>
                   </span>
                 </td>
@@ -305,14 +298,16 @@ function SavedTemplate(props) {
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>
-      <TemplateDetails
-        show={modalState}
-        handleClose={handleClose}
-        templateData={modalData}
-        setTemplateData = {setModalData}
-        updateEnabled ={updateModal}
-        handleUpdateData ={handleUpdatedData}
-      ></TemplateDetails>
+      {modalState === true && (
+        <TemplateDetails
+          show={modalState}
+          handleClose={handleClose}
+          templateData={modalData}
+          setTemplateData={setModalData}
+          updateEnabled={updateModal}
+          handleUpdateData={handleUpdatedData}
+        ></TemplateDetails>
+      )}
       <DeleteModal
         show={deleteState}
         handleClose={handleClose}
