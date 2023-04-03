@@ -1,5 +1,4 @@
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Edit from "@material-ui/icons/Edit";
 import axios from "axios";
@@ -8,6 +7,7 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import r1 from "../../../assets/img/patients/patient.jpg";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
@@ -591,9 +591,7 @@ function SettingDashboardDefault(props) {
         handleClose={() => setShowConfirmationModal(false)}
         updateData={updateData}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

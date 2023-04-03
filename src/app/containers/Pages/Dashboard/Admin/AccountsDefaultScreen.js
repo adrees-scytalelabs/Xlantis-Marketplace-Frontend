@@ -1,5 +1,5 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -37,6 +37,7 @@ import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collect
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -387,9 +388,7 @@ function AccountsDefaultScreen(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

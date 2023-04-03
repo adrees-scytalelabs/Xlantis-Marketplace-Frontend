@@ -2,40 +2,35 @@ import { CardActions, CardContent, Grid } from "@material-ui/core/";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Avatar from "@material-ui/core/Avatar";
-import Backdrop from "@material-ui/core/Backdrop";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import AccessTimeIcon from "@material-ui/icons/AccessTime";
+import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import CheckIcon from "@material-ui/icons/Check";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import axios from "axios";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Button, Row, Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import Countdown from "react-countdown";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Web3 from "web3";
-import MarketPlaceContract from "../../../../components/blockchain/Abis/MarketPlaceContract.json";
-import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NewNFTCard from "../../../../components/Cards/NewNFTCards";
 import TxHistory from "../../../../components/Cards/TxHistory";
-import CubeComponent from "../../../../components/Cube/CubeComponent";
 import HeaderHome from "../../../../components/Headers/Header";
 import ConfirmBuyCubeModal from "../../../../components/Modals/ConfirmBuyCubeModal";
 import LoginErrorModal from "../../../../components/Modals/LoginErrorModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WethModal from "../../../../components/Modals/WethModal";
-import { Alert } from "reactstrap";
-import AccessTimeIcon from "@material-ui/icons/AccessTime";
-import CheckIcon from "@material-ui/icons/Check";
-import AddShoppingCartIcon from "@material-ui/icons/AddShoppingCart";
+import MarketPlaceContract from "../../../../components/blockchain/Abis/MarketPlaceContract.json";
+import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 const newStyles = makeStyles((theme) => ({
   dropTitle: {
@@ -113,7 +108,7 @@ function SaleCubeNFTs(props) {
     jwtDecoded = jwtDecode(jwt);
   }
   const [ownerAudio, setOwnerAudio] = useState(new Audio());
-  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio()); 
+  const [nonOwnerAudio, setNonOwnerAudio] = useState(new Audio());
   const [isClaimingWeth, setIsClaimingWeth] = useState(false);
   const [weth, setWeth] = useState(0);
   const [enableWethButton, setEnableWethButton] = useState(false);
@@ -128,7 +123,7 @@ function SaleCubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); 
+    })();
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -440,7 +435,7 @@ function SaleCubeNFTs(props) {
       const balance = await web3.eth.getBalance(accounts[0]);
       console.log("balance", (balance / 10 ** 18).toString());
       setBalance(balance);
-    })(); 
+    })();
   }, []);
   let getWeth = () => {
     handleShowWeth();
@@ -483,7 +478,7 @@ function SaleCubeNFTs(props) {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        <HeaderHome selectedNav={"Market"} role={null}/>
+        <HeaderHome selectedNav={"Market"} role={null} />
         <div className="card">
           <div className="card-body" style={{ marginTop: "110px" }}>
             {openSpinner ? (
@@ -769,8 +764,8 @@ function SaleCubeNFTs(props) {
                       >
                         {hide
                           ? tokenList.map((i, index) => (
-                              <NewNFTCard data={i[0]} key={index}></NewNFTCard>
-                            ))
+                            <NewNFTCard data={i[0]} key={index}></NewNFTCard>
+                          ))
                           : null}
                       </Grid>
                     </div>
@@ -842,9 +837,7 @@ function SaleCubeNFTs(props) {
         handleClose={handleCloseNetwork}
         network={network}
       />
-      <Backdrop className={classes.backdrop} open={openBackdrop}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={openBackdrop} />
     </div>
   );
 }

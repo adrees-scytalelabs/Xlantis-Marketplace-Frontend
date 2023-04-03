@@ -1,8 +1,7 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { createMuiTheme, Tooltip } from "@material-ui/core";
@@ -11,6 +10,7 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useHistory } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -97,7 +97,7 @@ function WalletEnabled(props) {
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -125,7 +125,7 @@ function WalletEnabled(props) {
 
   useEffect(() => {
     getEnabledWalletAdmins();
-     
+
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -134,12 +134,12 @@ function WalletEnabled(props) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    
+
     setPage(0);
   };
 
   let getEnabledWalletAdmins = () => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v2`)
@@ -194,7 +194,7 @@ function WalletEnabled(props) {
     <div>
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-          
+
           <Table responsive>
             <thead>
               <tr>
@@ -245,12 +245,12 @@ function WalletEnabled(props) {
                     </button>
                   </td>
                   <td>
-                    
+
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className={classes.approveBtn}
-                          
+
                           onClick={(e) => {
                             handleWalletDisable(e, i._id);
                           }}
@@ -259,7 +259,7 @@ function WalletEnabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    
+
                   </td>
                 </tr>
               </tbody>
@@ -267,7 +267,7 @@ function WalletEnabled(props) {
           </Table>
         </div>
       </div>
-      
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -282,9 +282,7 @@ function WalletEnabled(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

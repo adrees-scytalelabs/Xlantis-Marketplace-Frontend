@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
-
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
@@ -40,6 +37,7 @@ import ListIcon from "@material-ui/icons/List";
 import { Col, Row, Table } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import Web3 from "web3";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 import Footer from "../../../../components/Footers/Footer";
 import HeaderHome from "../../../../components/Headers/Header";
@@ -1246,9 +1244,7 @@ const FixedDropSingleNFTHome = () => {
       <BidTxModal handleClose={handleCloseModalBid} open={modalOpenBid} handleBid={handleBidSubmitSSO} handlePay={openTransak} dropData={dataBid} isOpen={modalOpenBid} />
 
       <BuyTxModal handleClose={handleCloseModal} open={modalOpen} handleBuy={SSOBuy} handlePay={openTransak} dropData={data} isOpen={modalOpen} />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </>
   );
 };

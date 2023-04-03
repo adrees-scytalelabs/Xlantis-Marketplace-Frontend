@@ -1,6 +1,6 @@
 import { Card, CardContent, Grid } from "@material-ui/core/";
 import Avatar from "@material-ui/core/Avatar";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -24,6 +24,7 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -827,9 +828,7 @@ function NewCube(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

@@ -1,14 +1,14 @@
 import { Tooltip } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useHistory } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -79,7 +79,7 @@ function AccountApprovalSSO(props) {
   const [modalData, setModalData] = useState();
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -118,7 +118,7 @@ function AccountApprovalSSO(props) {
       properties: "",
       template: "",
       saved: "",
-    }); 
+    });
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -127,12 +127,12 @@ function AccountApprovalSSO(props) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    
+
     setPage(0);
   };
 
   let getUnverifiedAdminsSSO = (start, end) => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/unverified/${start}/${end}?userType=v1`)
@@ -185,10 +185,10 @@ function AccountApprovalSSO(props) {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div>
         <div className="row no-gutters">
-          
+
           <Table responsive>
             <thead>
               <tr>
@@ -248,7 +248,7 @@ function AccountApprovalSSO(props) {
                     </button>
                   </td>
                   <td>
-                    
+
                     {i.isVerified ? (
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button disabled>
@@ -272,7 +272,7 @@ function AccountApprovalSSO(props) {
                       </div>
                     )}
 
-                    
+
                   </td>
                 </tr>
               ))}
@@ -280,7 +280,7 @@ function AccountApprovalSSO(props) {
           </Table>
         </div>
       </div>
-      
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -295,9 +295,7 @@ function AccountApprovalSSO(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
