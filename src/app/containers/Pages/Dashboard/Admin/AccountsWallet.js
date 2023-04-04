@@ -68,25 +68,15 @@ const useStyles = makeStyles((theme) => ({
 function AccountsWallet(props) {
   const classes = useStyles();
   const [modalData, setModalData] = useState();
-  const [network, setNetwork] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
-  let [isSaving, setIsSaving] = useState(false);
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); 
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
+ 
   useEffect(() => {
     getUnverifiedWallet(0, rowsPerPage);
     props.setActiveTab({
@@ -219,11 +209,7 @@ function AccountsWallet(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
+
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

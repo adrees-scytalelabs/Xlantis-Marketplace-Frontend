@@ -33,14 +33,6 @@ const AdminSSORedirect = () => {
     console.log("inputs are not undefined");
   }
 
-  var testInputs = {
-    domain: "Nike",
-    companyName: "Nike",
-    designation: "CTO",
-    industryType: "Sports",
-    reasonForInterest: "Seperate domain to use xManna marketplace",
-  };
-
   const handleSubmitDetails = (event) => {
     event.preventDefault();
     addDetails();

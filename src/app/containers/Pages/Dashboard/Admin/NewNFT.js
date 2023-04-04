@@ -257,17 +257,7 @@ function NewNFT(props) {
   let [description, setDescription] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
 
-  let [value, setValue] = useState("");
-  let [key, setKey] = useState("");
 
-  let [rarities] = useState([
-    "Mastercraft",
-    "Legendary",
-    "Epic",
-    "Rare",
-    "Uncommon",
-    "Common",
-  ]);
   let [supplyType, setSupplyType] = useState("Single");
   let [nftContractAddress, setNftContractAddress] = useState("");
 

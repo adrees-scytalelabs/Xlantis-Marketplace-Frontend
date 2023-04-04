@@ -102,22 +102,16 @@ function DropApproval(props) {
   let [isAuctionApproved, setIsAuctionApproved] = useState(false);
   let [approvingAuction, setApprovingAuction] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
-  const handleShowNetworkModal = () => setShowNetworkModal(true);
   const [show, setShow] = useState(false);
   let [versionB, setVersionB] = useState("");
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
 
-  const history = useHistory();
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));

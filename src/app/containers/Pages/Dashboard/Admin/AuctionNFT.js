@@ -123,7 +123,6 @@ const AuctionNFT = (props) => {
   const { nftId, dropId } = useParams();
   let [bidDetail, setBidDetail] = useState([]);
   const location = useLocation();
-  const { nftContractAddress } = location.state;
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);

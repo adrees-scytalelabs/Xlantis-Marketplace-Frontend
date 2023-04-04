@@ -40,12 +40,9 @@ const useStyles = makeStyles({
 
 function MyCollection(props) {
   
-  const { enqueueSnackbar } = useSnackbar();
   let [collections, setCollections] = useState([]); 
-  let [collection, setCollection] = useState("");
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); 
-  let [isCreating, setIsCreating] = useState(false);
   let [open, setOpen] = useState(false);
 
   let [collectionCount, setCollectionCount] = useState(0);
@@ -53,8 +50,6 @@ function MyCollection(props) {
 
   const classes = useStyles();
   let getCollections = (start, end) => {
-    const version = Cookies.get("Version");
-    //console.log("version", version);
 
 
     setOpen(true);

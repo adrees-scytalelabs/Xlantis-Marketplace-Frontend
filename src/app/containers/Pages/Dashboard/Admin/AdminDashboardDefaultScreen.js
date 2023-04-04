@@ -36,12 +36,8 @@ function AdminDashboardDefaultScreen(props) {
       });
   };
 
-  const [modalOpen, setMOdalOpen] = useState(false);
-  const [data, setData] = useState();
 
-  const handleCloseModal = () => {
-    setMOdalOpen(false);
-  };
+  
 
   useEffect(() => {
     props.setActiveTab({

@@ -87,7 +87,6 @@ const makeTheme = createMuiTheme({
 function SSOEnabled(props) {
   const classes = useStyles();
 
-  const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
   let [admins, setSSOAdmins] = useState([]);
@@ -96,8 +95,6 @@ function SSOEnabled(props) {
   let [adminCount, setSSOAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); 
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
@@ -284,11 +281,7 @@ function SSOEnabled(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
+
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

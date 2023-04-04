@@ -109,11 +109,9 @@ const customTheme = createMuiTheme({
 const NFTBuy = (props) => {
   let location = useLocation();
   const classes = useStyles();
-  const { nftId } = useParams();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
-  const [keys, setKeys] = useState([]);
   let [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 

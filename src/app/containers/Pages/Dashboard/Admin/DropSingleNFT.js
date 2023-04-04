@@ -131,7 +131,6 @@ const customTheme = createMuiTheme({
 const DropSingleNFT = (props) => {
   let location = useLocation();
   const classes = useStyles();
-  const { nftId } = useParams();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
@@ -144,7 +143,6 @@ const DropSingleNFT = (props) => {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   let [show, setShow] = useState(false);
   let [bidDetail, setBidDetail] = useState([]);
-  let [isHovering, setIsHovering] = useState(false);
   let [contractType, setContractType] = useState("");
   let [versionB, setVersionB] = useState("");
   let [bidId, setBidId] = useState();

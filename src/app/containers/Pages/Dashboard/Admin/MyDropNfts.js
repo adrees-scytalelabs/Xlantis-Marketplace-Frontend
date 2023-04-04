@@ -77,22 +77,9 @@ function MyDropNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
-  const [network, setNetwork] = useState("");
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  let [openDialog, setOpenDialog] = useState(false);
-  let [openEditModal, setOpenEditModal] = useState(false);
   let [audio, setAudio] = useState();
-  let [nftDetail, setNftDetail] = useState({});
   let [versionB, setVersionB] = useState("");
-  let handleOpenNFTDetailModal = (nftObject) => {
-    setNftDetail(nftObject);
-    setOpenDialog(true);
-  };
 
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
-  const handleShowNetworkModal = () => setShowNetworkModal(true);
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -102,7 +89,6 @@ function MyDropNFTs(props) {
   };
   let getNFTs = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
     //console.log("nftids", location.state.nftId);
     //console.log("dropId", location.state.dropId);
     //console.log("saleType", location.state.saleType);
