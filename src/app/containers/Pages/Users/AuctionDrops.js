@@ -18,7 +18,7 @@ import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
-
+import MessageCard from '../../../components/MessageCards.js/MessageCard';
 
 
 
@@ -118,11 +118,8 @@ function AuctionDrops() {
                                     <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                                 </div>
                             ) : tokenList.length === 0 ? (
-                                <Card variant="outlined" style={{ padding: "40px", marginTop: '20px', marginBottom: '20px' }}>
-                                    <Typography variant="body2" className="text-center" color="textSecondary" component="p"  >
-                                        <strong>No items to display </strong>
-                                    </Typography>
-                                </Card>
+                                <MessageCard msg = "No items to display"></MessageCard>
+
                             ) : (
                                 <Grid
                                     container

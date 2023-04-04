@@ -16,6 +16,7 @@ import { Link } from "react-router-dom";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { truncate } from "../../../../assets/js/utils";
 import { Alert } from "@material-ui/lab";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -178,24 +179,7 @@ function DropsPage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
           ) : (
             <Grid
               container

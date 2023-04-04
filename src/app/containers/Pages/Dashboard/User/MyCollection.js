@@ -16,6 +16,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -193,23 +194,8 @@ function MyCollection(props) {
               </Spinner>
             </div>
           ) : collections.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                color="textSecondary"
-                component="p"
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
+
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (

@@ -16,6 +16,7 @@ import { Spinner } from "react-bootstrap";
 import CornerRibbon from "react-corner-ribbon";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import { truncate } from "../../../../assets/js/utils";
+import MessageCardDropNfts from "../../../../components/MessageCards.js/MessageCardDropNfts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -361,26 +362,7 @@ function MyNFTs(props) {
                   </span>
                 </div>
               ) : tokenList.length === 0 ? (
-                <Card
-                  variant="outlined"
-                  style={{
-                    padding: "40px",
-                    paddingTop: "80px",
-                    marginTop: "20px",
-                    marginBottom: "20px",
-                    backgroundColor: "#000",
-                    marginLeft: "20%",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    className="text-center"
-                    component="p"
-                    style={{ color: "#fff" }}
-                  >
-                    <strong>No items to display </strong>
-                  </Typography>
-                </Card>
+                <MessageCardDropNfts msg = "No items to display"></MessageCardDropNfts>
               ) : (
                 <Grid
                   container

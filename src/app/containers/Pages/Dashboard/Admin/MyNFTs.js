@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { nftImage } from "../../../../assets/js/images";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles({
   root: {
@@ -188,24 +189,7 @@ function MyNFTs(props) {
               </div>
             </div>
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
