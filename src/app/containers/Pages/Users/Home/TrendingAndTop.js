@@ -14,6 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -242,24 +243,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : activeFixedDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff" }}
-                      >
-                        <strong>No Drops on Sale</strong>
-                      </Typography>
-                    </Card>
+                      <MessageCard msg = "No Drops on Sale"></MessageCard>
                   ) : (
                     <div
                       className="row no-gutters w-100 align-items-center position-relative "
@@ -286,25 +270,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : activeAuctionDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff", backgroundColor: "black" }}
-                      >
-                        {/* <strong>No Drops On Auction</strong> */}
-                        <strong>This feature is coming soon</strong>
-                      </Typography>
-                    </Card>
+                    <MessageCard msg = "This feature is coming soon"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -320,24 +286,8 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "black",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff", backgroundColor: "black" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  
+                  <MessageCard msg = "No items to display"></MessageCard>
                 )}
               </div>
             </div>
@@ -353,24 +303,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingFixedDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff", backgroundColor: "black" }}
-                      >
-                        <strong>No Upcoming Drop Sales</strong>
-                      </Typography>
-                    </Card>
+                    <MessageCard msg = "No Upcoming Drop Sales"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -393,24 +326,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingAuctionDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff", backgroundColor: "black" }}
-                      >
-                        <strong>No Pending Drops For Auction</strong>
-                      </Typography>
-                    </Card>
+                    <MessageCard msg = "No Pending Drops For Auction"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -426,24 +342,7 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "black",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff", backgroundColor: "black" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "No items to display"></MessageCard>
                 )}
               </div>
             </div>
@@ -459,24 +358,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : closedFixedDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff", backgroundColor: "black" }}
-                      >
-                        <strong>No items to display</strong>
-                      </Typography>
-                    </Card>
+                    <MessageCard msg = "No items to display"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -499,24 +381,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : closedAuctionDrop.length === 0 ? (
-                    <Card
-                      variant="outlined"
-                      style={{
-                        padding: "40px",
-                        marginTop: "20px",
-                        marginBottom: "20px",
-                        backgroundColor: "black",
-                      }}
-                    >
-                      <Typography
-                        variant="body2"
-                        className="text-center"
-                        component="p"
-                        style={{ color: "#fff", backgroundColor: "black" }}
-                      >
-                        <strong>No items to display</strong>
-                      </Typography>
-                    </Card>
+                    <MessageCard msg = "No items to display"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -532,24 +397,7 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "black",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff", backgroundColor: "black" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "No items to display"></MessageCard>
                 )}
               </div>
             </div>

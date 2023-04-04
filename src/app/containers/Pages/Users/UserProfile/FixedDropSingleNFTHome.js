@@ -14,7 +14,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 import {
   Accordion,
   AccordionDetails,
@@ -1196,24 +1196,7 @@ const FixedDropSingleNFTHome = () => {
               style={{ minHeight: "70vh" }}
             >
               <div className="col-12 text-center">
-                <Card
-                  variant="outlined"
-                  style={{
-                    padding: "40px",
-                    marginTop: "20px",
-                    marginBottom: "20px",
-                    backgroundColor: "#000",
-                  }}
-                >
-                  <Typography
-                    variant="body2"
-                    className="text-center"
-                    component="p"
-                    style={{ color: "#fff" }}
-                  >
-                    <strong>No items to display </strong>
-                  </Typography>
-                </Card>
+                <MessageCard msg = "No items to display"></MessageCard>
               </div>
               <div className="col-12 mt-4 text-center">
                 <button

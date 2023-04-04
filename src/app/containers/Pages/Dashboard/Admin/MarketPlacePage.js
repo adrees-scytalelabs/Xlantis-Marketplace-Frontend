@@ -17,6 +17,7 @@ import { useRouteMatch } from "react-router-dom";
 import Countdown from "react-countdown";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { truncate } from "../../../../assets/js/utils";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -160,24 +161,7 @@ function MarketPlacePage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="div"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
           ) : (
             <Grid
               container

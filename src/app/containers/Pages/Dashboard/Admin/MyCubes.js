@@ -13,7 +13,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
-
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -144,23 +144,7 @@ function MyCubes(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <Card
-                variant="outlined"
-                style={{
-                  padding: "40px",
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  className="text-center"
-                  color="textSecondary"
-                  component="p"
-                >
-                  <strong>No items to display </strong>
-                </Typography>
-              </Card>
+              <MessageCard msg = "No items to display"></MessageCard>
             ) : (
               <Grid
                 container

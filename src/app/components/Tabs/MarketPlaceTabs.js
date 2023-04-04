@@ -17,6 +17,7 @@ import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
+import MessageCard from "../MessageCards.js/MessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -244,24 +245,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "No items to display"></MessageCard>
                 )}
               </div>
             </div>
@@ -319,25 +303,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      {/* <strong>No items to display </strong> */}
-                      <strong>This feature is coming soon</strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "This feature is coming soon"></MessageCard>
                 )}
               </div>
             </div>
