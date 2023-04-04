@@ -3,27 +3,24 @@ import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Avatar from "@material-ui/core/Avatar";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import axios from "axios";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Button, Row, Spinner } from "react-bootstrap";
 import Countdown from "react-countdown";
 import { Link, useHistory, useParams } from "react-router-dom";
+import { Alert } from "reactstrap";
 import Web3 from "web3";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import BiddingHistory from "../../../../components/Cards/BiddingHistory";
 import NewNFTCard from "../../../../components/Cards/NewNFTCards";
 import TxHistory from "../../../../components/Cards/TxHistory";
@@ -33,7 +30,9 @@ import ConfirmBidModal from "../../../../components/Modals/ConfirmBidModal";
 import LoginErrorModal from "../../../../components/Modals/LoginErrorModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WethModal from "../../../../components/Modals/WethModal";
-import { Alert } from "reactstrap";
+import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
+import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -1531,9 +1530,7 @@ function AuctionCubeNFTs(props) {
         handleClose={handleCloseNetwork}
         network={network}
       />
-      <Backdrop className={classes.backdrop} open={openBackdrop}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={openBackdrop}/>
     </div>
   );
 }

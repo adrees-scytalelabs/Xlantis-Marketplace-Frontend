@@ -3,12 +3,11 @@ import {
   CardActionArea,
   Grid
 } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
@@ -29,6 +28,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import ipfs from "../../../../components/IPFS/ipfs";
 import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
@@ -408,7 +408,7 @@ function NewNFT(props) {
       setCollection(JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
-    } 
+    }
   };
 
   useEffect(() => {
@@ -2523,9 +2523,7 @@ function NewNFT(props) {
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

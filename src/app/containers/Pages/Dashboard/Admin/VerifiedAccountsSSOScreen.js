@@ -1,38 +1,14 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
+
 import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -117,7 +93,7 @@ function VerifiedAccountsSSOScreen(props) {
 
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -146,7 +122,7 @@ function VerifiedAccountsSSOScreen(props) {
       properties: "",
       template: "",
       saved: "",
-    }); 
+    });
   }, []);
   const handleModalOpen = (e, data) => {
     e.preventDefault();
@@ -158,7 +134,7 @@ function VerifiedAccountsSSOScreen(props) {
     handleClose();
   };
   const handleChangePage = (event, newPage) => {
-   // console.log("newPage", newPage);
+    // console.log("newPage", newPage);
     setPage(newPage);
     //console.log("Start", newPage * rowsPerPage);
     //console.log("End", newPage * rowsPerPage + rowsPerPage);
@@ -175,12 +151,12 @@ function VerifiedAccountsSSOScreen(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
-       // console.log("response.data", response.data);
+        // console.log("response.data", response.data);
         setAdmins(response.data.Admins);
         setAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -209,11 +185,11 @@ function VerifiedAccountsSSOScreen(props) {
       adminId: verifyAdminId,
     };
 
-  //  console.log("data", data);
+    //  console.log("data", data);
 
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
-     //   console.log("admin verify response: ", response);
+        //   console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
@@ -233,10 +209,10 @@ function VerifiedAccountsSSOScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div>
         <div className="row no-gutters">
-          
+
           <Table responsive>
             <thead>
               <tr>
@@ -304,7 +280,7 @@ function VerifiedAccountsSSOScreen(props) {
           </Table>
         </div>
       </div>
-      
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -319,9 +295,7 @@ function VerifiedAccountsSSOScreen(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

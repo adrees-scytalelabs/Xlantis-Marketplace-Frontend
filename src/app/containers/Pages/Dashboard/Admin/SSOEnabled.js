@@ -1,14 +1,14 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { createMuiTheme, Tooltip } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useHistory } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -95,7 +95,7 @@ function SSOEnabled(props) {
 
   let [adminCount, setSSOAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
@@ -124,7 +124,7 @@ function SSOEnabled(props) {
   useEffect(() => {
     getEnabledSSOAdmins();
 
-     
+
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -133,12 +133,12 @@ function SSOEnabled(props) {
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    
+
     setPage(0);
   };
 
   let getEnabledSSOAdmins = () => {
-    
+
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v1`)
@@ -193,7 +193,7 @@ function SSOEnabled(props) {
     <div>
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-          
+
           <Table responsive>
             <thead>
               <tr>
@@ -252,12 +252,12 @@ function SSOEnabled(props) {
                     </button>
                   </td>
                   <td>
-                    
+
                     {i.isEnabled ? (
                       <div className="row no-gutters justify-content-center align-items-center ml-4">
                         <Button
                           className={classes.approveBtn}
-                          
+
                           onClick={(e) => {
                             handleDisable(e, i._id);
                           }}
@@ -266,7 +266,7 @@ function SSOEnabled(props) {
                         </Button>
                       </div>
                     ) : null}
-                    
+
                   </td>
                 </tr>
               </tbody>
@@ -274,7 +274,7 @@ function SSOEnabled(props) {
           </Table>
         </div>
       </div>
-      
+
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -289,9 +289,7 @@ function SSOEnabled(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

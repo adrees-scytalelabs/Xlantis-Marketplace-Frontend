@@ -1,13 +1,13 @@
 import { Tooltip, createMuiTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
 import { useHistory } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -131,10 +131,10 @@ function VerifiedAccountsDefaultScreen(props) {
     });
   }, []);
   const handleChangePage = (event, newPage) => {
-   // console.log("newPage", newPage);
+    // console.log("newPage", newPage);
     setPage(newPage);
-   // console.log("Start", newPage * rowsPerPage);
-   // console.log("End", newPage * rowsPerPage + rowsPerPage);
+    // console.log("Start", newPage * rowsPerPage);
+    // console.log("End", newPage * rowsPerPage + rowsPerPage);
     getUnverifiedAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
@@ -161,7 +161,7 @@ function VerifiedAccountsDefaultScreen(props) {
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
-       // console.log("response.data", response.data);
+        // console.log("response.data", response.data);
         setAdmins(response.data.Admins);
         setAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -186,7 +186,7 @@ function VerifiedAccountsDefaultScreen(props) {
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v2`)
       .then((response) => {
-       // console.log("response.data", response.data);
+        // console.log("response.data", response.data);
         setWalletAdmins(response.data.Admins);
         setWalletAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -213,11 +213,11 @@ function VerifiedAccountsDefaultScreen(props) {
       adminId: verifyAdminId,
     };
 
-   // console.log("data", data);
+    // console.log("data", data);
 
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
-      //  console.log("admin verify response: ", response);
+        //  console.log("admin verify response: ", response);
         let variant = "success";
         enqueueSnackbar("Admin Verified Successfully.", { variant });
         handleCloseBackdrop();
@@ -363,9 +363,7 @@ function VerifiedAccountsDefaultScreen(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
