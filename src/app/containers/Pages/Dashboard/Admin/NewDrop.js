@@ -28,6 +28,7 @@ import r1 from "../../../../assets/img/patients/patient.jpg";
 import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import UploadFile from "../../../../components/Upload/UploadFile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -130,7 +131,6 @@ function NewDrop(props) {
   };
 
   const history = useHistory();
-
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -450,11 +450,9 @@ function NewDrop(props) {
         enqueueSnackbar("Unable to Upload Image", { variant });
       }
     );
-
   };
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -478,85 +476,23 @@ function NewDrop(props) {
                 <div className="form-group">
                   <div className="form-group">
                     <label>Select Banner Image</label>
-                    <div className="filter-widget">
-                      <div className="form-group">
-                        <div className="no-gutters align-items-end justify-content-start">
-                          <div className="co-12 col-md-auto drop-banner-img mr-3">
-                            <img src={bannerImage} alt="Selfie" />
-                          </div>
-                          <div className="co-12 col-md-auto">
-                            <label
-                              htmlFor="uploadBannerImg"
-                              className="uploadLabel"
-                            >
-                              {isUploadingBanner ? (
-                                <div className="text-center">
-                                  <Spinner
-                                    animation="border"
-                                    role="status"
-                                    style={{ color: "#fbfeff" }}
-                                  ></Spinner>
-                                </div>
-                              ) : (
-                                "Choose File"
-                              )}
-                            </label>
-                            <input
-                              name="sampleFile"
-                              type="file"
-                              id="uploadBannerImg"
-                              accept=".png,.jpg,.jpeg"
-                              onChange={onChangeBannerFile}
-                              hidden
-                            />
-                            <small className="form-text text-muted">
-                              Allowed JPG, JPEG, PNG Max size of 5MB
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <UploadFile
+                      fileURL={bannerImage}
+                      isUploading={isUploadingBanner}
+                      changeFile={onChangeBannerFile}
+                      class="co-12 col-md-auto drop-banner-img mr-3"
+                      accept=".png,.jpg,.jpeg,.gif"
+                    />
                   </div>
                   <div className="form-group">
                     <label>Select Title Image</label>
-                    <div className="filter-widget">
-                      <div className="form-group">
-                        <div className="no-gutters align-items-end justify-content-start">
-                          <div className="co-12 col-md-auto profile-img mr-3">
-                            <img src={image} alt="Selfie" />
-                          </div>
-                          <div className="co-12 col-md-auto">
-                            <label
-                              htmlFor="uploadPreviewImg"
-                              className="uploadLabel"
-                            >
-                              {isUploadingIPFS ? (
-                                <div className="text-center">
-                                  <Spinner
-                                    animation="border"
-                                    role="status"
-                                    style={{ color: "#fbfeff" }}
-                                  ></Spinner>
-                                </div>
-                              ) : (
-                                "Choose File"
-                              )}
-                            </label>
-                            <input
-                              name="sampleFile"
-                              type="file"
-                              id="uploadPreviewImg"
-                              accept=".png,.jpg,.jpeg,.gif"
-                              onChange={onChangeFile}
-                              hidden
-                            />
-                            <small className="form-text text-muted">
-                              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                    <UploadFile
+                      fileURL={image}
+                      isUploading={isUploadingIPFS}
+                      changeFile={onChangeFile}
+                      class="co-12 col-md-auto profile-img mr-3"
+                      accept=".png,.jpg,.jpeg,.gif"
+                    />
                   </div>
                   <div className="form-group newNftFields">
                     <label>Drop Name</label>
@@ -738,10 +674,7 @@ function NewDrop(props) {
                             className={classes.root}
                           >
                             <CardActionArea>
-                              <CardMedia
-                                className={classes.media}
-                                title=""
-                              >
+                              <CardMedia className={classes.media} title="">
                                 <CubeComponent1
                                   data={typesImages}
                                   index={index}

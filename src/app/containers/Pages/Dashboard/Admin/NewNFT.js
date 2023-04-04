@@ -1,8 +1,5 @@
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import {
-  CardActionArea,
-  Grid
-} from "@material-ui/core/";
+import { CardActionArea, Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -22,10 +19,7 @@ import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Spinner } from "react-bootstrap";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
 import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
@@ -36,6 +30,7 @@ import NFTEditModal from "../../../../components/Modals/NFTEditModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 
 const themeTemplate = createMuiTheme({
@@ -242,7 +237,6 @@ function NewNFT(props) {
     }
   };
 
-
   const handleTemplatePropertyChange = (index, e) => {
     let data = [...properties];
 
@@ -369,7 +363,6 @@ function NewNFT(props) {
           console.log(error);
           console.log(error.response);
         }
-
       }
     );
   };
@@ -390,7 +383,6 @@ function NewNFT(props) {
           console.log(error);
           console.log(error.response);
         }
-
       }
     );
   };
@@ -408,7 +400,7 @@ function NewNFT(props) {
       setCollection(JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
-    } 
+    }
   };
 
   useEffect(() => {
@@ -478,7 +470,6 @@ function NewNFT(props) {
       setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
-
     }
   };
 
@@ -607,8 +598,7 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    }
-    else if (
+    } else if (
       tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
@@ -694,9 +684,6 @@ function NewNFT(props) {
                     supplytype: supplyType,
 
                     nftId: response.data.nftId,
-
-
-
                   },
                 ]);
 
@@ -900,7 +887,6 @@ function NewNFT(props) {
   };
 
   let handleCloseNFTDetailModal = () => {
-
     setOpenDialog(false);
   };
 
@@ -978,7 +964,6 @@ function NewNFT(props) {
         enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
       });
     };
-
   };
 
   let handleChangeCollectionClose = () => {
@@ -1058,8 +1043,7 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Description", { variant });
-    }
-    else if (collection === "") {
+    } else if (collection === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Collection Name", { variant });
     } else if (
@@ -1220,7 +1204,6 @@ function NewNFT(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -1244,227 +1227,18 @@ function NewNFT(props) {
               <div className="form-group">
                 {/* Image Upload */}
                 <label className="mb-0 p-1">Select Artwork</label>
-                {isGlbFile ? (
-                  <div>
-                    <div className="form-group">
-                      <div className="row no-gutters align-items-end justify-content-start">
-                        <div className="co-12 col-md-auto profile-img mr-3">
-                          <GLTFModel src={nftURI} width={250} height={250}>
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 100, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 50, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 0, z: 0 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 100, z: 200 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: -100, y: 200, z: -100 }}
-                            />
-                          </GLTFModel>
-                        </div>
-                        <div className="co-12 col-md-auto">
-                          <label for="uploadGlbFile" className="uploadLabel">
-                            {isUploadingIPFS ? (
-                              <div className="text-center">
-                                <Spinner
-                                  animation="border"
-                                  role="status"
-                                  style={{ color: "#fbfeff" }}
-                                ></Spinner>
-                              </div>
-                            ) : (
-                              "Choose File"
-                            )}
-                          </label>
-                          <input
-                            name="sampleFile"
-                            type="file"
-                            id="uploadGlbFile"
-                            accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
-                            onChange={onChangeFile}
-                            hidden
-                          />
-                          <small className="form-text text-muted">
-                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                    <label>Select Preview Image</label>
-                    <div className="form-group">
-                      <div className="row no-gutters align-items-end justify-content-start">
-                        <div className="co-12 col-md-auto profile-img mr-3">
-                          <img src={previewImageURI} alt="Selfie" />
-                        </div>
-                        <div className="co-12 col-md-auto">
-                          <label
-                            for="uploadPreviewImg1"
-                            className="uploadLabel"
-                          >
-                            {isUploadingPreview ? (
-                              <div className="text-center">
-                                <Spinner
-                                  animation="border"
-                                  role="status"
-                                  style={{ color: "#fbfeff" }}
-                                ></Spinner>
-                              </div>
-                            ) : (
-                              "Choose File"
-                            )}
-                          </label>
-                          <input
-                            name="sampleFile"
-                            type="file"
-                            id="uploadPreviewImg1"
-                            accept=".png,.jpg,.jpeg"
-                            onChange={onChangePreviewImage}
-                            hidden
-                          />
-                          <small className="form-text text-muted">
-                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : isMp3File ? (
-                  <div>
-                    <div className="form-group">
-                      <div className="row no-gutters align-items-end justify-content-start">
-                        <div className="co-12 col-md-auto profile-img mr-3">
-                          <AudioPlayer
-                            style={{ borderRadius: "1rem" }}
-                            autoPlay
-                            layout="horizontal"
-                            src={nftURI}
-                            onPlay={(e) => console.log("onPlay")}
-                            showSkipControls={false}
-                            showJumpControls={false}
-                            header={`Now playing: ${name}`}
-                            showDownloadProgress
-                          />
-                        </div>
-                        <div className="co-12 col-md-auto">
-                          <label for="uploadMp3" className="uploadLabel">
-                            {isUploadingIPFS ? (
-                              <div className="text-center">
-                                <Spinner
-                                  animation="border"
-                                  role="status"
-                                  style={{ color: "#fbfeff" }}
-                                ></Spinner>
-                              </div>
-                            ) : (
-                              "Choose File"
-                            )}
-                          </label>
-                          <input
-                            name="sampleFile"
-                            type="file"
-                            id="uploadMp3"
-                            accept=".mp3"
-                            onChange={onChangeFile}
-                            hidden
-                          />
-                          <small className="form-text text-muted">
-                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                    <label>Select Preview Image</label>
-                    <div className="filter-widget">
-                      <div className="form-group">
-                        <div className="row no-gutters align-items-end justify-content-start">
-                          <div className="co-12 col-md-auto profile-img mr-3">
-                            <img src={previewImageURI} alt="Selfie" />
-                          </div>
-                          <div className="co-12 col-md-auto">
-                            <label
-                              for="uploadPreviewImg"
-                              className="uploadLabel"
-                            >
-                              {isUploadingPreview ? (
-                                <div className="text-center">
-                                  <Spinner
-                                    animation="border"
-                                    role="status"
-                                    style={{ color: "#fbfeff" }}
-                                  ></Spinner>
-                                </div>
-                              ) : (
-                                "Choose File"
-                              )}
-                            </label>
-                            <input
-                              name="sampleFile"
-                              type="file"
-                              id="uploadPreviewImg"
-                              accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
-                              onChange={onChangePreviewImage}
-                              hidden
-                            />
-                            <small className="form-text text-muted">
-                              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div>
-                    <div className="form-group">
-                      <div className="row no-gutters align-items-end justify-content-start">
-                        <div className="co-12 col-md-auto profile-img mr-3">
-                          <img src={image} alt="Selfie" />
-                        </div>
-                        <div className="co-12 col-md-auto">
-                          <label for="upload" className="uploadLabel">
-                            {isUploadingIPFS ? (
-                              <div className="text-center">
-                                <Spinner
-                                  animation="border"
-                                  role="status"
-                                  style={{ color: "#fbfeff" }}
-                                ></Spinner>
-                              </div>
-                            ) : (
-                              "Choose File"
-                            )}
-                          </label>
-                          <input
-                            name="sampleFile"
-                            type="file"
-                            id="upload"
-                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
-                            onChange={onChangeFile}
-                            hidden
-                          />
-                          <small className="form-text text-muted">
-                            Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                          </small>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-
+                <NFTUpload
+                  image={image}
+                  name={name}
+                  isMp3File={isMp3File}
+                  onChangePreviewImage={onChangePreviewImage}
+                  isGlbFile={isGlbFile}
+                  nftURI={nftURI}
+                  isUploadingIPFS={isUploadingIPFS}
+                  onChangeFile={onChangeFile}
+                  previewImageURI={previewImageURI}
+                  isUploadingPreview={isUploadingPreview}
+                />
                 {/* Fields */}
                 <div className="form-group newNftFields">
                   <label>Title</label>
@@ -2118,7 +1892,7 @@ function NewNFT(props) {
                                 <span style={{ fontSize: "0.9rem" }}>
                                   Single{" "}
                                   <i
-                                    class="fa fa-info-circle"
+                                    className="fa fa-info-circle"
                                     aria-hidden="true"
                                   ></i>
                                 </span>
@@ -2357,12 +2131,12 @@ function NewNFT(props) {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-                      name === "" ||
-                      description === "" ||
-                      tokenSupply === "" ||
-                      collection === "" ||
-                      tokenSupply <= 0 ||
-                      isUploadingData === true ? (
+                    name === "" ||
+                    description === "" ||
+                    tokenSupply === "" ||
+                    collection === "" ||
+                    tokenSupply <= 0 ||
+                    isUploadingData === true ? (
                       <Tooltip
                         title={
                           tokenSupply <= 0
@@ -2420,8 +2194,7 @@ function NewNFT(props) {
                             <CardMedia
                               className={classes.media}
                               image={i.nftURI}
-                            >
-                            </CardMedia>
+                            />
                           </Card>
                         </CardActionArea>
                         <CardActions>
@@ -2493,13 +2266,13 @@ function NewNFT(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      ></NetworkErrorModal>
+      />
       <NFTDetailModal
         show={openDialog}
         handleClose={handleCloseNFTDetailModal}
         nftDetail={nftDetail}
         handleEdit={handleEdit}
-      ></NFTDetailModal>
+      />
       <NFTEditModal
         show={openEditModal}
         handleClose={handleEditClose}
@@ -2507,7 +2280,7 @@ function NewNFT(props) {
         onUpdate={onUpdateEditModal}
         handleChangeCollection={handleChangeCollectionOpen}
         isUploadingData={isUploadingData}
-      ></NFTEditModal>
+      />
       <NewTamplateModal
         handleClose={handleNewTemplateModalClose}
         show={newTemplateModalShow}
@@ -2518,7 +2291,7 @@ function NewNFT(props) {
         collectionDetails={changeCollectionList}
         updateChangeCollection={updateChangeCollection}
         isUploading={isUploadingData}
-      ></ChangeCollectionConfirmationModal>
+      />
       <WorkInProgressModal
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
