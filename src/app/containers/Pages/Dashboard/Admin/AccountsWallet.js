@@ -1,5 +1,5 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import { Tooltip } from "@material-ui/core";
@@ -9,6 +9,7 @@ import React, { useEffect, useState } from "react";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import Table from "react-bootstrap/Table";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -224,9 +225,7 @@ function AccountsWallet(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

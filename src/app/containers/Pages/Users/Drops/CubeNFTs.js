@@ -2,15 +2,11 @@ import { Grid } from "@material-ui/core/";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Avatar from "@material-ui/core/Avatar";
-import Backdrop from "@material-ui/core/Backdrop";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
@@ -20,9 +16,8 @@ import { Button, Row, Spinner } from "react-bootstrap";
 import Countdown from "react-countdown";
 import { Link, useHistory, useParams } from "react-router-dom";
 import Web3 from "web3";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import BiddingHistory from "../../../../components/Cards/BiddingHistory";
 import NewNFTCard from "../../../../components/Cards/NewNFTCards";
 import TxHistory from "../../../../components/Cards/TxHistory";
@@ -32,6 +27,9 @@ import ConfirmBidModal from "../../../../components/Modals/ConfirmBidModal";
 import LoginErrorModal from "../../../../components/Modals/LoginErrorModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WethModal from "../../../../components/Modals/WethModal";
+import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
+import WethContract from "../../../../components/blockchain/Abis/WethContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -98,7 +96,7 @@ function CubeNFTs(props) {
         ownerAudio.removeEventListener("ended", () => ownerAudio.pause());
         nonOwnerAudio.addEventListener("ended", () => nonOwnerAudio.pause());
       };
-    })(); 
+    })();
   }, []);
 
   const { enqueueSnackbar } = useSnackbar();
@@ -589,7 +587,7 @@ function CubeNFTs(props) {
           } else {
             setBid(
               (highestBid - bidByUser + response.data.Dropdata.bidDelta) /
-                10 ** 18
+              10 ** 18
             );
           }
         }
@@ -654,7 +652,7 @@ function CubeNFTs(props) {
         .call();
       console.log("balance", (wethReceipt / 10 ** 18).toString());
       setBalance(balance);
-    })(); 
+    })();
   }, []);
   let getWeth = () => {
     handleShowWeth();
@@ -696,7 +694,7 @@ function CubeNFTs(props) {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        <HeaderHome selectedNav={"Drops"} role={null}/>
+        <HeaderHome selectedNav={"Drops"} role={null} />
         <div className="card">
           <div className="card-body" style={{ marginTop: "110px" }}>
             {openSpinner ? (
@@ -872,7 +870,7 @@ function CubeNFTs(props) {
                                     ) : null
                                   ) : bidHistory.length !== 0 ? (
                                     bidHistory[bidHistory.length - 1].userId ===
-                                    jwtDecoded.userId ? (
+                                      jwtDecoded.userId ? (
                                       isClaiming ? (
                                         <div
                                           align="center"
@@ -891,7 +889,7 @@ function CubeNFTs(props) {
                                           </span>
                                         </div>
                                       ) : bidHistory[bidHistory.length - 1]
-                                          .claimNft ? (
+                                        .claimNft ? (
                                         <Button
                                           variant="primary"
                                           disabled
@@ -909,8 +907,8 @@ function CubeNFTs(props) {
                                         </Button>
                                       )
                                     ) : bidHistory.findIndex(
-                                        (i) => i.userId === jwtDecoded.userId
-                                      ) !== -1 ? (
+                                      (i) => i.userId === jwtDecoded.userId
+                                    ) !== -1 ? (
                                       isClaiming ? (
                                         <div
                                           align="center"
@@ -929,11 +927,11 @@ function CubeNFTs(props) {
                                           </span>
                                         </div>
                                       ) : bidHistory[
-                                          bidHistory.findIndex(
-                                            (i) =>
-                                              i.userId === jwtDecoded.userId
-                                          )
-                                        ].withdraw ? (
+                                        bidHistory.findIndex(
+                                          (i) =>
+                                            i.userId === jwtDecoded.userId
+                                        )
+                                      ].withdraw ? (
                                         <Button
                                           variant="primary"
                                           disabled
@@ -989,7 +987,7 @@ function CubeNFTs(props) {
                                 </span>
                               </Typography>
                             ) : new Date() >
-                                new Date(dropData.AuctionStartsAt) &&
+                              new Date(dropData.AuctionStartsAt) &&
                               new Date() < new Date(dropData.AuctionEndsAt) ? (
                               <Typography
                                 variant="h5"
@@ -1024,21 +1022,15 @@ function CubeNFTs(props) {
                               }
                               style={{ color: "#000" }}
                             >
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={cubeData.MusicArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={cubeData.MusicArtistProfile}
                                 title={cubeData.MusicArtistName}
                                 subheader={cubeData.MusicArtistAbout}
                               />
                             </Link>
                             <Row>
                               {new Date() <
-                              new Date(dropData.AuctionStartsAt) ? (
+                                new Date(dropData.AuctionStartsAt) ? (
                                 <>
                                   <label> Enter Bid: (WETH)</label>
                                   <input
@@ -1049,7 +1041,7 @@ function CubeNFTs(props) {
                                     className="form-control"
                                     style={{ marginBottom: "20px" }}
                                     value={bid}
-                                    onChange={(evt) => {}}
+                                    onChange={(evt) => { }}
                                   />
                                   <br></br>
                                   <Button variant="primary" block disabled>
@@ -1057,13 +1049,13 @@ function CubeNFTs(props) {
                                   </Button>
                                 </>
                               ) : new Date() >
-                                  new Date(dropData.AuctionStartsAt) &&
+                                new Date(dropData.AuctionStartsAt) &&
                                 new Date() <
-                                  new Date(dropData.AuctionEndsAt) ? (
+                                new Date(dropData.AuctionEndsAt) ? (
                                 <>
                                   <label> Enter Bid:(WETH) </label>
                                   {(highestBid - bidByUser) / 10 ** 18 >
-                                  balance / 10 ** 18 ? (
+                                    balance / 10 ** 18 ? (
                                     <>
                                       <input
                                         type="number"
@@ -1101,13 +1093,13 @@ function CubeNFTs(props) {
                                                 (highestBid -
                                                   bidByUser +
                                                   dropData.bidDelta) /
-                                                  10 ** 18
+                                                10 ** 18
                                               ) {
                                                 setBid(
                                                   (highestBid -
                                                     bidByUser +
                                                     dropData.bidDelta) /
-                                                    10 ** 18
+                                                  10 ** 18
                                                 );
                                               } else if (
                                                 evt.target.value >
@@ -1122,7 +1114,7 @@ function CubeNFTs(props) {
                                                 (highestBid -
                                                   bidByUser +
                                                   dropData.bidDelta) /
-                                                  10 ** 18
+                                                10 ** 18
                                               );
                                             }
                                           }}
@@ -1222,14 +1214,8 @@ function CubeNFTs(props) {
                               }
                               style={{ color: "#000" }}
                             >
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={cubeData.MusicArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={cubeData.MusicArtistProfile}
                                 title={cubeData.MusicArtistName}
                                 subheader={cubeData.MusicArtistAbout}
                               />
@@ -1253,8 +1239,8 @@ function CubeNFTs(props) {
                       >
                         {hide
                           ? tokenList.map((i, index) => (
-                              <NewNFTCard data={i[0]} key={index}></NewNFTCard>
-                            ))
+                            <NewNFTCard data={i[0]} key={index}></NewNFTCard>
+                          ))
                           : null}
                       </Grid>
                     </div>
@@ -1363,9 +1349,7 @@ function CubeNFTs(props) {
         handleClose={handleCloseNetwork}
         network={network}
       />
-      <Backdrop className={classes.backdrop} open={openBackdrop}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={openBackdrop} />
     </div>
   );
 }

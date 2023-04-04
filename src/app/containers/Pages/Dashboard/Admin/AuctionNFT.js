@@ -1,47 +1,42 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import axios from "axios";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Backdrop,
   Card,
   CardContent,
-  CardHeader,
   CardMedia,
-  CircularProgress,
   makeStyles,
   Paper,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import { Col, Row, Table } from "react-bootstrap";
-import Web3 from "web3";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import { BlurLinear, ExpandMore } from "@material-ui/icons";
+import transakSDK from "@transak/transak-sdk";
+import axios from "axios";
+import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { Col, Row, Table } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
-import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import { now } from "lodash";
-import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { BlurLinear, ExpandMore } from "@material-ui/icons";
-import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
-import Cookies from "js-cookie";
+import { useLocation, useParams } from "react-router-dom";
+import Web3 from "web3";
+import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
+import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
+import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
-import transakSDK from "@transak/transak-sdk";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
-import ListIcon from "@material-ui/icons/List";
 import {
   createMuiTheme,
-  ThemeProvider,
-  useTheme,
+  ThemeProvider
 } from "@material-ui/core/styles";
+import ListIcon from "@material-ui/icons/List";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const customTheme = createMuiTheme({
   overrides: {
@@ -150,34 +145,34 @@ const AuctionNFT = (props) => {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
 
-let getNftDetail = () => {
+  let getNftDetail = () => {
     // handleShowBackdrop();
     let version = Cookies.get("Version");
 
     axios.get(`/${version}/drop/nft/${nftId}`).then(
-        (response) => {
-            console.log("Response getting NFT Detail: ", response);
-            setNftDetail(response.data.data);
-            setDropIdObj(response.data.data.dropId);
-            setNftBlockChainId(response.data.data[0].nftId);
-            const keys = Object.keys(response.data.data[0].properties);
-            console.log("Keys: ", keys);
-            
-            setKeys(keys);
-            setProperties(response.data.data[0].properties);
-            
-        }
+      (response) => {
+        console.log("Response getting NFT Detail: ", response);
+        setNftDetail(response.data.data);
+        setDropIdObj(response.data.data.dropId);
+        setNftBlockChainId(response.data.data[0].nftId);
+        const keys = Object.keys(response.data.data[0].properties);
+        console.log("Keys: ", keys);
+
+        setKeys(keys);
+        setProperties(response.data.data[0].properties);
+
+      }
     )
-    .catch((error) => {
+      .catch((error) => {
         console.log("Error: ", error);
-    })
-}
+      })
+  }
 
-const handleCloseModal = () => {
+  const handleCloseModal = () => {
     setMOdalOpen(false);
-};
+  };
 
-const handleOpenModal = async (e) => {
+  const handleOpenModal = async (e) => {
     if (e) {
       e.preventDefault();
     }
@@ -635,7 +630,7 @@ const handleOpenModal = async (e) => {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -658,7 +653,7 @@ const handleOpenModal = async (e) => {
                 <Card className={classes.root}>
                   <div>
                     {nftDetail.nftFormat === "glb" ||
-                    nftDetail.nftFormat === "gltf" ? (
+                      nftDetail.nftFormat === "gltf" ? (
                       <div>
                         <div
                           style={{
@@ -723,7 +718,7 @@ const handleOpenModal = async (e) => {
                         ></CardMedia>
                         <div>
                           <AudioPlayer
-                            
+
                             style={{ borderRadius: "1rem" }}
                             autoPlay={false}
                             layout="horizontal"
@@ -733,10 +728,10 @@ const handleOpenModal = async (e) => {
                             showJumpControls={false}
                             // header={`Now playing: ${name}`}
                             showDownloadProgress
-                            // onClickPrevious={handleClickPrevious}
-                            // onClickNext={handleClickNext}
-                            // onEnded={handleClickNext}
-                            // other props here
+                          // onClickPrevious={handleClickPrevious}
+                          // onClickNext={handleClickNext}
+                          // onEnded={handleClickNext}
+                          // other props here
                           />
                         </div>
                       </div>
@@ -997,9 +992,7 @@ const handleOpenModal = async (e) => {
         dropData={data}
         isOpen={modalOpen}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 };
