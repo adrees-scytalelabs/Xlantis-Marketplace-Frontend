@@ -9,10 +9,6 @@ import SuperAdminSSOScreen from "./SuperAdminSSOScreen";
 import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    
-  },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -119,17 +115,12 @@ function SuperAdminDashboardDefaultScreen(props) {
       properties:"",
       template:"",
       saved:"",
-
-    });
-    
+    }); 
   }, []);
-
- // console.log("props in super admin dashboard: ", props);
 
   return (
     <>
       <div className="backgroundDefault">
-        
         <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
           <div className="row">
             <div className="col-sm-12">
@@ -145,12 +136,10 @@ function SuperAdminDashboardDefaultScreen(props) {
             </div>
           </div>
         </div>
-        {/* <!-- /Page Content --> */}
         <div className="card-body page-height px-0">
           <ThemeProvider theme={customTheme}>
             <div className="row no-gutters">
               <div className="col-md-12 col-lg-12 col-xl-12">
-                {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -174,7 +163,6 @@ function SuperAdminDashboardDefaultScreen(props) {
                     {...a11yProps(2)}
                   />
                 </Tabs>
-                {/* </AppBar> */}
                 <TabPanel value={value} index={0}>
                   <SuperAdminDefaultScreen
                     match={props.match}

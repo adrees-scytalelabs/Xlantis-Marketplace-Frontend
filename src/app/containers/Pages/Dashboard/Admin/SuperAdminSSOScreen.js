@@ -1,8 +1,5 @@
 
-import {
-  Card
-} from "@material-ui/core";
-
+import {Card} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
@@ -106,7 +103,6 @@ function SuperAdminSSOScreen(props) {
       saved: "",
     });
     getCounts();
-
   }, []);
 
   return (

@@ -154,6 +154,7 @@ function TemplateDetails(props) {
                       id="valueType"
                       className="templatesSelect"
                       placeholder="Select a Type"
+                      disabled={props.updateEnabled}
                       value={i.type}
                       onChange={(e) => handlePropertyChange(index, e)}
                       style={{ padding: "9px" }}
@@ -165,23 +166,26 @@ function TemplateDetails(props) {
                       <option value="number">Number</option>
                     </select>
                   </Col>
-                  <Col
-                    xs={12}
-                    lg={2}
-                    md={4}
-                    sm={12}
-                    className="ml-4 mt-2 mt-lg-0"
-                  >
-                    <h4>Action</h4>
-                    <Tooltip title="Remove a property" placement="bottom">
-                      <button
-                        className="btn btn-submit btn-lg propsActionBtn"
-                        onClick={(e) => handleRemoveProperty(e, index)}
-                      >
-                        -
-                      </button>
-                    </Tooltip>
-                  </Col>
+                  {props.updateEnabled == false && (
+                    <Col
+                      xs={12}
+                      lg={2}
+                      md={4}
+                      sm={12}
+                      className="ml-4 mt-2 mt-lg-0"
+                    >
+                      <h4>Action</h4>
+                      <Tooltip title="Remove a property" placement="bottom">
+                        <button
+                          className="btn btn-submit btn-lg propsActionBtn"
+                          onClick={(e) => handleRemoveProperty(e, index)}
+                          disabled={props.updateEnabled}
+                        >
+                          -
+                        </button>
+                      </Tooltip>
+                    </Col>
+                  )}
                 </Row>
               ))}
               {props.updateEnabled == false && (

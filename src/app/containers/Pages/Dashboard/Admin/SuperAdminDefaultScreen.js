@@ -2,7 +2,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 import { Card } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
@@ -77,11 +76,9 @@ function SuperAdminDefaultScreen(props) {
     axios
       .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
-        //  console.log(response);
         axios
           .get(`/super-admin/admins/counts?userType=v2`)
           .then((response1) => {
-            // console.log(response1);
             setTotalAdmins(
               response1.data.counts.totalAdmins +
               response.data.counts.totalAdmins
@@ -128,10 +125,7 @@ function SuperAdminDefaultScreen(props) {
       saved: "",
     });
     getCounts();
-
   }, []);
-
-  // console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
