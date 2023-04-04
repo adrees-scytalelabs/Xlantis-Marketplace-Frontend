@@ -1,6 +1,6 @@
 import { Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React, { useEffect } from "react";
+import React from "react";
 import Table from "react-bootstrap/Table";
 import Button from "@material-ui/core/Button";
 
@@ -34,9 +34,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 function SuperAdminTable(props) {
   const classes = useStyles();
-  useEffect(() => {
-    console.log(props.admins);
-  });
   return (
     <Table responsive>
       <thead>
