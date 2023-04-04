@@ -1,95 +1,25 @@
-import { Tooltip, createMuiTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import VerfiedAccountsTable from "../../../../components/tables/VerfiedAccountsTable";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
 }));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
 
 function VerifiedAccountsDefaultScreen(props) {
   const classes = useStyles();
 
   const [network, setNetwork] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
   let [admins, setAdmins] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
 
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
@@ -105,15 +35,6 @@ function VerifiedAccountsDefaultScreen(props) {
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
-
-  const history = useHistory();
-
   useEffect(() => {
     getUnverifiedWallet(0, rowsPerPage);
     getUnverifiedAdmins(0, rowsPerPage);
@@ -131,10 +52,7 @@ function VerifiedAccountsDefaultScreen(props) {
     });
   }, []);
   const handleChangePage = (event, newPage) => {
-   // console.log("newPage", newPage);
     setPage(newPage);
-   // console.log("Start", newPage * rowsPerPage);
-   // console.log("End", newPage * rowsPerPage + rowsPerPage);
     getUnverifiedAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
@@ -156,12 +74,10 @@ function VerifiedAccountsDefaultScreen(props) {
   };
 
   let getUnverifiedAdmins = (start, end) => {
-
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v1`)
       .then((response) => {
-       // console.log("response.data", response.data);
         setAdmins(response.data.Admins);
         setAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -181,12 +97,10 @@ function VerifiedAccountsDefaultScreen(props) {
       });
   };
   let getUnverifiedWallet = (start, end) => {
-
     setOpen(true);
     axios
       .get(`/super-admin/admins/${start}/${end}?userType=v2`)
       .then((response) => {
-       // console.log("response.data", response.data);
         setWalletAdmins(response.data.Admins);
         setWalletAdminCount(response.data.Admins.length);
         setOpen(false);
@@ -205,150 +119,18 @@ function VerifiedAccountsDefaultScreen(props) {
         setOpen(false);
       });
   };
-  let handleVerify = (e, verifyAdminId) => {
-    e.preventDefault();
-    setIsSaving(true);
-    handleShowBackdrop();
-    let data = {
-      adminId: verifyAdminId,
-    };
-
-   // console.log("data", data);
-
-    axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
-      (response) => {
-      //  console.log("admin verify response: ", response);
-        let variant = "success";
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
-        handleCloseBackdrop();
-        setIsSaving(false);
-      },
-      (error) => {
-        console.log("Error on status pending nft: ", error);
-        console.log("Error on status pending nft: ", error.response);
-
-        handleCloseBackdrop();
-
-        let variant = "error";
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
-      }
-    );
-  };
 
   return (
     <div className="backgroundDefault">
-
-      <div>
-        <div className="row no-gutters">
-
-          <Table responsive>
-            <thead>
-              <tr>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-3">
-                    Email
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-5">
-                    Details
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Login Type
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            {admins.map((i, index) => {
-              return (
-                i.isVerified === true && (
-                  <tbody>
-                    <tr>
-                      <td className={classes.collectionTitle}>{i.username}</td>
-                      <td className={classes.collectionTitle}>{i.email}</td>
-                      <td className={classes.collectionTitle}>
-                        {i.walletAddress != undefined ? (
-                          <Tooltip
-                            classes={{ tooltip: classes.noMaxWidth }}
-                            leaveDelay={1500}
-                            title={i.walletAddress}
-                            arrow
-                          >
-                            <span className="ml-4">
-                              {i.walletAddress.slice(0, 8)}...
-                            </span>
-                          </Tooltip>
-                        ) : (
-                          <label className="ml-4">N/A</label>
-                        )}
-                      </td>
-                      <td className={classes.collectionTitle}>
-                        <button
-                          className="btn submit-btn propsActionBtn "
-                          onClick={(e) => handleModalOpen(e, i)}
-                        >
-                          View
-                        </button>
-                      </td>
-                      <td className={classes.collectionTitle}>
-                        <span className="ml-1">
-                          <label className="ml-5">SSO</label>
-                        </span>
-                      </td>
-                    </tr>
-                  </tbody>
-                )
-              );
-            })}
-            {walletAdmins.map((i, index) => {
-              return (
-                i.isVerified === true && (
-                  <tbody>
-                    <tr>
-                      <td className={classes.collectionTitle}>{i.username}</td>
-                      <td className={classes.collectionTitle}><label className="ml-4">N/A</label></td>
-                      <td className={classes.collectionTitle}>
-                        <Tooltip
-                          classes={{ tooltip: classes.noMaxWidth }}
-                          leaveDelay={1500}
-                          title={i.walletAddress}
-                          arrow
-                        >
-                          <span className="ml-4">{i.walletAddress.slice(0, 8)}...</span>
-                        </Tooltip>
-                      </td>
-                      <td className={classes.collectionTitle}>
-                        <button
-                          className="btn submit-btn propsActionBtn "
-                          onClick={(e) => handleModalOpen(e, i)}
-                        >
-                          View
-                        </button>
-                      </td>
-                      <td className={classes.collectionTitle}>
-                        <label className="ml-5">Wallet</label>
-                      </td>
-                    </tr>
-                  </tbody>
-                )
-              );
-            })}
-          </Table>
-        </div>
+      <div className="row no-gutters">
+        <VerfiedAccountsTable
+          admins={admins}
+          walletAdmins={walletAdmins}
+          handleModalOpen={handleModalOpen}
+          ssoEnabled={true}
+          walletEnabled={true}
+        ></VerfiedAccountsTable>
       </div>
-
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
