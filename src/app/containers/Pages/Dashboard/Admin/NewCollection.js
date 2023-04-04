@@ -22,7 +22,7 @@ import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collect
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-
+import UploadFile from "../../../../components/Upload/UploadFile";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -505,7 +505,6 @@ function NewCollection(props) {
   };
 
   let giveFixedPriceApproval = async () => {
-
     let approvalData = {
       collectionId: collectionId,
       factoryType: "fixed-price",
@@ -515,10 +514,9 @@ function NewCollection(props) {
       (response) => {
         console.log("Response from approval of Fixed Price: ", response);
         let variant = "success";
-        enqueueSnackbar(
-          "Collection Approved For Fixed Price Successfully",
-          { variant }
-        );
+        enqueueSnackbar("Collection Approved For Fixed Price Successfully", {
+          variant,
+        });
         setIsFixedPriceApproved(true);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
@@ -527,10 +525,7 @@ function NewCollection(props) {
         let variant = "error";
         enqueueSnackbar("Unable to approve collection", { variant });
         console.log("Err from approval Fixed-price: ", err);
-        console.log(
-          "Err response from approval Fixed-price: ",
-          err.response
-        );
+        console.log("Err response from approval Fixed-price: ", err.response);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
       }
@@ -623,7 +618,6 @@ function NewCollection(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -646,35 +640,13 @@ function NewCollection(props) {
               <div className="form-group">
                 {/* Upload Image */}
                 <label>Select Preview Image</label>
-                <div className="filter-widget">
-                  <div className="form-group">
-                    <div className="row no-gutters align-items-end justify-content-start">
-                      <div className="co-12 col-md-auto profile-img mr-3">
-                        <img src={fileURL} alt="Collection Thumb" />
-                      </div>
-                      <div className="co-12 col-md-auto">
-                        <label
-                          htmlFor="uploadPreviewImg"
-                          className="uploadLabel"
-                        >
-                          {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
-                        </label>
-                        <input
-                          name="sampleFile"
-                          type="file"
-                          id="uploadPreviewImg"
-                          accept=".png,.jpg,.jpeg,.gif"
-                          onChange={onChangeFile}
-                          hidden
-                        />
-                        <small className="form-text text-muted">
-                          Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
+                <UploadFile
+                  fileURL={fileURL}
+                  isUploading={isUploadingIPFS}
+                  changeFile={onChangeFile}
+                  class="co-12 col-md-auto profile-img mr-3"
+                  accept=".png,.jpg,.jpeg,.gif"
+                />
                 {/* Feilds */}
                 <div className="form-group newNftFields">
                   <label>Collection Name</label>
