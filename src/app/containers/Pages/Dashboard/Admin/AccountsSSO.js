@@ -1,42 +1,15 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
+
 import { createMuiTheme, Tooltip } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
-import DateTimePicker from "react-datetime-picker";
-import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateAuctionContract from "../../../../components/blockchain/Abis/CreateAuctionContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { useHistory, useRouteMatch } from "react-router-dom";
-import ipfs from "../../../../components/IPFS/ipfs";
 import Table from "react-bootstrap/Table";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import { useHistory } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -302,9 +275,7 @@ function AccountsSSO(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

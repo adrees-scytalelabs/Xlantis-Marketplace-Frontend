@@ -1,13 +1,12 @@
 import { Grid } from "@material-ui/core/";
 import Avatar from "@material-ui/core/Avatar";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
@@ -24,6 +23,7 @@ import { Spinner } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract from "../../../../components/blockchain/Abis/CreateNFTContract.json";
@@ -449,7 +449,7 @@ function NewNFT(props) {
       let imageNFT = e.target.files[0];
       reader.readAsArrayBuffer(e.target.files[0]);
       reader.onloadend = () => {
-        
+
         ipfs.add(Buffer(reader.result), async (err, result) => {
           if (err) {
             console.log(err);
@@ -1010,9 +1010,7 @@ function NewNFT(props) {
         handleClose={handleClose}
         network={network}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

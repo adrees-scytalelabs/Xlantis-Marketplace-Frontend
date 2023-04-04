@@ -1,16 +1,14 @@
 import { Card, CardContent, Grid } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
-import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
@@ -18,13 +16,14 @@ import { Spinner } from "react-bootstrap";
 import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
-import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import NewCubeComponent from "../../../../components/Cube/NewCubeComponent";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
+import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -179,7 +178,7 @@ function NewCube(props) {
       newDrop: "",
       newCollection: "",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
   let getMyNFTs = () => {
     axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
@@ -611,16 +610,16 @@ function NewCube(props) {
                                   i.type === "Mastercraft"
                                     ? "4px solid #ff0000"
                                     : i.type === "Legendary"
-                                    ? "4px solid #FFD700"
-                                    : i.type === "Epic"
-                                    ? "4px solid #9400D3"
-                                    : i.type === "Rare"
-                                    ? "4px solid #0000FF"
-                                    : i.type === "Uncommon"
-                                    ? "4px solid #008000"
-                                    : i.type === "Common"
-                                    ? "4px solid #FFFFFF"
-                                    : "none",
+                                      ? "4px solid #FFD700"
+                                      : i.type === "Epic"
+                                        ? "4px solid #9400D3"
+                                        : i.type === "Rare"
+                                          ? "4px solid #0000FF"
+                                          : i.type === "Uncommon"
+                                            ? "4px solid #008000"
+                                            : i.type === "Common"
+                                              ? "4px solid #FFFFFF"
+                                              : "none",
                               }}
                               className={classes.media}
                               image={i.artwork}
@@ -771,9 +770,7 @@ function NewCube(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

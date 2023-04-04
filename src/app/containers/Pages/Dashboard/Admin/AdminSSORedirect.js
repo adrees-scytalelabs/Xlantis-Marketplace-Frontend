@@ -1,12 +1,14 @@
-import React, { useState } from "react";
-import HeaderHome from "../../../../components/Headers/Header";
-import Select from "react-select";
-
-import axios from "axios";
 import { Grid } from "@material-ui/core";
-import { Link, Redirect } from "react-router-dom";
-import { useCookies } from "react-cookie";
+import axios from "axios";
 import Cookies from "js-cookie";
+import React, { useState } from "react";
+import { Redirect } from "react-router-dom";
+import "../../../../assets/css/adminStyle.css";
+import "../../../../assets/css/bootstrap.min.css";
+import "../../../../assets/css/style.css";
+import "../../../../assets/plugins/fontawesome/css/all.min.css";
+import "../../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import HeaderHome from "../../../../components/Headers/Header";
 
 const indsutries = [
   { industry: "IT" },
@@ -16,12 +18,10 @@ const indsutries = [
   { industry: "Software Development" },
 ];
 
-
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
   const [success, setSucess] = useState();
   let version = Cookies.get("Version");
- // console.log(version, " is the version")
 
   const handleChangeValues = (event) => {
     const name = event.target.name;
@@ -56,16 +56,14 @@ const AdminSSORedirect = () => {
   };
 
   let route;
-  if(version === 'v2-wallet-login') {
-    route = "/v2-wallet-login/user/admin/add-info"
-  } else route = "/v1-sso/user/admin/add-info"
+  if (version === "v2-wallet-login") {
+    route = "/v2-wallet-login/user/admin/add-info";
+  } else route = "/v1-sso/user/admin/add-info";
 
   const addDetails = async () => {
-    // Object.keys(inputs).length === 0
     await axios
       .put(route, inputs, config)
       .then((response) => {
-      //  console.log("The response of axios post: ", response.data.success);
         setSucess(response.data.success);
       })
       .catch((error) => {
@@ -73,13 +71,11 @@ const AdminSSORedirect = () => {
       });
   };
 
-  
   return (
     <>
       <div className="main-wrapper sso-redirect-wrapper">
-        {/* Header */}
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={""} role={null}/>
+          <HeaderHome selectedNav={""} role={null} />
         </div>
         <div className="container my-5 px-lg-0">
           <div className="row no-gutters justify-content-center align-items-center">
@@ -100,7 +96,6 @@ const AdminSSORedirect = () => {
                                 value={inputs?.fullName || ""}
                                 name="fullName"
                                 required
-                                
                                 placeholder="Full Name"
                                 className="form-control-login -login newNftInput"
                                 onChange={handleChangeValues}
@@ -113,7 +108,6 @@ const AdminSSORedirect = () => {
                                 name="industryType"
                                 value={inputs?.industryType || ""}
                                 required
-                                // multiple
                                 className="form-control-login  newNftInput"
                                 onChange={handleChangeValues}
                               >

@@ -1,19 +1,16 @@
-import { Avatar, CardHeader, Grid } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
+
 import { Link } from "react-router-dom";
 
-import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme } from "@material-ui/core";
 import axios from "axios";
 
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
-import { useHistory, useRouteMatch } from "react-router-dom";
+import { useRouteMatch } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -91,7 +88,7 @@ function TopUp(props) {
       changePassword: "",
       newRandomDrop: "",
       topUp: "active",
-    }); 
+    });
   }, []);
   const handleTopUpAmount = (e) => {
     e.preventDefault();
@@ -115,7 +112,7 @@ function TopUp(props) {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -167,9 +164,7 @@ function TopUp(props) {
           </div>
         </div>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

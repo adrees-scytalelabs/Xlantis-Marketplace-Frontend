@@ -1,3 +1,4 @@
+import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
@@ -6,41 +7,39 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
+import Logo from "../../../assets/img/logo.png";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../../assets/img/logo.png";
-import DropApproval from "./Admin/DropApproval";
+import AddNFT from "./Admin/AddNFT";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
-import UserSettings from "../Users/UserSettings";
+import AuctionNFT from "./Admin/AuctionNFT";
+import CollectionNfts from "./Admin/CollectionNfts";
+import CubeNFTs from "./Admin/CubeNFTs";
+import DropApproval from "./Admin/DropApproval";
+import DropNfts from "./Admin/DropNfts";
+import DropSingleNFT from "./Admin/DropSingleNFT";
 import DropCubes from "./Admin/DropsCubes";
+import MarketPlace from "./Admin/MarketPlace";
+import MyCollection from "./Admin/MyCollection";
 import MyCubes from "./Admin/MyCubes";
+import MyDropNFTs from "./Admin/MyDropNfts";
 import MyDrops from "./Admin/MyDrops";
 import MyNFTs from "./Admin/MyNFTs";
 import MySeasons from "./Admin/MySeasons";
-import MyCollection from "./Admin/MyCollection";
+import NFTBuy from "./Admin/NFTBuy";
+import NewCollection from "./Admin/NewCollection";
 import NewCube from "./Admin/NewCube";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import AddNFT from "./Admin/AddNFT";
 import NewSeason from "./Admin/NewSeason";
 import RandomDrop from "./Admin/RandomDrop";
 import SeasonDrops from "./Admin/SeasonDrops";
+import TopUp from "./Admin/TopUp";
+import SingleNftDetail from "./Admin/singleNftDetail";
 import ChangePassword from "./ChangePassword";
 import ProfileSetting from "./ProfileSetting";
-import CollectionNfts from "./Admin/CollectionNfts";
-import CubeNFTs from "./Admin/CubeNFTs";
-import NewCollection from "./Admin/NewCollection";
-import SingleNftDetail from "./Admin/singleNftDetail";
-import DropNfts from "./Admin/DropNfts";
-import MarketPlace from "./Admin/MarketPlace";
-import NFTBuy from "./Admin/NFTBuy";
-import AuctionNFT from "./Admin/AuctionNFT";
-import MyDropNFTs from "./Admin/MyDropNfts";
-import DropSingleNFT from "./Admin/DropSingleNFT";
-import transakSDK from "@transak/transak-sdk";
-import TopUp from "./Admin/TopUp";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -94,7 +93,7 @@ function AdminDashboard(props) {
     myCubes: "",
     newRandomDrop: "",
     marketPlace: "",
-    topUp:""
+    topUp: "",
   });
 
   function openTransak() {
@@ -167,13 +166,6 @@ function AdminDashboard(props) {
             {/* Robot Drop */}
           </a>
         </div>
-        {/* <!-- /Logo --> */}
-        {/* 
-        <a href="" id="toggle_btn">
-          <i className="fa fa-align-left"></i>
-        </a> */}
-
-        {/* <!-- Mobile Menu Toggle --> */}
         <a
           href="/"
           className="mobile_btn"
@@ -221,19 +213,11 @@ function AdminDashboard(props) {
                     Profile Settings
                   </Link>
                 </Dropdown.Item>
-                {/* <Dropdown.Item>
-                  <span style={{ color: "white" }} onClick={openTransak}>
-                    Buy Crypto
-                  </span>
-                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
                       sessionStorage.clear();
-                      // Cookies.remove("Authorization");
                       sessionStorage.removeItem("Address");
-                      
-
                       Cookies.remove("PNT");
                       window.location.reload(false);
                     }}
@@ -366,9 +350,6 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/changepassword`}>
               <ChangePassword setActiveTab={setActiveTab} />
             </Route>
-            {/* <Route exact path={`${path}/admin/profileSettings`}>
-              <ProfileSetting setActiveTab={setActiveTab} />
-            </Route> */}
 
             <Route path={`${path}`}>
               <AdminDashboardDefaultScreen
