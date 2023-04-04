@@ -9,16 +9,13 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function AccountApprovalDefaultScreen(props) {
-  const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   let [admins, setAdmins] = useState([]);
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
+  const [page, setPage] = useState(0); 
   const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -194,11 +191,7 @@ function AccountApprovalDefaultScreen(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
+     
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

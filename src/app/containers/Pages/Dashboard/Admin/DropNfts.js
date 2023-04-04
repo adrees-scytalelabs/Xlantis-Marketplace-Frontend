@@ -11,7 +11,6 @@ import Pause from "@material-ui/icons/Pause";
 import PlayArrow from "@material-ui/icons/PlayArrow";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useRef, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import CornerRibbon from "react-corner-ribbon";
@@ -149,21 +148,10 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  let [openDialog, setOpenDialog] = useState(false);
-  let [openEditModal, setOpenEditModal] = useState(false);
-  let [nftDetail, setNftDetail] = useState({});
   let [audio, setAudio] = useState();
   let [versionB, setVersionB] = useState("");
-  let handleOpenNFTDetailModal = (nftObject) => {
-    setNftDetail(nftObject);
-    setOpenDialog(true);
-  };
-
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
-  const handleShowNetworkModal = () => setShowNetworkModal(true);
-  const myRef = useRef();
+ 
+  
   let [windowSize, setWindowSize] = useState(window.innerWidth);
 
   const handleCloseBackdrop = () => {

@@ -21,11 +21,9 @@ function UserLoginScreen(props) {
   let [isLoading, setIsLoading] = useState(false);
   let [msg, setMsg] = useState("");
 
-  let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   let Login = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -161,11 +159,7 @@ function UserLoginScreen(props) {
         </div>
         <Footer position={""} />
       </div>
-      <NetworkErrorModal
-        show={show}
-        handleClose={handleClose}
-        network={network}
-      ></NetworkErrorModal>
+    
     </div>
   );
 }

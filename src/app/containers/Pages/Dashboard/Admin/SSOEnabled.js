@@ -8,15 +8,12 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 function SSOEnabled(props) {
-  const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   let [admins, setSSOAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [adminCount, setSSOAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
+  const [page, setPage] = useState(0); 
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
@@ -128,11 +125,6 @@ function SSOEnabled(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

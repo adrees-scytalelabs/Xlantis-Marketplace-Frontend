@@ -9,7 +9,6 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function Disabled(props) {
-  const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
@@ -18,8 +17,6 @@ function Disabled(props) {
   let [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
@@ -184,11 +181,6 @@ function Disabled(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

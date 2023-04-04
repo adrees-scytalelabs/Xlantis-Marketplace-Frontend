@@ -8,15 +8,12 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function AccountsDefaultScreen(props) {
-  const [network, setNetwork] = useState("");
   let [admins, setAdmins] = useState([]);
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
   let [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
+  const [page, setPage] = useState(0); 
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const handleClose = () => setShow(false);
@@ -129,11 +126,6 @@ function AccountsDefaultScreen(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

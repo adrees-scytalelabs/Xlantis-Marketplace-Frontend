@@ -8,13 +8,10 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function AccountsWallet(props) {
   const [modalData, setModalData] = useState();
-  const [network, setNetwork] = useState("");
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [adminWalletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -104,11 +101,6 @@ function AccountsWallet(props) {
         onChangePage={handleChangePage}
         onChangeRowsPerPage={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

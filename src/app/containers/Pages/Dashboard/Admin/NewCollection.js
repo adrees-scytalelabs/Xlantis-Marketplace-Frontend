@@ -64,13 +64,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewCollection(props) {
-  const [propertyKey, setPropertyKey] = useState("");
-  const [propertyValue, setPropertyValue] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [properties, setProperties] = useState([]);
-  const [levelValues, setLevelValues] = useState([
-    { name: "", lowLevel: 0, highLevel: 0 },
-  ]);
+
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let [network, setNetwork] = useState(false);
@@ -88,16 +82,13 @@ function NewCollection(props) {
     setOpen(true);
   };
 
-  const [tokenList, setTokenList] = useState([]);
+
   let [isSaving, setIsSaving] = useState(false);
   let [collectionName, setCollectionName] = useState("");
-  let [website, setWebsite] = useState("");
-  let [aboutTheArt, setAboutTheArt] = useState("");
-  let [ipfsHash, setIpfsHash] = useState(null);
+ 
   let [collectionDescription, setCollectionDescription] = useState("");
   let [collectionSymbol, setCollectionSymbol] = useState("");
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [image, setImage] = useState(r1);
   let [imageFile, setImageFile] = useState();
   let [fileURL, setFileURL] = useState(r1);
   let [collectionId, setCollectionId] = useState("");
