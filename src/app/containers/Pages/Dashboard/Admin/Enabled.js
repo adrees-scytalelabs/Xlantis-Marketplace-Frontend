@@ -1,101 +1,18 @@
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-
-import { createMuiTheme, Tooltip } from "@material-ui/core";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
-}));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function Enabled(props) {
-  const classes = useStyles();
-
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
   let [admins, setSSOAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
-
   let [adminCount, setSSOAdminCount] = useState(0);
   let [walletAdmins, setWalletAdmins] = useState([]);
   let [walletCount, setWalletAdminCount] = useState(0);
@@ -105,10 +22,8 @@ function Enabled(props) {
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [open, setOpen] = useState(false);
   const handleModalOpen = (e, data) => {
     e.preventDefault();
@@ -125,13 +40,9 @@ function Enabled(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-
-  const history = useHistory();
-
   useEffect(() => {
     getEnabledSSOAdmins();
     getEnabledWalletAdmins();
-
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -145,7 +56,6 @@ function Enabled(props) {
   };
 
   let getEnabledSSOAdmins = () => {
-
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v1`)
@@ -171,7 +81,6 @@ function Enabled(props) {
       });
   };
   let getEnabledWalletAdmins = () => {
-
     setOpen(true);
     axios
       .get(`/super-admin/admins/enabled?userType=v2`)
@@ -256,150 +165,19 @@ function Enabled(props) {
     <div>
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-
-          <Table responsive>
-            <thead>
-              <tr>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-4">
-                    Email
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-5">
-                    Details
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Login Type
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Status
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            {admins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>
-                    {i.walletAddress != undefined ? (
-                      <Tooltip
-                        classes={{ tooltip: classes.noMaxWidth }}
-                        leaveDelay={800}
-                        title={i.walletAddress}
-                        arrow
-                      >
-                        <span className="ml-4">
-                          {i.walletAddress.slice(0, 8)}...
-                        </span>
-                      </Tooltip>
-                    ) : (
-                      <label className="ml-4">N/A</label>
-                    )}
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <button
-                      className="btn submit-btn propsActionBtn "
-                      onClick={(e) => handleModalOpen(e, i)}
-                    >
-                      View
-                    </button>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <span className="ml-1">
-                      <label className="ml-5">SSO</label>
-                    </span>
-                  </td>
-                  <td>
-
-                    {i.isEnabled ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-
-                          onClick={(e) => {
-                            handleDisable(e, i._id);
-                          }}
-                        >
-                          Disable
-                        </Button>
-                      </div>
-                    ) : null}
-
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-            {walletAdmins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>
-                    <label className="ml-4">N/A</label>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <Tooltip
-                      classes={{ tooltip: classes.noMaxWidth }}
-                      leaveDelay={800}
-                      title={i.walletAddress}
-                      arrow
-                    >
-                      <span className="ml-4">
-                        {i.walletAddress.slice(0, 8)}...
-                      </span>
-                    </Tooltip>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <button
-                      className="btn submit-btn propsActionBtn "
-                      onClick={(e) => handleModalOpen(e, i)}
-                    >
-                      View
-                    </button>
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <label className="ml-5">Wallet</label>
-                  </td>
-                  <td>
-
-                    {i.isEnabled ? (
-                      <div className="row no-gutters justify-content-center align-items-center ml-4">
-                        <Button
-                          className={classes.approveBtn}
-
-                          onClick={(e) => {
-                            handleWalletDisable(e, i._id);
-                          }}
-                        >
-                          Disable
-                        </Button>
-                      </div>
-                    ) : null}
-
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-          </Table>
+          <SuperAdminTable
+            admins={admins}
+            walletAdmins={walletAdmins}
+            handleModalOpen={handleModalOpen}
+            ssoEnabled={true}
+            walletEnabled={true}
+            statusEnable={true}
+            handleDisable={handleDisable}
+            handleWalletDisable={handleWalletDisable}
+            manageAccounts={true}
+          ></SuperAdminTable>
         </div>
       </div>
-
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -414,9 +192,7 @@ function Enabled(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

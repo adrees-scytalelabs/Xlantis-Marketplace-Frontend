@@ -5,7 +5,6 @@ import AccordionSummary from "@material-ui/core/AccordionSummary";
 import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
@@ -16,6 +15,7 @@ import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useParams, useHistory, Link } from "react-router-dom";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import NewNFTCard from "../../../../components/Cards/NewNFTCards";
 import TxHistory from "../../../../components/Cards/TxHistory";
 import CubeComponent from "../../../../components/Cube/CubeComponent";
@@ -282,14 +282,8 @@ function UserCubeNFTs(props) {
                           }
                           style={{ color: "#000" }}
                         >
-                          <CardHeader
-                            avatar={
-                              <Avatar
-                                src={cubeData.MusicArtistProfile}
-                                aria-label="Artist"
-                                className={classes.avatar}
-                              />
-                            }
+                          <CardHeaderWithAvatar
+                            src={cubeData.MusicArtistProfile}
                             title={cubeData.MusicArtistName}
                             subheader={cubeData.MusicArtistAbout}
                           />

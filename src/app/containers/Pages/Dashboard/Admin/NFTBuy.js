@@ -9,8 +9,7 @@ import {
   Paper,
   Typography
 } from "@material-ui/core";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+
 import {
   createMuiTheme,
   ThemeProvider
@@ -28,6 +27,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import Web3 from "web3";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
@@ -786,9 +786,7 @@ const NFTBuy = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 };

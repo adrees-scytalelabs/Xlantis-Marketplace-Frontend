@@ -5,39 +5,14 @@ import {
   Typography
 } from "@material-ui/core";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import WalletDisabled from "./WalletDisabled";
 import WalletEnabled from "./WalletEnabled";
 
-
-const paginationStyles = makeStyles({
-  base: {
-    
-    border: 0,
-    color: "#fff",
-    padding: "0 30px",
-    fontWeight: "bold",
-    fontFamily: "orbitron",
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "#fff",
-  },
-  body2: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontFamily: "orbitron",
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    
-  },
+const useStyles = makeStyles(() => ({
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -129,16 +104,10 @@ function a11yProps(index) {
 const ManageAccountsWallet = (props) => {
   const location = useLocation();
   const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
   useEffect(() => {
     props.setTab(0);
     if (location.state != null) {
@@ -187,7 +156,6 @@ const ManageAccountsWallet = (props) => {
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -206,7 +174,6 @@ const ManageAccountsWallet = (props) => {
                   {...a11yProps(1)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0}>
                 <WalletEnabled />
               </TabPanel>

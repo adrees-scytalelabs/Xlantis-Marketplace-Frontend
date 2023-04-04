@@ -23,7 +23,6 @@ function AdminDashboardDefaultScreen(props) {
     axios
       .get(`${version}/user/getcounts`)
       .then((response) => {
-        //console.log(response);
         setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
         setTotalDrops(response.data.Dropscount);
@@ -35,9 +34,6 @@ function AdminDashboardDefaultScreen(props) {
         console.log(error.response);
       });
   };
-
-
-  
 
   useEffect(() => {
     props.setActiveTab({
@@ -62,7 +58,6 @@ function AdminDashboardDefaultScreen(props) {
   }, []);
   return (
     <>
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

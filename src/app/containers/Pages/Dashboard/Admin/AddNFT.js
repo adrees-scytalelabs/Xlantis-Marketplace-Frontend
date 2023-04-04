@@ -3,10 +3,9 @@ import {
   CardContent, Grid,
   Typography
 } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -19,6 +18,7 @@ import { Spinner } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
@@ -204,7 +204,7 @@ function AddNFT(props) {
           console.log(error);
           console.log(error.response);
         }
-        
+
       }
     );
   };
@@ -217,7 +217,8 @@ function AddNFT(props) {
     const version = Cookies.get("Version");
 
     axios.get(`/collection/collections/${location.state.nftType}`).then(
-      (response) => {;
+      (response) => {
+        ;
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
       },
@@ -366,7 +367,7 @@ function AddNFT(props) {
   }
 
   useEffect(() => {
-    
+
     setIsDisabled(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
@@ -392,7 +393,7 @@ function AddNFT(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
   let loadWeb3 = async () => {
     if (window.ethereum) {
@@ -680,7 +681,7 @@ function AddNFT(props) {
             console.log(error);
             console.log(error.response);
           }
-          
+
         }
       );
     } catch (e) {
@@ -925,7 +926,7 @@ function AddNFT(props) {
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -1037,8 +1038,8 @@ function AddNFT(props) {
                               nftTokenSupply === 0
                                 ? "none"
                                 : nftTokenSupply >= supply
-                                ? "3px solid green"
-                                : "3px solid red",
+                                  ? "3px solid green"
+                                  : "3px solid red",
                           }}
                           type="number"
                           required
@@ -1175,7 +1176,7 @@ function AddNFT(props) {
             Update Drop
           </button>
         </div>
-       
+
         {enableTime && (
           <div
             className="datePicker col-md-12 col-lg-6 col-sm-12"
@@ -1278,9 +1279,7 @@ function AddNFT(props) {
         topUp={handleTopUpAmount}
         setOpen={setMOdalOpen}
       ></TopUpModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

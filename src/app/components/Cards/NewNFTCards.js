@@ -13,6 +13,7 @@ import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import CardHeaderWithAvatar from '../CardHeader/CardHeaderWithAvatar';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -76,8 +77,8 @@ function NewNFTCard(props) {
                     </Typography>
                     <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
                     <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
+                        <CardHeaderWithAvatar
+                            src={props.data.ImageArtistProfile}
                             title={props.data.ImageArtistName}
                             subheader={props.data.ImageArtistAbout}
                         />
@@ -87,24 +88,24 @@ function NewNFTCard(props) {
                     </Typography>
                     <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
                     <Link to={"/User/Profile/Detail/producer/" + props.data.ProducerId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
+                        <CardHeaderWithAvatar
+                            src={props.data.ProducerProfile} 
                             title={props.data.ProducerName}
                             subheader={props.data.ProducerInspiration}
                         />
                     </Link>
                     <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
                     <Link to={"/User/Profile/Detail/executiveProducer/" + props.data.ExecutiveProducerId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
+                        <CardHeaderWithAvatar
+                            src={props.data.ExecutiveProducerProfile} 
                             title={props.data.ExecutiveProducerName}
                             subheader={props.data.ExecutiveProducerInspiration}
                         />
                     </Link>
                     <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
                     <Link to={"/User/Profile/Detail/fan/" + props.data.FanId + "/null"} style={{ color: '#000' }}>
-                        <CardHeader
-                            avatar={<Avatar src={props.data.FanProfile} aria-label="Fan" className={classes.avatar} />}
+                        <CardHeaderWithAvatar
+                            src={props.data.FanProfile}
                             title={props.data.FanName}
                             subheader={props.data.FanInspiration}
                         />

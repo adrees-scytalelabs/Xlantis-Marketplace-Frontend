@@ -1,24 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
-import { Button } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
-import Backdrop from "@material-ui/core/Backdrop";
 import { useSnackbar } from "notistack";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   let [valid, setValid] = useState("");
   let [title, setTitle] = useState("");
   let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
@@ -27,19 +14,14 @@ function CreateTemplate(props) {
   let handleAvailibility = (e) => {
     e.preventDefault();
     let name = e.target.value;
-
-
     axios.get(`/nft-properties/template/is-available/${name}`).then(
       (response) => {
-        // console.log("response", response);
-        // console.log("Check response",response.data.isAvailable)
         if(!response.data.isAvailable){
           setValid("is-valid")
         }
         else{
           setValid("is-invalid")
         }
-
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -51,9 +33,6 @@ function CreateTemplate(props) {
 
       }
     );
-    // setTimeout(() => {
-    //   setChecking(false);
-    // }, 2000);
   }
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -66,8 +45,6 @@ function CreateTemplate(props) {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
     setProperties([...properties, newData]);
-    // console.log("Add button pressed.");
-    // console.log("Properties: ", properties);
   };
 
   let handleRemoveProperty = (e, index) => {
@@ -78,10 +55,7 @@ function CreateTemplate(props) {
   };
 
   let handlePropertyChange = (index, event) => {
-   // console.log(properties, " /// properties");
     let data = [...properties];
-  //  console.log("the datat change: ", event.target);
-  //  console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -89,20 +63,13 @@ function CreateTemplate(props) {
   let handleSaveTemplate = (e) => {
     e.preventDefault();
     handleShowBackdrop();
-
-  //  console.log("Properties : ", properties);
-  //  console.log("Title", title);
-
     let templateData = {
       name: title,
       data: properties,
     };
-
-  //  console.log("Template Data", templateData);
     try {
       axios.post("/super-admin/template", templateData).then(
         (response) => {
-       //   console.log("response", response);
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
           handleCloseBackdrop();
@@ -141,7 +108,6 @@ function CreateTemplate(props) {
   }, []);
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -162,7 +128,6 @@ function CreateTemplate(props) {
           </div>
         </div>
       </div>
-      {/*Page Content */}
       <div className="page-content mt-5">
         <div className="row">
           <div className="col-12 col-lg-6 col-sm-12 col-md-8">
@@ -176,7 +141,6 @@ function CreateTemplate(props) {
                 value={title}
                 className={`newNftProps form-control ${valid}`}
                 onChange={(e) => {
-                //  console.log("title", e.target.value);
                   handleAvailibility(e);
                   setTitle(e.target.value);
                 }}
@@ -269,5 +233,4 @@ function CreateTemplate(props) {
     </div>
   );
 }
-
 export default CreateTemplate;

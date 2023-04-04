@@ -1,11 +1,11 @@
+import Tooltip from "@material-ui/core/Tooltip";
+import { makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import Tooltip from "@material-ui/core/Tooltip";
-import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { useSnackbar } from "notistack";
-import Backdrop from "@material-ui/core/Backdrop";
+import CircularBackdrop from "../Backdrop/Backdrop";
+
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -50,7 +50,7 @@ function TemplateDetails(props) {
     let data = [...properties];
     data.splice(index, 1);
     setProperties(data);
-     props.setTemplateData((existingValues) => ({
+    props.setTemplateData((existingValues) => ({
       ...existingValues,
       properties: data,
     }));
@@ -154,6 +154,7 @@ function TemplateDetails(props) {
                       id="valueType"
                       className="templatesSelect"
                       placeholder="Select a Type"
+                      disabled={props.updateEnabled}
                       value={i.type}
                       onChange={(e) => handlePropertyChange(index, e)}
                       style={{ padding: "9px" }}
@@ -165,23 +166,26 @@ function TemplateDetails(props) {
                       <option value="number">Number</option>
                     </select>
                   </Col>
-                  <Col
-                    xs={12}
-                    lg={2}
-                    md={4}
-                    sm={12}
-                    className="ml-4 mt-2 mt-lg-0"
-                  >
-                    <h4>Action</h4>
-                    <Tooltip title="Remove a property" placement="bottom">
-                      <button
-                        className="btn btn-submit btn-lg propsActionBtn"
-                        onClick={(e) => handleRemoveProperty(e, index)}
-                      >
-                        -
-                      </button>
-                    </Tooltip>
-                  </Col>
+                  {props.updateEnabled == false && (
+                    <Col
+                      xs={12}
+                      lg={2}
+                      md={4}
+                      sm={12}
+                      className="ml-4 mt-2 mt-lg-0"
+                    >
+                      <h4>Action</h4>
+                      <Tooltip title="Remove a property" placement="bottom">
+                        <button
+                          className="btn btn-submit btn-lg propsActionBtn"
+                          onClick={(e) => handleRemoveProperty(e, index)}
+                          disabled={props.updateEnabled}
+                        >
+                          -
+                        </button>
+                      </Tooltip>
+                    </Col>
+                  )}
                 </Row>
               ))}
               {props.updateEnabled == false && (
@@ -216,9 +220,7 @@ function TemplateDetails(props) {
             )}
           </Modal.Footer>
         </Modal>
-        <Backdrop className={classes.backdrop} open={open}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <CircularBackdrop open={open} />
       </>
     )
   );

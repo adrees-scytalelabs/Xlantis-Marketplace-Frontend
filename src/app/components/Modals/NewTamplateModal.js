@@ -5,10 +5,12 @@ import { Button } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Backdrop from "../Backdrop/Backdrop";
+import CircularBackdrop from "../Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -164,7 +166,7 @@ const NewTamplateModal = (props) => {
               color: "red",
               // cursor: 'pointer',
             }}
-            // onClick={handleClearClick}
+          // onClick={handleClearClick}
           >
             X
           </div>
@@ -180,8 +182,8 @@ const NewTamplateModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header className="NewTemplateHeader" style={{background: 'black'}}>
-        <Modal.Title style={{color:'white'}}>Create New Template</Modal.Title>
+      <Modal.Header className="NewTemplateHeader" style={{ background: 'black' }}>
+        <Modal.Title style={{ color: 'white' }}>Create New Template</Modal.Title>
       </Modal.Header>
       <Modal.Body className="NewTemplateBody">
         <div>
@@ -351,9 +353,7 @@ const NewTamplateModal = (props) => {
             </h6>
           </div>
         </div>
-        <Backdrop className={classes.backdrop} open={open}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <CircularBackdrop open={open} />
       </Modal.Body>
     </Modal>
   );
