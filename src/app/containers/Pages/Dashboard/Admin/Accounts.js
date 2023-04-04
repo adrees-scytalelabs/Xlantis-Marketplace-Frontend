@@ -151,7 +151,6 @@ function Accounts(props) {
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -175,7 +174,6 @@ function Accounts(props) {
                   {...a11yProps(2)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0} className="">
                 <AccountsDefaultScreen
                   match={props.match}
