@@ -188,7 +188,6 @@ const ManageAccountsSSO = (props) => {
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -207,7 +206,6 @@ const ManageAccountsSSO = (props) => {
                   {...a11yProps(1)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0}>
                 <SSOEnabled />
               </TabPanel>

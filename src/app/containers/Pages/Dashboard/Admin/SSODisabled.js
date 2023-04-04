@@ -1,4 +1,3 @@
-import { createMuiTheme, Tooltip } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
@@ -8,81 +7,16 @@ import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import Table from "react-bootstrap/Table";
-import { useHistory } from "react-router-dom";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
   backdrop: {
     zIndex: theme.zIndex.drawer + 1,
     color: "#fff",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
 }));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
 
 function SSODisabled(props) {
   const classes = useStyles();
@@ -119,11 +53,9 @@ function SSODisabled(props) {
     e.preventDefault();
     handleClose();
   };
-  const history = useHistory();
 
   useEffect(() => {
     getDisableSSOAdmins();
-
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -137,7 +69,6 @@ function SSODisabled(props) {
   };
 
   let getDisableSSOAdmins = () => {
-
     setOpen(true);
     axios
       .get(`/super-admin/admins/disabled?userType=v1`)
@@ -193,85 +124,14 @@ function SSODisabled(props) {
     <div className="">
       <div style={{ minHeight: "55vh" }}>
         <div className="row no-gutters">
-
-          <Table responsive>
-            <thead>
-              <tr>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Username
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-4">
-                    Email
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Wallet Address
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center ml-5">
-                    Details
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Status
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            {admins.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.username}</td>
-                  <td className={classes.collectionTitle}>{i.email}</td>
-                  <td className={classes.collectionTitle}>
-                    {i.walletAddress != undefined ? (
-                      <Tooltip
-                        classes={{ tooltip: classes.noMaxWidth }}
-                        leaveDelay={1500}
-                        title={i.walletAddress}
-                        arrow
-                      >
-                        <span >{i.walletAddress.slice(0, 8)}...</span>
-                      </Tooltip>
-                    ) : (
-                      <label className="ml-4">N/A</label>
-                    )}
-                  </td>
-                  <td className={classes.collectionTitle}>
-                    <button
-                      className="btn submit-btn propsActionBtn "
-                      onClick={(e) => handleModalOpen(e, i)}
-                    >
-                      View
-                    </button>
-                  </td>
-                  <td>
-
-                    {i.isEnabled === false ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={`${classes.approveBtn} ml-4`}
-
-                          onClick={(e) => {
-                            handleEnableSSO(e, i._id);
-                          }}
-                        >
-                          Enable
-                        </Button>
-                      </div>
-                    ) : null}
-
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-          </Table>
+          <SuperAdminTable
+            admins={admins}
+            handleModalOpen={handleModalOpen}
+            ssoEnabled={true}
+            statusDisable={true}
+            handleEnableSSO={handleEnableSSO}
+            manageAccounts={true}
+          ></SuperAdminTable>
         </div>
       </div>
 
