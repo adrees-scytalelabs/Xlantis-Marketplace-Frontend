@@ -6,7 +6,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import VerfiedAccountsTable from "../../../../components/tables/VerfiedAccountsTable";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -123,13 +123,13 @@ function VerifiedAccountsDefaultScreen(props) {
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
-        <VerfiedAccountsTable
+        <SuperAdminTable
           admins={admins}
           walletAdmins={walletAdmins}
           handleModalOpen={handleModalOpen}
           ssoEnabled={true}
           walletEnabled={true}
-        ></VerfiedAccountsTable>
+        ></SuperAdminTable>
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}

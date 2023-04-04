@@ -1,7 +1,8 @@
 import { Tooltip } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useEffect } from "react";
 import Table from "react-bootstrap/Table";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles((theme) => ({
   noMaxWidth: {
@@ -20,9 +21,22 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1rem",
     fontFamily: "inter",
   },
+  approveBtn: {
+    backgroundColor: "#F64D04",
+    color: "#fff",
+    padding: "6px 24px",
+    border: "1px solid #F64D04",
+    borderRadius: "0px 15px",
+    "&$hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
 }));
-function VerfiedAccountsTable(props) {
+function SuperAdminTable(props) {
   const classes = useStyles();
+  useEffect(() => {
+   console.log(props.admins);
+  });
   return (
     <Table responsive>
       <thead>
@@ -56,12 +70,19 @@ function VerfiedAccountsTable(props) {
               </div>
             </th>
           )}
+          {props.approval == true && (
+            <th className={classes.tableHeader}>
+              <div className="row no-gutters justify-content-center align-items-center">
+                Approval Status
+              </div>
+            </th>
+          )}
         </tr>
       </thead>
       {props.ssoEnabled == true &&
         props.admins.map((i, index) => {
           return (
-            i.isVerified === true && (
+            
               <tbody>
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
@@ -97,15 +118,27 @@ function VerfiedAccountsTable(props) {
                       </span>
                     </td>
                   )}
+                  {props.approval == true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className={classes.approveBtn}
+                          onClick={(e) => {
+                            props.handleVerify(e, i._id);
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               </tbody>
             )
-          );
         })}
       {props.walletEnabled == true &&
         props.walletAdmins.map((i, index) => {
           return (
-            i.isVerified === true && (
               <tbody>
                 <tr>
                   <td className={classes.collectionTitle}>{i.username}</td>
@@ -139,13 +172,26 @@ function VerfiedAccountsTable(props) {
                       <label className="ml-5">Wallet</label>
                     </td>
                   )}
+                  {props.approval == true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className={classes.approveBtn}
+                          onClick={(e) => {
+                            props.handleVerifyWallet(e, i._id);
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
                 </tr>
               </tbody>
             )
-          );
         })}
     </Table>
   );
 }
 
-export default VerfiedAccountsTable;
+export default SuperAdminTable;
