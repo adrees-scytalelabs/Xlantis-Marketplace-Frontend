@@ -1,4 +1,4 @@
-import { Avatar, CardHeader, Grid, TablePagination } from "@material-ui/core/";
+import { Grid, TablePagination } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 
 const useStyles = makeStyles((theme) => ({
@@ -222,14 +223,8 @@ function MyCubes(props) {
                               }
                               style={{ color: "#000" }}
                             >
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.MusicArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.MusicArtistProfile}
                                 title={i.MusicArtistName}
                                 subheader={i.MusicArtistAbout}
                               />

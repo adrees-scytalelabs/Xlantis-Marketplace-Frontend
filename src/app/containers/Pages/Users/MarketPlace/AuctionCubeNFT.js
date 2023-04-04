@@ -2,11 +2,8 @@ import { Grid } from "@material-ui/core/";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Avatar from "@material-ui/core/Avatar";
-
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,6 +18,7 @@ import { Link, useHistory, useParams } from "react-router-dom";
 import { Alert } from "reactstrap";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import BiddingHistory from "../../../../components/Cards/BiddingHistory";
 import NewNFTCard from "../../../../components/Cards/NewNFTCards";
 import TxHistory from "../../../../components/Cards/TxHistory";
@@ -1155,14 +1153,8 @@ function AuctionCubeNFTs(props) {
                               }
                               style={{ color: "#000" }}
                             >
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={cubeData.MusicArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={cubeData.MusicArtistProfile}   
                                 title={cubeData.MusicArtistName}
                                 subheader={cubeData.MusicArtistAbout}
                               />
@@ -1389,14 +1381,8 @@ function AuctionCubeNFTs(props) {
                               }
                               style={{ color: "#000" }}
                             >
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={cubeData.MusicArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={cubeData.MusicArtistProfile}     
                                 title={cubeData.MusicArtistName}
                                 subheader={cubeData.MusicArtistAbout}
                               />

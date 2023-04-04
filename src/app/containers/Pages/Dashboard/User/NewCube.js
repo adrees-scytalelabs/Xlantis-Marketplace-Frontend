@@ -1,5 +1,4 @@
 import { Card, CardContent, Grid } from "@material-ui/core/";
-import Avatar from "@material-ui/core/Avatar";
 
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
@@ -18,6 +17,7 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import NewCubeComponent from "../../../../components/Cube/NewCubeComponent";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
@@ -658,14 +658,8 @@ function NewCube(props) {
                               >
                                 Image Artist
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ImageArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ImageArtistProfile}
                                 title={i.ImageArtistName}
                                 subheader={i.ImageArtistAbout}
                               />
@@ -685,14 +679,8 @@ function NewCube(props) {
                               >
                                 Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ProducerProfile}
-                                    aria-label="Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ProducerProfile}
                                 title={i.ProducerName}
                                 subheader={i.ProducerInspiration}
                               />
@@ -704,14 +692,8 @@ function NewCube(props) {
                               >
                                 Executive Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ExecutiveProducerProfile}
-                                    aria-label="Executive Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ExecutiveProducerProfile}
                                 title={i.ExecutiveProducerName}
                                 subheader={i.ExecutiveProducerInspiration}
                               />
@@ -723,14 +705,8 @@ function NewCube(props) {
                               >
                                 Fan
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.FanProfile}
-                                    aria-label="Fan"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.FanProfile}
                                 title={i.FanName}
                                 subheader={i.FanInspiration}
                               />

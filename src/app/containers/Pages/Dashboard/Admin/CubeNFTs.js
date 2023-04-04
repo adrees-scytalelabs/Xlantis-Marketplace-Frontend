@@ -2,11 +2,9 @@ import { Grid } from "@material-ui/core/";
 import Accordion from "@material-ui/core/Accordion";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
 import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Avatar from "@material-ui/core/Avatar";
 
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,6 +17,7 @@ import Countdown from "react-countdown";
 import { useParams } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import BiddingHistory from "../../../../components/Cards/BiddingHistory";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import TxHistory from "../../../../components/Cards/TxHistory";
@@ -465,14 +464,8 @@ function CubeNFTs(props) {
                       )}
                       <h3 className="text-muted">Music Artist</h3>
 
-                      <CardHeader
-                        avatar={
-                          <Avatar
-                            src={cubeData.MusicArtistProfile}
-                            aria-label="Artist"
-                            className={classes.avatar}
-                          />
-                        }
+                      <CardHeaderWithAvatar
+                        src={cubeData.MusicArtistProfile}
                         title={cubeData.MusicArtistName}
                         subheader={cubeData.MusicArtistAbout}
                       />
@@ -489,14 +482,8 @@ function CubeNFTs(props) {
                       <h4>Reserve Price</h4>
                       <h2>{cubeData.SalePrice / 10 ** 18} ETH </h2>
                       <h3 className="text-muted">Music Artist</h3>
-                      <CardHeader
-                        avatar={
-                          <Avatar
-                            src={cubeData.MusicArtistProfile}
-                            aria-label="Artist"
-                            className={classes.avatar}
-                          />
-                        }
+                      <CardHeaderWithAvatar
+                        src={cubeData.MusicArtistProfile}
                         title={cubeData.MusicArtistName}
                         subheader={cubeData.MusicArtistAbout}
                       />

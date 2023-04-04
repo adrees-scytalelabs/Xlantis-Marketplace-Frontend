@@ -1,11 +1,8 @@
 import { Card, CardContent, Grid } from "@material-ui/core/";
-import Avatar from "@material-ui/core/Avatar";
-
 import Button from "@material-ui/core/Button";
 import CardActions from "@material-ui/core/CardActions";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,12 +16,13 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -692,14 +690,8 @@ function NewCube(props) {
                               >
                                 Image Artist
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ImageArtistProfile}
-                                    aria-label="Artist"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ImageArtistProfile}
                                 title={i.ImageArtistName}
                                 subheader={i.ImageArtistAbout}
                               />
@@ -719,14 +711,8 @@ function NewCube(props) {
                               >
                                 Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ProducerProfile}
-                                    aria-label="Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ProducerProfile}
                                 title={i.ProducerName}
                                 subheader={i.ProducerInspiration}
                               />
@@ -738,14 +724,8 @@ function NewCube(props) {
                               >
                                 Executive Producer
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.ExecutiveProducerProfile}
-                                    aria-label="Executive Producer"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar
+                                src={i.ExecutiveProducerProfile}
                                 title={i.ExecutiveProducerName}
                                 subheader={i.ExecutiveProducerInspiration}
                               />
@@ -757,14 +737,8 @@ function NewCube(props) {
                               >
                                 Fan
                               </Typography>
-                              <CardHeader
-                                avatar={
-                                  <Avatar
-                                    src={i.FanProfile}
-                                    aria-label="Fan"
-                                    className={classes.avatar}
-                                  />
-                                }
+                              <CardHeaderWithAvatar 
+                                src={i.FanProfile}
                                 title={i.FanName}
                                 subheader={i.FanInspiration}
                               />
