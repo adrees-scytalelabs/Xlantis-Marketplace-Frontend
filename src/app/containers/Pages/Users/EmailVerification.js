@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import "../../../assets/css/bootstrap.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/css/style.css";
-import Header from "../../../components/Headers/Header";
-import success from "../../../assets/img/success.png";
-import failure from "../../../assets/img/failure.png";
-import { useParams } from "react-router-dom";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import "../../../assets/css/bootstrap.min.css";
+import "../../../assets/css/style.css";
+import failure from "../../../assets/img/failure.png";
+import success from "../../../assets/img/success.png";
+import "../../../assets/plugins/fontawesome/css/all.min.css";
+import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import Header from "../../../components/Headers/Header";
+
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   backdrop: {
@@ -43,7 +43,7 @@ function EmailVerification(props) {
 
   useEffect(() => {
     handleEmailVerification();
-  },[]);
+  }, []);
   return (
     <div className="main-wrapper">
       <div
@@ -53,9 +53,7 @@ function EmailVerification(props) {
         <Header setlocal={props.setlocal} selectedNav={"home"} />
         {isConfirming ? (
           <>
-            <Backdrop className={classes.backdrop} open={isConfirming}>
-              <CircularProgress color="inherit" />
-            </Backdrop>
+            <CircularBackdrop open={isConfirming} />
           </>
         ) : null}
         {isSuccess === true ? (
@@ -67,7 +65,7 @@ function EmailVerification(props) {
             </div>
             <div className="row">
               <div className="col-12 text-center">
-                <img src={success} alt='success'/>
+                <img src={success} alt='success' />
               </div>
             </div>
           </div>

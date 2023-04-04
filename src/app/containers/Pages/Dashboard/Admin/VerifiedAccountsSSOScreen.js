@@ -1,22 +1,12 @@
+import React, {useEffect, useState } from "react";
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  }
-}));
-
 function VerifiedAccountsSSOScreen(props) {
-  const classes = useStyles();
   const [network, setNetwork] = useState("");
   let [admins, setAdmins] = useState([]);
   let [adminCount, setAdminCount] = useState(0);
@@ -56,7 +46,6 @@ function VerifiedAccountsSSOScreen(props) {
   };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-
     getUnverifiedAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
@@ -118,9 +107,7 @@ function VerifiedAccountsSSOScreen(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

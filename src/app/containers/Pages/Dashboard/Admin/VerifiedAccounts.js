@@ -1,19 +1,14 @@
-import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
+import { Box, Tab, Tabs, Typography } from "@material-ui/core";
 import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AccountsDefaultScreen from "./AccountsDefaultScreen";
-import AccountsSSO from "./AccountsSSO";
-import AccountsWallet from "./AccountsWallet";
 import VerifiedAccountsDefaultScreen from "./VerifiedAccountsDefaultScreen";
 import VerifiedAccountsSSOScreen from "./VerifiedAccountsSSOScreen";
 import VerifiedAccountsWalletScreen from "./VerifiedAccountsWalletScreen";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -69,7 +64,6 @@ const customTheme = createMuiTheme({
 });
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
-
   return (
     <div
       role="tabpanel"
@@ -132,7 +126,6 @@ function VerifiedAccounts(props) {
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -153,7 +146,6 @@ function VerifiedAccounts(props) {
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -177,7 +169,6 @@ function VerifiedAccounts(props) {
                   {...a11yProps(2)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0} className="">
                 <VerifiedAccountsDefaultScreen
                   match={props.match}

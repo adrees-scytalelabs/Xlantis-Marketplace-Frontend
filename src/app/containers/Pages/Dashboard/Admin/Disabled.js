@@ -1,8 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -10,22 +6,13 @@ import React, { useEffect, useState } from "react";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function Disabled(props) {
-  const classes = useStyles();
-
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-
   let [admins, setAdmins] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
-
   let [adminCount, setAdminCount] = useState(0);
   let [walletAdminCount, setWalletAdminCount] = useState(0);
   let [walletAdmins, setWalletAdmins] = useState([]);
@@ -35,10 +22,8 @@ function Disabled(props) {
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
-
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -204,9 +189,7 @@ function Disabled(props) {
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}

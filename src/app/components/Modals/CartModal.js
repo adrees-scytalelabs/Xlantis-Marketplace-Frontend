@@ -3,10 +3,10 @@ import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
+
 import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { Backdrop, createMuiTheme, ThemeProvider } from "@material-ui/core";
 // MUI TABLE
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";

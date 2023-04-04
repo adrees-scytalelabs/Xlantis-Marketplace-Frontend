@@ -10,8 +10,6 @@ import AccountApprovalWallet from "./AccountApprovalWallet";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -128,8 +126,6 @@ function AccountApproval(props) {
     
   }, []);
 
-  //console.log("props in super admin dashboard: ", props);
-
   return (
     <div className="backgroundDefault">
       
@@ -153,7 +149,6 @@ function AccountApproval(props) {
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -177,7 +172,6 @@ function AccountApproval(props) {
                   {...a11yProps(2)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0} className="">
                 <AccountApprovalDefaultScreen
                   match={props.match}

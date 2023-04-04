@@ -9,10 +9,6 @@ import AccountsSSO from "./AccountsSSO";
 import AccountsWallet from "./AccountsWallet";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    // width: 500,
-  },
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",

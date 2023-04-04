@@ -1,14 +1,11 @@
 
-import {
-  Card
-} from "@material-ui/core";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import {Card} from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 const useStyles = makeStyles((theme) => ({
   root: {
     maxWidth: 345,
@@ -106,7 +103,6 @@ function SuperAdminSSOScreen(props) {
       saved: "",
     });
     getCounts();
-
   }, []);
 
   return (
@@ -338,9 +334,7 @@ function SuperAdminSSOScreen(props) {
           </Card>
         </div>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

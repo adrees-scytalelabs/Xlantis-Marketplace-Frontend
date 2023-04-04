@@ -1,26 +1,14 @@
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function SavedTemplate(props) {
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
-  const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [templateData, setTemplateData] = useState([]);
   const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -137,9 +125,7 @@ function SavedTemplate(props) {
           handleUpdatedData={handleUpdatedData}
         ></SuperAdminPropertiesTable>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       {modalState === true && (
         <TemplateDetails
           show={modalState}

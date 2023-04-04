@@ -2,67 +2,11 @@
 import axios from "axios"; 
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "@material-ui/core/Backdrop";
-import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import Cookies from "js-cookie";
 import { Card } from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
-}));
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function SuperAdminWalletScreen(props) {
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   let [totalAdmins, setTotalAdmins] = useState(0);
   let [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
@@ -77,10 +21,8 @@ function SuperAdminWalletScreen(props) {
     ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
     axios
-
       .get(`/super-admin/admins/counts?userType=v2`)
       .then((response) => {
-       // console.log(response);
         setTotalAdmins(response.data.counts.totalAdmins);
         setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
         setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
@@ -110,8 +52,6 @@ function SuperAdminWalletScreen(props) {
     getCounts();
     
   }, []);
-
- // console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
@@ -341,9 +281,7 @@ function SuperAdminWalletScreen(props) {
           </Card>
         </div>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

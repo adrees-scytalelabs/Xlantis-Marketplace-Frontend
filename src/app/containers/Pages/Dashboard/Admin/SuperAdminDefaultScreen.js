@@ -1,14 +1,11 @@
 
-import axios from "axios"; 
+import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "@material-ui/core/Backdrop";
+import { Card } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import Cookies from "js-cookie";
-import { Card } from "@material-ui/core";
-import { Session } from "walletlink/dist/relay/Session";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -79,30 +76,28 @@ function SuperAdminDefaultScreen(props) {
     axios
       .get(`/super-admin/admins/counts?userType=v1`)
       .then((response) => {
-      //  console.log(response);
         axios
           .get(`/super-admin/admins/counts?userType=v2`)
           .then((response1) => {
-           // console.log(response1);
             setTotalAdmins(
               response1.data.counts.totalAdmins +
-                response.data.counts.totalAdmins
+              response.data.counts.totalAdmins
             );
             setTotalVerifiedAdmins(
               response1.data.counts.totalVerifiedAdmins +
-                response.data.counts.totalVerifiedAdmins
+              response.data.counts.totalVerifiedAdmins
             );
             setTotalUnverifiedAdmins(
               response1.data.counts.totalUnverifiedAdmins +
-                response.data.counts.totalUnverifiedAdmins
+              response.data.counts.totalUnverifiedAdmins
             );
             setTotalEnabled(
               response1.data.counts.totalEnabledAdmins +
-                response.data.counts.totalEnabledAdmins
+              response.data.counts.totalEnabledAdmins
             );
             setTotalDisabled(
               response1.data.counts.totalDisabledAdmins +
-                response.data.counts.totalDisabledAdmins
+              response.data.counts.totalDisabledAdmins
             );
             setOpen(false);
           })
@@ -123,17 +118,14 @@ function SuperAdminDefaultScreen(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      sso:"",
-      wallet:"",
-      properties:"",
-      template:"",
-      saved:"",
+      sso: "",
+      wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
     });
     getCounts();
-    
   }, []);
-
- // console.log("props in super admin dashboard: ", props);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
@@ -193,7 +185,7 @@ function SuperAdminDefaultScreen(props) {
             <Link
               to={{
                 pathname: `${props.match.url}/manageAccounts`,
-                state: {current:"enabled"},
+                state: { current: "enabled" },
               }}
             >
               <div className="row no-gutters justify-content-between">
@@ -238,10 +230,10 @@ function SuperAdminDefaultScreen(props) {
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
           >
-           <Link
+            <Link
               to={{
                 pathname: `${props.match.url}/manageAccounts`,
-                state: {current:"disabled"},
+                state: { current: "disabled" },
               }}
             >
               <div className="row no-gutters justify-content-between">
@@ -363,9 +355,7 @@ function SuperAdminDefaultScreen(props) {
           </Card>
         </div>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }
