@@ -172,7 +172,7 @@ function RandomDrop(props) {
                                         
                                         >
                                             {types.map((data, index) =>
-                                                <NewNFTCards key={index} index={index} data={data} handleRemoveClick={handleRemoveClick}></NewNFTCards>
+                                                <NewNFTCards key={index} index={index} data={data} handleRemoveClick={handleRemoveClick} />
                                             )}
                                         </Grid>
                                     </div>

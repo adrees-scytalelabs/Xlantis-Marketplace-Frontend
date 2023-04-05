@@ -182,7 +182,6 @@ function NewNFT(props) {
 
   const handleTemplateChange = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " template change");
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
     if (e.target.value === "default") {
@@ -192,13 +191,11 @@ function NewNFT(props) {
 
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " Template selected!");
     if (templateData) {
       for (let i = 0; i < templateData.length; i++) {
         if (e.target.value === templateData[i].name) {
           handleSetProperties(templateData[i].properties);
 
-          // console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < templateData[i].properties.length; p++) {
             dynamicField.push({
@@ -217,12 +214,10 @@ function NewNFT(props) {
 
   const handleStandardSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " Template selected!");
     if (standardTemplates) {
       for (let i = 0; i < standardTemplates.length; i++) {
         if (e.target.value === standardTemplates[i].name) {
           handleSetProperties(standardTemplates[i].properties);
-          //console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < standardTemplates[i].properties.length; p++) {
             dynamicField.push({
@@ -658,7 +653,6 @@ function NewNFT(props) {
           if (batchId === "") {
             axios.post(`/batch-mint/`, data).then(
               (response) => {
-                //console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
                 setNftId(response.data.nftId);
                 setTokenList([
@@ -774,10 +768,7 @@ function NewNFT(props) {
           setIsMp3File(false);
           let variant = "success";
           enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
-
-          //console.log("Token list length: ", tokenList.length);
           setIsUploadingData(false);
-
           handleCloseBackdrop();
         });
       };
@@ -1910,7 +1901,7 @@ function NewNFT(props) {
                                 <span style={{ fontSize: "0.9rem" }}>
                                   Multiple{" "}
                                   <i
-                                    class="fa fa-info-circle"
+                                    className="fa fa-info-circle"
                                     aria-hidden="true"
                                   ></i>
                                 </span>
@@ -1941,11 +1932,9 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                                // console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
-                                // console.log("Value: ", value);
                               }
                             }
                           }}
@@ -1980,12 +1969,10 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                                //  console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
                                 setContractType(value.contractType);
-                                //  console.log("Value: ", value);
                               }
                             }
                           }}
@@ -2134,7 +2121,7 @@ function NewNFT(props) {
                         title={
                           tokenSupply <= 0
                             ? "Token Supply Cannot Be Less Than 1"
-                            : null
+                            : ""
                         }
                       >
                         <button
@@ -2171,16 +2158,14 @@ function NewNFT(props) {
                     container
                     spacing={2}
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                   >
                     {tokenList.map((i, index) => (
                       <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
                         <CardActionArea
                           onClick={() => {
-                            // console.log("nftDetailObject: ", i);
                             handleOpenNFTDetailModal(i);
                             setEditObjectIndex(index);
-                            //  console.log("Open Dialog Value: ", openDialog);
                           }}
                         >
                           <Card id="nftCardProps">

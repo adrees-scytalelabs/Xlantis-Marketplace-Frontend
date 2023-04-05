@@ -6,7 +6,7 @@ import {
   createMuiTheme,
   makeStyles,
   ThemeProvider,
-  useTheme
+  useTheme,
 } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -17,6 +17,7 @@ import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
+import MarketPlaceMessageCard from "../Cards/MarketPlaceMessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -71,8 +72,7 @@ const paginationStyles = makeStyles({
 });
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -244,24 +244,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MarketPlaceMessageCard message="No items to display" />
                 )}
               </div>
             </div>
@@ -319,25 +302,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      {/* <strong>No items to display </strong> */}
-                      <strong>This feature is coming soon</strong>
-                    </Typography>
-                  </Card>
+                  <MarketPlaceMessageCard message="This feature is coming soon" />
                 )}
               </div>
             </div>

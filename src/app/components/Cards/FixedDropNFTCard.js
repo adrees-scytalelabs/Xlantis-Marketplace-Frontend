@@ -137,8 +137,6 @@ function FixedDropNFTCard(props) {
         state: {
           nftDetails: props.data,
           dropId: props.data.dropId,
-          // isSold: props.data.currentMarketplaceId.isSold,
-          // price: props.data.currentMarketplaceId.price,
           saleType: props.saleType,
           description: props.description,
          
@@ -146,9 +144,7 @@ function FixedDropNFTCard(props) {
       }}
     >
       <Card style={{ height: "100%" }} id="nftCardProps">
-        {/* <Link to={"/dashboard/nftDetail/" + props.data._id}> */}
         <div className="row no-gutters mb-3">
-          {/* NFT Image */}
           <CardMedia
             className={classes.media}
             image={props.data.nftURI}
@@ -158,13 +154,9 @@ function FixedDropNFTCard(props) {
           <CardContent
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
-            {/* <CardHeader className="text-center" title={props.data.title} /> */}
-            {/* Title & Rarity */}
             <div
               className="row no-gutters justify-content-between align-items-center"
-              // style={{ minHeight: "60px" }}
             >
-              {/* title */}
               <div className="col-auto">
                 <Typography
                   variant="h6"
@@ -179,10 +171,8 @@ function FixedDropNFTCard(props) {
                 <Typography
                   variant="body2"
                   component="p"
-                  // className={classes.commonRarity}
                   style={selectedRarity.style}
                 >
-                  {/* <strong>Token Rarity: </strong> */}
                   {rarity}
                 </Typography>
               </div>
@@ -194,10 +184,7 @@ function FixedDropNFTCard(props) {
                 className={classes.cardDescriptions}
                 component="p"
               >
-                {/* <strong>Artwork Description: </strong> */}
-                {/* {props.data.description} */}
                 {truncate(props.data.description, 30)}
-                {/* {description} */}
               </Typography>
             </div>
             <Typography
@@ -210,7 +197,6 @@ function FixedDropNFTCard(props) {
             </Typography>
           </CardContent>
         </div>
-        {/* </Link> */}
       </Card>
     </Link>
   );

@@ -36,10 +36,7 @@ const useStyles = makeStyles((theme) => ({
 
 
 const MyCollectionsCard = (props) => {
-  
   const classes = useStyles();
-
-  //console.log(props.i, "props in card");
 
   return (
     <Card style={{ height: "100%" }} id="collectionCardProps">
@@ -66,10 +63,7 @@ const MyCollectionsCard = (props) => {
                 className={classes.cardDescriptions}
                 component="p"
               >
-                {/* <strong>Artwork Description: </strong> */}
-                {/* {props.data.description} */}
                 {truncate(props.i.description, 35)}
-                {/* {description} */}
               </Typography>
             </div>
           </CardContent>
