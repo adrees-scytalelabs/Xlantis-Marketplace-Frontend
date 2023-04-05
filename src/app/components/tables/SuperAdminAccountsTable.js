@@ -77,7 +77,7 @@ function SuperAdminTable(props) {
           {props.manageAccounts == true && (
             <th className={classes.tableHeader}>
               <div className="row no-gutters justify-content-center align-items-center">
-                  Status
+                Status
               </div>
             </th>
           )}
@@ -109,7 +109,14 @@ function SuperAdminTable(props) {
                 <td className={classes.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
-                    onClick={(e) => props.handleModalOpen(e, i)}
+                    onClick={(e) =>
+                      props.handleModalOpen(
+                        e,
+                        i,
+                        props.setShow,
+                        props.setModalData
+                      )
+                    }
                   >
                     View
                   </button>
@@ -127,7 +134,17 @@ function SuperAdminTable(props) {
                       <Button
                         className={classes.approveBtn}
                         onClick={(e) => {
-                          props.handleVerify(e, i._id);
+                          props.handleVerify(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setAdmins,
+                            props.setAdminCount,
+                            props.rowsPerPage,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Approve
@@ -150,18 +167,18 @@ function SuperAdminTable(props) {
                   </td>
                 )}
                 {props.statusDisable == true && (
-                <td>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    <Button
-                      className={`${classes.approveBtn} ml-4`}
-                      onClick={(e) => {
-                        props.handleEnableSSO(e, i._id);
-                      }}
-                    >
-                      Enable
-                    </Button>
-                  </div>
-                </td>
+                  <td>
+                    <div className="row no-gutters justify-content-center align-items-center">
+                      <Button
+                        className={`${classes.approveBtn} ml-4`}
+                        onClick={(e) => {
+                          props.handleEnableSSO(e, i._id);
+                        }}
+                      >
+                        Enable
+                      </Button>
+                    </div>
+                  </td>
                 )}
               </tr>
             </tbody>
@@ -193,7 +210,14 @@ function SuperAdminTable(props) {
                 <td className={classes.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
-                    onClick={(e) => props.handleModalOpen(e, i)}
+                    onClick={(e) =>
+                      props.handleModalOpen(
+                        e,
+                        i,
+                        props.setShow,
+                        props.setModalData
+                      )
+                    }
                   >
                     View
                   </button>
@@ -209,7 +233,17 @@ function SuperAdminTable(props) {
                       <Button
                         className={classes.approveBtn}
                         onClick={(e) => {
-                          props.handleVerifyWallet(e, i._id);
+                          props.handleVerifyWallet(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setWalletAdmins,
+                            props.setAdminCount,
+                            props.rowsPerPage,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Approve
@@ -217,7 +251,7 @@ function SuperAdminTable(props) {
                     </div>
                   </td>
                 )}
-                 {props.statusEnable == true && (
+                {props.statusEnable == true && (
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center ml-4">
                       <Button
@@ -232,18 +266,18 @@ function SuperAdminTable(props) {
                   </td>
                 )}
                 {props.statusDisable == true && (
-                <td>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    <Button
-                      className={`${classes.approveBtn} ml-4`}
-                      onClick={(e) => {
-                        props.handleEnableWallet(e, i._id);
-                      }}
-                    >
-                      Enable
-                    </Button>
-                  </div>
-                </td>
+                  <td>
+                    <div className="row no-gutters justify-content-center align-items-center">
+                      <Button
+                        className={`${classes.approveBtn} ml-4`}
+                        onClick={(e) => {
+                          props.handleEnableWallet(e, i._id);
+                        }}
+                      >
+                        Enable
+                      </Button>
+                    </div>
+                  </td>
                 )}
               </tr>
             </tbody>
