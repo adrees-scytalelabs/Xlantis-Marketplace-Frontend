@@ -516,9 +516,6 @@ const NFTBuy = (props) => {
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
-                            {/* <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} /> */}
                             <DirectionLight
                               color={0xffffff}
                               position={{ x: 100, y: 200, z: 100 }}

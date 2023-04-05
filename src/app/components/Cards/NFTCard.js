@@ -61,8 +61,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// CONDITIONAL STYLES
-
 const unCommon = {
   fontFamily: "poppins",
   color: "#007f5f",
@@ -97,8 +95,6 @@ const defaultStyles = {
 
 function NFTCard(props) {
   const classes = useStyles();
-
-  // Styling
   const selectedRarity = {
     style:
       props.data.type === "Common"
@@ -151,4 +147,3 @@ function NFTCard(props) {
 }
 
 export default NFTCard;
-//User/Profile/Detail/userId

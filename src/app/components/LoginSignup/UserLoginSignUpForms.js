@@ -96,7 +96,6 @@ const AdminLoginSignupForms = () => {
           console.log("JWT could not be submitted,", error);
           if (error) setTokenVerification(false);
         });
-      // adminAccount(account);
     }
     return () => {
       controller.abort();
@@ -121,7 +120,6 @@ const AdminLoginSignupForms = () => {
       "user token before refresh /// ",
       sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {})
     );
-  //console.log(Cookies.get("Version"), " /// Version for user");
 
   
   return (
@@ -337,7 +335,6 @@ const AdminLoginSignupForms = () => {
             </div>
           </div>
         </div>
-        {/* <Alert severity="error">This is an error message!</Alert> */}
       </div>
       <WorkInProgressModal
         show={workProgressModalShow}

@@ -1,9 +1,5 @@
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import {
-  CardActionArea,
-  Grid
-} from "@material-ui/core/";
-
+import { CardActionArea, Grid } from "@material-ui/core/";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -195,7 +191,6 @@ function NewNFT(props) {
       for (let i = 0; i < templateData.length; i++) {
         if (e.target.value === templateData[i].name) {
           handleSetProperties(templateData[i].properties);
-
           let dynamicField = [];
           for (let p = 0; p < templateData[i].properties.length; p++) {
             dynamicField.push({
@@ -248,7 +243,6 @@ function NewNFT(props) {
   let [ipfsHash, setIpfsHash] = useState(null);
   let [description, setDescription] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
-
 
   let [supplyType, setSupplyType] = useState("Single");
   let [nftContractAddress, setNftContractAddress] = useState("");
@@ -1209,7 +1203,6 @@ function NewNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                {/* Image Upload */}
                 <label className="mb-0 p-1">Select Artwork</label>
                 <NFTUpload
                   image={image}
@@ -1223,7 +1216,6 @@ function NewNFT(props) {
                   previewImageURI={previewImageURI}
                   isUploadingPreview={isUploadingPreview}
                 />
-                {/* Fields */}
                 <div className="form-group newNftFields">
                   <label>Title</label>
                   <div className="form-group newNftWrapper">
@@ -2111,12 +2103,12 @@ function NewNFT(props) {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-                      name === "" ||
-                      description === "" ||
-                      tokenSupply === "" ||
-                      collection === "" ||
-                      tokenSupply <= 0 ||
-                      isUploadingData === true ? (
+                    name === "" ||
+                    description === "" ||
+                    tokenSupply === "" ||
+                    collection === "" ||
+                    tokenSupply <= 0 ||
+                    isUploadingData === true ? (
                       <Tooltip
                         title={
                           tokenSupply <= 0

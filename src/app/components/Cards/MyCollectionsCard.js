@@ -1,17 +1,11 @@
-import React from "react";
-// REACT ROUTER
-import { Link } from "react-router-dom";
 import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import { makeStyles } from "@material-ui/core/styles";
+import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
-// UTILS
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { truncate } from "../../assets/js/utils";
-
-// STYLES
 const useStyles = makeStyles((theme) => ({
   media: {
     width: "100%",
@@ -34,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const MyCollectionsCard = (props) => {
   const classes = useStyles();
 
@@ -56,7 +49,6 @@ const MyCollectionsCard = (props) => {
             >
               {props.i.name}
             </Typography>
-            {/* Descriptions */}
             <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
                 variant="body2"

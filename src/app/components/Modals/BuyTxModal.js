@@ -392,7 +392,6 @@ const BuyTxModal = (props) => {
               </Accordion>
               <Divider />
               <div className="mt-5">
-                {/* Total Cost */}
                 <div
                   className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                 >
@@ -411,12 +410,9 @@ const BuyTxModal = (props) => {
                       
                     >
                       $115,780.00
-                      {/* {response.totalCostInWei} */}
                     </p>
                   </div>
                 </div>
-
-                {/* Estimated Time in Sec */}
                 <div
                   className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                 >
@@ -430,12 +426,8 @@ const BuyTxModal = (props) => {
                     </Typography>
                   </div>
                   <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      className={classes.cardTitle}
-                      
-                    >
+                    <p className={classes.cardTitle}>
                       1min 30sec
-                      {/* {response.estimatedTimeInSec} */}
                     </p>
                   </div>
                 </div>

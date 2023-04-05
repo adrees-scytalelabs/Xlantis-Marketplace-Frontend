@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import axios from "axios";
 import { Form, Spinner } from "react-bootstrap";
 import Modal from "react-bootstrap/Modal";
@@ -130,7 +129,6 @@ function ProfileSetting(props) {
   };
   return (
     <>
-      {/* {props.userData.name !== undefined ? ( */}
       <div className="card">
         <ul className="breadcrumb" style={{ backgroundColor: "rgb(167, 0, 0)" }}>
           <li className="breadcrumb-item">
@@ -139,7 +137,6 @@ function ProfileSetting(props) {
           <li className="breadcrumb-item active">Profile Settings</li>
         </ul>
         <div className="card-body">
-          {/* // <!-- Profile Settings Form --> */}
           <form onSubmit={onSubmitHandleEvent}>
             <div className="row form-row">
               <div className="col-12 col-md-12">
@@ -161,11 +158,8 @@ function ProfileSetting(props) {
                             paddingTop: "33%",
                           }}
                         >
-                          {/* <strong>{props.userData.name[0]}</strong> */}
                         </p>
                       </div>
-                      {/* </>
-                          )} */}
                     </div>
                     <div className="upload-img">
                       <div
@@ -217,7 +211,6 @@ function ProfileSetting(props) {
                 <div className="form-group">
                   <label>Mobile</label>
                   <input
-                    // pattern="[+]852[0-9]{8}"
                     type="text"
                     defaultValue={props.userData.mobile}
                     className="form-control"
@@ -227,7 +220,6 @@ function ProfileSetting(props) {
                     }}
                     required
                   />
-                  {/* <small>Format: +852XXXXXXXX</small> */}
                 </div>
               </div>
               <div className="col-12">
@@ -274,9 +266,6 @@ function ProfileSetting(props) {
           </Modal>
         </div>
       </div>
-      {/* ) : (
-      <></>
-        )} */}
     </>
   );
 }

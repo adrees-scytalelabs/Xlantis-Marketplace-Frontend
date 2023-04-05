@@ -10,6 +10,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,23 +140,8 @@ function MySeasons(props) {
               </span>
             </div>
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                color="textSecondary"
-                component="p"
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
+
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (

@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -57,7 +57,6 @@ function MyCollection(props) {
     axios
       .get(url)
       .then((response) => {
-       // console.log("response.data", response.data);
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
         setOpen(false);
@@ -94,8 +93,6 @@ function MyCollection(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
-   // console.log("Entered in my collection tab");
     getCollections(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",
@@ -145,24 +142,7 @@ function MyCollection(props) {
               </span>
             </div>
           ) : collections.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "black"
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (

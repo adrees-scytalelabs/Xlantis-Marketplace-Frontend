@@ -159,9 +159,6 @@ function RandomDrop(props) {
                     <div className="col-md-12 col-lg-6">
                         {types.length > 0 ? (
                             <Scrollbars style={{ height: 600 }}>
-
-
-                                {/* <!-- Change Password Form --> */}
                                 <div className="form-group">
                                     <div >
                                         <Grid

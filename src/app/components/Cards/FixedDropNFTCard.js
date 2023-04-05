@@ -70,7 +70,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// CONDITIONAL STYLES
+
 
 const unCommon = {
   fontFamily: "orbitron",
@@ -106,13 +106,9 @@ const defaultStyles = {
 
 
 function FixedDropNFTCard(props) {
-  //console.log("props nftCrad", props);
   const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
-  //console.log("NFT id for fixed drop: ", singleNFTid);
-
-  // Styling
   const selectedRarity = {
     style:
       rarity === "Common"
@@ -150,7 +146,6 @@ function FixedDropNFTCard(props) {
             image={props.data.nftURI}
             title="NFT Image"
           />
-          {/* </CardMedia> */}
           <CardContent
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
@@ -166,7 +161,6 @@ function FixedDropNFTCard(props) {
                   {props.data.title}
                 </Typography>
               </div>
-              {/* rarity */}
               <div className="col-auto">
                 <Typography
                   variant="body2"
@@ -177,7 +171,6 @@ function FixedDropNFTCard(props) {
                 </Typography>
               </div>
             </div>
-            {/* Descriptions */}
             <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
                 variant="body2"

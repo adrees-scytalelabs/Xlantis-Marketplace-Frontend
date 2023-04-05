@@ -568,7 +568,6 @@ function NewNFT(props) {
                   </div>
 
                   <div className="form-group">
-                    {/* <label>About the Art</label> */}
                     <textarea
                       type="text"
                       required

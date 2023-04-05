@@ -5,7 +5,6 @@ import React from "react";
 import { Link, useHistory } from "react-router-dom";
 
 function AdminSidebar(props) {
-  //console.log(props);
   let history = useHistory();
   let handleLogout = (e) => {
     sessionStorage.clear();

@@ -13,9 +13,6 @@ const ChangeCollectionConfirmationModal = (props) => {
 
     useEffect(() => {
         setCollections(props.collectionDetails);
-        // let collectionList = [...props.collectionDetails];
-        // collectionList.splice(0, 1);
-        // setCollections(collectionList);
     })
 
     return ( 
@@ -23,7 +20,6 @@ const ChangeCollectionConfirmationModal = (props) => {
             <Modal.Header closeButton>
                 <Modal.Title> Change Collection? </Modal.Title>
             </Modal.Header>
-            {/* <Modal.Body className="text-center"> <i className="fas fa-times-circle fa-10x"></i></Modal.Body> */}
             <Modal.Body>It will change collection for all <strong>NFTs.</strong> Are you sure you want to change <strong>Collection?</strong></Modal.Body>
             <Modal.Body>
                 <div className="form-group">
@@ -32,7 +28,7 @@ const ChangeCollectionConfirmationModal = (props) => {
                         <Autocomplete
                             id="combo-dox-demo"
                             options={collections}
-                            // disabled={isDisabledImporter}
+                            
                             getOptionLabel={(option) =>
                                 option.name
                             }

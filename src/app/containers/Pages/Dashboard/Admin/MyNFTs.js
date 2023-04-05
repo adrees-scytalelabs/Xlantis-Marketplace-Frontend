@@ -11,6 +11,7 @@ import { Link } from "react-router-dom";
 import { nftImage } from "../../../../assets/js/images";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles({
   root: {
@@ -64,8 +65,6 @@ const makeTheme = createMuiTheme({
   },
 });
 
-//console.log("nft images: ", nftImage);
-
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
@@ -83,16 +82,12 @@ function MyNFTs(props) {
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    //console.log("version", version);
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-       // console.log("response", response);
-        let nfts = response.data.NFTdata;
+       let nfts = response.data.NFTdata;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
         });
-        //console.log("NFTS", nfts);
-        //console.log("Updated", newState);
         setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
@@ -156,8 +151,6 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  //console.log("the tokenList length: ", tokenList.length);
-  //console.log(tokenList.length !== 0 && "page-height");
 
   return (
     <div className="backgroundDefault position-relative">
@@ -179,7 +172,6 @@ function MyNFTs(props) {
       </div>
 
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <div className="row no-gutters justify-content-center align-items-center">
@@ -188,24 +180,7 @@ function MyNFTs(props) {
               </div>
             </div>
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg = "No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (

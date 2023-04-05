@@ -57,7 +57,6 @@ const SuperAdminLoginForms = () => {
         setIsLoading(false);
         let variant = "success";
         enqueueSnackbar('Logged In Successfully', { variant });
-        // history.push("/");
         window.location.reload();
 
       },

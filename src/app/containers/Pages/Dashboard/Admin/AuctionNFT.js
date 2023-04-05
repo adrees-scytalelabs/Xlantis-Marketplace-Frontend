@@ -233,7 +233,6 @@ const AuctionNFT = (props) => {
           "Response from getting drop details: ",
           response.data.dropData.dropCloneAddress
         );
-        //set contract type when its done at backend
         setDropCloneAddress(response.data.dropData.dropCloneAddress);
       },
       (err) => {
@@ -251,15 +250,15 @@ const AuctionNFT = (props) => {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -268,22 +267,15 @@ const AuctionNFT = (props) => {
   function openTransak() {
     handleCloseModal();
     const transak = new transakSDK(settings);
-
     transak.init();
-
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
-
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
     });
-
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -395,8 +387,6 @@ const AuctionNFT = (props) => {
 
   let handleBidSubmit = async (event) => {
     event.preventDefault();
-
-    //conditions checking
     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
     console.log("Bid Expiry Time: ", bidExpiryTime);
@@ -427,14 +417,12 @@ const AuctionNFT = (props) => {
       } else {
         handleShowBackdrop();
         await giveAuctionErc20Approval();
-
         let bidData = {
           nftId: nftDetail._id,
           bidAmount: biddingValue.toString(),
           bidderAddress: accounts[0],
           expiryTime: bidExpiryTime,
         };
-
         console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
         console.log("Bid data: ", bidData);
 
@@ -473,8 +461,6 @@ const AuctionNFT = (props) => {
             let bidIdHash = getHash(response.data.bidId);
             let bidId = response.data.bidId;
 
-            //sending call on blockchain
-
             console.log("Bid data for blockchain: ");
             console.log("drop id hash: ", dropIdHash);
             console.log("bid id hash: ", bidIdHash);
@@ -500,8 +486,6 @@ const AuctionNFT = (props) => {
               })
               .on("receipt", (receipt) => {
                 console.log("receipt: ", receipt);
-
-                //sending finalize call on backend
                 let finalizeBidData = {
                   bidId: bidId,
                   txHash: trxHash,
@@ -534,8 +518,6 @@ const AuctionNFT = (props) => {
 
   let handleBidSubmitSSO = async (event) => {
     event.preventDefault();
-
-    //conditions checking
     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
     console.log("Bid Expiry Time: ", bidExpiryTime);
@@ -557,7 +539,6 @@ const AuctionNFT = (props) => {
     } else {
       handleShowBackdrop();
       let bidAmountInWei = Web3.utils.toWei(biddingValue);
-
       let bidData = {
         nftId: nftDetail._id,
         bidAmount: bidAmountInWei,

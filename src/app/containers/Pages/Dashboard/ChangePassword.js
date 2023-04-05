@@ -38,7 +38,6 @@ function ChangePassword(props) {
             handleShowSuccessModal();
           },
           (error) => {
-            // console.log(error);
             if (error.response.status === 404) {
               setErrorMsg("User not found, try later.");
             } else if (error.response.status === 401) {
@@ -82,7 +81,6 @@ function ChangePassword(props) {
       <div className="card-body">
         <div className="row">
           <div className="col-md-12 col-lg-6">
-            {/* <!-- Change Password Form --> */}
             <form onSubmit={handleSubmitEvent}>
               <div className="form-group">
                 <label>Old Password</label>
@@ -145,7 +143,6 @@ function ChangePassword(props) {
                 </div>
               )}
             </form>
-            {/* <!-- /Change Password Form --> */}
           </div>
         </div>
       </div>

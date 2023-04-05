@@ -8,6 +8,7 @@ import Cookies from "js-cookie";
 import axios from "axios";
 import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 function UserFan(props) {
   let history = useHistory();
@@ -105,23 +106,8 @@ function UserFan(props) {
                     </span>
                   </div>
                 ) : data.length === 0 ? (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "No items to display"></MessageCard>
+
                 ) : (
                   <Grid
                     container

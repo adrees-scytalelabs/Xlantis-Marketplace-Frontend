@@ -10,11 +10,10 @@ export const hoverClassStyleTest = (selectedNav) => {
     });
 }
 
-// export const hoverClassStyle = {
-//     Market: props.selectedNav === "Market" ? "" : "headerNavLinks",
-//     Drops: props.selectedNav === "Drops" ? "" : "headerNavLinks",
-//     Home: props.selectedNav === "Home" ? "" : "headerNavLinks",
-//     Blog: props.selectedNav === "Blog" ? "" : "headerNavLinks",
-//     Community: props.selectedNav === "Community" ? "" : "headerNavLinks",
-//     Create: props.selectedNav === "Create" ? "" : "headerNavLinks",
-// };
+
+
+
+
+
+
+

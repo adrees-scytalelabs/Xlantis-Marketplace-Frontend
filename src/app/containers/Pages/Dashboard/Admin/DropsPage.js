@@ -1,23 +1,22 @@
-import { CardHeader, Grid } from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { truncate } from "../../../../assets/js/utils";
-import { Alert } from "@material-ui/lab";
-import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
+import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -99,10 +98,8 @@ function DropsPage(props) {
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    // console.log("version", version);
     axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
       (response) => {
-        //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();

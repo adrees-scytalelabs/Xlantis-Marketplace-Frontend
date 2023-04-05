@@ -5,7 +5,7 @@ import {
   makeStyles,
   Paper,
   Tooltip,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
@@ -23,11 +23,7 @@ import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/Auc
 import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-
-import {
-  createMuiTheme,
-  ThemeProvider
-} from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
@@ -78,17 +74,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
         backgroundColor: "black",
       },
-      // content: {
-      //     borderBottom: "1px solid white",
-      //     paddingBottom: "12px"
-      // },
       expandIcon: {
         color: "white",
       },
@@ -107,15 +99,6 @@ const customTheme = createMuiTheme({
         padding: "16px 14px",
       },
     },
-    // MuiIconButton: {
-    //     root: {
-    //         padding: 0
-    //     },
-    //     label: {
-    //         borderBottom: "1px solid white",
-    //         padding: "12px",
-    //     }
-    // }
   },
 });
 
@@ -141,15 +124,15 @@ const DropSingleNFT = (props) => {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -183,19 +166,16 @@ const DropSingleNFT = (props) => {
 
     transak.init();
 
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
 
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
     });
 
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -321,14 +301,12 @@ const DropSingleNFT = (props) => {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
     setNftDetail(location.state.nftDetail);
-    //  console.log("NFT detail: ", location.state.nftDetail);
     setContractType(location.state.nftDetail.collectionId.contractType);
     setKeys(Object.keys(location.state.nftDetail.properties));
     setProperties(location.state.nftDetail.properties);
     if (location.state.saleType === "auction") {
       getBidList(location.state.nftDetail._id);
     }
-    //    console.log("saleType", location.state.saleType);
 
     props.setActiveTab({
       dashboard: "",
@@ -376,9 +354,8 @@ const DropSingleNFT = (props) => {
         addressAuctionFactory = Addresses.AuctionDropFactory721;
       }
 
-      //getting data to send call
       let dropIdHash = getHash(nftDetail.dropId);
-      let nftAddress = nftDetail.collectionId.nftContractAddress; //to be confirmed to send request
+      let nftAddress = nftDetail.collectionId.nftContractAddress;
       let tokenId = nftDetail.nftId;
       let uri = nftDetail.nftURI;
       let signature = nftDetail.voucherSignature;

@@ -72,18 +72,6 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newCube}>
-              <Link to={`${props.match.url}/newCube`}>
-                <i className="fas fa-cube"></i> <span>New Cube</span>
-              </Link>
-            </li> 
-             <li className={props.activeTab.myCubes}>
-              <Link to={`${props.match.url}/myCubes`}>
-                <i className="fas fa-cubes"></i><span>My Cubes</span>
-              </Link>
-            </li>  */}
-
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match.url}/dropApproval`}>
@@ -108,23 +96,6 @@ function AdminSidebar(props) {
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newRandomDrop}>
-              <Link to={`${props.match.url}/newRandomDrop`}>
-                <i className="fas fa-random"></i> <span>New Random Drop</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.newSeason}>
-              <Link to={`${props.match.url}/newSeason`}>
-                <i className="fas fa-boxes"></i> <span>New Season</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.mySeason}>
-              <Link to={`${props.match.url}/mySeason`}>
-                <LibraryBooksIcon/> <span>My Season</span>
-              </Link>
-            </li> */}
-
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

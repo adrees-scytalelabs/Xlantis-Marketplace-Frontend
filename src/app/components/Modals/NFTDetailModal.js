@@ -1,5 +1,5 @@
-import { Button, makeStyles } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { Button } from "@material-ui/core";
+import { default as React, default as React, useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import NFTDetailModalCard from "../Cards/NFTDetailModalCard";
