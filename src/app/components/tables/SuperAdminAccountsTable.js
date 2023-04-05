@@ -83,6 +83,7 @@ function SuperAdminTable(props) {
           )}
         </tr>
       </thead>
+
       {props.ssoEnabled == true &&
         props.admins.map((i, index) => {
           return (
