@@ -111,7 +111,6 @@ function MyNFTs(props) {
       </div>
       
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
@@ -137,7 +136,6 @@ function MyNFTs(props) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        {/* </form> */}
       </div>
     </div>
   );

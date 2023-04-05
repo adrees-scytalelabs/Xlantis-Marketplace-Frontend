@@ -28,20 +28,17 @@ function PricingBanner() {
                       <ul>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
 
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
@@ -96,20 +93,17 @@ function PricingBanner() {
                       <ul>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
 
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
@@ -158,20 +152,17 @@ function PricingBanner() {
                       <ul>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
 
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
                         <li>
                           <span>
-                            {/* &#10003; */}
                             Highly available auto healing cluster
                           </span>
                         </li>
@@ -205,13 +196,7 @@ function PricingBanner() {
             </div>
           </div>
         </div>
-        
-        
       </div>
-
-      {/* </div>
-                </div>
-            </div> */}
     </>
   );
 }

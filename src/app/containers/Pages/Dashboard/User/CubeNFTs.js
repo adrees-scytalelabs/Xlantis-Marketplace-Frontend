@@ -613,8 +613,6 @@ function CubeNFTs(props) {
 
                   {dropId !== "notdrop" ? (
                     <div className="col-md-12 col-lg-6">
-                      {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                color="" label="@UserName" /> */}
 
                       {new Date() > new Date(dropData.AuctionEndsAt) ? (
                         bidHistory.length === 0 ? (
@@ -735,15 +733,9 @@ function CubeNFTs(props) {
                           subheader={cubeData.MusicArtistAbout}
                         />
                       </Link>
-                      {/* <Row>
-                                                <button className="btn-lg btn btn-dark btn-block" >Place a bid</button>{' '}
-
-                                            </Row> */}
                     </div>
                   ) : (
                     <div className="col-md-12 col-lg-6">
-                      {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                color="" label="@UserName" /> */}
                       <h1>{cubeData.title} </h1>
                       <h4>Reserve Price</h4>
                       <h2>{cubeData.SalePrice / 10 ** 18} ETH </h2>

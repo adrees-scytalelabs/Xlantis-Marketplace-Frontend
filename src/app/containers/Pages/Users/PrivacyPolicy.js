@@ -84,9 +84,7 @@ function PrivacyPolicy(props) {
 
                                             </ul>
                                         </Typography>
-                                        {/* </Container> */}
                                         <Typography variant="h4" gutterBottom>Collecting and Using Your Personal Data</Typography>
-                                        {/* <Container> */}
                                         <Typography variant="h5" gutterBottom>Types of Data Collected</Typography>
 
                                         <Typography variant="h6" gutterBottom>Personal Data</Typography>
@@ -225,15 +223,8 @@ function PrivacyPolicy(props) {
                                                 <li>By visiting this page on our website: imex-frontend.herokuapp.com/contact-us</li>
                                             </ul>
                                         </Typography>
-                                        {/* </Container> */}
                                     </CardContent>
                                     <CardActions disableSpacing>
-                                        {/* <IconButton aria-label="add to favorites">
-                                            <FavoriteIcon />
-                                        </IconButton>
-                                        <IconButton aria-label="share">
-                                            <ShareIcon />
-                                        </IconButton> */}
 
                                     </CardActions>
 

@@ -66,7 +66,6 @@ const OnSaleCard = (props) => {
 
   return (
     <div className="col-12 p-2">
-      {/* <Paper> */}
       <Card id="marketCardProps">
         <div className="row no-gutters mdColHeight">
           <Link
@@ -94,9 +93,7 @@ const OnSaleCard = (props) => {
                 }}
                 className="p-3"
               >
-                {/* Creator Details and  Explore Button */}
                 <div className="row no-gutters justify-content-between align-itmes-end">
-                  {/* Creator Image */}
                   <div className="col-2 w-100">
                     <Link to="/">
                       <div
@@ -114,10 +111,8 @@ const OnSaleCard = (props) => {
                           }}
                         />
                       </div>
-                      {/* Creator Name */}
                     </Link>
                   </div>
-                  {/* Explore Button */}
                   <div className="col-8 w-100 text-right align-self-end">
                     
                     <Link
@@ -142,14 +137,8 @@ const OnSaleCard = (props) => {
                 </div>
               </div>
             </div>
-            {/* <div className="mainDiv">
-              <div className="square"></div>
-              <div className="square2"></div>
-              <div className="square3"></div>
-            </div> */}
           </Link>
           <CardContent style={{ paddingBottom: 16, width: "100%" }}>
-            {/* Title, Description and Price */}
             <div
               className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
@@ -185,11 +174,9 @@ const OnSaleCard = (props) => {
               color="textSecondary"
               className="text-center"
             >
-              {/* Sale Ends and Sale Ended */}
 
               {new Date() < new Date(props.i.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert
                     severity="info"
                     className={
@@ -213,7 +200,6 @@ const OnSaleCard = (props) => {
               ) : new Date() > new Date(props.i.startTime) &&
                 new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert
                     severity="warning"
                     className={
@@ -233,7 +219,6 @@ const OnSaleCard = (props) => {
                       ></Countdown>
                     </span>
                   </Alert>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                 </div>
               ) : (
                 <Typography
@@ -258,7 +243,6 @@ const OnSaleCard = (props) => {
           </CardContent>
         </div>
       </Card>
-      {/* </Paper> */}
     </div>
   );
 };

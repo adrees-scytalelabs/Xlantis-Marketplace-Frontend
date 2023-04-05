@@ -178,7 +178,6 @@ const MarketPlaceTabs = (props) => {
     <div className="w-100">
       <ThemeProvider theme={customTheme}>
         <div className={classes.root}>
-          {/* Tabs */}
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{

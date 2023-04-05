@@ -31,7 +31,6 @@ const NFTEditModal = (props) => {
 
     useEffect(() => {
         setIsGlbFile(false);
-       // console.log("nft edit Props: ", props);
         if(props.show === true) {
             setNftDetail(props.nftDetail);
             if(props.nftDetail.nftFormat === "glb") {
@@ -182,7 +181,6 @@ const NFTEditModal = (props) => {
                 let variant = "success";
                 enqueueSnackbar('Preview Image Uploaded to IPFS ', { variant });
                 setIsUploadingPreview(false);
-                // 
             })
         }
     }

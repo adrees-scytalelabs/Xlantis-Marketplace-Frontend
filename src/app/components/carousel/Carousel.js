@@ -120,7 +120,6 @@ const Carousel = (props) => {
             {length > show && isRepeating && renderExtraNext()}
           </div>
         </div>
-        {/* You can alwas change the content of the button to other things */}
         {(isRepeating || currentIndex < length - show) && (
           <button onClick={next} className="right-arrow">
             &gt;

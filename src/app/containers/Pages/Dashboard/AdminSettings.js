@@ -34,10 +34,6 @@ function UserSettings(props) {
     }
   };
 
-  useEffect(() => {
-    //console.log("Props in admin settings are: ", props);
-  }, []);
-
   let [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: "",

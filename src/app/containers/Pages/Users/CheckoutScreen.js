@@ -332,7 +332,6 @@ const CheckoutScreen = () => {
                           </Typography>
                           <Divider className={classes.divider} />
                         </div>
-                        {/* <div className="col-12"> */}
                         <label
                           for="acceptedTerms"
                           className="checkoutAcceptedTermsCheckbox"
@@ -363,7 +362,6 @@ const CheckoutScreen = () => {
               </Grid>
             </div>
           </div>
-          {/* Footer */}
           <Footer position={"relative"} />
         </div>
       </ThemeProvider>
