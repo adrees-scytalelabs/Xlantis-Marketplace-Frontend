@@ -409,7 +409,6 @@ const BidTxModal = (props) => {
                       
                     >
                       $115,780.00
-                      {/* {response.totalCostInWei} */}
                     </p>
                   </div>
                 </div>
@@ -431,7 +430,6 @@ const BidTxModal = (props) => {
                       
                     >
                       1min 30sec
-                      {/* {response.estimatedTimeInSec} */}
                     </p>
                   </div>
                 </div>

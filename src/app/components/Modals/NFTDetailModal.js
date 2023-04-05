@@ -1,9 +1,7 @@
 import { Button, CardContent, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Card, Col, Modal, Row, Table } from 'react-bootstrap';
-import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -18,77 +16,59 @@ const NFTDetailModal = (props) => {
     const classes = useStyles();
     let [isProperties, setIsProperties] = useState(false);
 
-
-    useEffect(() => {
-       // console.log("NFT detail props are: ", props);
-        // if (props.nftDetail.properties.length > 0 ) {
-        //     setIsProperties(true);
-        // }
-        // console.log("Properties object is: ", props.nftDetail.properties);
-        // let keys = Object.keys(props.nftDetail.properties);
-        // console.log("Keys are: ", keys);
-    },[props.show])
-
     return (
         <Modal show={props.show} onHide={props.handleClose} size="lg" >
             <Modal.Header closeButton>
-                <Modal.Title>{ props.nftDetail.title }</Modal.Title>
+                <Modal.Title>{props.nftDetail.title}</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Card>
-                    <div style={{display: 'flex',margin: "10px", justifyContent: 'center', alignItems: 'center'}} >
+                    <div style={{ display: 'flex', margin: "10px", justifyContent: 'center', alignItems: 'center' }} >
                         {props.nftDetail.previewImageURI !== "" ? (
-                            (props.nftDetail.nftFormat === "mp3" ) ? (
-                            <div>
-                                <AudioPlayer
-                                    style={{ width: "420px",  borderRadius: "1rem" }}
-                                    // style={{ borderRadius: "1rem" }}
-                                    autoPlay = {false}
-                                    layout="horizontal"
-                                    src={props.nftDetail.nftURI}
-                                    onPlay={(e) =>
-                                    console.log("nft uri ", props.nftDetail.nftURI) }
-                                    showSkipControls={false}
-                                    showJumpControls={false}
-                                    header={`Now playing: ${props.nftDetail.title}`}
-                                    showDownloadProgress
-                                    // onClickPrevious={handleClickPrevious}
-                                    // onClickNext={handleClickNext}
-                                    // onEnded={handleClickNext}
-                                    // other props here
-                                />
-                            </div>) : (
-                            
-                            <GLTFModel src={props.nftDetail.nftURI} width={250} height={250} >
-                                <AmbientLight color={0xffffff} />
-                                <AmbientLight color={0xffffff} />
-                                <AmbientLight color={0xffffff} />
-                                <AmbientLight color={0xffffff} />
-                                {/* <AmbientLight color={0xffffff} />
-                                <AmbientLight color={0xffffff} />
-                                <AmbientLight color={0xffffff} /> */}
-                                <DirectionLight
-                                    color={0xffffff}
-                                    position={{ x: 100, y: 200, z: 100 }}
-                                />
-                                <DirectionLight
-                                    color={0xffffff}
-                                    position={{ x: 50, y: 200, z: 100 }}
-                                />
-                                <DirectionLight
-                                    color={0xffffff}
-                                    position={{ x: 0, y: 0, z: 0 }}
-                                />
-                                <DirectionLight
-                                    color={0xffffff}
-                                    position={{ x: 0, y: 100, z: 200 }}
-                                />
-                                <DirectionLight
-                                    color={0xffffff}
-                                    position={{ x: -100, y: 200, z: -100}}
-                                />
-                            </GLTFModel>
-                        )) : (null)}
+                            (props.nftDetail.nftFormat === "mp3") ? (
+                                <div>
+                                    <AudioPlayer
+                                        style={{ width: "420px", borderRadius: "1rem" }}
+
+                                        autoPlay={false}
+                                        layout="horizontal"
+                                        src={props.nftDetail.nftURI}
+                                        onPlay={(e) =>
+                                            console.log("nft uri ", props.nftDetail.nftURI)}
+                                        showSkipControls={false}
+                                        showJumpControls={false}
+                                        header={`Now playing: ${props.nftDetail.title}`}
+                                        showDownloadProgress
+                                    />
+                                </div>) : (
+
+                                <GLTFModel src={props.nftDetail.nftURI} width={250} height={250} >
+                                    <AmbientLight color={0xffffff} />
+                                    <AmbientLight color={0xffffff} />
+                                    <AmbientLight color={0xffffff} />
+                                    <AmbientLight color={0xffffff} />
+                                    <DirectionLight
+                                        color={0xffffff}
+                                        position={{ x: 100, y: 200, z: 100 }}
+                                    />
+                                    <DirectionLight
+                                        color={0xffffff}
+                                        position={{ x: 50, y: 200, z: 100 }}
+                                    />
+                                    <DirectionLight
+                                        color={0xffffff}
+                                        position={{ x: 0, y: 0, z: 0 }}
+                                    />
+                                    <DirectionLight
+                                        color={0xffffff}
+                                        position={{ x: 0, y: 100, z: 200 }}
+                                    />
+                                    <DirectionLight
+                                        color={0xffffff}
+                                        position={{ x: -100, y: 200, z: -100 }}
+                                    />
+                                </GLTFModel>
+                            )) : (null)}
                     </div>
                     <Row>
                         <Col>
@@ -103,52 +83,52 @@ const NFTDetailModal = (props) => {
                         </Col>
                         <Col>
                             <CardContent>
-                                <Row style={{marginBottom:"5px"}} >
+                                <Row style={{ marginBottom: "5px" }} >
                                     <Col>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             <strong>Description: </strong>
                                         </Typography>
                                     </Col>
-                                    <Col style={{justifyContent:'right'}}>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.description}
-                                    </Typography>
+                                    <Col style={{ justifyContent: 'right' }}>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {props.nftDetail.description}
+                                        </Typography>
                                     </Col>
                                 </Row>
-                                <Row style={{marginBottom:"5px"}} >
+                                <Row style={{ marginBottom: "5px" }} >
                                     <Col>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             <strong>Rarity: </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.rarity}
-                                    </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {props.nftDetail.rarity}
+                                        </Typography>
                                     </Col>
                                 </Row>
-                                <Row style={{marginBottom:"5px"}} >
+                                <Row style={{ marginBottom: "5px" }} >
                                     <Col>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             <strong>Token Supply: </strong>
                                         </Typography>
                                     </Col>
                                     <Col className='align-self-end'>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.tokensupply}
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {props.nftDetail.tokensupply}
                                         </Typography>
                                     </Col>
                                 </Row>
-                                <Row style={{marginBottom:"5px"}} >
+                                <Row style={{ marginBottom: "5px" }} >
                                     <Col>
                                         <Typography variant="body2" color="textSecondary" component="p">
                                             <strong>Collection: </strong>
                                         </Typography>
                                     </Col>
                                     <Col>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.collectiontitle}
-                                    </Typography>
+                                        <Typography variant="body2" color="textSecondary" component="p">
+                                            {props.nftDetail.collectiontitle}
+                                        </Typography>
                                     </Col>
                                 </Row>
                                 <Row>
@@ -174,7 +154,7 @@ const NFTDetailModal = (props) => {
                                                         <td>{i.value}</td>
                                                     </tr>
                                                 ))
-                                                }   
+                                                }
                                             </tbody>
                                         </Table>
                                     </Col>
@@ -195,5 +175,5 @@ const NFTDetailModal = (props) => {
         </Modal>
     );
 }
- 
+
 export default NFTDetailModal;

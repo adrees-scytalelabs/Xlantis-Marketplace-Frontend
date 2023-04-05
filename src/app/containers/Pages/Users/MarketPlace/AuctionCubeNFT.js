@@ -892,7 +892,6 @@ function AuctionCubeNFTs(props) {
 
                         {dropId !== "notdrop" ? (
                           <div className="col-md-12 col-lg-6">
-                            {/* {console.log()} */}
                             {enableWethButton ? (
                               isClaimingWeth ? (
                                 <div align="center" className="text-center">
@@ -1094,7 +1093,6 @@ function AuctionCubeNFTs(props) {
                               Current Bid : {auctionData.minimumBid / 10 ** 18}{" "}
                               WETH{" "}
                             </Typography>
-                            {/* <Typography variant="h5" gutterBottom>Current Bid : {(highestBid - bidByUser) / 10 ** 18} WETH </Typography> */}
                             <Typography variant="h5" gutterBottom>
                               Bid Delta : {auctionData.bidDelta / 10 ** 18} WETH{" "}
                             </Typography>
@@ -1349,7 +1347,6 @@ function AuctionCubeNFTs(props) {
                                       </>
                                     )
                                   ) : null}
-                                  {/* {}` */}
                                 </>
                               ) : (
                                 <Button variant="primary" block disabled>
@@ -1360,9 +1357,6 @@ function AuctionCubeNFTs(props) {
                           </div>
                         ) : (
                           <div className="col-md-12 col-lg-6">
-                            {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                            color="" label="@UserName" />
-                                                        <h1> </h1> */}
                             <Typography variant="h4" gutterBottom>
                               {cubeData.title}
                             </Typography>

@@ -157,13 +157,11 @@ function AuctionDrops() {
                                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                                             <strong>Auction Starts At:</strong>
                                                                         </Typography>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))} */}
                                                                         <Countdown daysInHours date={new Date(i.AuctionStartsAt)}>
                                                                         </Countdown>
                                                                     </div>
                                                                 ) : new Date() > new Date(i.AuctionStartsAt) && new Date() < new Date(i.AuctionEndsAt) ? (
                                                                     <div style={{ color: "#FF0000" }}>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                                                         <Typography variant="body2" color="textSecondary" component="p">
                                                                             <strong>Auction Ends At:</strong>
                                                                         </Typography>

@@ -20,7 +20,7 @@ import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    
+
   },
   media: {
     height: 0,
@@ -100,10 +100,8 @@ function DropsPage(props) {
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-   // console.log("version", version);
     axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
       (response) => {
-      //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();
@@ -133,27 +131,6 @@ function DropsPage(props) {
     setVersionB(Cookies.get("Version"));
 
     getMyDrops(props.status, 0, rowsPerPage);
-
-    
-
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -174,19 +151,19 @@ function DropsPage(props) {
   };
   return (
     <div className="backgroundDefault">
-      <div className="card-body" style={{ }}>
+      <div className="card-body" style={{}}>
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <MessageCard msg = "No items to display"></MessageCard>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid
               container
               spacing={3}
               direction="row"
               justify="flex-start"
-              
+
             >
               {tokenList.map((i, index) => (
                 <Grid
@@ -208,7 +185,7 @@ function DropsPage(props) {
                           saleType: i.saleType,
                           startTime: i.startTime,
                           endTime: i.endTime,
-                          nftType:i.dropType
+                          nftType: i.dropType
                         },
                       }}
                     >
@@ -225,7 +202,6 @@ function DropsPage(props) {
                             title="Drop Image"
                           ></CardMedia>
                           <CardContent>
-                            {/* Title, Description and Price */}
                             <div
                               className="row no-gutters justify-content-between"
                               style={{ minHeight: "60px" }}
@@ -261,7 +237,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                
+
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -319,7 +295,7 @@ function DropsPage(props) {
                                   >
                                     <Alert
                                       severity="error"
-                                      
+
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -332,7 +308,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                
+
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -387,13 +363,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      
+
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      
+
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -468,7 +444,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                
+
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -497,7 +473,6 @@ function DropsPage(props) {
                                 ) : new Date() > new Date(i.startTime) &&
                                   new Date() < new Date(i.endTime) ? (
                                   <div style={{ marginTop: "1rem" }}>
-                                    {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                     <Alert
                                       severity="warning"
                                       className={cardClasses.textAlert}
@@ -524,13 +499,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      
+
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      
+
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -543,7 +518,7 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-                
+
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -572,7 +547,6 @@ function DropsPage(props) {
                                 ) : new Date() > new Date(i.startTime) &&
                                   new Date() < new Date(i.endTime) ? (
                                   <div style={{ marginTop: "1rem" }}>
-                                    {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                                     <Alert
                                       severity="warning"
                                       className={cardClasses.textAlert}
@@ -599,13 +573,13 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-                                      
+
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-                                      
+
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >

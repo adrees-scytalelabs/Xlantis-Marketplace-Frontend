@@ -1,11 +1,9 @@
 import React, { useState } from "react";
-// BOOTSTRAP
 import { Col, Modal, Row } from "react-bootstrap";
 import { Button } from "@material-ui/core";
 import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
-
 import { useSnackbar } from "notistack";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -81,9 +79,6 @@ const NewTamplateModal = (props) => {
         }
       }
     );
-    // setTimeout(() => {
-    //   setChecking(false);
-    // }, 2000);
   };
 
   let handleSaveTemplate = (e) => {
@@ -164,9 +159,7 @@ const NewTamplateModal = (props) => {
               right: "5px",
               transform: "translateY(-50%)",
               color: "red",
-              // cursor: 'pointer',
             }}
-          // onClick={handleClearClick}
           >
             X
           </div>

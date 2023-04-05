@@ -512,7 +512,6 @@ function SaleCubeNFTs(props) {
                   </div>
 
                   <div className="col-md-12 col-lg-7 pl-lg-3">
-                    {/* Get More WETH */}
                     {enableWethButton ? (
                       isClaimingWeth ? (
                         <div align="center" className="text-center">

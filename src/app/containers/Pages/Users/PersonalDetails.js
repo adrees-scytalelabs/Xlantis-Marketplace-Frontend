@@ -227,10 +227,6 @@ class PersonalDetails extends Component {
             Already have an account?
           </Link>
         </div>
-        {/* <div>
-                  <button className="btn login-btn" style={{ textAlign: "left" }} onClick={this.back}>Back</button>
-
-              </div> */}
         <br />
         <div>
           {this.state.isLoading ? (

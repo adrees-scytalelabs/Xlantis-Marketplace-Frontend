@@ -447,7 +447,6 @@ function ProfileSetting(props) {
                     />
                   </div>
                   <div className="form-group">
-                    {/* <label>About the Track</label> */}
                     <textarea
                       type="text"
                       required
@@ -626,7 +625,6 @@ function ProfileSetting(props) {
                   style={{ margin: "20px" }}
                 >
                   <div className="form-group">
-                    {/* <label>Artist Name</label> */}
                     <input
                       type="text"
                       required
@@ -685,7 +683,6 @@ function ProfileSetting(props) {
                     </div>
                   </div>
                   <div className="form-group">
-                    {/* <label>About the Track</label> */}
                     <textarea
                       type="text"
                       required
@@ -797,7 +794,6 @@ function ProfileSetting(props) {
                   style={{ margin: "20px" }}
                 >
                   <div className="form-group">
-                    {/* <label>Producer</label> */}
                     <input
                       type="text"
                       required
@@ -856,7 +852,6 @@ function ProfileSetting(props) {
                     </div>
                   </div>
                   <div className="form-group">
-                    {/* <label>Inspiration For the Piece</label> */}
                     <textarea
                       type="text"
                       required
@@ -964,7 +959,6 @@ function ProfileSetting(props) {
                   style={{ margin: "20px" }}
                 >
                   <div className="form-group">
-                    {/* <label>Producer</label> */}
                     <input
                       type="text"
                       required
@@ -1025,7 +1019,6 @@ function ProfileSetting(props) {
                     </div>
                   </div>
                   <div className="form-group">
-                    {/* <label>Inspiration For the Piece</label> */}
                     <textarea
                       type="text"
                       required
@@ -1136,7 +1129,6 @@ function ProfileSetting(props) {
               {isFan === null ? (
                 <form onSubmit={(e) => enableFan(e)} style={{ margin: "20px" }}>
                   <div className="form-group">
-                    {/* <label>Producer</label> */}
                     <input
                       type="text"
                       required
@@ -1195,7 +1187,6 @@ function ProfileSetting(props) {
                     </div>
                   </div>
                   <div className="form-group">
-                    {/* <label>Inspiration For the Piece</label> */}
                     <textarea
                       type="text"
                       required

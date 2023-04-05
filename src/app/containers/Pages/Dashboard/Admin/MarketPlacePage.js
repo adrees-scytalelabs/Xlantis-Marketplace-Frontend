@@ -102,10 +102,8 @@ function MarketPlacePage(props) {
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-   // console.log("version", version);
     axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
       (response) => {
-      //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();
@@ -135,7 +133,7 @@ function MarketPlacePage(props) {
     setVersionB(Cookies.get("Version"));
 
     getMyDrops(props.saleType, 0, rowsPerPage);
-    
+
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -161,7 +159,7 @@ function MarketPlacePage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <MessageCard msg = "No items to display"></MessageCard>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid
               container
@@ -379,9 +377,9 @@ function MarketPlacePage(props) {
                             </Typography>
                           )}
 
-                          </CardContent>
+                        </CardContent>
                       </CardActionArea>
-                      </Card>
+                    </Card>
                   </Link>
                 </Grid>
               ))}

@@ -108,10 +108,8 @@ const OnAuctionCard = (props) => {
                           }}
                         />
                       </div>
-                      {/* Creator Name */}
                     </Link>
                   </div>
-                  {/* Explore Button */}
                   <div className="col w-100 text-right align-self-end">
                     <Link
                       to={{

@@ -860,7 +860,6 @@ const FixedDropSingleNFTHome = () => {
                 className="row no-gutters"
                 style={{ minHeight: "76vh", padding: "1.5rem" }}
               >
-                {/* NFT Image */}
                 <div className="col-md-12 col-lg-4 pr-md-3">
                   <Paper elevation={5}>
                     <Card className={classes.root}>
@@ -1211,7 +1210,6 @@ const FixedDropSingleNFTHome = () => {
               </div>
             </div>
           )}
-          {/* FOOTER */}
           <div className="row no-gutters mt-4">
             <div className="col-12">
               <Footer />

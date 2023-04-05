@@ -202,29 +202,12 @@ const AuctionNFT = (props) => {
             console.log("responeee", response.data.data.data[0]);
             setData(response.data.data);
             setMOdalOpen(true);
-
-            // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-            // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-            // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-            // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-            // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-            // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
           },
           (error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
             }
-            if (error.response !== undefined) {
-              if (error.response.status === 400) {
-                // setMsg(error.response.data.message);
-              } else {
-                // setMsg("Unknown Error Occured, try again.");
-              }
-            } else {
-              //   setMsg("Unknown Error Occured, try again.");
-            }
-            // setIsLoading(false);
           }
         );
     }
@@ -256,7 +239,6 @@ const AuctionNFT = (props) => {
           "Response from getting drop details: ",
           response.data.dropData.dropCloneAddress
         );
-        //set contract type when its done at backend
         setDropCloneAddress(response.data.dropData.dropCloneAddress);
       },
       (err) => {
@@ -274,15 +256,15 @@ const AuctionNFT = (props) => {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -291,22 +273,15 @@ const AuctionNFT = (props) => {
   function openTransak() {
     handleCloseModal();
     const transak = new transakSDK(settings);
-
     transak.init();
-
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
-
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
     });
-
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -418,8 +393,6 @@ const AuctionNFT = (props) => {
 
   let handleBidSubmit = async (event) => {
     event.preventDefault();
-
-    //conditions checking
     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
     console.log("Bid Expiry Time: ", bidExpiryTime);
@@ -450,8 +423,6 @@ const AuctionNFT = (props) => {
       } else {
         handleShowBackdrop();
         await giveAuctionErc20Approval();
-
-        //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
         let bidData = {
           nftId: nftDetail._id,
           bidAmount: biddingValue.toString(),
@@ -497,8 +468,6 @@ const AuctionNFT = (props) => {
             let bidIdHash = getHash(response.data.bidId);
             let bidId = response.data.bidId;
 
-            //sending call on blockchain
-
             console.log("Bid data for blockchain: ");
             console.log("drop id hash: ", dropIdHash);
             console.log("bid id hash: ", bidIdHash);
@@ -524,8 +493,6 @@ const AuctionNFT = (props) => {
               })
               .on("receipt", (receipt) => {
                 console.log("receipt: ", receipt);
-
-                //sending finalize call on backend
                 let finalizeBidData = {
                   bidId: bidId,
                   txHash: trxHash,
@@ -558,8 +525,6 @@ const AuctionNFT = (props) => {
 
   let handleBidSubmitSSO = async (event) => {
     event.preventDefault();
-
-    //conditions checking
     console.log("Bid Expiry Timestamp: ", bidExpiryTimeStamp);
     console.log("Drop Expiry Timestamp: ", dropExpiryTimeStamp);
     console.log("Bid Expiry Time: ", bidExpiryTime);
@@ -581,12 +546,9 @@ const AuctionNFT = (props) => {
     } else {
       handleShowBackdrop();
       let bidAmountInWei = Web3.utils.toWei(biddingValue);
-
-      //put condition here if badding value is higher than max bid or if there is first bid then it should be higher than floor value
       let bidData = {
         nftId: nftDetail._id,
         bidAmount: bidAmountInWei,
-        // bidderAddress: accounts[0],
         expiryTime: bidExpiryTime,
       };
 
@@ -671,9 +633,6 @@ const AuctionNFT = (props) => {
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
                             <AmbientLight color={0xffffff} />
-                            {/* <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} /> */}
                             <DirectionLight
                               color={0xffffff}
                               position={{ x: 100, y: 200, z: 100 }}
@@ -725,12 +684,7 @@ const AuctionNFT = (props) => {
                             onPlay={(e) => console.log("onPlay")}
                             showSkipControls={false}
                             showJumpControls={false}
-                            // header={`Now playing: ${name}`}
                             showDownloadProgress
-                          // onClickPrevious={handleClickPrevious}
-                          // onClickNext={handleClickNext}
-                          // onEnded={handleClickNext}
-                          // other props here
                           />
                         </div>
                       </div>
@@ -778,16 +732,6 @@ const AuctionNFT = (props) => {
                       {nftDetail.description}
                     </Col>
                   </Row>
-                  {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" color="textSecondary" component="p" style={{color: "#a70000"}} >
-                                            <strong>Rarity </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.type}
-                                    </Col>
-                                </Row> */}
                   <Row>
                     <Col>
                       <Typography
@@ -937,12 +881,6 @@ const AuctionNFT = (props) => {
                             <th style={{ padding: "0.75rem" }}>#</th>
                             <th style={{ padding: "0.75rem" }}>Bidder</th>
                             <th style={{ padding: "0.75rem" }}>Bid</th>
-                            {/* <th colSpan={2}></th> */}
-                            {/* <th>
-                                                            <button className="btn" onClick={props.acceptBid}>
-                                                                Accept
-                                                            </button>
-                                                        </th> */}
                           </tr>
                         </thead>
                         <tbody>
