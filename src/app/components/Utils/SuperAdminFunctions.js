@@ -195,3 +195,50 @@ export let getVerifiedWalletAdmins = (start, end, setOpen, setWalletAdmins, setW
       setOpen(false);
     });
 };
+
+export let getSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/${start}/${end}?userType=v1`)
+    .then((response) => {
+      setAdmins(response.data.Admins);
+      setAdminCount(response.data.Admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (
+          error.response.data === "Unauthorized access (invalid token) !!"
+        ) {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
+export let getWalletAdmins = (start, end, setOpen, setWalletAdmins, setWalletAdminCount) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/${start}/${end}?userType=v2`)
+    .then((response) => {
+      setWalletAdmins(response.data.Admins);
+      setWalletAdminCount(response.data.Admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (
+          error.response.data === "Unauthorized access (invalid token) !!"
+        ) {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
