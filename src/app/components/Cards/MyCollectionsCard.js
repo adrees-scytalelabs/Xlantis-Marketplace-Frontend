@@ -28,12 +28,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const MyCollectionsCard = (props) => {
-
   const classes = useStyles();
-
-  //console.log(props.i, "props in card");
 
   return (
     <Card style={{ height: "100%" }} id="collectionCardProps">

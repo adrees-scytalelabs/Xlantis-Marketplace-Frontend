@@ -763,7 +763,7 @@ function SaleCubeNFTs(props) {
                       >
                         {hide
                           ? tokenList.map((i, index) => (
-                            <NewNFTCard data={i[0]} key={index}></NewNFTCard>
+                            <NewNFTCard data={i[0]} key={index} />
                           ))
                           : null}
                       </Grid>

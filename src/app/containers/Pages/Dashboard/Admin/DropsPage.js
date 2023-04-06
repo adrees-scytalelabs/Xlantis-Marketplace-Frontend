@@ -1,27 +1,25 @@
-import { CardHeader, Grid } from "@material-ui/core/";
+import { Grid } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import TablePagination from "@material-ui/core/TablePagination";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { truncate } from "../../../../assets/js/utils";
-import { Alert } from "@material-ui/lab";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import DropsPageCard from "../../../../components/Cards/DropsPageCard";
+import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-
-  },
+  root: {},
   media: {
     height: 0,
     paddingTop: "100%",
@@ -156,14 +154,13 @@ function DropsPage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <MessageCard msg="No items to display"></MessageCard>
+            <MarketPlaceMessageCard message="No items to display" />
           ) : (
             <Grid
               container
               spacing={3}
               direction="row"
-              justify="flex-start"
-
+              justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
                 <Grid
@@ -185,204 +182,15 @@ function DropsPage(props) {
                           saleType: i.saleType,
                           startTime: i.startTime,
                           endTime: i.endTime,
-                          nftType: i.dropType
+                          nftType: i.dropType,
                         },
                       }}
                     >
-                      <Card
-                        id="marketCardProps"
-                        style={{ height: "100%" }}
-                        variant="outlined"
-                        className={classes.root}
-                      >
-                        <CardActionArea>
-                          <CardMedia
-                            className={classes.media}
-                            image={i.image}
-                            title="Drop Image"
-                          ></CardMedia>
-                          <CardContent>
-                            <div
-                              className="row no-gutters justify-content-between"
-                              style={{ minHeight: "60px" }}
-                            >
-                              <div className="col-8 align-self-end">
-                                <Typography
-                                  variant="h6"
-                                  component="div"
-                                  className={cardClasses.cardTitle}
-                                >
-                                  {i.title}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  component="p"
-                                  className={cardClasses.cardDescriptions}
-                                >
-                                  {truncate(i.description, 25)}
-                                </Typography>
-                              </div>
-                              <div className="col-4 align-self-end text-right p-0">
-                                <p
-                                  className="nftPrice mb-0 p-0"
-                                  style={{ lineHeight: "1.6" }}
-                                >
-                                  {i.totalNFTs} NFTs
-                                </p>
-                              </div>
-                            </div>
-                            <br></br>
-
-                            {i.saleType === "auction" ? (
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-
-                                className="text-center"
-                              >
-                                {new Date() < new Date(i.startTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="info"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Auction Starts At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.startTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : new Date() > new Date(i.startTime) &&
-                                  new Date() < new Date(i.endTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="warning"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Auction Ends At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.endTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : (
-                                  <Typography
-                                    variant="body2"
-                                    style={{ marginTop: "1rem" }}
-                                    component="p"
-                                  >
-                                    <Alert
-                                      severity="error"
-
-                                      className={cardClasses.textAlert}
-                                      style={{ fontWeight: "bold" }}
-                                    >
-                                      Auction Ended
-                                    </Alert>
-                                  </Typography>
-                                )}
-                              </Typography>
-                            ) : (
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-
-                                className="text-center"
-                              >
-                                {new Date() < new Date(i.startTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="info"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Sale Starts At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.startTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : new Date() > new Date(i.startTime) &&
-                                  new Date() < new Date(i.endTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="warning"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Sale Ends At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.endTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : (
-                                  <Typography
-                                    variant="body2"
-                                    style={{
-                                      marginTop: "1rem",
-
-                                    }}
-                                    component="p"
-                                  >
-                                    <Alert
-                                      severity="error"
-
-                                      className={cardClasses.textAlert}
-                                      style={{ fontWeight: "bold" }}
-                                    >
-                                      Sale Ended
-                                    </Alert>
-                                  </Typography>
-                                )}
-                              </Typography>
-                            )}
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions></CardActions>
-                      </Card>
+                      <DropsPageCard
+                        dropDetails={i}
+                        classes={classes}
+                        cardClasses={cardClasses}
+                      />
                     </Link>
                   ) : (
                     <Link
@@ -407,7 +215,7 @@ function DropsPage(props) {
                             className={classes.media}
                             image={i.image}
                             title="Drop Image"
-                          ></CardMedia>
+                          />
                           <CardContent>
                             <div
                               className="row no-gutters justify-content-between"
@@ -444,7 +252,6 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -466,7 +273,7 @@ function DropsPage(props) {
                                           daysInHours
                                           date={new Date(i.startTime)}
                                           style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
+                                        />
                                       </span>
                                     </Alert>
                                   </div>
@@ -490,7 +297,7 @@ function DropsPage(props) {
                                           daysInHours
                                           date={new Date(i.endTime)}
                                           style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
+                                        />
                                       </span>
                                     </Alert>
                                   </div>
@@ -499,13 +306,11 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -518,7 +323,6 @@ function DropsPage(props) {
                               <Typography
                                 variant="h6"
                                 gutterBottom
-
                                 className="text-center"
                               >
                                 {new Date() < new Date(i.startTime) ? (
@@ -540,7 +344,7 @@ function DropsPage(props) {
                                           daysInHours
                                           date={new Date(i.startTime)}
                                           style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
+                                        />
                                       </span>
                                     </Alert>
                                   </div>
@@ -564,7 +368,7 @@ function DropsPage(props) {
                                           daysInHours
                                           date={new Date(i.endTime)}
                                           style={{ fontFamily: "orbitron" }}
-                                        ></Countdown>
+                                        />
                                       </span>
                                     </Alert>
                                   </div>
@@ -573,13 +377,11 @@ function DropsPage(props) {
                                     variant="body2"
                                     style={{
                                       marginTop: "1rem",
-
                                     }}
                                     component="p"
                                   >
                                     <Alert
                                       severity="error"
-
                                       className={cardClasses.textAlert}
                                       style={{ fontWeight: "bold" }}
                                     >
@@ -589,7 +391,6 @@ function DropsPage(props) {
                                 )}
                               </Typography>
                             )}
-
                           </CardContent>
                         </CardActionArea>
                         <CardActions></CardActions>
@@ -608,8 +409,8 @@ function DropsPage(props) {
         count={totalDrops}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );

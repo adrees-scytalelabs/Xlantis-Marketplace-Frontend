@@ -2,13 +2,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card,
-  CardContent,
-  CardMedia,
   makeStyles,
   Paper,
   Tooltip,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
@@ -16,10 +13,8 @@ import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Col, Row, Table } from "react-bootstrap";
 import Countdown from "react-countdown";
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
@@ -28,12 +23,10 @@ import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/Auc
 import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-
-import {
-  createMuiTheme,
-  ThemeProvider
-} from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
+import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
+import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -81,13 +74,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
         backgroundColor: "black",
-      },      expandIcon: {
+      },
+      expandIcon: {
         color: "white",
       },
     },
@@ -105,7 +99,6 @@ const customTheme = createMuiTheme({
         padding: "16px 14px",
       },
     },
-
   },
 });
 
@@ -163,7 +156,6 @@ const DropSingleNFT = (props) => {
           console.log(error);
           console.log(error.response);
         }
-
       }
     );
   };
@@ -174,18 +166,15 @@ const DropSingleNFT = (props) => {
 
     transak.init();
 
-
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
-
 
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
     });
-
 
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
@@ -365,7 +354,6 @@ const DropSingleNFT = (props) => {
         addressAuctionFactory = Addresses.AuctionDropFactory721;
       }
 
-
       let dropIdHash = getHash(nftDetail.dropId);
       let nftAddress = nftDetail.collectionId.nftContractAddress;
       let tokenId = nftDetail.nftId;
@@ -393,8 +381,7 @@ const DropSingleNFT = (props) => {
           .on("receipt", (receipt) => {
             console.log("receipt: ", receipt);
           });
-      }
-      else if (contractType === "721") {
+      } else if (contractType === "721") {
         await myContractInstance.methods
           .acceptBidLazyMint(
             dropIdHash,
@@ -473,7 +460,6 @@ const DropSingleNFT = (props) => {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -514,127 +500,11 @@ const DropSingleNFT = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <Card className={classes.root}>
-                  <div>
-                    {nftDetail.nftFormat === "glb" ||
-                      nftDetail.nftFormat === "gltf" ? (
-                      <div>
-                        <div
-                          style={{
-                            display: "flex",
-                            margin: "10px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <GLTFModel
-                            src={nftDetail.nftURI}
-                            width={250}
-                            height={250}
-                          >
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 100, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 50, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 0, z: 0 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 100, z: 200 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: -100, y: 200, z: -100 }}
-                            />
-                          </GLTFModel>
-                        </div>
-                        <div style={{ marginTop: "20px" }}>
-                          <CardMedia
-                            className={classes.media}
-                            title="NFT Artwork"
-                            image={nftDetail.previewImageURI}
-                          ></CardMedia>
-                        </div>
-                      </div>
-                    ) : nftDetail.nftFormat === "mp3" ? (
-                      <div>
-                        <CardMedia
-                          className={classes.media}
-                          title="NFT Artwork"
-                          image={
-                            nftDetail.previewImageURI
-                              ? nftDetail.previewImageURI
-                              : nftDetail.nftURI
-                          }
-                        ></CardMedia>
-                        <div>
-                          <AudioPlayer
-
-                            style={{ borderRadius: "1rem" }}
-                            autoPlay={false}
-                            layout="horizontal"
-                            src={nftDetail.nftURI}
-                            onPlay={(e) => console.log("onPlay")}
-                            showSkipControls={false}
-                            showJumpControls={false}
-                            showDownloadProgress
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <CardMedia
-                        className={classes.media}
-                        title="NFT Artwork"
-                        image={nftDetail.nftURI}
-                      ></CardMedia>
-                    )}
-                  </div>
-                </Card>
+                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
-              <Card style={{ backgroundColor: "black" }}>
-                <CardContent>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Title </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.title}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Description </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.description}
-                    </Col>
-                  </Row>
-                </CardContent>
-              </Card>
+              <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
                   <Accordion>
@@ -718,7 +588,7 @@ const DropSingleNFT = (props) => {
                                     <Countdown
                                       daysInHour
                                       date={new Date(bid.expiryTime)}
-                                    ></Countdown>
+                                    />
                                   )}
                                 </td>
                                 <td>

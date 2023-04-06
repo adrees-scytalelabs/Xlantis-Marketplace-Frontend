@@ -178,7 +178,7 @@ function FixedDropNFTCard(props) {
                 component="p"
               >
                 {truncate(props.data.description, 30)}
-               </Typography>
+              </Typography>
             </div>
             <Typography
               variant="body2"

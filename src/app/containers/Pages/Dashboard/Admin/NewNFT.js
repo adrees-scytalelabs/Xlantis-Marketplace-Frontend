@@ -1,9 +1,5 @@
 import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import {
-  CardActionArea,
-  Grid
-} from "@material-ui/core/";
-
+import { CardActionArea, Grid } from "@material-ui/core/";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -247,7 +243,6 @@ function NewNFT(props) {
   let [ipfsHash, setIpfsHash] = useState(null);
   let [description, setDescription] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
-
 
   let [supplyType, setSupplyType] = useState("Single");
   let [nftContractAddress, setNftContractAddress] = useState("");
@@ -768,7 +763,6 @@ function NewNFT(props) {
           let variant = "success";
           enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
           setIsUploadingData(false);
-
           handleCloseBackdrop();
         });
       };
@@ -1899,7 +1893,7 @@ function NewNFT(props) {
                                 <span style={{ fontSize: "0.9rem" }}>
                                   Multiple{" "}
                                   <i
-                                    class="fa fa-info-circle"
+                                    className="fa fa-info-circle"
                                     aria-hidden="true"
                                   ></i>
                                 </span>
@@ -2109,17 +2103,17 @@ function NewNFT(props) {
                 {NFTType === "1155" ? (
                   <div>
                     {image === "" ||
-                      name === "" ||
-                      description === "" ||
-                      tokenSupply === "" ||
-                      collection === "" ||
-                      tokenSupply <= 0 ||
-                      isUploadingData === true ? (
+                    name === "" ||
+                    description === "" ||
+                    tokenSupply === "" ||
+                    collection === "" ||
+                    tokenSupply <= 0 ||
+                    isUploadingData === true ? (
                       <Tooltip
                         title={
                           tokenSupply <= 0
                             ? "Token Supply Cannot Be Less Than 1"
-                            : null
+                            : ""
                         }
                       >
                         <button
@@ -2156,7 +2150,7 @@ function NewNFT(props) {
                     container
                     spacing={2}
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                   >
                     {tokenList.map((i, index) => (
                       <Grid item xs={12} sm={6} md={6} lg={5} key={index}>

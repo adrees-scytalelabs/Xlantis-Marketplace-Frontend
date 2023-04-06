@@ -1,18 +1,15 @@
-import { Grid } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
+import { truncate } from "../../assets/js/utils";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import { truncate } from "../../assets/js/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -63,8 +60,6 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "0.875rem",
   },
 }));
-
-
 
 const unCommon = {
   fontFamily: "poppins",
@@ -125,9 +120,7 @@ function NFTCard(props) {
           <CardContent
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
-            <div
-              className="row no-gutters justify-content-start align-items-center"
-            >
+            <div className="row no-gutters justify-content-start align-items-center">
               <Typography
                 variant="h6"
                 component="p"
@@ -144,9 +137,8 @@ function NFTCard(props) {
                 style={{ minHeight: "2.5rem" }}
               >
                 {truncate(props.data.description, 35)}
-               </Typography>
+              </Typography>
             </div>
-            
           </CardContent>
         </div>
       </Card>

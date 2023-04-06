@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
-import { Card } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   ThemeProvider,
-  useTheme
+  useTheme,
 } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -14,10 +13,10 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import "../../assets/css/mediaQueries.css";
+import MarketPlaceMessageCard from "../Cards/MarketPlaceMessageCard";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
-import MessageCard from "../MessageCards.js/MessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,8 +71,7 @@ const paginationStyles = makeStyles({
 });
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -85,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -244,7 +242,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MessageCard msg = "No items to display"></MessageCard>
+                  <MarketPlaceMessageCard message="No items to display" />
                 )}
               </div>
             </div>
@@ -302,7 +300,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MessageCard msg = "This feature is coming soon"></MessageCard>
+                  <MarketPlaceMessageCard message="This feature is coming soon" />
                 )}
               </div>
             </div>
