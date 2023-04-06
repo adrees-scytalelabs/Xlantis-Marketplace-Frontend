@@ -61,10 +61,10 @@ function VerifiedAccountsSSOScreen(props) {
   let getUnverifiedAdmins = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
       .then((response) => {
-        setAdmins(response.data.Admins);
-        setAdminCount(response.data.Admins.length);
+        setAdmins(response.data.verifiedAdmins);
+        setAdminCount(response.data.verifiedAdmins.length);
         setOpen(false);
       })
       .catch((error) => {

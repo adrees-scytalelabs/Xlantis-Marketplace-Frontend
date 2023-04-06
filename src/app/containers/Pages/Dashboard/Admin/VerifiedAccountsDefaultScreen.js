@@ -23,8 +23,8 @@ function VerifiedAccountsDefaultScreen(props) {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getUnverifiedWallet(0, rowsPerPage);
-    getUnverifiedAdmins(0, rowsPerPage);
+    getVerifiedWalletAdmins(0, rowsPerPage);
+    getVerifiedSSOAdmins(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -40,7 +40,7 @@ function VerifiedAccountsDefaultScreen(props) {
   }, []);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    getUnverifiedAdmins(
+    getVerifiedSSOAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage
     );
@@ -56,17 +56,17 @@ function VerifiedAccountsDefaultScreen(props) {
   };
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedAdmins(0, parseInt(event.target.value, 10));
+    getVerifiedWalletAdmins(0, parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  let getUnverifiedAdmins = (start, end) => {
+  let getVerifiedSSOAdmins = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
       .then((response) => {
-        setAdmins(response.data.Admins);
-        setAdminCount(response.data.Admins.length);
+        setAdmins(response.data.verifiedAdmins);
+        setAdminCount(response.data.verifiedAdmins.length);
         setOpen(false);
       })
       .catch((error) => {
@@ -83,17 +83,18 @@ function VerifiedAccountsDefaultScreen(props) {
         setOpen(false);
       });
   };
-  let getUnverifiedWallet = (start, end) => {
+  let getVerifiedWalletAdmins = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v2`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v2`)
       .then((response) => {
-        setWalletAdmins(response.data.Admins);
-        setWalletAdminCount(response.data.Admins.length);
+        console.log(response)
+        setWalletAdmins(response.data.verifiedAdmins);
+        setWalletAdminCount(response.data.verifiedAdmins.length);
         setOpen(false);
       })
       .catch((error) => {
-        console.log(error.response.data);
+        console.log(error.response);
         if (error.response.data !== undefined) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
