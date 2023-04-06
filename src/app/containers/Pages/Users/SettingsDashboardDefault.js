@@ -1,6 +1,5 @@
 
 import { makeStyles } from "@material-ui/core/styles";
-import Edit from "@material-ui/icons/Edit";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -8,6 +7,8 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import r1 from "../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
+import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
+import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
@@ -302,74 +303,14 @@ function SettingDashboardDefault(props) {
 
   return (
     <div>
-      <div className="row no-gutters">
-        <div className="col-12">
-          <div
-            className="banner-img"
-            style={{ backgroundImage: `url(${bannerImage})` }}
-          >
-            {isUploadingBannerIPFS ? (
-              <div
-                className="text-center"
-                style={{ position: "relative", top: "150px", right: "10px" }}
-              >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
-              </div>
-            ) : (
-              <label htmlFor="banner-file-input" className="banner-input-label">
-                <div className="banner-dark-layer">
-                  <Edit fontSize="large" id="banner-icon" />
-                </div>
-              </label>
-            )}
-
-            <input
-              id="banner-file-input"
-              type="file"
-              onChange={onChangeBannerFile}
-            />
-          </div>
-          <div
-            style={{
-              backgroundImage: `url(${profileImage})`,
-              marginLeft: "1%",
-            }}
-            className="profile-backgrnd"
-          >
-            {isUploadingIPFS ? (
-              <div
-                className="text-center"
-                style={{ position: "relative", top: "70px" }}
-              >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
-              </div>
-            ) : (
-              <label
-                htmlFor="profile-file-input"
-                className="profile-input-label"
-              >
-                <div className="profile-dark-layer">
-                  <Edit fontSize="medium" id="profile-icon" />
-                </div>
-              </label>
-            )}
-
-            <input
-              id="profile-file-input"
-              type="file"
-              onChange={onChangeFile}
-            />
-          </div>
-        </div>
-      </div>
+      <ProfileDetailBanner
+        bannerImage={bannerImage}
+        isUploadingBannerIPFS={isUploadingBannerIPFS}
+        onChangeBannerFile={onChangeBannerFile}
+        profileImage={profileImage}
+        isUploadingIPFS={isUploadingIPFS}
+        onChangeFile={onChangeFile}
+      />
       {isAdmin ? (
         <>
           <div className="row pt-5">
@@ -380,77 +321,47 @@ function SettingDashboardDefault(props) {
               <div className="col-md-12 col-lg-6">
                 <form>
                   <div className="form-group">
-                    <label>Name</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        value={adminName}
-                        placeholder="Enter Name"
-                        className="form-control"
-                        onChange={(e) => {
-                          setAdminName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <label>Company Name</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        value={adminCompanyName}
-                        required
-                        placeholder="Enter Company Name"
-                        className="form-control"
-                        onChange={(e) => {
-                          setAdminCompanyName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <>
-                      <label>Domain</label>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          required
-                          disabled
-                          value={adminDomain}
-                          placeholder="Enter Domain"
-                          className="form-control"
-                        />
-                      </div>
-                    </>
-                    <label>Designation</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        disabled
-                        value={adminDesignation}
-                        placeholder="Enter Designation"
-                        className="form-control"
-                      />
-                    </div>
-                    <label>Industry</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        disabled
-                        value={adminIndustry}
-                        className="form-control"
-                      />
-                    </div>
-                    <label>Reason For Interest</label>
-                    <div className="form-group">
-                      <textarea
-                        type="text"
-                        required
-                        rows="4"
-                        disabled
-                        value={adminReasonForInterest}
-                        className="form-control"
-                      />
-                    </div>
+                    <ProfileDetailInput
+                      type="text"
+                      label="Name"
+                      placeholder="Enter Name"
+                      set={setAdminName}
+                      value={adminName}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Company Name"
+                      placeholder="Enter Company Name"
+                      set={setAdminCompanyName}
+                      value={adminCompanyName}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Domain"
+                      placeholder="Enter Domain"
+                      disabled={true}
+                      value={adminDomain}
+                    />
+                     <ProfileDetailInput
+                      type="text"
+                      label="Designation"
+                      placeholder="Enter Designation"
+                      disabled={true}
+                      value={adminDesignation}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Industry"
+                      disabled={true}
+                      value={adminIndustry}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Reason For Interest"
+                      disabled={true}
+                      value={adminReasonForInterest}
+                      row="4"
+                    />
                     {isSaving ? (
                       <div className="text-center">
                         <Spinner
@@ -489,60 +400,38 @@ function SettingDashboardDefault(props) {
               <div className="col-md-12 col-lg-6">
                 <form>
                   <div className="form-group">
-                    <label>Username</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        placeholder="Enter Username"
-                        className="form-control"
-                        onChange={(e) => {
-                          setName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <label>Bio</label>
-                    <div className="form-group">
-                      <textarea
-                        type="text"
-                        value={bio}
-                        required
-                        rows="4"
-                        placeholder="Tell the world your story!"
-                        className="form-control"
-                        onChange={(e) => {
-                          setBio(e.target.value);
-                        }}
-                      />
-                    </div>
+                    <ProfileDetailInput
+                      type="text"
+                      label="Username"
+                      placeholder="Enter Username"
+                      set={setName}
+                      value={name}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Bio"
+                      placeholder="Tell the world your story!"
+                      set={setBio}
+                      value={bio}
+                      row="4"
+                    />
+                  
                     {Cookies.get("Version") != "v2-wallet-login" && (
-                      <>
-                        <label>Email</label>
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            required
-                            value={email}
-                            placeholder="Enter Email"
-                            className="form-control"
-                            onChange={(e) => {
-                              setEmail(e.target.value);
-                            }}
-                          />
-                        </div>
-                      </>
+
+                        <ProfileDetailInput
+                          type="email"
+                          label="Emial"
+                          placeholder="Enter Email"
+                          set={setEmail}
+                          value={email}
+                        />  
                     )}
-                    <label>Wallet Address</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        readOnly={true}
-                        value={sessionStorage.getItem("Address")}
-                        placeholder="Wallet Address"
-                        className="form-control"
-                      />
-                    </div>
+                    <ProfileDetailInput
+                      type="text"
+                      label="Wallet Address"
+                      placeholder="Wallet Address"
+                      value={sessionStorage.getItem("Address")}
+                    />
                     {isSaving ? (
                       <div className="text-center">
                         <Spinner
