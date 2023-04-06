@@ -63,7 +63,7 @@ function VerifiedAccountsDefaultScreen(props) {
   let getVerifiedSSOAdmins = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/verified/?userType=v1`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
       .then((response) => {
         setAdmins(response.data.verifiedAdmins);
         setAdminCount(response.data.verifiedAdmins.length);
@@ -86,7 +86,7 @@ function VerifiedAccountsDefaultScreen(props) {
   let getVerifiedWalletAdmins = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/verified?userType=v2`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v2`)
       .then((response) => {
         console.log(response)
         setWalletAdmins(response.data.verifiedAdmins);

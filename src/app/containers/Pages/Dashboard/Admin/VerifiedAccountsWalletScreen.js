@@ -61,7 +61,7 @@ function VerifiedAccountsWalletScreen(props) {
   let getUnverifiedWallet = (start, end) => {
     setOpen(true);
     axios
-      .get(`/super-admin/admins/verified?userType=v2`)
+      .get(`/super-admin/admins/verified/${start}/${end}?userType=v2`)
       .then((response) => {
         setWalletAdmins(response.data.verifiedAdmins);
         setWalletAdminCount(response.data.verifiedAdmins.length);
