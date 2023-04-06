@@ -112,12 +112,10 @@ function NewNFT(props) {
 
   const handleStandardSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " Template selected!");
     if (standardTemplates) {
       for (let i = 0; i < standardTemplates.length; i++) {
         if (e.target.value === standardTemplates[i].name) {
           handleSetProperties(standardTemplates[i].properties);
-          //console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < standardTemplates[i].properties.length; p++) {
             dynamicField.push({
@@ -141,7 +139,6 @@ function NewNFT(props) {
   let [ipfsHash, setIpfsHash] = useState(null);
   let [description, setDescription] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
-
 
   let [supplyType, setSupplyType] = useState("Single");
   let [nftContractAddress, setNftContractAddress] = useState("");
@@ -540,7 +537,6 @@ function NewNFT(props) {
           if (batchId === "") {
             axios.post(`/batch-mint/`, data).then(
               (response) => {
-                //console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
                 setNftId(response.data.nftId);
                 setTokenList([
@@ -656,10 +652,7 @@ function NewNFT(props) {
           setIsMp3File(false);
           let variant = "success";
           enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
-
-          //console.log("Token list length: ", tokenList.length);
           setIsUploadingData(false);
-
           handleCloseBackdrop();
         });
       };
@@ -737,11 +730,11 @@ function NewNFT(props) {
       }
     );
   };
- 
 
 
 
- 
+
+
 
   let handleOpenNFTDetailModal = (nftObject) => {
     setNftDetail(nftObject);
@@ -1087,7 +1080,6 @@ function NewNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                {/* Image Upload */}
                 <label className="mb-0 p-1">Select Artwork</label>
                 <NFTUpload
                   image={image}
@@ -1101,7 +1093,6 @@ function NewNFT(props) {
                   previewImageURI={previewImageURI}
                   isUploadingPreview={isUploadingPreview}
                 />
-                {/* Fields */}
                 <div className="form-group newNftFields">
                   <label>Title</label>
                   <div className="form-group newNftWrapper">
@@ -1131,9 +1122,9 @@ function NewNFT(props) {
                       }}
                     />
                   </div>
-                  <NewNftTemplates 
-                    setProperties={setProperties} 
-                    properties={properties} 
+                  <NewNftTemplates
+                    setProperties={setProperties}
+                    properties={properties}
                     standardTemplates={standardTemplates}
                     handleStandardSelectTemplate={handleStandardSelectTemplate}
                     handleSetProperties={handleSetProperties}
@@ -1146,44 +1137,44 @@ function NewNFT(props) {
                     setTemplateData={setTemplateData}
                     templateData={templateData}
                     defaultTemplates={defaultTemplates}
-                    />
+                  />
 
-                    <NewNftSelectNft
-                      tokenList={tokenList}
-                      classes={classes}
-                      setWorkProgressModalShow={setWorkProgressModalShow}
-                      NFTType={NFTType}
-                      setNFTType={setNFTType}
-                      getCollections={getCollections}
-                      collectionTypes={collectionTypes}
-                      setCollection={setCollection}
-                      setCollectionId={setCollectionId}
-                      setNftContractAddress={setNftContractAddress}
-                      collection={collection}
-                      setContractType={setContractType}
-                    />
+                  <NewNftSelectNft
+                    tokenList={tokenList}
+                    classes={classes}
+                    setWorkProgressModalShow={setWorkProgressModalShow}
+                    NFTType={NFTType}
+                    setNFTType={setNFTType}
+                    getCollections={getCollections}
+                    collectionTypes={collectionTypes}
+                    setCollection={setCollection}
+                    setCollectionId={setCollectionId}
+                    setNftContractAddress={setNftContractAddress}
+                    collection={collection}
+                    setContractType={setContractType}
+                  />
 
-                    <NewNftSelectSupply
-                      NFTType={NFTType}
-                      classes={classes}
-                      setSupplyType={setSupplyType}
-                      setTokenSupply={setTokenSupply}
-                      supplyType={supplyType}
-                      tokenSupply={tokenSupply}
-                    />
-                 
-                 
+                  <NewNftSelectSupply
+                    NFTType={NFTType}
+                    classes={classes}
+                    setSupplyType={setSupplyType}
+                    setTokenSupply={setTokenSupply}
+                    supplyType={supplyType}
+                    tokenSupply={tokenSupply}
+                  />
+
+
                 </div>
-              <AddNftQueue
-                NFTType={NFTType}
-                image={image}
-                name={name}
-                description={description}
-                tokenSupply={tokenSupply}
-                collection={collection}
-                isUploadingData={isUploadingData}
-                handleAddClick={handleAddClick}
-              />
+                <AddNftQueue
+                  NFTType={NFTType}
+                  image={image}
+                  name={name}
+                  description={description}
+                  tokenSupply={tokenSupply}
+                  collection={collection}
+                  isUploadingData={isUploadingData}
+                  handleAddClick={handleAddClick}
+                />
               </div>
             </form>
           </div>

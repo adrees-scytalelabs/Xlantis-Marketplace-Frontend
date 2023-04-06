@@ -17,6 +17,7 @@ import { useRouteMatch } from "react-router-dom";
 import Countdown from "react-countdown";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { truncate } from "../../../../assets/js/utils";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -101,10 +102,8 @@ function MarketPlacePage(props) {
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-   // console.log("version", version);
     axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
       (response) => {
-      //  console.log("response", response);
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();
@@ -134,7 +133,7 @@ function MarketPlacePage(props) {
     setVersionB(Cookies.get("Version"));
 
     getMyDrops(props.saleType, 0, rowsPerPage);
-    
+
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -160,24 +159,7 @@ function MarketPlacePage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="div"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid
               container
@@ -395,9 +377,9 @@ function MarketPlacePage(props) {
                             </Typography>
                           )}
 
-                          </CardContent>
+                        </CardContent>
                       </CardActionArea>
-                      </Card>
+                    </Card>
                   </Link>
                 </Grid>
               ))}

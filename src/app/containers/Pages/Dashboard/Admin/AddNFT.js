@@ -1,11 +1,5 @@
 import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import {
-  CardContent, Grid,
-  Typography
-} from "@material-ui/core/";
-
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
+import { Grid } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -24,6 +18,7 @@ import AuctionDropFactory721 from "../../../../components/blockchain/Abis/Auctio
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
@@ -204,7 +199,6 @@ function AddNFT(props) {
           console.log(error);
           console.log(error.response);
         }
-
       }
     );
   };
@@ -218,7 +212,6 @@ function AddNFT(props) {
 
     axios.get(`/collection/collections/${location.state.nftType}`).then(
       (response) => {
-        ;
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
       },
@@ -352,8 +345,7 @@ function AddNFT(props) {
     const transak = new transakSDK(settings);
 
     transak.init();
-    transak.on(transak.ALL_EVENTS, (data) => {
-    });
+    transak.on(transak.ALL_EVENTS, (data) => {});
 
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       transak.close();
@@ -367,7 +359,6 @@ function AddNFT(props) {
   }
 
   useEffect(() => {
-
     setIsDisabled(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
@@ -681,7 +672,6 @@ function AddNFT(props) {
             console.log(error);
             console.log(error.response);
           }
-
         }
       );
     } catch (e) {
@@ -811,8 +801,7 @@ function AddNFT(props) {
       if (collection === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Collection", { variant });
-      }
-      else if (price === 0 || price === undefined || price === null) {
+      } else if (price === 0 || price === undefined || price === null) {
         let variant = "error";
         enqueueSnackbar("Price cannot be 0 or empty", { variant });
       } else if (price < 0) {
@@ -926,7 +915,6 @@ function AddNFT(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -1038,8 +1026,8 @@ function AddNFT(props) {
                               nftTokenSupply === 0
                                 ? "none"
                                 : nftTokenSupply >= supply
-                                  ? "3px solid green"
-                                  : "3px solid red",
+                                ? "3px solid green"
+                                : "3px solid red",
                           }}
                           type="number"
                           required
@@ -1112,47 +1100,19 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             {nftName != "" ? (
               <form>
-
                 <div className="form-group mt-3 mt-lg-0">
                   <div>
                     <Grid
                       container
                       spacing={2}
                       direction="row"
-                      justify="flex-start"
+                      justifyContent="flex-start"
                     >
                       <Grid item xs={6} sm={4} md={4} lg={4}>
-                        <Card style={{ height: "100%" }} id="nftCardProps">
-                          <CardMedia
-                            variant="outlined"
-                            className={classes.media}
-                            image={
-                              nftDetail.previewImageURI
-                                ? nftDetail.previewImageURI
-                                : nftDetail.nftURI
-                            }
-                            title="NFT Image"
-                          />
-                          <CardContent
-                            style={{
-                              paddingBottom: 0,
-                              paddingTop: 0,
-                              width: "100%",
-                            }}
-                          >
-                            <div
-                              className="row no-gutters justify-content-start align-items-center"
-                            >
-                              <Typography
-                                variant="h6"
-                                component="p"
-                                className={classes.cardTitle}
-                              >
-                                {nftDetail.title}
-                              </Typography>
-                            </div>
-                          </CardContent>
-                        </Card>
+                        <AddNFTDisplayCard
+                          nftDetail={nftDetail}
+                          classes={classes}
+                        />
                       </Grid>
                     </Grid>
                   </div>
@@ -1249,13 +1209,13 @@ function AddNFT(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      ></NetworkErrorModal>
+      />
       <NFTDetailModal
         show={openDialog}
         handleClose={handleCloseNFTDetailModal}
         nftDetail={nftDetail}
         handleEdit={handleEdit}
-      ></NFTDetailModal>
+      />
       {modalOpen === true && (
         <PublishDropModal
           handleClose={handleCloseModal}
@@ -1278,7 +1238,7 @@ function AddNFT(props) {
         setAmount={setAmount}
         topUp={handleTopUpAmount}
         setOpen={setMOdalOpen}
-      ></TopUpModal>
+      />
       <CircularBackdrop open={open} />
     </div>
   );

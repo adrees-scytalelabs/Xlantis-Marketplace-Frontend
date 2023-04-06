@@ -117,7 +117,7 @@ function AdminInformationModal(props) {
             borderTop: "none",
           }}
         >
-          <button className="newTemplateBtn mb-3" onClick={props.handleClose}>
+          <button className="newTemplateBtn mb-3" onClick={(e) => props.handleClose(e,props.setShow)}>
             Close
           </button>
         </Modal.Footer>

@@ -69,7 +69,7 @@ function CubeNFTs(props) {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { dropId, cubeId } = useParams();
-  // console.log("dropId", dropId);
+  
   const [tokenList, setTokenList] = useState([]);
   const [cubeData, setCubeData] = useState({});
   const [dropData, setDropData] = useState({});
@@ -119,8 +119,8 @@ function CubeNFTs(props) {
         setTokenList(response.data.nftdata);
         setCubeData(response.data.tokensdata);
         setOwnerAudio(new Audio(response.data.tokensdata.ownermusicfile));
-        // ownerAudio.setAttribute('crossorigin', 'anonymous');
-        // ownerAudio.play();
+        
+        
         if (dropId !== "notdrop") {
           setDropData(response.data.Dropdata);
           await loadWeb3();
@@ -184,7 +184,7 @@ function CubeNFTs(props) {
             handleCloseBackdrop();
           }
         );
-        // handleCloseBackdrop();
+        
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -300,14 +300,14 @@ function CubeNFTs(props) {
         console.log("res", res);
         if (res.data.success) setIsClaimFunds(res.data.Adminclaimfundsresult);
 
-        // handleCloseBackdrop();
+        
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-        // handleCloseBackdrop();
+        
       }
     );
   };
@@ -380,8 +380,6 @@ function CubeNFTs(props) {
 
                   {dropId !== "notdrop" ? (
                     <div className="col-md-12 col-lg-6">
-                      {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                color="" label="@UserName" /> */}
                       {new Date() > new Date(dropData.AuctionEndsAt) ? (
                         isClaiming ? (
                           <div align="center" className="text-center">
@@ -469,15 +467,9 @@ function CubeNFTs(props) {
                         title={cubeData.MusicArtistName}
                         subheader={cubeData.MusicArtistAbout}
                       />
-                      {/* <Row>
-                                                <button className="btn-lg btn btn-dark btn-block" >Place a bid</button>{' '}
-
-                                            </Row> */}
                     </div>
                   ) : (
                     <div className="col-md-12 col-lg-6">
-                      {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                color="" label="@UserName" /> */}
                       <h1>{cubeData.title} </h1>
                       <h4>Reserve Price</h4>
                       <h2>{cubeData.SalePrice / 10 ** 18} ETH </h2>
@@ -509,7 +501,7 @@ function CubeNFTs(props) {
                   {console.log("tokenList", tokenList)}
 
                   {tokenList.map((i, index) => (
-                    <NFTCard data={i[0]} key={index}></NFTCard>
+                    <NFTCard data={i[0]} key={index} />
                   ))}
                 </Grid>
               </div>

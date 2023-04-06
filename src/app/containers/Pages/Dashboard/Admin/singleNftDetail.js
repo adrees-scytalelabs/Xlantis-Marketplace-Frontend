@@ -112,11 +112,9 @@ const SingleNftDetail = (props) => {
 
     axios.get(`/nft/getSingleNFT/${nftId}`).then(
       (response) => {
-     //   console.log("Response: ", response);
         setNftDetail(response.data.data[0]);
         setProperties(response.data.data[0].properties);
         const keys = Object.keys(response.data.data[0].properties);
-      // console.log("Keys: ", keys);
         setKeys(keys);
       },
       (error) => {
@@ -178,13 +176,6 @@ const SingleNftDetail = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Card className={classes.root}>
-                {/* <CardMedia
-                                className={classes.media}
-                                title="NFT Artwork"
-                                image={nftDetail.nftURI}
-                            >
-
-                            </CardMedia> */}
                 <div>
                   {nftDetail.nftFormat === "glb" ||
                     nftDetail.nftFormat === "gltf" ? (
@@ -199,9 +190,6 @@ const SingleNftDetail = (props) => {
                           <AmbientLight color={0xffffff} />
                           <AmbientLight color={0xffffff} />
                           <AmbientLight color={0xffffff} />
-                          {/* <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} />
-                                                <AmbientLight color={0xffffff} /> */}
                           <DirectionLight
                             color={0xffffff}
                             position={{ x: 100, y: 200, z: 100 }}
@@ -254,12 +242,7 @@ const SingleNftDetail = (props) => {
                           showSkipControls={false}
                           showJumpControls={false}
 
-                          showDownloadProgress
-
-
-
-
-                        />
+                          showDownloadProgress                        />
                       </div>
                     </div>
                   ) : (
@@ -299,26 +282,6 @@ const SingleNftDetail = (props) => {
                     </Col>
                     <Col>{nftDetail.description}</Col>
                   </Row>
-                  {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
-                                            <strong>Rarity </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.type}
-                                    </Col>
-                                </Row> */}
-                  {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color: '#a70000'}}>
-                                            <strong>Supply Type </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.supplyType}
-                                    </Col>
-                                </Row> */}
                   <Row>
                     <Col>
                       <Typography

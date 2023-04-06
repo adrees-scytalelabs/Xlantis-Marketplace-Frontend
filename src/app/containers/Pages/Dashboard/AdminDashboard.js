@@ -62,10 +62,10 @@ function AdminDashboard(props) {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", 
+    environment: "STAGING",
     defaultCryptoCurrency: "ETH",
-    themeColor: "000000", // App theme color
+    themeColor: "000000", 
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -101,18 +101,18 @@ function AdminDashboard(props) {
 
     transak.init();
 
-    // To get all the events
+    
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
 
-    // This will trigger when the user closed the widget
+    
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
     });
 
-    // This will trigger when the user marks payment is made.
+    
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -122,14 +122,12 @@ function AdminDashboard(props) {
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
-      {/* <!-- Header --> */}
       <div className={`admin-header ${menuOpenedClass}`}>
-        {/* <!-- Logo --> */}
         <div className="header-left">
           <a
             href="/"
             className="navbar-brand logo"
-            // onClick={(e) => e.preventDefault()}
+            
             style={{ width: "210px" }}
           >
             <img
@@ -144,12 +142,11 @@ function AdminDashboard(props) {
                 padding: "5px 15px",
               }}
             />
-            {/* Robot Drop */}
           </a>
           <a
             href="/"
             className="logo logo-small"
-            // onClick={(e) => e.preventDefault()}
+            
             style={{ width: "210px" }}
           >
             <img
@@ -163,7 +160,6 @@ function AdminDashboard(props) {
                 padding: "5px 15px",
               }}
             />
-            {/* Robot Drop */}
           </a>
         </div>
         <a
@@ -174,11 +170,7 @@ function AdminDashboard(props) {
         >
           <i className="fa fa-bars"></i>
         </a>
-        {/* <!-- /Mobile Menu Toggle --> */}
-
-        {/* <!-- Header Right Menu --> */}
         <ul className="nav user-menu">
-          {/* <!-- User Menu --> */}
 
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
@@ -230,11 +222,8 @@ function AdminDashboard(props) {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          {/* <!-- /User Menu --> */}
         </ul>
-        {/* <!-- /Header Right Menu --> */}
       </div>
-      {/* <!-- /Header --> */}
 
       <AdminSidebar
         match={props.match}
@@ -257,7 +246,6 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/myNFTs`}>
               <MyNFTs setActiveTab={setActiveTab} />
             </Route>
-            {/* myNFTs:"", */}
             <Route exact path={`${path}/myCubes`}>
               <MyCubes setActiveTab={setActiveTab} />
             </Route>

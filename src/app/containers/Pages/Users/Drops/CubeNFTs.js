@@ -820,7 +820,6 @@ function CubeNFTs(props) {
 
                         {dropId !== "notdrop" ? (
                           <div className="col-md-12 col-lg-6">
-                            {/* {console.log()} */}
                             {enableWethButton ? (
                               isClaimingWeth ? (
                                 <div align="center" className="text-center">
@@ -965,7 +964,6 @@ function CubeNFTs(props) {
                               Current Bid : {dropData.MinimumBid / 10 ** 18}{" "}
                               WETH{" "}
                             </Typography>
-                            {/* <Typography variant="h5" gutterBottom>Current Bid : {(highestBid - bidByUser) / 10 ** 18} WETH </Typography> */}
                             <Typography variant="h5" gutterBottom>
                               Bid Delta : {dropData.bidDelta / 10 ** 18} WETH{" "}
                             </Typography>
@@ -1193,9 +1191,6 @@ function CubeNFTs(props) {
                           </div>
                         ) : (
                           <div className="col-md-12 col-lg-6">
-                            {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                            color="" label="@UserName" />
-                                                        <h1> </h1> */}
                             <Typography variant="h4" gutterBottom>
                               {cubeData.title}
                             </Typography>
@@ -1239,7 +1234,7 @@ function CubeNFTs(props) {
                       >
                         {hide
                           ? tokenList.map((i, index) => (
-                            <NewNFTCard data={i[0]} key={index}></NewNFTCard>
+                            <NewNFTCard data={i[0]} key={index} />
                           ))
                           : null}
                       </Grid>

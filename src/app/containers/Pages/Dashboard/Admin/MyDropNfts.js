@@ -12,6 +12,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import CornerRibbon from "react-corner-ribbon";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -89,9 +90,6 @@ function MyDropNFTs(props) {
   };
   let getNFTs = (start, end) => {
     handleShowBackdrop();
-    //console.log("nftids", location.state.nftId);
-    //console.log("dropId", location.state.dropId);
-    //console.log("saleType", location.state.saleType);
 
     let data = {
       nftIds: location.state.nftId,
@@ -103,13 +101,10 @@ function MyDropNFTs(props) {
       )
       .then(
         (response) => {
-         // console.log("response", response);
           let nfts = response.data.data;
           let newState = nfts.map((obj) => {
             return { ...obj, isPlaying: false };
           });
-         // console.log("NFTS", nfts);
-         // console.log("Updated", newState);
           setTokenList(newState);
           setTotalNfts(response.data.data.length);
 
@@ -138,8 +133,6 @@ function MyDropNFTs(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
-  //  console.log("Location state: ", location);
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
 
@@ -255,24 +248,7 @@ function MyDropNFTs(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <Card
-                variant="outlined"
-                style={{
-                  padding: "40px",
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  backgroundColor:"black"
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  className="text-center"
-                  component="p"
-                  style={{color: "white"}}
-                >
-                  <strong>No items to display </strong>
-                </Typography>
-              </Card>
+              <MessageCard msg = "No items to display"></MessageCard>
             ) : (
               <Grid container spacing={2} direction="row" justify="flex-start">
                 {tokenList.map((i, index) => (

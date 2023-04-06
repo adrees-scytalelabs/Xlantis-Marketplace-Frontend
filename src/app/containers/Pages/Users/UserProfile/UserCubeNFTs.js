@@ -268,8 +268,6 @@ function UserCubeNFTs(props) {
                       </div>
 
                       <div className="col-md-12 col-lg-6">
-                        {/* <Chip clickable style={{ marginTop: '20px' }}
-                                                color="" label="@UserName" /> */}
                         <h1>{cubeData.title} </h1>
                         <h4>Reserve Price</h4>
                         <h2>{cubeData.SalePrice / 10 ** 18} ETH </h2>

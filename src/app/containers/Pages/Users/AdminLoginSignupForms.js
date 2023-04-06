@@ -376,7 +376,6 @@ const AdminLoginSignupForms = () => {
             </div>
           </div>
         </div>
-        {/* <Alert severity="error">This is an error message!</Alert> */}
       </div>
       <WorkInProgressModal
         show={workProgressModalShow}

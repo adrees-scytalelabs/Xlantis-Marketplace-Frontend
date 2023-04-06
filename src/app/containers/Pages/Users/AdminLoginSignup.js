@@ -6,11 +6,9 @@ const AdminLoginSignup = () => {
   return (
     <>
       <div className="main-wrapper">
-        {/* Header */}
         <div className="row no-gutters w-100">
           <HeaderHome selectedNav={""} role="admin" />
         </div>
-        {/* Login Signup */}
         <div
           className="row no-gutters w-100 justify-content-center align-items-center"
           style={{ minHeight: "100vh", paddingTop: "90px" }}

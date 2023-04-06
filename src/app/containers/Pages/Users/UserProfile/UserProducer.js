@@ -8,6 +8,7 @@ import axios from "axios";
 import Card from "@material-ui/core/Card";
 import { Spinner } from "react-bootstrap";
 import NFTCard from "../../../../components/Cards/NFTCard";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 function UserProducer(props) {
   let history = useHistory();
@@ -106,23 +107,8 @@ function UserProducer(props) {
                     </span>
                   </div>
                 ) : data.length === 0 ? (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      color="textSecondary"
-                      component="p"
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg = "No items to display"></MessageCard>
+
                 ) : (
                   <Grid
                     container
@@ -131,7 +117,7 @@ function UserProducer(props) {
                     justify="flex-start"
                   >
                     {data.map((i, index) => (
-                      <NFTCard data={i} key={index}></NFTCard>
+                      <NFTCard data={i} key={index} />
                     ))}
                   </Grid>
                 )}

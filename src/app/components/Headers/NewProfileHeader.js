@@ -115,13 +115,10 @@ export default function HeaderMenuAppBar(props) {
             <div className={classes.avatarRoot}>
               {props.userData !== undefined ? (
                 <>
-                  {/* {props.userData.pictureURL !== undefined ? ( */}
-
                   <Avatar
                     src={props.userData.pictureURL}
                     onClick={handleMenu}
                   ></Avatar>
-                  {/* ) : null} */}
                 </>
               ) : null}
             </div>

@@ -512,7 +512,6 @@ function SaleCubeNFTs(props) {
                   </div>
 
                   <div className="col-md-12 col-lg-7 pl-lg-3">
-                    {/* Get More WETH */}
                     {enableWethButton ? (
                       isClaimingWeth ? (
                         <div align="center" className="text-center">
@@ -764,7 +763,7 @@ function SaleCubeNFTs(props) {
                       >
                         {hide
                           ? tokenList.map((i, index) => (
-                            <NewNFTCard data={i[0]} key={index}></NewNFTCard>
+                            <NewNFTCard data={i[0]} key={index} />
                           ))
                           : null}
                       </Grid>

@@ -9,6 +9,7 @@ import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { Link } from "react-router-dom";
+import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -110,30 +111,12 @@ function MyNFTs(props) {
       </div>
       
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
+            <MessageCard msg = "No items to display"></MessageCard>
 
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
           ) : (
             <Grid container spacing={1} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
@@ -153,7 +136,6 @@ function MyNFTs(props) {
           onChangePage={handleChangePage}
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
-        {/* </form> */}
       </div>
     </div>
   );
