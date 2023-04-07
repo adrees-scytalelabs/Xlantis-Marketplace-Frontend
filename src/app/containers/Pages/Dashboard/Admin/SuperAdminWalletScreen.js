@@ -1,10 +1,8 @@
-
-import axios from "axios"; 
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import { Card } from "@material-ui/core";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function SuperAdminWalletScreen(props) {
   const [open, setOpen] = useState(false);
@@ -45,240 +43,110 @@ function SuperAdminWalletScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     });
     getCounts();
-    
   }, []);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/accounts`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Total Wallet Admins
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalAdmins}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/accounts`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalAdmins}
+            message="Total Wallet Admins"
+            icon={<ListAltIcon />}
+          />
         </div>
         <div className="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link
-              to={{
-                pathname: `${props.match.url}/manageAccounts/Wallet`,
-                state: { current: "enabled" },
-              }}
-            >
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Wallet Enabled Admins
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalEnabled}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={{
+              pathname: `${props.match.url}/manageAccounts/Wallet`,
+              state: { current: "enabled" },
+            }}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalEnabled}
+            message="Wallet Enabled Admins"
+            icon={<ListAltIcon />}
+          />
         </div>
         <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link
-              to={{
-                pathname: `${props.match.url}/manageAccounts/Wallet`,
-                state: { current: "disabled" },
-              }}
-            >
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Wallet Disabled Admins
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalDisabled}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={{
+              pathname: `${props.match.url}/manageAccounts/Wallet`,
+              state: { current: "disabled" },
+            }}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalDisabled}
+            message="Wallet Disabled Admins"
+            icon={<ListAltIcon />}
+          />
         </div>
         <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/verifiedAccounts`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Wallet Verified Admins
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalVerifiedAdmins}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/verifiedAccounts`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalVerifiedAdmins}
+            message="Wallet Verified Admins"
+            icon={<ListAltIcon />}
+          />
         </div>
         <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/accountApproval`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Wallet Unverified Admins
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalUnverifiedAdmins}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/accountApproval`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalUnverifiedAdmins}
+            message="Wallet Unverified Admins"
+            icon={<ListAltIcon />}
+          />
         </div>
       </div>
       <CircularBackdrop open={open} />

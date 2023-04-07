@@ -1,11 +1,8 @@
-
-import { Card } from "@material-ui/core";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function UserDashboardDefaultScreen(props) {
   let [totalCubes, setTotalCubes] = useState(0);
@@ -17,9 +14,9 @@ function UserDashboardDefaultScreen(props) {
   let [userName, setUserName] = useState("");
 
   let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios
       .get("user/getcounts")
       .then((response) => {
@@ -45,8 +42,7 @@ function UserDashboardDefaultScreen(props) {
           console.log(error.response);
         });
     }
-
-  }
+  };
 
   useEffect(() => {
     props.setActiveTab({
@@ -68,12 +64,10 @@ function UserDashboardDefaultScreen(props) {
     });
     getCounts();
     getProfile();
-
   }, []);
 
   return (
     <>
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -86,53 +80,25 @@ function UserDashboardDefaultScreen(props) {
           </div>
         </div>
       </div>
-
-
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/myNFTs`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Total NFTs
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalNFTs}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/myNFTs`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalNFTs}
+            message="Total NFTs"
+            icon={<ListAltIcon />}
+          />
         </div>
-        
       </div>
     </>
   );

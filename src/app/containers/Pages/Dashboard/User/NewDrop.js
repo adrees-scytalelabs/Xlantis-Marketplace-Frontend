@@ -1,5 +1,4 @@
 import { Grid } from "@material-ui/core/";
-
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
@@ -94,9 +93,9 @@ function NewDrop(props) {
   };
 
   let getMyCubes = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios.get("/token/TokenIdsnotonauction").then(
       (response) => {
         console.log("response", response);
@@ -289,9 +288,9 @@ function NewDrop(props) {
         };
         console.log("cubeData", DropData);
 
-        axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+        axios.defaults.headers.common[
           "Authorization"
-        )}`;
+        ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
         axios.post("/drop/createdrop", DropData).then(
           (response) => {
             console.log("response", response);
@@ -556,11 +555,7 @@ function NewDrop(props) {
                             className={classes.root}
                           >
                             <CardActionArea>
-                              <CardMedia
-                                className={classes.media}
-
-                                title=""
-                              >
+                              <CardMedia className={classes.media} title="">
                                 <CubeComponent1
                                   data={typesImages}
                                   index={index}
@@ -664,7 +659,7 @@ function NewDrop(props) {
         show={showNetworkModal}
         handleClose={handleCloseNetworkModal}
         network={network}
-      ></NetworkErrorModal>
+      />
       <CircularBackdrop open={open} />
     </div>
   );
