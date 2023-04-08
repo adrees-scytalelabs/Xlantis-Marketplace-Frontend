@@ -1,19 +1,10 @@
 import { Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { Alert } from "@material-ui/lab";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
-import { truncate } from "../../../../assets/js/utils";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
@@ -204,197 +195,11 @@ function DropsPage(props) {
                         },
                       }}
                     >
-                      <Card
-                        id="myDropsPending"
-                        style={{ height: "100%" }}
-                        variant="outlined"
-                        className={classes.root}
-                      >
-                        <CardActionArea>
-                          <CardMedia
-                            className={classes.media}
-                            image={i.image}
-                            title="Drop Image"
-                          />
-                          <CardContent>
-                            <div
-                              className="row no-gutters justify-content-between"
-                              style={{ minHeight: "60px" }}
-                            >
-                              <div className="col-8 align-self-end">
-                                <Typography
-                                  variant="h6"
-                                  component="div"
-                                  className={cardClasses.cardTitle}
-                                >
-                                  {i.title}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  component="p"
-                                  className={cardClasses.cardDescriptions}
-                                >
-                                  {truncate(i.description, 25)}
-                                </Typography>
-                              </div>
-                              <div className="col-4 align-self-end text-right p-0">
-                                <p
-                                  className="nftPrice mb-0 p-0"
-                                  style={{ lineHeight: "1.6" }}
-                                >
-                                  {i.totalNFTs} NFTs
-                                </p>
-                              </div>
-                            </div>
-                            <br></br>
-
-                            {i.saleType === "auction" ? (
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                className="text-center"
-                              >
-                                {new Date() < new Date(i.startTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="info"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Auction Starts At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.startTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        />
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : new Date() > new Date(i.startTime) &&
-                                  new Date() < new Date(i.endTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="warning"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Auction Ends At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.endTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        />
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : (
-                                  <Typography
-                                    variant="body2"
-                                    style={{
-                                      marginTop: "1rem",
-                                    }}
-                                    component="p"
-                                  >
-                                    <Alert
-                                      severity="error"
-                                      className={cardClasses.textAlert}
-                                      style={{ fontWeight: "bold" }}
-                                    >
-                                      Auction Ended
-                                    </Alert>
-                                  </Typography>
-                                )}
-                              </Typography>
-                            ) : (
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                className="text-center"
-                              >
-                                {new Date() < new Date(i.startTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="info"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Sale Starts At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.startTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        />
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : new Date() > new Date(i.startTime) &&
-                                  new Date() < new Date(i.endTime) ? (
-                                  <div style={{ marginTop: "1rem" }}>
-                                    <Alert
-                                      severity="warning"
-                                      className={cardClasses.textAlert}
-                                    >
-                                      <span
-                                        style={{
-                                          fontFamily: "orbitron",
-                                          fontWeight: "bold",
-                                        }}
-                                      >
-                                        Sale Ends At:{" "}
-                                      </span>
-                                      <span>
-                                        <Countdown
-                                          daysInHours
-                                          date={new Date(i.endTime)}
-                                          style={{ fontFamily: "orbitron" }}
-                                        />
-                                      </span>
-                                    </Alert>
-                                  </div>
-                                ) : (
-                                  <Typography
-                                    variant="body2"
-                                    style={{
-                                      marginTop: "1rem",
-                                    }}
-                                    component="p"
-                                  >
-                                    <Alert
-                                      severity="error"
-                                      className={cardClasses.textAlert}
-                                      style={{ fontWeight: "bold" }}
-                                    >
-                                      Sale Ended
-                                    </Alert>
-                                  </Typography>
-                                )}
-                              </Typography>
-                            )}
-                          </CardContent>
-                        </CardActionArea>
-                        <CardActions></CardActions>
-                      </Card>
+                      <DropsPageCard
+                        dropDetails={i}
+                        classes={classes}
+                        cardClasses={cardClasses}
+                      />
                     </Link>
                   )}
                 </Grid>

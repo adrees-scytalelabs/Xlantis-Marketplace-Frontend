@@ -1,9 +1,8 @@
 import { Card } from "@material-ui/core";
-import ListAltIcon from "@material-ui/icons/ListAlt";
 import React from "react";
 import { Link } from "react-router-dom";
 
-const DisplayNFTAndCollectionNumberCard = (props) => {
+const DisplayNumbersAndContentCard = (props) => {
   return (
     <Card
       style={{
@@ -19,9 +18,7 @@ const DisplayNFTAndCollectionNumberCard = (props) => {
           <div className="col align-self-end">
             <section>
               <h4 className={props.hoverH4}>
-                <span>
-                  {props.icon}
-                </span>
+                <span>{props.icon}</span>
                 {props.message}
               </h4>
             </section>
@@ -35,4 +32,4 @@ const DisplayNFTAndCollectionNumberCard = (props) => {
   );
 };
 
-export default DisplayNFTAndCollectionNumberCard;
+export default DisplayNumbersAndContentCard;

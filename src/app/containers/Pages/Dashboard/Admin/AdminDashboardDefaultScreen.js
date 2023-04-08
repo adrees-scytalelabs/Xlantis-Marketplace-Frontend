@@ -2,7 +2,7 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import DisplayNFTAndCollectionNumberCard from "../../../../components/Cards/DisplayNFTAndCollectionNumberCard";
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function AdminDashboardDefaultScreen(props) {
   let [totalCubes, setTotalCubes] = useState(0);
@@ -69,7 +69,7 @@ function AdminDashboardDefaultScreen(props) {
       </div>
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
-          <DisplayNFTAndCollectionNumberCard
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             linkTo={`${props.match.url}/myNFTs`}
@@ -87,7 +87,7 @@ function AdminDashboardDefaultScreen(props) {
           />
         </div>
         <div className="col-12 col-sm-5 col-xl-4 ml-sm-2 mt-2 mt-sm-0 totalCollectionsAdminDash">
-          <DisplayNFTAndCollectionNumberCard
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHoverCollections(true)}
             onMouseLeave={() => setHoverCollections(false)}
             linkTo={`${props.match.url}/myCollection`}
