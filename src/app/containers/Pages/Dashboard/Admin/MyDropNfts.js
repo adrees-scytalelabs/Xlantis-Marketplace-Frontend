@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -127,20 +127,14 @@ function MyDropNFTs(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "active",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "active",
+      topUp: "",
     });
   }, []);
   const handleChangePage = (event, newPage) => {

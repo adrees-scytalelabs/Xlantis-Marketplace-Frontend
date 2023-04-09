@@ -13,9 +13,9 @@ import Tabs from "@material-ui/core/Tabs";
 import Typography from "@material-ui/core/Typography";
 import PropTypes from "prop-types";
 import "../../assets/css/mediaQueries.css";
-import MarketPlaceMessageCard from "../Cards/MarketPlaceMessageCard";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
+import MessageCard from "../MessageCards/MessageCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 function TabPanel(props) {
@@ -242,7 +242,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MarketPlaceMessageCard message="No items to display" />
+                  <MessageCard msg="No items to display" />
                 )}
               </div>
             </div>
@@ -254,8 +254,8 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerSalePage}
                 labelRowsPerPage={"Drops per page"}
                 page={salePage}
-                onChangePage={handleChangeSalePage}
-                onChangeRowsPerPage={handleChangeRowsPerSalePage}
+                onPageChange={handleChangeSalePage}
+                onRowsPerPageChange={handleChangeRowsPerSalePage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,
@@ -300,7 +300,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MarketPlaceMessageCard message="This feature is coming soon" />
+                  <MessageCard msg="This feature is coming soon" />
                 )}
               </div>
             </div>
@@ -312,8 +312,8 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerAuctionPage}
                 labelRowsPerPage={"Drops per page"}
                 page={AuctionPage}
-                onChangePage={handleChangeAuctionPage}
-                onChangeRowsPerPage={handleChangeRowsPerAuctionPage}
+                onPageChange={handleChangeAuctionPage}
+                onRowsPerPageChange={handleChangeRowsPerAuctionPage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,

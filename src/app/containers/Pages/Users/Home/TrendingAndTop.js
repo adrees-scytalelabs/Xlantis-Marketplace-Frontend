@@ -1,7 +1,7 @@
 import { Card } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   ThemeProvider,
   useTheme
@@ -14,7 +14,7 @@ import React, { useEffect, useRef, useState } from "react";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
 import OnSaleCard from "../../../../components/Cards/OnSaleCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -56,7 +56,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import BusinessIcon from "@material-ui/icons/Business";
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -15,7 +15,7 @@ function AdminSidebar(props) {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
-    
+
     window.location.reload(false);
   };
 
@@ -36,7 +36,7 @@ function AdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.createNewCollection}>
+            <li className={props.activeTab.newCollection}>
               <Link
                 to={`${props.match.url}/createNewCollection`}
                 className="sidebarLink"
@@ -45,7 +45,7 @@ function AdminSidebar(props) {
                 <span>New Collection</span>
               </Link>
             </li>
-            <li className={props.activeTab.newCollection}>
+            <li className={props.activeTab.myCollections}>
               <Link
                 to={`${props.match.url}/myCollection`}
                 className="sidebarLink"
@@ -64,7 +64,7 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.marketPlace}>
+            <li className={props.activeTab.marketplace}>
               <Link
                 to={`${props.match.url}/marketPlace`}
                 className="sidebarLink"

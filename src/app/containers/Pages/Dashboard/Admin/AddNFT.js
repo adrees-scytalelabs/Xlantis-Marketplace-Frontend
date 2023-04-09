@@ -1,4 +1,4 @@
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
@@ -74,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiTextField: {
       root: {
@@ -370,20 +370,14 @@ function AddNFT(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      settings: "",
-      myNFTs: "",
-      mySeason: "",
-      myDrops: "",
-      myCubes: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "active",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "active",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
   let loadWeb3 = async () => {

@@ -310,21 +310,14 @@ const DropSingleNFT = (props) => {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "active",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-      marketPlace: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "active",
+      topUp: "",
     });
   }, []);
 

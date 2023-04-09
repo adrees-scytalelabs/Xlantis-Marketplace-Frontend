@@ -9,7 +9,7 @@ import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { Link } from "react-router-dom";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -133,8 +133,8 @@ function MyNFTs(props) {
           count={totalNfts}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
     </div>

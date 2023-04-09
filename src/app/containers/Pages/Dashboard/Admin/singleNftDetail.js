@@ -5,7 +5,7 @@ import {
   createTheme,
   makeStyles,
   ThemeProvider,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import axios from "axios";
@@ -13,7 +13,6 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Col, Row, Table } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
-
 import "react-h5-audio-player/lib/styles.css";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
@@ -97,13 +96,6 @@ const SingleNftDetail = (props) => {
   const [keys, setKeys] = useState([]);
   const [properties, setProperties] = useState({});
 
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
-
   let getNftDetail = () => {
     const version = Cookies.get("Version");
 
@@ -125,21 +117,14 @@ const SingleNftDetail = (props) => {
     getNftDetail();
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
-      myNFTs: "active",
       newCollection: "",
-      mySeason: "",
-      tradeListOrders: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "active",
+      marketplace: "",
+      newDrop: "",
       myDrops: "",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
+      topUp: "",
     });
   }, []);
 

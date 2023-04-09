@@ -1,4 +1,4 @@
-import { Backdrop, ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { Backdrop, ThemeProvider, createTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import Grid from "@material-ui/core/Grid";
 import Modal from "@material-ui/core/Modal";
@@ -89,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiAccordion: {
       root: {

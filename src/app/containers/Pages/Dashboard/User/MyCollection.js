@@ -16,7 +16,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -237,8 +237,8 @@ function MyCollection(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CreateNewCollectionModal
         show={openCollectionModal}

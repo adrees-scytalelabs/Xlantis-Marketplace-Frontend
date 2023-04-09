@@ -23,7 +23,13 @@ function AccountApprovalWallet(props) {
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    getUnverifiedAdminsWallet(0, rowsPerPage, setOpen, setWalletAdmins, setAdminCount);
+    getUnverifiedAdminsWallet(
+      0,
+      rowsPerPage,
+      setOpen,
+      setWalletAdmins,
+      setAdminCount
+    );
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -62,7 +68,7 @@ function AccountApprovalWallet(props) {
           setOpen={setOpen}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -70,22 +76,22 @@ function AccountApprovalWallet(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Notification
         variant={variant}
         notificationData={notificationData}
         setLoad={setLoad}
         load={load}
-      ></Notification>
+      />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { ThemeProvider, createTheme } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Table from "@material-ui/core/Table";
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiDivider: {
       root: {

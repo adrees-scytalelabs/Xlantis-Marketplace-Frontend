@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const cardStyles = makeStyles((theme) => ({

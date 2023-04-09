@@ -126,20 +126,13 @@ function NewDrop(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      newDrop: "active",
-      newCube: "",
-      mySeason: "",
-      myCubes: "",
-      myDrops: "",
-      myNFTs: "",
       newCollection: "",
-      orders: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "active",
+      myDrops: "",
       topUp: "",
     });
   }, []);

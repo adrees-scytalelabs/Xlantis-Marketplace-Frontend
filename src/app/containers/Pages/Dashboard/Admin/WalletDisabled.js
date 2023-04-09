@@ -123,8 +123,8 @@ function WalletDisabled(props) {
         count={walletAdminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

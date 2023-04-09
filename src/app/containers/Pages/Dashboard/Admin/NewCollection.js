@@ -1,4 +1,3 @@
-
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
@@ -64,7 +63,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewCollection(props) {
-
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let [network, setNetwork] = useState(false);
@@ -82,10 +80,9 @@ function NewCollection(props) {
     setOpen(true);
   };
 
-
   let [isSaving, setIsSaving] = useState(false);
   let [collectionName, setCollectionName] = useState("");
- 
+
   let [collectionDescription, setCollectionDescription] = useState("");
   let [collectionSymbol, setCollectionSymbol] = useState("");
   let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
@@ -115,21 +112,14 @@ function NewCollection(props) {
 
     props.setActiveTab({
       dashboard: "",
+      newCollection: "active",
+      myCollection: "",
       newNFT: "",
-      orders: "",
-      settings: "",
       myNFTs: "",
-      mySeason: "",
-      myDrops: "",
-      myCubes: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
+      marketplace: "",
       newDrop: "",
-      newCube: "",
-      createNewCollection: "active",
-      newCollection: "",
-      newRandomDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
 

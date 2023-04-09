@@ -98,8 +98,8 @@ function AccountsWallet(props) {
         count={adminWalletCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal

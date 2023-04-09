@@ -301,21 +301,14 @@ const AuctionNFT = (props) => {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-      marketPlace: "active",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "active",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
 

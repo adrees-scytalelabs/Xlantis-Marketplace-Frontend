@@ -4,7 +4,7 @@ import {
   Tabs,
   Typography
 } from "@material-ui/core";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",

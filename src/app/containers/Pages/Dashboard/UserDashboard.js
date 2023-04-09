@@ -1,61 +1,34 @@
 import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import Logo from "../../../assets/img/logo.png";
-import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import ChangePassword from "./ChangePassword";
-import CollectionNfts from "./User/CollectionNfts";
-import CubeNFTs from "./User/CubeNFTs";
-import DropCubes from "./User/DropsCubes";
-import MyCollection from "./User/MyCollection";
-import MyCubes from "./User/MyCubes";
-import MyDrops from "./User/MyDrops";
-import MyNFTs from "./User/MyNFTs";
-import MySeasons from "./User/MySeasons";
-import NewCube from "./User/NewCube";
-import NewDrop from "./User/NewDrop";
-import NewNFT from "./User/NewNFT";
-import NewSeason from "./User/NewSeason";
-import ProfileSetting from "./User/ProfileSetting";
-import RandomDrop from "./User/RandomDrop";
-import SeasonDrops from "./User/SeasonDrops";
-import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
-import UserSettings from "../Users/UserSettings";
-import UserSidebar from "./User/UserSidebar";import DropNfts from "./Admin/DropNfts";
+import HeaderHome from "../../../components/Headers/Header";
+import AuctionNFT from "./Admin/AuctionNFT";
+import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";
 import NFTBuy from "./Admin/NFTBuy";
-import AuctionNFT from "./Admin/AuctionNFT";
-import HeaderHome from "../../../components/Headers/Header";
 import SingleNftDetail from "./Admin/singleNftDetail";
-axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+import CollectionNfts from "./User/CollectionNfts";
+import MyCollection from "./User/MyCollection";
+import MyDrops from "./User/MyDrops";
+import MyNFTs from "./User/MyNFTs";
+import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
+import UserSidebar from "./User/UserSidebar";
+axios.defaults.headers.common[
   "Authorization"
-)}`;
+] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function UserDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
-
-  let handleSlideNav = (e) => {
-    e.preventDefault();
-    if (slideNavClass !== "" && menuOpenedClass !== "") {
-      setMenuOpenedClass("");
-      setSlideNavClass("");
-    } else {
-      setMenuOpenedClass("menu-opened");
-      setSlideNavClass("slide-nav");
-    }
-  };
+  let [slideNavClass] = useState();
 
   let [activeTab, setActiveTab] = useState({
     dashboard: "active",
+    myNFTs: "",
     totalUserAccount: "",
     pendingUserAccount: "",
     resolvedDisputedOrders: "",
@@ -70,18 +43,14 @@ function UserDashboard(props) {
     newDrop: "",
     newSeason: "",
     newCollection: "",
-    myNFTs: "",
     myCubes: "",
-    newRandomDrop: ""
+    newRandomDrop: "",
   });
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
-     
-        <HeaderHome  
-                selectedNav={""} role={null}
-                />
-     
+      <HeaderHome selectedNav={""} role={null} />
+
       <UserSidebar
         match={props.match}
         activeTab={activeTab}
@@ -96,48 +65,18 @@ function UserDashboard(props) {
                 setActiveTab={setActiveTab}
               />
             </Route>
-            <Route exact path={`${path}/myCubes`}>
-              <MyCubes setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newNFT`}>
-              <NewNFT setActiveTab={setActiveTab} />
-            </Route>
+
             <Route exact path={`${path}/myNFTs`}>
               <MyNFTs setActiveTab={setActiveTab} />
             </Route>
             <Route exact path={`${path}/nftDetail/:nftId`}>
               <SingleNftDetail setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/newDrop`}>
-              <NewDrop setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/myCubes/Nfts/:dropId/:cubeId`}>
-              <CubeNFTs setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newCube`}>
-              <NewCube setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newRandomDrop`}>
-              <RandomDrop setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newSeason`}>
-              <NewSeason setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/mySeason`}>
-              <MySeasons setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/mySeason/drops/:seasonId`}>
-              <SeasonDrops setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newDrop`}>
-              <NewDrop setActiveTab={setActiveTab} />
-            </Route>
+
             <Route exact path={`${path}/myDrops`}>
               <MyDrops setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/myDrops/cubes/:dropId`}>
-              <DropCubes setActiveTab={setActiveTab} />
-            </Route>
+
             <Route exact path={`${path}/myCollection`}>
               <MyCollection setActiveTab={setActiveTab} />
             </Route>
@@ -155,14 +94,6 @@ function UserDashboard(props) {
             </Route>
             <Route exact path={`${path}/collection/nfts/:collectionId`}>
               <CollectionNfts setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/profilesettings`}>
-              <ProfileSetting
-                setActiveTab={setActiveTab}
-              />
-            </Route>
-            <Route exact path={`${path}/changepassword`}>
-              <ChangePassword setActiveTab={setActiveTab} />
             </Route>
             <Route path={`${path}`}>
               <UserDashboardDefaultScreen

@@ -5,9 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
-import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function CollectionNfts(props) {
   const { collectionId } = useParams();
@@ -24,7 +22,6 @@ function CollectionNfts(props) {
     handleShowBackdrop();
     axios.get(`/collection/${collectionId}`).then(
       (response) => {
-        //console.log("response", response);
         setTokenList(response.data.nftsdata);
         handleCloseBackdrop();
       },
@@ -45,20 +42,14 @@ function CollectionNfts(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "active",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
 
@@ -99,9 +90,14 @@ function CollectionNfts(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <MarketPlaceMessageCard mesage="No items to display" />
+              <MessageCard msg="No items to display" />
             ) : (
-              <Grid container spacing={2} direction="row" justify="flex-start">
+              <Grid
+                container
+                spacing={2}
+                direction="row"
+                justifyContent="flex-start"
+              >
                 {tokenList.map((i, index) => (
                   <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
                     <NFTCard data={i[0]} />

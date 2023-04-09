@@ -17,7 +17,6 @@ import Accounts from "./Admin/Accounts";
 import ManageAccounts from "./Admin/ManageAccounts";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
 import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
-
 import transakSDK from "@transak/transak-sdk";
 import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 import TemplateProperties from "./Admin/TemplateProperties";

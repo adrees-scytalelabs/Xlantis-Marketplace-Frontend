@@ -10,7 +10,7 @@ import AccordionDetails from "@material-ui/core/AccordionDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import Divider from "@material-ui/core/Divider";
-import { Backdrop, createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { Backdrop, createTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
 import Badge from "@material-ui/core/Badge";
 import axios from "axios";
@@ -85,7 +85,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiBadge: {
       anchorOriginTopRightRectangle: {

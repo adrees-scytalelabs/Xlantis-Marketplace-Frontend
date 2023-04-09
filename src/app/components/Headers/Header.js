@@ -16,7 +16,7 @@ import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 
 import {
-  createMuiTheme
+  createTheme
 } from "@material-ui/core/styles";
 import jwtDecode from "jwt-decode";
 
@@ -35,7 +35,7 @@ import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiIconButton: {
       root: {

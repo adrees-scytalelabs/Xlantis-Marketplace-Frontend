@@ -4,9 +4,9 @@ import {
   AccordionSummary,
   makeStyles,
   Paper,
-  Typography
+  Typography,
 } from "@material-ui/core";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
@@ -71,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -380,21 +380,14 @@ const NFTBuy = (props) => {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-      marketPlace: "active",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "active",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
 

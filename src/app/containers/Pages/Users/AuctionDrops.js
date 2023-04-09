@@ -12,7 +12,7 @@ import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
-import MessageCard from "../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../components/MessageCards/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {

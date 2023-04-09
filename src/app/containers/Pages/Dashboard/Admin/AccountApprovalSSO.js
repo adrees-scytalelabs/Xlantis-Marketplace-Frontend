@@ -2,14 +2,14 @@ import { TablePagination } from "@material-ui/core/";
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import Notification from "../../../../components/Utils/Notification";
 import {
   getUnverifiedAdminsSSO,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen,
   handleVerify,
 } from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 function AccountApprovalSSO(props) {
   let [admins, setAdmins] = useState([]);
@@ -62,7 +62,7 @@ function AccountApprovalSSO(props) {
           setOpen={setOpen}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -70,22 +70,22 @@ function AccountApprovalSSO(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Notification
         variant={variant}
         notificationData={notificationData}
         setLoad={setLoad}
         load={load}
-      ></Notification>
+      />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

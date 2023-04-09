@@ -1,4 +1,3 @@
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
@@ -8,20 +7,11 @@ import failure from "../../../assets/img/failure.png";
 import success from "../../../assets/img/success.png";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Header from "../../../components/Headers/Header";
-
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+import Header from "../../../components/Headers/Header";
 
 function EmailVerification(props) {
   const { email, token } = useParams();
-  const classes = useStyles();
 
   let [isConfirming, setIsConfirming] = useState(false);
   let [isSuccess, setIsSuccess] = useState("");
@@ -65,7 +55,7 @@ function EmailVerification(props) {
             </div>
             <div className="row">
               <div className="col-12 text-center">
-                <img src={success} alt='success' />
+                <img src={success} alt="success" />
               </div>
             </div>
           </div>
@@ -79,7 +69,7 @@ function EmailVerification(props) {
             </div>
             <div className="row">
               <div className="col-12 text-center email-verification-failure">
-                <img src={failure} alt='falure' />
+                <img src={failure} alt="falure" />
               </div>
             </div>
           </div>

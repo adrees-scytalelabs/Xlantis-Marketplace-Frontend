@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 
 import Button from "@material-ui/core/Button";
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiButton: {
       root: {
@@ -447,8 +447,8 @@ function DropApproval(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

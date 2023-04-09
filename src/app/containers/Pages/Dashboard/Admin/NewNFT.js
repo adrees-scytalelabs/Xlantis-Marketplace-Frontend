@@ -1,14 +1,14 @@
-import { createMuiTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import RemoveNft from "../../../../components/Cards/RemoveNft";
 import ipfs from "../../../../components/IPFS/ipfs";
 import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
@@ -16,22 +16,13 @@ import NFTEditModal from "../../../../components/Modals/NFTEditModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import NFTUpload from "../../../../components/Upload/NFTUpload";
-import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
-import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
 import NewNftSelectNft from "../../../../components/Radio/NewNftSelectNft";
 import NewNftSelectSupply from "../../../../components/Radio/NewNftSelectSupply";
-import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
+import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
+import NFTUpload from "../../../../components/Upload/NFTUpload";
+import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
-import RemoveNft from "../../../../components/Cards/RemoveNft";
-
-const themeTemplate = createMuiTheme({
-  overrides: {
-    Mui: {
-      focused: {},
-    },
-  },
-});
+import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -75,7 +66,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewNFT(props) {
-  let history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
   let [network, setNetwork] = useState(false);
@@ -285,20 +275,14 @@ function NewNFT(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "active",
-      orders: "",
-      settings: "",
-      myNFTs: "",
-      mySeason: "",
-      myDrops: "",
-      myCubes: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "active",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
   let loadWeb3 = async () => {
@@ -335,9 +319,7 @@ function NewNFT(props) {
       setDescription("");
       setRarity("");
       setTokenSupply(1);
-
       setCollection("");
-
       setSupplyType("Single");
       setCollectionId("");
       handleCloseBackdrop();
@@ -730,11 +712,6 @@ function NewNFT(props) {
       }
     );
   };
-
-
-
-
-
 
   let handleOpenNFTDetailModal = (nftObject) => {
     setNftDetail(nftObject);
@@ -1162,8 +1139,6 @@ function NewNFT(props) {
                     supplyType={supplyType}
                     tokenSupply={tokenSupply}
                   />
-
-
                 </div>
                 <AddNftQueue
                   NFTType={NFTType}

@@ -1,22 +1,16 @@
-import {
-  Card,
-  Grid,
-  TablePagination,
-  Typography
-} from "@material-ui/core/";
+import { Grid, TablePagination } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
-    backgroundColor: "black"
+    backgroundColor: "black",
   },
   bullet: {
     display: "inline-block",
@@ -39,10 +33,9 @@ const useStyles = makeStyles({
 });
 
 function MyCollection(props) {
-  
-  let [collections, setCollections] = useState([]); 
+  let [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   let [open, setOpen] = useState(false);
 
   let [collectionCount, setCollectionCount] = useState(0);
@@ -50,8 +43,6 @@ function MyCollection(props) {
 
   const classes = useStyles();
   let getCollections = (start, end) => {
-
-
     setOpen(true);
     const url = `/collection/myCollections/${start}/${end}`;
     axios
@@ -96,26 +87,18 @@ function MyCollection(props) {
     getCollections(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
+      newCollection: "",
+      myCollections: "active",
+      newNFT: "",
       myNFTs: "",
-      newCollection: "active",
-      mySeason: "",
-      tradeListOrders: "",
+      marketplace: "",
+      newDrop: "",
       myDrops: "",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-    }); 
+      topUp: "",
+    });
   }, []);
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -142,11 +125,10 @@ function MyCollection(props) {
               </span>
             </div>
           ) : collections.length === 0 ? (
-            <MessageCard msg = "No items to display"></MessageCard>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (
-
                 <Grid
                   item
                   xs={12}
@@ -160,7 +142,6 @@ function MyCollection(props) {
                     <MyCollectionsCard i={i} />
                   </Link>
                 </Grid>
-
               ))}
             </Grid>
           )}
@@ -172,8 +153,8 @@ function MyCollection(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );
