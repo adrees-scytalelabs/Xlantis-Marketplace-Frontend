@@ -1,17 +1,14 @@
 import { ThemeProvider, createTheme } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { nftImage } from "../../../../assets/js/images";
 import NFTCard from "../../../../components/Cards/NFTCard";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles({
   root: {
@@ -71,7 +68,7 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  const [versionB, setVersionB] = useState("");
+  const [, setVersionB] = useState("");
   const classes = useStyles();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -81,7 +78,6 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    const version = Cookies.get("Version");
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
         let nfts = response.data.NFTdata;

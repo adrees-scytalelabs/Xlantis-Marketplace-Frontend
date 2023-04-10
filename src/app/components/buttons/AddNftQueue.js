@@ -26,7 +26,7 @@ function AddNftQueue({
                         title={
                           tokenSupply <= 0
                             ? "Token Supply Cannot Be Less Than 1"
-                            : null
+                            : ""
                         }
                       >
                         <button

@@ -39,7 +39,7 @@ function MyCollection(props) {
   const [open, setOpen] = useState(false);
 
   const [collectionCount, setCollectionCount] = useState(0);
-  const [versionB, setVersionB] = useState("");
+  const [, setVersionB] = useState("");
 
   const classes = useStyles();
   let getCollections = (start, end) => {

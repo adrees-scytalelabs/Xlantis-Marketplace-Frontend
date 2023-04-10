@@ -75,27 +75,19 @@ function NewDrop(props) {
   let { path } = useRouteMatch();
 
   const classes = useStyles();
-  const [startTime, setStartTime] = useState(new Date());
-  const [endTime, setEndTime] = useState(new Date());
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState(r1);
   const [bannerImage, setBannerImage] = useState(DropBanner);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
-  const [dropId, setDropId] = useState("");
+  const [, setDropId] = useState("");
 
-  const [isUploading, setIsUploading] = useState();
   const [isSaving, setIsSaving] = useState(false);
-  const [type, setType] = useState();
-  const [types, setTypes] = useState([]);
-  const [typesImages, setTypesImages] = useState([]);
   const [network, setNetwork] = useState("");
 
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  const [imageType, setImageType] = useState("");
-  const [ipfsURI, setIpfsURI] = useState("");
-  const [ipfsHash, setIpfsHash] = useState(null);
+  const [, setImageType] = useState("");
   const [nftType, setNftType] = useState("1155");
   const [versionB, setVersionB] = useState("");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);

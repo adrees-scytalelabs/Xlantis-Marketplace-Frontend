@@ -74,9 +74,6 @@ const AdminLoginSignupForms = () => {
   const clientID = `${REACT_APP_CLIENT_ID}`;
   let history = useHistory();
 
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
 
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
@@ -85,12 +82,6 @@ const AdminLoginSignupForms = () => {
     setIsActive(!isActive);
   };
 
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
-  };
 
   const handleGoBack = () => {
     history.push(`/`);

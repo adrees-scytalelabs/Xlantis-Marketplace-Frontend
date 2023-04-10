@@ -91,13 +91,11 @@ const makeTheme = createTheme({
 const SingleNftDetail = (props) => {
   const classes = useStyles();
   const { nftId } = useParams();
-  const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [keys, setKeys] = useState([]);
   const [properties, setProperties] = useState({});
 
   let getNftDetail = () => {
-    const version = Cookies.get("Version");
 
     axios.get(`/nft/getSingleNFT/${nftId}`).then(
       (response) => {
