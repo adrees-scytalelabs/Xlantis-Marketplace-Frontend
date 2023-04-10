@@ -4,6 +4,7 @@ import { Modal } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import NFTDetailModalCard from "../Cards/NFTDetailModalCard";
 
+
 const NFTDetailModal = (props) => {
   useEffect(() => {}, [props.show]);
 

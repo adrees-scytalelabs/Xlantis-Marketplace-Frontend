@@ -7,6 +7,7 @@ import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import PrivacyPolicyCard from "../../../components/Cards/PrivacyPolicyCard";
 import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
+import Typography from '../../../components/Typography/TypographyText';
 
 function PrivacyPolicy(props) {
 
