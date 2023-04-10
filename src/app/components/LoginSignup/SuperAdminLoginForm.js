@@ -1,20 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from 'notistack';
 import React, { useState } from "react";
 import "react-intl-tel-input/dist/main.css";
 import { useHistory } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  signInWithGoogle: {
-    margin: "24px auto",
-    textAlign: "center",
-    fontFamily: "inter",
-    color: "#aaa",
-    "&::before": {},
-  },
-}));
 
 
 const SuperAdminLoginForms = () => {
@@ -25,20 +14,7 @@ const SuperAdminLoginForms = () => {
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [msg, setMsg] = useState("");
 
-
-  const classes = useStyles();
-
-  const handleSetSignUp = () => {
-    setIsActive(true);
-    console.log("active set");
-  };
-
-  const handleSetSignIn = () => {
-    setIsActive(false);
-    console.log("inactive set");
-  };
 
   const handleSignIn = (e) => {
 

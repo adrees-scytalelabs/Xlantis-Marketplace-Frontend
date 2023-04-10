@@ -6,37 +6,8 @@ import { Link } from "react-router-dom";
 import TrendingAndTop from "./TrendingAndTop";
 import "../../../../assets/css/style.css";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
 
 function MarketPlace(props) {
-  const classes = useStyles();
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [open, setOpen] = useState(false);

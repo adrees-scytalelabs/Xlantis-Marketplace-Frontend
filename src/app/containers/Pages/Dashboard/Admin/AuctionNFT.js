@@ -2,15 +2,15 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card,
-  CardContent,
   makeStyles,
   Paper,
   TextField,
   Tooltip,
-  Typography,
+  Typography
 } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
+import ListIcon from "@material-ui/icons/List";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -21,17 +21,15 @@ import DateTimePicker from "react-datetime-picker";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
+import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import ListIcon from "@material-ui/icons/List";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
-import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
 
 const customTheme = createTheme({
   overrides: {
@@ -172,8 +170,6 @@ const AuctionNFT = (props) => {
 
     const dropId = nftDetail.dropId;
     const nftId = nftDetail._id;
-    console.log("version", versionB);
-    console.log("NFTDETAIL");
     if (
       bidExpiryTimeStamp > dropExpiryTimeStamp ||
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
@@ -208,7 +204,6 @@ const AuctionNFT = (props) => {
   };
 
   let getBidList = (nftId) => {
-    let version = Cookies.get("Version");
     axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
       (response) => {
         console.log("Response from getting bid: ", response);
@@ -224,8 +219,6 @@ const AuctionNFT = (props) => {
   };
 
   let getDropCloneAddress = () => {
-    console.log("Drop ID: ", dropId);
-    let version = Cookies.get("Version");
     axios.get(`/drop/${dropId}`).then(
       (response) => {
         console.log("Response from getting drop details: ", response);

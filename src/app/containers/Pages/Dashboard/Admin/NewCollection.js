@@ -85,7 +85,7 @@ function NewCollection(props) {
 
   const [collectionDescription, setCollectionDescription] = useState("");
   const [collectionSymbol, setCollectionSymbol] = useState("");
-  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [isUploadingIPFS,] = useState(false);
   const [imageFile, setImageFile] = useState();
   const [fileURL, setFileURL] = useState(r1);
   const [collectionId, setCollectionId] = useState("");

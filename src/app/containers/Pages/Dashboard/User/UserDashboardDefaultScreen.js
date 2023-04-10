@@ -5,11 +5,7 @@ import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function UserDashboardDefaultScreen(props) {
-  const [totalCubes, setTotalCubes] = useState(0);
   const [totalNFTs, setTotalNFTs] = useState(0);
-  const [totalDrops, setTotalDrops] = useState(0);
-  const [totalSeasons, setTotalSeasons] = useState(0);
-  const [totalCollections, setTotalCollections] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
 
@@ -21,7 +17,6 @@ function UserDashboardDefaultScreen(props) {
       .get("user/getcounts")
       .then((response) => {
         setTotalNFTs(response.data.NFTscount);
-        setTotalCollections(response.data.Collectionscount);
       })
       .catch((error) => {
         console.log(error);

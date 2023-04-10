@@ -1,9 +1,7 @@
 import React from "react";
 import {
-  Link, useHistory
+  Link
 } from "react-router-dom";
-
-
 import {
   makeStyles, Typography
 } from "@material-ui/core";
@@ -34,7 +32,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Success() {
   const classes = useStyles();
-  let history = useHistory();
   return (
     <>
       <div style={{ minHeight: "95px" }}>

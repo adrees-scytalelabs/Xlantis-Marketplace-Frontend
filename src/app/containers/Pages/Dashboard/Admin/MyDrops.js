@@ -1,19 +1,15 @@
 import {
-  AppBar,
   Box,
-  Card,
-  CardHeader,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import DropsPage from "./DropsPage";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DropsPage from "./DropsPage";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -76,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MyDrops = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
