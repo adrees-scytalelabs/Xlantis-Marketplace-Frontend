@@ -9,7 +9,6 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-u
 function AccountsDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
   const [walletAdmins, setWalletAdmins] = useState([]);
