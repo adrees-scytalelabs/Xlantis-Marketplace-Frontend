@@ -326,7 +326,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingAuctionDrop.length === 0 ? (
-                    <MessageCard msg = "No Pending Drops For Auction"></MessageCard>
+                    <MessageCard msg = "This feature is coming soon"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -342,7 +342,7 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <MessageCard msg = "No items to display"></MessageCard>
+                  <MessageCard msg = "No items to display" />
                 )}
               </div>
             </div>
@@ -381,7 +381,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : closedAuctionDrop.length === 0 ? (
-                    <MessageCard msg = "No items to display"></MessageCard>
+                    <MessageCard msg = "This feature is coming soon"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
