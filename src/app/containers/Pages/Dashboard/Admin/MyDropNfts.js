@@ -1,18 +1,13 @@
-import { CardContent, CardMedia, Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
+import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Pause from "@material-ui/icons/Pause";
-import PlayArrow from "@material-ui/icons/PlayArrow";
 import axios from "axios";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import CornerRibbon from "react-corner-ribbon";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -77,10 +72,7 @@ function MyDropNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  const [nftIds, setNftIds] = useState([]);
-  let [audio, setAudio] = useState();
-  let [versionB, setVersionB] = useState("");
-
+  const [audio, setAudio] = useState();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -94,65 +86,52 @@ function MyDropNFTs(props) {
     let data = {
       nftIds: location.state.nftId,
     };
-    axios
-      .get(
-        `/drop/nfts/${location.state.dropId}/${start}/${end}`,
-        data
-      )
-      .then(
-        (response) => {
-          let nfts = response.data.data;
-          let newState = nfts.map((obj) => {
-            return { ...obj, isPlaying: false };
-          });
-          setTokenList(newState);
-          setTotalNfts(response.data.data.length);
+    axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
+      (response) => {
+        let nfts = response.data.data;
+        let newState = nfts.map((obj) => {
+          return { ...obj, isPlaying: false };
+        });
+        setTokenList(newState);
+        setTotalNfts(response.data.data.length);
 
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          if (error.response.data !== undefined) {
-            if (
-              error.response.data === "Unauthorized access (invalid token) !!"
-            ) {
-              sessionStorage.removeItem("Authorization");
-              sessionStorage.removeItem("Address");
-              Cookies.remove("Version");
-
-              window.location.reload(false);
-            }
-          }
-          handleCloseBackdrop();
+        handleCloseBackdrop();
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        if (error.response.data !== undefined) {
+          if (
+            error.response.data === "Unauthorized access (invalid token) !!"
+          ) {
+            sessionStorage.removeItem("Authorization");
+            sessionStorage.removeItem("Address");
+            Cookies.remove("Version");
+
+            window.location.reload(false);
+          }
+        }
+        handleCloseBackdrop();
+      }
+    );
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
-    setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "active",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-    }); 
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "active",
+      topUp: "",
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -214,19 +193,20 @@ function MyDropNFTs(props) {
   };
   return (
     <div className="backgroundDefault">
-    
-    <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">Drop Nfts</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                Dashboard
-              </li>
+              <Link to={`/dashboard`}>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  Dashboard
+                </li>
               </Link>
               <Link to={`/dashboard/myDrops`}>
-              <li className="breadcrumb-item slash" style={{ color: "#777" }}>My Drops</li>
+                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
+                  My Drops
+                </li>
               </Link>
               <li className="breadcrumb-item active">Drop Nfts</li>
             </ul>
@@ -248,7 +228,7 @@ function MyDropNFTs(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <MessageCard msg = "No items to display"></MessageCard>
+              <MessageCard msg="No items to display"></MessageCard>
             ) : (
               <Grid container spacing={2} direction="row" justify="flex-start">
                 {tokenList.map((i, index) => (
@@ -262,127 +242,16 @@ function MyDropNFTs(props) {
                           saleType: location.state.saleType,
                           status: location.state.status,
                           nftId: location.state.nftId,
-                          dropId:location.state.dropId
+                          dropId: location.state.dropId,
                         },
                       }}
                     >
-                      <Card
-                        style={{ height: "100%", backgroundColor: "black", border: "1px solid white", color: "white" }}
-                        variant="outlined"
-                        className={classes.cardHeight}
-                      >
-                        <div style={{ position: "relative" }}>
-                          {i.currentMarketplaceId.isSold === true ? (
-                            <CornerRibbon
-                              position="top-right"
-                              fontColor="#f0f0f0"
-                              backgroundColor="#4caf50"
-                              style={{ fontWeight: "bold" }}
-                            >
-                              SOLD
-                            </CornerRibbon>
-                          ) : null}
-                        </div>
-                        <div style={{ position: "relative" }}>
-                          <CardMedia
-                            variant="outlined"
-                            style={{
-                              border:
-                                i.type === "Mastercraft"
-                                  ? "4px solid #ff0000"
-                                  : i.type === "Legendary"
-                                  ? "4px solid #FFD700"
-                                  : i.type === "Epic"
-                                  ? "4px solid #9400D3"
-                                  : i.type === "Rare"
-                                  ? "4px solid #0000FF"
-                                  : i.type === "Uncommon"
-                                  ? "4px solid #008000"
-                                  : i.type === "Common"
-                                  ? "4px solid #FFFFFF"
-                                  : "none",
-                            }}
-                            className={classes.media}
-                            image={
-                              i.previewImageURI ? i.previewImageURI : i.nftURI
-                            }
-                            title="NFT Image"
-                          />
-
-                          {i.nftFormat === "mp3" ? (
-                            <div
-                              style={{
-                                position: "absolute",
-                                left: "75%",
-                                bottom: "5%",
-                              }}
-                            >
-                              {i.isPlaying === false ? (
-                                <button
-                                  className="btn"
-                                  style={{
-                                    borderRadius: "80%",
-                                    backgroundColor: "rgba(0,0,0,.5)",
-                                    border: "#9f9f9f",
-                                  }}
-                                  onClick={(e) => handlePlay(e, i)}
-                                >
-                                  <PlayArrow />
-                                </button>
-                              ) : (
-                                <button
-                                  className="btn"
-                                  style={{
-                                    borderRadius: "80%",
-                                    backgroundColor: "rgba(0,0,0,.5)",
-                                    border: "#9f9f9f",
-                                  }}
-                                  onClick={(e) => handlePause(e, i)}
-                                >
-                                  <Pause />
-                                </button>
-                              )}
-                            </div>
-                          ) : null}
-                        </div>
-                        <CardContent>
-            <div
-              className="row no-gutters justify-content-between"
-              style={{ minHeight: "60px" }}
-            >
-              <div className="col-8 align-self-end">
-              <Typography
-                  variant="h6"
-                  className={classes.cardTitle}
-                >
-                  {
-                            i.title.length > 12 ? (
-                                <span>{i.title.slice(0, 7)}...</span>
-                              ) : (
-                                i.title
-                              )
-                            }
-                </Typography>
-                <Typography
-                            variant="body2"
-                            className={classes.cardDescriptions}
-                          >
-                            <strong>Artwork Description: </strong>
-                            {i.description}
-                          </Typography>
-              </div>
-              <div className="col-4 align-self-end text-right p-0">
-             
-                            <p className="nftPrice mb-0 p-0">
-                            {i.currentMarketplaceId.price}{" "}
-                            USD
-                            </p>
-              </div>
-            </div>
-                          
-                          
-                        </CardContent>
-                      </Card>
+                      <MyDropNFTsCard
+                        nftDetails={i}
+                        handlePlay={handlePlay}
+                        handlePause={handlePause}
+                        classes={classes}
+                      />
                     </Link>
                   </Grid>
                 ))}
@@ -395,8 +264,8 @@ function MyDropNFTs(props) {
             count={totalNfts}
             rowsPerPage={rowsPerPage}
             page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
           />
         </form>
       </div>

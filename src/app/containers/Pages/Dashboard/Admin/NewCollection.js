@@ -1,4 +1,3 @@
-
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
@@ -64,12 +63,11 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewCollection(props) {
-
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-  let [approvalModalShow, setApprovalModalShow] = useState(false);
+  const [approvalModalShow, setApprovalModalShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -82,27 +80,26 @@ function NewCollection(props) {
     setOpen(true);
   };
 
+  const [isSaving, setIsSaving] = useState(false);
+  const [collectionName, setCollectionName] = useState("");
 
-  let [isSaving, setIsSaving] = useState(false);
-  let [collectionName, setCollectionName] = useState("");
- 
-  let [collectionDescription, setCollectionDescription] = useState("");
-  let [collectionSymbol, setCollectionSymbol] = useState("");
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [imageFile, setImageFile] = useState();
-  let [fileURL, setFileURL] = useState(r1);
-  let [collectionId, setCollectionId] = useState("");
-  let [nftContractAddress, setNftContractAddress] = useState("");
-  let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
-  let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
-  let [isAuctionApproved, setIsAuctionApproved] = useState(false);
-  let [approvingAuction, setApprovingAuction] = useState(false);
-  let [doneLoader, setDoneLoader] = useState(false);
-  let [nftType, setNftType] = useState("1155");
-  let [version, setVersion] = useState("");
-  let [royaltyFee, setRoyaltyFee] = useState(0);
-  let [approvalFlag, setApprovalFlag] = useState(false);
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [collectionDescription, setCollectionDescription] = useState("");
+  const [collectionSymbol, setCollectionSymbol] = useState("");
+  const [isUploadingIPFS,] = useState(false);
+  const [imageFile, setImageFile] = useState();
+  const [fileURL, setFileURL] = useState(r1);
+  const [collectionId, setCollectionId] = useState("");
+  const [nftContractAddress, setNftContractAddress] = useState("");
+  const [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
+  const [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
+  const [isAuctionApproved, setIsAuctionApproved] = useState(false);
+  const [approvingAuction, setApprovingAuction] = useState(false);
+  const [doneLoader, setDoneLoader] = useState(false);
+  const [nftType, setNftType] = useState("1155");
+  const [version, setVersion] = useState("");
+  const [royaltyFee, setRoyaltyFee] = useState(0);
+  const [approvalFlag, setApprovalFlag] = useState(false);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const Text721 =
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
@@ -115,21 +112,14 @@ function NewCollection(props) {
 
     props.setActiveTab({
       dashboard: "",
+      newCollection: "active",
+      myCollection: "",
       newNFT: "",
-      orders: "",
-      settings: "",
       myNFTs: "",
-      mySeason: "",
-      myDrops: "",
-      myCubes: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
+      marketplace: "",
       newDrop: "",
-      newCube: "",
-      createNewCollection: "active",
-      newCollection: "",
-      newRandomDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
 

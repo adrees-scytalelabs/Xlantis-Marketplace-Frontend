@@ -212,7 +212,7 @@ function NewNftSelectNft({
                                 <span style={{ fontSize: "0.9rem" }}>
                                   Multiple{" "}
                                   <i
-                                    class="fa fa-info-circle"
+                                    className="fa fa-info-circle"
                                     aria-hidden="true"
                                   ></i>
                                 </span>

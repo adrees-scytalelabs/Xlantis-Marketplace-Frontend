@@ -16,18 +16,18 @@ const NFTEditModal = (props) => {
 
     const { enqueueSnackbar } = useSnackbar();
 
-    let [nftDetail, setNftDetail] = useState({});
-    let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-    let [imageType, setImageType] = useState("");
-    let [ipfsHash, setIpfsHash] = useState("");
-    let [nftURI, setNftURI] = useState('');
-    let [image, setImage] = useState(r1);
-    let [rarities] = useState(["Mastercraft", "Legendary", "Epic", "Rare", "Uncommon", "Common"]);
-    let [isGlbFile, setIsGlbFile] = useState(false);
-    let [isMp3File, setIsMp3File] = useState(false);
+    const [nftDetail, setNftDetail] = useState({});
+    const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+    const [imageType, setImageType] = useState("");
+    const [ipfsHash, setIpfsHash] = useState("");
+    const [nftURI, setNftURI] = useState('');
+    const [image, setImage] = useState(r1);
+    const [rarities] = useState(["Mastercraft", "Legendary", "Epic", "Rare", "Uncommon", "Common"]);
+    const [isGlbFile, setIsGlbFile] = useState(false);
+    const [isMp3File, setIsMp3File] = useState(false);
 
-    let [previewImageURI, setPreviewImageURI] = useState("");
-    let [isUploadingPreview, setIsUploadingPreview] = useState(false);
+    const [previewImageURI, setPreviewImageURI] = useState("");
+    const [isUploadingPreview, setIsUploadingPreview] = useState(false);
 
     useEffect(() => {
         setIsGlbFile(false);

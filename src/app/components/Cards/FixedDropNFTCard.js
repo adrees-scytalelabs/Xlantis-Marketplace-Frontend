@@ -1,21 +1,15 @@
-import { Grid } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
-import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import React, { useEffect } from "react";
+import { makeStyles } from "@material-ui/core/styles";
+import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
+import { truncate } from "../../assets/js/utils";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import { truncate } from "../../assets/js/utils";
-import { drop } from "lodash";
-import axios from "axios";
-import { useRouteMatch } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   root: {

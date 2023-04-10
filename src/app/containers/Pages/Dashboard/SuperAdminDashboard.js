@@ -6,23 +6,21 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
+import Logo from "../../../assets/img/logo.png";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../../assets/img/logo.png";
-import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
-import SuperAdminSidebar from "./Admin/SuperAdminSidenar";
 import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
-import ManageAccounts from "./Admin/ManageAccounts";
-import VerifiedAccounts from "./Admin/VerifiedAccounts";
-import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
-
-import transakSDK from "@transak/transak-sdk";
-import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
-import TemplateProperties from "./Admin/TemplateProperties";
 import CreateTemplate from "./Admin/CreateTemplate";
+import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
+import ManageAccounts from "./Admin/ManageAccounts";
+import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 import SavedTemplate from "./Admin/SavedTemplate";
+import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
+import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
+import TemplateProperties from "./Admin/TemplateProperties";
+import VerifiedAccounts from "./Admin/VerifiedAccounts";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -30,8 +28,8 @@ axios.defaults.headers.common[
 
 function SuperAdminDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -44,51 +42,18 @@ function SuperAdminDashboard(props) {
     }
   };
 
-  const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", 
-    environment: "STAGING",
-    defaultCryptoCurrency: "ETH",
-    themeColor: "000000", 
-    hostURL: window.location.origin,
-    widgetHeight: "700px",
-    widgetWidth: "500px",
-  };
-
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     manageAccounts: "",
     manageAccountsSSO: "",
     accountApproval: "",
     accounts: "",
-    properties:"",
-    template:"",
-    saved:"",
+    properties: "",
+    template: "",
+    saved: "",
   });
-  let [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(0);
 
-  function openTransak() {
-    const transak = new transakSDK(settings);
-
-    transak.init();
-
-    
-    transak.on(transak.ALL_EVENTS, (data) => {
-      console.log(data);
-    });
-
-    
-    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
-      console.log(eventData);
-      transak.close();
-    });
-
-    
-    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-      console.log(orderData);
-      window.alert("Payment Success");
-      transak.close();
-    });
-  }
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
@@ -97,7 +62,7 @@ function SuperAdminDashboard(props) {
           <a
             href="/"
             className="logo"
-            
+
             style={{ width: "210px" }}
           >
             <img
@@ -115,7 +80,7 @@ function SuperAdminDashboard(props) {
           <a
             href="/"
             className="logo logo-small"
-            
+
             style={{ width: "210px" }}
           >
             <img
@@ -177,7 +142,7 @@ function SuperAdminDashboard(props) {
                     onClick={() => {
                       sessionStorage.removeItem("Authorization");
                       sessionStorage.removeItem("Address");
-                      
+
 
                       Cookies.remove("PNT");
                       window.location.reload(false);

@@ -1,19 +1,15 @@
 import {
-  AppBar,
   Box,
-  Card,
-  CardHeader,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import DropsPage from "./DropsPage";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import DropsPage from "./DropsPage";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -35,7 +31,7 @@ function TabPanel(props) {
   );
 }
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -61,8 +57,7 @@ function a11yProps(index) {
 }
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -77,7 +72,6 @@ const useStyles = makeStyles((theme) => ({
 
 const MyDrops = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -91,28 +85,19 @@ const MyDrops = (props) => {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
-      myNFTs: "",
       newCollection: "",
-      mySeason: "",
-      tradeListOrders: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
       myDrops: "active",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-      marketPlace: "",
-    }); 
+      topUp: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

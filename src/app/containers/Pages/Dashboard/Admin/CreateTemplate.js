@@ -6,9 +6,9 @@ import { useSnackbar } from "notistack";
 
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let [valid, setValid] = useState("");
-  let [title, setTitle] = useState("");
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [valid, setValid] = useState("");
+  const [title, setTitle] = useState("");
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const [open, setOpen] = useState(false);
 
   let handleAvailibility = (e) => {

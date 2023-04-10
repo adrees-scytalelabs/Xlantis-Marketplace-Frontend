@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 const UploadFile = (props) => {

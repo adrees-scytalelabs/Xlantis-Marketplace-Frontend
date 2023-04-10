@@ -5,7 +5,7 @@ import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, Redirect, useHistory, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
@@ -15,9 +15,6 @@ import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 
-import {
-  createMuiTheme
-} from "@material-ui/core/styles";
 import jwtDecode from "jwt-decode";
 
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
@@ -35,54 +32,29 @@ import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
 
-const customTheme = createMuiTheme({
-  overrides: {
-    MuiIconButton: {
-      root: {
-        margin: "0 !important",
-        backgroundColor: "transparent !important",
-        border: "none",
-        '"&:hover"': {
-          boxShadow: "none",
-        },
-      },
-    },
-  },
-});
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  const [userSignOut, setUserSignOut] = useState(false);
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [userSignOut,] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  const [open, setOpen] = useState(false);
-  let { path } = useRouteMatch();
   let history = useHistory();
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [adminSignInData, setAdminSignInData] = useState(null);
-  const [tokenVerification, setTokenVerification] = useState(true);
-  let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
+  const [, setTokenVerification] = useState(true);
+  const [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
   let location = useLocation();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
   const openPopper = Boolean(anchorElPopper);
   const [notificationsList, setNotificationsList] = useState();
-  let [isSaving, setIsSaving] = useState(false);
-  let [notificationCount, setNotificationCount] = useState(0);
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
-
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
   useEffect(() => {
-     setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   useEffect(() => {
     if (userId !== "" && socket !== null) {
@@ -115,22 +87,14 @@ function HeaderHome(props) {
     widgetWidth: "500px",
   };
 
-  let [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
-  function handleListKeyDown(event) {
-    if (event.key === "Tab") {
-      event.preventDefault();
-      setOpen(false);
-    } else if (event.key === "Escape") {
-      setOpen(false);
-    }
-  }
 
   const providerOptions = {
     binancechainwallet: {
@@ -349,7 +313,7 @@ function HeaderHome(props) {
       props.selectedNav === "Community" ? selectedStyling : defaultStyling,
     create: props.selectedNav === "create" ? selectedStyling : defaultStyling,
   };
-  
+
 
   let Logout = (e) => {
     console.log("akjdf");
@@ -396,7 +360,7 @@ function HeaderHome(props) {
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
-        
+
         let variant = "info";
         enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
       }
@@ -427,8 +391,8 @@ function HeaderHome(props) {
 
   useEffect(() => {
     getProfile();
-    getNotifications(0,10);
-  },[]);
+    getNotifications(0, 10);
+  }, []);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
@@ -666,7 +630,7 @@ function HeaderHome(props) {
           </li>
           <li className="header-item-rht">
             <ShoppingCartIcon
-              onClick={() => setWorkProgressModalShow(true)}        
+              onClick={() => setWorkProgressModalShow(true)}
               style={{ cursor: "pointer" }}
             />
           </li>
@@ -708,9 +672,10 @@ function HeaderHome(props) {
       <SSOWalletModal handleClose={handleCloseModal} open={modalOpen} metamaskLogin={handleLogin}
         openWorkProgressModal={() => {
           setMOdalOpen(false);
-          setWorkProgressModalShow(true);}}
+          setWorkProgressModalShow(true);
+        }}
       />
-      <WorkInProgressModal show={workProgressModalShow} handleClose={() => setWorkProgressModalShow(false)}/>
+      <WorkInProgressModal show={workProgressModalShow} handleClose={() => setWorkProgressModalShow(false)} />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
 
     </header>

@@ -2,16 +2,13 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import DisplayNFTAndCollectionNumberCard from "../../../../components/Cards/DisplayNFTAndCollectionNumberCard";
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function AdminDashboardDefaultScreen(props) {
-  let [totalCubes, setTotalCubes] = useState(0);
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalDrops, setTotalDrops] = useState(0);
-  let [totalSeasons, setTotalSeasons] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
-  let [hover, setHover] = useState(false);
-  let [hoverCollections, setHoverCollections] = useState(false);
+  const [totalNFTs, setTotalNFTs] = useState(0);
+  const [totalCollections, setTotalCollections] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [hoverCollections, setHoverCollections] = useState(false);
 
   let getCounts = () => {
     let version = Cookies.get("Version");
@@ -21,10 +18,7 @@ function AdminDashboardDefaultScreen(props) {
     axios
       .get(`${version}/user/getcounts`)
       .then((response) => {
-        setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
-        setTotalDrops(response.data.Dropscount);
-        setTotalSeasons(response.data.Seasonscount);
         setTotalCollections(response.data.Collectionscount);
       })
       .catch((error) => {
@@ -36,20 +30,14 @@ function AdminDashboardDefaultScreen(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      mySeason: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
     getCounts();
   }, []);
@@ -69,7 +57,7 @@ function AdminDashboardDefaultScreen(props) {
       </div>
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
-          <DisplayNFTAndCollectionNumberCard
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
             linkTo={`${props.match.url}/myNFTs`}
@@ -87,7 +75,7 @@ function AdminDashboardDefaultScreen(props) {
           />
         </div>
         <div className="col-12 col-sm-5 col-xl-4 ml-sm-2 mt-2 mt-sm-0 totalCollectionsAdminDash">
-          <DisplayNFTAndCollectionNumberCard
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHoverCollections(true)}
             onMouseLeave={() => setHoverCollections(false)}
             linkTo={`${props.match.url}/myCollection`}

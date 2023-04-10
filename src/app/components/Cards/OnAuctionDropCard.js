@@ -9,7 +9,7 @@ import {
 import React from "react";
 import Countdown from "react-countdown";
 
-const MyDropsCard = (props) => {
+const OnAuctionDropCard = (props) => {
   return (
     <Card
       style={{ height: "100%" }}
@@ -43,10 +43,6 @@ const MyDropsCard = (props) => {
                 <Typography variant="body2" color="textSecondary" component="p">
                   <strong>Auction Starts At:</strong>
                 </Typography>
-                {console.log(
-                  "Date(i.AuctionStartsAt)",
-                  Date(props.dropDetails.AuctionStartsAt)
-                )}
                 <Countdown
                   daysInHours
                   date={new Date(props.dropDetails.AuctionStartsAt)}
@@ -55,10 +51,6 @@ const MyDropsCard = (props) => {
             ) : new Date() > new Date(props.dropDetails.AuctionStartsAt) &&
               new Date() < new Date(props.dropDetails.AuctionEndsAt) ? (
               <div style={{ color: "#FF0000" }}>
-                {console.log(
-                  "Date(i.AuctionStartsAt)",
-                  Date(props.dropDetails.AuctionEndsAt.toLoca)
-                )}
                 <Typography variant="body2" color="textSecondary" component="p">
                   <strong>Auction Ends At:</strong>
                 </Typography>
@@ -83,4 +75,4 @@ const MyDropsCard = (props) => {
   );
 };
 
-export default MyDropsCard;
+export default OnAuctionDropCard;

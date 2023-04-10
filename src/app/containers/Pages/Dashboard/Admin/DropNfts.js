@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
-import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
+import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -143,10 +143,10 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [audio, setAudio] = useState();
-  let [versionB, setVersionB] = useState("");
+  const [audio, setAudio] = useState();
+  const [versionB, setVersionB] = useState("");
 
-  let [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -252,21 +252,14 @@ function MyNFTs(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-      marketPlace: "active",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "active",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
   }, []);
   const handleChangePage = (event, newPage) => {
@@ -348,11 +341,7 @@ function MyNFTs(props) {
                   </span>
                 </div>
               ) : tokenList.length === 0 ? (
-                <MarketPlaceMessageCard
-                  marginLeft="20%"
-                  paddingTop="80px"
-                  message="No items to display"
-                />
+                <MessageCardDropNfts msg="No items to display" />
               ) : (
                 <Grid
                   container

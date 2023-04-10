@@ -1,19 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function AdminInformationModal(props) {
-  const classes = useStyles();
-  useEffect(() => {
-    //console.log(props.adminData);
-    //console.log("Reach Template Data", props);
-  }, [props]);
   return (
     props.show == true && (
       <Modal
@@ -24,9 +12,9 @@ function AdminInformationModal(props) {
       >
         <Modal.Header
           className="NewTemplateHeader"
-          style={{ background: "black"}}
+          style={{ background: "black" }}
         >
-          <Modal.Title style={{color: "white" }}>
+          <Modal.Title style={{ color: "white" }}>
             Admin Details
           </Modal.Title>
         </Modal.Header>
@@ -117,7 +105,7 @@ function AdminInformationModal(props) {
             borderTop: "none",
           }}
         >
-          <button className="newTemplateBtn mb-3" onClick={(e) => props.handleClose(e,props.setShow)}>
+          <button className="newTemplateBtn mb-3" onClick={(e) => props.handleClose(e, props.setShow)}>
             Close
           </button>
         </Modal.Footer>

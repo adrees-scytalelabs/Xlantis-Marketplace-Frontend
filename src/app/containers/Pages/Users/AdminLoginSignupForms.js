@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useSnackbar } from "notistack";
-import MuiAlert from "@material-ui/lab/Alert";
 import Cookies from "js-cookie";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
 import "react-intl-tel-input/dist/main.css";
-import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
+import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
+
 
 
 const AdminLoginSignupForms = () => {
-
-  const [openSnackBar, setOpenSnackBar] = useState(false);
   const [account, setAccount] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [phoneNum, setPhoneNum] = useState();
@@ -20,11 +18,6 @@ const AdminLoginSignupForms = () => {
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-
-  function Alert(props) {
-    return <MuiAlert elevation={6} variant="filled" {...props} />;
-  }
-
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
 
@@ -32,12 +25,6 @@ const AdminLoginSignupForms = () => {
     setIsActive(!isActive);
   };
 
-  const handleCloseSnackBar = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setOpenSnackBar(false);
-  };
 
   useEffect(() => {
     const controller = new AbortController();
@@ -81,7 +68,7 @@ const AdminLoginSignupForms = () => {
   }, [account]);
 
   useEffect(() => {
-    
+
     if (adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
@@ -114,8 +101,8 @@ const AdminLoginSignupForms = () => {
           >
             <div className="adminLoginContainer">
               <div>
-                <AdminLoginSignInForm 
-                  setWorkProgressModalShow={setWorkProgressModalShow} 
+                <AdminLoginSignInForm
+                  setWorkProgressModalShow={setWorkProgressModalShow}
                   handleSuccess={handleSuccess}
                   adminSignInData={adminSignInData}
                   tokenVerification={tokenVerification}

@@ -1,4 +1,4 @@
-import {Grid } from "@material-ui/core/";
+import { Grid, makeStyles } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -6,10 +6,41 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MyDropsCard from "../../../../components/Cards/MyDropsCard";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 
+
+const useStyles = makeStyles((theme) => ({
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 0,
+    paddingTop: "100%",
+  },
+  badge: {
+    "& > *": {
+      margin: theme.spacing(1),
+    },
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: "#fff",
+  },
+  bullet: {
+    display: "inline-block",
+    margin: "0 2px",
+    transform: "scale(0.8)",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+}));
 function MyDrops(props) {
+  const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalDrops, setTotalDrops] = useState(0);
@@ -23,9 +54,9 @@ function MyDrops(props) {
   };
   let getMyDrops = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios.get(`/drop/mydrops/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
@@ -73,7 +104,7 @@ function MyDrops(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -110,30 +141,36 @@ function MyDrops(props) {
               </span>
             </div>
           ) : tokenList.length === 0 ? (
-            <MessageCard msg = "No items to displayt"></MessageCard>        
+            <MessageCard msg="No items to displayt" />
           ) : (
-            <Grid container spacing={2} direction="row" justify="flex-start">
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justifyContent="flex-start"
+            >
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
-                    <MyDropsCard i={i}  />
-                  </Link>
-                </Grid>
-              ))}
-            </Grid>
+                    <MyDropsCard dropDetails={i} classes={classes} />
+                  </Link >
+                </Grid >
+              ))
+              }
+            </Grid >
           )}
-        </div>
-      </div>
+        </div >
+      </div >
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
         count={totalDrops}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div>
+    </div >
   );
 }
 

@@ -11,7 +11,7 @@ import SettingDashboardDefault from "./SettingsDashboardDefault";
 
 function UserSettings(props) {
   let { path } = useRouteMatch();
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: ""
 

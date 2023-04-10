@@ -1,5 +1,4 @@
 
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -7,93 +6,49 @@ import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import r1 from "../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
-import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
 import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
+import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
 
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
 
 function SettingDashboardDefault(props) {
-  let [isAdmin, setIsAdmin] = useState(false);
-  let [name, setName] = useState("");
-  let [bio, setBio] = useState("");
-  let [email, setEmail] = useState("");
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [email, setEmail] = useState("");
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
-  let [isSaving, setIsSaving] = useState(false);
-  let [isUploadingData, setIsUploadingData] = useState(false);
-  let [imageSrc, setImageSrc] = useState("");
-  let [crop, setCrop] = useState({ x: 0, y: 0 });
-  let [zoom, setZoom] = useState(1);
-  let [aspect, setAspect] = useState(1 / 1);
-  let [showCropModal, setShowCropModal] = useState(false);
-  let [selectedImage, setSelectedImage] = useState("");
-  let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
-  let [imageCounter, setImageCounter] = useState(0);
-  let [adminName, setAdminName] = useState("");
-  let [adminCompanyName, setAdminCompanyName] = useState("");
-  let [adminDomain, setAdminDomain] = useState("");
-  let [adminDesignation, setAdminDesignation] = useState("");
-  let [adminOldData, setAdminOldData] = useState({});
-  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
-  let [adminIndustry, setAdminIndustry] = useState("");
-  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [, setIsUploadingData] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [adminName, setAdminName] = useState("");
+  const [adminCompanyName, setAdminCompanyName] = useState("");
+  const [adminDomain, setAdminDomain] = useState("");
+  const [adminDesignation, setAdminDesignation] = useState("");
+  const [adminOldData, setAdminOldData] = useState({});
+  const [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  const [adminIndustry, setAdminIndustry] = useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
 
-  const classes = useStyles();
 
-  let [profileImage, setProfileImage] = useState(
+  const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(r1);
-
+  const [bannerImage, setBannerImage] = useState(r1);
   const { enqueueSnackbar } = useSnackbar();
-
-  const handleOverlay = (e) => {
-    e.target.style.opacity = 1;
-  };
-
-  const handleRemoveOverlay = (e) => {
-    e.target.style.opacity = 0;
-  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -342,7 +297,7 @@ function SettingDashboardDefault(props) {
                       disabled={true}
                       value={adminDomain}
                     />
-                     <ProfileDetailInput
+                    <ProfileDetailInput
                       type="text"
                       label="Designation"
                       placeholder="Enter Designation"
@@ -415,16 +370,16 @@ function SettingDashboardDefault(props) {
                       value={bio}
                       row="4"
                     />
-                  
+
                     {Cookies.get("Version") != "v2-wallet-login" && (
 
-                        <ProfileDetailInput
-                          type="email"
-                          label="Emial"
-                          placeholder="Enter Email"
-                          set={setEmail}
-                          value={email}
-                        />  
+                      <ProfileDetailInput
+                        type="email"
+                        label="Emial"
+                        placeholder="Enter Email"
+                        set={setEmail}
+                        value={email}
+                      />
                     )}
                     <ProfileDetailInput
                       type="text"
