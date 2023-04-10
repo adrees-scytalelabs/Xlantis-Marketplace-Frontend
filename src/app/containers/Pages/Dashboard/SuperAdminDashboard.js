@@ -11,7 +11,7 @@ import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Logo from "../../../assets/img/logo.png";
 import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
-import SuperAdminSidebar from "./Admin/SuperAdminSidenar";
+import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
 import ManageAccounts from "./Admin/ManageAccounts";
