@@ -128,7 +128,7 @@ function AddNFT(props) {
   let history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -143,41 +143,41 @@ function AddNFT(props) {
   };
 
   const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [enableTime, setEnableTime] = useState(false);
-  let [dropId, setDropId] = useState("");
+  const [dropId, setDropId] = useState("");
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  let [nftList, setNftList] = useState([]);
-  let [collectionTypes, setCollectionTypes] = useState([]);
-  let [collection, setCollection] = useState("");
-  let [isAdded, setIsAdded] = useState(false);
-  let [nftContractAddresses, setNftContractAddress] = useState("");
-  let [collectionId, setCollectionId] = useState("");
-  let [changeCollectionList, setChangeCollectionList] = useState([]);
-  let [nftName, setNftName] = useState("");
-  let [nftURI, setNftURI] = useState("");
-  let [nftTokenSupply, setNftTokenSupply] = useState(0);
-  let [nftDetail, setNftDetail] = useState({});
-  let [openDialog, setOpenDialog] = useState(false);
-  let [openEditModal, setOpenEditModal] = useState(false);
-  let [nftId, setNftId] = useState("");
-  let [tokenId, setTokenId] = useState("");
+  const [nftList, setNftList] = useState([]);
+  const [collectionTypes, setCollectionTypes] = useState([]);
+  const [collection, setCollection] = useState("");
+  const [isAdded, setIsAdded] = useState(false);
+  const [nftContractAddresses, setNftContractAddress] = useState("");
+  const [collectionId, setCollectionId] = useState("");
+  const [changeCollectionList, setChangeCollectionList] = useState([]);
+  const [nftName, setNftName] = useState("");
+  const [nftURI, setNftURI] = useState("");
+  const [nftTokenSupply, setNftTokenSupply] = useState(0);
+  const [nftDetail, setNftDetail] = useState({});
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [nftId, setNftId] = useState("");
+  const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
-  let [isUploadingData, setIsUploadingData] = useState(false);
-  let [price, setPrice] = useState(0);
-  let [supply, setSupply] = useState(1);
-  let [saleType, setSaleType] = useState("");
-  let [nftType, setNftType] = useState("");
-  let [versionB, setVersionB] = useState("");
-  let [AlertMessage, setAlertMessage] = useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [supply, setSupply] = useState(1);
+  const [saleType, setSaleType] = useState("");
+  const [nftType, setNftType] = useState("");
+  const [versionB, setVersionB] = useState("");
+  const [AlertMessage, setAlertMessage] = useState(false);
   const [startTimeStamp, setStartTimeStamp] = useState(
     Math.round(startTime.getTime() / 1000)
   );
   const [endTimeStamp, setEndTimeStamp] = useState(
     Math.round(endTime.getTime() / 1000)
   );
-  let [dropInfo, setDropInfo] = useState([]);
+  const [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const [costInfo, setCostInfo] = useState({});

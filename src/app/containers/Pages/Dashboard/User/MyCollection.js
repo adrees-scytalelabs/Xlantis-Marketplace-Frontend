@@ -43,13 +43,13 @@ const useStyles = makeStyles({
 
 function MyCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  let [isCreating, setIsCreating] = useState(false);
-  let [open, setOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
+  const [collectionCount, setCollectionCount] = useState(0);
   const [openCollectionModal, setOpenCollectionModal] = useState(false);
   const handleCloseCollectionModal = () => {
     setOpenCollectionModal(false);

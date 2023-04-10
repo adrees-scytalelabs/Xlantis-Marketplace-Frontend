@@ -10,9 +10,9 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 function WalletEnabled(props) {
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-  let [isSaving, setIsSaving] = useState(false);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [walletCount, setWalletAdminCount] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);

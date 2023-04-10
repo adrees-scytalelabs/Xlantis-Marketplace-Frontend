@@ -73,8 +73,8 @@ function MyDropNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [audio, setAudio] = useState();
-  let [versionB, setVersionB] = useState("");
+  const [audio, setAudio] = useState();
+  const [versionB, setVersionB] = useState("");
 
   const handleCloseBackdrop = () => {
     setOpen(false);

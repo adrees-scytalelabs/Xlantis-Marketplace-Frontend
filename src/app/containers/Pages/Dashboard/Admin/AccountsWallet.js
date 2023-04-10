@@ -1,23 +1,30 @@
 import { TablePagination } from "@material-ui/core/";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import {
+  getWalletAdmins,
+  handleModalOpen,
+  handleModalClose,
+} from "../../../../components/Utils/SuperAdminFunctions";
 
 function AccountsWallet(props) {
   const [modalData, setModalData] = useState();
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    getUnverifiedWallet(0, rowsPerPage);
+    getWalletAdmins(
+      0,
+      rowsPerPage,
+      setOpen,
+      setWalletAdmins,
+      setWalletAdminCount
+    );
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -31,57 +38,28 @@ function AccountsWallet(props) {
     });
   }, []);
 
-  const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+  const handleChangePage = (newPage) => {
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getUnverifiedWallet(
+    getWalletAdmins(
       newPage * rowsPerPage,
-      newPage * rowsPerPage + rowsPerPage
+      newPage * rowsPerPage + rowsPerPage,
+      setOpen,
+      walletAdmins,
+      adminWalletCount
     );
   };
 
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedWallet(0, parseInt(event.target.value, 10));
+    getWalletAdmins(
+      0,
+      parseInt(event.target.value, 10),
+      setOpen,
+      walletAdmins,
+      adminWalletCount
+    );
     setPage(0);
   };
-
-  let getUnverifiedWallet = (start, end) => {
-    setOpen(true);
-    axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v2`)
-      .then((response) => {
-        setWalletAdmins(response.data.Admins);
-        setWalletAdminCount(response.data.Admins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-
-  const handleModalOpen = (e, data) => {
-    e.preventDefault();
-    handleShow();
-    setModalData(data);
-  };
-  const handleModalClose = (e, data) => {
-    e.preventDefault();
-    handleClose();
-  };
-
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
@@ -90,6 +68,8 @@ function AccountsWallet(props) {
           handleModalOpen={handleModalOpen}
           ssoEnabled={false}
           walletEnabled={true}
+          setShow={setShow}
+          setModalData={setModalData}
         ></SuperAdminTable>
       </div>
       <TablePagination
@@ -106,6 +86,7 @@ function AccountsWallet(props) {
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
+        setShow={setShow}
       ></AdminInformationModal>
     </div>
   );

@@ -12,13 +12,13 @@ import {
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 function AccountApprovalSSO(props) {
-  let [admins, setAdmins] = useState([]);
+  const [admins, setAdmins] = useState([]);
   const [modalData, setModalData] = useState();
-  let [adminCount, setAdminCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  let [load, setLoad] = useState(false);
-  let [variant, setVariant] = useState("");
-  let [notificationData, setNotificationData] = useState("");
+  const [load, setLoad] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [notificationData, setNotificationData] = useState("");
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);

@@ -10,9 +10,9 @@ import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 
 function CreateNewCollectionModal(props) {
     const { enqueueSnackbar } = useSnackbar();
-    let [collectionTitle, setCollectionTitle] = useState();
-    let [collectionImage, setCollectionImage] = useState(r1);
-    let [isUploadingCollectionImage, setIsUploadingCollectionImage] = useState(false);
+    const [collectionTitle, setCollectionTitle] = useState();
+    const [collectionImage, setCollectionImage] = useState(r1);
+    const [isUploadingCollectionImage, setIsUploadingCollectionImage] = useState(false);
     let onChangeImageHandler = (e) => {
         setIsUploadingCollectionImage(true);
         let fileData = new FormData();

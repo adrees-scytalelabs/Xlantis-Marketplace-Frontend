@@ -11,7 +11,7 @@ function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

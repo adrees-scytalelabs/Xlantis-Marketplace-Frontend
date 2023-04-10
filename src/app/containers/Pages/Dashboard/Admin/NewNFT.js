@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -82,12 +82,12 @@ function NewNFT(props) {
     setOpen(true);
   };
 
-  let [defaultTemplates, setDefaultTemplates] = useState({
+  const [defaultTemplates, setDefaultTemplates] = useState({
     name: "",
     properties: [],
   });
-  let [templateData, setTemplateData] = useState([]);
-  let [standardTemplates, setStandardTemplates] = useState([]);
+  const [templateData, setTemplateData] = useState([]);
+  const [standardTemplates, setStandardTemplates] = useState([]);
 
   const [extractedDataProps, setExtractedDataProps] = useState(null);
   const [newTemplateModalShow, setNewTemplateModalShow] = useState(false);
@@ -124,45 +124,45 @@ function NewNFT(props) {
   };
 
   const [tokenList, setTokenList] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
-  let [name, setName] = useState("");
-  let [ipfsHash, setIpfsHash] = useState(null);
-  let [description, setDescription] = useState("");
-  let [properties, setProperties] = useState([{ key: "", value: "" }]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [name, setName] = useState("");
+  const [ipfsHash, setIpfsHash] = useState(null);
+  const [description, setDescription] = useState("");
+  const [properties, setProperties] = useState([{ key: "", value: "" }]);
 
-  let [supplyType, setSupplyType] = useState("Single");
-  let [nftContractAddress, setNftContractAddress] = useState("");
+  const [supplyType, setSupplyType] = useState("Single");
+  const [nftContractAddress, setNftContractAddress] = useState("");
 
-  let [collectionTypes, setCollectionTypes] = useState([]);
-  let [collection, setCollection] = useState("");
+  const [collectionTypes, setCollectionTypes] = useState([]);
+  const [collection, setCollection] = useState("");
 
-  let [tokenSupply, setTokenSupply] = useState(1);
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [rarity, setRarity] = useState("");
-  let [image, setImage] = useState(r1);
-  let [collectionId, setCollectionId] = useState("");
-  let [nftURI, setNftURI] = useState("");
-  let [metaDataURI, setMetaDataURI] = useState("");
-  let [imageType, setImageType] = useState("");
-  let [openDialog, setOpenDialog] = useState(false);
-  let [openEditModal, setOpenEditModal] = useState(false);
-  let [nftDetail, setNftDetail] = useState({});
-  let [editObjectIndex, setEditObjectIndex] = useState(0);
-  let [batchId, setBatchId] = useState("");
-  let [changeCollection, setChangeCollection] = useState(false);
-  let [changeCollectionList, setChangeCollectionList] = useState([]);
-  let [nftId, setNftId] = useState("");
-  let [isUploadingData, setIsUploadingData] = useState(false);
-  let [isGlbFile, setIsGlbFile] = useState(false);
-  let [previewImageURI, setPreviewImageURI] = useState(r1);
-  let [isUploadingPreview, setIsUploadingPreview] = useState(false);
-  let [isMp3File, setIsMp3File] = useState(false);
-  let [contractType, setContractType] = useState("");
-  let [NFTType, setNFTType] = useState("1155");
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [tokenSupply, setTokenSupply] = useState(1);
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [rarity, setRarity] = useState("");
+  const [image, setImage] = useState(r1);
+  const [collectionId, setCollectionId] = useState("");
+  const [nftURI, setNftURI] = useState("");
+  const [metaDataURI, setMetaDataURI] = useState("");
+  const [imageType, setImageType] = useState("");
+  const [openDialog, setOpenDialog] = useState(false);
+  const [openEditModal, setOpenEditModal] = useState(false);
+  const [nftDetail, setNftDetail] = useState({});
+  const [editObjectIndex, setEditObjectIndex] = useState(0);
+  const [batchId, setBatchId] = useState("");
+  const [changeCollection, setChangeCollection] = useState(false);
+  const [changeCollectionList, setChangeCollectionList] = useState([]);
+  const [nftId, setNftId] = useState("");
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [isGlbFile, setIsGlbFile] = useState(false);
+  const [previewImageURI, setPreviewImageURI] = useState(r1);
+  const [isUploadingPreview, setIsUploadingPreview] = useState(false);
+  const [isMp3File, setIsMp3File] = useState(false);
+  const [contractType, setContractType] = useState("");
+  const [NFTType, setNFTType] = useState("1155");
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
-  let [previewImage, setPreviewImage] = useState(r1);
-  let [versionB, setVersionB] = useState("");
+  const [previewImage, setPreviewImage] = useState(r1);
+  const [versionB, setVersionB] = useState("");
   let getCollections = (collectionType) => {
     setCollection("");
     const url = `/collection/collections/${collectionType}`;

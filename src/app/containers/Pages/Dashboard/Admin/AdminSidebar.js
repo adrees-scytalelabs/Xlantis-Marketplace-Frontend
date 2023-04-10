@@ -9,7 +9,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 
 function AdminSidebar(props) {
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");

@@ -14,12 +14,12 @@ import {
 import Notification from "../../../../components/Utils/Notification";
 
 function AccountApprovalDefaultScreen(props) {
-  let [admins, setAdmins] = useState([]);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [load, setLoad] = useState(false);
-  let [variant, setVariant] = useState("");
-  let [notificationData, setNotificationData] = useState("");
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [load, setLoad] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [notificationData, setNotificationData] = useState("");
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [modalData, setModalData] = useState();

@@ -33,13 +33,13 @@ const useStyles = makeStyles({
 });
 
 function MyCollection(props) {
-  let [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  let [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
-  let [versionB, setVersionB] = useState("");
+  const [collectionCount, setCollectionCount] = useState(0);
+  const [versionB, setVersionB] = useState("");
 
   const classes = useStyles();
   let getCollections = (start, end) => {

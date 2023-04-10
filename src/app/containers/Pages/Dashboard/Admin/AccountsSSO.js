@@ -1,24 +1,25 @@
 import { TablePagination } from "@material-ui/core/";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import {
+  getSSOAdmins,
+  handleModalOpen,
+  handleModalClose,
+} from "../../../../components/Utils/SuperAdminFunctions";
 
 function AccountsSSO(props) {
   const [modalData, setModalData] = useState();
-  let [admins, setAdmins] = useState([]);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); 
   const [show, setShow] = useState(false);
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getUnverifiedAdmins(0, rowsPerPage);
+    getSSOAdmins(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -31,57 +32,27 @@ function AccountsSSO(props) {
       saved: "",
     });
   }, []);
-
-  const handleChangePage = (event, newPage) => {
-    console.log("newPage", newPage);
+  const handleChangePage = (newPage) => {
     setPage(newPage);
-    console.log("Start", newPage * rowsPerPage);
-    console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getUnverifiedAdmins(
+    getSSOAdmins(
       newPage * rowsPerPage,
-      newPage * rowsPerPage + rowsPerPage
+      newPage * rowsPerPage + rowsPerPage,
+      setOpen,
+      setAdmins,
+      setAdminCount
     );
   };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedAdmins(0, parseInt(event.target.value, 10));
+    getSSOAdmins(
+      0,
+      parseInt(event.target.value, 10),
+      setOpen,
+      setAdmins,
+      setAdminCount
+    );
     setPage(0);
   };
-
-  let getUnverifiedAdmins = (start, end) => {
-    setOpen(true);
-    axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
-      .then((response) => {
-        setAdmins(response.data.Admins);
-        setAdminCount(response.data.Admins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-  const handleModalOpen = (e, data) => {
-    e.preventDefault();
-    handleShow();
-    setModalData(data);
-  };
-  const handleModalClose = (e, data) => {
-    e.preventDefault();
-    handleClose();
-  };
-
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
@@ -90,6 +61,8 @@ function AccountsSSO(props) {
           handleModalOpen={handleModalOpen}
           ssoEnabled={true}
           walletEnabled={false}
+          setShow={setShow}
+          setModalData={setModalData}
         ></SuperAdminTable>
       </div>
       <TablePagination
@@ -106,6 +79,7 @@ function AccountsSSO(props) {
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
+        setShow={setShow}
       ></AdminInformationModal>
     </div>
   );

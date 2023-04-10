@@ -5,10 +5,10 @@ import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function AdminDashboardDefaultScreen(props) {
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
-  let [hover, setHover] = useState(false);
-  let [hoverCollections, setHoverCollections] = useState(false);
+  const [totalNFTs, setTotalNFTs] = useState(0);
+  const [totalCollections, setTotalCollections] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [hoverCollections, setHoverCollections] = useState(false);
 
   let getCounts = () => {
     let version = Cookies.get("Version");

@@ -29,8 +29,8 @@ axios.defaults.headers.common[
 
 function SuperAdminDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -53,7 +53,7 @@ function SuperAdminDashboard(props) {
     widgetWidth: "500px",
   };
 
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     manageAccounts: "",
     manageAccountsSSO: "",
@@ -63,7 +63,7 @@ function SuperAdminDashboard(props) {
     template:"",
     saved:"",
   });
-  let [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(0);
 
   function openTransak() {
     const transak = new transakSDK(settings);

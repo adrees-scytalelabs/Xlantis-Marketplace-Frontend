@@ -141,17 +141,17 @@ const FixedDropSingleNFTHome = () => {
 
   const [data, setData] = useState();
   const [dataBid, setDataBid] = useState();
-  let [dropCloneAddress, setDropCloneAddress] = useState("");
+  const [dropCloneAddress, setDropCloneAddress] = useState("");
   const [open, setOpen] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
-  let [versionB, setVersionB] = useState("");
-  let [startTime, setStartTime] = useState();
-  let [endTime, setEndTime] = useState();
+  const [versionB, setVersionB] = useState("");
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
   const { singleNFTid } = useParams();

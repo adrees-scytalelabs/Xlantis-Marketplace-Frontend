@@ -109,17 +109,17 @@ const DropSingleNFT = (props) => {
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
   const [keys, setKeys] = useState([]);
-  let [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [show, setShow] = useState(false);
-  let [bidDetail, setBidDetail] = useState([]);
-  let [contractType, setContractType] = useState("");
-  let [versionB, setVersionB] = useState("");
-  let [bidId, setBidId] = useState();
+  const [show, setShow] = useState(false);
+  const [bidDetail, setBidDetail] = useState([]);
+  const [contractType, setContractType] = useState("");
+  const [versionB, setVersionB] = useState("");
+  const [bidId, setBidId] = useState();
 
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();

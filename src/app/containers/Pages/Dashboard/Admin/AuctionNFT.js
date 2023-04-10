@@ -111,7 +111,7 @@ const AuctionNFT = (props) => {
   const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { nftId, dropId } = useParams();
-  let [bidDetail, setBidDetail] = useState([]);
+  const [bidDetail, setBidDetail] = useState([]);
   const location = useLocation();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
@@ -132,8 +132,8 @@ const AuctionNFT = (props) => {
   );
   const [dropCloneAddress, setDropCloneAddress] = useState("");
   const [contractType, setContractType] = useState("");
-  let [price, setPrice] = useState();
-  let [versionB, setVersionB] = useState("");
+  const [price, setPrice] = useState();
+  const [versionB, setVersionB] = useState("");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const [modalOpen, setMOdalOpen] = useState(false);

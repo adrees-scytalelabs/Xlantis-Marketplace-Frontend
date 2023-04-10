@@ -13,8 +13,8 @@ import Header from "../../../components/Headers/Header";
 function EmailVerification(props) {
   const { email, token } = useParams();
 
-  let [isConfirming, setIsConfirming] = useState(false);
-  let [isSuccess, setIsSuccess] = useState("");
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isSuccess, setIsSuccess] = useState("");
   let handleEmailVerification = () => {
     setIsSuccess("");
     setIsConfirming(true);

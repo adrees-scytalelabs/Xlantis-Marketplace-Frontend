@@ -71,7 +71,7 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const classes = useStyles();
   const handleCloseBackdrop = () => {
     setOpen(false);

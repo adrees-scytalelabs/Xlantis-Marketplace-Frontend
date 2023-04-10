@@ -6,12 +6,12 @@ import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNu
 
 function SuperAdminWalletScreen(props) {
   const [open, setOpen] = useState(false);
-  let [totalAdmins, setTotalAdmins] = useState(0);
-  let [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
-  let [totalUnverifiedAdmins, setTotalUnverifiedAdmins] = useState(0);
-  let [totalEnabled, setTotalEnabled] = useState(0);
-  let [totalDisabled, setTotalDisabled] = useState(0);
-  let [hover, setHover] = useState(false);
+  const [totalAdmins, setTotalAdmins] = useState(0);
+  const [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
+  const [totalUnverifiedAdmins, setTotalUnverifiedAdmins] = useState(0);
+  const [totalEnabled, setTotalEnabled] = useState(0);
+  const [totalDisabled, setTotalDisabled] = useState(0);
+  const [hover, setHover] = useState(false);
 
   let getCounts = () => {
     axios.defaults.headers.common[

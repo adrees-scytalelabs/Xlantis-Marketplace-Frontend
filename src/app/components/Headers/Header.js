@@ -53,7 +53,7 @@ const customTheme = createTheme({
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [updateProfile, setUpdateProfile] = useState(props.updateProfile);
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut, setUserSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [open, setOpen] = useState(false);
@@ -63,16 +63,16 @@ function HeaderHome(props) {
   const [cartOpen, setCartOpen] = useState(false);
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
-  let [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
+  const [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
   let location = useLocation();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
   const openPopper = Boolean(anchorElPopper);
   const [notificationsList, setNotificationsList] = useState();
-  let [isSaving, setIsSaving] = useState(false);
-  let [notificationCount, setNotificationCount] = useState(0);
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [notificationCount, setNotificationCount] = useState(0);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
 
   const handleCloseBackdrop = () => {
@@ -115,9 +115,9 @@ function HeaderHome(props) {
     widgetWidth: "500px",
   };
 
-  let [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);

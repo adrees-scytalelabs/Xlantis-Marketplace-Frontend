@@ -24,8 +24,8 @@ const SuperAdminLoginForms = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
-  let [isLoading, setIsLoading] = useState(false);
-  let [msg, setMsg] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [msg, setMsg] = useState("");
 
 
   const classes = useStyles();

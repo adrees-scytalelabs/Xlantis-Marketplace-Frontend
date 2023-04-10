@@ -24,9 +24,9 @@ axios.defaults.headers.common[
 
 function UserDashboard(props) {
   let { path } = useRouteMatch();
-  let [slideNavClass] = useState();
+  const [slideNavClass] = useState();
 
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     myNFTs: "",
     totalUserAccount: "",

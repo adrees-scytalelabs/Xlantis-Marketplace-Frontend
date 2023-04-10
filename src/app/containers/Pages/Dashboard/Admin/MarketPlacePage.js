@@ -82,7 +82,7 @@ function MarketPlacePage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

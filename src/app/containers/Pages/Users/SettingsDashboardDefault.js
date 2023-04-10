@@ -50,40 +50,40 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SettingDashboardDefault(props) {
-  let [isAdmin, setIsAdmin] = useState(false);
-  let [name, setName] = useState("");
-  let [bio, setBio] = useState("");
-  let [email, setEmail] = useState("");
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [email, setEmail] = useState("");
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
-  let [isSaving, setIsSaving] = useState(false);
-  let [isUploadingData, setIsUploadingData] = useState(false);
-  let [imageSrc, setImageSrc] = useState("");
-  let [crop, setCrop] = useState({ x: 0, y: 0 });
-  let [zoom, setZoom] = useState(1);
-  let [aspect, setAspect] = useState(1 / 1);
-  let [showCropModal, setShowCropModal] = useState(false);
-  let [selectedImage, setSelectedImage] = useState("");
-  let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
-  let [imageCounter, setImageCounter] = useState(0);
-  let [adminName, setAdminName] = useState("");
-  let [adminCompanyName, setAdminCompanyName] = useState("");
-  let [adminDomain, setAdminDomain] = useState("");
-  let [adminDesignation, setAdminDesignation] = useState("");
-  let [adminOldData, setAdminOldData] = useState({});
-  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
-  let [adminIndustry, setAdminIndustry] = useState("");
-  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isUploadingData, setIsUploadingData] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [adminName, setAdminName] = useState("");
+  const [adminCompanyName, setAdminCompanyName] = useState("");
+  const [adminDomain, setAdminDomain] = useState("");
+  const [adminDesignation, setAdminDesignation] = useState("");
+  const [adminOldData, setAdminOldData] = useState({});
+  const [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  const [adminIndustry, setAdminIndustry] = useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
 
   const classes = useStyles();
 
-  let [profileImage, setProfileImage] = useState(
+  const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(r1);
+  const [bannerImage, setBannerImage] = useState(r1);
 
   const { enqueueSnackbar } = useSnackbar();
 

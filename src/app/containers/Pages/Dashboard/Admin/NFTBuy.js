@@ -105,14 +105,14 @@ const NFTBuy = (props) => {
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
-  let [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
-  let [price, setPrice] = useState();
+  const [price, setPrice] = useState();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
 

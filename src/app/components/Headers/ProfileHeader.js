@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
 };
 
 function ProfileHeader(props) {
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();

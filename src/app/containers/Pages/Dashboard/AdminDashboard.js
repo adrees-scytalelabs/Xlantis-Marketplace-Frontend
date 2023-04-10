@@ -37,8 +37,8 @@ axios.defaults.headers.common[
 
 function AdminDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -61,7 +61,7 @@ function AdminDashboard(props) {
     widgetWidth: "500px",
   };
 
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     newCollection: "",
     myCollections: "",

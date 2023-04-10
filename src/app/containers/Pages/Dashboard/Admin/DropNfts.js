@@ -143,10 +143,10 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [nftIds, setNftIds] = useState([]);
-  let [audio, setAudio] = useState();
-  let [versionB, setVersionB] = useState("");
+  const [audio, setAudio] = useState();
+  const [versionB, setVersionB] = useState("");
 
-  let [windowSize, setWindowSize] = useState(window.innerWidth);
+  const [windowSize, setWindowSize] = useState(window.innerWidth);
 
   const handleCloseBackdrop = () => {
     setOpen(false);
