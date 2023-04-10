@@ -159,7 +159,16 @@ function SuperAdminTable(props) {
                       <Button
                         className={classes.approveBtn}
                         onClick={(e) => {
-                          props.handleDisable(e, i._id);
+                          props.handleDisable(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setAdmins,
+                            props.setAdminCount,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Disable
@@ -173,7 +182,16 @@ function SuperAdminTable(props) {
                       <Button
                         className={`${classes.approveBtn} ml-4`}
                         onClick={(e) => {
-                          props.handleEnableSSO(e, i._id);
+                          props.handleEnableSSO(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setAdmins,
+                            props.setAdminCount,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Enable
@@ -258,7 +276,16 @@ function SuperAdminTable(props) {
                       <Button
                         className={classes.approveBtn}
                         onClick={(e) => {
-                          props.handleWalletDisable(e, i._id);
+                          props.handleWalletDisable(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setWalletAdmins,
+                            props.setWalletAdminCount,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Disable
@@ -272,7 +299,16 @@ function SuperAdminTable(props) {
                       <Button
                         className={`${classes.approveBtn} ml-4`}
                         onClick={(e) => {
-                          props.handleEnableWallet(e, i._id);
+                          props.handleEnableWallet(
+                            e,
+                            i._id,
+                            props.setOpen,
+                            props.setWalletAdmins,
+                            props.setWalletAdminCount,
+                            props.setVariant,
+                            props.setLoad,
+                            props.setNotificationData
+                          );
                         }}
                       >
                         Enable
