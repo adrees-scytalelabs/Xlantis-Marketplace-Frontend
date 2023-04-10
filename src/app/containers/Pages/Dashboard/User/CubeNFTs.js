@@ -28,6 +28,7 @@ import CreateAuctionContract from "../../../../components/blockchain/Abis/Create
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import MarketPlaceContract from "../../../../components/blockchain/Abis/MarketPlaceContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import TxHistoryAccordian from "../../../../components/Accordians/TxHistoryAccordian";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -879,82 +880,10 @@ function CubeNFTs(props) {
                   </Grid>
                 </div>
                 <div className="col-md-12 col-lg-6">
-                  <div className="form-group" style={{ marginTop: "20px" }}>
-                    <Accordion>
-                      <AccordionSummary
-                        expandIcon={<ExpandMoreIcon />}
-                        aria-controls="panel1a-content"
-                        id="panel1a-header"
-                      >
-                        <Typography variant="h6" gutterBottom>
-                          Tx History
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        {transactionHistory.length === 0 ? (
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            <strong>No Transaction History Found </strong>
-                          </Typography>
-                        ) : null}
-                        <Grid
-                          container
-                          spacing={2}
-                          direction="row"
-                          justify="flex-start"
-                        >
-                          {transactionHistory
-                            .slice(0)
-                            .reverse()
-                            .map((i, index) => (
-                              <TxHistory data={i} key={index} />
-                            ))}
-                        </Grid>
-                      </AccordionDetails>
-                    </Accordion>
-                  </div>
+                  <TxHistoryAccordian transactionHistory={transactionHistory}/>
 
                   {cubeData.check === "auction" ? (
-                    <div className="form-group" style={{ marginTop: "20px" }}>
-                      <Accordion>
-                        <AccordionSummary
-                          expandIcon={<ExpandMoreIcon />}
-                          aria-controls="panel2a-content"
-                          id="panel2a-header"
-                        >
-                          <Typography variant="h6" gutterBottom>
-                            Bidding History
-                          </Typography>
-                        </AccordionSummary>
-                        <AccordionDetails>
-                          {bidHistory.length === 0 ? (
-                            <Typography
-                              variant="body2"
-                              color="textSecondary"
-                              component="p"
-                            >
-                              <strong>No Bidding History Found </strong>
-                            </Typography>
-                          ) : null}
-                          <Grid
-                            container
-                            spacing={2}
-                            direction="row"
-                            justify="flex-start"
-                          >
-                            {bidHistory
-                              .slice(0)
-                              .reverse()
-                              .map((i, index) => (
-                                <BiddingHistory data={i} key={index} />
-                              ))}
-                          </Grid>
-                        </AccordionDetails>
-                      </Accordion>
-                    </div>
+                    <BiddingHistory bidHistory={bidHistory}/>
                   ) : null}
 
                 </div>

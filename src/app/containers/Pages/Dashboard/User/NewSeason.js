@@ -1,54 +1,17 @@
-import { CardHeader, Grid } from "@material-ui/core/";
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import {  Grid } from "@material-ui/core/";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Countdown from "react-countdown";
 import { Scrollbars } from "react-custom-scrollbars";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import NewSeasonCard from "../../../../components/Cards/NewSeasonCard";
+import NewSeasonForm from "../../../../components/Forms/NewSeasonForm";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
 
-  media: {
-    height: 300,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
 function NewSeason(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   const [inputList, setInputList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [image, setImage] = useState(r1);
@@ -190,112 +153,20 @@ function NewSeason(props) {
       <div className="card-body">
         <div className="row">
           <div className="col-md-12 col-lg-6">
-            <form onSubmit={handleSubmitEvent}>
-              <div className="form-group">
-                <label>Select Drops</label>
-                <div className="filter-widget">
-                  <Autocomplete
-                    id="combo-dox-demo"
-                    required
-                    options={inputList}
-                    value={type}
-                    getOptionLabel={(option) => option.title}
-                    onChange={(event, value) => {
-                      if (value == null) setType("");
-                      else {
-                        console.log(value);
-                        setType(value.title);
-                        handleAddClick(value);
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Drops" variant="outlined" />
-                    )}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Season Name</label>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      placeholder="Enter Name of Season"
-                      className="form-control"
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label>Season Description</label>
-                    <textarea
-                      type="text"
-                      required
-                      rows="4"
-                      value={description}
-                      placeholder="Enter Description of Season"
-                      className="form-control"
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Select Title Image</label>
-                    <div className="filter-widget">
-                      <div className="form-group">
-                        <div className="change-avatar">
-                          <div className="profile-img">
-                            <div
-                              style={{
-                                background: "#E9ECEF",
-                                width: "100px",
-                                height: "100px",
-                              }}
-                            >
-                              <img src={image} alt="Selfie" />
-                            </div>
-                          </div>
-                          <div className="upload-img">
-                            <div
-                              className="change-photo-btn"
-                              style={{ backgroundColor: "rgb(167,0,0)" }}
-                            >
-                              {isUploading ? (
-                                <div className="text-center">
-                                  <Spinner
-                                    animation="border"
-                                    role="status"
-                                    style={{ color: "#fff" }}
-                                  ></Spinner>
-                                </div>
-                              ) : (
-                                <span>
-                                  <i className="fa fa-upload"></i>Upload photo
-                                </span>
-                              )}
-
-                              <input
-                                name="sampleFile"
-                                type="file"
-                                className="upload"
-                                accept=".png,.jpg,.jpeg,.gif"
-                                onChange={onChangeFile}
-                              />
-                            </div>
-                            <small className="form-text text-muted">
-                              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                            </small>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <NewSeasonForm
+              handleSubmitEvent={handleSubmitEvent}
+              inputList={inputList}
+              type={type}
+              setType={setType}
+              handleAddClick={handleAddClick}
+              setName={setName}
+              name={name}
+              setDescription={setDescription}
+              description={description}
+              image={image}
+              isUploading={isUploading}
+              onChangeFile={onChangeFile}
+            />
           </div>
           <div className="col-md-12 col-lg-6">
             {types.length > 0 ? (
@@ -306,110 +177,11 @@ function NewSeason(props) {
                       container
                       spacing={3}
                       direction="row"
-                      justify="flex-start"
+                      justifyContent="flex-start"
                     >
                       {types.map((i, index) => (
                         <Grid item xs={12} sm={6} md={6} key={index}>
-                          <Card
-                            style={{ height: "100%" }}
-                            variant="outlined"
-                            className={classes.root}
-                          >
-                            <CardActionArea>
-                              <CardHeader
-                                className="text-center"
-                                title={i.title}
-                              />
-                              <CardMedia
-                                className={classes.media}
-                                image={i.image}
-                                title=""
-                              ></CardMedia>
-                              <CardContent>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Drop Description: </strong>
-                                  {i.description}
-                                </Typography>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Minimum Bid: </strong>
-                                  {i.MinimumBid / 10 ** 18} WETH
-                                </Typography>
-                                <Typography
-                                  variant="h6"
-                                  gutterBottom
-                                  color="textSecondary"
-                                  className="text-center"
-                                >
-                                  {new Date() < new Date(i.AuctionStartsAt) ? (
-                                    <div style={{ color: "#00FF00" }}>
-                                      <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        component="p"
-                                      >
-                                        <strong>Auction Starts At:</strong>
-                                      </Typography>
-                                      {console.log(
-                                        "Date(i.AuctionStartsAt)",
-                                        Date(i.AuctionStartsAt)
-                                      )}
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.AuctionStartsAt)}
-                                      ></Countdown>
-                                    </div>
-                                  ) : new Date() >
-                                      new Date(i.AuctionStartsAt) &&
-                                    new Date() < new Date(i.AuctionEndsAt) ? (
-                                    <div style={{ color: "#FF0000" }}>
-                                      {console.log(
-                                        "Date(i.AuctionStartsAt)",
-                                        Date(i.AuctionEndsAt.toLoca)
-                                      )}
-                                      <Typography
-                                        variant="body2"
-                                        color="textSecondary"
-                                        component="p"
-                                      >
-                                        <strong>Auction Ends At:</strong>
-                                      </Typography>
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.AuctionEndsAt)}
-                                      ></Countdown>
-                                    </div>
-                                  ) : (
-                                    <Typography
-                                      variant="body2"
-                                      style={{ color: "#FF0000" }}
-                                      component="p"
-                                    >
-                                      <strong>Auction Ended</strong>
-                                    </Typography>
-                                  )}
-                                </Typography>
-                              </CardContent>
-                            </CardActionArea>
-                            <CardActions>
-                              <Button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleRemoveClick(index);
-                                }}
-                                className="btn btn-sm bg-danger-light btn-block"
-                              >
-                                Remove Drop
-                              </Button>
-                            </CardActions>
-                          </Card>
+                          <NewSeasonCard i={i} handleRemoveClick={handleRemoveClick} index={index} />
                         </Grid>
                       ))}
                     </Grid>

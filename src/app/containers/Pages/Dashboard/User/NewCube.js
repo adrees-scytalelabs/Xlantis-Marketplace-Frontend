@@ -1,13 +1,4 @@
-import { Card, CardContent, Grid } from "@material-ui/core/";
-
-import Button from "@material-ui/core/Button";
-import CardActions from "@material-ui/core/CardActions";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardMedia from "@material-ui/core/CardMedia";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import { Grid } from "@material-ui/core/";
 import axios from "axios";
 import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
@@ -17,52 +8,17 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import logo from "../../../../assets/img/img-04.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import NewCubeComponent from "../../../../components/Cube/NewCubeComponent";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SixNFTsErrorModal from "../../../../components/Modals/SixNFTsErrorModal";
 import CreateCubeContract from "../../../../components/blockchain/Abis/CreateCubeContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+import NewCubeForm from "../../../../components/Forms/NewCubeForm";
+import NewCubeCard from "../../../../components/Cards/NewCubeCard";
 
 function NewCube(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
   const [selectedNFTList, setSelectedNFTList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
@@ -452,135 +408,23 @@ function NewCube(props) {
       <div className="card-body">
         <div className="row">
           <div className="col-md-12 col-lg-6">
-            <form>
-              <div className="form-group">
-                <label>Select Artworks </label>
-                <div className="filter-widget">
-                  <Autocomplete
-                    id="combo-dox-demo"
-                    required
-                    options={tokenList}
-                    getOptionLabel={(option) =>
-                      option.title +
-                      "," +
-                      option.type +
-                      "," +
-                      option.tokensupplyalternative
-                    }
-                    onChange={(event, value) => {
-                      if (value !== null) {
-                        console.log(value);
-                        handleAddClick(value);
-                      }
-                    }}
-                    renderInput={(params) => (
-                      <TextField {...params} label="NFTs" variant="outlined" />
-                    )}
-                  />
-                </div>
-                <div className="form-group">
-                  <label>Name</label>
-                  <div className="form-group">
-                    <input
-                      type="text"
-                      required
-                      value={name}
-                      placeholder="Enter Name of Cube"
-                      className="form-control"
-                      onChange={(e) => {
-                        setName(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Description</label>
-                    <textarea
-                      type="text"
-                      required
-                      rows="4"
-                      value={description}
-                      placeholder="Enter Description of Cube"
-                      className="form-control"
-                      onChange={(e) => {
-                        setDescription(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Sale Price (ETH)</label>
-                    <div className="filter-widget">
-                      <input
-                        type="number"
-                        required
-                        value={salePrice}
-                        className="form-control"
-                        onChange={(e) => {
-                          if (e.target.value >= 0) {
-                            setSalePrice(e.target.value);
-                          } else {
-                            setSalePrice(0);
-                          }
-                        }}
-                      />
-                    </div>
-                  </div>
-                  <div className="form-group">
-                    <label>Upload Music for Owner</label>{" "}
-                  </div>
-                  <div className="form-group">
-                    <input
-                      required
-                      type="file"
-                      name="sampleFile"
-                      accept=".mp3"
-                      className="form-control"
-                      onChange={(e) => uploadMusicOwnerHandler(e)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Upload Music for Non Owner</label>{" "}
-                  </div>
-                  <div className="form-group">
-                    <input
-                      required
-                      type="file"
-                      name="sampleFile"
-                      accept=".mp3"
-                      className="form-control"
-                      onChange={(e) => uploadMusicNonOwnerHandler(e)}
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label>Select Artist</label>
-                    <div className="filter-widget">
-                      <Autocomplete
-                        id="combo-dox-demo"
-                        required
-                        options={artistTypes}
-                        getOptionLabel={(option) => option.Name}
-                        onChange={(event, value) => {
-                          if (value == null) setArtist("");
-                          else {
-                            console.log(value);
-                            setArtistId(value.userId);
-                            setArtist(value.Name);
-                            setAboutTheTrack(value.About);
-                            setArtistImage(value.Profile);
-                          }
-                        }}
-                        renderInput={(params) => (
-                          <TextField
-                            {...params}
-                            label="Artists"
-                            variant="outlined"
-                          />
-                        )}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </form>
+            <NewCubeForm
+              tokenList={tokenList}
+              handleAddClick={handleAddClick}
+              setName={setName}
+              name={name}
+              description={description}
+              setDescription={setDescription}
+              setSalePrice={setSalePrice}
+              salePrice={salePrice}
+              uploadMusicOwnerHandler={uploadMusicOwnerHandler}
+              uploadMusicNonOwnerHandler={uploadMusicNonOwnerHandler}
+              artistTypes={artistTypes}
+              setArtist={setArtist}
+              setArtistId={setArtistId}
+              setAboutTheTrack={setAboutTheTrack}
+              setArtistImage={setArtistImage}
+            />
           </div>
           <div className="col-md-12 col-lg-6">
             <div className="App">
@@ -594,145 +438,11 @@ function NewCube(props) {
                       container
                       spacing={2}
                       direction="row"
-                      justify="flex-start"
+                      justifyContent="flex-start"
                     >
                       {selectedNFTList.map((i, index) => (
                         <Grid item xs={12} sm={6} md={6} key={index}>
-                          <Card style={{ height: "100%" }} variant="outlined">
-                            <CardHeader
-                              className="text-center"
-                              title={i.title}
-                            />
-                            <CardMedia
-                              variant="outlined"
-                              style={{
-                                border:
-                                  i.type === "Mastercraft"
-                                    ? "4px solid #ff0000"
-                                    : i.type === "Legendary"
-                                      ? "4px solid #FFD700"
-                                      : i.type === "Epic"
-                                        ? "4px solid #9400D3"
-                                        : i.type === "Rare"
-                                          ? "4px solid #0000FF"
-                                          : i.type === "Uncommon"
-                                            ? "4px solid #008000"
-                                            : i.type === "Common"
-                                              ? "4px solid #FFFFFF"
-                                              : "none",
-                              }}
-                              className={classes.media}
-                              image={i.artwork}
-                              title="NFT Image"
-                            />
-                            <CardContent>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Artwork Description: </strong>
-                                {i.description}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Token Rarity: </strong>
-                                {i.type}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Token Supply: </strong>
-                                {i.tokensupplyalternative}
-                              </Typography>
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                color="textSecondary"
-                                className="text-center"
-                              >
-                                Image Artist
-                              </Typography>
-                              <CardHeaderWithAvatar
-                                src={i.ImageArtistProfile}
-                                title={i.ImageArtistName}
-                                subheader={i.ImageArtistAbout}
-                              />
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Website URL: </strong>
-                                {i.ImageArtistWebsite}
-                              </Typography>
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                color="textSecondary"
-                                className="text-center"
-                              >
-                                Producer
-                              </Typography>
-                              <CardHeaderWithAvatar
-                                src={i.ProducerProfile}
-                                title={i.ProducerName}
-                                subheader={i.ProducerInspiration}
-                              />
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                color="textSecondary"
-                                className="text-center"
-                              >
-                                Executive Producer
-                              </Typography>
-                              <CardHeaderWithAvatar
-                                src={i.ExecutiveProducerProfile}
-                                title={i.ExecutiveProducerName}
-                                subheader={i.ExecutiveProducerInspiration}
-                              />
-                              <Typography
-                                variant="h6"
-                                gutterBottom
-                                color="textSecondary"
-                                className="text-center"
-                              >
-                                Fan
-                              </Typography>
-                              <CardHeaderWithAvatar
-                                src={i.FanProfile}
-                                title={i.FanName}
-                                subheader={i.FanInspiration}
-                              />
-
-                              <Typography
-                                variant="body2"
-                                color="textSecondary"
-                                component="p"
-                              >
-                                <strong>Other: </strong>
-                                {i.other}
-                              </Typography>
-                            </CardContent>
-
-                            <CardActions>
-                              <Button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                  handleRemoveClick(index, i);
-                                }}
-                                className="btn btn-sm bg-danger-light btn-block"
-                              >
-                                Remove NFT
-                              </Button>
-                            </CardActions>
-                          </Card>
+                          <NewCubeCard i={i} handleRemoveClick={handleRemoveClick} index={index} />
                         </Grid>
                       ))}
                     </Grid>
