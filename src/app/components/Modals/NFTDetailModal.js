@@ -1,4 +1,4 @@
-import { Button, CardContent, CardMedia, makeStyles, Paper, Typography } from '@material-ui/core';
+import { Button, CardContent, CardMedia, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
@@ -6,6 +6,7 @@ import { Card, Col, Modal, Row, Table } from 'react-bootstrap';
 import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+import TypographyText from '../TypographyText/TypographyTextText';
 
 const useStyles = makeStyles(() => ({
     media: {
@@ -16,8 +17,6 @@ const useStyles = makeStyles(() => ({
 
 const NFTDetailModal = (props) => {
     const classes = useStyles();
-    let [isProperties, setIsProperties] = useState(false);
-
 
     useEffect(() => {
        // console.log("NFT detail props are: ", props);
@@ -105,57 +104,40 @@ const NFTDetailModal = (props) => {
                             <CardContent>
                                 <Row style={{marginBottom:"5px"}} >
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Description: </strong>
-                                        </Typography>
+                                        <TypographyText key = "Description: " component="p" variant="body2" isSpan = {false}></TypographyText>
+                                        
                                     </Col>
                                     <Col style={{justifyContent:'right'}}>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.description}
-                                    </Typography>
+                                        <TypographyText key = {props.nftDetail.description} component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Rarity: </strong>
-                                        </Typography>
+                                        <TypographyText key = "Rarity: " component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                     <Col>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.rarity}
-                                    </Typography>
+                                        <TypographyText key = {props.nftDetail.rarity} component="p" variant="body2" isSpan = {false}></TypographyText>   
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Token Supply: </strong>
-                                        </Typography>
+                                        <TypographyText key = "Token Supply: " component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                     <Col className='align-self-end'>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.tokensupply}
-                                        </Typography>
+                                        <TypographyText key = {props.nftDetail.tokensupply} component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                 </Row>
                                 <Row style={{marginBottom:"5px"}} >
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Collection: </strong>
-                                        </Typography>
+                                        <TypographyText key = "Collection: " component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                     <Col>
-                                    <Typography variant="body2" color="textSecondary" component="p">
-                                        {props.nftDetail.collectiontitle}
-                                    </Typography>
+                                        <TypographyText key = {props.nftDetail.collectiontitle} component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                 </Row>
                                 <Row>
                                     <Col>
-                                        <Typography variant="body2" color="textSecondary" component="p">
-                                            <strong>Properties: </strong>
-                                        </Typography>
+                                        <TypographyText key = "Properties: " component="p" variant="body2" isSpan = {false}></TypographyText>
                                     </Col>
                                 </Row>
                                 <Row>

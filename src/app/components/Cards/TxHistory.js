@@ -3,13 +3,12 @@ import { Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import React from "react";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-
+import TypographyText from '../Typography/TypographyText';
 const useStyles = makeStyles((theme) => ({
     root: {
         flexGrow: 1,
@@ -52,18 +51,12 @@ function TxHistory(props) {
         <Grid item xs={12} sm={12} md={12}>
             <Card className={classes.root}>
                 <CardActionArea style={{ margin: '5px' }}>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>From : </strong>{props.data.from}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>To : </strong>{props.data.to}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Hash : </strong>
-                        <a href={"https://ropsten.etherscan.io/tx/" + props.data.transaction} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
+
+                    <TypographyText key = "From : " component="p" variant="body2" isSpan = {false} value = {props.data.from}></TypographyText>
+                    <TypographyText key = "To : " component="p" variant="body2" isSpan = {false} value = {props.data.to}></TypographyText>
+                    <TypographyText key = "Hash : " component="p" variant="body2" isSpan = {false} value = {<div><a href={"https://ropsten.etherscan.io/tx/" + props.data.transaction} target="_blank" rel="noopener noreferrer" style={{ color: 'rgb(167,0,0)' }}>
                             <span style={{ cursor: 'pointer' }}>{props.data.transaction.substr(0, 20)}. . .</span>
-                        </a>
-                    </Typography>
+                        </a></div>}></TypographyText>
                 </CardActionArea>
             </Card>
         </Grid>

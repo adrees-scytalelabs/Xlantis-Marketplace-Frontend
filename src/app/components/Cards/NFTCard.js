@@ -5,7 +5,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardMedia from "@material-ui/core/CardMedia";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
@@ -13,6 +12,7 @@ import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { truncate } from "../../assets/js/utils";
+import TypographyText from "../TypographyText/TypographyTextText";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -160,30 +160,16 @@ function NFTCard(props) {
               className="row no-gutters justify-content-start align-items-center"
               // style={{ minHeight: "60px" }}
             >
-              <Typography
-                variant="h6"
-                component="p"
-                className={classes.cardTitle}
-              >
-                {props.data.title}
-              </Typography>
+              <TypographyText variant = "h6" component="p" class={classes.cardTitle} value = {props.data.title} isSpan = {false}></TypographyText>
+
             </div>
             {/* Descriptions */}
             <div className="row no-gutters justify-content-start align-items-center">
-              <Typography
-                variant="body2"
-                className={classes.cardDescriptions}
-                component="p"
-                style={{ minHeight: "2.5rem" }}
-              >
-                {/* <strong>Artwork Description: </strong> */}
-                {truncate(props.data.description, 35)}
-                {/* {props.data.description} */}
-              </Typography>
+              <TypographyText variant = "body2" component="p" class={classes.cardDescriptions} style={{ minHeight: "2.5rem" }} value = {truncate(props.data.description, 35)} isSpan = {false}></TypographyText>
             </div>
             {/* Rarity */}
             {/* <div className="row no-gutters justify-content-start align-items-center">
-                <Typography
+                <TypographyText
                   variant="body2"
                   component="p"
                   // className={classes.commonRarity}
@@ -191,10 +177,10 @@ function NFTCard(props) {
                 >
                   <strong>Token Rarity: </strong>
                   {props.data.type}
-                </Typography>
+                </TypographyText>
               </div> */}
 
-            {/* <Typography
+            {/* <TypographyText
                 variant="body2"
                 component="p"
                 className={classes.cardDescriptions}
@@ -202,8 +188,8 @@ function NFTCard(props) {
                 <strong>Token Supply: </strong>
                 {props.data.tokenSupply}
                 150
-              </Typography> */}
-            {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</Typography>
+              </TypographyText> */}
+            {/* <TypographyText variant="h6" gutterBottom color="textSecondary" className="text-center">Image Artist</TypographyText>
                         <Link to={"/User/Profile/Detail/imageArtist/" + props.data.ImageArtistId + "/null"} style={{ color: '#000' }}>
                             <CardHeader
                                 avatar={<Avatar src={props.data.ImageArtistProfile} aria-label="Artist" className={classes.avatar} />}
@@ -211,10 +197,8 @@ function NFTCard(props) {
                                 subheader={props.data.ImageArtistAbout}
                             />
                         </Link>
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            <strong>Website URL: </strong>{props.data.ImageArtistWebsite}
-                        </Typography>
-                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</Typography>
+                        <TypographyText key = "Website URL: " value = {props.data.ImageArtistWebsite}></TypographyText>
+                        <TypographyText variant="h6" gutterBottom color="textSecondary" className="text-center">Producer</TypographyText>
                         <Link to={"/User/Profile/Detail/producer/" + props.data.ProducerId + "/null"} style={{ color: '#000' }}>
                             <CardHeader
                                 avatar={<Avatar src={props.data.ProducerProfile} aria-label="Producer" className={classes.avatar} />}
@@ -222,7 +206,7 @@ function NFTCard(props) {
                                 subheader={props.data.ProducerInspiration}
                             />
                         </Link>
-                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</Typography>
+                        <TypographyText variant="h6" gutterBottom color="textSecondary" className="text-center">Executive Producer</TypographyText>
                         <Link to={"/User/Profile/Detail/executiveProducer/" + props.data.ExecutiveProducerId + "/null"} style={{ color: '#000' }}>
                             <CardHeader
                                 avatar={<Avatar src={props.data.ExecutiveProducerProfile} aria-label="Executive Producer" className={classes.avatar} />}
@@ -230,7 +214,7 @@ function NFTCard(props) {
                                 subheader={props.data.ExecutiveProducerInspiration}
                             />
                         </Link>
-                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</Typography>
+                        <TypographyText variant="h6" gutterBottom color="textSecondary" className="text-center">Fan</TypographyText>
                         <Link to={"/User/Profile/Detail/fan/" + props.data.FanId + "/null"} style={{ color: '#000' }}>
                             <CardHeader
                                 avatar={<Avatar src={props.data.FanProfile} aria-label="Fan" className={classes.avatar} />}
@@ -238,10 +222,9 @@ function NFTCard(props) {
                                 subheader={props.data.FanInspiration}
                             />
                         </Link>
+                        <TypographyText key = "Other: " component="p" variant="body2" isSpan = {false} value = {props.data.other}></TypographyText>
 
-                        <Typography variant="body2" color="textSecondary" component="p">
-                            <strong>Other: </strong>{props.data.other}
-                        </Typography> */}
+                        */}
           </CardContent>
         </div>
       </Card>

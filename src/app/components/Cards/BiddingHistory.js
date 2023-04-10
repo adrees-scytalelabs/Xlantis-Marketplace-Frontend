@@ -3,12 +3,12 @@ import { Grid } from '@material-ui/core';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import React from "react";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import TypographyText from '../Typography/TypographyText';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -52,12 +52,11 @@ function BiddingHistory(props) {
         <Grid item xs={12} sm={12} md={12} >
             <Card className={classes.root} >
                 <CardActionArea style={{ margin: '5px' }}>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Address : </strong>{props.data.address}
-                    </Typography>
-                    <Typography variant="body2" color="textSecondary" component="p">
-                        <strong>Bid : </strong><span style={{ cursor: 'pointer', color: 'rgb(167,0,0)' }}>{props.data.Bid / 10 ** 18} WETH</span>
-                    </Typography>
+                    <TypographyText key = "Address : " value = {props.data.address} component="p" variant="body2" isSpan = {false}></TypographyText>
+
+                    <TypographyText key = "Bid : " value = {props.data.Bid / 10 ** 18} WETH component="p" variant="body2" isSpan = {true}
+                    spanStyle = {{ cursor: 'pointer', color: 'rgb(167,0,0)' }}
+                    ></TypographyText>
                 </CardActionArea>
             </Card>
         </Grid>

@@ -6,7 +6,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { makeStyles } from '@material-ui/core/styles';
 import TablePagination from '@material-ui/core/TablePagination';
-import Typography from '@material-ui/core/Typography';
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -19,7 +18,7 @@ import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MessageCard from '../../../components/MessageCards.js/MessageCard';
-
+import TypographyText from '../../../components/Typography/TypographyText';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -144,37 +143,29 @@ function AuctionDrops() {
                                                         >
                                                         </CardMedia>
                                                         <CardContent>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Drop Description: </strong>{i.description}
-                                                            </Typography>
-                                                            <Typography variant="body2" color="textSecondary" component="p">
-                                                                <strong>Minimum Bid: </strong>{(i.MinimumBid) / 10 ** 18}  WETH
-                                                            </Typography>
-                                                            <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                                                            <TypographyText key = "Drop Description: " component="p" color="textSecondary" variant="body2" isSpan = {false} value = {i.description}></TypographyText>
+                                                            <TypographyText key = "Minimum Bid: " component="p"color="textSecondary" variant="body2" isSpan = {false} value = {`${(i.MinimumBid) / 10 ** 18}  WETH`}></TypographyText>
+
+                                                            <TypographyText  component="p" isGutterBottom ={true} className="text-center" color="textSecondary" variant="h6" isSpan = {false} value = 
+
                                                                 {new Date() < new Date(i.AuctionStartsAt) ? (
                                                                     <div style={{ color: "#00FF00" }} >
+                                                                        <TypographyText key= "Auction Starts At:" variant = "body2" color="textSecondary" component="p" 
+                                                                        value ={ <Countdown daysInHours date={new Date(i.AuctionStartsAt)}>
+                                                                        </Countdown>} isSpan = {false}></TypographyText>
 
-                                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                                            <strong>Auction Starts At:</strong>
-                                                                        </Typography>
-                                                                        {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionStartsAt))} */}
-                                                                        <Countdown daysInHours date={new Date(i.AuctionStartsAt)}>
-                                                                        </Countdown>
                                                                     </div>
                                                                 ) : new Date() > new Date(i.AuctionStartsAt) && new Date() < new Date(i.AuctionEndsAt) ? (
                                                                     <div style={{ color: "#FF0000" }}>
                                                                         {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
-                                                                        <Typography variant="body2" color="textSecondary" component="p">
-                                                                            <strong>Auction Ends At:</strong>
-                                                                        </Typography>
-                                                                        <Countdown daysInHours date={new Date(i.AuctionEndsAt)}>
-                                                                        </Countdown>
+                                                                        <TypographyText key= "Auction Ends At:" variant = "body2" color="textSecondary" component="p" 
+                                                                        value ={ <Countdown daysInHours date={new Date(i.AuctionEndsAt)}>
+                                                                        </Countdown>} isSpan = {false}></TypographyText>
+                                                                        
                                                                     </div>) : (
-                                                                    <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                        <strong>Auction Ended</strong>
-                                                                    </Typography>
+                                                                    <TypographyText key = "Auction Ended" component="p" style={{ color: "#FF0000" }} variant="body2" isSpan = {false} ></TypographyText>
                                                                 )}
-                                                            </Typography>
+                                                            ></TypographyText>
                                                         </CardContent>
                                                     </CardActionArea>
                                                     <CardActions>
