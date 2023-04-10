@@ -191,7 +191,7 @@ function App() {
             <LoginRegisterRedirectCheck exact path="/checkout" />
             <LoginRegisterRedirectCheck exact path="/admin-signup-details" />
             <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
-            <LoginRegisterRedirectCheck exact path="/usd_payment/successcc" />
+            <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
             <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
             <LoginRegisterRedirectCheck exact path="/auctionDrops" />
             <LoginRegisterRedirectCheck
