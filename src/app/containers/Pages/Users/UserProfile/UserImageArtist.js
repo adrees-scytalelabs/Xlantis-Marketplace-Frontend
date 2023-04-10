@@ -117,7 +117,7 @@ function UserImageArtist(props) {
                     justify="flex-start"
                   >
                     {data.map((i, index) => (
-                      <NFTCard data={i} key={index}></NFTCard>
+                      <NFTCard data={i} key={index} />
                     ))}
                   </Grid>
                 )}

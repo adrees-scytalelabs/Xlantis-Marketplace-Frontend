@@ -125,7 +125,6 @@ function DropCubes(props) {
                     <Typography variant="body2" color="textSecondary" component="p">
                         <strong>Minimum Bid: </strong>{tokenList.MinimumBid / 10 ** 18} WETH
                     </Typography>
-                    {/* <Typography variant="h6" gutterBottom color="textSecondary" className="text-left"> */}
                     {new Date() < new Date(tokenList.AuctionStartsAt) ? (
                         <Typography variant="h5" gutterBottom color="textSecondary">
                             <strong>Auction Starts At:</strong>
@@ -149,7 +148,6 @@ function DropCubes(props) {
                             <strong>Auction Ended</strong>
                         </Typography>
                     )}
-                    {/* </Typography> */}
                     {open ? (
                         <div align="center" className="text-center">
                             <Spinner

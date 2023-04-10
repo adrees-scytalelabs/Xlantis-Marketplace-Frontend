@@ -56,8 +56,6 @@ function TrendingCollections() {
                 <CollectionCard />
                 <CollectionCard />
               </Grid>
-
-              {/* </Grid> */}
             </div>
           </Container>
         </div>

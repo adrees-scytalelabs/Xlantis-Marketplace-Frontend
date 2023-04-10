@@ -1,22 +1,17 @@
-import { CardContent, CardMedia, Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
+import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import {
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   makeStyles,
 } from "@material-ui/core/styles";
-import Pause from "@material-ui/icons/Pause";
-import PlayArrow from "@material-ui/icons/PlayArrow";
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import CornerRibbon from "react-corner-ribbon";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
-import { truncate } from "../../../../assets/js/utils";
-import MessageCardDropNfts from "../../../../components/MessageCards.js/MessageCardDropNfts";
+import DropNFTCard from "../../../../components/Cards/DropNFTCard";
+import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,7 +82,7 @@ const cardStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -137,7 +132,6 @@ const customTheme = createMuiTheme({
   },
 });
 
-
 function MyNFTs(props) {
   let location = useLocation();
   const classes = useStyles();
@@ -151,8 +145,7 @@ function MyNFTs(props) {
   const [nftIds, setNftIds] = useState([]);
   let [audio, setAudio] = useState();
   let [versionB, setVersionB] = useState("");
- 
-  
+
   let [windowSize, setWindowSize] = useState(window.innerWidth);
 
   const handleCloseBackdrop = () => {
@@ -292,7 +285,6 @@ function MyNFTs(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -315,18 +307,14 @@ function MyNFTs(props) {
       </div>
 
       <div className="card-body page-height px-0">
-        {/* Banner and Thumb */}
         <div className="row no-gutters">
           <div className="col-12">
             <div className="bannerWrapper">
-              {/* banner */}
               <img
                 src="https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
                 className="bannerImg"
                 alt="Drop banner"
               />
-
-              {/* thumbg */}
               <div className="dropThumbWrapper">
                 <img
                   src="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
@@ -338,9 +326,7 @@ function MyNFTs(props) {
           </div>
         </div>
         <div className="container-fluid mt-5">
-          {/* Heading */}
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
-            {/* On Sale */}
             <div className="col-12">
               <h1 className="marketCatHeadings">NFTs inside Sample Drop </h1>
             </div>
@@ -362,13 +348,17 @@ function MyNFTs(props) {
                   </span>
                 </div>
               ) : tokenList.length === 0 ? (
-                <MessageCardDropNfts msg = "No items to display"></MessageCardDropNfts>
+                <MarketPlaceMessageCard
+                  marginLeft="20%"
+                  paddingTop="80px"
+                  message="No items to display"
+                />
               ) : (
                 <Grid
                   container
                   spacing={3}
                   direction="row"
-                  justify="flex-start"
+                  justifyContent="flex-start"
                   style={{ marginBottom: "24px" }}
                 >
                   {tokenList.map((i, index) => (
@@ -392,115 +382,17 @@ function MyNFTs(props) {
                               startTime: location.state.startTime,
                               endTime: location.state.endTime,
                               nftId: location.state.nftId,
-                              dropId: location.state.dropId
+                              dropId: location.state.dropId,
                             },
                           }}
                         >
-                          <Card
-                            variant="outlined"
-                            className={classes.cardHeight}
-                            style={{
-                              borderRadius: 0,
-                              border: "1px solid #fff",
-                            }}
-                          >
-
-                            <div style={{ position: "relative" }}>
-                              <CardMedia
-                                className={classes.media}
-                                image={
-                                  i.previewImageURI
-                                    ? i.previewImageURI
-                                    : i.nftURI
-                                }
-                                title="NFT Image"
-                              />
-
-                              {i.nftFormat === "mp3" ? (
-                                <div
-                                  style={{
-                                    position: "absolute",
-                                    left: "75%",
-                                    bottom: "5%",
-                                  }}
-                                >
-                                  {i.isPlaying === false ? (
-                                    <button
-                                      className="btn"
-                                      style={{
-                                        borderRadius: "50%",
-                                        backgroundColor: "rgba(0,0,0,.5)",
-                                        border: "#9f9f9f",
-                                      }}
-                                      onClick={(e) => handlePlay(e, i)}
-                                    >
-                                      <PlayArrow />
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn"
-                                      style={{
-                                        borderRadius: "80%",
-                                        backgroundColor: "rgba(0,0,0,.5)",
-                                        border: "#9f9f9f",
-                                      }}
-                                      onClick={(e) => handlePause(e, i)}
-                                    >
-                                      <Pause />
-                                    </button>
-                                  )}
-                                </div>
-                              ) : null}
-                              {i.currentMarketplaceId.isSold === true ? (
-                                <CornerRibbon
-                                  position="top-right"
-                                  fontColor="#f0f0f0"
-                                  backgroundColor="#f44336"
-                                  style={{ fontWeight: "bold" }}
-                                >
-                                  SOLD
-                                </CornerRibbon>
-                              ) : null}
-                            </div>
-
-                            <CardContent>
-
-                              <div
-                                className="row no-gutters justify-content-between"
-                                style={{ minHeight: "60px" }}
-                              >
-                                <div className="col-lg-8 align-self-end">
-                                  <Typography
-                                    variant="h6"
-                                    component="div"
-                                    className={cardClasses.cardTitle}
-                                  >
-                                    {i.title.length > 12 ? (
-                                      <span>{i.title.slice(0, 7)}...</span>
-                                    ) : (
-                                      i.title
-                                    )}
-                                  </Typography>
-                                  <Typography
-                                    variant="body2"
-                                    component="p"
-                                    className={cardClasses.cardDescriptions}
-                                  >
-                                    {truncate(i.description, 25)}
-                                  </Typography>
-                                </div>
-                                <div className="col-lg-4 align-self-end text-center text-lg-right py-3  p-lg-0">
-                                  <p
-                                    className="nftPrice mb-0 p-0"
-                                    style={{ lineHeight: "1.6" }}
-                                  >
-                                    {i.currentMarketplaceId.price}{" "}
-                                    USD
-                                  </p>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
+                          <DropNFTCard
+                            details={i}
+                            classes={classes}
+                            handlePlay={handlePlay}
+                            handlePause={handlePause}
+                            cardClasses={cardClasses}
+                          />
                         </Link>
                       ) : (
                         <Link
@@ -516,124 +408,27 @@ function MyNFTs(props) {
                             },
                           }}
                         >
-                          <Card
-                            style={{
-                              borderRadius: 0,
-                              border: "1px solid #fff",
-                            }}
-                            className={classes.cardHeight}
-                          >
-
-                            <div style={{ position: "relative" }}>
-                              <CardMedia
-                                className={classes.media}
-                                image={
-                                  i.previewImageURI
-                                    ? i.previewImageURI
-                                    : i.nftURI
-                                }
-                                title="NFT Image"
-                              />
-
-                              {i.nftFormat === "mp3" ? (
-                                <div
-                                  style={{
-                                    position: "absolute",
-                                    left: "75%",
-                                    bottom: "5%",
-                                  }}
-                                >
-                                  {i.isPlaying === false ? (
-                                    <button
-                                      className="btn"
-                                      style={{
-                                        borderRadius: "50%",
-                                        backgroundColor: "rgba(0,0,0,.5)",
-                                        border: "#9f9f9f",
-                                      }}
-                                      onClick={(e) => handlePlay(e, i)}
-                                    >
-                                      <PlayArrow />
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn"
-                                      style={{
-                                        borderRadius: "80%",
-                                        backgroundColor: "rgba(0,0,0,.5)",
-                                        border: "#9f9f9f",
-                                      }}
-                                      onClick={(e) => handlePause(e, i)}
-                                    >
-                                      <Pause />
-                                    </button>
-                                  )}
-                                </div>
-                              ) : null}
-                              {i.currentMarketplaceId.isSold === true ? (
-                                <CornerRibbon
-                                  position="top-right"
-                                  fontColor="#f0f0f0"
-                                  backgroundColor="#f44336"
-                                  style={{ fontWeight: "bold" }}
-                                >
-                                  SOLD
-                                </CornerRibbon>
-                              ) : null}
-                            </div>
-                            <CardContent>
-
-                              <div
-                                className="row no-gutters justify-content-between"
-                                style={{ minHeight: "60px" }}
-                              >
-                                <div className="col-lg-8 align-self-end">
-                                  <Typography
-                                    variant="h6"
-                                    component="div"
-                                    className={cardClasses.cardTitle}
-                                  >
-                                    {i.title.length > 12 ? (
-                                      <span>{i.title.slice(0, 7)}...</span>
-                                    ) : (
-                                      i.title
-                                    )}
-                                  </Typography>
-                                  <Typography
-                                    variant="body2"
-                                    component="p"
-                                    className={cardClasses.cardDescriptions}
-                                  >
-                                    {truncate(i.description, 25)}
-                                  </Typography>
-                                </div>
-                                <div className="col-lg-4 align-self-end text-center text-lg-right py-3  p-lg-0">
-                                  <p
-                                    className="nftPrice mb-0 p-0"
-                                    style={{ lineHeight: "1.6" }}
-                                  >
-                                    {i.currentMarketplaceId.price}{" "}
-                                    USD
-                                  </p>
-                                </div>
-                              </div>
-                            </CardContent>
-                          </Card>
+                          <DropNFTCard
+                            deetails={i}
+                            classes={classes}
+                            handlePlay={handlePlay}
+                            handlePause={handlePause}
+                            cardClasses={cardClasses}
+                          />
                         </Link>
                       )}
                     </Grid>
                   ))}
                 </Grid>
               )}
-
               <TablePagination
                 rowsPerPageOptions={[4, 8, 12, 24]}
                 component="div"
                 count={totalNfts}
                 rowsPerPage={rowsPerPage}
                 page={page}
-                onChangePage={handleChangePage}
-                onChangeRowsPerPage={handleChangeRowsPerPage}
+                onPageChange={handleChangePage}
+                onRowsPerPageChange={handleChangeRowsPerPage}
               />
             </div>
           </ThemeProvider>

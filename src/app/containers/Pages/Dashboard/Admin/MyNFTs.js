@@ -65,8 +65,6 @@ const makeTheme = createMuiTheme({
   },
 });
 
-//console.log("nft images: ", nftImage);
-
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
@@ -84,16 +82,12 @@ function MyNFTs(props) {
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
-    //console.log("version", version);
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-       // console.log("response", response);
-        let nfts = response.data.NFTdata;
+       let nfts = response.data.NFTdata;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
         });
-        //console.log("NFTS", nfts);
-        //console.log("Updated", newState);
         setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
@@ -157,8 +151,6 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  //console.log("the tokenList length: ", tokenList.length);
-  //console.log(tokenList.length !== 0 && "page-height");
 
   return (
     <div className="backgroundDefault position-relative">
@@ -180,7 +172,6 @@ function MyNFTs(props) {
       </div>
 
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <div className="row no-gutters justify-content-center align-items-center">

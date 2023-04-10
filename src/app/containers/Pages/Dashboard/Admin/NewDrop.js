@@ -1,32 +1,20 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import { Grid } from "@material-ui/core/";
-
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
+import { ThemeProvider, createTheme } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import Tooltip from "@material-ui/core/Tooltip";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Scrollbars } from "react-custom-scrollbars";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import Web3 from "web3";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
-import CubeComponent1 from "../../../../components/Cube/CubeComponent1";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import UploadFile from "../../../../components/Upload/UploadFile";
@@ -66,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiFormControlLabel: {
       label: {
@@ -655,93 +643,6 @@ function NewDrop(props) {
               </div>
             </form>
           </div>
-
-          <div className="col-md-12 col-lg-6">
-            {types.length > 0 ? (
-              <Scrollbars style={{ height: 900 }}>
-                <div className="form-group">
-                  <div>
-                    <Grid
-                      container
-                      spacing={3}
-                      direction="row"
-                      justify="flex-start"
-                    >
-                      {types.map((i, index) => (
-                        <Grid item xs={12} sm={6} md={6} key={index}>
-                          <Card
-                            style={{ height: "100%" }}
-                            variant="outlined"
-                            className={classes.root}
-                          >
-                            <CardActionArea>
-                              <CardMedia className={classes.media} title="">
-                                <CubeComponent1
-                                  data={typesImages}
-                                  index={index}
-                                />
-                              </CardMedia>
-                              <CardContent>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Cube Title: </strong>
-                                  {i.title}
-                                </Typography>
-
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Cube Description: </strong>
-                                  {i.description}
-                                </Typography>
-
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Sale Price: </strong>
-                                  {i.SalePrice / 10 ** 18} ETH
-                                </Typography>
-                                <Typography
-                                  variant="h6"
-                                  gutterBottom
-                                  color="textSecondary"
-                                  className="text-center"
-                                >
-                                  Music Artist
-                                </Typography>
-                                <CardHeaderWithAvatar
-                                  src={i.MusicArtistProfile}
-                                  title={i.MusicArtistName}
-                                  subheader={i.MusicArtistAbout}
-                                />
-                              </CardContent>
-                            </CardActionArea>
-                            <CardActions>
-                              <Button
-                                onClick={(e) => {
-                                  e.preventDefault();
-                                }}
-                                className="btn btn-sm bg-danger-light btn-block"
-                              >
-                                Remove NFT
-                              </Button>
-                            </CardActions>
-                          </Card>
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
-                </div>
-              </Scrollbars>
-            ) : null}
-          </div>
         </div>
         {isSaving ? (
           <div className="text-center">
@@ -769,7 +670,7 @@ function NewDrop(props) {
         show={showNetworkModal}
         handleClose={handleCloseNetworkModal}
         network={network}
-      ></NetworkErrorModal>
+      />
       <WorkInProgressModal
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}

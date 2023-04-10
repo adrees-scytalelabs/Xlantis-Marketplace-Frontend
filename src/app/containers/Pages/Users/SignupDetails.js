@@ -133,9 +133,6 @@ class SignupDetails extends Component {
         <div className="form-group">
           <p style={{ color: "#FF0000" }}>{this.state.msg}</p>
         </div>
-        {/* <div>
-                    <button className="btn login-btn" style={{ textAlign: "left" }} onClick={this.back}>Back</button>
-                </div> */}
         <br />
         <div className="text-center">
           <button

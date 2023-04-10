@@ -629,7 +629,6 @@ function NewCollection(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                {/* Upload Image */}
                 <label>Select Preview Image</label>
                 <UploadFile
                   fileURL={fileURL}
@@ -638,7 +637,6 @@ function NewCollection(props) {
                   class="co-12 col-md-auto profile-img mr-3"
                   accept=".png,.jpg,.jpeg,.gif"
                 />
-                {/* Feilds */}
                 <div className="form-group newNftFields">
                   <label>Collection Name</label>
                   <div className="form-group newNftWrapper">
@@ -672,7 +670,6 @@ function NewCollection(props) {
                   </div>
 
                   <div className="form-group newNftWrapper">
-                    {/* <label>About the Art</label> */}
                     <textarea
                       type="text"
                       required

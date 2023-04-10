@@ -2,29 +2,20 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card,
-  CardContent,
-  CardMedia,
   makeStyles,
   Paper,
   Typography
 } from "@material-ui/core";
-
-import {
-  createMuiTheme,
-  ThemeProvider
-} from "@material-ui/core/styles";
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Col, Row, Table } from "react-bootstrap";
-import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -32,6 +23,8 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
+import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 
@@ -136,7 +129,6 @@ const NFTBuy = (props) => {
           console.log(error);
           console.log(error.response);
         }
-
       }
     );
   };
@@ -356,9 +348,7 @@ const NFTBuy = (props) => {
       function handleSSOBuy() {
         console.log("Nft detail: ", nftDetail);
         console.log("Price", nftDetail);
-
       }
-
     }
   };
 
@@ -454,7 +444,6 @@ const NFTBuy = (props) => {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -475,7 +464,7 @@ const NFTBuy = (props) => {
                   pathname: `/dashboard/marketPlace/drops/nfts`,
                   state: {
                     nftId: location.state.nftId,
-                    dropId: location.state.dropId
+                    dropId: location.state.dropId,
                   },
                 }}
               >
@@ -494,176 +483,11 @@ const NFTBuy = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <Card className={classes.root}>
-                  <div>
-                    {nftDetail.nftFormat === "glb" ||
-                      nftDetail.nftFormat === "gltf" ? (
-                      <div>
-                        <div
-                          style={{
-                            display: "flex",
-                            margin: "10px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <GLTFModel
-                            src={nftDetail.nftURI}
-                            width={250}
-                            height={250}
-                          >
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            {/* <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} /> */}
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 100, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 50, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 0, z: 0 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 100, z: 200 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: -100, y: 200, z: -100 }}
-                            />
-                          </GLTFModel>
-                        </div>
-                        <div style={{ marginTop: "20px" }}>
-                          <CardMedia
-                            className={classes.media}
-                            title="NFT Artwork"
-                            image={nftDetail.previewImageURI}
-                          ></CardMedia>
-                        </div>
-                      </div>
-                    ) : nftDetail.nftFormat === "mp3" ? (
-                      <div>
-                        <CardMedia
-                          className={classes.media}
-                          title="NFT Artwork"
-                          image={
-                            nftDetail.previewImageURI
-                              ? nftDetail.previewImageURI
-                              : nftDetail.nftURI
-                          }
-                        ></CardMedia>
-                        <div>
-                          <AudioPlayer
-                            style={{ borderRadius: "1rem" }}
-                            autoPlay={false}
-                            layout="horizontal"
-                            src={nftDetail.nftURI}
-                            onPlay={(e) => console.log("onPlay")}
-                            showSkipControls={false}
-                            showJumpControls={false}
-                            showDownloadProgress
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <CardMedia
-                        className={classes.media}
-                        title="NFT Artwork"
-                        image={nftDetail.nftURI}
-                      ></CardMedia>
-                    )}
-                  </div>
-                </Card>
+                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
-              <Card style={{ backgroundColor: "black" }}>
-                <CardContent>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Title </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.title}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Description </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.description}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>Price </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {price} USD
-                    </Col>
-                  </Row>
-
-                  {nftDetail.nftType === "1155" ? (
-                    <span>
-                      <Row>
-                        <Col>
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                          >
-                            <strong>Supply Type </strong>
-                          </Typography>
-                        </Col>
-                        <Col style={{ color: "white", fontFamily: "inter" }}>
-                          {nftDetail.supplyType}
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Typography
-                            variant="body1"
-                            component="p"
-                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                          >
-                            <strong>Token Supply </strong>
-                          </Typography>
-                        </Col>
-                        <Col style={{ color: "white", fontFamily: "inter" }}>
-                          {nftDetail.tokenSupply}
-                        </Col>
-                      </Row>
-                    </span>
-                  ) : null}
-                </CardContent>
-              </Card>
+              <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
                   <Accordion>
@@ -688,7 +512,11 @@ const NFTBuy = (props) => {
                           {Object.keys(properties).map((key, index) => (
                             <tr key={index}>
                               <td>{key}</td>
-                              <td ><label className="ml-2">{properties[key]}</label></td>
+                              <td>
+                                <label className="ml-2">
+                                  {properties[key]}
+                                </label>
+                              </td>
                             </tr>
                           ))}
                         </tbody>
@@ -699,8 +527,8 @@ const NFTBuy = (props) => {
               </Row>
               <br></br>
               {location.state.nftDetail.currentMarketplaceId.isSold === false &&
-                new Date() >= new Date(location.state.startTime) &&
-                new Date() < new Date(location.state.endTime) ? (
+              new Date() >= new Date(location.state.startTime) &&
+              new Date() < new Date(location.state.endTime) ? (
                 <Row>
                   <Col
                     style={{
@@ -739,7 +567,7 @@ const NFTBuy = (props) => {
                         Buy
                       </button>
                       {location.state.nftDetail.currentMarketplaceId.isSold ===
-                        true ? (
+                      true ? (
                         <ReactTooltip
                           id="registerTip"
                           place="top"

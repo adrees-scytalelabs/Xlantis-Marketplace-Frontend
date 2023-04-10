@@ -7,7 +7,7 @@ import { Link, useParams } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import Card from "@material-ui/core/Card";
 import Typography from "@material-ui/core/Typography";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
 
 function CollectionNfts(props) {
   const { collectionId } = useParams();
@@ -42,7 +42,6 @@ function CollectionNfts(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollectionNfts();
-    
 
     props.setActiveTab({
       dashboard: "",
@@ -60,7 +59,7 @@ function CollectionNfts(props) {
       newCube: "",
       newCollection: "active",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
 
   return (
@@ -100,7 +99,7 @@ function CollectionNfts(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <MessageCard msg = "No items to display"></MessageCard>
+              <MarketPlaceMessageCard mesage="No items to display" />
             ) : (
               <Grid container spacing={2} direction="row" justify="flex-start">
                 {tokenList.map((i, index) => (

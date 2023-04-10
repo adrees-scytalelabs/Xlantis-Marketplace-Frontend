@@ -1,6 +1,4 @@
 import { Grid } from "@material-ui/core/";
-import Avatar from "@material-ui/core/Avatar";
-
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -24,11 +22,11 @@ import { Scrollbars } from "react-custom-scrollbars";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 import ipfs from "../../../../components/IPFS/ipfs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract from "../../../../components/blockchain/Abis/CreateNFTContract.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import CardHeaderWithAvatar from "../../../../components/CardHeader/CardHeaderWithAvatar";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -128,9 +126,9 @@ function NewNFT(props) {
   let [executiveProducerId, setExecutiveProducerId] = useState("");
 
   let getProfileData = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios.get("/profile/createprofile").then(
       (response) => {
         console.log("response", response);
@@ -159,9 +157,9 @@ function NewNFT(props) {
     );
   };
   let getCollections = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios.get("/collection/collections").then(
       (response) => {
         console.log("response", response);
@@ -449,7 +447,6 @@ function NewNFT(props) {
       let imageNFT = e.target.files[0];
       reader.readAsArrayBuffer(e.target.files[0]);
       reader.onloadend = () => {
-
         ipfs.add(Buffer(reader.result), async (err, result) => {
           if (err) {
             console.log(err);
@@ -568,7 +565,6 @@ function NewNFT(props) {
                   </div>
 
                   <div className="form-group">
-                    {/* <label>About the Art</label> */}
                     <textarea
                       type="text"
                       required
@@ -827,7 +823,7 @@ function NewNFT(props) {
                       container
                       spacing={2}
                       direction="row"
-                      justify="flex-start"
+                      justifyContent="flex-start"
                     >
                       {tokenList.map((i, index) => (
                         <Grid item xs={12} sm={6} md={6} key={index}>
@@ -843,16 +839,16 @@ function NewNFT(props) {
                                   i.type === "Mastercraft"
                                     ? "4px solid #ff0000"
                                     : i.type === "Legendary"
-                                      ? "4px solid #FFD700"
-                                      : i.type === "Epic"
-                                        ? "4px solid #9400D3"
-                                        : i.type === "Rare"
-                                          ? "4px solid #0000FF"
-                                          : i.type === "Uncommon"
-                                            ? "4px solid #008000"
-                                            : i.type === "Common"
-                                              ? "4px solid #FFFFFF"
-                                              : "none",
+                                    ? "4px solid #FFD700"
+                                    : i.type === "Epic"
+                                    ? "4px solid #9400D3"
+                                    : i.type === "Rare"
+                                    ? "4px solid #0000FF"
+                                    : i.type === "Uncommon"
+                                    ? "4px solid #008000"
+                                    : i.type === "Common"
+                                    ? "4px solid #FFFFFF"
+                                    : "none",
                               }}
                               className={classes.media}
                               image={i.artwork}
@@ -940,7 +936,6 @@ function NewNFT(props) {
                               </Typography>
                               <CardHeaderWithAvatar
                                 src={i.FanProfile}
-                                  
                                 title={i.FanName}
                                 subheader={i.FanInspiration}
                               />

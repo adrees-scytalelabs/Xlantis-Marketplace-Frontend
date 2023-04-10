@@ -1,27 +1,10 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import {
-  CardActionArea,
-  Grid
-} from "@material-ui/core/";
-
-import Button from "@material-ui/core/Button";
-import Card from "@material-ui/core/Card";
-import CardActions from "@material-ui/core/CardActions";
-import CardMedia from "@material-ui/core/CardMedia";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import TextField from "@material-ui/core/TextField";
-import Tooltip from "@material-ui/core/Tooltip";
+import { createMuiTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import axios from "axios";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
@@ -35,66 +18,17 @@ import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
+import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
+import NewNftSelectNft from "../../../../components/Radio/NewNftSelectNft";
+import NewNftSelectSupply from "../../../../components/Radio/NewNftSelectSupply";
+import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
+import AddNftQueue from "../../../../components/buttons/AddNftQueue";
+import RemoveNft from "../../../../components/Cards/RemoveNft";
 
 const themeTemplate = createMuiTheme({
   overrides: {
     Mui: {
       focused: {},
-    },
-  },
-});
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiTextField: {
-      root: {
-        border: "1px solid #fff",
-        borderRadius: 5,
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "1px solid #fff",
-        "&$focused": {},
-      },
-    },
-    MuiInputBase: {
-      input: {
-        color: "#777",
-        fontFamily: "inter",
-      },
-    },
-    MuiInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "none",
-        borderRadius: 5,
-        padding: "6px 15px !important",
-        "&$focused": {},
-      },
-      underline: {
-        "&:$before": {},
-        "&::after": {
-          border: "none !important",
-        },
-      },
-    },
-    MuiAutocomplete: {
-      inputRoot: {},
-    },
-    MuiIconButton: {
-      root: {
-        color: "#fff !important",
-      },
-    },
-    MuiFormControlLabel: {
-      label: {
-        color: "white",
-        fontFamily: "inter",
-      },
     },
   },
 });
@@ -176,53 +110,12 @@ function NewNFT(props) {
     setTemplate("default");
   };
 
-  let handleNewTemplateModalOpen = () => {
-    setNewTemplateModalShow(true);
-  };
-
-  const handleTemplateChange = (e) => {
-    setExtractedDataProps(null);
-    //console.log(e.target.value, " template change");
-    if (e.target.value === "new") handleNewTemplateModalOpen();
-    setTemplate(e.target.value);
-    if (e.target.value === "default") {
-      handleSetProperties(defaultTemplates.properties);
-    }
-  };
-
-  const handleSelectTemplate = (e) => {
-    setExtractedDataProps(null);
-    //console.log(e.target.value, " Template selected!");
-    if (templateData) {
-      for (let i = 0; i < templateData.length; i++) {
-        if (e.target.value === templateData[i].name) {
-          handleSetProperties(templateData[i].properties);
-
-          // console.log("values matched");
-          let dynamicField = [];
-          for (let p = 0; p < templateData[i].properties.length; p++) {
-            dynamicField.push({
-              key: templateData[i].properties[p].key,
-              value: "",
-              type: templateData[i].properties[p].type,
-              id: templateData[i].properties[p]._id,
-            });
-            setExtractedDataProps(dynamicField);
-          }
-        }
-      }
-      if (e.target.value === "none") setExtractedDataProps(null);
-    }
-  };
-
   const handleStandardSelectTemplate = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " Template selected!");
     if (standardTemplates) {
       for (let i = 0; i < standardTemplates.length; i++) {
         if (e.target.value === standardTemplates[i].name) {
           handleSetProperties(standardTemplates[i].properties);
-          //console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < standardTemplates[i].properties.length; p++) {
             dynamicField.push({
@@ -240,20 +133,12 @@ function NewNFT(props) {
     }
   };
 
-  const handleTemplatePropertyChange = (index, e) => {
-    let data = [...properties];
-
-    data[index].value = e.target.value;
-    setProperties(data);
-  };
-
   const [tokenList, setTokenList] = useState([]);
   let [isSaving, setIsSaving] = useState(false);
   let [name, setName] = useState("");
   let [ipfsHash, setIpfsHash] = useState(null);
   let [description, setDescription] = useState("");
   let [properties, setProperties] = useState([{ key: "", value: "" }]);
-
 
   let [supplyType, setSupplyType] = useState("Single");
   let [nftContractAddress, setNftContractAddress] = useState("");
@@ -288,12 +173,6 @@ function NewNFT(props) {
 
   let [previewImage, setPreviewImage] = useState(r1);
   let [versionB, setVersionB] = useState("");
-  const Text721 =
-    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 =
-    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
-  const SupplyTypeText =
-    "Single supply in ERC-1155 refers to a collection of NFTs that have a predetermined, only one copy of NFTs available, while variable supply allows for the creation of multiple and identical NFTs copies, depending on demand.";
   let getCollections = (collectionType) => {
     setCollection("");
     const url = `/collection/collections/${collectionType}`;
@@ -658,7 +537,6 @@ function NewNFT(props) {
           if (batchId === "") {
             axios.post(`/batch-mint/`, data).then(
               (response) => {
-                //console.log("Response on batch mint: ", response);
                 setBatchId(response.data.batchId);
                 setNftId(response.data.nftId);
                 setTokenList([
@@ -774,10 +652,7 @@ function NewNFT(props) {
           setIsMp3File(false);
           let variant = "success";
           enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
-
-          //console.log("Token list length: ", tokenList.length);
           setIsUploadingData(false);
-
           handleCloseBackdrop();
         });
       };
@@ -855,24 +730,11 @@ function NewNFT(props) {
       }
     );
   };
-  let handleRemoveProperty = (e, index) => {
-    e.preventDefault();
-    let data = [...properties];
-    data.splice(index, 1);
-    setProperties(data);
-  };
 
-  let handleAddProperty = (e) => {
-    e.preventDefault();
-    let newData = { key: "", value: "" };
-    setProperties([...properties, newData]);
-  };
 
-  let handlePropertyChange = (index, event) => {
-    let data = [...properties];
-    data[index][event.target.name] = event.target.value;
-    setProperties(data);
-  };
+
+
+
 
   let handleOpenNFTDetailModal = (nftObject) => {
     setNftDetail(nftObject);
@@ -1218,7 +1080,6 @@ function NewNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                {/* Image Upload */}
                 <label className="mb-0 p-1">Select Artwork</label>
                 <NFTUpload
                   image={image}
@@ -1232,7 +1093,6 @@ function NewNFT(props) {
                   previewImageURI={previewImageURI}
                   isUploadingPreview={isUploadingPreview}
                 />
-                {/* Fields */}
                 <div className="form-group newNftFields">
                   <label>Title</label>
                   <div className="form-group newNftWrapper">
@@ -1262,998 +1122,80 @@ function NewNFT(props) {
                       }}
                     />
                   </div>
-                  <div>
-                    <label>Templates</label>
-                    <small style={{ marginLeft: "5px" }}>(optional)</small>
-                  </div>
-                  <div className="w-100 position-relative mb-4">
-                    <select
-                      name="templates"
-                      id="selectTemplate"
-                      className="templatesSelect"
-                      placeholder="Select a Template"
-                      onChange={handleTemplateChange}
-                      value={template}
-                    >
-                      <option value="default">Default</option>
-                      <option value="none">None</option>
-                      <option value="saved">Saved</option>
-                      <option value="standard">Standard</option>
-                      <option value="new">Create New</option>
-                    </select>
-                    {template === "default" ? (
-                      defaultTemplates !== null ? (
-                        <div className="w-100 my-3 row no-gutters justify-content-md-between">
-                          <div className="filter-widget col-12">
-                            <input
-                              name={defaultTemplates.name}
-                              type="text"
-                              placeholder={defaultTemplates.name}
-                              required
-                              value={defaultTemplates.name}
-                              className="newNftProps"
-                              disabled
-                              style={{
-                                color: "#696969",
-                                borderColor: "#626262",
-                              }}
-                            />
-                          </div>
-                          {defaultTemplates.properties.map((p, index) => (
-                            <div className="col-12 col-md-5" key={index}>
-                              <div className="w-100">
-                                <label>{p.key}</label>
-                                {p.type === "string" ? (
-                                  <div className="filter-widget">
-                                    <input
-                                      name={p.key}
-                                      type="text"
-                                      placeholder="value"
-                                      required
-                                      value={properties[index].value}
-                                      className="newNftProps"
-                                      onChange={(e) =>
-                                        handleTemplatePropertyChange(index, e)
-                                      }
-                                    />
-                                  </div>
-                                ) : p.type === "number" ? (
-                                  <div className="filter-widget">
-                                    <input
-                                      name={p.key}
-                                      type="number"
-                                      placeholder="0"
-                                      required
-                                      className="newNftProps"
-                                      onChange={(e) =>
-                                        handleTemplatePropertyChange(index, e)
-                                      }
-                                    />
-                                  </div>
-                                ) : (
-                                  <div className="filter-widget">
-                                    <input
-                                      name={p.key}
-                                      type="radio"
-                                      id="templateYes"
-                                      required
-                                      value={true}
-                                      className="newNftProps"
-                                      style={{
-                                        width: "auto",
-                                        margin: "0.5rem",
-                                      }}
-                                      onChange={(e) =>
-                                        handleTemplatePropertyChange(index, e)
-                                      }
-                                    />
-                                    <label
-                                      for="templateYes"
-                                      style={{
-                                        width: "calc(100% - 55px)",
-                                        fontFamily: "inter",
-                                        fontWeight: "normal",
-                                      }}
-                                    >
-                                      Yes
-                                    </label>
-                                    <input
-                                      name={p.key}
-                                      type="radio"
-                                      id="templateNo"
-                                      required
-                                      value={false}
-                                      className="newNftProps"
-                                      style={{
-                                        width: "auto",
-                                        margin: "0.5rem",
-                                      }}
-                                      onChange={(e) =>
-                                        handleTemplatePropertyChange(index, e)
-                                      }
-                                    />
-                                    <label
-                                      for="templateNo"
-                                      style={{
-                                        width: "calc(100% - 55px)",
-                                        fontFamily: "inter",
-                                        fontWeight: "normal",
-                                      }}
-                                    >
-                                      No
-                                    </label>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <div className="mt-2 mb-4">
-                          <div
-                            className="alert alert-info"
-                            role="alert"
-                            style={{ fontFamily: "inter" }}
-                          >
-                            You have not set Default Template
-                          </div>
-                        </div>
-                      )
-                    ) : template === "none" ? (
-                      <div className="w-100 my-3">
-                        {properties.map((property, index) => {
-                          return (
-                            <div key={index}>
-                              <div className="row no-gutters justify-content-md-between align-items-center">
-                                <div className="col-12 col-md-5">
-                                  <div className="form-group w-100">
-                                    <label>Key</label>
-                                    <div className="filter-widget">
-                                      <input
-                                        name="key"
-                                        type="text"
-                                        placeholder="Enter key of the property"
-                                        required
-                                        value={property.key}
-                                        className="newNftProps"
-                                        onChange={(e) =>
-                                          handlePropertyChange(index, e)
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-12 col-md-5">
-                                  <div className="form-group w-100">
-                                    <label>Value</label>
-                                    <div className="filter-widget">
-                                      <input
-                                        name="value"
-                                        type="text"
-                                        placeholder="Enter Value of the property"
-                                        required
-                                        value={property.value}
-                                        className="newNftProps"
-                                        onChange={(e) =>
-                                          handlePropertyChange(index, e)
-                                        }
-                                      />
-                                    </div>
-                                  </div>
-                                </div>
-                                <div className="col-12 col-md-auto text-right">
-                                  <div className="form-group">
-                                    <label>Action</label>
-                                    <div className="filter-widget">
-                                      <Tooltip
-                                        title="Remove a property"
-                                        placement="bottom"
-                                      >
-                                        <button
-                                          className="btn btn-submit btn-lg propsActionBtn"
-                                          onClick={(e) =>
-                                            handleRemoveProperty(e, index)
-                                          }
-                                        >
-                                          -
-                                        </button>
-                                      </Tooltip>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
-                        <div className="row no-gutters align-items-center justify-content-end">
-                          <div className="col-auto">
-                            <Tooltip title="Add a property" placement="right">
-                              <button
-                                className="btn btn-submit btn-lg propsActionBtn mb-4"
-                                onClick={(e) => handleAddProperty(e)}
-                              >
-                                +
-                              </button>
-                            </Tooltip>
-                          </div>
-                        </div>
-                      </div>
-                    ) : template === "saved" ? (
-                      templateData !== null ? (
-                        <div className="w-100 my-3">
-                          <select
-                            name="savedTemplate"
-                            id="savedTemplate"
-                            className="templatesSelect"
-                            onChange={handleSelectTemplate}
-                          >
-                            <option value="none" defaultValue>
-                              None
-                            </option>
-                            {templateData.map((data, index) => (
-                              <option
-                                value={data.name}
-                                id={data.id}
-                                key={index + 100}
-                              >
-                                {data.name}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="w-100 my-3 row no-gutters justify-content-md-between">
-                            {extractedDataProps !== null ? (
-                              extractedDataProps.map((p, index) => (
-                                <div
-                                  className="col-12 col-md-5"
-                                  key={index + 200}
-                                >
-                                  <div className="w-100">
-                                    <label>{p.key}</label>
-                                    {p.type === "string" ? (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="text"
-                                          placeholder="value"
-                                          required
-                                          value={properties[index].value}
-                                          className="newNftProps"
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                      </div>
-                                    ) : p.type === "number" ? (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="number"
-                                          placeholder="0"
-                                          required
-                                          value={properties[index].value}
-                                          className="newNftProps"
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="radio"
-                                          id="savedTemplateYes"
-                                          required
-                                          value={true}
-                                          style={{
-                                            width: "auto",
-                                            margin: "0.5rem",
-                                          }}
-                                          className="newNftProps"
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                        <label
-                                          for="savedTemplateYes"
-                                          style={{
-                                            width: "calc(100% - 55px)",
-                                            fontFamily: "inter",
-                                            fontWeight: "normal",
-                                          }}
-                                        >
-                                          Yes
-                                        </label>
-                                        <input
-                                          name={p.key}
-                                          type="radio"
-                                          id="savedTemplateNo"
-                                          required
-                                          value={false}
-                                          className="newNftProps"
-                                          style={{
-                                            width: "auto",
-                                            margin: "0.5rem",
-                                          }}
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                        <label
-                                          for="savedTemplateNo"
-                                          style={{
-                                            width: "calc(100% - 55px)",
-                                            fontFamily: "inter",
-                                            fontWeight: "normal",
-                                          }}
-                                        >
-                                          No
-                                        </label>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="mt-2 mb-4 w-100">
-                                <div
-                                  className="alert alert-info"
-                                  role="alert"
-                                  style={{ fontFamily: "inter" }}
-                                >
-                                  There are no Properties in this Template
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="mt-2 mb-4">
-                          <div
-                            className="alert alert-info"
-                            role="alert"
-                            style={{ fontFamily: "inter" }}
-                          >
-                            You have not saved any Template
-                          </div>
-                        </div>
-                      )
-                    ) : (
-                      template === "standard" &&
-                      (standardTemplates !== null ? (
-                        <div className="w-100 my-3">
-                          <select
-                            name="savedTemplate"
-                            id="savedTemplate"
-                            className="templatesSelect"
-                            onChange={handleStandardSelectTemplate}
-                          >
-                            <option value="none" defaultValue>
-                              None
-                            </option>
-                            {standardTemplates.map((data, index) => (
-                              <option
-                                value={data.name}
-                                id={data.id}
-                                key={index + 300}
-                              >
-                                {data.name}
-                              </option>
-                            ))}
-                          </select>
-                          <div className="w-100 my-3 row no-gutters justify-content-md-between">
-                            {extractedDataProps !== null ? (
-                              extractedDataProps.map((p, index) => (
-                                <div
-                                  className="col-12 col-md-5"
-                                  key={index + 400}
-                                >
-                                  <div className="w-100">
-                                    <label>{p.key}</label>
-                                    {p.type === "string" ? (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="text"
-                                          placeholder="value"
-                                          required
-                                          value={properties[index].value}
-                                          className="newNftProps"
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                      </div>
-                                    ) : p.type === "number" ? (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="number"
-                                          placeholder="0"
-                                          required
-                                          value={properties[index].value}
-                                          className="newNftProps"
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                      </div>
-                                    ) : (
-                                      <div className="filter-widget">
-                                        <input
-                                          name={p.key}
-                                          type="radio"
-                                          id="standardTemplateYes"
-                                          required
-                                          value={true}
-                                          className="newNftProps"
-                                          style={{
-                                            width: "auto",
-                                            margin: "0.5rem",
-                                          }}
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                        <label
-                                          for="standardTemplateYes"
-                                          style={{
-                                            width: "calc(100% - 55px)",
-                                            fontFamily: "inter",
-                                            fontWeight: "normal",
-                                          }}
-                                        >
-                                          Yes
-                                        </label>
-                                        <input
-                                          name={p.key}
-                                          type="radio"
-                                          id="standardTemplateNo"
-                                          required
-                                          value={false}
-                                          className="newNftProps"
-                                          style={{
-                                            width: "auto",
-                                            margin: "0.5rem",
-                                          }}
-                                          onChange={(e) =>
-                                            handleTemplatePropertyChange(
-                                              index,
-                                              e
-                                            )
-                                          }
-                                        />
-                                        <label
-                                          for="standardTemplateNo"
-                                          style={{
-                                            width: "calc(100% - 55px)",
-                                            fontFamily: "inter",
-                                            fontWeight: "normal",
-                                          }}
-                                        >
-                                          No
-                                        </label>
-                                      </div>
-                                    )}
-                                  </div>
-                                </div>
-                              ))
-                            ) : (
-                              <div className="mt-2 mb-4 w-100">
-                                <div
-                                  className="alert alert-info"
-                                  role="alert"
-                                  style={{ fontFamily: "inter" }}
-                                >
-                                  There are no Properties in this Template
-                                </div>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="mt-2 mb-4">
-                          <div
-                            className="alert alert-info"
-                            role="alert"
-                            style={{ fontFamily: "inter" }}
-                          >
-                            Standard Properties not set
-                          </div>
-                        </div>
-                      ))
-                    )}
-                  </div>
-                  <ThemeProvider theme={makeTheme}>
-                    {tokenList.length > 0 ? (
-                      <FormControl
-                        component="fieldset"
-                        style={{
-                          color: "#fff",
-                          fontFamily: "orbitron",
-                          fontWeight: "bold",
-                        }}
-                      >
-                        <label
-                          component="legend"
-                          style={{ fontWeight: "bold", fontFamily: "orbitron" }}
-                        >
-                          Select NFT Type
-                        </label>
-                        <RadioGroup
-                          row
-                          aria-label="position"
-                          name="position"
-                          defaultValue="top"
-                        >
-                          <Tooltip
-                            title={Text721}
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <FormControlLabel
-                              style={{ color: "white" }}
-                              disabled
-                              value="ERC721"
-                              onChange={() => {
-                                setWorkProgressModalShow(true);
-                              }}
-                              checked={NFTType === "721"}
-                              control={<Radio />}
-                              label={
-                                <span
-                                  style={{ fontSize: "0.9rem", color: "white" }}
-                                >
-                                  Single
-                                </span>
-                              }
-                            />
-                          </Tooltip>
+                  <NewNftTemplates
+                    setProperties={setProperties}
+                    properties={properties}
+                    standardTemplates={standardTemplates}
+                    handleStandardSelectTemplate={handleStandardSelectTemplate}
+                    handleSetProperties={handleSetProperties}
+                    extractedDataProps={extractedDataProps}
+                    setExtractedDataProps={setExtractedDataProps}
+                    setNewTemplateModalShow={setNewTemplateModalShow}
+                    newTemplateModalShow={newTemplateModalShow}
+                    setTemplate={setTemplate}
+                    template={template}
+                    setTemplateData={setTemplateData}
+                    templateData={templateData}
+                    defaultTemplates={defaultTemplates}
+                  />
 
-                          <Tooltip
-                            title={Text1155}
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <FormControlLabel
-                              style={{ color: "white" }}
-                              disabled
-                              value="ERC1155"
-                              onChange={() => {
-                                setNFTType("1155");
-                                getCollections("1155");
-                              }}
-                              checked={NFTType === "1155"}
-                              control={<Radio color="secondary" />}
-                              label={
-                                <span
-                                  style={{ fontSize: "0.9rem", color: "white" }}
-                                >
-                                  Multiple
-                                </span>
-                              }
-                            />
-                          </Tooltip>
-                        </RadioGroup>
-                      </FormControl>
-                    ) : (
-                      <FormControl component="fieldset">
-                        <label
-                          component="legend"
-                          style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                        >
-                          Select NFT Type
-                        </label>
-                        <RadioGroup
-                          row
-                          aria-label="position"
-                          name="position"
-                          defaultValue="top"
-                        >
-                          <Tooltip
-                            title={Text721}
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <FormControlLabel
-                              style={{ color: "black" }}
-                              value="ERC721"
-                              onChange={() => {
-                                setWorkProgressModalShow(true);
-                              }}
-                              checked={NFTType === "721"}
-                              control={<Radio color="secondary" />}
-                              label={
-                                <span style={{ fontSize: "0.9rem" }}>
-                                  Single{" "}
-                                  <i
-                                    className="fa fa-info-circle"
-                                    aria-hidden="true"
-                                  ></i>
-                                </span>
-                              }
-                            />
-                          </Tooltip>
+                  <NewNftSelectNft
+                    tokenList={tokenList}
+                    classes={classes}
+                    setWorkProgressModalShow={setWorkProgressModalShow}
+                    NFTType={NFTType}
+                    setNFTType={setNFTType}
+                    getCollections={getCollections}
+                    collectionTypes={collectionTypes}
+                    setCollection={setCollection}
+                    setCollectionId={setCollectionId}
+                    setNftContractAddress={setNftContractAddress}
+                    collection={collection}
+                    setContractType={setContractType}
+                  />
 
-                          <Tooltip
-                            title={Text1155}
-                            classes={{ tooltip: classes.tooltip }}
-                          >
-                            <FormControlLabel
-                              style={{ color: "black", marginLeft: ".8rem" }}
-                              value="ERC1155"
-                              onChange={() => {
-                                setNFTType("1155");
-                                getCollections("1155");
-                              }}
-                              checked={NFTType === "1155"}
-                              control={<Radio color="secondary" />}
-                              label={
-                                <span style={{ fontSize: "0.9rem" }}>
-                                  Multiple{" "}
-                                  <i
-                                    class="fa fa-info-circle"
-                                    aria-hidden="true"
-                                  ></i>
-                                </span>
-                              }
-                            />
-                          </Tooltip>
-                        </RadioGroup>
-                      </FormControl>
-                    )}
-                  </ThemeProvider>
+                  <NewNftSelectSupply
+                    NFTType={NFTType}
+                    classes={classes}
+                    setSupplyType={setSupplyType}
+                    setTokenSupply={setTokenSupply}
+                    supplyType={supplyType}
+                    tokenSupply={tokenSupply}
+                  />
 
-                  {tokenList.length > 0 ? (
-                    <div className="form-group">
-                      <label
-                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                      >
-                        Select Collection
-                      </label>
-                      <div className="filter-widget">
-                        <Autocomplete
-                          id="combo-dox-demo"
-                          disabled
-                          options={collectionTypes}
-                          getOptionLabel={(option) => option.name}
-                          onChange={(event, value) => {
-                            if (value == null) setCollection("");
-                            else {
-                              if (value.name === "+ Create new Collection") {
-                                history.push("/dashboard/createNewCollection");
-                              } else {
-                                // console.log(value);
-                                setCollection(value.name);
-                                setCollectionId(value._id);
-                                setNftContractAddress(value.nftContractAddress);
-                                // console.log("Value: ", value);
-                              }
-                            }
-                          }}
-                          inputValue={collection}
-                          renderInput={(params) => (
-                            <ThemeProvider theme={makeTheme}>
-                              <TextField
-                                {...params}
-                                placeholder="Collections"
-                              />
-                            </ThemeProvider>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  ) : (
-                    <div className="form-group">
-                      <label
-                        style={{ fontWeight: "bold", fontFamily: "poppins" }}
-                      >
-                        Select Collection
-                      </label>
-                      <div className="filter-widget">
-                        <Autocomplete
-                          id="combo-dox-demo"
-                          required
-                          options={collectionTypes}
-                          getOptionLabel={(option) => option.name}
-                          onChange={(event, value) => {
-                            if (value == null) setCollection("");
-                            else {
-                              if (value.name === "+ Create new Collection") {
-                                history.push("/dashboard/createNewCollection");
-                              } else {
-                                //  console.log(value);
-                                setCollection(value.name);
-                                setCollectionId(value._id);
-                                setNftContractAddress(value.nftContractAddress);
-                                setContractType(value.contractType);
-                                //  console.log("Value: ", value);
-                              }
-                            }
-                          }}
-                          inputValue={collection}
-                          renderInput={(params) => (
-                            <ThemeProvider theme={makeTheme}>
-                              <TextField
-                                {...params}
-                                placeholder="Collections"
-                              />
-                            </ThemeProvider>
-                          )}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  {NFTType === "1155" ? (
-                    <div>
-                      <FormControl component="fieldset">
-                        <Tooltip
-                          title={SupplyTypeText}
-                          classes={{ tooltip: classes.tooltip }}
-                          placement="top-start"
-                          arrow={true}
-                        >
-                          <label
-                            component="legend"
-                            style={{
-                              fontWeight: "bold",
-                              fontFamily: "poppins",
-                            }}
-                          >
-                            Select Supply Type{" "}
-                            <i
-                              className="fa fa-info-circle"
-                              aria-hidden="true"
-                            ></i>
-                          </label>
-                        </Tooltip>
-                        <RadioGroup
-                          row
-                          aria-label="position"
-                          name="position"
-                          defaultValue="top"
-                        >
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="Single"
-                            onChange={() => {
-                              setSupplyType("Single");
-                              setTokenSupply(1);
-                            }}
-                            checked={supplyType === "Single"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span
-                                style={{
-                                  fontWeight: "bold",
-                                  fontFamily: "poppins",
-                                }}
-                              >
-                                Single
-                              </span>
-                            }
-                          />
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="Variable Supply"
-                            onChange={() => {
-                              setSupplyType("Variable");
-                              setTokenSupply(1);
-                            }}
-                            checked={supplyType === "Variable"}
-                            control={<Radio color="secondary" />}
-                            label={
-                              <span
-                                style={{
-                                  fontWeight: "bold",
-                                  fontFamily: "poppins",
-                                }}
-                              >
-                                Variable Supply
-                              </span>
-                            }
-                          />
-                        </RadioGroup>
-                      </FormControl>
 
-                      {supplyType === "Single" ? (
-                        <div className="form-group">
-                          <label
-                            style={{
-                              fontWeight: "bold",
-                              fontFamily: "poppins",
-                            }}
-                          >
-                            Token Supply
-                          </label>
-                          <div className="filter-widget">
-                            <input
-                              type="number"
-                              required
-                              value={tokenSupply}
-                              className="form-control"
-                              disabled
-                            />
-                          </div>
-                        </div>
-                      ) : (
-                        <div className="form-group">
-                          <label
-                            style={{
-                              fontWeight: "bold",
-                              fontFamily: "poppins",
-                            }}
-                          >
-                            Token Supply
-                          </label>
-                          <div className="filter-widget">
-                            <input
-                              type="number"
-                              placeholder="Enter Token price(USD)"
-                              required
-                              value={tokenSupply}
-                              className="form-control"
-                              onChange={(e) => {
-                                setTokenSupply(e.target.value);
-                              }}
-                            />
-                          </div>
-                        </div>
-                      )}
-                    </div>
-                  ) : null}
                 </div>
-                {NFTType === "1155" ? (
-                  <div>
-                    {image === "" ||
-                      name === "" ||
-                      description === "" ||
-                      tokenSupply === "" ||
-                      collection === "" ||
-                      tokenSupply <= 0 ||
-                      isUploadingData === true ? (
-                      <Tooltip
-                        title={
-                          tokenSupply <= 0
-                            ? "Token Supply Cannot Be Less Than 1"
-                            : null
-                        }
-                      >
-                        <button
-                          className="btn propsActionBtn"
-                          type="submit"
-                          disabled
-                        >
-                          <i className="fa fa-plus"></i> Add NFT to Queue
-                        </button>
-                      </Tooltip>
-                    ) : (
-                      <button
-                        className="btn propsActionBtn"
-                        type="button"
-                        onClick={(e) => handleAddClick(e)}
-                      >
-                        <i className="fa fa-plus"></i> Add NFT to Queue
-                      </button>
-                    )}
-                  </div>
-                ) : null}
+                <AddNftQueue
+                  NFTType={NFTType}
+                  image={image}
+                  name={name}
+                  description={description}
+                  tokenSupply={tokenSupply}
+                  collection={collection}
+                  isUploadingData={isUploadingData}
+                  handleAddClick={handleAddClick}
+                />
               </div>
             </form>
           </div>
 
-          <div
-            className="col-sm-12 col-md-6 col-lg-5"
-            style={{ marginLeft: "10px" }}
-          >
-            <form>
-              <div className="form-group">
-                <div>
-                  <Grid
-                    container
-                    spacing={2}
-                    direction="row"
-                    justify="flex-start"
-                  >
-                    {tokenList.map((i, index) => (
-                      <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
-                        <CardActionArea
-                          onClick={() => {
-                            // console.log("nftDetailObject: ", i);
-                            handleOpenNFTDetailModal(i);
-                            setEditObjectIndex(index);
-                            //  console.log("Open Dialog Value: ", openDialog);
-                          }}
-                        >
-                          <Card id="nftCardProps">
-                            <CardMedia
-                              className={classes.media}
-                              image={i.nftURI}
-                            />
-                          </Card>
-                        </CardActionArea>
-                        <CardActions>
-                          <Button
-                            onClick={(e) => {
-                              e.preventDefault();
-                              handleRemoveClick(index);
-                            }}
-                            className="btn btn-sm btn-block propsActionBtn"
-                          >
-                            Remove NFT
-                          </Button>
-                        </CardActions>
-                      </Grid>
-                    ))}
-                  </Grid>
-                </div>
-              </div>
-            </form>
-          </div>
+          <RemoveNft
+            tokenList={tokenList}
+            handleOpenNFTDetailModal={handleOpenNFTDetailModal}
+            setEditObjectIndex={setEditObjectIndex}
+            classes={classes}
+            handleRemoveClick={handleRemoveClick}
+          />
         </div>
-        {isSaving ? (
-          <div className="text-center">
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#ff0000" }}
-            >
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        ) : NFTType === "1155" ? (
-          <div className="submit-section">
-            {tokenList.length === 0 ? (
-              <button
-                type="button"
-                disabled
-                className="btn submit-btn propsActionBtn"
-              >
-                Batch create NFTs
-              </button>
-            ) : (
-              <button
-                type="button"
-                onClick={(e) => {
-                  versionB === "v1-sso"
-                    ? handleSubmitEvent(e)
-                    : handleSubmitEventMetamask(e);
-                }}
-                className="btn submit-btn propsActionBtn"
-              >
-                Batch create NFTs
-              </button>
-            )}
-          </div>
-        ) : (
-          <div className="submit-section">
-            <button
-              type="button"
-              onClick={(e) => handleFreeMint(e)}
-              className="btn submit-btn propsActionBtn"
-            >
-              Free Mint
-            </button>
-          </div>
-        )}
+        <BatchCreateNft
+          isSaving={isSaving}
+          NFTType={NFTType}
+          tokenList={tokenList}
+          versionB={versionB}
+          handleSubmitEvent={handleSubmitEvent}
+          handleSubmitEventMetamask={handleSubmitEventMetamask}
+          handleFreeMint={handleFreeMint}
+        />
       </div>
       <NetworkErrorModal
         show={show}
