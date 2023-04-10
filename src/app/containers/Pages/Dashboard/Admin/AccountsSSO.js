@@ -11,8 +11,8 @@ import {
 
 function AccountsSSO(props) {
   const [modalData, setModalData] = useState();
-  let [admins, setAdmins] = useState([]);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0); 
   const [show, setShow] = useState(false);
@@ -71,8 +71,8 @@ function AccountsSSO(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal

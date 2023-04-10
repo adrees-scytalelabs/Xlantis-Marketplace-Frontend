@@ -12,14 +12,12 @@ import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
 import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
 import { Link } from "react-router-dom";
 
-
 const paginationStyles = makeStyles({
   base: {
-    
     border: 0,
     color: "#fff",
     padding: "0 30px",
@@ -38,10 +36,7 @@ const paginationStyles = makeStyles({
 });
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    
-  },
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -53,7 +48,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -129,7 +124,6 @@ function a11yProps(index) {
   };
 }
 
-
 const MarketPlace = (props) => {
   const classes = useStyles();
   const theme = useTheme();
@@ -146,42 +140,35 @@ const MarketPlace = (props) => {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
-      myNFTs: "",
       newCollection: "",
-      mySeason: "",
-      tradeListOrders: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "active",
+      newDrop: "",
       myDrops: "",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-      marketPlace: "active",
-    }); 
+      topUp: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">MarketPlace</h3>
             <ul className="breadcrumb">
-            <li className="breadcrumb-item slash" >
-                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
+              <li className="breadcrumb-item slash">
+                <Link style={{ color: "#777" }} to="/dashboard">
+                  Dashboard
+                </Link>
               </li>
               <li className="breadcrumb-item active">MarketPlace</li>
             </ul>
           </div>
         </div>
       </div>
-      
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">

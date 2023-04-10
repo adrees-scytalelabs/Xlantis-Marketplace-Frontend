@@ -61,7 +61,6 @@ function MarketPlace(props) {
       .get(endpoint)
       .then(
         (response) => {
-          //console.log("response /// ", response)
           setFixedPriceDrop(response.data.data);
           handleCloseBackdrop();
         },

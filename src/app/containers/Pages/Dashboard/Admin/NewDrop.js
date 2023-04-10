@@ -77,28 +77,28 @@ function NewDrop(props) {
   const classes = useStyles();
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
-  let [saleType, setSaleType] = useState("fixed-price");
-  let [name, setName] = useState("");
-  let [description, setDescription] = useState("");
-  let [image, setImage] = useState(r1);
-  let [bannerImage, setBannerImage] = useState(DropBanner);
-  let [isUploadingBanner, setIsUploadingBanner] = useState(false);
-  let [dropId, setDropId] = useState("");
+  const [saleType, setSaleType] = useState("fixed-price");
+  const [name, setName] = useState("");
+  const [description, setDescription] = useState("");
+  const [image, setImage] = useState(r1);
+  const [bannerImage, setBannerImage] = useState(DropBanner);
+  const [isUploadingBanner, setIsUploadingBanner] = useState(false);
+  const [dropId, setDropId] = useState("");
 
-  let [isUploading, setIsUploading] = useState();
-  let [isSaving, setIsSaving] = useState(false);
-  let [type, setType] = useState();
-  let [types, setTypes] = useState([]);
+  const [isUploading, setIsUploading] = useState();
+  const [isSaving, setIsSaving] = useState(false);
+  const [type, setType] = useState();
+  const [types, setTypes] = useState([]);
   const [typesImages, setTypesImages] = useState([]);
   const [network, setNetwork] = useState("");
 
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [imageType, setImageType] = useState("");
-  let [ipfsURI, setIpfsURI] = useState("");
-  let [ipfsHash, setIpfsHash] = useState(null);
-  let [nftType, setNftType] = useState("1155");
-  let [versionB, setVersionB] = useState("");
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [imageType, setImageType] = useState("");
+  const [ipfsURI, setIpfsURI] = useState("");
+  const [ipfsHash, setIpfsHash] = useState(null);
+  const [nftType, setNftType] = useState("1155");
+  const [versionB, setVersionB] = useState("");
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
@@ -126,20 +126,13 @@ function NewDrop(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      newDrop: "active",
-      newCube: "",
-      mySeason: "",
-      myCubes: "",
-      myDrops: "",
-      myNFTs: "",
       newCollection: "",
-      orders: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "active",
+      myDrops: "",
       topUp: "",
     });
   }, []);

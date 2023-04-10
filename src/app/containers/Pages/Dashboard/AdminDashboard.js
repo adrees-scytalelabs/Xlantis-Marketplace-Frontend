@@ -16,30 +16,20 @@ import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
 import AuctionNFT from "./Admin/AuctionNFT";
 import CollectionNfts from "./Admin/CollectionNfts";
-import CubeNFTs from "./Admin/CubeNFTs";
 import DropApproval from "./Admin/DropApproval";
 import DropNfts from "./Admin/DropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
-import DropCubes from "./Admin/DropsCubes";
 import MarketPlace from "./Admin/MarketPlace";
 import MyCollection from "./Admin/MyCollection";
-import MyCubes from "./Admin/MyCubes";
 import MyDropNFTs from "./Admin/MyDropNfts";
 import MyDrops from "./Admin/MyDrops";
 import MyNFTs from "./Admin/MyNFTs";
-import MySeasons from "./Admin/MySeasons";
 import NFTBuy from "./Admin/NFTBuy";
 import NewCollection from "./Admin/NewCollection";
-import NewCube from "./Admin/NewCube";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import NewSeason from "./Admin/NewSeason";
-import RandomDrop from "./Admin/RandomDrop";
-import SeasonDrops from "./Admin/SeasonDrops";
 import TopUp from "./Admin/TopUp";
 import SingleNftDetail from "./Admin/singleNftDetail";
-import ChangePassword from "./ChangePassword";
-import ProfileSetting from "./ProfileSetting";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -47,8 +37,8 @@ axios.defaults.headers.common[
 
 function AdminDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -62,37 +52,24 @@ function AdminDashboard(props) {
   };
 
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", 
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
     environment: "STAGING",
     defaultCryptoCurrency: "ETH",
-    themeColor: "000000", 
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
   };
 
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
-    totalUserAccount: "",
-    pendingUserAccount: "",
-    resolvedDisputedOrders: "",
-    tradeListOrders: "",
-    earningsList: "",
-    referralEarnings: "",
-    settings: "",
-    changePassword: "",
-    newNFT: "",
-    dropApproval: "",
-    newCube: "",
-    myDrops: "",
-    newDrop: "",
-    newSeason: "",
     newCollection: "",
-    createNewCollection: "",
+    myCollections: "",
+    newNFT: "",
     myNFTs: "",
-    myCubes: "",
-    newRandomDrop: "",
-    marketPlace: "",
+    marketplace: "",
+    newDrop: "",
+    myDrops: "",
     topUp: "",
   });
 
@@ -101,18 +78,15 @@ function AdminDashboard(props) {
 
     transak.init();
 
-    
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
 
-    
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
     });
 
-    
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -124,12 +98,7 @@ function AdminDashboard(props) {
     <div className={`main-wrapper ${slideNavClass}`}>
       <div className={`admin-header ${menuOpenedClass}`}>
         <div className="header-left">
-          <a
-            href="/"
-            className="navbar-brand logo"
-            
-            style={{ width: "210px" }}
-          >
+          <a href="/" className="navbar-brand logo" style={{ width: "210px" }}>
             <img
               src={Logo}
               alt="Logo"
@@ -143,12 +112,7 @@ function AdminDashboard(props) {
               }}
             />
           </a>
-          <a
-            href="/"
-            className="logo logo-small"
-            
-            style={{ width: "210px" }}
-          >
+          <a href="/" className="logo logo-small" style={{ width: "210px" }}>
             <img
               src={Logo}
               alt="Logo"
@@ -171,7 +135,6 @@ function AdminDashboard(props) {
           <i className="fa fa-bars"></i>
         </a>
         <ul className="nav user-menu">
-
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
@@ -246,27 +209,6 @@ function AdminDashboard(props) {
             <Route exact path={`${path}/myNFTs`}>
               <MyNFTs setActiveTab={setActiveTab} />
             </Route>
-            <Route exact path={`${path}/myCubes`}>
-              <MyCubes setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/newCube`}>
-              <NewCube setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/newRandomDrop`}>
-              <RandomDrop setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/newSeason`}>
-              <NewSeason setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/mySeason`}>
-              <MySeasons setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/mySeason/drops/:seasonId`}>
-              <SeasonDrops setActiveTab={setActiveTab} />
-            </Route>
 
             <Route exact path={`${path}/dropApproval`}>
               <DropApproval setActiveTab={setActiveTab} />
@@ -293,14 +235,6 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/myDrops/nfts/singleNft`}>
               <DropSingleNFT setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myDrops/cubes/:dropId`}>
-              <DropCubes setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myCubes/Nfts/:dropId/:cubeId`}>
-              <CubeNFTs setActiveTab={setActiveTab} />
             </Route>
 
             <Route exact path={`${path}/createNewCollection`}>
@@ -331,12 +265,6 @@ function AdminDashboard(props) {
 
             <Route exact path={`${path}/marketPlace/:dropId/:nftId`}>
               <AuctionNFT setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/profilesettings`}>
-              <ProfileSetting setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/changepassword`}>
-              <ChangePassword setActiveTab={setActiveTab} />
             </Route>
 
             <Route path={`${path}`}>

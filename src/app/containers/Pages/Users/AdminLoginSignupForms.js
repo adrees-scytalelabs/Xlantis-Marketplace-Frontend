@@ -6,7 +6,7 @@ import IntlTelInput from "react-intl-tel-input";
 import { Typography } from "@material-ui/core";
 import {
   ThemeProvider,
-  createMuiTheme,
+  createTheme,
   makeStyles
 } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiIconButton: {
       root: {

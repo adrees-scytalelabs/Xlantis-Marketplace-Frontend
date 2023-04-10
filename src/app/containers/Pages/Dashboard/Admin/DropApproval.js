@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { TablePagination } from "@material-ui/core/";
 
 import Button from "@material-ui/core/Button";
@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiButton: {
       root: {
@@ -90,20 +90,20 @@ function DropApproval(props) {
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  let [collections, setCollections] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
+  const [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
-  let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
-  let [isAuctionApproved, setIsAuctionApproved] = useState(false);
-  let [approvingAuction, setApprovingAuction] = useState(false);
+  const [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
+  const [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
+  const [isAuctionApproved, setIsAuctionApproved] = useState(false);
+  const [approvingAuction, setApprovingAuction] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
 
   const handleShow = () => setShow(true);
 
@@ -447,8 +447,8 @@ function DropApproval(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

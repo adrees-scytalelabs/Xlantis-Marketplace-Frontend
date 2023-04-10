@@ -18,7 +18,7 @@ function TemplateDetails(props) {
   const [title, setTitle] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

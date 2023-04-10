@@ -12,16 +12,16 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 function SSOEnabled() {
-  let [admins, setSSOAdmins] = useState([]);
-  let [adminCount, setSSOAdminCount] = useState(0);
+  const [admins, setSSOAdmins] = useState([]);
+  const [adminCount, setSSOAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  let [load, setLoad] = useState(false);
-  let [variant, setVariant] = useState("");
-  let [notificationData, setNotificationData] = useState("");
+  const [load, setLoad] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [notificationData, setNotificationData] = useState("");
 
   useEffect(() => {
     getEnabledSSOAdmins(setOpen, setSSOAdmins, setSSOAdminCount);
@@ -64,8 +64,8 @@ function SSOEnabled() {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Notification
         variant={variant}

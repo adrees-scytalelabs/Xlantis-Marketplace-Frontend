@@ -14,17 +14,17 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 function Disabled() {
-  let [admins, setAdmins] = useState([]);
-  let [adminCount, setAdminCount] = useState(0);
-  let [walletAdminCount, setWalletAdminCount] = useState(0);
-  let [walletAdmins, setWalletAdmins] = useState([]);
+  const [admins, setAdmins] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
+  const [walletAdminCount, setWalletAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
-  let [load, setLoad] = useState(false);
-  let [variant, setVariant] = useState("");
-  let [notificationData, setNotificationData] = useState("");
+  const [load, setLoad] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [notificationData, setNotificationData] = useState("");
   const [open, setOpen] = useState(false);
   useEffect(() => {
     getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
@@ -70,8 +70,8 @@ function Disabled() {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <Notification
         variant={variant}

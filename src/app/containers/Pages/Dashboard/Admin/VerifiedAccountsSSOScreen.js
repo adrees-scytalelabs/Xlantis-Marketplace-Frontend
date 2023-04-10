@@ -12,8 +12,8 @@ import {
 
 function VerifiedAccountsSSOScreen(props) {
   const [network, setNetwork] = useState("");
-  let [admins, setAdmins] = useState([]);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -82,8 +82,8 @@ function VerifiedAccountsSSOScreen(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

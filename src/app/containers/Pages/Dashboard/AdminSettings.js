@@ -14,14 +14,14 @@ import AdminSidebar from "./Admin/AdminSidebar";
 function UserSettings(props) {
   let { path } = useRouteMatch();
 
-  let [match] = useState({
+  const [match] = useState({
     isExact: true,
     params: {},
     path: "/dashboard",
     url: "/dashboard",
   });
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -34,7 +34,7 @@ function UserSettings(props) {
     }
   };
 
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: "",
   });

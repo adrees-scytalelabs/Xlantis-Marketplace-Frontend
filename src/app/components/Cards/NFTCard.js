@@ -61,56 +61,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const unCommon = {
-  fontFamily: "poppins",
-  color: "#007f5f",
-  fontWeight: "bold",
-};
-const rare = {
-  fontFamily: "poppins",
-  color: "#3f37c9",
-  fontWeight: "bold",
-};
-const epic = {
-  fontFamily: "poppins",
-  color: "#fb5607",
-  fontWeight: "bold",
-};
-const legendary = {
-  fontFamily: "poppins",
-  color: "#7400b8",
-  fontWeight: "bold",
-};
-const mastercraft = {
-  fontFamily: "poppins",
-  color: "#ffb600",
-  fontWeight: "bold",
-};
-
-const defaultStyles = {
-  fontFamily: "poppins",
-  color: "#04111D",
-  fontWeight: "bold",
-};
-
 function NFTCard(props) {
   const classes = useStyles();
-  const selectedRarity = {
-    style:
-      props.data.type === "Common"
-        ? defaultStyles
-        : props.data.type === "Uncommon"
-        ? unCommon
-        : props.data.type === "Rare"
-        ? rare
-        : props.data.type === "Epic"
-        ? epic
-        : props.data.type === "Legendary"
-        ? legendary
-        : props.data.type === "Mastercraft"
-        ? mastercraft
-        : defaultStyles,
-  };
 
   return (
     <Link to={"/dashboard/nftDetail/" + props.data._id}>

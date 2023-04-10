@@ -16,17 +16,17 @@ import {
 
 function Enabled() {
   const [network, setNetwork] = useState("");
-  let [admins, setSSOAdmins] = useState([]);
-  let [adminCount, setSSOAdminCount] = useState(0);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [walletCount, setWalletAdminCount] = useState(0);
+  const [admins, setSSOAdmins] = useState([]);
+  const [adminCount, setSSOAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
-  let [load, setLoad] = useState(false);
-  let [variant, setVariant] = useState("");
-  let [notificationData, setNotificationData] = useState("");
+  const [load, setLoad] = useState(false);
+  const [variant, setVariant] = useState("");
+  const [notificationData, setNotificationData] = useState("");
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
@@ -76,8 +76,8 @@ function Enabled() {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

@@ -22,12 +22,12 @@ const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
   const classes = useStyles();
 
-  let [title, setTitle] = useState("");
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
-  let [defaultt, setDefault] = useState(false);
+  const [title, setTitle] = useState("");
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [defaultt, setDefault] = useState(false);
   const [open, setOpen] = useState(false);
-  let [available, setAvailable] = useState();
-  let [checking, setChecking] = useState(false);
+  const [available, setAvailable] = useState();
+  const [checking, setChecking] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };

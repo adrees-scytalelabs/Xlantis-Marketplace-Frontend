@@ -13,11 +13,11 @@ import {
 
 function VerifiedAccountsDefaultScreen(props) {
   const [network, setNetwork] = useState("");
-  let [admins, setAdmins] = useState([]);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
   const [modalData, setModalData] = useState();
-  let [adminCount, setAdminCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -85,8 +85,8 @@ function VerifiedAccountsDefaultScreen(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

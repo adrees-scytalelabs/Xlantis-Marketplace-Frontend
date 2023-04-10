@@ -11,8 +11,8 @@ import {
 
 function AccountsWallet(props) {
   const [modalData, setModalData] = useState();
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
@@ -78,8 +78,8 @@ function AccountsWallet(props) {
         count={adminWalletCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal

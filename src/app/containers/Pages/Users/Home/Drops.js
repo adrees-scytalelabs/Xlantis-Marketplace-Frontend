@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import OnAuctionDropCard from "../../../../components/Cards/OnAuctionDropCard";
-import MessageCard from "../Cards/MessageCards.js/TrendingAndTopMsg";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -92,7 +92,7 @@ function Drops() {
                   </span>
                 </div>
               ) : tokenList.length === 0 ? (
-                <MessageCard msg="No items to display"></MessageCard>
+                <MessageCard msg="No items to display" />
               ) : (
                 <Grid
                   container

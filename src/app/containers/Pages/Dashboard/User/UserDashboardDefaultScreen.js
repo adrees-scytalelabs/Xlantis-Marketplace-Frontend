@@ -5,13 +5,13 @@ import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function UserDashboardDefaultScreen(props) {
-  let [totalCubes, setTotalCubes] = useState(0);
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalDrops, setTotalDrops] = useState(0);
-  let [totalSeasons, setTotalSeasons] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
-  let [hover, setHover] = useState(false);
-  let [userName, setUserName] = useState("");
+  const [totalCubes, setTotalCubes] = useState(0);
+  const [totalNFTs, setTotalNFTs] = useState(0);
+  const [totalDrops, setTotalDrops] = useState(0);
+  const [totalSeasons, setTotalSeasons] = useState(0);
+  const [totalCollections, setTotalCollections] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [userName, setUserName] = useState("");
 
   let getCounts = () => {
     axios.defaults.headers.common[
@@ -50,9 +50,7 @@ function UserDashboardDefaultScreen(props) {
       newNFT: "",
       orders: "",
       myNFTs: "",
-      myCubes: "",
       myDrops: "",
-      mySeason: "",
       settings: "",
       privacyPolicy: "",
       termsandconditions: "",

@@ -9,7 +9,7 @@ import {
   Typography,
   makeStyles
 } from "@material-ui/core";
-import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ListIcon from "@material-ui/icons/List";
@@ -27,7 +27,7 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import FixedDropSingleNFTCard from "../../../../components/Cards/FixedDropSingleNFTCard";
 import Footer from "../../../../components/Footers/Footer";
 import HeaderHome from "../../../../components/Headers/Header";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
@@ -87,7 +87,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiAccordionSummary: {
       root: {
@@ -141,17 +141,17 @@ const FixedDropSingleNFTHome = () => {
 
   const [data, setData] = useState();
   const [dataBid, setDataBid] = useState();
-  let [dropCloneAddress, setDropCloneAddress] = useState("");
+  const [dropCloneAddress, setDropCloneAddress] = useState("");
   const [open, setOpen] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
-  let [versionB, setVersionB] = useState("");
-  let [startTime, setStartTime] = useState();
-  let [endTime, setEndTime] = useState();
+  const [versionB, setVersionB] = useState("");
+  const [startTime, setStartTime] = useState();
+  const [endTime, setEndTime] = useState();
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
   const { singleNFTid } = useParams();

@@ -1,9 +1,8 @@
-
 import { Link } from "react-router-dom";
 
 import { makeStyles } from "@material-ui/core/styles";
 
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import axios from "axios";
 
 import { useSnackbar } from "notistack";
@@ -47,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiFormControlLabel: {
       label: {
@@ -73,20 +72,13 @@ function TopUp(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      newDrop: "",
-      newCube: "",
-      mySeason: "",
-      myCubes: "",
-      myDrops: "",
-      myNFTs: "",
       newCollection: "",
-      orders: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
       topUp: "active",
     });
   }, []);
@@ -112,7 +104,6 @@ function TopUp(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

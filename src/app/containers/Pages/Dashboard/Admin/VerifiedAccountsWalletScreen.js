@@ -12,8 +12,8 @@ import {
 
 function VerifiedAccountsWalletScreen(props) {
   const [network, setNetwork] = useState("");
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -83,8 +83,8 @@ function VerifiedAccountsWalletScreen(props) {
         count={adminWalletCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

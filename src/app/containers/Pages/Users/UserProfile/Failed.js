@@ -1,7 +1,7 @@
+import { Typography, makeStyles } from "@material-ui/core";
+import CancelIcon from "@material-ui/icons/Cancel";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-import { makeStyles, Typography } from "@material-ui/core";
-import CancelIcon from '@material-ui/icons/Cancel';
+import { Link } from "react-router-dom";
 import HeaderHome from "../../../../components/Headers/Header";
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Failed() {
   const classes = useStyles();
-  let history = useHistory();
   return (
     <>
       <div style={{ minHeight: "95px" }}>

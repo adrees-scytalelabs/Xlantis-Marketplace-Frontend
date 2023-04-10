@@ -10,9 +10,9 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 function WalletDisabled(props) {
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-  let [isSaving, setIsSaving] = useState(false);
-  let [walletAdminCount, setWalletAdminCount] = useState(0);
-  let [walletAdmins, setWalletAdmins] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
+  const [walletAdminCount, setWalletAdminCount] = useState(0);
+  const [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -123,8 +123,8 @@ function WalletDisabled(props) {
         count={walletAdminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}

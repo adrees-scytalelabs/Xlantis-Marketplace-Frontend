@@ -1,20 +1,20 @@
 import { TablePagination } from "@material-ui/core/";
 import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import {
   getSSOAdmins,
   getWalletAdmins,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
-
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+u
 function AccountsDefaultScreen(props) {
-  let [admins, setAdmins] = useState([]);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
@@ -74,7 +74,7 @@ function AccountsDefaultScreen(props) {
           walletEnabled={true}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -82,8 +82,8 @@ function AccountsDefaultScreen(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal
@@ -91,8 +91,8 @@ function AccountsDefaultScreen(props) {
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
-    </div>
+      />
+    </div >
   );
 }
 

@@ -7,9 +7,9 @@ import { Modal } from 'react-bootstrap';
 
 const ChangeCollectionConfirmationModal = (props) => {
 
-    let [collection, setCollection] = useState({});
-    let [collections, setCollections] = useState([]);
-    let [collectionName, setCollectionName] = useState("");
+    const [collection, setCollection] = useState({});
+    const [collections, setCollections] = useState([]);
+    const [collectionName, setCollectionName] = useState("");
 
     useEffect(() => {
         setCollections(props.collectionDetails);

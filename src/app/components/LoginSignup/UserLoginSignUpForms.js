@@ -7,7 +7,7 @@ import GoogleButton from "react-google-button";
 
 import { Divider, Typography } from "@material-ui/core";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   ThemeProvider,
   useTheme,

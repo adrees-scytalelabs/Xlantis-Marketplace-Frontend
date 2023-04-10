@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
-import MarketPlaceMessageCard from "../../../../components/Cards/MarketPlaceMessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles((theme) => ({
@@ -78,7 +78,7 @@ function DropsPage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -145,7 +145,7 @@ function DropsPage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <MarketPlaceMessageCard message="No items to display" />
+            <MessageCard msg="No items to display" />
           ) : (
             <Grid
               container

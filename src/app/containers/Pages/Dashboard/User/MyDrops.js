@@ -7,7 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MyDropsCard from "../../../../components/Cards/MyDropsCard";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {

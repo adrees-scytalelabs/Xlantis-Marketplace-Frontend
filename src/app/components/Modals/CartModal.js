@@ -1,4 +1,4 @@
-import { Backdrop, ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { Backdrop, ThemeProvider, createTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
 import Modal from "@material-ui/core/Modal";
 import Table from "@material-ui/core/Table";
@@ -101,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiIconButton: {
       root: {
