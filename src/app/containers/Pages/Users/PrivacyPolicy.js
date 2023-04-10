@@ -15,7 +15,6 @@ function PrivacyPolicy(props) {
       <div className="main-wrapper">
         <div className="home-section home-full-height">
           <Header />
-
           <div
             className="content"
             style={{ paddingTop: "180px" }}

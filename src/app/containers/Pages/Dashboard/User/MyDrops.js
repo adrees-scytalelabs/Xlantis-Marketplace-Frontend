@@ -1,6 +1,5 @@
-import { Grid } from "@material-ui/core/";
+import { Grid, makeStyles } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -8,6 +7,8 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import MyDropsCard from "../../../../components/Cards/MyDropsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
 }));
-
 function MyDrops(props) {
   const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
@@ -153,13 +153,14 @@ function MyDrops(props) {
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
                     <MyDropsCard dropDetails={i} classes={classes} />
-                  </Link>
-                </Grid>
-              ))}
-            </Grid>
+                  </Link >
+                </Grid >
+              ))
+              }
+            </Grid >
           )}
-        </div>
-      </div>
+        </div >
+      </div >
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -169,7 +170,7 @@ function MyDrops(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div>
+    </div >
   );
 }
 

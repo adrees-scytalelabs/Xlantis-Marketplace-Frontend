@@ -1,19 +1,14 @@
 import { ThemeProvider, createTheme } from "@material-ui/core";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React, { useState } from "react";
-import { CountryDropdown } from "react-country-region-selector";
 import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
+import CheckoutScreenForm from "../../../components/Forms/CheckoutScreenForm";
+import CheckoutScreenTable from "../../../components/tables/CheckoutScreenTable";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -135,189 +130,13 @@ const CheckoutScreen = () => {
             <div className="row no-gutters justify-content-center mb-5 pb-5">
               <Grid container spacing={3} style={{ paddingtop: "16px" }}>
                 <Grid item xs={12} md={8}>
-                  <form action="" autoComplete="off" className="checkoutForm">
-                    <h4 className={classes.formHeadings}>Billing Details</h4>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} md={6}>
-                        <label>First Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <label>First Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Country</label>
-                        <div className="form-group newNftWrapper checkoutCountryWrapper">
-                          <CountryDropdown
-                            value={country}
-                            onChange={(val) => selectCountry(val)}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Street Address</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Town/City</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>State/County</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Zip/Postcode</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="number"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Company Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Appartment Address</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </form>
+                  <CheckoutScreenForm classes={classes} country={country} selectCountry={selectCountry} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Grid container spacing={2}>
                     <Grid item>
                       <h4 className={classes.formHeadings}>You Order</h4>
-                      <TableContainer>
-                        <Table
-                          className={classes.table}
-                          aria-label="simple table"
-                        >
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Product</TableCell>
-                              <TableCell align="right">Subtotal</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow
-                              style={{ borderBottom: "2px solid black" }}
-                            >
-                              <TableCell className={classes.tableBodyCell}>
-                                Common x3
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className={classes.tableBodyCell}>
-                                Anciet x3
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow
-                              style={{ borderBottom: "2px solid black" }}
-                            >
-                              <TableCell className={classes.subtotal}>
-                                Subtotal
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className={classes.total}>
-                                Total
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.total}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
+                      <CheckoutScreenTable classes={classes} />
                       <div className="row no-gutters mt-5 justif-content-center align-items-center">
                         <div className="col-12">
                           <Divider className={classes.divider} />
