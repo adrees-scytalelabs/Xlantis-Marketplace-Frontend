@@ -1,23 +1,13 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   makeStyles,
   Paper,
-  TextField,
-  Tooltip,
-  Typography
 } from "@material-ui/core";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { BlurLinear, ExpandMore } from "@material-ui/icons";
-import ListIcon from "@material-ui/icons/List";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
-import DateTimePicker from "react-datetime-picker";
+import { Col, Row,  } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
@@ -30,6 +20,11 @@ import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/A
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import BidValue from "../../../../components/Select/BidValue";
+import Bids from "../../../../components/Accordian/Bids";
 
 const customTheme = createTheme({
   overrides: {
@@ -596,134 +591,33 @@ const AuctionNFT = (props) => {
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <Accordion style={{ backgroundColor: "black" }}>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                      <Typography
-                        variant="body1"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <BlurLinear />
-                        <strong> Properties</strong>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Table striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th>Key</th>
-                            <th>Value</th>
-                            <th>Rarity</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {keys?.map((j, index) => (
-                            <tr key={index}>
-                              <td>{j}</td>
-                              <td>{properties[j]}</td>
-                              <td></td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </AccordionDetails>
-                  </Accordion>
+                  <PropertiesAccordian 
+                    keys={keys}
+                    properties={properties}
+                  />
+                  
                 </Col>
               </Row>
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <form>
-                    <label style={{ color: "#F64D04", marginTop: "10px" }}>
-                      Set Bid Expiry Time
-                    </label>
-                    <div className="form-group">
-                      <DateTimePicker
-                        className="form-control"
-                        onChange={(e) => {
-                          console.log(e);
-                          console.log("e.getTime()", Math.round(e.getTime()));
-                          setBidExpiryTime(e);
-                          setBidExpiryTimeStamp(
-                            Number(Math.round(e.getTime()))
-                          );
-                        }}
-                        value={bidExpiryTime}
-                        style={{ color: "white", backgroundColor: "black" }}
-                      />
-                    </div>
-                    <label>Bidding value</label>
-                    <div className="form-group">
-                      <div className="row no-gutters align-items-center">
-                        <TextField
-                          autoComplete="false"
-                          value={biddingValue}
-                          variant="outlined"
-                          type="number"
-                          color="secondary"
-                          onChange={(e) => {
-                            handleChangeBiddingValue(e);
-                          }}
-                        />
-                        <button
-                          className="bidBtn"
-                          onClick={(e) => {
-                            versionB === "v1-sso"
-                              ? handleOpenModal(e)
-                              : handleBidSubmit(e);
-                          }}
-                        >
-                          Bid
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  <BidValue 
+                    bidExpiryTime={bidExpiryTime}
+                    setBidExpiryTime={setBidExpiryTime}
+                    setBidExpiryTimeStamp={setBidExpiryTimeStamp}
+                    handleChangeBiddingValue={handleChangeBiddingValue}
+                    versionB={versionB}
+                    handleOpenModal={handleOpenModal}
+                    handleBidSubmit={handleBidSubmit}
+                  />
+          
                 </Col>
               </Row>
 
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                      <Typography variant="body1" style={{ color: "#F64D04" }}>
-                        <ListIcon />
-                        <strong> Offers</strong>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Table striped hover bordered size="sm" responsive>
-                        <thead>
-                          <tr>
-                            <th style={{ padding: "0.75rem" }}>#</th>
-                            <th style={{ padding: "0.75rem" }}>Bidder</th>
-                            <th style={{ padding: "0.75rem" }}>Bid</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {bidDetail?.map((bid, index) => (
-                            <tr key={index}>
-                              <td style={{ padding: "0.75rem" }}>
-                                {index + 1}
-                              </td>
-                              <td style={{ padding: "0.75rem" }}>
-                                <Tooltip
-                                  classes={{ tooltip: classes.noMaxWidth }}
-                                  leaveDelay={1500}
-                                  title={bid.bidderAddress}
-                                  arrow
-                                >
-                                  <span>
-                                    {bid.bidderAddress.slice(0, 8)}...
-                                  </span>
-                                </Tooltip>
-                              </td>
-                              <td style={{ padding: "0.75rem" }}>
-                                {bid.bidAmount}
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </AccordionDetails>
-                  </Accordion>
+                  <Bids 
+                    bidDetail={bidDetail}
+                  />
                 </Col>
               </Row>
             </div>
