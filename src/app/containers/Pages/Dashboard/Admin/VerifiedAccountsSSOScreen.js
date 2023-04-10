@@ -1,27 +1,29 @@
-import React, {useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TablePagination } from "@material-ui/core/";
-import axios from "axios";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import {
+  getVerifiedSSOAdmins,
+  handleModalOpen,
+  handleModalClose,
+} from "../../../../components/Utils/SuperAdminFunctions";
 
 function VerifiedAccountsSSOScreen(props) {
   const [network, setNetwork] = useState("");
-  let [admins, setAdmins] = useState([]);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    getUnverifiedAdmins(0, rowsPerPage);
+    getVerifiedSSOAdmins(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -35,53 +37,33 @@ function VerifiedAccountsSSOScreen(props) {
       saved: "",
     });
   }, []);
-  const handleModalOpen = (e, data) => {
-    e.preventDefault();
-    handleShow();
-    setModalData(data);
-  };
-  const handleModalClose = (e, data) => {
-    e.preventDefault();
-    handleClose();
-  };
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (newPage) => {
     setPage(newPage);
-    getUnverifiedAdmins(
+    getVerifiedSSOAdmins(
       newPage * rowsPerPage,
-      newPage * rowsPerPage + rowsPerPage
+      newPage * rowsPerPage + rowsPerPage,
+      setOpen,
+      setAdmins,
+      setAdminCount
     );
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedAdmins(0, parseInt(event.target.value, 10));
+    setRowsPerPage(
+      parseInt(event.target.value, 10),
+      setOpen,
+      setAdmins,
+      setAdminCount
+    );
+    getVerifiedSSOAdmins(
+      0,
+      parseInt(event.target.value, 10),
+      setOpen,
+      setAdmins,
+      setAdminCount
+    );
     setPage(0);
   };
-
-  let getUnverifiedAdmins = (start, end) => {
-    setOpen(true);
-    axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
-      .then((response) => {
-        setAdmins(response.data.Admins);
-        setAdminCount(response.data.Admins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
@@ -90,17 +72,18 @@ function VerifiedAccountsSSOScreen(props) {
           handleModalOpen={handleModalOpen}
           ssoEnabled={true}
           walletEnabled={false}
+          setShow={setShow}
+          setModalData={setModalData}
         ></SuperAdminTable>
       </div>
-
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}
@@ -112,6 +95,7 @@ function VerifiedAccountsSSOScreen(props) {
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
+        setShow={setShow}
       ></AdminInformationModal>
     </div>
   );

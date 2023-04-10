@@ -4,18 +4,18 @@ import { Link } from "react-router-dom";
 import StorageIcon from "@material-ui/icons/Storage";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import BusinessIcon from "@material-ui/icons/Business";
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import { useState } from "react";
 import { useEffect } from "react";
 
 function AdminSidebar(props) {
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
-    
+
     window.location.reload(false);
   };
 
@@ -36,7 +36,7 @@ function AdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.createNewCollection}>
+            <li className={props.activeTab.newCollection}>
               <Link
                 to={`${props.match.url}/createNewCollection`}
                 className="sidebarLink"
@@ -45,7 +45,7 @@ function AdminSidebar(props) {
                 <span>New Collection</span>
               </Link>
             </li>
-            <li className={props.activeTab.newCollection}>
+            <li className={props.activeTab.myCollections}>
               <Link
                 to={`${props.match.url}/myCollection`}
                 className="sidebarLink"
@@ -64,7 +64,7 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.marketPlace}>
+            <li className={props.activeTab.marketplace}>
               <Link
                 to={`${props.match.url}/marketPlace`}
                 className="sidebarLink"
@@ -72,18 +72,6 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newCube}>
-              <Link to={`${props.match.url}/newCube`}>
-                <i className="fas fa-cube"></i> <span>New Cube</span>
-              </Link>
-            </li> 
-             <li className={props.activeTab.myCubes}>
-              <Link to={`${props.match.url}/myCubes`}>
-                <i className="fas fa-cubes"></i><span>My Cubes</span>
-              </Link>
-            </li>  */}
-
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match.url}/dropApproval`}>
@@ -108,23 +96,6 @@ function AdminSidebar(props) {
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newRandomDrop}>
-              <Link to={`${props.match.url}/newRandomDrop`}>
-                <i className="fas fa-random"></i> <span>New Random Drop</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.newSeason}>
-              <Link to={`${props.match.url}/newSeason`}>
-                <i className="fas fa-boxes"></i> <span>New Season</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.mySeason}>
-              <Link to={`${props.match.url}/mySeason`}>
-                <LibraryBooksIcon/> <span>My Season</span>
-              </Link>
-            </li> */}
-
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

@@ -89,7 +89,7 @@ function CollectionNfts(props) {
                             
                             >
                                 {tokenList.map((i, index) => (
-                                    <NFTCard data={i[0]} key={index}></NFTCard>
+                                    <NFTCard data={i[0]} key={index} />
                                 ))}
                             </Grid>
                         )}

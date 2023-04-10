@@ -1,12 +1,11 @@
 import React, { useState } from "react";
 
-import { Card } from "@material-ui/core";
 import Box from "@material-ui/core/Box";
 import {
-  createMuiTheme,
+  createTheme,
   makeStyles,
   ThemeProvider,
-  useTheme
+  useTheme,
 } from "@material-ui/core/styles";
 import Tab from "@material-ui/core/Tab";
 import TablePagination from "@material-ui/core/TablePagination";
@@ -16,8 +15,8 @@ import PropTypes from "prop-types";
 import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
+import MessageCard from "../MessageCards/MessageCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
-import MessageCard from "../MessageCards.js/MessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -72,8 +71,7 @@ const paginationStyles = makeStyles({
 });
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -85,7 +83,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -178,7 +176,6 @@ const MarketPlaceTabs = (props) => {
     <div className="w-100">
       <ThemeProvider theme={customTheme}>
         <div className={classes.root}>
-          {/* Tabs */}
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{
@@ -245,7 +242,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MessageCard msg = "No items to display"></MessageCard>
+                  <MessageCard msg="No items to display" />
                 )}
               </div>
             </div>
@@ -257,8 +254,8 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerSalePage}
                 labelRowsPerPage={"Drops per page"}
                 page={salePage}
-                onChangePage={handleChangeSalePage}
-                onChangeRowsPerPage={handleChangeRowsPerSalePage}
+                onPageChange={handleChangeSalePage}
+                onRowsPerPageChange={handleChangeRowsPerSalePage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,
@@ -303,7 +300,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <MessageCard msg = "This feature is coming soon"></MessageCard>
+                  <MessageCard msg="This feature is coming soon" />
                 )}
               </div>
             </div>
@@ -315,8 +312,8 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerAuctionPage}
                 labelRowsPerPage={"Drops per page"}
                 page={AuctionPage}
-                onChangePage={handleChangeAuctionPage}
-                onChangeRowsPerPage={handleChangeRowsPerAuctionPage}
+                onPageChange={handleChangeAuctionPage}
+                onRowsPerPageChange={handleChangeRowsPerAuctionPage}
                 paginationClasses={{
                   base: classes.root,
                   label: classes.label,

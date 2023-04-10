@@ -1,35 +1,20 @@
-import React, { useState } from "react";
-// BOOTSTRAP
-import { Col, Modal, Row } from "react-bootstrap";
-import { Button } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
-
 import { useSnackbar } from "notistack";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "../Backdrop/Backdrop";
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 import CircularBackdrop from "../Backdrop/Backdrop";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 
 
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
 
-  let [title, setTitle] = useState("");
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
-  let [defaultt, setDefault] = useState(false);
+  const [title, setTitle] = useState("");
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [defaultt, setDefault] = useState(false);
   const [open, setOpen] = useState(false);
-  let [available, setAvailable] = useState();
-  let [checking, setChecking] = useState(false);
+  const [available, setAvailable] = useState();
+  const [checking, setChecking] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -81,9 +66,6 @@ const NewTamplateModal = (props) => {
         }
       }
     );
-    // setTimeout(() => {
-    //   setChecking(false);
-    // }, 2000);
   };
 
   let handleSaveTemplate = (e) => {
@@ -164,9 +146,7 @@ const NewTamplateModal = (props) => {
               right: "5px",
               transform: "translateY(-50%)",
               color: "red",
-              // cursor: 'pointer',
             }}
-          // onClick={handleClearClick}
           >
             X
           </div>

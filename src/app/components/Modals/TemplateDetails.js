@@ -1,24 +1,15 @@
 import Tooltip from "@material-ui/core/Tooltip";
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import CircularBackdrop from "../Backdrop/Backdrop";
 
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function TemplateDetails(props) {
-  const classes = useStyles();
   const [title, setTitle] = useState("");
   const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -95,7 +86,7 @@ function TemplateDetails(props) {
     }
   }, [props]);
   return (
-    props.show == true && (
+    props.show === true && (
       <>
         <Modal
           show={props.show}
@@ -166,7 +157,7 @@ function TemplateDetails(props) {
                       <option value="number">Number</option>
                     </select>
                   </Col>
-                  {props.updateEnabled == false && (
+                  {props.updateEnabled === false && (
                     <Col
                       xs={12}
                       lg={2}
@@ -188,7 +179,7 @@ function TemplateDetails(props) {
                   )}
                 </Row>
               ))}
-              {props.updateEnabled == false && (
+              {props.updateEnabled === false && (
                 <Row className="mt-4 ml-1">
                   <button
                     className="btn btn-submit btn-lg propsActionBtn mb-4"
@@ -210,7 +201,7 @@ function TemplateDetails(props) {
             <button className="newTemplateBtn mb-3" onClick={props.handleClose}>
               Close
             </button>
-            {props.updateEnabled == false && (
+            {props.updateEnabled === false && (
               <button
                 className="newTemplateBtn mb-3"
                 onClick={(e) => updateData(e)}

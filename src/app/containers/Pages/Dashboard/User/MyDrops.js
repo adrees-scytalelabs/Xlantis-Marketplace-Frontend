@@ -1,18 +1,13 @@
-import { CardHeader, Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, makeStyles } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MyDropsCard from "../../../../components/Cards/MyDropsCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
+
 
 
 const useStyles = makeStyles((theme) => ({
@@ -44,7 +39,6 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 12,
   },
 }));
-
 function MyDrops(props) {
   const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
@@ -60,9 +54,9 @@ function MyDrops(props) {
   };
   let getMyDrops = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios.get(`/drop/mydrops/${start}/${end}`).then(
       (response) => {
         console.log("response", response);
@@ -110,7 +104,7 @@ function MyDrops(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -147,114 +141,36 @@ function MyDrops(props) {
               </span>
             </div>
           ) : tokenList.length === 0 ? (
-            <MessageCard msg = "No items to displayt"></MessageCard>        
+            <MessageCard msg="No items to displayt" />
           ) : (
-            <Grid container spacing={2} direction="row" justify="flex-start">
+            <Grid
+              container
+              spacing={2}
+              direction="row"
+              justifyContent="flex-start"
+            >
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
-                    <Card
-                      style={{ height: "100%" }}
-                      variant="outlined"
-                      className={classes.root}
-                    >
-                      <CardActionArea>
-                        <CardHeader className="text-center" title={i.title} />
-                        <CardMedia
-                          className={classes.media}
-                          image={i.image}
-                          title=""
-                        ></CardMedia>
-                        <CardContent>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            <strong>Drop Description: </strong>
-                            {i.description}
-                          </Typography>
-                          <Typography
-                            variant="body2"
-                            color="textSecondary"
-                            component="p"
-                          >
-                            <strong>Minimum Bid: </strong>
-                            {i.MinimumBid / 10 ** 18} WETH
-                          </Typography>
-                          <Typography
-                            variant="h6"
-                            gutterBottom
-                            color="textSecondary"
-                            className="text-center"
-                          >
-                            {new Date() < new Date(i.AuctionStartsAt) ? (
-                              <div style={{ color: "#00FF00" }}>
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Auction Starts At:</strong>
-                                </Typography>
-                                {console.log(
-                                  "Date(i.AuctionStartsAt)",
-                                  Date(i.AuctionStartsAt)
-                                )}
-                                <Countdown
-                                  daysInHours
-                                  date={new Date(i.AuctionStartsAt)}
-                                ></Countdown>
-                              </div>
-                            ) : new Date() > new Date(i.AuctionStartsAt) &&
-                              new Date() < new Date(i.AuctionEndsAt) ? (
-                              <div style={{ color: "#FF0000" }}>
-                                {console.log(
-                                  "Date(i.AuctionStartsAt)",
-                                  Date(i.AuctionEndsAt.toLoca)
-                                )}
-                                <Typography
-                                  variant="body2"
-                                  color="textSecondary"
-                                  component="p"
-                                >
-                                  <strong>Auction Ends At:</strong>
-                                </Typography>
-                                <Countdown
-                                  daysInHours
-                                  date={new Date(i.AuctionEndsAt)}
-                                ></Countdown>
-                              </div>
-                            ) : (
-                              <Typography
-                                variant="body2"
-                                style={{ color: "#FF0000" }}
-                                component="p"
-                              >
-                                <strong>Auction Ended</strong>
-                              </Typography>
-                            )}
-                          </Typography>
-                        </CardContent>
-                      </CardActionArea>
-                    </Card>
-                  </Link>
-                </Grid>
-              ))}
-            </Grid>
+                    <MyDropsCard dropDetails={i} classes={classes} />
+                  </Link >
+                </Grid >
+              ))
+              }
+            </Grid >
           )}
-        </div>
-      </div>
+        </div >
+      </div >
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
         count={totalDrops}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div>
+    </div >
   );
 }
 

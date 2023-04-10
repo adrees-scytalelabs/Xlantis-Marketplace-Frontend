@@ -5,15 +5,13 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -24,7 +22,6 @@ function CollectionNfts(props) {
     handleShowBackdrop();
     axios.get(`/collection/${collectionId}`).then(
       (response) => {
-        //console.log("response", response);
         setTokenList(response.data.nftsdata);
         handleCloseBackdrop();
       },
@@ -42,25 +39,18 @@ function CollectionNfts(props) {
     setVersionB(Cookies.get("Version"));
 
     getCollectionNfts();
-    
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "active",
-      newRandomDrop: "",
-    }); 
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
+    });
   }, []);
 
   return (
@@ -100,9 +90,14 @@ function CollectionNfts(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <MessageCard msg = "No items to display"></MessageCard>
+              <MessageCard msg="No items to display" />
             ) : (
-              <Grid container spacing={2} direction="row" justify="flex-start">
+              <Grid
+                container
+                spacing={2}
+                direction="row"
+                justifyContent="flex-start"
+              >
                 {tokenList.map((i, index) => (
                   <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
                     <NFTCard data={i[0]} />

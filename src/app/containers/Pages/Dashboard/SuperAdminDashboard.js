@@ -6,23 +6,21 @@ import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
+import Logo from "../../../assets/img/logo.png";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../../assets/img/logo.png";
-import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
-import SuperAdminSidebar from "./Admin/SuperAdminSidenar";
 import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
-import ManageAccounts from "./Admin/ManageAccounts";
-import VerifiedAccounts from "./Admin/VerifiedAccounts";
-import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
-
-import transakSDK from "@transak/transak-sdk";
-import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
-import TemplateProperties from "./Admin/TemplateProperties";
 import CreateTemplate from "./Admin/CreateTemplate";
+import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
+import ManageAccounts from "./Admin/ManageAccounts";
+import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 import SavedTemplate from "./Admin/SavedTemplate";
+import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
+import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
+import TemplateProperties from "./Admin/TemplateProperties";
+import VerifiedAccounts from "./Admin/VerifiedAccounts";
 
 axios.defaults.headers.common[
   "Authorization"
@@ -30,8 +28,8 @@ axios.defaults.headers.common[
 
 function SuperAdminDashboard(props) {
   let { path } = useRouteMatch();
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -44,62 +42,27 @@ function SuperAdminDashboard(props) {
     }
   };
 
-  const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
-    defaultCryptoCurrency: "ETH",
-    themeColor: "000000", // App theme color
-    hostURL: window.location.origin,
-    widgetHeight: "700px",
-    widgetWidth: "500px",
-  };
-
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     manageAccounts: "",
     manageAccountsSSO: "",
     accountApproval: "",
     accounts: "",
-    properties:"",
-    template:"",
-    saved:"",
+    properties: "",
+    template: "",
+    saved: "",
   });
-  let [tab, setTab] = useState(0);
+  const [tab, setTab] = useState(0);
 
-  function openTransak() {
-    const transak = new transakSDK(settings);
-
-    transak.init();
-
-    // To get all the events
-    transak.on(transak.ALL_EVENTS, (data) => {
-      console.log(data);
-    });
-
-    // This will trigger when the user closed the widget
-    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
-      console.log(eventData);
-      transak.close();
-    });
-
-    // This will trigger when the user marks payment is made.
-    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-      console.log(orderData);
-      window.alert("Payment Success");
-      transak.close();
-    });
-  }
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
-      {/* <!-- Header --> */}
       <div className={`admin-header ${menuOpenedClass}`}>
-        {/* <!-- Logo --> */}
         <div className="header-left">
           <a
             href="/"
             className="logo"
-            // onClick={(e) => e.preventDefault()}
+
             style={{ width: "210px" }}
           >
             <img
@@ -113,12 +76,11 @@ function SuperAdminDashboard(props) {
                 padding: "5px 15px",
               }}
             />
-            {/* Robot Drop */}
           </a>
           <a
             href="/"
             className="logo logo-small"
-            // onClick={(e) => e.preventDefault()}
+
             style={{ width: "210px" }}
           >
             <img
@@ -132,16 +94,8 @@ function SuperAdminDashboard(props) {
                 padding: "5px 15px",
               }}
             />
-            {/* Robot Drop */}
           </a>
         </div>
-        {/* <!-- /Logo --> */}
-        {/* 
-        <a href="" id="toggle_btn">
-          <i className="fa fa-align-left"></i>
-        </a> */}
-
-        {/* <!-- Mobile Menu Toggle --> */}
         <a
           href="/"
           className="mobile_btn"
@@ -150,12 +104,7 @@ function SuperAdminDashboard(props) {
         >
           <i className="fa fa-bars"></i>
         </a>
-        {/* <!-- /Mobile Menu Toggle --> */}
-
-        {/* <!-- Header Right Menu --> */}
         <ul className="nav user-menu">
-          {/* <!-- User Menu --> */}
-
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
@@ -188,21 +137,12 @@ function SuperAdminDashboard(props) {
                     Dashboard
                   </Link>
                 </Dropdown.Item>
-                {/* <Dropdown.Item>
-                  <span
-                    style={{ color: "white" }}
-                    onClick={openTransak}
-                    className="headerAccountMenu"
-                  >
-                    Buy Crypto
-                  </span>
-                </Dropdown.Item> */}
                 <Dropdown.Item>
                   <Link
                     onClick={() => {
                       sessionStorage.removeItem("Authorization");
                       sessionStorage.removeItem("Address");
-                      
+
 
                       Cookies.remove("PNT");
                       window.location.reload(false);
@@ -217,11 +157,8 @@ function SuperAdminDashboard(props) {
               </Dropdown.Menu>
             </Dropdown>
           </li>
-          {/* <!-- /User Menu --> */}
         </ul>
-        {/* <!-- /Header Right Menu --> */}
       </div>
-      {/* <!-- /Header --> */}
 
       <SuperAdminSidebar
         match={props.match}
@@ -264,7 +201,6 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/manageAccounts/SSO`}>
-              {/* {console.log(setActiveTab)} */}
               <ManageAccountsSSO
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -272,7 +208,6 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/manageAccounts/Wallet`}>
-              {/* {console.log(setActiveTab)} */}
               <ManageAccountsWallet
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -290,7 +225,6 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/properties/createTemplate`}>
-              {/* {console.log(setActiveTab)} */}
               <CreateTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}
@@ -298,7 +232,6 @@ function SuperAdminDashboard(props) {
               />
             </Route>
             <Route exact path={`${path}/properties/savedTemplate`}>
-              {/* {console.log(setActiveTab)} */}
               <SavedTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}

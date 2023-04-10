@@ -1,17 +1,14 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
+import { ThemeProvider, createTheme } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
 import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { nftImage } from "../../../../assets/js/images";
 import NFTCard from "../../../../components/Cards/NFTCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
 
 const useStyles = makeStyles({
   root: {
@@ -31,7 +28,7 @@ const useStyles = makeStyles({
   },
 });
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiTablePagination: {
       caption: {
@@ -65,15 +62,13 @@ const makeTheme = createMuiTheme({
   },
 });
 
-//console.log("nft images: ", nftImage);
-
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [, setVersionB] = useState("");
   const classes = useStyles();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -83,17 +78,12 @@ function MyNFTs(props) {
   };
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    const version = Cookies.get("Version");
-    //console.log("version", version);
     axios.get(`/nft/myNFTs/${start}/${end}`).then(
       (response) => {
-       // console.log("response", response);
         let nfts = response.data.NFTdata;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
         });
-        //console.log("NFTS", nfts);
-        //console.log("Updated", newState);
         setTokenList(newState);
         setTotalNfts(response.data.Nftcount);
 
@@ -127,21 +117,15 @@ function MyNFTs(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "active",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-    }); 
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "active",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -157,12 +141,8 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  //console.log("the tokenList length: ", tokenList.length);
-  //console.log(tokenList.length !== 0 && "page-height");
-
   return (
     <div className="backgroundDefault position-relative">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -180,7 +160,6 @@ function MyNFTs(props) {
       </div>
 
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <div className="row no-gutters justify-content-center align-items-center">
@@ -189,7 +168,7 @@ function MyNFTs(props) {
               </div>
             </div>
           ) : tokenList.length === 0 ? (
-            <MessageCard msg = "No items to display"></MessageCard>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
@@ -210,8 +189,8 @@ function MyNFTs(props) {
             rowsPerPage={rowsPerPage}
             labelRowsPerPage={"Items per page"}
             page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
             classes={{
               root: classes.root,
               label: classes.label,

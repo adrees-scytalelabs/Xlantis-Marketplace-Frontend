@@ -1,92 +1,22 @@
-
 import { Link } from "react-router-dom";
-
-import { makeStyles } from "@material-ui/core/styles";
-
-import { createMuiTheme } from "@material-ui/core";
 import axios from "axios";
-
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
-import { useRouteMatch } from "react-router-dom";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiFormControlLabel: {
-      label: {
-        color: "white",
-        fontFamily: "inter",
-      },
-    },
-    MuiRadio: {
-      root: {
-        color: "white",
-      },
-    },
-  },
-});
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let { path } = useRouteMatch();
-  const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0.1);
-
-  const classes = useStyles();
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      newDrop: "",
-      newCube: "",
-      mySeason: "",
-      myCubes: "",
-      myDrops: "",
-      myNFTs: "",
       newCollection: "",
-      orders: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
       topUp: "active",
     });
   }, []);
@@ -112,7 +42,6 @@ function TopUp(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -164,7 +93,6 @@ function TopUp(props) {
           </div>
         </div>
       </div>
-      <CircularBackdrop open={open} />
     </div>
   );
 }

@@ -1,32 +1,24 @@
-
-import Card from "@material-ui/core/Card";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
 function AdminDashboardDefaultScreen(props) {
-  let [totalCubes, setTotalCubes] = useState(0);
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalDrops, setTotalDrops] = useState(0);
-  let [totalSeasons, setTotalSeasons] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
-  let [hover, setHover] = useState(false);
-  let [hoverCollections, setHoverCollections] = useState(false);
+  const [totalNFTs, setTotalNFTs] = useState(0);
+  const [totalCollections, setTotalCollections] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [hoverCollections, setHoverCollections] = useState(false);
 
   let getCounts = () => {
     let version = Cookies.get("Version");
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+    axios.defaults.headers.common[
       "Authorization"
-    )}`;
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     axios
       .get(`${version}/user/getcounts`)
       .then((response) => {
-        setTotalCubes(response.data.Cubescount);
         setTotalNFTs(response.data.NFTscount);
-        setTotalDrops(response.data.Dropscount);
-        setTotalSeasons(response.data.Seasonscount);
         setTotalCollections(response.data.Collectionscount);
       })
       .catch((error) => {
@@ -38,23 +30,16 @@ function AdminDashboardDefaultScreen(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      mySeason: "",
-      settings: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
     });
     getCounts();
-
   }, []);
   return (
     <>
@@ -72,93 +57,44 @@ function AdminDashboardDefaultScreen(props) {
       </div>
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/myNFTs`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Total NFTs
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalNFTs}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/myNFTs`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalNFTs}
+            message="Total NFTs"
+            icon={<ListAltIcon />}
+          />
         </div>
         <div className="col-12 col-sm-5 col-xl-4 ml-sm-2 mt-2 mt-sm-0 totalCollectionsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalCollectionsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHoverCollections(true)}
             onMouseLeave={() => setHoverCollections(false)}
-          >
-            <Link to={`${props.match.url}/myCollection`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hoverCollections
-                          ? "totalCollectionsAdminDashHeadingHover totalCollectionsAdminDashHeading"
-                          : "totalCollectionsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <i className="fas fa-layer-group pr-1"></i>
-                      </span>
-                      Total Collections
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hoverCollections
-                        ? "totalCollectionsAdminDashCountHover"
-                        : "totalCollectionsAdminDashCount"
-                    }
-                  >
-                    {totalCollections}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${props.match.url}/myCollection`}
+            hoverH4={
+              hoverCollections
+                ? "totalCollectionsAdminDashHeadingHover totalCollectionsAdminDashHeading"
+                : "totalCollectionsAdminDashHeading"
+            }
+            hoverH1={
+              hoverCollections
+                ? "totalCollectionsAdminDashCountHover"
+                : "totalCollectionsAdminDashCount"
+            }
+            content={totalCollections}
+            message="Total Collections"
+            icon={<i className="fas fa-layer-group pr-1"></i>}
+          />
         </div>
       </div>
-
     </>
   );
 }

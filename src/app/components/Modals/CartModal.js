@@ -1,24 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-
+import { Backdrop, ThemeProvider, createTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography";
-import { Backdrop, createMuiTheme, ThemeProvider } from "@material-ui/core";
-// MUI TABLE
+import Modal from "@material-ui/core/Modal";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-// MUI CARD
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -28,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   paper: {
-    
+
     border: "1px solid #fff",
     borderRadius: 5,
     boxShadow: theme.shadows[5],
@@ -63,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   wrapper: {
-    
+
     padding: "4px 0px",
   },
   buttons: {
@@ -109,7 +101,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiIconButton: {
       root: {
@@ -177,41 +169,9 @@ let tableData = [
   },
 ];
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 const CartModal = (props) => {
-  
-  const [expanded, setExpanded] = useState("panel1");
-  const [disabled, setDisabled] = useState(true);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
   const classes = useStyles();
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    console.log("changing rows: ", event);
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  //   Content
   return (
     <div>
       <ThemeProvider theme={makeTheme}>
@@ -296,22 +256,6 @@ const CartModal = (props) => {
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                  {/* <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        align="center"
-                        rowsPerPageOptions={[2, 5]}
-                        component="div"
-                        rowSpan={1}
-                        colSpan={6}
-                        count={tableData.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                      />
-                    </TableRow>
-                  </TableFooter> */}
                 </Table>
               </TableContainer>
             </div>

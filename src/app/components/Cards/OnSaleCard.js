@@ -1,22 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Avatar, Button, CardHeader, Grid, Paper } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Alert from "@material-ui/lab/Alert";
+import React from "react";
 import Countdown from "react-countdown";
-import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
+import { Link } from "react-router-dom";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
-import { AlertTitle } from "@material-ui/lab";
 import { truncate } from "../../assets/js/utils";
-import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -66,7 +60,6 @@ const OnSaleCard = (props) => {
 
   return (
     <div className="col-12 p-2">
-      {/* <Paper> */}
       <Card id="marketCardProps">
         <div className="row no-gutters mdColHeight">
           <Link
@@ -94,9 +87,7 @@ const OnSaleCard = (props) => {
                 }}
                 className="p-3"
               >
-                {/* Creator Details and  Explore Button */}
                 <div className="row no-gutters justify-content-between align-itmes-end">
-                  {/* Creator Image */}
                   <div className="col-2 w-100">
                     <Link to="/">
                       <div
@@ -114,12 +105,10 @@ const OnSaleCard = (props) => {
                           }}
                         />
                       </div>
-                      {/* Creator Name */}
                     </Link>
                   </div>
-                  {/* Explore Button */}
                   <div className="col-8 w-100 text-right align-self-end">
-                    
+
                     <Link
                       to={{
                         pathname: `/fixdropnft/${props.i._id}`,
@@ -137,19 +126,13 @@ const OnSaleCard = (props) => {
                         </span>
                       </button>
                     </Link>
-                    
+
                   </div>
                 </div>
               </div>
             </div>
-            {/* <div className="mainDiv">
-              <div className="square"></div>
-              <div className="square2"></div>
-              <div className="square3"></div>
-            </div> */}
           </Link>
           <CardContent style={{ paddingBottom: 16, width: "100%" }}>
-            {/* Title, Description and Price */}
             <div
               className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
@@ -178,18 +161,16 @@ const OnSaleCard = (props) => {
                 </p>
               </div>
             </div>
-            
+
             <Typography
               variant="h6"
               gutterBottom
               color="textSecondary"
               className="text-center"
             >
-              {/* Sale Ends and Sale Ended */}
 
               {new Date() < new Date(props.i.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert
                     severity="info"
                     className={
@@ -213,7 +194,6 @@ const OnSaleCard = (props) => {
               ) : new Date() > new Date(props.i.startTime) &&
                 new Date() < new Date(props.i.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                   <Alert
                     severity="warning"
                     className={
@@ -233,7 +213,6 @@ const OnSaleCard = (props) => {
                       ></Countdown>
                     </span>
                   </Alert>
-                  {/* {console.log("Date(i.AuctionStartsAt)", Date(i.AuctionEndsAt.toLoca))} */}
                 </div>
               ) : (
                 <Typography
@@ -258,7 +237,6 @@ const OnSaleCard = (props) => {
           </CardContent>
         </div>
       </Card>
-      {/* </Paper> */}
     </div>
   );
 };

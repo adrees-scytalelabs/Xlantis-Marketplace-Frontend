@@ -1,22 +1,13 @@
-import React, { useEffect, useState } from "react";
-// REACT ROUTER DOM
-import { Link } from "react-router-dom";
-
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
+import { Backdrop, ThemeProvider, createTheme } from "@material-ui/core";
 import Fade from "@material-ui/core/Fade";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import { Backdrop, createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
 import Grid from "@material-ui/core/Grid";
-// MUI ICONS
+import Modal from "@material-ui/core/Modal";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import EmailIcon from "@material-ui/icons/Email";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -98,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiAccordion: {
       root: {
@@ -138,7 +129,7 @@ const makeTheme = createMuiTheme({
 });
 
 const SSOWalletModal = (props) => {
-  
+
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(true);
   const classes = useStyles();
@@ -147,7 +138,7 @@ const SSOWalletModal = (props) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  //   Content
+
   return (
     <ThemeProvider theme={makeTheme}>
       <Modal
@@ -182,7 +173,6 @@ const SSOWalletModal = (props) => {
                 <Grid item xs={12} sm={6}>
                   <button
                     className="ssoModalCard"
-                    // onClick={props.metamaskLogin}
                     onClick={() => {
                       props.openWorkProgressModal();
                     }}

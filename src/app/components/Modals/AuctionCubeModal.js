@@ -6,12 +6,12 @@ import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 
-function AuctionCubeModal(props) {// eslint-disable-next-line
-    const [time, setTime] = useState(new Date());// eslint-disable-next-line
-    const [timeStamp, setTimeStamp] = useState(time.getTime() / 1000);// eslint-disable-next-line
+function AuctionCubeModal(props) {
+    const [time, setTime] = useState(new Date());
+    const [timeStamp, setTimeStamp] = useState(time.getTime() / 1000);
     const [price, setPrice] = useState();
-    let [minimumBid, setMinimumBid] = useState();
-    let [bidDelta, setBidDelta] = useState();
+    const [minimumBid, setMinimumBid] = useState();
+    const [bidDelta, setBidDelta] = useState();
 
     const [startTime, setStartTime] = useState(new Date());
     const [endTime, setEndTime] = useState(new Date());

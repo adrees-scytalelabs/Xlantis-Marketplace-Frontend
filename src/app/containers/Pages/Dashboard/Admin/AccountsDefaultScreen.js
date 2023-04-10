@@ -1,27 +1,33 @@
 import { TablePagination } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import {
+  getSSOAdmins,
+  getWalletAdmins,
+  handleModalClose,
+  handleModalOpen,
+} from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 function AccountsDefaultScreen(props) {
-  let [admins, setAdmins] = useState([]);
-  let [walletAdmins, setWalletAdmins] = useState([]);
-  let [adminWalletCount, setWalletAdminCount] = useState(0);
-  let [adminCount, setAdminCount] = useState(0);
+  const [admins, setAdmins] = useState([]);
+  const [walletAdmins, setWalletAdmins] = useState([]);
+  const [adminWalletCount, setWalletAdminCount] = useState(0);
+  const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
-  const handleClose = () => setShow(false);
-  const handleShow = () => setShow(true);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    getUnverifiedWallet(0, rowsPerPage);
-    getUnverifiedAdmins(0, rowsPerPage);
+    getWalletAdmins(
+      0,
+      rowsPerPage,
+      setOpen,
+      setWalletAdmins,
+      setWalletAdminCount
+    );
+    getSSOAdmins(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
     setShow(false);
     props.setActiveTab({
       dashboard: "",
@@ -35,77 +41,27 @@ function AccountsDefaultScreen(props) {
       saved: "",
     });
   }, []);
-
-  const handleChangePage = (event, newPage) => {
+  const handleChangePage = (newPage) => {
     setPage(newPage);
-    getUnverifiedAdmins(
+    getSSOAdmins(
       newPage * rowsPerPage,
-      newPage * rowsPerPage + rowsPerPage
+      newPage * rowsPerPage + rowsPerPage,
+      setOpen,
+      setAdmins,
+      setAdminCount
     );
   };
-  const handleModalOpen = (e, data) => {
-    e.preventDefault();
-    handleShow();
-    setModalData(data);
-  };
-  const handleModalClose = (e, data) => {
-    e.preventDefault();
-    handleClose();
-  };
-
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
-    getUnverifiedAdmins(0, parseInt(event.target.value, 10));
+    getSSOAdmins(
+      0,
+      parseInt(event.target.value, 10),
+      setOpen,
+      setAdmins,
+      setAdminCount
+    );
     setPage(0);
   };
-
-  let getUnverifiedAdmins = (start, end) => {
-    setOpen(true);
-    axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v1`)
-      .then((response) => {
-        setAdmins(response.data.Admins);
-        setAdminCount(response.data.Admins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-  let getUnverifiedWallet = (start, end) => {
-    setOpen(true);
-    axios
-      .get(`/super-admin/admins/${start}/${end}?userType=v2`)
-      .then((response) => {
-        setWalletAdmins(response.data.Admins);
-        setWalletAdminCount(response.data.Admins.length);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
-  };
-
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
@@ -115,7 +71,9 @@ function AccountsDefaultScreen(props) {
           handleModalOpen={handleModalOpen}
           ssoEnabled={true}
           walletEnabled={true}
-        ></SuperAdminTable>
+          setShow={setShow}
+          setModalData={setModalData}
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -123,16 +81,17 @@ function AccountsDefaultScreen(props) {
         count={adminCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
-      ></AdminInformationModal>
-    </div>
+        setShow={setShow}
+      />
+    </div >
   );
 }
 

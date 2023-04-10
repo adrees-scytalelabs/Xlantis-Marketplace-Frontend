@@ -1,45 +1,32 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import { Link } from "react-router-dom";
 import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card,
-  CardContent,
-  CardHeader,
-  CardMedia,
   makeStyles,
   Paper,
   Tooltip,
   Typography,
 } from "@material-ui/core";
-import { Col, Row, Table } from "react-bootstrap";
-import { useLocation } from "react-router-dom";
-import { Button } from "@material-ui/core";
-import Web3 from "web3";
-import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
-import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import { useSnackbar } from "notistack";
-import abiAuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ListIcon from "@material-ui/icons/List";
-import Countdown from "react-countdown";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
-import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-import { GLTFModel, AmbientLight, DirectionLight } from "react-3d-viewer";
 import transakSDK from "@transak/transak-sdk";
-
+import axios from "axios";
+import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { Col, Row, Table } from "react-bootstrap";
+import Countdown from "react-countdown";
+import "react-h5-audio-player/lib/styles.css";
+import { Link, useLocation } from "react-router-dom";
+import Web3 from "web3";
+import abiAuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
+import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
+import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
+import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
-import {
-  createMuiTheme,
-  ThemeProvider,
-  useTheme,
-} from "@material-ui/core/styles";
+import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
+import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -87,17 +74,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   overrides: {
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
         backgroundColor: "black",
       },
-      // content: {
-      //     borderBottom: "1px solid white",
-      //     paddingBottom: "12px"
-      // },
       expandIcon: {
         color: "white",
       },
@@ -116,15 +99,6 @@ const customTheme = createMuiTheme({
         padding: "16px 14px",
       },
     },
-    // MuiIconButton: {
-    //     root: {
-    //         padding: 0
-    //     },
-    //     label: {
-    //         borderBottom: "1px solid white",
-    //         padding: "12px",
-    //     }
-    // }
   },
 });
 
@@ -135,30 +109,30 @@ const DropSingleNFT = (props) => {
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
   const [keys, setKeys] = useState([]);
-  let [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
 
-  let [isSaving, setIsSaving] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [show, setShow] = useState(false);
-  let [bidDetail, setBidDetail] = useState([]);
-  let [contractType, setContractType] = useState("");
-  let [versionB, setVersionB] = useState("");
-  let [bidId, setBidId] = useState();
+  const [show, setShow] = useState(false);
+  const [bidDetail, setBidDetail] = useState([]);
+  const [contractType, setContractType] = useState("");
+  const [versionB, setVersionB] = useState("");
+  const [bidId, setBidId] = useState();
 
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412", // Your API Key
-    environment: "STAGING", // STAGING/PRODUCTION
+    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
+    environment: "STAGING",
     cryptoCurrencyCode: "MATIC",
     network: "private",
     defaultNetwork: "polygon",
     walletAddress: "0xE66a70d89D44754f726A4B463975d1F624530111",
     fiatAmount: 1100,
     isAutoFillUserData: true,
-    themeColor: "000000", // App theme color
+    themeColor: "000000",
     hostURL: window.location.origin,
     widgetHeight: "700px",
     widgetWidth: "500px",
@@ -182,7 +156,6 @@ const DropSingleNFT = (props) => {
           console.log(error);
           console.log(error.response);
         }
-        
       }
     );
   };
@@ -193,19 +166,16 @@ const DropSingleNFT = (props) => {
 
     transak.init();
 
-    // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
       console.log(data);
     });
 
-    // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       console.log(eventData);
       transak.close();
       handleOpenModal();
     });
 
-    // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
       console.log(orderData);
       window.alert("Payment Success");
@@ -331,32 +301,23 @@ const DropSingleNFT = (props) => {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
     setNftDetail(location.state.nftDetail);
-  //  console.log("NFT detail: ", location.state.nftDetail);
     setContractType(location.state.nftDetail.collectionId.contractType);
     setKeys(Object.keys(location.state.nftDetail.properties));
     setProperties(location.state.nftDetail.properties);
     if (location.state.saleType === "auction") {
       getBidList(location.state.nftDetail._id);
     }
-//    console.log("saleType", location.state.saleType);
 
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "",
-      myCubes: "",
-      myDrops: "active",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-      marketPlace: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "active",
+      topUp: "",
     });
   }, []);
 
@@ -386,13 +347,12 @@ const DropSingleNFT = (props) => {
         addressAuctionFactory = Addresses.AuctionDropFactory721;
       }
 
-      //getting data to send call
       let dropIdHash = getHash(nftDetail.dropId);
-      let nftAddress = nftDetail.collectionId.nftContractAddress; //to be confirmed to send request
+      let nftAddress = nftDetail.collectionId.nftContractAddress;
       let tokenId = nftDetail.nftId;
       let uri = nftDetail.nftURI;
       let signature = nftDetail.voucherSignature;
-      let bidIdHash = getHash(bidIdd); 
+      let bidIdHash = getHash(bidIdd);
       let trxHash;
 
       let myContractInstance = await new web3.eth.Contract(
@@ -414,8 +374,7 @@ const DropSingleNFT = (props) => {
           .on("receipt", (receipt) => {
             console.log("receipt: ", receipt);
           });
-      }
-      else if (contractType === "721") {
+      } else if (contractType === "721") {
         await myContractInstance.methods
           .acceptBidLazyMint(
             dropIdHash,
@@ -494,7 +453,6 @@ const DropSingleNFT = (props) => {
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -535,165 +493,11 @@ const DropSingleNFT = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <Card className={classes.root}>
-                  <div>
-                    {nftDetail.nftFormat === "glb" ||
-                    nftDetail.nftFormat === "gltf" ? (
-                      <div>
-                        <div
-                          style={{
-                            display: "flex",
-                            margin: "10px",
-                            justifyContent: "center",
-                            alignItems: "center",
-                          }}
-                        >
-                          <GLTFModel
-                            src={nftDetail.nftURI}
-                            width={250}
-                            height={250}
-                          >
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            <AmbientLight color={0xffffff} />
-                            {/* <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} />
-                                                    <AmbientLight color={0xffffff} /> */}
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 100, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 50, y: 200, z: 100 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 0, z: 0 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: 0, y: 100, z: 200 }}
-                            />
-                            <DirectionLight
-                              color={0xffffff}
-                              position={{ x: -100, y: 200, z: -100 }}
-                            />
-                          </GLTFModel>
-                        </div>
-                        <div style={{ marginTop: "20px" }}>
-                          <CardMedia
-                            className={classes.media}
-                            title="NFT Artwork"
-                            image={nftDetail.previewImageURI}
-                          ></CardMedia>
-                        </div>
-                      </div>
-                    ) : nftDetail.nftFormat === "mp3" ? (
-                      <div>
-                        <CardMedia
-                          className={classes.media}
-                          title="NFT Artwork"
-                          image={
-                            nftDetail.previewImageURI
-                              ? nftDetail.previewImageURI
-                              : nftDetail.nftURI
-                          }
-                        ></CardMedia>
-                        <div>
-                          <AudioPlayer
-                            
-                            style={{ borderRadius: "1rem" }}
-                            autoPlay={false}
-                            layout="horizontal"
-                            src={nftDetail.nftURI}
-                            onPlay={(e) => console.log("onPlay")}
-                            showSkipControls={false}
-                            showJumpControls={false}
-                            // header={`Now playing: ${name}`}
-                            showDownloadProgress
-                            // onClickPrevious={handleClickPrevious}
-                            // onClickNext={handleClickNext}
-                            // onEnded={handleClickNext}
-                            // other props here
-                          />
-                        </div>
-                      </div>
-                    ) : (
-                      <CardMedia
-                        className={classes.media}
-                        title="NFT Artwork"
-                        image={nftDetail.nftURI}
-                      ></CardMedia>
-                    )}
-                  </div>
-                </Card>
+                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
-              <Card style={{ backgroundColor: "black" }}>
-                <CardContent>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Title </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.title}
-                    </Col>
-                  </Row>
-                  <Row>
-                    <Col>
-                      <Typography
-                        variant="body1"
-                        component="p"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <strong>NFT Description </strong>
-                      </Typography>
-                    </Col>
-                    <Col style={{ color: "white", fontFamily: "inter" }}>
-                      {nftDetail.description}
-                    </Col>
-                  </Row>
-                  {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Rarity </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.type}
-                                    </Col>
-                                </Row> */}
-                  {/* <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Supply Type </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.supplyType}
-                                    </Col>
-                                </Row>
-                                <Row>
-                                    <Col>
-                                        <Typography variant="body1" component="p" style={{color:"#a70000"}} >
-                                            <strong>Token Supply </strong>
-                                        </Typography>
-                                    </Col>
-                                    <Col>
-                                        {nftDetail.tokenSupply}
-                                    </Col>
-                                </Row> */}
-                </CardContent>
-              </Card>
+              <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
                   <Accordion>
@@ -749,11 +553,6 @@ const DropSingleNFT = (props) => {
                               <th>Bid</th>
                               <th>Expiration</th>
                               <th colSpan={2}></th>
-                              {/* <th>
-                                                            <button className="btn" onClick={props.acceptBid}>
-                                                                Accept
-                                                            </button>
-                                                        </th> */}
                             </tr>
                           </thead>
                           <tbody>
@@ -782,7 +581,7 @@ const DropSingleNFT = (props) => {
                                     <Countdown
                                       daysInHour
                                       date={new Date(bid.expiryTime)}
-                                    ></Countdown>
+                                    />
                                   )}
                                 </td>
                                 <td>

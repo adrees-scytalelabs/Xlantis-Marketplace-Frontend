@@ -16,7 +16,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
-import MessageCard from "../../../../components/MessageCards.js/MessageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -43,13 +43,13 @@ const useStyles = makeStyles({
 
 function MyCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  let [isCreating, setIsCreating] = useState(false);
-  let [open, setOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
+  const [collectionCount, setCollectionCount] = useState(0);
   const [openCollectionModal, setOpenCollectionModal] = useState(false);
   const handleCloseCollectionModal = () => {
     setOpenCollectionModal(false);
@@ -237,8 +237,8 @@ function MyCollection(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CreateNewCollectionModal
         show={openCollectionModal}
