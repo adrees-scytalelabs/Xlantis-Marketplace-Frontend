@@ -1,4 +1,5 @@
 import axios from "axios";
+import Cookies from "js-cookie";
 
 const handleClose = (setShow) => setShow(false);
 const handleShow = (setShow) => setShow(true);
@@ -149,7 +150,13 @@ export let handleVerifyWallet = (
     }
   );
 };
-export let getVerifiedSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount) => {
+export let getVerifiedSSOAdmins = (
+  start,
+  end,
+  setOpen,
+  setAdmins,
+  setAdminCount
+) => {
   setOpen(true);
   axios
     .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
@@ -161,9 +168,7 @@ export let getVerifiedSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount
     .catch((error) => {
       console.log(error.response.data);
       if (error.response.data !== undefined) {
-        if (
-          error.response.data === "Unauthorized access (invalid token) !!"
-        ) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
           sessionStorage.removeItem("Authorization");
           sessionStorage.removeItem("Address");
           window.location.reload(false);
@@ -172,7 +177,13 @@ export let getVerifiedSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount
       setOpen(false);
     });
 };
-export let getVerifiedWalletAdmins = (start, end, setOpen, setWalletAdmins, setWalletAdminCount) => {
+export let getVerifiedWalletAdmins = (
+  start,
+  end,
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount
+) => {
   setOpen(true);
   axios
     .get(`/super-admin/admins/verified/${start}/${end}?userType=v2`)
@@ -184,9 +195,7 @@ export let getVerifiedWalletAdmins = (start, end, setOpen, setWalletAdmins, setW
     .catch((error) => {
       console.log(error.response);
       if (error.response.data !== undefined) {
-        if (
-          error.response.data === "Unauthorized access (invalid token) !!"
-        ) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
           sessionStorage.removeItem("Authorization");
           sessionStorage.removeItem("Address");
           window.location.reload(false);
@@ -208,9 +217,7 @@ export let getSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount) => {
     .catch((error) => {
       console.log(error.response.data);
       if (error.response.data !== undefined) {
-        if (
-          error.response.data === "Unauthorized access (invalid token) !!"
-        ) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
           sessionStorage.removeItem("Authorization");
           sessionStorage.removeItem("Address");
           window.location.reload(false);
@@ -219,7 +226,13 @@ export let getSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount) => {
       setOpen(false);
     });
 };
-export let getWalletAdmins = (start, end, setOpen, setWalletAdmins, setWalletAdminCount) => {
+export let getWalletAdmins = (
+  start,
+  end,
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount
+) => {
   setOpen(true);
   axios
     .get(`/super-admin/admins/${start}/${end}?userType=v2`)
@@ -231,9 +244,7 @@ export let getWalletAdmins = (start, end, setOpen, setWalletAdmins, setWalletAdm
     .catch((error) => {
       console.log(error.response.data);
       if (error.response.data !== undefined) {
-        if (
-          error.response.data === "Unauthorized access (invalid token) !!"
-        ) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
           sessionStorage.removeItem("Authorization");
           sessionStorage.removeItem("Address");
           window.location.reload(false);
@@ -241,4 +252,239 @@ export let getWalletAdmins = (start, end, setOpen, setWalletAdmins, setWalletAdm
       }
       setOpen(false);
     });
+};
+
+export let getEnabledSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/enabled?userType=v1`)
+    .then((response) => {
+      setAdmins(response.data.admins);
+      setAdminCount(response.data.admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          Cookies.remove("Version");
+
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
+export let getEnabledWalletAdmins = (
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount
+) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/enabled?userType=v2`)
+    .then((response) => {
+      setWalletAdmins(response.data.admins);
+      setWalletAdminCount(response.data.admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          Cookies.remove("Version");
+
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
+
+export let handleSSODisable = (
+  e,
+  verifyAdminId,
+  setOpen,
+  setAdmins,
+  setAdminCount,
+  setVariant,
+  setLoad,
+  setNotificationData
+) => {
+  e.preventDefault();
+  handleShowBackdrop(setOpen);
+  let data = {
+    adminId: verifyAdminId,
+  };
+
+  axios.patch("/super-admin/disable?userType=v1", data).then(
+    (response) => {
+      handleCloseBackdrop(setOpen);
+      getEnabledSSOAdmins(setOpen, setAdmins, setAdminCount);
+      setVariant("success");
+      setNotificationData("Admin Disabled Successfully.");
+      setLoad(true);
+    },
+    (error) => {
+      console.log("Error on disable: ", error);
+      console.log("Error on disable: ", error.response);
+      handleCloseBackdrop(setOpen);
+      setVariant("error");
+      setNotificationData("Unable to Disable Admin.");
+      setLoad(true);
+    }
+  );
+};
+export let handleWalletDisable = (
+  e,
+  verifyAdminId,
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount,
+  setVariant,
+  setLoad,
+  setNotificationData
+) => {
+  e.preventDefault();
+  handleShowBackdrop(setOpen);
+  let data = {
+    adminId: verifyAdminId,
+  };
+
+  axios.patch("/super-admin/disable?userType=v2", data).then(
+    (response) => {
+      handleCloseBackdrop(setOpen);
+      getEnabledWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+      setVariant("success");
+      setNotificationData("Admin Disabled Successfully.");
+      setLoad(true);
+    },
+    (error) => {
+      console.log("Error on disable: ", error);
+      console.log("Error on disable: ", error.response);
+      handleCloseBackdrop(setOpen);
+      setVariant("error");
+      setNotificationData("Unable to Enable Admin.");
+      setLoad(true);
+    }
+  );
+};
+export let getDisableSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/disabled?userType=v1`)
+    .then((response) => {
+      setAdmins(response.data.admins);
+      setAdminCount(response.data.admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          Cookies.remove("Version");
+
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
+
+export let getDisableWalletAdmins = (
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount
+) => {
+  setOpen(true);
+  axios
+    .get(`/super-admin/admins/disabled?userType=v2`)
+    .then((response) => {
+      setWalletAdmins(response.data.admins);
+      setWalletAdminCount(response.data.admins.length);
+      setOpen(false);
+    })
+    .catch((error) => {
+      console.log(error.response.data);
+      if (error.response.data !== undefined) {
+        if (error.response.data === "Unauthorized access (invalid token) !!") {
+          sessionStorage.removeItem("Authorization");
+          sessionStorage.removeItem("Address");
+          window.location.reload(false);
+        }
+      }
+      setOpen(false);
+    });
+};
+export let handleEnableSSO = (
+  e,
+  verifyAdminId,
+  setOpen,
+  setAdmins,
+  setAdminCount,
+  setVariant,
+  setLoad,
+  setNotificationData
+) => {
+  e.preventDefault();
+  handleShowBackdrop(setOpen);
+  let data = {
+    adminId: verifyAdminId,
+  };
+  axios.patch(`/super-admin/enable?userType=v1`, data).then(
+    (response) => {
+      handleCloseBackdrop(setOpen);
+      getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
+      setVariant("success");
+      setNotificationData("Admin Enabled Successfully.");
+      setLoad(true);
+    },
+    (error) => {
+      console.log("Error during enable: ", error);
+      console.log("Error response: ", error.response);
+      handleCloseBackdrop(setOpen);
+      setVariant("error");
+      setNotificationData("Unable to Enabled Admin.");
+      setLoad(true);
+    }
+  );
+};
+export let handleEnableWallet = (
+  e,
+  verifyAdminId,
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount,
+  setVariant,
+  setLoad,
+  setNotificationData
+) => {
+  e.preventDefault();
+  handleShowBackdrop(setOpen);
+  let data = {
+    adminId: verifyAdminId,
+  };
+  axios.patch(`/super-admin/enable?userType=v2`, data).then(
+    (response) => {
+      handleCloseBackdrop(setOpen);
+      getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+      setVariant("success");
+      setNotificationData("Admin Enabled Successfully.");
+      setLoad(true);
+    },
+    (error) => {
+      console.log("Error: ", error);
+      console.log("Error response: ", error.response);
+      handleCloseBackdrop(setOpen);
+      setVariant("error");
+      setNotificationData("Unable to Enabled Admin.");
+      setLoad(true);
+    }
+  );
 };
