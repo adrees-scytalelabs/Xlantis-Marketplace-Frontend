@@ -98,7 +98,7 @@ function a11yProps(index) {
 function AccountApproval(props) {
   const classes = useStyles();
   const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
+  const handleChange = ( newValue) => {
     setValue(newValue);
   };
 

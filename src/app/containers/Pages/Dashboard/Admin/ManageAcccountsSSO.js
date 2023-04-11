@@ -12,7 +12,7 @@ import { Link, useLocation } from "react-router-dom";
 import SSODisabled from "./SSODisabled";
 import SSOEnabled from "./SSOEnabled";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",

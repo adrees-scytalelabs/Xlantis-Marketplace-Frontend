@@ -121,7 +121,6 @@ function MarketPlacePage(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
     getMyDrops(props.saleType, 0, rowsPerPage);
   }, []);
   const handleChangePage = (event, newPage) => {

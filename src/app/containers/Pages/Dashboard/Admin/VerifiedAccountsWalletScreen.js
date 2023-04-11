@@ -2,7 +2,6 @@ import { TablePagination } from "@material-ui/core/";
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
   getVerifiedWalletAdmins,
@@ -75,7 +74,7 @@ function VerifiedAccountsWalletScreen(props) {
           walletEnabled={true}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -86,18 +85,13 @@ function VerifiedAccountsWalletScreen(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

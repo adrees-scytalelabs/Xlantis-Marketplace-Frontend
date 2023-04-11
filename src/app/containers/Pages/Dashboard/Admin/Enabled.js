@@ -2,7 +2,6 @@ import { TablePagination } from "@material-ui/core/";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import React, { useEffect, useState } from "react";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import Notification from "../../../../components/Utils/Notification";
 import {
@@ -15,15 +14,12 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 function Enabled() {
-  const [network, setNetwork] = useState("");
   const [admins, setSSOAdmins] = useState([]);
   const [adminCount, setSSOAdminCount] = useState(0);
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [load, setLoad] = useState(false);
   const [variant, setVariant] = useState("");
   const [notificationData, setNotificationData] = useState("");
@@ -67,7 +63,7 @@ function Enabled() {
             setAdminCount={setSSOAdminCount}
             setWalletAdminCount={setWalletAdminCount}
             setOpen={setOpen}
-          ></SuperAdminTable>
+          />
         </div>
       </div>
       <TablePagination
@@ -79,24 +75,19 @@ function Enabled() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <Notification
         variant={variant}
         notificationData={notificationData}
         setLoad={setLoad}
         load={load}
-      ></Notification>
+      />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

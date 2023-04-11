@@ -1,9 +1,5 @@
 import {
-  AppBar,
   Box,
-  Card,
-  CardHeader,
-  Grid,
   Tab,
   Tabs,
   Typography,
@@ -11,29 +7,10 @@ import {
 import React, { useEffect } from "react";
 import { useState } from "react";
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
+import { makeStyles} from "@material-ui/styles";
 import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import MarketPlacePage from "./MarketPlacePage";
 import { Link } from "react-router-dom";
-
-const paginationStyles = makeStyles({
-  base: {
-    border: 0,
-    color: "#fff",
-    padding: "0 30px",
-    fontWeight: "bold",
-    fontFamily: "orbitron",
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "#fff",
-  },
-  body2: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontFamily: "orbitron",
-  },
-});
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -126,15 +103,9 @@ function a11yProps(index) {
 
 const MarketPlace = (props) => {
   const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
   };
 
   useEffect(() => {

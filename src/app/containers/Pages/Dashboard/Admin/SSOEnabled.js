@@ -55,7 +55,7 @@ function SSOEnabled() {
             setAdmins={setSSOAdmins}
             setAdminCount={setSSOAdminCount}
             setOpen={setOpen}
-          ></SuperAdminTable>
+          />
         </div>
       </div>
       <TablePagination
@@ -72,14 +72,14 @@ function SSOEnabled() {
         notificationData={notificationData}
         setLoad={setLoad}
         load={load}
-      ></Notification>
+      />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }
