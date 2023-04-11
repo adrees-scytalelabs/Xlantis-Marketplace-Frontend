@@ -269,11 +269,11 @@ function AddNFT(props) {
 
     axios.get(`/collection/collections/${location.state.nftType}`).then(
       (response) => {
-      //  console.log("response", response);
+        //  console.log("response", response);
         setChangeCollectionList(response.data.collectionData);
-      //  console.log("COLLECTION", changeCollectionList);
+        //  console.log("COLLECTION", changeCollectionList);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
-       // console.log(collectionTypes);
+        // console.log(collectionTypes);
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -312,7 +312,7 @@ function AddNFT(props) {
 
   const getHash = (id) => {
     const hex = Web3.utils.toHex(id);
-   // console.log("conversion to hex: ", hex);
+    // console.log("conversion to hex: ", hex);
     return hex;
   };
 
@@ -322,7 +322,7 @@ function AddNFT(props) {
     };
     axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
-     //   console.log("response of top up amount", response);
+        //   console.log("response of top up amount", response);
         let variant = "success";
         enqueueSnackbar("Balance Updated", { variant });
       },
@@ -374,7 +374,7 @@ function AddNFT(props) {
     };
     axios.post(`/drop/finalize`, dropData).then(
       (response) => {
-      //  console.log("nft title response", response.data);
+        //  console.log("nft title response", response.data);
         let variant = "success";
         enqueueSnackbar(
           "Drop Is Being Finalized. Transactions Are In Process",
@@ -413,19 +413,19 @@ function AddNFT(props) {
 
     // To get all the events
     transak.on(transak.ALL_EVENTS, (data) => {
-    //  console.log(data);
+      //  console.log(data);
     });
 
     // This will trigger when the user closed the widget
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
-     // console.log(eventData);
+      // console.log(eventData);
       transak.close();
       handleOpenModal();
     });
 
     // This will trigger when the user marks payment is made.
     transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-     // console.log(orderData);
+      // console.log(orderData);
       window.alert("Payment Success");
       transak.close();
       handleOpenModal();
@@ -446,7 +446,7 @@ function AddNFT(props) {
     setSaleType(location.state.saleType);
     let type = location.state.nftType;
     setNftType(type);
-   // console.log("dropid", dropId);
+    // console.log("dropid", dropId);
 
     getCollections();
 
@@ -531,7 +531,7 @@ function AddNFT(props) {
 
       axios.patch(`/drop/start-time`, data).then(
         (response) => {
-         // console.log("response of drop/start-time: ", response);
+          // console.log("response of drop/start-time: ", response);
           let variant = "success";
           enqueueSnackbar("Time Successfully Updated.", { variant });
         },
@@ -550,11 +550,11 @@ function AddNFT(props) {
       dropId: dropId,
     };
 
-   // console.log("data", data);
+    // console.log("data", data);
 
     axios.put(`/drop/status/pending`, data).then(
       (response) => {
-      //  console.log("drop status pending response: ", response);
+        //  console.log("drop status pending response: ", response);
         setIsUploadingData(false);
         handleCloseBackdrop();
       },
@@ -588,9 +588,9 @@ function AddNFT(props) {
       abi = DropFactory1155;
     }
 
-   // console.log("Contract Address: ", address);
+    // console.log("Contract Address: ", address);
     var myContractInstance = await new web3.eth.Contract(abi, address);
-   // console.log("myContractInstance", myContractInstance);
+    // console.log("myContractInstance", myContractInstance);
 
     // console.log("Start TIME", startTime);
     // console.log("end time", endTime);
@@ -604,7 +604,7 @@ function AddNFT(props) {
           dropInfo
         )
         .send({ from: accounts[0] }, (err, response) => {
-        //  console.log("get transaction", err, response);
+          //  console.log("get transaction", err, response);
           let data = {
             dropId: dropId,
             txHash: response,
@@ -633,7 +633,7 @@ function AddNFT(props) {
           }
         })
         .on("receipt", (receipt) => {
-         // console.log("receipt", receipt);
+          // console.log("receipt", receipt);
           let variant = "success";
           enqueueSnackbar("New Drop Created Successfully.", { variant });
           setIsAdded(false);
@@ -661,9 +661,9 @@ function AddNFT(props) {
       abi = AuctionDropFactory1155;
     }
 
-   // console.log("Contract Address: ", address);
+    // console.log("Contract Address: ", address);
     var myContractInstance = await new web3.eth.Contract(abi, address);
-  //  console.log("myContractInstance", myContractInstance);
+    //  console.log("myContractInstance", myContractInstance);
 
     // console.log("Start TIME", startTime);
     // console.log("end time", endTime);
@@ -768,7 +768,7 @@ function AddNFT(props) {
       axios.get(`/drop/validate-admin-balance/${dropId}`).then(
         (response) => {
           setCostInfo(response.data);
-         // console.log("Admin Balance and Buy Detail", response);
+          // console.log("Admin Balance and Buy Detail", response);
           handleCloseBackdrop();
           // if (costInfo!=undefined){
           //   TotalCost();
@@ -803,7 +803,7 @@ function AddNFT(props) {
     event.preventDefault();
     const web3 = window.web3;
     const accounts = await web3.eth.getAccounts();
-   // console.log("Checker testing");
+    // console.log("Checker testing");
     setIsSaving(true);
     await handleTimeEvent(event);
     await handleDropData(event, web3, accounts);
@@ -853,7 +853,7 @@ function AddNFT(props) {
   const handleAddClick = async (e) => {
     handleShowBackdrop();
     e.preventDefault();
-   // console.log("HANDLE ADD");
+    // console.log("HANDLE ADD");
     if (nftType === "1155") {
       if (collection === "") {
         let variant = "error";
@@ -886,7 +886,7 @@ function AddNFT(props) {
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
-       // console.log("AFTER CHECKS");
+        // console.log("AFTER CHECKS");
         handleShowBackdrop();
         setIsUploadingData(true);
 
@@ -894,7 +894,7 @@ function AddNFT(props) {
         //sending data to backend
         let data;
         let newObject;
-       // console.log("before check");
+        // console.log("before check");
         if (nftType === "1155") {
           //console.log("ERC1155 DATA");
           data = {
@@ -919,14 +919,14 @@ function AddNFT(props) {
 
         axios.put(`/drop/nft`, data).then(
           async (response) => {
-           // console.log("nft drop add response: ", response);
+            // console.log("nft drop add response: ", response);
             await handleBuyDetail();
-           // console.log("time", startTime, endTime);
+            // console.log("time", startTime, endTime);
 
             setIsAdded(true);
             let found = false;
             if (nftType === "1155") {
-            //  console.log("SET ERC1155 DATA");
+              //  console.log("SET ERC1155 DATA");
 
               setDropInfo((current) =>
                 current.map((obj) => {
@@ -960,9 +960,10 @@ function AddNFT(props) {
               enqueueSnackbar("NFT Added Successfully", { variant });
             }
 
-          //  console.log(dropInfo);
+            //  console.log(dropInfo);
 
             setIsUploadingData(false);
+            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
