@@ -1,4 +1,4 @@
-import { createMuiTheme } from "@material-ui/core";
+import { createTheme } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import Table from "react-bootstrap/Table";
@@ -54,7 +54,7 @@ const useStyles = makeStyles((theme) => ({
     },
   }));
   
-  const makeTheme = createMuiTheme({
+  const makeTheme = createTheme({
     overrides: {
       MuiButton: {
         root: {

@@ -601,6 +601,7 @@ const AuctionNFT = (props) => {
               <Row style={{ marginTop: "5px" }}>
                 <Col>
                   <BidValue 
+                    biddingValue={biddingValue}
                     bidExpiryTime={bidExpiryTime}
                     setBidExpiryTime={setBidExpiryTime}
                     setBidExpiryTimeStamp={setBidExpiryTimeStamp}

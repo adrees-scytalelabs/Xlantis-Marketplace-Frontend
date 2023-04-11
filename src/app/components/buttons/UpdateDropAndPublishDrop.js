@@ -28,9 +28,7 @@ function UpdateDropAndPublishDrop({
             type="button"
             disabled={isDisabled}
             onClick={(e) => {
-              versionB === "v1-sso"
-                ? handleSubmitEvent(e)
-                : handleSubmitEvent(e);
+              handleSubmitEvent(e);
             }}
             style={{ float: "right", marginBottom: "5%" }}
             className="bttn"

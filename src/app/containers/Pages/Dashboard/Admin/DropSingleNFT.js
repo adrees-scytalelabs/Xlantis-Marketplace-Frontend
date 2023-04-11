@@ -506,6 +506,7 @@ const DropSingleNFT = (props) => {
                 <Row style={{ marginTop: "5px" }}>
                   <Col>
                     <AcceptBidAccordian 
+                      versionB={versionB}
                       bidDetail={bidDetail}
                       isSold={location.state.nftDetail.currentMarketplaceId.isSold}
                       handleAcceptBid={handleAcceptBid}

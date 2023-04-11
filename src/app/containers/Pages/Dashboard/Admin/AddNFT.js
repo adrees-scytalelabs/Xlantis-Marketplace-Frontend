@@ -1020,6 +1020,7 @@ function AddNFT(props) {
         </div>
         <UpdateDropAndPublishDrop 
           isDisabled={isDisabled}
+          versionB={versionB}
           handleSubmitEvent={handleSubmitEvent}
           enableTime={enableTime}
           setCurrentTimeStamp={setCurrentTimeStamp}
