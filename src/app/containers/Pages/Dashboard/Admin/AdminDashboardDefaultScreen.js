@@ -3,29 +3,23 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { useDispatch, useSelector } from 'react-redux';
+import { getCount } from "../../../../redux/getCountSlice";
 
 function AdminDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [totalCollections, setTotalCollections] = useState(0);
   const [hover, setHover] = useState(false);
   const [hoverCollections, setHoverCollections] = useState(false);
+   const {nftCount,collectionCount } = useSelector((store) => store.count);
+     const dispatch = useDispatch();
 
-  let getCounts = () => {
-    let version = Cookies.get("Version");
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-    axios
-      .get(`${version}/user/getcounts`)
-      .then((response) => {
-        setTotalNFTs(response.data.NFTscount);
-        setTotalCollections(response.data.Collectionscount);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
-  };
+
+     useEffect(() => {
+      dispatch(getCount());
+      setTotalNFTs(nftCount);
+      setTotalCollections(collectionCount);
+    }, [nftCount]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -39,7 +33,6 @@ function AdminDashboardDefaultScreen(props) {
       myDrops: "",
       topUp: "",
     });
-    getCounts();
   }, []);
   return (
     <>
