@@ -8,7 +8,7 @@ import AccountsDefaultScreen from "./AccountsDefaultScreen";
 import AccountsSSO from "./AccountsSSO";
 import AccountsWallet from "./AccountsWallet";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",

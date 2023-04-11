@@ -2,7 +2,6 @@ import { TablePagination } from "@material-ui/core/";
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
   getVerifiedSSOAdmins,
@@ -12,7 +11,6 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 function VerifiedAccountsDefaultScreen(props) {
-  const [network, setNetwork] = useState("");
   const [admins, setAdmins] = useState([]);
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [adminWalletCount, setWalletAdminCount] = useState(0);
@@ -20,8 +18,6 @@ function VerifiedAccountsDefaultScreen(props) {
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -77,7 +73,7 @@ function VerifiedAccountsDefaultScreen(props) {
           walletEnabled={true}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -88,18 +84,13 @@ function VerifiedAccountsDefaultScreen(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

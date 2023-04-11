@@ -63,7 +63,7 @@ function AccountsSSO(props) {
           walletEnabled={false}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -80,7 +80,7 @@ function AccountsSSO(props) {
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }

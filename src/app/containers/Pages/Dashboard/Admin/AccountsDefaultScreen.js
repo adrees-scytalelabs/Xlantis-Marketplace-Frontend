@@ -78,7 +78,7 @@ function AccountsDefaultScreen(props) {
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
-        count={adminCount}
+        count={adminCount+adminWalletCount}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

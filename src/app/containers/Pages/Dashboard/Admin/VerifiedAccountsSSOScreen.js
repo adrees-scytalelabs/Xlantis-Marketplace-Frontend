@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { TablePagination } from "@material-ui/core/";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
   getVerifiedSSOAdmins,
@@ -11,13 +10,10 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 function VerifiedAccountsSSOScreen(props) {
-  const [network, setNetwork] = useState("");
   const [admins, setAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
@@ -74,7 +70,7 @@ function VerifiedAccountsSSOScreen(props) {
           walletEnabled={false}
           setShow={setShow}
           setModalData={setModalData}
-        ></SuperAdminTable>
+        />
       </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
@@ -85,18 +81,13 @@ function VerifiedAccountsSSOScreen(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      ></NetworkErrorModal>
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
         adminData={modalData}
         setShow={setShow}
-      ></AdminInformationModal>
+      />
     </div>
   );
 }
