@@ -777,6 +777,7 @@ function AddNFT(props) {
               enqueueSnackbar("NFT Added Successfully", { variant });
             }
             setIsUploadingData(false);
+            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
