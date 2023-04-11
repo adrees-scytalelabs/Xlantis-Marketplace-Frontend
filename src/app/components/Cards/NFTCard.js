@@ -1,16 +1,15 @@
 import Card from "@material-ui/core/Card";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import { truncate } from "../../assets/js/utils";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-
+import { truncate } from "../../assets/js/utils";
+import TypographyText from "../Typography/TypographyText";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -73,23 +72,11 @@ function NFTCard(props) {
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
             <div className="row no-gutters justify-content-start align-items-center">
-              <Typography
-                variant="h6"
-                component="p"
-                className={classes.cardTitle}
-              >
-                {props.data.title}
-              </Typography>
+            <TypographyText variant = "h6" component="p" class={classes.cardTitle} value = {props.data.title} isSpan = {false}></TypographyText>
+
             </div>
             <div className="row no-gutters justify-content-start align-items-center">
-              <Typography
-                variant="body2"
-                className={classes.cardDescriptions}
-                component="p"
-                style={{ minHeight: "2.5rem" }}
-              >
-                {truncate(props.data.description, 35)}
-              </Typography>
+              <TypographyText variant = "body2" component="p" style={{ minHeight: "2.5rem" }} class={classes.cardDescriptions} value = {truncate(props.data.description, 35)} isSpan = {false}></TypographyText>         
             </div>
           </CardContent>
         </div>

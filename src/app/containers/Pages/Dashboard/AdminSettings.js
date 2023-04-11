@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";

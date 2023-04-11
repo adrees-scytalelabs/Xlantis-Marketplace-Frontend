@@ -7,41 +7,10 @@ import { Link } from "react-router-dom";
 import OnAuctionDropCard from "../../../../components/Cards/OnAuctionDropCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
-
 function Drops() {
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage] = useState(4);
   const [open, setOpen] = useState(false);
-  const classes = useStyles();
   let getMyDrops = (start, end) => {
     setOpen(true);
     axios.get(`/drop/drops/${start}/${end}`).then(

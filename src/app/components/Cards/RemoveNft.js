@@ -1,9 +1,9 @@
-import React from "react";
+import { CardActionArea, Grid } from "@material-ui/core/";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardMedia from "@material-ui/core/CardMedia";
-import { CardActionArea, Grid } from "@material-ui/core/";
+import React from "react";
 
 function RemoveNft({
   tokenList,
@@ -12,6 +12,7 @@ function RemoveNft({
   classes,
   handleRemoveClick,
 }) {
+  console.log("tokenList", tokenList);
   return (
     <div>
       <div
@@ -35,7 +36,7 @@ function RemoveNft({
                         setEditObjectIndex(index);
                       }}
                     >
-                      <Card id="nftCardProps">
+                      <Card style={{ height: "200px", width: '200px' }} id="nftCardProps">
                         <CardMedia className={classes.media} image={i.nftURI} />
                       </Card>
                     </CardActionArea>

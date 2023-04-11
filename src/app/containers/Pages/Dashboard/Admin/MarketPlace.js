@@ -2,13 +2,12 @@ import {
   Box,
   Tab,
   Tabs,
-  Typography,
+  Typography
 } from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { ThemeProvider, createTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
-import { makeStyles} from "@material-ui/styles";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
 import MarketPlacePage from "./MarketPlacePage";
 import { Link } from "react-router-dom";
 

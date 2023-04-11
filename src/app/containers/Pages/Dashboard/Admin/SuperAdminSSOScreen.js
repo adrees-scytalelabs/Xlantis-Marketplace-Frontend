@@ -1,64 +1,11 @@
-import { makeStyles } from "@material-ui/core/styles";
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
-}));
 
 function SuperAdminSSOScreen(props) {
-  const classes = useStyles();
   const [totalAdmins, setTotalAdmins] = useState(0);
   const [open, setOpen] = useState(false);
   const [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);

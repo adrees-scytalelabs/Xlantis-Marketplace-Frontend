@@ -82,7 +82,6 @@ function MarketPlacePage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const [versionB, setVersionB] = useState("");
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -91,7 +90,6 @@ function MarketPlacePage(props) {
   };
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    const version = Cookies.get("Version");
     axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
       (response) => {
         setTokenList(response.data.data);
@@ -120,7 +118,6 @@ function MarketPlacePage(props) {
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
     getMyDrops(props.saleType, 0, rowsPerPage);
   }, []);
   const handleChangePage = (event, newPage) => {

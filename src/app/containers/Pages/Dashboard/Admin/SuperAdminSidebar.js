@@ -127,7 +127,7 @@ function SuperAdminSidebar(props) {
               >
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
-                <i class="fa fa-caret-down"></i>
+                <i className="fa fa-caret-down"></i>
               </Link>
               <div className={`${style} container`}>
                 <div
@@ -170,7 +170,7 @@ function SuperAdminSidebar(props) {
               >
                 <i className="fas fa-layer-group"></i>
                 <span>Properties</span>
-                <i class="fa fa-caret-down"></i>
+                <i className="fa fa-caret-down"></i>
               </Link>
               <div className={`${propertiesStyle} container`}>
                 <div

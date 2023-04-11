@@ -72,9 +72,7 @@ function MyDropNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  const [nftIds, setNftIds] = useState([]);
   const [audio, setAudio] = useState();
-  const [versionB, setVersionB] = useState("");
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -121,8 +119,6 @@ function MyDropNFTs(props) {
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
-    setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
 
     props.setActiveTab({

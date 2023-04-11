@@ -1,7 +1,6 @@
-import { Button } from "@material-ui/core";
+import { Check } from "@material-ui/icons";
 import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { Check } from "@material-ui/icons";
 import BlackSpinner from "../Spinners/BlackSpinner";
 
 const RequestApprovalModal = (props) => {

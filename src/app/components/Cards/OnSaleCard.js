@@ -1,22 +1,16 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { Avatar, Button, CardHeader, Grid, Paper } from "@material-ui/core/";
 import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import Alert from "@material-ui/lab/Alert";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import OpenInNewIcon from "@material-ui/icons/OpenInNew";
+import Alert from "@material-ui/lab/Alert";
+import React from "react";
 import Countdown from "react-countdown";
-import nft from "../../assets/img/pexels-mo-eid-8832898.jpg";
+import { Link } from "react-router-dom";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
-import { AlertTitle } from "@material-ui/lab";
 import { truncate } from "../../assets/js/utils";
-import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -114,7 +108,7 @@ const OnSaleCard = (props) => {
                     </Link>
                   </div>
                   <div className="col-8 w-100 text-right align-self-end">
-                    
+
                     <Link
                       to={{
                         pathname: `/fixdropnft/${props.i._id}`,
@@ -132,7 +126,7 @@ const OnSaleCard = (props) => {
                         </span>
                       </button>
                     </Link>
-                    
+
                   </div>
                 </div>
               </div>
@@ -167,7 +161,7 @@ const OnSaleCard = (props) => {
                 </p>
               </div>
             </div>
-            
+
             <Typography
               variant="h6"
               gutterBottom

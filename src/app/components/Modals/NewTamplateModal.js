@@ -1,26 +1,13 @@
-import React, { useState } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
-import { Button } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
 import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
 import { useSnackbar } from "notistack";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import Backdrop from "../Backdrop/Backdrop";
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 import CircularBackdrop from "../Backdrop/Backdrop";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 
 
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
 
   const [title, setTitle] = useState("");
   const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);

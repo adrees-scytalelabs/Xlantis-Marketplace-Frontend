@@ -51,16 +51,6 @@ function AdminDashboard(props) {
     }
   };
 
-  const settings = {
-    apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
-    environment: "STAGING",
-    defaultCryptoCurrency: "ETH",
-    themeColor: "000000",
-    hostURL: window.location.origin,
-    widgetHeight: "700px",
-    widgetWidth: "500px",
-  };
-
   const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     newCollection: "",
@@ -72,27 +62,6 @@ function AdminDashboard(props) {
     myDrops: "",
     topUp: "",
   });
-
-  function openTransak() {
-    const transak = new transakSDK(settings);
-
-    transak.init();
-
-    transak.on(transak.ALL_EVENTS, (data) => {
-      console.log(data);
-    });
-
-    transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
-      console.log(eventData);
-      transak.close();
-    });
-
-    transak.on(transak.EVENTS.TRANSAK_ORDER_SUCCESSFUL, (orderData) => {
-      console.log(orderData);
-      window.alert("Payment Success");
-      transak.close();
-    });
-  }
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
