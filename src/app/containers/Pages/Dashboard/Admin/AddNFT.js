@@ -768,27 +768,16 @@ function AddNFT(props) {
       axios.get(`/drop/validate-admin-balance/${dropId}`).then(
         (response) => {
           setCostInfo(response.data);
-          // console.log("Admin Balance and Buy Detail", response);
           handleCloseBackdrop();
-          // if (costInfo!=undefined){
-          //   TotalCost();
-          // }
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
           }
-          if (error.response !== undefined) {
-            if (error.response.status === 400) {
-              // setMsg(error.response.data.message);
-            } else {
-              // setMsg("Unknown Error Occured, try again.");
-            }
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-          // setIsLoading(false);
+            let variant = "error";
+            enqueueSnackbar("Something went wrong with add nft try again", { variant });
+            handleCloseBackdrop();
         }
       );
     } catch (e) {
@@ -920,7 +909,7 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           async (response) => {
             // console.log("nft drop add response: ", response);
-            await handleBuyDetail();
+           const res = await handleBuyDetail();
             // console.log("time", startTime, endTime);
 
             setIsAdded(true);
@@ -959,11 +948,7 @@ function AddNFT(props) {
               let variant = "success";
               enqueueSnackbar("NFT Added Successfully", { variant });
             }
-
-            //  console.log(dropInfo);
-
             setIsUploadingData(false);
-            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
