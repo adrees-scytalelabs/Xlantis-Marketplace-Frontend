@@ -166,7 +166,7 @@ function AddNFT(props) {
   const classes = useStyles();
   let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-
+  const [buttonName, setbuttonName] = useState("bttn");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -225,41 +225,11 @@ function AddNFT(props) {
   };
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
-        // console.log("response of tx-cost summary", response);
-        // console.log("responeee", response.data.data.collectionTxSummary);
-        setData(response.data.data);
-        setMOdalOpen(true);
-
-        // data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        // data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
-        // data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
-        // data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
-        // data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
-        // data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (error.response.status === 400) {
-            // setMsg(error.response.data.message);
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-        } else {
-          // setMsg("Unknown Error Occured, try again.");
-        }
-        // setIsLoading(false);
-      }
-    );
   };
 
   const handleCloseModal = () => {
     setMOdalOpen(false);
+    // history.push({ pathname: '/dashboard/myDrops' });
   };
 
   let getCollections = () => {
@@ -287,7 +257,6 @@ function AddNFT(props) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
             Cookies.remove("Version");
-
             window.location.reload();
           }
         }
@@ -381,6 +350,7 @@ function AddNFT(props) {
           { variant }
         );
         handleCloseModal();
+
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -481,15 +451,39 @@ function AddNFT(props) {
     }
   };
   const handleSubmitEvent = async (event) => {
+    event.preventDefault();
     if (isAdded) {
-      event.preventDefault();
-      setIsDisabled(true);
-      setEnableTime(true);
+      handleShowBackdrop();
+      await handleBuyDetail();
     } else {
       let variant = "error";
       enqueueSnackbar("Please Add NFT to drop first", { variant });
     }
   };
+  const getTxCost = async (e) =>{
+    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        setData(response.data.data);
+        setMOdalOpen(true);
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
+          if (error.response.status === 400) {
+            // setMsg(error.response.data.message);
+          } else {
+            // setMsg("Unknown Error Occured, try again.");
+          }
+        } else {
+          // setMsg("Unknown Error Occured, try again.");
+        }
+        // setIsLoading(false);
+      }
+    );
+  }
   const handleTimeEvent = async (event) => {
     event.preventDefault();
     if (
@@ -532,6 +526,7 @@ function AddNFT(props) {
       axios.patch(`/drop/start-time`, data).then(
         (response) => {
           // console.log("response of drop/start-time: ", response);
+          getTxCost(event);
           let variant = "success";
           enqueueSnackbar("Time Successfully Updated.", { variant });
         },
@@ -768,27 +763,31 @@ function AddNFT(props) {
       axios.get(`/drop/validate-admin-balance/${dropId}`).then(
         (response) => {
           setCostInfo(response.data);
-          // console.log("Admin Balance and Buy Detail", response);
+          setIsDisabled(true);
+          setEnableTime(true);
+          let variant = "success";
+          enqueueSnackbar(
+            "Transaction Summary received",
+            {
+              variant,
+            }
+          );
           handleCloseBackdrop();
-          // if (costInfo!=undefined){
-          //   TotalCost();
-          // }
+          setbuttonName("updatebttn")
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
           }
-          if (error.response !== undefined) {
-            if (error.response.status === 400) {
-              // setMsg(error.response.data.message);
-            } else {
-              // setMsg("Unknown Error Occured, try again.");
+          let variant = "error";
+          enqueueSnackbar(
+            "Something went wrong with blockchain trancsaction try again",
+            {
+              variant,
             }
-          } else {
-            // setMsg("Unknown Error Occured, try again.");
-          }
-          // setIsLoading(false);
+          );
+          handleCloseBackdrop();
         }
       );
     } catch (e) {
@@ -920,50 +919,46 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           async (response) => {
             // console.log("nft drop add response: ", response);
-            await handleBuyDetail();
-            // console.log("time", startTime, endTime);
+              
+                setIsAdded(true);
+                let found = false;
+                // console.log("time", startTime, endTime);
+                if (nftType === "1155") {
+                  //  console.log("SET ERC1155 DATA");
 
-            setIsAdded(true);
-            let found = false;
-            if (nftType === "1155") {
-              //  console.log("SET ERC1155 DATA");
+                  setDropInfo((current) =>
+                    current.map((obj) => {
+                      if (obj.nftContractAddress === nftContractAddresses) {
+                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                        let amount = obj.amounts.concat(newObject.amounts);
+                        let price = obj.prices.concat(newObject.prices);
+                        found = true;
 
-              setDropInfo((current) =>
-                current.map((obj) => {
-                  if (obj.nftContractAddress === nftContractAddresses) {
-                    let tokens = obj.tokenIds.concat(newObject.tokenIds);
-                    let amount = obj.amounts.concat(newObject.amounts);
-                    let price = obj.prices.concat(newObject.prices);
-                    found = true;
+                        return {
+                          ...obj,
+                          tokenIds: tokens,
+                          amounts: amount,
+                          prices: price,
+                        };
+                      }
 
-                    return {
-                      ...obj,
-                      tokenIds: tokens,
-                      amounts: amount,
-                      prices: price,
-                    };
+                      return obj;
+                    })
+                  );
+
+                  if (found === false) {
+                    const dropp = [...dropInfo, newObject];
+                    // giveApproval();
+                    console.log("drop", dropp);
+                    console.log("here");
+                    setDropInfo(dropp);
                   }
 
-                  return obj;
-                })
-              );
-
-              if (found === false) {
-                const dropp = [...dropInfo, newObject];
-                // giveApproval();
-                console.log("drop", dropp);
-                console.log("here");
-                setDropInfo(dropp);
-              }
-
-              let variant = "success";
-              enqueueSnackbar("NFT Added Successfully", { variant });
-            }
-
-            //  console.log(dropInfo);
-
-            setIsUploadingData(false);
-            handleCloseBackdrop();
+                  let variant = "success";
+                  enqueueSnackbar("NFT Added Successfully", { variant });
+                }
+                setIsUploadingData(false);
+                handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
@@ -1227,9 +1222,11 @@ function AddNFT(props) {
                       <div className="filter-widget newNftWrapper">
                         <input
                           style={{
+                            backgroundColor:'black',
+                            color:'white',
                             border:
                               nftTokenSupply === 0
-                                ? "none"
+                                ? "2 px solid white"
                                 : nftTokenSupply >= supply
                                 ? "3px solid green"
                                 : "3px solid red",
@@ -1393,7 +1390,7 @@ function AddNFT(props) {
             }}
             style={{ float: "right", marginBottom: "5%" }}
             // onClick={handleOpenModal}
-            className="bttn"
+            className={buttonName}
           >
             Update Drop
           </button>

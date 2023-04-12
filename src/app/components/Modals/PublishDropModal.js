@@ -162,8 +162,6 @@ const PublishDropModal = (props) => {
   const handleConfirm = (e) => {
     e.preventDefault();
     if (props.cost.isTopupRequired === true) {
-      // props.setTopUpModal(true);
-      // props.setOpen(false);
       let variant = "error";
       enqueueSnackbar(
         "Your account has insufficient funds for this transaction. Kindly top up your account.",
