@@ -3,10 +3,8 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 const initialState = {
-  count:[],
   nftCount:0,
   collectionCount:0,
-  isLoading:0
 };
 
 export const getCount = createAsyncThunk(
@@ -35,11 +33,9 @@ const getCountSlice = createSlice({
       [getCount.fulfilled]: (state, action) => {
         state.nftCount = action.payload.NFTscount;
         state.collectionCount = action.payload.Collectionscount;
-        state.isLoading = 1;
       },
       [getCount.rejected]: (state, action) => {
         console.log(action);
-        state.isLoading = 2;
       }
   },
 });
