@@ -166,7 +166,7 @@ function AddNFT(props) {
   const classes = useStyles();
   let [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-  const [addNft, setAddNft] = useState(false);
+  const [buttonName, setbuttonName] = useState("bttn");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -257,7 +257,6 @@ function AddNFT(props) {
             sessionStorage.removeItem("Authorization");
             sessionStorage.removeItem("Address");
             Cookies.remove("Version");
-
             window.location.reload();
           }
         }
@@ -774,6 +773,7 @@ function AddNFT(props) {
             }
           );
           handleCloseBackdrop();
+          setbuttonName("updatebttn")
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -1222,9 +1222,11 @@ function AddNFT(props) {
                       <div className="filter-widget newNftWrapper">
                         <input
                           style={{
+                            backgroundColor:'black',
+                            color:'white',
                             border:
                               nftTokenSupply === 0
-                                ? "none"
+                                ? "2 px solid white"
                                 : nftTokenSupply >= supply
                                 ? "3px solid green"
                                 : "3px solid red",
@@ -1388,7 +1390,7 @@ function AddNFT(props) {
             }}
             style={{ float: "right", marginBottom: "5%" }}
             // onClick={handleOpenModal}
-            className="bttn"
+            className={buttonName}
           >
             Update Drop
           </button>
