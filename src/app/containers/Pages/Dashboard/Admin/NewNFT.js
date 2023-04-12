@@ -889,9 +889,12 @@ function NewNFT(props) {
       // setExecutiveProducerType("New");
       // setFanType("New");
       setSupplyType("Single");
-      setCollectionId("");
+      //setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
+      history.push({
+        pathname: `/dashboard/collection/nfts/${collectionId}`
+      });
       // await loadWeb3();
       // const web3 = window.web3;
       // const accounts = await web3.eth.getAccounts();
