@@ -1,20 +1,13 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   makeStyles,
   Paper,
-  Tooltip,
-  Typography,
 } from "@material-ui/core";
-import { BlurLinear, ExpandMore } from "@material-ui/icons";
-import ListIcon from "@material-ui/icons/List";
+
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
-import Countdown from "react-countdown";
+import { Col, Row, } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
@@ -27,6 +20,8 @@ import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import AcceptBidAccordian from "../../../../components/Accordian/AcceptBidAccordian";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -500,120 +495,24 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                      <Typography
-                        variant="body1"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <BlurLinear />
-                        <strong> Properties</strong>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Table striped bordered hover responsive>
-                        <thead>
-                          <tr>
-                            <th>Key</th>
-                            <th>Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {keys?.map((j, index) => (
-                            <tr key={index}>
-                              <td>{j}</td>
-                              <td>{properties[j]}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </AccordionDetails>
-                  </Accordion>
+                  <PropertiesAccordian 
+                    key={keys}
+                    properties={properties}
+                  />
+                  
                 </Col>
               </Row>
               {location.state.saleType === "auction" ? (
                 <Row style={{ marginTop: "5px" }}>
                   <Col>
-                    <Accordion>
-                      <AccordionSummary expandIcon={<ExpandMore />}>
-                        <Typography
-                          variant="body1"
-                          style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                        >
-                          <ListIcon />
-                          <strong> Offers</strong>
-                        </Typography>
-                      </AccordionSummary>
-                      <AccordionDetails>
-                        <Table striped hover bordered size="sm" responsive>
-                          <thead>
-                            <tr>
-                              <th>#</th>
-                              <th>Bidder</th>
-                              <th>Bid</th>
-                              <th>Expiration</th>
-                              <th colSpan={2}></th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {bidDetail?.map((bid, index) => (
-                              <tr key={index}>
-                                <td>{index + 1}</td>
-                                <td>
-                                  <Tooltip
-                                    classes={{ tooltip: classes.noMaxWidth }}
-                                    leaveDelay={1500}
-                                    title={bid.bidderAddress}
-                                    arrow
-                                  >
-                                    <span>
-                                      {bid.bidderAddress.slice(0, 8)}...
-                                    </span>
-                                  </Tooltip>
-                                </td>
-                                <td>{bid.bidAmount}</td>
-                                <td>
-                                  {bid.isAccepted ? (
-                                    <span>Accepted</span>
-                                  ) : new Date() > new Date(bid.expiryTime) ? (
-                                    <span>Expired</span>
-                                  ) : (
-                                    <Countdown
-                                      daysInHour
-                                      date={new Date(bid.expiryTime)}
-                                    />
-                                  )}
-                                </td>
-                                <td>
-                                  {new Date() > new Date(bid.expiryTime) ? (
-                                    <button className="btn" disabled>
-                                      Accept
-                                    </button>
-                                  ) : bid.isAccepted ||
-                                    location.state.nftDetail
-                                      .currentMarketplaceId.isSold ? (
-                                    <button className="btn" disabled>
-                                      Accept
-                                    </button>
-                                  ) : (
-                                    <button
-                                      className="btn"
-                                      onClick={(e) => {
-                                        versionB === "v1-sso"
-                                          ? handleOpenModal(e, bid._id)
-                                          : handleAcceptBid(e, bid._id);
-                                      }}
-                                    >
-                                      Accept
-                                    </button>
-                                  )}
-                                </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </Table>
-                      </AccordionDetails>
-                    </Accordion>
+                    <AcceptBidAccordian 
+                      versionB={versionB}
+                      bidDetail={bidDetail}
+                      isSold={location.state.nftDetail.currentMarketplaceId.isSold}
+                      handleAcceptBid={handleAcceptBid}
+                      handleOpenModal={handleOpenModal}
+
+                    />
                   </Col>
                 </Row>
               ) : null}

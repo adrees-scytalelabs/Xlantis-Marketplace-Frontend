@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-
+import TopUpForm from "../../../../components/Forms/TopUpForm";
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -57,42 +57,11 @@ function TopUp(props) {
           </div>
         </div>
       </div>
-      <div className="card-body p-0">
-        <div className="row mt-5">
-          <div className="col-lg-6 col-md-6 col-sm-12 ">
-            <label>Select your Top Up Amount</label>
-          </div>
-        </div>
-
-        <div className="row mt-3">
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <input
-              type="number"
-              required
-              value={amount}
-              placeholder="Enter Top Up Amount"
-              className="form-control newNftInput"
-              min={0.1}
-              step={0.1}
-              style={{ backgroundColor: "black", color: "white" }}
-              onChange={(e) => {
-                setAmount(e.target.value);
-              }}
-            />
-          </div>
-        </div>
-        <div className="row mt-5">
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <button
-              className="newTemplateBtn mb-3"
-              onClick={(e) => handleTopUpAmount(e)}
-              style={{ backgroundColor: "black", float: "right" }}
-            >
-              Proceed
-            </button>
-          </div>
-        </div>
-      </div>
+      <TopUpForm 
+        amount={amount}
+        setAmount={setAmount}
+        handleTopUpAmount={handleTopUpAmount}
+      />      
     </div>
   );
 }
