@@ -126,7 +126,7 @@ function NewCollection(props) {
   let [doneLoader, setDoneLoader] = useState(false);
   let [nftType, setNftType] = useState("1155");
   let [version, setVersion] = useState("");
-  let [royaltyFee, setRoyaltyFee] = useState(0);
+  let [royaltyFee, setRoyaltyFee] = useState(null);
   let [approvalFlag, setApprovalFlag] = useState(false);
   let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const Text721 =
@@ -893,7 +893,7 @@ function NewCollection(props) {
                       type="number"
                       required
                       value={royaltyFee}
-                      placeholder="Enter Royalty Fee"
+                      placeholder="0"
                       className="form-control newNftInput"
                       onChange={(e) => {
                         setRoyaltyFee(e.target.value);
