@@ -1219,7 +1219,7 @@ function AddNFT(props) {
                       Out of ({nftTokenSupply})
                     </span>
                     <div className="form-group">
-                      <div className="filter-widget newNftWrapper">
+                      <div style={{ display: "flex" }}>
                         <input
                           placeholder="0"
                           style={{
@@ -1231,6 +1231,7 @@ function AddNFT(props) {
                                 : nftTokenSupply >= supply
                                 ? "3px solid green"
                                 : "3px solid red",
+                            marginBottom: "0px",
                           }}
                           type="number"
                           required
@@ -1251,12 +1252,33 @@ function AddNFT(props) {
                             }
                           }}
                         />
-                        {AlertMessage ? (
-                          <span style={{ fontSize: "10px", color: "red" }}>
-                            Limit of supply is {nftTokenSupply}
-                          </span>
-                        ) : null}
+                        <button
+                          className="btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSupply(nftTokenSupply);
+                            setAlertMessage(false);
+                          }}
+                          style={{
+                            backgroundColor: "black",
+                            marginLeft: "5px",
+                            border: "1px solid white",
+                          }}
+                        >
+                          Max
+                        </button>
                       </div>
+                      {AlertMessage ? (
+                        <span
+                          style={{
+                            fontSize: "10px",
+                            color: "red",
+                            margin: "0px !important",
+                          }}
+                        >
+                          Limit of supply is {nftTokenSupply}
+                        </span>
+                      ) : null}
                     </div>
                   </span>
                 ) : null}
