@@ -229,7 +229,12 @@ function AddNFT(props) {
 
   const handleCloseModal = () => {
     setMOdalOpen(false);
-    // history.push({ pathname: '/dashboard/myDrops' });
+    history.push({
+      pathname: `/dashboard/myDrops`,
+      state: {
+        value: 1,
+      },
+    });
   };
 
   let getCollections = () => {
