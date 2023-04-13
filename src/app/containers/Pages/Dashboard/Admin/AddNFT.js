@@ -1257,6 +1257,18 @@ function AddNFT(props) {
                           </span>
                         ) : null}
                       </div>
+                      <div>
+                        <button
+                          className="btn"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            setSupply(nftTokenSupply);
+                            setAlertMessage(false);
+                          }}
+                        >
+                          Max Supply
+                        </button>
+                      </div>
                     </div>
                   </span>
                 ) : null}
