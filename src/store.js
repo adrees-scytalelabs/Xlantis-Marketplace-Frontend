@@ -4,11 +4,17 @@ import countReducer from './app/redux/getCountSlice';
 import userCountReducer from './app/redux/getUserCount';
 import UserProfileReducer from './app/redux/getUserProfileSlice';
 import getMyCollectionReducer from './app/redux/getMyCollectionSlice';
+import getNewNftCollectionReducer from './app/redux/getNewNftCollectionSlice';
+import getNewNftDefaultTemplateReducer from './app/redux/getNewNftDefaultTemplateSlice';
+import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
 export const store = configureStore({
   reducer: {
     count:countReducer,
     userCount:userCountReducer,
     userProfile:UserProfileReducer,
-    MyCollection:getMyCollectionReducer
+    MyCollection:getMyCollectionReducer,
+    NewNftCollection:getNewNftCollectionReducer,
+    defaultTemplate:getNewNftDefaultTemplateReducer,
+    newNftProperties:getNewNftPropertiesReducer
   },
 });

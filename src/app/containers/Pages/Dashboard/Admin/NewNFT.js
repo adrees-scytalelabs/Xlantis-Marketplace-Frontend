@@ -23,6 +23,10 @@ import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
+import { useDispatch, useSelector } from 'react-redux';
+import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
+import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
+import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -163,36 +167,24 @@ function NewNFT(props) {
 
   const [previewImage, setPreviewImage] = useState(r1);
   const [versionB, setVersionB] = useState("");
-  let getCollections = (collectionType) => {
-    setCollection("");
-    const url = `/collection/collections/${collectionType}`;
-    axios.get(url).then(
-      (response) => {
-        if (collectionType === "1155") {
-          setChangeCollectionList(response.data.collectionData);
-        }
-        setCollectionTypes(response.data.collectionData);
-      },
-      (error) => {
-        console.log("get collections error");
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
+  const {collectionData,loading} = useSelector((store) => store.NewNftCollection);
+  const {defaultTemplate,loadingDefault} = useSelector((store) => store.defaultTemplate);
+  const {templates,propertiesLoading} = useSelector((store) => store.newNftProperties);
+  const dispatch = useDispatch();
 
-            window.location.reload(false);
-          }
-        }
+
+  let getCollections = (collectionType) => {
+      setCollection("");
+      dispatch(getNewNftCollection(collectionType));
+      // console.log("collectionResp",collectionData);
+      if (collectionType === "1155") {
+        setChangeCollectionList(collectionData);
       }
-    );
+      setCollectionTypes(collectionData);
   };
+  useEffect(() => {
+    getCollections(NFTType);
+  }, [loading]);
 
   const handleSetProperties = (availableProperties) => {
     let prop = [];
@@ -213,41 +205,36 @@ function NewNFT(props) {
   };
 
   const getDefaultTemplate = () => {
-    axios.get(`/nft-properties/admin/default`).then(
-      (response) => {
-        setDefaultTemplates(response.data.defaultTemplate);
-        if (response.data.defaultTemplate != null) {
-          handleSetProperties(response.data.defaultTemplate.properties);
-        }
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
+
+    dispatch(getNewNftDefaultTemplate());
+    // console.log("redxdefaltRResp",defaultTemplate);
+    setDefaultTemplates(defaultTemplate);
+    if(loadingDefault===1){
+      if (defaultTemplate !== null) {
+        handleSetProperties(defaultTemplate.properties);
       }
-    );
+    }
   };
+  useEffect(() => {
+    getDefaultTemplate();
+  }, [loadingDefault]);
 
   const getSavedTemplate = (role) => {
     if (role === "admin") {
     }
-    axios.get(`/nft-properties/${role}`).then(
-      (response) => {
+    dispatch(getNewNftProperties(role));
+      //  console.log("reduxdefaultResp",templates);
         if (role === "admin") {
-          setTemplateData(response.data.templates);
+          setTemplateData(templates);
         } else {
-          setStandardTemplates(response.data.templates);
+          setStandardTemplates(templates);
         }
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-      }
-    );
   };
+
+  useEffect(() => {
+    getSavedTemplate("admin");
+    getSavedTemplate("super-admin");
+  }, [propertiesLoading]);
 
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
@@ -267,10 +254,6 @@ function NewNFT(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-    getCollections(NFTType);
-    getDefaultTemplate();
-    getSavedTemplate("admin");
-    getSavedTemplate("super-admin");
     getDataFromCookies();
 
     props.setActiveTab({

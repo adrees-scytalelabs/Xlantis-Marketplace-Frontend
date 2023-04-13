@@ -4,21 +4,26 @@ import Cookies from "js-cookie";
 
 const initialState = {
   collectionData:[],
-  collectionCont:0,
+  loading:0
 };
 
-export const getMyCollection = createAsyncThunk(
-  'myCollection/getMyCollection',
+export const getNewNftCollection = createAsyncThunk(
+  'newNftCollection/getNewNftCollection',
   async (name,thunkAPI) => {
     try {
 
-      const resp = await axios(`/collection/myCollections/${name.start}/${name.end}`);
-      console.log("reduxResp",resp);
+        // console.log("nameThunk",name);
+      const resp = await axios(`/collection/collections/${name}`);
+    //   console.log("reduxResp",resp);
 
       return resp.data;
     } catch (error) {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
+        console.log("get collections error");
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+        if (error.response !== undefined) {
           if (
             error.response.data === "Unauthorized access (invalid token) !!"
           ) {
@@ -34,16 +39,16 @@ export const getMyCollection = createAsyncThunk(
   }
 );
 
-const getMyCollectionSlice = createSlice({
-  name: 'myCollection',
+const getNewNftCollectionSlice = createSlice({
+  name: 'newNftcollection',
   initialState,
   reducers: {},
   extraReducers:{
-      [getMyCollection.fulfilled]: (state, action) => {
+      [getNewNftCollection.fulfilled]: (state, action) => {
         state.collectionData = action.payload.collectionData;
-        state.collectionCont = action.payload.collectionCount;
+        state.loading = 1
       },
-      [getMyCollection.rejected]: (state, action) => {
+      [getNewNftCollection.rejected]: (state, action) => {
         console.log(action);
       }
   },
@@ -51,6 +56,6 @@ const getMyCollectionSlice = createSlice({
 
 
 
-export default getMyCollectionSlice.reducer;
+export default getNewNftCollectionSlice.reducer;
 
 

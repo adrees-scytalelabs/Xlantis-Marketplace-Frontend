@@ -51,6 +51,8 @@ function MyCollection(props) {
     setOpen(true);
       dispatch(getMyCollection({start,end}));
       console.log("collectionResp",collectionData,collectionCont);
+      setCollections(collectionData);
+        setCollectionCount(collectionCont);
         setOpen(false);
   };
   useEffect(() => {
