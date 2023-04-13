@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, {  useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
@@ -120,7 +120,6 @@ function AdminDashboard(props) {
       transak.close();
     });
   }
-
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
       {/* <!-- Header --> */}

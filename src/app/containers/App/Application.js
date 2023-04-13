@@ -3,7 +3,12 @@ import { useCookies } from "react-cookie";
 import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import {
+  BrowserRouter,
+  Redirect,
+  Route,
+  Switch,
+} from "react-router-dom";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
 import UserDashboard from "../Pages/Dashboard/UserDashboard";
 import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
@@ -56,8 +61,8 @@ function App() {
         isVerified = true;
       } else if (Cookies.get("Verified") === "false") isVerified = false;
       version = Cookies.get("Version");
-    //  console.log("isLoggedIn", isLoggedIn);
-     // console.log("isVerified", isVerified);
+      //  console.log("isLoggedIn", isLoggedIn);
+      // console.log("isVerified", isVerified);
     } else {
       isLoggedIn = false;
     }
@@ -76,6 +81,7 @@ function App() {
   jwt !== null && console.log();
 
   const PrivateRoute = ({ path, ...rest }) => {
+    checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (
@@ -84,20 +90,29 @@ function App() {
             render={(props) =>
               version === "v1-sso" ? (
                 isLoggedIn && isVerified ? (
-                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                  (
+                  (
+                    <AdminDashboard
+                      {...props}
+                      jwtDecoded={jwtDecoded}
+                      topUp={true}
+                    />
+                  ))
                 ) : (
                   <Redirect to="/" />
                 )
               ) : version === "v2-wallet-login" ? (
                 isLoggedIn && isVerified ? (
-                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                  (
+                  (<AdminDashboard {...props} jwtDecoded={jwtDecoded} />))
                 ) : (
                   <Redirect to="/" />
                 )
               ) : isLoggedIn ? (
-                <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                (
+                (<AdminDashboard {...props} jwtDecoded={jwtDecoded} />))
               ) : (
-                <Redirect to="/" />
+                ((<Redirect to="/" />))
               )
             }
           />
@@ -144,7 +159,7 @@ function App() {
       jwtDecoded.role === "admin"
     ) {
       // if (cookies.Verified && cookies.InfoAdded) {
-     // console.log("herer!! ", jwtDecoded.role);
+      // console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (
       jwtDecoded &&
@@ -154,7 +169,7 @@ function App() {
       jwtDecoded.role === "admin"
     ) {
       // if (cookies.Verified && cookies.InfoAdded) {
-     // console.log("herer!! ", jwtDecoded.role);
+      // console.log("herer!! ", jwtDecoded.role);
       return <Redirect to="/dashboard" />;
     } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
       return <Redirect to="/superAdminDashboard" />;
