@@ -39,7 +39,6 @@ import TopUpModal from "../../../../components/Modals/TopUpModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import { useHistory } from "react-router-dom";
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -126,7 +125,7 @@ function NewCollection(props) {
   let [doneLoader, setDoneLoader] = useState(false);
   let [nftType, setNftType] = useState("1155");
   let [version, setVersion] = useState("");
-  let [royaltyFee, setRoyaltyFee] = useState(0);
+  let [royaltyFee, setRoyaltyFee] = useState(null);
   let [approvalFlag, setApprovalFlag] = useState(false);
   let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const Text721 =
@@ -215,7 +214,7 @@ function NewCollection(props) {
             setIsSaving(false);
             handleCloseBackdrop();
             setIsSaving(false);
-            history.push({ pathname: '/dashboard/mycollection' });
+            history.push({ pathname: "/dashboard/mycollection" });
           },
           (error) => {
             if (process.env.NODE_ENV === "development") {
@@ -652,10 +651,9 @@ function NewCollection(props) {
       (response) => {
         console.log("Response from approval of Fixed Price: ", response);
         let variant = "success";
-        enqueueSnackbar(
-          "Collection Approved For Fixed Price Successfully",
-          { variant }
-        );
+        enqueueSnackbar("Collection Approved For Fixed Price Successfully", {
+          variant,
+        });
         setIsFixedPriceApproved(true);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
@@ -664,10 +662,7 @@ function NewCollection(props) {
         let variant = "error";
         enqueueSnackbar("Unable to approve collection", { variant });
         console.log("Err from approval Fixed-price: ", err);
-        console.log(
-          "Err response from approval Fixed-price: ",
-          err.response
-        );
+        console.log("Err response from approval Fixed-price: ", err.response);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
       }
@@ -763,7 +758,7 @@ function NewCollection(props) {
     //   setDoneLoader(true);
     //   handleApprovalModalClose();
     // }
-    if(isFixedPriceApproved === true){
+    if (isFixedPriceApproved === true) {
       setDoneLoader(true);
       handleApprovalModalClose();
     }
@@ -892,11 +887,13 @@ function NewCollection(props) {
                     <input
                       type="number"
                       required
-                      value={royaltyFee}
-                      placeholder="Enter Royalty Fee"
+                      value={royaltyFee ?? ""}
+                      placeholder="0"
                       className="form-control newNftInput"
                       onChange={(e) => {
-                        setRoyaltyFee(e.target.value);
+                        if (e.target.value >= 0) {
+                          setRoyaltyFee(e.target.value);
+                        }
                       }}
                     />
                   </div>

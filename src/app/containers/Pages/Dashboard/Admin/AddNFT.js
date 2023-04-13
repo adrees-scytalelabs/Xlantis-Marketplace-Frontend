@@ -201,8 +201,8 @@ function AddNFT(props) {
   let [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
-  let [price, setPrice] = useState(0);
-  let [supply, setSupply] = useState(1);
+  let [price, setPrice] = useState(null);
+  let [supply, setSupply] = useState(null);
   let [saleType, setSaleType] = useState("");
   let [nftType, setNftType] = useState("");
   let [versionB, setVersionB] = useState("");
@@ -355,7 +355,6 @@ function AddNFT(props) {
           { variant }
         );
         handleCloseModal();
-
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -465,7 +464,7 @@ function AddNFT(props) {
       enqueueSnackbar("Please Add NFT to drop first", { variant });
     }
   };
-  const getTxCost = async (e) =>{
+  const getTxCost = async (e) => {
     axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
         setData(response.data.data);
@@ -488,7 +487,7 @@ function AddNFT(props) {
         // setIsLoading(false);
       }
     );
-  }
+  };
   const handleTimeEvent = async (event) => {
     event.preventDefault();
     if (
@@ -771,14 +770,11 @@ function AddNFT(props) {
           setIsDisabled(true);
           setEnableTime(true);
           let variant = "success";
-          enqueueSnackbar(
-            "Transaction Summary received",
-            {
-              variant,
-            }
-          );
+          enqueueSnackbar("Transaction Summary received", {
+            variant,
+          });
           handleCloseBackdrop();
-          setbuttonName("updatebttn")
+          setbuttonName("updatebttn");
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -855,7 +851,6 @@ function AddNFT(props) {
 
   // handle click event of the Add button
   const handleAddClick = async (e) => {
-    handleShowBackdrop();
     e.preventDefault();
     // console.log("HANDLE ADD");
     if (nftType === "1155") {
@@ -924,46 +919,46 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           async (response) => {
             // console.log("nft drop add response: ", response);
-              
-                setIsAdded(true);
-                let found = false;
-                // console.log("time", startTime, endTime);
-                if (nftType === "1155") {
-                  //  console.log("SET ERC1155 DATA");
 
-                  setDropInfo((current) =>
-                    current.map((obj) => {
-                      if (obj.nftContractAddress === nftContractAddresses) {
-                        let tokens = obj.tokenIds.concat(newObject.tokenIds);
-                        let amount = obj.amounts.concat(newObject.amounts);
-                        let price = obj.prices.concat(newObject.prices);
-                        found = true;
+            setIsAdded(true);
+            let found = false;
+            // console.log("time", startTime, endTime);
+            if (nftType === "1155") {
+              //  console.log("SET ERC1155 DATA");
 
-                        return {
-                          ...obj,
-                          tokenIds: tokens,
-                          amounts: amount,
-                          prices: price,
-                        };
-                      }
+              setDropInfo((current) =>
+                current.map((obj) => {
+                  if (obj.nftContractAddress === nftContractAddresses) {
+                    let tokens = obj.tokenIds.concat(newObject.tokenIds);
+                    let amount = obj.amounts.concat(newObject.amounts);
+                    let price = obj.prices.concat(newObject.prices);
+                    found = true;
 
-                      return obj;
-                    })
-                  );
-
-                  if (found === false) {
-                    const dropp = [...dropInfo, newObject];
-                    // giveApproval();
-                    console.log("drop", dropp);
-                    console.log("here");
-                    setDropInfo(dropp);
+                    return {
+                      ...obj,
+                      tokenIds: tokens,
+                      amounts: amount,
+                      prices: price,
+                    };
                   }
 
-                  let variant = "success";
-                  enqueueSnackbar("NFT Added Successfully", { variant });
-                }
-                setIsUploadingData(false);
-                handleCloseBackdrop();
+                  return obj;
+                })
+              );
+
+              if (found === false) {
+                const dropp = [...dropInfo, newObject];
+                // giveApproval();
+                console.log("drop", dropp);
+                console.log("here");
+                setDropInfo(dropp);
+              }
+
+              let variant = "success";
+              enqueueSnackbar("NFT Added Successfully", { variant });
+            }
+            setIsUploadingData(false);
+            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
@@ -1226,9 +1221,10 @@ function AddNFT(props) {
                     <div className="form-group">
                       <div className="filter-widget newNftWrapper">
                         <input
+                          placeholder="0"
                           style={{
-                            backgroundColor:'black',
-                            color:'white',
+                            backgroundColor: "black",
+                            color: "white",
                             border:
                               nftTokenSupply === 0
                                 ? "2 px solid white"
@@ -1239,7 +1235,7 @@ function AddNFT(props) {
                           type="number"
                           required
                           disabled={isDisabled}
-                          value={supply}
+                          value={supply ?? ""}
                           className="form-control"
                           onChange={(e) => {
                             if (e.target.value >= 0) {
@@ -1282,14 +1278,13 @@ function AddNFT(props) {
                         borderRadius: "5px",
                       }}
                       type="number"
+                      value={price ?? ""}
                       required
                       placeholder={0}
                       className="form-control"
                       onChange={(e) => {
-                        if (e.target.value > 0) {
+                        if (e.target.value >= 0) {
                           setPrice(e.target.value);
-                        } else {
-                          setPrice(0);
                         }
                       }}
                     />
