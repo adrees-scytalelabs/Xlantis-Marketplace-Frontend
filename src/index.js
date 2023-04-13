@@ -5,6 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 import App from "./app/containers/App/Application";
 import axios from "axios";
 import { CookiesProvider } from "react-cookie";
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 // axios.defaults.withCredentials = true;
 
@@ -14,9 +16,12 @@ if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
 else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
 ReactDOM.render(
+  <Provider store={store}>
   <CookiesProvider>
-    <App />
-  </CookiesProvider>,
+   
+      <App />
+  </CookiesProvider>
+  </Provider>,
   document.getElementById("root")
 );
 

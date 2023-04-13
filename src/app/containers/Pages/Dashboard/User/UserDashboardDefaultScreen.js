@@ -3,26 +3,21 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { useDispatch, useSelector } from 'react-redux';
+import {getUserCount} from "../../../../redux/getUserCount";
 
 function UserDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
+  const {nftCount } = useSelector((store) => store.userCount);
+  const dispatch = useDispatch();
 
-  let getCounts = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-    axios
-      .get("user/getcounts")
-      .then((response) => {
-        setTotalNFTs(response.data.NFTscount);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
-  };
+  useEffect(() => {
+    dispatch(getUserCount());
+    setTotalNFTs(nftCount);
+  }, [nftCount]);
+  
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin != "undefined") {
@@ -55,7 +50,7 @@ function UserDashboardDefaultScreen(props) {
       newCollection: "",
       newRandomDrop: "",
     });
-    getCounts();
+    // getCounts();
     getProfile();
   }, []);
 
