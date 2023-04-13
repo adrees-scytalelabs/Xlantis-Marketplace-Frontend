@@ -3236,14 +3236,12 @@ function NewNFT(props) {
                               type="number"
                               placeholder="0"
                               required
-                              value={tokenSupply}
+                              value={tokenSupply ?? ""}
                               className="form-control"
                               onChange={(e) => {
-                                // if (e.target.value > 0)
-                                setTokenSupply(e.target.value);
-                                // else {
-                                // setTokenSupply(1);
-                                // }
+                                if(e.target.value >= 0){
+                                  setTokenSupply(e.target.value);
+                                }
                               }}
                             />
                           </div>

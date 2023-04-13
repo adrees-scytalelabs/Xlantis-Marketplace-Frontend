@@ -201,7 +201,7 @@ function AddNFT(props) {
   let [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   let [isUploadingData, setIsUploadingData] = useState(false);
-  let [price, setPrice] = useState(0);
+  let [price, setPrice] = useState(null);
   let [supply, setSupply] = useState(null);
   let [saleType, setSaleType] = useState("");
   let [nftType, setNftType] = useState("");
@@ -1235,7 +1235,7 @@ function AddNFT(props) {
                           type="number"
                           required
                           disabled={isDisabled}
-                          value={supply}
+                          value={supply ?? ""}
                           className="form-control"
                           onChange={(e) => {
                             if (e.target.value >= 0) {
@@ -1278,14 +1278,13 @@ function AddNFT(props) {
                         borderRadius: "5px",
                       }}
                       type="number"
+                      value={price ?? ""}
                       required
                       placeholder={0}
                       className="form-control"
                       onChange={(e) => {
-                        if (e.target.value > 0) {
+                        if (e.target.value >= 0) {
                           setPrice(e.target.value);
-                        } else {
-                          setPrice(0);
                         }
                       }}
                     />
