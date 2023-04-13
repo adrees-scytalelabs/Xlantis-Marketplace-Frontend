@@ -1,8 +1,7 @@
 import { Avatar, CardHeader, Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
-
+import { Link,useLocation } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
@@ -68,12 +67,26 @@ const makeTheme = createMuiTheme({
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
+  let location = useLocation();
   let { path } = useRouteMatch();
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0.1);
 
   const classes = useStyles();
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const activeTab = searchParams.get("activetab");
+    console.log("value",activeTab);
+    if(activeTab!=null){
+      if(activeTab){
+        let variant = "success";
+        enqueueSnackbar('Top Up Successfully', { variant });
+        const searchParams = new URLSearchParams(window.location.search);
+        searchParams.delete('activetab');
+        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
+        window.history.replaceState(null, '', newUrl);
+      }
+    }
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
