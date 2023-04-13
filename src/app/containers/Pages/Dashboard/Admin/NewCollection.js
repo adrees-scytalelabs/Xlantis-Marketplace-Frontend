@@ -37,6 +37,7 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import Cookies from "js-cookie";
 import TopUpModal from "../../../../components/Modals/TopUpModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -79,6 +80,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function NewCollection(props) {
+  let history = useHistory();
   const [propertyKey, setPropertyKey] = useState("");
   const [propertyValue, setPropertyValue] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
@@ -212,13 +214,8 @@ function NewCollection(props) {
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
-            //setApprovalModalShow(true);
-            
-            // setCollectionName("");
-            // setCollectionSymbol("");
-            // setCollectionDescription("");
-            // handleCloseBackdrop();
             setIsSaving(false);
+            history.push({ pathname: '/dashboard/mycollection' });
           },
           (error) => {
             if (process.env.NODE_ENV === "development") {
