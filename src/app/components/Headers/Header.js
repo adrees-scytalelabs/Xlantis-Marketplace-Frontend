@@ -33,6 +33,7 @@ import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProfile } from "../../redux/getUserProfileSlice";
+import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 
 
 function HeaderHome(props) {
@@ -55,6 +56,7 @@ function HeaderHome(props) {
   const [notificationCount, setNotificationCount] = useState(0);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const {userData,loading } = useSelector((store) => store.userProfile);
+  const {notification,notificationLoading } = useSelector((store) => store.getHeaderNotification);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -162,20 +164,9 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
-    axios.get(`/notifications/${start}/${end}`).then(
-      (response) => {
-        //console.log("notification response", response);
-        setNotificationsList(response.data.notifications);
-        setNotificationCount(response.data.notifications.length);
-
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-      }
-    );
+    dispatch(getHeaderNotification({start,end}))
+        setNotificationsList(notification);
+        setNotificationCount(notification.length);
   }
 
   function readNotification(notificationId) {
@@ -386,7 +377,7 @@ function HeaderHome(props) {
 
   useEffect(() => {
     getNotifications(0, 10);
-  }, []);
+  }, [notificationLoading]);
 
   useEffect(() => {
     getProfile();
