@@ -43,6 +43,7 @@ import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import transakSDK from "@transak/transak-sdk";
 import Tooltip from "@material-ui/core/Tooltip";
 import TopUpModal from "../../../../components/Modals/TopUpModal";
+import PublishSuccessfully from "../../../../components/Modals/PublishSuccessfully";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -216,6 +217,7 @@ function AddNFT(props) {
   let [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
+  const [transactionModal, setTransactionModal] = useState(false);
   const [costInfo, setCostInfo] = useState({});
   const [amount, setAmount] = useState(5);
   const [topUpModal, setTopUpModal] = useState(false);
@@ -226,15 +228,19 @@ function AddNFT(props) {
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
   };
-
-  const handleCloseModal = () => {
-    setMOdalOpen(false);
+  const handleRedirect = () => {
+    setTransactionModal(false);
     history.push({
       pathname: `/dashboard/myDrops`,
       state: {
         value: 1,
       },
     });
+  }
+  const handleCloseModal = () => {
+    setMOdalOpen(false);
+    setTransactionModal(true);
+    
   };
 
   let getCollections = () => {
@@ -349,11 +355,11 @@ function AddNFT(props) {
     axios.post(`/drop/finalize`, dropData).then(
       (response) => {
         //  console.log("nft title response", response.data);
-        let variant = "success";
-        enqueueSnackbar(
-          "Drop Is Being Finalized. Transactions Are In Process",
-          { variant }
-        );
+        // let variant = "success";
+        // enqueueSnackbar(
+        //   "Drop Is Being Finalized. Transactions Are In Process",
+        //   { variant }
+        // );
         handleCloseModal();
       },
       (error) => {
@@ -1536,6 +1542,9 @@ function AddNFT(props) {
         topUp={handleTopUpAmount}
         setOpen={setMOdalOpen}
       ></TopUpModal>
+      <PublishSuccessfully
+      show={transactionModal} handleClose={handleRedirect}>
+      </PublishSuccessfully>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

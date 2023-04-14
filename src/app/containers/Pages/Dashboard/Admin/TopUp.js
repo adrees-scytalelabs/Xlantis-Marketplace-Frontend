@@ -1,7 +1,7 @@
 import { Avatar, CardHeader, Grid } from "@material-ui/core/";
 import Backdrop from "@material-ui/core/Backdrop";
 import Button from "@material-ui/core/Button";
-import { Link,useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { makeStyles } from "@material-ui/core/styles";
@@ -10,7 +10,7 @@ import { createMuiTheme, ThemeProvider } from "@material-ui/core";
 import axios from "axios";
 
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState,useRef } from "react";
 
 import { useHistory, useRouteMatch } from "react-router-dom";
 
@@ -75,16 +75,30 @@ function TopUp(props) {
   const classes = useStyles();
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
-    const activeTab = searchParams.get("activetab");
-    console.log("value",activeTab);
-    if(activeTab!=null){
-      if(activeTab){
-        let variant = "success";
-        enqueueSnackbar('Top Up Successfully', { variant });
-        const searchParams = new URLSearchParams(window.location.search);
-        searchParams.delete('activetab');
-        const newUrl = `${window.location.pathname}?${searchParams.toString()}`;
-        window.history.replaceState(null, '', newUrl);
+    const id = searchParams.get("session_id");
+    const sessionId = localStorage.getItem('sessionId')
+    if (id != null) {
+      if (sessionId == id) {
+        const active = searchParams.get("active");
+        if (active == "true") {
+          let variant = "success";
+          enqueueSnackbar("Top Up Successfully", { variant });
+          localStorage.removeItem('sessionId');
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.delete('session_id');
+          searchParams.delete('active');
+          const newUrl = `${window.location.pathname}`;
+          window.history.replaceState(null, '', newUrl);
+        } else {
+          let variant = "error";
+          enqueueSnackbar("Top Up Unsccessfully", { variant });
+          localStorage.removeItem('sessionId');
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.delete('session_id');
+          searchParams.delete('active');
+          const newUrl = `${window.location.pathname}`;
+          window.history.replaceState(null, '', newUrl);
+        }
       }
     }
     props.setActiveTab({
@@ -113,7 +127,7 @@ function TopUp(props) {
     };
     axios.post(`/usd-payments/admin/topup`, data).then(
       (response) => {
-        //console.log("response of top up amount", response);
+        localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
         // let variant = "success";
         // enqueueSnackbar("Balance Updated", { variant });
