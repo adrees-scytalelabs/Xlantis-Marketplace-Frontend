@@ -1,13 +1,13 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useRouteMatch } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSaleType } from "../../../../redux/getMarketPlaceSaleTypeSlice";
 
 const cardStyles = makeStyles((theme) => ({
   cardTheme: {
@@ -82,44 +82,32 @@ function MarketPlacePage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
+  const {saleTypeData,loading} = useSelector((store) => store.marketPlaceSaleType);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
-      (response) => {
-        setTokenList(response.data.data);
-        setTotalDrops(response.data.data.length);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
+    dispatch(getSaleType({saleType,start,end}))
+    if(loading===1){
+        setTokenList(saleTypeData);
+        setTotalDrops(saleTypeData.length);
         handleCloseBackdrop();
       }
-    );
+      else if(loading===2){
+        handleCloseBackdrop();
+      }
   };
 
   useEffect(() => {
     getMyDrops(props.saleType, 0, rowsPerPage);
-  }, []);
+  }, [loading]);
+
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);

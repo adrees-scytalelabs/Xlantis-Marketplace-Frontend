@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { useDispatch, useSelector } from 'react-redux';
+import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -40,34 +42,24 @@ function MyCollection(props) {
 
   const [collectionCount, setCollectionCount] = useState(0);
   const [, setVersionB] = useState("");
+  const {collectionData,collectionCont } = useSelector((store) => store.MyCollection);
+  const dispatch = useDispatch();
 
   const classes = useStyles();
+
   let getCollections = (start, end) => {
     setOpen(true);
-    const url = `/collection/myCollections/${start}/${end}`;
-    axios
-      .get(url)
-      .then((response) => {
-        setCollections(response.data.collectionData);
-        setCollectionCount(response.data.collectionCount);
+      dispatch(getMyCollection({start,end}));
+      console.log("collectionResp",collectionData,collectionCont);
+      setCollections(collectionData);
+        setCollectionCount(collectionCont);
         setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
   };
+  useEffect(() => {
+    getCollections(0, rowsPerPage);
+  }, [collectionCont]);
+
+
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -84,7 +76,6 @@ function MyCollection(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-    getCollections(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
