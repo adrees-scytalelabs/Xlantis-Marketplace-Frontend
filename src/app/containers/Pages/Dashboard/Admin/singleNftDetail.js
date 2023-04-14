@@ -16,6 +16,7 @@ import { Link, useParams } from "react-router-dom";
 import "react-h5-audio-player/lib/styles.css";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -159,35 +160,11 @@ const SingleNftDetail = (props) => {
               <SingleNFTDetailCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                      <Typography
-                        variant="body1"
-                        style={{ color: "#fff", fontFamily: "orbitron" }}
-                      >
-                        <BlurLinear />
-                        <strong> Properties</strong>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Table striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th>Key</th>
-                            <th>Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {keys?.map((j, index) => (
-                            <tr key={index}>
-                              <td>{j}</td>
-                              <td>{properties[j]}</td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </AccordionDetails>
-                  </Accordion>
+                  <PropertiesAccordian 
+                    keys={keys}
+                    properties={properties}
+                  />
+                  
                 </Col>
               </Row>
             </div>

@@ -8,10 +8,11 @@ import {
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
 import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
+import DropBanner from "../../../../components/banners/DropBanner";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -300,24 +301,8 @@ function MyNFTs(props) {
       </div>
 
       <div className="card-body page-height px-0">
-        <div className="row no-gutters">
-          <div className="col-12">
-            <div className="bannerWrapper">
-              <img
-                src="https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
-                className="bannerImg"
-                alt="Drop banner"
-              />
-              <div className="dropThumbWrapper">
-                <img
-                  src="https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
-                  className="thumbImg"
-                  alt="drop thumb"
-                />
-              </div>
-            </div>
-          </div>
-        </div>
+        <DropBanner />
+        
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
             <div className="col-12">
@@ -330,16 +315,8 @@ function MyNFTs(props) {
           <ThemeProvider theme={customTheme}>
             <div className="row no-gutters justify-content-center">
               {open ? (
-                <div align="center" className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#ff0000" }}
-                  ></Spinner>
-                  <span style={{ color: "#ff0000" }} className="sr-only">
-                    Loading...
-                  </span>
-                </div>
+                <WhiteSpinner />
+                
               ) : tokenList.length === 0 ? (
                 <MessageCardDropNfts msg="No items to display" />
               ) : (

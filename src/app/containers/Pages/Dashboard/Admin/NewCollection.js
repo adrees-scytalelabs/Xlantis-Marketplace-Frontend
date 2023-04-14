@@ -1,8 +1,3 @@
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Tooltip from "@material-ui/core/Tooltip";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -15,13 +10,17 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UploadFile from "../../../../components/Upload/UploadFile";
+import Select from "../../../../components/Select/Select";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
+import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
+import SubmitButton from "../../../../components/buttons/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -100,10 +99,7 @@ function NewCollection(props) {
   const [royaltyFee, setRoyaltyFee] = useState(0);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const Text721 =
-    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 =
-    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
@@ -628,163 +624,57 @@ function NewCollection(props) {
                   accept=".png,.jpg,.jpeg,.gif"
                 />
                 <div className="form-group newNftFields">
-                  <label>Collection Name</label>
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="text"
-                      required
-                      value={collectionName}
-                      placeholder="Enter Name of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionName(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <label>Collection Symbol</label>
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="text"
-                      required
-                      value={collectionSymbol}
-                      placeholder="Enter Symbol of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionSymbol(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label>Collection Description</label>
-                    <small style={{ marginLeft: "5px" }}></small>
-                  </div>
+                  <Select
+                    label ="Collection Name"
+                    values = {collectionName}
+                    placeholder= "Enter Name of Collection"
+                    setValue={setCollectionName}
+                  />
+                  <Select
+                    label ="Collection Symbol"
+                    values = {collectionSymbol}
+                    placeholder= "Enter Symbol of Collection"
+                    setValue={setCollectionSymbol}
+                  />
+                  <SelectDescription
+                    label ="Collection Description"
+                    values = {collectionDescription}
+                    placeholder= "Enter Description of Collection"
+                    setDescription={setCollectionDescription}
+                  />
 
-                  <div className="form-group newNftWrapper">
-                    <textarea
-                      type="text"
-                      required
-                      rows="4"
-                      value={collectionDescription}
-                      placeholder="Enter Description of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionDescription(e.target.value);
-                      }}
-                    />
-                  </div>
+                  <SelectRoyaltyFee
+                    RoyaltyFeeText={RoyaltyFeeText}
+                    values={royaltyFee}
+                    onChange={setRoyaltyFee}
+                  />
 
-                  <div>
-                    <Tooltip
-                      title={RoyaltyFeeText}
-                      classes={{ tooltip: classes.tooltip }}
-                      placement="top-start"
-                      arrow={true}
-                    >
-                      <label>
-                        Royalty Fee{" "}
-                        <i className="fa fa-info-circle" aria-hidden="true"></i>
-                      </label>
-                    </Tooltip>
-
-                    <small style={{ marginLeft: "5px" }}></small>
-                  </div>
-
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="number"
-                      required
-                      value={royaltyFee}
-                      placeholder="Enter Royalty Fee"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setRoyaltyFee(e.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <FormControl component="fieldset">
-                    <label
-                      component="legend"
-                      style={{ fontWeight: "bold", fontFamily: "orbitron" }}
-                    >
-                      Select NFT Type
-                    </label>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
-                    >
-                      <Tooltip
-                        title={Text721}
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC721"
-                          onChange={() => {
-                            setWorkProgressModalShow(true);
-                          }}
-                          checked={nftType === "721"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Single{" "}
-                              <i
-                                className="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        title={Text1155}
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC1155"
-                          onChange={() => {
-                            setNftType("1155");
-                          }}
-                          checked={nftType === "1155"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Multiple{" "}
-                              <i
-                                className="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
-                      </Tooltip>
-                    </RadioGroup>
-                  </FormControl>
+                  <SelectNFTAndSaleType
+                    label="Select NFT Type"
+                    onChangeWorkInProgress = {() => {
+                      console.log("721workinf");
+                      setWorkProgressModalShow(true);
+                    }}
+                    onChange={() => {
+                      console.log("1155working");
+                      setNftType("1155");
+                    }}
+                    type={nftType}
+                    radioType="nft"
+                  />
+                  
                 </div>
               </div>
             </form>
           </div>
         </div>
-        {isSaving ? (
-          <WhiteSpinner />
-        ) : (
-          <div className="submit-section">
-            <button
-              type="button"
-              onClick={(e) => {
-                version === "v1-sso"
-                  ? handleSubmitEvent(e)
-                  : handleSubmitEventMetamask(e);
-              }}
-              className="btn submit-btn propsActionBtn"
-            >
-              Add Collection
-            </button>
-          </div>
-        )}
+        <SubmitButton
+         label = "Add Collection"
+         isSaving={isSaving}
+         version ={version}
+         handleSubmitEvent={handleSubmitEvent}
+         handleSubmitEventMetamask={handleSubmitEventMetamask}
+        />
       </div>
       <NetworkErrorModal
         show={show}
