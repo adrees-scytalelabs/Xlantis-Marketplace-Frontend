@@ -697,6 +697,7 @@ let giveAuctionErc20Approval = async () => {
         );
         console.log("Stripe Url",response.data.stripeSession)
         // history.push(response.data.stripeSession)
+        localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.stripeSession)
       },
       (error) => {
