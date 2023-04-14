@@ -78,24 +78,11 @@ const FixedPriceDropNFTs = () => {
     );
   };
 
-  const getDropData = async (dropId) => {
-    await axios.get(`/drop/${dropId}`).then(
-      (response) => {
-        //console.log("Response from getting drop data: ", response);
-        setTitleImage(response.data.dropData.image);
-        setBannerImage(response.data.dropData.bannerURL);
-        setDropTitle(response.data.dropData.title);
-      },
-      (error) => {
-        console.log("Error getting drop data", error);
-      }
-    );
-  };
-
   // Side Effects
   useEffect(() => {
-    getDropData(dropID.dropId);
     getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
+    setTitleImage(location.state.imageURL);
+    setBannerImage(location.state.bannerURL);
   }, []);
 
   return (

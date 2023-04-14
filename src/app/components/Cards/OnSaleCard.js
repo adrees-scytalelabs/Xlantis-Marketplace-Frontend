@@ -1,5 +1,5 @@
 // REACT
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 // MUI
 import { Avatar, Button, CardHeader, Grid, Paper } from "@material-ui/core/";
@@ -75,6 +75,10 @@ const OnSaleCard = (props) => {
   const styles = useStyles();
   const matchScrn = useMediaQuery("(max-width: 991px)");
 
+  useEffect(() => {
+    console.log("Props in onSaleCard: ", props);
+  })
+
   return (
     <div className="col-12 p-2">
       {/* <Paper> */}
@@ -86,6 +90,8 @@ const OnSaleCard = (props) => {
               state: {
                 saleType: props.i.saleType,
                 description: props.i.description,
+                bannerURL: props.i.bannerURL,
+                imageURL: props.i.image
               },
             }}
             style={{ width: "100%" }}
