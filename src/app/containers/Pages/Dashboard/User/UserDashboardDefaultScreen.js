@@ -1,38 +1,27 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { useDispatch, useSelector } from 'react-redux';
 import {getUserCount} from "../../../../redux/getUserCount";
+import { getUserProfile } from "../../../../redux/getUserProfileSlice";
 
 function UserDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
   const {nftCount } = useSelector((store) => store.userCount);
+  const {userData } = useSelector((store) => store.userProfile);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getUserCount());
     setTotalNFTs(nftCount);
   }, [nftCount]);
-  
-  let getProfile = () => {
-    let userLogin = sessionStorage.getItem("Authorization");
-    if (userLogin != "undefined") {
-      let version = Cookies.get("Version");
-      axios
-        .get(`${version}/user/profile`)
-        .then((response) => {
-          setUserName(response.data.userData.username);
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(error.response);
-        });
-    }
-  };
+
+  useEffect(() => {
+    dispatch(getUserProfile());
+    setUserName(userData);
+  }, [userData]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -50,8 +39,6 @@ function UserDashboardDefaultScreen(props) {
       newCollection: "",
       newRandomDrop: "",
     });
-    // getCounts();
-    getProfile();
   }, []);
 
   return (
