@@ -3239,8 +3239,11 @@ function NewNFT(props) {
                               value={tokenSupply ?? ""}
                               className="form-control"
                               onChange={(e) => {
-                                if(e.target.value >= 0){
-                                  setTokenSupply(e.target.value);
+                                if (e.target.value >= 0) {
+                                  const regex = /^\d*$/;
+                                  if (regex.test(e.target.value)) {
+                                    setTokenSupply(e.target.value);
+                                  }
                                 }
                               }}
                             />

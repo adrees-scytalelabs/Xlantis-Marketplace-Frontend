@@ -1240,15 +1240,19 @@ function AddNFT(props) {
                           className="form-control"
                           onChange={(e) => {
                             if (e.target.value >= 0) {
-                              if (e.target.value > nftTokenSupply) {
-                                setAlertMessage(true);
-                                // setTimeout(() => {
-                                //   setAlertMessage(false);
-                                // }, 5000);
-                              } else {
-                                setAlertMessage(false);
+                              const regex = /^\d*$/;
+                              if (regex.test(e.target.value)) {
+                                if (e.target.value > nftTokenSupply) {
+                                  setAlertMessage(true);
+                                  // setTimeout(() => {
+                                  //   setAlertMessage(false);
+                                  // }, 5000);
+                                } else {
+                                  setAlertMessage(false);
+                                }
+
+                                setSupply(e.target.value);
                               }
-                              setSupply(e.target.value);
                             }
                           }}
                         />
