@@ -1,5 +1,5 @@
 // REACT
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 // MUI
 import { Avatar, Button, CardHeader, Grid, Paper } from "@material-ui/core/";
@@ -74,10 +74,6 @@ const useStyles = makeStyles((theme) => ({
 const OnSaleCard = (props) => {
   const styles = useStyles();
   const matchScrn = useMediaQuery("(max-width: 991px)");
-
-  useEffect(() => {
-    console.log("Props in onSaleCard: ", props);
-  })
 
   return (
     <div className="col-12 p-2">
