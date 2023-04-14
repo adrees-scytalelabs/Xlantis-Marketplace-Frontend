@@ -1,15 +1,12 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import DateTimePicker from "react-datetime-picker";
+
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -23,6 +20,9 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import TopUpModal from "../../../../components/Modals/TopUpModal";
+import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
+import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
+import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -907,6 +907,7 @@ function AddNFT(props) {
     setOpenEditModal(false);
   };
 
+
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -929,156 +930,58 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                <div className="form-group">
-                  <label>Select Collection</label>
-                  <div className="filter-widget newNftWrapper">
-                    <Autocomplete
-                      id="combo-dox-demo"
-                      required
-                      disabled={isDisabled}
-                      options={collectionTypes}
-                      getOptionLabel={(option) => option.name}
-                      onChange={(e, value) => {
-                        if (value == null) setCollection("");
-                        else {
-                          console.log("hereee");
-                          setCollection(value.name);
-                          setCollectionId(value._id);
-                          setNftContractAddress(value.nftContractAddress);
-                          setNftList([]);
-                          setNftName("");
-                          getNfts(value._id);
-                        }
-                      }}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <div>
-                          <ThemeProvider theme={makeTheme}>
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Collection"
-                            />
-                          </ThemeProvider>
-                        </div>
-                      )}
-                      style={{ padding: "6px 15px !important" }}
-                    />
-                  </div>
-                </div>
+                <Autocomplete 
+                  label={"Select Collection"}
+                  options={collectionTypes}
+                  isDisabled={isDisabled}
+                  placeholder="Select Collection"
+                  onChange={(e, value) => {
+                    if (value == null) setCollection("");
+                    else {
+                      console.log("hereee");
+                      setCollection(value.name);
+                      setCollectionId(value._id);
+                      setNftContractAddress(value.nftContractAddress);
+                      setNftList([]);
+                      setNftName("");
+                      getNfts(value._id);
+                    }
+                  }}
+                />
 
-                <div className="form-group">
-                  <label>Select NFT</label>
-                  <div className="filter-widget newNftWrapper">
-                    <Autocomplete
-                      id="combo-dox-demo"
-                      required
-                      disabled={isDisabled}
-                      options={nftList}
-                      getOptionLabel={(option) => option.title}
-                      onChange={(e, value) => {
-                        if (value == null) setNftName("");
-                        else {
-                          console.log("hereee");
-                          console.log("Selected NFT values: ", value);
-                          setNftName(value.title);
-                          setNftId(value._id);
-                          setNftURI(value.nftURI);
-                          setTokenId(value.nftId);
-                          setNftTokenSupply(value.tokenSupply);
+                <Autocomplete 
+                  label={"Select NFT"}
+                  options={nftList}
+                  isDisabled={isDisabled}
+                  placeholder="Select NFT"
+                  onChange={(e, value) => {
+                    if (value == null) setNftName("");
+                    else {
+                      console.log("hereee");
+                      console.log("Selected NFT values: ", value);
+                      setNftName(value.title);
+                      setNftId(value._id);
+                      setNftURI(value.nftURI);
+                      setTokenId(value.nftId);
+                      setNftTokenSupply(value.tokenSupply);
 
-                          handleOpenNFTDetailModal(value);
-                        }
-                      }}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <div>
-                          <ThemeProvider theme={makeTheme}>
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select NFT"
-                            />
-                          </ThemeProvider>
-                        </div>
-                      )}
-                    />
-                  </div>
-                </div>
+                      handleOpenNFTDetailModal(value);
+                    }
+                  }}
+                />
 
-                {nftType === "1155" ? (
-                  <span>
-                    <label>Supply</label>
-                    <span style={{ float: "right", fontSize: "12px" }}>
-                      Out of ({nftTokenSupply})
-                    </span>
-                    <div className="form-group">
-                      <div className="filter-widget newNftWrapper">
-                        <input
-                          style={{
-                            border:
-                              nftTokenSupply === 0
-                                ? "none"
-                                : nftTokenSupply >= supply
-                                ? "3px solid green"
-                                : "3px solid red",
-                          }}
-                          type="number"
-                          required
-                          disabled={isDisabled}
-                          value={supply}
-                          className="form-control"
-                          onChange={(e) => {
-                            if (e.target.value >= 0) {
-                              if (e.target.value > nftTokenSupply) {
-                                setAlertMessage(true);
-                              } else {
-                                setAlertMessage(false);
-                              }
-                              setSupply(e.target.value);
-                            }
-                          }}
-                        />
-                        {AlertMessage ? (
-                          <span style={{ fontSize: "10px", color: "red" }}>
-                            Limit of supply is {nftTokenSupply}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </span>
-                ) : null}
+                <SelectSupplyAndPrice 
+                  nftType={nftType}
+                  nftTokenSupply={nftTokenSupply}
+                  values={supply}
+                  isDisabled={isDisabled}
+                  setSupply={setSupply}
+                  saleType={saleType}
+                  setPrice={setPrice}
+                  AlertMessage={AlertMessage}
+                  setAlertMessage={setAlertMessage}
+                />
 
-                {location.state.saleType === "auction" ? (
-                  <label>Floor Price (USD)</label>
-                ) : (
-                  <label>Price (USD)</label>
-                )}
-
-                <div className="form-group">
-                  <div className="filter-widget newNftWrapper">
-                    <input
-                      disabled={isDisabled}
-                      style={{
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        border: "1px solid #fff",
-                        borderRadius: "5px",
-                      }}
-                      type="number"
-                      required
-                      placeholder={0}
-                      className="form-control"
-                      onChange={(e) => {
-                        if (e.target.value > 0) {
-                          setPrice(e.target.value);
-                        } else {
-                          setPrice(0);
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
               </div>
               <button
                 className="bttn"
@@ -1115,89 +1018,24 @@ function AddNFT(props) {
             ) : null}
           </div>
         </div>
-        <div className="submit-section col-md-12 col-lg-6 col-sm-12">
-          <button
-            type="button"
-            disabled={isDisabled}
-            onClick={(e) => {
-              versionB === "v1-sso"
-                ? handleSubmitEvent(e)
-                : handleSubmitEvent(e);
-            }}
-            style={{ float: "right", marginBottom: "5%" }}
-            className="bttn"
-          >
-            Update Drop
-          </button>
-        </div>
+        <UpdateDropAndPublishDrop 
+          isDisabled={isDisabled}
+          versionB={versionB}
+          handleSubmitEvent={handleSubmitEvent}
+          enableTime={enableTime}
+          setCurrentTimeStamp={setCurrentTimeStamp}
+          setStartTimeStamp={setStartTimeStamp}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          setEndTimeStamp={setEndTimeStamp}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          isSaving={isSaving}
+          handlePublishEvent={handlePublishEvent}
+          handleOpenModal={handleOpenModal}
+          
+        />
 
-        {enableTime && (
-          <div
-            className="datePicker col-md-12 col-lg-6 col-sm-12"
-            style={{ marginTop: "5%" }}
-          >
-            <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
-              Starts At
-            </label>
-            <div className="form-group" style={{ borderRadius: "12px" }}>
-              <DateTimePicker
-                className="form-control"
-                onChange={(e) => {
-                  console.log(e);
-                  console.log("START", Math.round(e.getTime() / 1000));
-                  console.log("NOW", Math.round(Date.now() / 1000));
-
-                  setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
-                  setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
-
-                  setStartTime(e);
-                }}
-                value={startTime}
-              />
-            </div>
-            <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
-              Ends At
-            </label>
-            <div className="form-group newNftWrapper">
-              <DateTimePicker
-                className="form-control"
-                onChange={(e) => {
-                  console.log(e);
-                  console.log("e.getTime()", Math.round(e.getTime() / 1000));
-                  setEndTimeStamp(Math.round(e.getTime() / 1000));
-                  setEndTime(e);
-                }}
-                value={endTime}
-              />
-            </div>
-            <div className="submit-section" style={{ marginBottom: "3%" }}>
-              {isSaving ? (
-                <div className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#fff" }}
-                  >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  className="bttn"
-                  style={{ float: "right" }}
-                  onClick={(e) => {
-                    versionB === "v1-sso"
-                      ? handleOpenModal(e)
-                      : handlePublishEvent(e);
-                  }}
-                >
-                  Publish Drop
-                </button>
-              )}
-            </div>
-          </div>
-        )}
       </div>
       <NetworkErrorModal
         show={show}
