@@ -1,22 +1,16 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   makeStyles,
   Paper,
-  Typography,
 } from "@material-ui/core";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { BlurLinear, ExpandMore } from "@material-ui/icons";
+import {ThemeProvider } from "@material-ui/core/styles";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
+import { Col, Row, } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
@@ -27,6 +21,9 @@ import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/A
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import BuyButton from "../../../../components/buttons/Buy";
+import { createTheme } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -483,113 +480,23 @@ const NFTBuy = (props) => {
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
-                  <Accordion>
-                    <AccordionSummary expandIcon={<ExpandMore />}>
-                      <Typography
-                        variant="body1"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
-                      >
-                        <BlurLinear />
-                        <strong> Properties</strong>
-                      </Typography>
-                    </AccordionSummary>
-                    <AccordionDetails>
-                      <Table striped bordered hover>
-                        <thead>
-                          <tr>
-                            <th>Key</th>
-                            <th>Value</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {Object.keys(properties).map((key, index) => (
-                            <tr key={index}>
-                              <td>{key}</td>
-                              <td>
-                                <label className="ml-2">
-                                  {properties[key]}
-                                </label>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                      </Table>
-                    </AccordionDetails>
-                  </Accordion>
+                  <PropertiesAccordian 
+                    properties={properties}
+                    key={Object.keys(properties)}
+                  />
+                  
                 </Col>
               </Row>
               <br></br>
-              {location.state.nftDetail.currentMarketplaceId.isSold === false &&
-              new Date() >= new Date(location.state.startTime) &&
-              new Date() < new Date(location.state.endTime) ? (
-                <Row>
-                  <Col
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        versionB === "v1-sso"
-                          ? handleOpenModal(e)
-                          : handleBuy(e);
-                      }}
-                      className="bidBtn"
-                    >
-                      Buy
-                    </button>
-                  </Col>
-                </Row>
-              ) : (
-                <Row>
-                  <Col
-                    style={{
-                      textAlign: "center",
-                    }}
-                  >
-                    <div data-tip data-for="registerTip">
-                      <button
-                        type="button"
-                        data-tip
-                        data-for="registerTip"
-                        disabled
-                        onClick={(e) => handleBuy(e)}
-                        className="bidBtn"
-                      >
-                        Buy
-                      </button>
-                      {location.state.nftDetail.currentMarketplaceId.isSold ===
-                      true ? (
-                        <ReactTooltip
-                          id="registerTip"
-                          place="top"
-                          effect="solid"
-                        >
-                          NFT Is Sold
-                        </ReactTooltip>
-                      ) : new Date() < new Date(location.state.startTime) ? (
-                        <ReactTooltip
-                          id="registerTip"
-                          place="top"
-                          effect="solid"
-                          style={{ color: "white" }}
-                        >
-                          Sale Has Not Started Yet
-                        </ReactTooltip>
-                      ) : new Date() > new Date(location.state.endTime) ? (
-                        <ReactTooltip
-                          id="registerTip"
-                          place="top"
-                          effect="solid"
-                        >
-                          Sale Has Ended
-                        </ReactTooltip>
-                      ) : null}
-                    </div>
-                  </Col>
-                </Row>
-              )}
+              <BuyButton
+                isSold={location.state.nftDetail.currentMarketplaceId.isSold} 
+                startTime={location.state.startTime}
+                endTime={location.state.endTime}
+                versionB={versionB}
+                handleOpenModal={handleOpenModal}
+                handleBuy={handleBuy}
+              />
+              
             </div>
           </div>
         </div>
