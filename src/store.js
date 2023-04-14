@@ -8,6 +8,7 @@ import getNewNftCollectionReducer from './app/redux/getNewNftCollectionSlice';
 import getNewNftDefaultTemplateReducer from './app/redux/getNewNftDefaultTemplateSlice';
 import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
 import getMarketPlaceSaleTypeReducer from './app/redux/getMarketPlaceSaleTypeSlice';
+import getMyDropsReducer from './app/redux/getMyDropsSlice';
 export const store = configureStore({
   reducer: {
     count:countReducer,
@@ -17,6 +18,7 @@ export const store = configureStore({
     NewNftCollection:getNewNftCollectionReducer,
     defaultTemplate:getNewNftDefaultTemplateReducer,
     newNftProperties:getNewNftPropertiesReducer,
-    marketPlaceSaleType:getMarketPlaceSaleTypeReducer
+    marketPlaceSaleType:getMarketPlaceSaleTypeReducer,
+    getMyDrops:getMyDropsReducer
   },
 });
