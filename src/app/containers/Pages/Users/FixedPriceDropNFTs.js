@@ -83,6 +83,7 @@ const FixedPriceDropNFTs = () => {
     getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
     setTitleImage(location.state.imageURL);
     setBannerImage(location.state.bannerURL);
+    setDropTitle(location.state.dropTitle);
   }, []);
 
   return (
