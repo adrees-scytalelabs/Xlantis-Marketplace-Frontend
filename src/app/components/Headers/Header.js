@@ -31,6 +31,8 @@ import { io } from "socket.io-client";
 import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from "../../redux/getUserProfileSlice";
 
 
 function HeaderHome(props) {
@@ -52,6 +54,8 @@ function HeaderHome(props) {
   const [notificationsList, setNotificationsList] = useState();
   const [notificationCount, setNotificationCount] = useState(0);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const {userData,loading } = useSelector((store) => store.userProfile);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
@@ -373,26 +377,20 @@ function HeaderHome(props) {
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin !== "undefined") {
-      let version = Cookies.get("Version");
-
-      axios
-        .get(`${version}/user/profile`)
-        .then((response) => {
-          response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(error.response);
-        });
+      dispatch(getUserProfile());
+      userData.imageURL && setProfileImg(userData.imageURL);
     }
 
   }
 
 
   useEffect(() => {
-    getProfile();
     getNotifications(0, 10);
   }, []);
+
+  useEffect(() => {
+    getProfile();
+  }, [loading]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>

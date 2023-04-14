@@ -10,7 +10,7 @@ function UserDashboardDefaultScreen(props) {
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
   const {nftCount } = useSelector((store) => store.userCount);
-  const {userData } = useSelector((store) => store.userProfile);
+  const {userData,loading } = useSelector((store) => store.userProfile);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -19,9 +19,12 @@ function UserDashboardDefaultScreen(props) {
   }, [nftCount]);
 
   useEffect(() => {
+    let userLogin = sessionStorage.getItem("Authorization");
+    if (userLogin != "undefined") {
     dispatch(getUserProfile());
-    setUserName(userData);
-  }, [userData]);
+    setUserName(userData.username);
+    }
+  }, [loading]);
 
   useEffect(() => {
     props.setActiveTab({
