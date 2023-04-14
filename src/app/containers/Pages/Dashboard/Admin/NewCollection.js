@@ -180,7 +180,7 @@ function NewCollection(props) {
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
     if (royaltyFee > 0) {
-      setIsSaving(true);
+      // setIsSaving(true);
 
       handleShowBackdrop();
       let collectionID;
@@ -211,9 +211,8 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setRoyaltyFee(0);
-            setIsSaving(false);
+            // setIsSaving(false);
             handleCloseBackdrop();
-            setIsSaving(false);
             history.push({ pathname: "/dashboard/mycollection" });
           },
           (error) => {
@@ -229,7 +228,7 @@ function NewCollection(props) {
             setCollectionSymbol("");
             setCollectionDescription("");
             setFileURL(r1);
-            setIsSaving(false);
+            // setIsSaving(false);
           }
         );
       } else if (nftType === "721") {
@@ -239,7 +238,7 @@ function NewCollection(props) {
         const network = await web3.eth.net.getNetworkType();
         if (network !== "private") {
           setNetwork(network);
-          setIsSaving(false);
+          // setIsSaving(false);
           handleShow();
         } else {
           axios.post(`/collection/`, fileData).then(
@@ -248,7 +247,7 @@ function NewCollection(props) {
               setCollectionId(response.data.collection._id);
               collectionID = response.data.collection._id;
               let CloneId = getHash(collectionID);
-              setIsSaving(false);
+              // setIsSaving(false);
               console.log("ERC721 COLLECTION CREATION");
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
@@ -287,7 +286,7 @@ function NewCollection(props) {
                     let variant = "error";
                     enqueueSnackbar("User Canceled Transaction", { variant });
                     handleCloseBackdrop();
-                    setIsSaving(false);
+                    // setIsSaving(false);
                   }
                 })
                 .on("receipt", (receipt) => {
@@ -316,7 +315,7 @@ function NewCollection(props) {
               let variant = "error";
               enqueueSnackbar("Unable to Create New Collection.", { variant });
               handleCloseBackdrop();
-              setIsSaving(false);
+              // setIsSaving(false);
             }
           );
         }
