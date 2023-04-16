@@ -400,7 +400,7 @@ function NewNFT(props) {
         if (e.target.value === templateData[i].name) {
           handleSetProperties(templateData[i].properties);
 
-         // console.log("values matched");
+          // console.log("values matched");
           let dynamicField = [];
           for (let p = 0; p < templateData[i].properties.length; p++) {
             dynamicField.push({
@@ -443,7 +443,7 @@ function NewNFT(props) {
   };
 
   if (extractedDataProps) {
-   // console.log(extractedDataProps, " Extracted Properties");
+    // console.log(extractedDataProps, " Extracted Properties");
   }
 
   const handleTemplatePropertyChange = (index, e) => {
@@ -451,7 +451,7 @@ function NewNFT(props) {
     let data = [...properties];
 
     data[index].value = e.target.value;
-   // console.log("change", data[index]);
+    // console.log("change", data[index]);
     setProperties(data);
   };
 
@@ -597,7 +597,7 @@ function NewNFT(props) {
   let [nftId, setNftId] = useState("");
   let [isUploadingData, setIsUploadingData] = useState(false);
   let [isGlbFile, setIsGlbFile] = useState(false);
-  let [previewImageURI, setPreviewImageURI] = useState(r1);
+  let [previewImageURI, setPreviewImageURI] = useState("");
   let [isUploadingPreview, setIsUploadingPreview] = useState(false);
   let [isMp3File, setIsMp3File] = useState(false);
   let [contractType, setContractType] = useState("");
@@ -641,15 +641,15 @@ function NewNFT(props) {
   // }
   let getCollections = (collectionType) => {
     setCollection("");
-   // console.log("get collections");
-   // console.log("collectionType", collectionType);
-   // console.log("VERSION", Cookies.get("Version"));
+    // console.log("get collections");
+    // console.log("collectionType", collectionType);
+    // console.log("VERSION", Cookies.get("Version"));
     const url = `/collection/collections/${collectionType}`;
-   // console.log("url", url);
+    // console.log("url", url);
     // setCollectionTypes([]);
     axios.get(url).then(
       (response) => {
-       // console.log("response", response);
+        // console.log("response", response);
 
         if (collectionType === "1155") {
           setChangeCollectionList(response.data.collectionData);
@@ -661,11 +661,11 @@ function NewNFT(props) {
         //   },
         //   ...response.data.collectionData,
         // ];
-       // console.log(
-         // "response.data.collectionData",
-         // response
-          // response.data.collectionData[0].nftContractAddress
-       // );
+        // console.log(
+        // "response.data.collectionData",
+        // response
+        // response.data.collectionData[0].nftContractAddress
+        // );
         setCollectionTypes(response.data.collectionData);
       },
       (error) => {
@@ -690,7 +690,7 @@ function NewNFT(props) {
   };
 
   const handleSetProperties = (availableProperties) => {
-   // console.log("avail prop", availableProperties);
+    // console.log("avail prop", availableProperties);
     let prop = [];
 
     availableProperties.map((property) => {
@@ -709,15 +709,15 @@ function NewNFT(props) {
       //console.log("property", property);
     });
 
-   // console.log("prop", prop);
-   // console.log("properties from def", prop);
+    // console.log("prop", prop);
+    // console.log("properties from def", prop);
     setProperties(prop);
   };
 
   const getDefaultTemplate = () => {
     axios.get(`/nft-properties/admin/default`).then(
       (response) => {
-       // console.log("default template response", response);
+        // console.log("default template response", response);
 
         setDefaultTemplates(response.data.defaultTemplate);
         if (response.data.defaultTemplate != null) {
@@ -749,10 +749,10 @@ function NewNFT(props) {
     axios.get(`/nft-properties/${role}`).then(
       (response) => {
         if (role === "admin") {
-        //  console.log("saved template response", response);
+          //  console.log("saved template response", response);
           setTemplateData(response.data.templates);
         } else {
-         // console.log("standard template response", response);
+          // console.log("standard template response", response);
           setStandardTemplates(response.data.templates);
         }
       },
@@ -778,23 +778,23 @@ function NewNFT(props) {
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
     let batchMintId = Cookies.get("Batch-ID");
-   // console.log("data", data);
+    // console.log("data", data);
     if (
       (data && batchMintId) !== null &&
       (typeof data || typeof batchMintId) !== "undefined" &&
       (data && batchMintId) !== ""
     ) {
-     // console.log("Data: ", data);
-     // console.log("Batch ID: ", batchMintId);
-     // console.log("Type is: ", typeof data);
-     // console.log("Type is: ", typeof batchMintId);
+      // console.log("Data: ", data);
+      // console.log("Batch ID: ", batchMintId);
+      // console.log("Type is: ", typeof data);
+      // console.log("Type is: ", typeof batchMintId);
       setTokenList(JSON.parse(data));
       setBatchId(batchMintId);
       setCollection(JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
     } else {
-     // console.log("No data in cookies");
+      // console.log("No data in cookies");
     }
   };
 
@@ -893,7 +893,7 @@ function NewNFT(props) {
       handleCloseBackdrop();
       setIsSaving(false);
       history.push({
-        pathname: `/dashboard/collection/nfts/${collectionId}`
+        pathname: `/dashboard/collection/nfts/${collectionId}`,
       });
       // await loadWeb3();
       // const web3 = window.web3;
@@ -1064,15 +1064,15 @@ function NewNFT(props) {
           AmountofNFTs.push(parseInt(tokenList[i].tokensupply));
           IPFsURIs.push(tokenList[i].nftURI);
         }
-       // console.log("AmountofNFTs", AmountofNFTs);
-       // console.log("IPFsHashes", IPFsURIs);
+        // console.log("AmountofNFTs", AmountofNFTs);
+        // console.log("IPFsHashes", IPFsURIs);
 
-       // console.log("Contract Address: ", address);
+        // console.log("Contract Address: ", address);
         var myContractInstance = await new web3.eth.Contract(abi, address);
-       // console.log("myContractInstance", myContractInstance);
-       // console.log("Name: ", name);
-      //  console.log("Description: ", description);
-      //  console.log("nftURI: ", nftURI);
+        // console.log("myContractInstance", myContractInstance);
+        // console.log("Name: ", name);
+        //  console.log("Description: ", description);
+        //  console.log("nftURI: ", nftURI);
         // console.log("tokenSupply: ", tokenSupply);
         // console.log("Account address: ", accounts[0]);
         // console.log("Image Type: ", imageType);
@@ -1089,7 +1089,7 @@ function NewNFT(props) {
             }
           })
           .on("receipt", (receipt) => {
-           // console.log("receipt", receipt);
+            // console.log("receipt", receipt);
             Cookies.remove("NFT-Detail");
             // console.log(
             //   "receipt",
@@ -1189,7 +1189,7 @@ function NewNFT(props) {
     if (tokenList.length === 1) {
       axios.delete(`/batch-mint/${batchId}`).then(
         (response) => {
-         // console.log("deleting batch response: ", response);
+          // console.log("deleting batch response: ", response);
           Cookies.remove("NFT-Detail");
           Cookies.remove("Batch-ID");
           setTokenList([]);
@@ -1202,7 +1202,7 @@ function NewNFT(props) {
     } else {
       axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
         (response) => {
-         // console.log("Response for delete nft from batch: ", response);
+          // console.log("Response for delete nft from batch: ", response);
           const list = [...tokenList];
           list.splice(index, 1);
           Cookies.remove("NFT-Detail");
@@ -1219,7 +1219,7 @@ function NewNFT(props) {
   // handle click event of the Add button
   const handleAddClick = (e) => {
     e.preventDefault();
-   // console.log("token supply", tokenSupply);
+    // console.log("token supply", tokenSupply);
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
@@ -1265,7 +1265,7 @@ function NewNFT(props) {
       const blob = new Blob([JSON.stringify(metaData, null, 2)], {
         type: "application/json",
       });
-     // console.log("blob", blob);
+      // console.log("blob", blob);
       var dataIpfsHash;
       reader.readAsArrayBuffer(blob);
       reader.onloadend = () => {
@@ -1280,7 +1280,7 @@ function NewNFT(props) {
           //console.log("HASH: ", result[0].hash);
           ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
           setMetaDataURI(ipfsMetaData);
-         // console.log("Meta Data URI: ", ipfsMetaData);
+          // console.log("Meta Data URI: ", ipfsMetaData);
 
           let propertiesObject = {};
           properties.map((property) => {
@@ -1324,18 +1324,13 @@ function NewNFT(props) {
                     nftFormat: imageType,
                     properties: properties,
                     ipfsHash: ipfsHash,
-                    
-                    
-                    
+
                     // rarity: rarity,
                     tokensupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
-                    
+
                     nftId: response.data.nftId,
-                    
-                    
-                    
                   },
                 ]);
 
@@ -1352,7 +1347,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    
+
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -1369,7 +1364,7 @@ function NewNFT(props) {
             );
           } else {
             data["batchId"] = batchId;
-           // console.log("data: ", data);
+            // console.log("data: ", data);
             axios.post(`/batch-mint/nft`, data).then(
               (response) => {
                 // console.log(
@@ -1391,7 +1386,7 @@ function NewNFT(props) {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-                    
+
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -1409,7 +1404,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    
+
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },
@@ -1455,6 +1450,7 @@ function NewNFT(props) {
     setIsUploadingIPFS(true);
     setIsGlbFile(false);
     setIsMp3File(false);
+    setNftURI("");
 
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
@@ -1463,7 +1459,7 @@ function NewNFT(props) {
     if (e.target.files[0].name.includes(".glb")) {
       typeImage = "glb";
       setImageType("glb");
-      setImage(e.target.files[0]);
+      setImage(r1);
     } else if (
       e.target.files[0].type.split("/")[1] === "mp3" ||
       e.target.files[0].name.includes(".mp3")
@@ -1471,13 +1467,13 @@ function NewNFT(props) {
       typeImage = "mp3";
       setIsMp3File(true);
       setImageType("mp3");
-      setImage(e.target.files[0]);
+      setImage(r1);
 
       // setImageType(e.target.files[0].type.split("/")[1]);
     } else {
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
-      setImage(e.target.files[0]);
+      // setImage(e.target.files[0]);
 
       if (previewImageURI !== "") {
         setPreviewImageURI("");
@@ -1489,36 +1485,40 @@ function NewNFT(props) {
     // console.log("Image Type: ", typeImage);
     // console.log("e.target.files[0]", e.target.files[0]);
     // console.log("Image type: ", imageType);
+    e.persist();
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
-     // console.log("reader.result", reader.result);
+      // console.log("reader.result", reader.result);
       // setBuffer(Buffer(reader.result));
-      ipfs.add(Buffer(reader.result), async (err, result) => {
-        if (err) {
-          console.log("err", err);
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
-          return;
-        }
-       // console.log("HASH", result[0].hash);
+      ipfs.add(Buffer(reader.result)).then(
+        (result) => {
+          // console.log("HASH", result[0].hash);
 
-        setIpfsHash(result[0].hash);
-        setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-        let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS", { variant });
-        if (typeImage === "glb") {
-          setIsGlbFile(true);
+          setIpfsHash(result[0].hash);
+          setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+          let variant = "success";
+          enqueueSnackbar("Image Uploaded to IPFS", { variant });
+          if (typeImage === "glb") {
+            setIsGlbFile(true);
+          }
+          //
+        },
+        (err) => {
+          if (err) {
+            console.log("err", err);
+            setIsUploadingIPFS(false);
+            let variant = "error";
+            enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+            return;
+          }
         }
-        //
-      });
+      );
     };
     // setIsUploadingIPFS(true);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
     axios.post(`/upload/image`, fileData).then(
       (response) => {
-      //  console.log("response", response);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
@@ -1643,12 +1643,12 @@ function NewNFT(props) {
     e.preventDefault();
     let newData = { key: "", value: "" };
     setProperties([...properties, newData]);
-   // console.log("Add button pressed.");
-   // console.log("Properties: ", properties);
+    // console.log("Add button pressed.");
+    // console.log("Properties: ", properties);
   };
 
   let handlePropertyChange = (index, event) => {
-  //  console.log(properties, " /// properties");
+    //  console.log(properties, " /// properties");
     let data = [...properties];
     // console.log("the datat change: ", event.target);
     // console.log("the data index /// ", data[index][event.target.name]);
@@ -1664,13 +1664,13 @@ function NewNFT(props) {
   let handleCloseNFTDetailModal = () => {
     // setTokenList([...tempTokenList]);
     // setTempTokenList([]);
-   // console.log("Close button called from modal.");
+    // console.log("Close button called from modal.");
     setOpenDialog(false);
   };
 
   let handleEdit = () => {
     // setNftDetail(nftObject);
-  //  console.log("Nft detail: ", nftDetail);
+    //  console.log("Nft detail: ", nftDetail);
     // setNftDetail(nftDetail);
     setOpenDialog(false);
     setOpenEditModal(true);
@@ -1681,7 +1681,7 @@ function NewNFT(props) {
   };
 
   let onUpdateEditModal = (obj) => {
-   // console.log("object in new nft screen: ", obj);
+    // console.log("object in new nft screen: ", obj);
     setIsUploadingData(true);
     handleShowBackdrop();
     let data = [...tokenList];
@@ -1701,7 +1701,7 @@ function NewNFT(props) {
     const blob = new Blob([JSON.stringify(metaData, null, 2)], {
       type: "application/json",
     });
-   // console.log("blob", blob);
+    // console.log("blob", blob);
     reader.readAsArrayBuffer(blob);
     reader.onloadend = () => {
       // setBuffer(Buffer(reader.result));
@@ -1713,7 +1713,7 @@ function NewNFT(props) {
           enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
           return;
         }
-      //  console.log("HASH: ", result[0].hash);
+        //  console.log("HASH: ", result[0].hash);
         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
 
         let updatedObject = {
@@ -1734,14 +1734,14 @@ function NewNFT(props) {
 
         axios.put(`/nft/${data[editObjectIndex].nftId}`, updatedObject).then(
           (response) => {
-          //  console.log("Response of updated nft: ", response);
+            //  console.log("Response of updated nft: ", response);
           },
           (error) => {
             console.log("Error of updated nft: ", error);
           }
         );
 
-       // console.log("Data: ", data);
+        // console.log("Data: ", data);
         setTokenList(data);
         setIsUploadingData(false);
         setOpenEditModal(false);
@@ -1806,11 +1806,11 @@ function NewNFT(props) {
     setPreviewImage(e.target.files[0]);
     let typeImage;
 
-    console.log("Image Type: ", typeImage);
-    console.log("e.target.files[0]", e.target.files[0]);
+    // console.log("Image Type: ", typeImage);
+    // console.log("e.target.files[0]", e.target.files[0]);
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
-      console.log("reader.result", reader.result);
+      // console.log("reader.result", reader.result);
       // setBuffer(Buffer(reader.result));
       ipfs.add(Buffer(reader.result), async (err, result) => {
         if (err) {
@@ -1822,7 +1822,7 @@ function NewNFT(props) {
           });
           return;
         }
-        console.log("HASH", result[0].hash);
+        // console.log("HASH", result[0].hash);
 
         // setIpfsHash(result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
@@ -2112,7 +2112,7 @@ function NewNFT(props) {
                             name="sampleFile"
                             type="file"
                             id="uploadGlbFile"
-                            accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
+                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
                             onChange={onChangeFile}
                             hidden
                           />
@@ -2126,7 +2126,10 @@ function NewNFT(props) {
                     <div className="form-group">
                       <div className="row no-gutters align-items-end justify-content-start">
                         <div className="co-12 col-md-auto profile-img mr-3">
-                          <img src={previewImageURI} alt="Selfie" />
+                          <img
+                            src={previewImageURI ? previewImageURI : r1}
+                            alt="Selfie"
+                          />
                         </div>
                         <div className="co-12 col-md-auto">
                           <label
@@ -2200,7 +2203,7 @@ function NewNFT(props) {
                             name="sampleFile"
                             type="file"
                             id="uploadMp3"
-                            accept=".mp3"
+                            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
                             onChange={onChangeFile}
                             hidden
                           />
@@ -2215,7 +2218,10 @@ function NewNFT(props) {
                       <div className="form-group">
                         <div className="row no-gutters align-items-end justify-content-start">
                           <div className="co-12 col-md-auto profile-img mr-3">
-                            <img src={previewImageURI} alt="Selfie" />
+                            <img
+                              src={previewImageURI ? previewImageURI : r1}
+                              alt="Selfie"
+                            />
                           </div>
                           <div className="co-12 col-md-auto">
                             <label
@@ -2255,7 +2261,7 @@ function NewNFT(props) {
                     <div className="form-group">
                       <div className="row no-gutters align-items-end justify-content-start">
                         <div className="co-12 col-md-auto profile-img mr-3">
-                          <img src={image} alt="Selfie" />
+                          <img src={nftURI ? nftURI : r1} alt="Selfie" />
                         </div>
                         <div className="co-12 col-md-auto">
                           <label for="upload" className="uploadLabel">
@@ -3063,11 +3069,11 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                               // console.log(value);
+                                // console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
-                               // console.log("Value: ", value);
+                                // console.log("Value: ", value);
                               }
                             }
                           }}
@@ -3105,12 +3111,12 @@ function NewNFT(props) {
                               if (value.name === "+ Create new Collection") {
                                 history.push("/dashboard/createNewCollection");
                               } else {
-                              //  console.log(value);
+                                //  console.log(value);
                                 setCollection(value.name);
                                 setCollectionId(value._id);
                                 setNftContractAddress(value.nftContractAddress);
                                 setContractType(value.contractType);
-                              //  console.log("Value: ", value);
+                                //  console.log("Value: ", value);
                               }
                             }
                           }}
@@ -3314,10 +3320,10 @@ function NewNFT(props) {
                       <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
                         <CardActionArea
                           onClick={() => {
-                           // console.log("nftDetailObject: ", i);
+                            // console.log("nftDetailObject: ", i);
                             handleOpenNFTDetailModal(i);
                             setEditObjectIndex(index);
-                          //  console.log("Open Dialog Value: ", openDialog);
+                            //  console.log("Open Dialog Value: ", openDialog);
                           }}
                         >
                           <Card id="nftCardProps">
