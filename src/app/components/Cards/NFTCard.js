@@ -8,8 +8,8 @@ import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import { truncate } from "../../assets/js/utils";
 import TypographyText from "../Typography/TypographyText";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
