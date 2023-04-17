@@ -1223,6 +1223,15 @@ function NewNFT(props) {
     if (image === r1) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
+    } else if (
+      imageType === "glb" ||
+      imageType === "gltf" ||
+      imageType === "mp3"
+    ) {
+      if (previewImageURI === "") {
+        let variant = "error";
+        enqueueSnackbar("Please upload Preview Image", { variant });
+      }
     } else if (name === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Name", { variant });
