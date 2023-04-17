@@ -950,10 +950,10 @@ function HeaderHome(props) {
               </span>) : null }
           </li>
           <li className="header-item-rht">
-            <ShoppingCartIcon
+            {/* <ShoppingCartIcon
               onClick={handleOpenCart}
               style={{ cursor: "pointer" }}
-            />
+            /> */}
           </li>
           <li>
             {sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
