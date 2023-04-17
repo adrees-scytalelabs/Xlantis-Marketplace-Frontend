@@ -73,6 +73,12 @@ function TopUp(props) {
   const [amount, setAmount] = useState(0.1);
 
   const classes = useStyles();
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
@@ -122,6 +128,7 @@ function TopUp(props) {
   }, []);
   const handleTopUpAmount = (e) => {
     e.preventDefault();
+    handleShowBackdrop();
     let data = {
       amount: amount,
     };
@@ -129,6 +136,7 @@ function TopUp(props) {
       (response) => {
         localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
+        handleCloseBackdrop();
         // let variant = "success";
         // enqueueSnackbar("Balance Updated", { variant });
       },
@@ -136,6 +144,7 @@ function TopUp(props) {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
+          handleCloseBackdrop();
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }

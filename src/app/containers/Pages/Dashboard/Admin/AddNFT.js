@@ -170,7 +170,7 @@ function AddNFT(props) {
   const [buttonName, setbuttonName] = useState("bttn");
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -236,11 +236,10 @@ function AddNFT(props) {
         value: 1,
       },
     });
-  }
+  };
   const handleCloseModal = () => {
     setMOdalOpen(false);
     setTransactionModal(true);
-    
   };
 
   let getCollections = () => {
@@ -814,48 +813,6 @@ function AddNFT(props) {
     await handleTimeEvent(event);
     await handleDropData(event, web3, accounts);
   };
-  // approval
-  // let giveApproval = async() => {
-  //     await loadWeb3();
-  //     const web3 = window.web3
-  //     const accounts = await web3.eth.getAccounts();
-  //     const network = await web3.eth.net.getNetworkType()
-  //     if (network !== 'goerli') {
-  //         setNetwork(network);
-  //         setIsSaving(false);
-  //         handleShow();
-  //     }
-  //     else{
-
-  //     const addressNft = nftContractAddresses;
-  //     const addressDropFactory = Addresses.FactoryDrop721;
-  //     const addressAuctionFactory = Addresses.AuctionDropFactory;
-  //     const abiNft = CreateNFTContract;
-
-  //     console.log("Contract Address: ", nftContractAddresses);
-  //     var myContractInstance = await new web3.eth.Contract(abiNft, addressNft);
-  //     console.log("myContractInstance", myContractInstance)
-
-  //     await myContractInstance.methods.setApprovalForAll(addressDropFactory, true).send({from : accounts[0]}, (err, response) => {
-  //         console.log('get transaction', err, response);
-
-  //         if (err !== null) {
-  //             console.log("err", err);
-  //             let variant = "error";
-  //             enqueueSnackbar('User Canceled Transaction', { variant });
-  //             handleCloseBackdrop();
-  //             setIsSaving(false);
-
-  //         }
-
-  //     })
-  //     .on('receipt', (receipt) => {
-  //         console.log("receipt", receipt);
-  //     })
-  //     }
-  // }
-
-  // handle click event of the Add button
   const handleAddClick = async (e) => {
     e.preventDefault();
     // console.log("HANDLE ADD");
@@ -925,7 +882,8 @@ function AddNFT(props) {
         axios.put(`/drop/nft`, data).then(
           async (response) => {
             // console.log("nft drop add response: ", response);
-
+            setTokenList([...tokenList, nftDetail]);
+            console.log(tokenList);
             setIsAdded(true);
             let found = false;
             // console.log("time", startTime, endTime);
@@ -1363,44 +1321,46 @@ function AddNFT(props) {
                       justify="flex-start"
                       // alignItems="flex-start"
                     >
-                      <Grid item xs={12} sm={6} md={6}>
-                        <Card style={{ height: "100%" }} id="nftCardProps">
-                          <CardMedia
-                            variant="outlined"
-                            // style={{
-                            //   height: "100%",
-                            //   border: "4px solid #fff",
-                            // }}
-                            className={classes.media}
-                            image={
-                              nftDetail.previewImageURI
-                                ? nftDetail.previewImageURI
-                                : nftDetail.nftURI
-                            }
-                            title="NFT Image"
-                          />
-                          <CardContent
-                            style={{
-                              paddingBottom: 0,
-                              paddingTop: 0,
-                              width: "100%",
-                            }}
-                          >
-                            <div
-                              className="row no-gutters justify-content-start align-items-center"
-                              // style={{ minHeight: "60px" }}
+                      {tokenList.map((i, index) => (
+                        <Grid item xs={12} sm={6} md={6} lg={5}>
+                          <Card style={{ height: "100%" }} id="nftCardProps">
+                            <CardMedia
+                              variant="outlined"
+                              // style={{
+                              //   height: "100%",
+                              //   border: "4px solid #fff",
+                              // }}
+                              className={classes.media}
+                              image={
+                                i.previewImageURI
+                                  ? i.previewImageURI
+                                  : i.nftURI
+                              }
+                              title="NFT Image"
+                            />
+                            <CardContent
+                              style={{
+                                paddingBottom: 0,
+                                paddingTop: 0,
+                                width: "100%",
+                              }}
                             >
-                              <Typography
-                                variant="h6"
-                                component="p"
-                                className={classes.cardTitle}
+                              <div
+                                className="row no-gutters justify-content-start align-items-center"
+                                // style={{ minHeight: "60px" }}
                               >
-                                {nftDetail.title}
-                              </Typography>
-                            </div>
-                          </CardContent>
-                        </Card>
-                      </Grid>
+                                <Typography
+                                  variant="h6"
+                                  component="p"
+                                  className={classes.cardTitle}
+                                >
+                                  {i.title}
+                                </Typography>
+                              </div>
+                            </CardContent>
+                          </Card>
+                        </Grid>
+                      ))}
                     </Grid>
                   </div>
                 </div>
@@ -1543,8 +1503,9 @@ function AddNFT(props) {
         setOpen={setMOdalOpen}
       ></TopUpModal>
       <PublishSuccessfully
-      show={transactionModal} handleClose={handleRedirect}>
-      </PublishSuccessfully>
+        show={transactionModal}
+        handleClose={handleRedirect}
+      ></PublishSuccessfully>
       <Backdrop className={classes.backdrop} open={open}>
         <CircularProgress color="inherit" />
       </Backdrop>

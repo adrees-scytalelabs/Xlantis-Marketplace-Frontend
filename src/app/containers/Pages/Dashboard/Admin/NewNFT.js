@@ -3336,61 +3336,12 @@ function NewNFT(props) {
                           }}
                         >
                           <Card id="nftCardProps">
-                            {/* <CardHeader
-                                className="text-center"
-                                title={i.title}
-                              /> */}
                             <CardMedia
                               className={classes.media}
                               image={i.nftURI}
                             >
-                              {/* className={classes.media}
-                                image={
-                                  i.previewImageURI === ""
-                                    ? i.nftURI
-                                    : i.previewImageURI
-                                }
-                                title="NFT Image" */}
-                              {/* /> */}
                             </CardMedia>
                           </Card>
-                          {/* <Dialog
-                                                        fullWidth={true}
-                                                        maxWidth={true}
-                                                        open={openDialog}
-                                                        onClose={handleClickCloseDialog}
-                                                        aria-labelledby="max-width-dialog-title"
-                                                    >
-                                                        <DialogTitle id="max-width-dialog-title">Edit NFT Details</DialogTitle>
-                                                        <DialogContent>
-                                                            <DialogContentText></DialogContentText>
-                                                            <form>
-                                                                <TextField
-                                                                    label="NFT Title"
-                                                                    variant="outlined"
-                                                                    value={tempTokenList.title}
-                                                                    onChange={(e) => {
-                                                                        let temp = [...tempTokenList];
-                                                                        temp[index].title = e.target.value;
-                                                                        console.log(tempTokenList);
-                                                                        setTempTokenList(temp);
-                                                                    }}
-                                                                />
-                                                                <TextField
-                                                                    label="NFT Description"
-                                                                    variant="outlined"
-                                                                    value={tempTokenList.description}
-                                                                    onChange={(e) => {
-                                                                        let temp = [...tempTokenList];
-                                                                        temp[index].description = e.target.value;
-                                                                        setTempTokenList(temp);
-                                                                    }}
-                                                                    style={{ marginLeft: "5px" }}
-                                                                />
-                                                                <button className="btn submit-btn" onClick={console.log("Submit clicked")} >Save</button> 
-                                                            </form>
-                                                        </DialogContent>
-                                                    </Dialog> */}
                         </CardActionArea>
                         <CardActions>
                           <Button
@@ -3403,21 +3354,6 @@ function NewNFT(props) {
                             Remove NFT
                           </Button>
                         </CardActions>
-                        {/* <NFTDetailModal 
-                                                    show={openDialog} 
-                                                    handleClose={handleCloseNFTDetailModal}
-                                                    nftDetail={tokenList[index]}
-                                                    handleEdit={handleEdit}
-                                                >
-                                                </NFTDetailModal>
-                                                <NFTEditModal
-                                                    show={openEditModal}
-                                                    handleClose={handleEditClose}
-                                                    nftDetail={i}
-                                                    index={index}
-                                                    onUpdate={onUpdateEditModal}
-                                                >
-                                                </NFTEditModal> */}
                       </Grid>
                     ))}
                   </Grid>
