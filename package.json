@@ -57,7 +57,6 @@
     "react-window": "^1.8.8",
     "react-window-size": "^1.2.2",
     "reactstrap": "^8.4.1",
-    "redux": "^4.0.5",
     "semantic-ui-react": "^0.88.2",
     "socket.io-client": "^4.6.1",
     "ua-parser-js": "^1.0.32",
