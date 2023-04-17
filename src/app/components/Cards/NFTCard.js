@@ -9,6 +9,7 @@ import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import TypographyText from "../Typography/TypographyText";
+import { truncate } from "../../assets/js/utils";
 
 const useStyles = makeStyles((theme) => ({
   root: {

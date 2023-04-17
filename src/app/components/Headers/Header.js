@@ -14,9 +14,7 @@ import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
-
 import jwtDecode from "jwt-decode";
-
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import transakSDK from "@transak/transak-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
@@ -24,26 +22,32 @@ import axios from "axios";
 import WalletLink from "walletlink";
 import Web3Modal from "web3modal";
 import CartModal from "../Modals/CartModal";
-
 import Badge from "@material-ui/core/Badge";
 import NotificationsIcon from "@material-ui/icons/Notifications";
 import { io } from "socket.io-client";
 import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
-
+import {
+  adminLoginThroughWallet,
+  getNotifications,
+  readNotifications,
+  userLoginThroughWallet,
+} from "../API/AxiosInterceptor";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [menuOpenedClass, setMenuOpenedClass] = useState();
-  const [userSignOut,] = useState(false);
+  const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   let history = useHistory();
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [, setTokenVerification] = useState(true);
-  const [profileImg, setProfileImg] = useState("https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png");
+  const [profileImg, setProfileImg] = useState(
+    "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
+  );
   let location = useLocation();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
@@ -94,7 +98,6 @@ function HeaderHome(props) {
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
 
   const providerOptions = {
     binancechainwallet: {
@@ -157,40 +160,38 @@ function HeaderHome(props) {
     }
   };
 
-  function getNotifications(start, end) {
-    axios.get(`/notifications/${start}/${end}`).then(
-      (response) => {
-        //console.log("notification response", response);
+  async function getNotification(start, end) {
+    await getNotifications(start, end)
+      .then((response) => {
+        // console.log("notification response", response);
         setNotificationsList(response.data.notifications);
         setNotificationCount(response.data.notifications.length);
-
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   }
 
   function readNotification(notificationId) {
     let data = {
-      notificationId
+      notificationId,
     };
 
     console.log("data", data);
 
-    axios.patch("/notifications/hide", data).then(
-      (response) => {
+    readNotifications(data)
+      .then((response) => {
         console.log("notification hide response: ", response);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-      }
-    );
+      });
   }
+
   async function handleLogin() {
     await loadWeb3();
     const web3 = window.web3;
@@ -226,27 +227,20 @@ function HeaderHome(props) {
         walletAddress: address,
         signature: signatureHash,
       };
-      let route;
       if (props.role === "admin") {
-
-        route = "v2-wallet-login/user/auth/admin-login";
-      } else {
-
-        route = "v2-wallet-login/user/auth/login";
-      }
-
-      console.log(route)
-      axios.post(route, loginData).then(
-        (response) => {
-          console.log("response", response);
-          if (props.role === "admin") {
+        adminLoginThroughWallet(loginData)
+          .then((response) => {
             console.log("admin sett");
             console.log("admin data set");
             Cookies.set("Version", "v2-wallet-login", {});
             console.log("version set");
             Cookies.set("InfoAdded", response.data.isInfoAdded, {});
             Cookies.set("Verified", response.data.isVerified, {});
-            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+            sessionStorage.setItem(
+              "Authorization",
+              response.data.raindropToken,
+              {}
+            );
             if (
               response.data.isInfoAdded === true &&
               response.data.isVerified === true
@@ -255,25 +249,36 @@ function HeaderHome(props) {
               window.location.reload(false);
             }
             setAdminSignInData(response.data);
-
-          }
-          else {
-            console.log("Running user", response.data)
+          })
+          .catch((error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+              if (error) setTokenVerification(false);
+            }
+          });
+      } else {
+        userLoginThroughWallet(loginData)
+          .then((response) => {
+            console.log("Running user", response.data);
             Cookies.set("Version", "v2-wallet-login", {});
-            sessionStorage.setItem("Authorization", response.data.raindropToken, {});
+            sessionStorage.setItem(
+              "Authorization",
+              response.data.raindropToken,
+              {}
+            );
             sessionStorage.setItem("Address", accounts[0]);
             setUserId(accounts[0]);
             window.location.reload();
-          }
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-            if (error) setTokenVerification(false);
-          }
-        }
-      );
+          })
+          .catch((error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+              if (error) setTokenVerification(false);
+            }
+          });
+      }
     }
 
     setMOdalOpen(false);
@@ -314,7 +319,6 @@ function HeaderHome(props) {
     create: props.selectedNav === "create" ? selectedStyling : defaultStyling,
   };
 
-
   let Logout = (e) => {
     console.log("akjdf");
     sessionStorage.removeItem("Authorization");
@@ -324,7 +328,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     setUserId("");
-    history.push({ pathname: '/' });
+    history.push({ pathname: "/" });
     window.location.reload(false);
   };
 
@@ -350,8 +354,8 @@ function HeaderHome(props) {
   if (props.role === null) {
     jwt = sessionStorage.getItem("Authorization");
     if (jwt !== null) {
-      jwtDecoded = jwtDecode(jwt)
-    };
+      jwtDecoded = jwtDecode(jwt);
+    }
   }
 
   useEffect(() => {
@@ -360,15 +364,20 @@ function HeaderHome(props) {
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
-
         let variant = "info";
-        enqueueSnackbar("Your request is under process. Waiting for approval by the Super Admin", { variant })
+        enqueueSnackbar(
+          "Your request is under process. Waiting for approval by the Super Admin",
+          { variant }
+        );
       }
     }
-  }, [adminSignInData])
+  }, [adminSignInData]);
 
   adminSignInData &&
-    console.log("jwt after submission in HeaderHome: //// ", adminSignInData.raindropToken);
+    console.log(
+      "jwt after submission in HeaderHome: //// ",
+      adminSignInData.raindropToken
+    );
 
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
@@ -378,28 +387,26 @@ function HeaderHome(props) {
       axios
         .get(`${version}/user/profile`)
         .then((response) => {
-          response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
+          response.data.userData.imageURL &&
+            setProfileImg(response.data.userData.imageURL);
         })
         .catch((error) => {
           console.log(error);
           console.log(error.response);
         });
     }
-
-  }
-
+  };
 
   useEffect(() => {
     getProfile();
-    getNotifications(0, 10);
+    getNotification(0, 10);
   }, []);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
-      {adminSignInData !== null &&
-        adminSignInData.isInfoAdded === false && (
-          <Redirect to="/admin-signup-details" />
-        )}
+      {adminSignInData !== null && adminSignInData.isInfoAdded === false && (
+        <Redirect to="/admin-signup-details" />
+      )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -461,14 +468,16 @@ function HeaderHome(props) {
               marginTop: "4px",
             }}
           >
-
             <li className="login-link" style={{ padding: "10px 35px" }}>
-
-              {(sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})` }}></div>
-
-              ) : (null
-              )}
+              {(sessionStorage.getItem("Address") && props.role === "admin") ||
+              sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                <div
+                  className="header-profile-image"
+                  onClick={handleClick}
+                  style={{ backgroundImage: `url(${profileImg})` }}
+                ></div>
+              ) : null}
             </li>
             <li>
               <a href="/" style={{ color: "#fff" }}>
@@ -492,41 +501,58 @@ function HeaderHome(props) {
             </li>
             <li className="login-link">
               <Link to={`/dashboard`}>
-                <span style={{
-                  padding: "10px 20px",
-                  cursor: "pointer",
-                }}>Dashboard</span>
+                <span
+                  style={{
+                    padding: "10px 20px",
+                    cursor: "pointer",
+                  }}
+                >
+                  Dashboard
+                </span>
               </Link>
             </li>
 
-            {
-              location.pathname.match("/dashboard") || location.pathname.match("/user/settings")
-                ? (
-                  <><li className="sidebar-items">
-                    <Link to={`/dashboard/myNFTs`}>
-                      <span style={{
+            {location.pathname.match("/dashboard") ||
+            location.pathname.match("/user/settings") ? (
+              <>
+                <li className="sidebar-items">
+                  <Link to={`/dashboard/myNFTs`}>
+                    <span
+                      style={{
                         padding: "10px 20px",
                         cursor: "pointer",
-                      }}>My NFTs</span>
-                    </Link>
-                  </li><li className="sidebar-items">
-                      <Link to={`/dashboard/marketPlace`}>
-                        <span style={{
-                          padding: "10px 20px",
-                          cursor: "pointer",
-                        }}>MarketPlace</span>
-                      </Link>
-                    </li><li className="sidebar-items">
-                      <Link to={`/user/settings`}>
-                        <span style={{
-                          padding: "10px 20px",
-                          cursor: "pointer",
-                        }}>Profile</span>
-                      </Link>
-                    </li></>
-                ) :
-                null
-            }
+                      }}
+                    >
+                      My NFTs
+                    </span>
+                  </Link>
+                </li>
+                <li className="sidebar-items">
+                  <Link to={`/dashboard/marketPlace`}>
+                    <span
+                      style={{
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      MarketPlace
+                    </span>
+                  </Link>
+                </li>
+                <li className="sidebar-items">
+                  <Link to={`/user/settings`}>
+                    <span
+                      style={{
+                        padding: "10px 20px",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Profile
+                    </span>
+                  </Link>
+                </li>
+              </>
+            ) : null}
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -542,91 +568,97 @@ function HeaderHome(props) {
                 View Cart
               </span>
             </li>
-            {
-              (sessionStorage.getItem("Address") && props.role === "admin") || (sessionStorage.getItem("Address")) || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                <li
-                  className="login-link"
-                  style={{ padding: "15px 20px" }}
-                  onClick={Logout}
+            {(sessionStorage.getItem("Address") && props.role === "admin") ||
+            sessionStorage.getItem("Address") ||
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <li
+                className="login-link"
+                style={{ padding: "15px 20px" }}
+                onClick={Logout}
+              >
+                <span
+                  style={{
+                    padding: "10px 20px",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
                 >
-                  <span
-                    style={{
-                      padding: "10px 20px",
-                      color: "white",
-                      cursor: "pointer",
-                    }}
-                  >
-                    Logout
-                  </span>
-                </li>
-              ) : null
-            }
+                  Logout
+                </span>
+              </li>
+            ) : null}
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "5px" }}>
           <li>
-            {
-              isLoading ? (
-                <div className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#fff" }}
-                  >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-              ) : sessionStorage.getItem("Address") && props.role === "admin" ? (
-                null
-
-              ) : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                <div className="header-profile-image" onClick={handleClick} style={{ backgroundImage: `url(${profileImg})`, cursor: "pointer" }}>
-
-                </div>
-              ) :
-                null
-            }
+            {isLoading ? (
+              <div className="text-center">
+                <Spinner
+                  animation="border"
+                  role="status"
+                  style={{ color: "#fff" }}
+                >
+                  <span className="sr-only">Loading...</span>
+                </Spinner>
+              </div>
+            ) : sessionStorage.getItem("Address") &&
+              props.role === "admin" ? null : sessionStorage.getItem(
+                "Address"
+              ) ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <div
+                className="header-profile-image"
+                onClick={handleClick}
+                style={{
+                  backgroundImage: `url(${profileImg})`,
+                  cursor: "pointer",
+                }}
+              ></div>
+            ) : null}
           </li>
           <li className="header-item-rht">
-            {
-              sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                <>
-                  <Link to="/dashboard" style={{ color: "#fff" }}>
-                    Dashboard
-                  </Link>
-                </>
-              ) : props.role === "admin" ? (
-                <>
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={() => {
-                      setWorkProgressModalShow(true);
-                    }}
-                  >
-                    Sign in with wallet
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                  </span>
-                  {userSignOut && <Redirect to="/" />}
-                </>
-
-              )
-            }
+            {sessionStorage.getItem("Address") &&
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <>
+                <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
+              </>
+            ) : props.role === "admin" ? (
+              <>
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={() => {
+                    setWorkProgressModalShow(true);
+                  }}
+                >
+                  Sign in with wallet
+                </span>
+              </>
+            ) : (
+              <>
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                </span>
+                {userSignOut && <Redirect to="/" />}
+              </>
+            )}
           </li>
 
           <li className="header-item-rht">
-            {sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (<span style={{ cursor: "pointer" }} onClick={() => Logout()}>
-              Logout
-            </span>) : null}
+            {sessionStorage.getItem("Address") &&
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+                Logout
+              </span>
+            ) : null}
           </li>
           <li className="header-item-rht">
             <ShoppingCartIcon
@@ -635,7 +667,8 @@ function HeaderHome(props) {
             />
           </li>
           <li>
-            {sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            {sessionStorage.getItem("Address") ||
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
                 <Badge color="secondary" badgeContent={1}>
                   <NotificationsIcon
@@ -659,7 +692,11 @@ function HeaderHome(props) {
                 >
                   <div>
                     <Paper elevation={3} variant="outlined" square>
-                      <NotificationList itemCount={notificationCount} notifications={notificationsList} close={readNotification} />
+                      <NotificationList
+                        itemCount={notificationCount}
+                        notifications={notificationsList}
+                        close={readNotification}
+                      />
                     </Paper>
                   </div>
                 </Popper>
@@ -667,17 +704,26 @@ function HeaderHome(props) {
             ) : null}
           </li>
         </ul>
-        <NetworkErrorModal show={show} handleClose={handleClose} network={network} ></NetworkErrorModal>
+        <NetworkErrorModal
+          show={show}
+          handleClose={handleClose}
+          network={network}
+        ></NetworkErrorModal>
       </nav>
-      <SSOWalletModal handleClose={handleCloseModal} open={modalOpen} metamaskLogin={handleLogin}
+      <SSOWalletModal
+        handleClose={handleCloseModal}
+        open={modalOpen}
+        metamaskLogin={handleLogin}
         openWorkProgressModal={() => {
           setMOdalOpen(false);
           setWorkProgressModalShow(true);
         }}
       />
-      <WorkInProgressModal show={workProgressModalShow} handleClose={() => setWorkProgressModalShow(false)} />
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={() => setWorkProgressModalShow(false)}
+      />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
-
     </header>
   );
 }
