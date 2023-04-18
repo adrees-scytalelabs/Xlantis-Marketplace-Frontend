@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 const initialState = {
   nftData:[],
   nftCount:0,
+  loading:0
 };
 
 export const myNft = createAsyncThunk(
@@ -43,9 +44,11 @@ const myNftSlice = createSlice({
       [myNft.fulfilled]: (state, action) => {
         state.nftData = action.payload.NFTdata;
         state.nftCount = action.payload.Nftcount
+        state.loading = 1
       },
       [myNft.rejected]: (state, action) => {
         console.log(action);
+        state.loading = 2
       }
   },
 });
