@@ -57,6 +57,7 @@ function App() {
   jwt !== null && console.log();
 
   const PrivateRoute = ({ path, ...rest }) => {
+    checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (
@@ -65,7 +66,7 @@ function App() {
             render={(props) =>
               version === "v1-sso" ? (
                 isLoggedIn && isVerified ? (
-                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
+                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} topUp={true}/>
                 ) : (
                   <Redirect to="/" />
                 )

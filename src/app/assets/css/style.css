@@ -10784,3 +10784,6 @@ object:hover {
     ;
   }
 }
+.updatebttn{
+  display: none;
+}
