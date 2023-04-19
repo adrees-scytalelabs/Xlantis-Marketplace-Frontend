@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
 
-import Fade from "@material-ui/core/Fade";
+import { Backdrop, createTheme, ThemeProvider } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Badge from "@material-ui/core/Badge";
+import Divider from "@material-ui/core/Divider";
+import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import { Backdrop, createTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import Badge from "@material-ui/core/Badge";
-import axios from "axios";
 import { getDropTxCostSummary } from "../API/AxiosInterceptor";
 
 const useStyles = makeStyles((theme) => ({

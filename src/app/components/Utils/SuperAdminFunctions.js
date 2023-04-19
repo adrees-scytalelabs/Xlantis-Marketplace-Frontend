@@ -1,5 +1,22 @@
-import axios from "axios";
 import Cookies from "js-cookie";
+import {
+  disbaleAdminV1,
+  disbaleAdminV2,
+  enableAdminV1,
+  enableAdminV2,
+  getAdminsV1Paginated,
+  getAdminsV2Paginated,
+  getDisabledAdminsV1,
+  getDisabledAdminsV2,
+  getEnabledAdminsV1,
+  getEnabledAdminsV2,
+  getUnverifiedAdminsV1Paginated,
+  getUnverifiedAdminsV2Paginated,
+  getVerifiedAdminsV1Paginated,
+  getVerifiedAdminsV2Paginated,
+  verifyAdminV1,
+  verifyAdminV2,
+} from "../API/AxiosInterceptor";
 
 const handleClose = (setShow) => setShow(false);
 const handleShow = (setShow) => setShow(true);
@@ -26,8 +43,7 @@ export let getUnverifiedAdminsSSO = (
   setAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/unverified/${start}/${end}?userType=v1`)
+  getUnverifiedAdminsV1Paginated(start, end)
     .then((response) => {
       setAdmins(response.data.unverifiedAdmins);
       setAdminCount(response.data.unverifiedAdmins.length);
@@ -53,8 +69,7 @@ export let getUnverifiedAdminsWallet = (
   setAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/unverified/${start}/${end}?userType=v2`)
+  getUnverifiedAdminsV2Paginated(start, end)
     .then((response) => {
       setWalletAdmins(response.data.unverifiedAdmins);
       setAdminCount(response.data.unverifiedAdmins.length);
@@ -89,24 +104,22 @@ export let handleVerify = (
     adminId: verifyAdminId,
   };
 
-  axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
-    (response) => {
+  verifyAdminV1(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getUnverifiedAdminsSSO(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
       setVariant("success");
       setNotificationData("Admin Verified Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error on verify: ", error);
       console.log("Error on verify: ", error.response);
-
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Verify Admin.");
       setLoad(true);
-    }
-  );
+    });
 };
 
 export let handleVerifyWallet = (
@@ -126,8 +139,8 @@ export let handleVerifyWallet = (
     adminId: verifyAdminId,
   };
 
-  axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
-    (response) => {
+  verifyAdminV2(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getUnverifiedAdminsWallet(
         0,
@@ -139,16 +152,15 @@ export let handleVerifyWallet = (
       setVariant("success");
       setNotificationData("Admin Verified Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error on verify: ", error);
       console.log("Error on verify: ", error.response);
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Verify Admin.");
       setLoad(true);
-    }
-  );
+    });
 };
 export let getVerifiedSSOAdmins = (
   start,
@@ -158,8 +170,7 @@ export let getVerifiedSSOAdmins = (
   setAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
+  getVerifiedAdminsV1Paginated(start, end)
     .then((response) => {
       setAdmins(response.data.verifiedAdmins);
       setAdminCount(response.data.verifiedAdmins.length);
@@ -185,8 +196,7 @@ export let getVerifiedWalletAdmins = (
   setWalletAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/verified/${start}/${end}?userType=v2`)
+  getVerifiedAdminsV2Paginated(start, end)
     .then((response) => {
       setWalletAdmins(response.data.verifiedAdmins);
       setWalletAdminCount(response.data.verifiedAdmins.length);
@@ -207,8 +217,7 @@ export let getVerifiedWalletAdmins = (
 
 export let getSSOAdmins = (start, end, setOpen, setAdmins, setAdminCount) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/${start}/${end}?userType=v1`)
+  getAdminsV1Paginated(start, end)
     .then((response) => {
       setAdmins(response.data.Admins);
       setAdminCount(response.data.Admins.length);
@@ -234,8 +243,7 @@ export let getWalletAdmins = (
   setWalletAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/${start}/${end}?userType=v2`)
+  getAdminsV2Paginated(start, end)
     .then((response) => {
       setWalletAdmins(response.data.Admins);
       setWalletAdminCount(response.data.Admins.length);
@@ -256,8 +264,7 @@ export let getWalletAdmins = (
 
 export let getEnabledSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/enabled?userType=v1`)
+  getEnabledAdminsV1()
     .then((response) => {
       setAdmins(response.data.admins);
       setAdminCount(response.data.admins.length);
@@ -283,8 +290,7 @@ export let getEnabledWalletAdmins = (
   setWalletAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/enabled?userType=v2`)
+  getEnabledAdminsV2()
     .then((response) => {
       setWalletAdmins(response.data.admins);
       setWalletAdminCount(response.data.admins.length);
@@ -321,23 +327,22 @@ export let handleSSODisable = (
     adminId: verifyAdminId,
   };
 
-  axios.patch("/super-admin/disable?userType=v1", data).then(
-    (response) => {
+  disbaleAdminV1(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getEnabledSSOAdmins(setOpen, setAdmins, setAdminCount);
       setVariant("success");
       setNotificationData("Admin Disabled Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error on disable: ", error);
       console.log("Error on disable: ", error.response);
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Disable Admin.");
       setLoad(true);
-    }
-  );
+    });
 };
 export let handleWalletDisable = (
   e,
@@ -355,28 +360,27 @@ export let handleWalletDisable = (
     adminId: verifyAdminId,
   };
 
-  axios.patch("/super-admin/disable?userType=v2", data).then(
-    (response) => {
+  disbaleAdminV2(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getEnabledWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
       setVariant("success");
       setNotificationData("Admin Disabled Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error on disable: ", error);
       console.log("Error on disable: ", error.response);
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Enable Admin.");
       setLoad(true);
-    }
-  );
+    });
 };
+
 export let getDisableSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/disabled?userType=v1`)
+  getDisabledAdminsV1()
     .then((response) => {
       setAdmins(response.data.admins);
       setAdminCount(response.data.admins.length);
@@ -403,8 +407,7 @@ export let getDisableWalletAdmins = (
   setWalletAdminCount
 ) => {
   setOpen(true);
-  axios
-    .get(`/super-admin/admins/disabled?userType=v2`)
+  getDisabledAdminsV2()
     .then((response) => {
       setWalletAdmins(response.data.admins);
       setWalletAdminCount(response.data.admins.length);
@@ -437,23 +440,23 @@ export let handleEnableSSO = (
   let data = {
     adminId: verifyAdminId,
   };
-  axios.patch(`/super-admin/enable?userType=v1`, data).then(
-    (response) => {
+
+  enableAdminV1(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
       setVariant("success");
       setNotificationData("Admin Enabled Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error during enable: ", error);
       console.log("Error response: ", error.response);
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Enabled Admin.");
       setLoad(true);
-    }
-  );
+    });
 };
 export let handleEnableWallet = (
   e,
@@ -470,21 +473,21 @@ export let handleEnableWallet = (
   let data = {
     adminId: verifyAdminId,
   };
-  axios.patch(`/super-admin/enable?userType=v2`, data).then(
-    (response) => {
+
+  enableAdminV2(data)
+    .then((response) => {
       handleCloseBackdrop(setOpen);
       getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
       setVariant("success");
       setNotificationData("Admin Enabled Successfully.");
       setLoad(true);
-    },
-    (error) => {
+    })
+    .catch((error) => {
       console.log("Error: ", error);
       console.log("Error response: ", error.response);
       handleCloseBackdrop(setOpen);
       setVariant("error");
       setNotificationData("Unable to Enabled Admin.");
       setLoad(true);
-    }
-  );
+    });
 };

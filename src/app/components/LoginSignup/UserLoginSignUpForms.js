@@ -1,16 +1,14 @@
 import { Typography } from "@material-ui/core";
-import {
-  makeStyles
-} from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import CloseIcon from "@material-ui/icons/Close";
 import InfoIcon from "@material-ui/icons/Info";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { useHistory } from "react-router-dom";
+import { userLoginThroughSSO } from "../API/AxiosInterceptor";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 
 const useStyles = makeStyles((theme) => ({
@@ -30,9 +28,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const AdminLoginSignupForms = () => {
-
   const [account, setAccount] = useState(null);
   const [isActive, setIsActive] = useState(false);
   const [, setPhoneNum] = useState();
@@ -40,7 +36,6 @@ const AdminLoginSignupForms = () => {
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const classes = useStyles();
-
 
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
@@ -60,8 +55,7 @@ const AdminLoginSignupForms = () => {
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      axios
-        .post("/v1-sso/user/auth/user-login", { idToken: account })
+      userLoginThroughSSO({ idToken: account })
         .then((response) => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
@@ -104,12 +98,10 @@ const AdminLoginSignupForms = () => {
       sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {})
     );
 
-
   return (
     <>
       <div className="row no-gutters w-100">
         <div className="adminCredWrapper">
-
           <div
             className={
               isActive
@@ -136,12 +128,9 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="email"
                           required
-
                           placeholder="Email"
                           className="form-control-login -login newNftInput"
-                          onChange={(e) => {
-
-                          }}
+                          onChange={(e) => {}}
                         />
                       </div>
                       <label>Password</label>
@@ -149,12 +138,9 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="password"
                           required
-
                           placeholder="Password"
                           className="form-control-login  newNftInput"
-                          onChange={(e) => {
-
-                          }}
+                          onChange={(e) => {}}
                         />
                       </div>
                     </div>
@@ -188,7 +174,6 @@ const AdminLoginSignupForms = () => {
                         Don’t have an account?{" "}
                         <button
                           className="signUpBtn-link"
-
                           onClick={() => {
                             setWorkProgressModalShow(true);
                           }}
@@ -235,8 +220,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Full Name"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Email</label>
@@ -246,8 +230,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Email"
                             className="form-control-login -login newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Password</label>
@@ -257,8 +240,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Password"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                       </div>
@@ -272,8 +254,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Username"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Phone Number</label>
@@ -291,8 +272,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Wallet Address"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                       </div>

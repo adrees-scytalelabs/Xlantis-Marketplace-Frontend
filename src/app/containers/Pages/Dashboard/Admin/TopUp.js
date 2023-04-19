@@ -1,7 +1,7 @@
-import { Link } from "react-router-dom";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { topUpAmount } from "../../../../components/API/AxiosInterceptor";
 import TopUpForm from "../../../../components/Forms/TopUpForm";
 
 function TopUp(props) {
@@ -25,19 +25,18 @@ function TopUp(props) {
     let data = {
       amount: amount,
     };
-    axios.post(`/usd-payments/admin/topup`, data).then(
-      (response) => {
+    topUpAmount(data)
+      .then((response) => {
         window.location.replace(response.data.sessionUrl);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
-      }
-    );
+      });
   };
 
   return (
@@ -57,11 +56,11 @@ function TopUp(props) {
           </div>
         </div>
       </div>
-      <TopUpForm 
+      <TopUpForm
         amount={amount}
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
-      />      
+      />
     </div>
   );
 }

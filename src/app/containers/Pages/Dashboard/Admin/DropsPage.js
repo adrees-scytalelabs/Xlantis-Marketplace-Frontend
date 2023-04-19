@@ -1,10 +1,10 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getMyDropsPaginatedUsingStatus } from "../../../../components/API/AxiosInterceptor";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
@@ -87,13 +87,13 @@ function DropsPage(props) {
   };
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
-      (response) => {
+    getMyDropsPaginatedUsingStatus(status, start, end)
+      .then((response) => {
         setTokenList(response.data.data);
         setTotalDrops(response.data.data.length);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -110,8 +110,7 @@ function DropsPage(props) {
           }
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {

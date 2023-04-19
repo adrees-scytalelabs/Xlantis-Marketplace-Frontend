@@ -1,10 +1,12 @@
 import Tooltip from "@material-ui/core/Tooltip";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
+import {
+  createNewAdminTemplates,
+  getIsAvailableTemplates,
+} from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
-
 
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -51,21 +53,20 @@ const NewTamplateModal = (props) => {
     setChecking(true);
     let namee = e.target.value;
 
-    axios.get(`/nft-properties/template/is-available/${namee}`).then(
-      (response) => {
+    getIsAvailableTemplates(namee)
+      .then((response) => {
         console.log("response", response);
         setAvailable(response.data.isAvailable);
         setChecking(false);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           setChecking(false);
 
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   let handleSaveTemplate = (e) => {
@@ -82,8 +83,8 @@ const NewTamplateModal = (props) => {
       data: properties,
     };
 
-    axios.post("/nft-properties/admin/template", templateData).then(
-      (response) => {
+    createNewAdminTemplates(templateData)
+      .then((response) => {
         console.log("response", response);
 
         setTitle("");
@@ -93,18 +94,16 @@ const NewTamplateModal = (props) => {
         let variant = "success";
         enqueueSnackbar("New Template Created Successfully", { variant });
         props.handleClose();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-
         let variant = "error";
         enqueueSnackbar("Unable to Create Template", { variant });
-      }
-    );
+      });
   };
 
   const getIcon = () => {
@@ -162,8 +161,13 @@ const NewTamplateModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header className="NewTemplateHeader" style={{ background: 'black' }}>
-        <Modal.Title style={{ color: 'white' }}>Create New Template</Modal.Title>
+      <Modal.Header
+        className="NewTemplateHeader"
+        style={{ background: "black" }}
+      >
+        <Modal.Title style={{ color: "white" }}>
+          Create New Template
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="NewTemplateBody">
         <div>

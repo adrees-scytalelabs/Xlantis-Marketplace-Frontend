@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import "../../../../assets/css/adminStyle.css";
@@ -6,9 +5,9 @@ import "../../../../assets/css/bootstrap.min.css";
 import "../../../../assets/css/style.css";
 import "../../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import HeaderHome from "../../../../components/Headers/Header";
+import { adminLoginAddInfoUsingRoute } from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
-
+import HeaderHome from "../../../../components/Headers/Header";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
@@ -45,8 +44,7 @@ const AdminSSORedirect = () => {
   } else route = "/v1-sso/user/admin/add-info";
 
   const addDetails = async () => {
-    await axios
-      .put(route, inputs, config)
+    await adminLoginAddInfoUsingRoute(route, inputs, config)
       .then((response) => {
         setSucess(response.data.success);
       })
@@ -65,12 +63,12 @@ const AdminSSORedirect = () => {
           <div className="row no-gutters justify-content-center align-items-center">
             <div className="col-12">
               <div className="detailRedirectWrapper">
-                <AdminSSORedirectForm 
+                <AdminSSORedirectForm
                   handleSubmitDetails={handleSubmitDetails}
                   inputs={inputs}
                   handleChangeValues={handleChangeValues}
                   success={success}
-                />    
+                />
               </div>
             </div>
           </div>

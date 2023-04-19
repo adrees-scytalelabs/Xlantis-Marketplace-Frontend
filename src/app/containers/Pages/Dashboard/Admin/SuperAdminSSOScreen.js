@@ -1,9 +1,8 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { getAdminCountsV1 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
-
 
 function SuperAdminSSOScreen(props) {
   const [totalAdmins, setTotalAdmins] = useState(0);
@@ -15,13 +14,9 @@ function SuperAdminSSOScreen(props) {
   const [hover, setHover] = useState(false);
 
   let getCounts = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
-    axios
-
-      .get(`/super-admin/admins/counts?userType=v1`)
+    
+    getAdminCountsV1()
       .then((response) => {
         setTotalAdmins(response.data.counts.totalAdmins);
         setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);

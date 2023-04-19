@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";

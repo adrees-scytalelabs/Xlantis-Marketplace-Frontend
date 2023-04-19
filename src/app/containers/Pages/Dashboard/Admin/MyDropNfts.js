@@ -1,11 +1,11 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 
@@ -86,8 +86,8 @@ function MyDropNFTs(props) {
     let data = {
       nftIds: location.state.nftId,
     };
-    axios.get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data).then(
-      (response) => {
+    getNFTsFromDropPaginated(location.state.dropId, start, end, data)
+      .then((response) => {
         let nfts = response.data.data;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
@@ -96,8 +96,8 @@ function MyDropNFTs(props) {
         setTotalNfts(response.data.data.length);
 
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -114,8 +114,7 @@ function MyDropNFTs(props) {
           }
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {

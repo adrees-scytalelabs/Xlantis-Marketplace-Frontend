@@ -2,14 +2,13 @@ import { ThemeProvider, createTheme } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { useDispatch, useSelector } from 'react-redux';
 import { myNft } from "../../../../redux/myNftSlice";
 
 const useStyles = makeStyles({

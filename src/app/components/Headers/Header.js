@@ -1,39 +1,39 @@
+import Badge from "@material-ui/core/Badge";
 import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
+import NotificationsIcon from "@material-ui/icons/Notifications";
+import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import transakSDK from "@transak/transak-sdk";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { io } from "socket.io-client";
+import WalletLink from "walletlink";
 import Web3 from "web3";
+import Web3Modal from "web3modal";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import NetworkErrorModal from "../Modals/NetworkErrorModal";
-import SSOWalletModal from "../Modals/SSOWalletModal";
-import jwtDecode from "jwt-decode";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import transakSDK from "@transak/transak-sdk";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import axios from "axios";
-import WalletLink from "walletlink";
-import Web3Modal from "web3modal";
-import CartModal from "../Modals/CartModal";
-import Badge from "@material-ui/core/Badge";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import { io } from "socket.io-client";
-import NotificationList from "../Cards/NotificationList Card";
-import WorkInProgressModal from "../Modals/WorkInProgressModal";
-import { hoverClassStyleTest } from "../Utils/CustomStyling";
 import {
   adminLoginThroughWallet,
   getNotifications,
+  getUserProfileVersioned,
   readNotifications,
   userLoginThroughWallet,
 } from "../API/AxiosInterceptor";
+import NotificationList from "../Cards/NotificationList Card";
+import CartModal from "../Modals/CartModal";
+import NetworkErrorModal from "../Modals/NetworkErrorModal";
+import SSOWalletModal from "../Modals/SSOWalletModal";
+import WorkInProgressModal from "../Modals/WorkInProgressModal";
+import { hoverClassStyleTest } from "../Utils/CustomStyling";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -384,8 +384,7 @@ function HeaderHome(props) {
     if (userLogin !== "undefined") {
       let version = Cookies.get("Version");
 
-      axios
-        .get(`${version}/user/profile`)
+      getUserProfileVersioned(version)
         .then((response) => {
           response.data.userData.imageURL &&
             setProfileImg(response.data.userData.imageURL);

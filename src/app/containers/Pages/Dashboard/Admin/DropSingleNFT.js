@@ -1,27 +1,28 @@
-import {
-  makeStyles,
-  Paper,
-} from "@material-ui/core";
-
+import { makeStyles, Paper } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
+import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
+import AcceptBidAccordian from "../../../../components/Accordian/AcceptBidAccordian";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import {
+  acceptAuctionBid,
+  getAuctionAcceptBidTxSummary,
+  getNFTBidListPaginated,
+  marketplaceBuyVersioned,
+} from "../../../../components/API/AxiosInterceptor";
 import abiAuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import Cookies from "js-cookie";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
-import AcceptBidAccordian from "../../../../components/Accordian/AcceptBidAccordian";
+import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -139,20 +140,19 @@ const DropSingleNFT = (props) => {
   const handleOpenModal = async (e, bidId) => {
     setBidId(bidId);
     console.log("NFTDETAIL", nftDetail);
-    axios.get(`/auction/bid/accept/tx-cost-summary`).then(
-      (response) => {
+    getAuctionAcceptBidTxSummary()
+      .then((response) => {
         console.log("response", response);
         console.log("responeee", response.data.data);
         setData(response.data.data);
         setMOdalOpen(true);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   function openTransak() {
@@ -248,20 +248,19 @@ const DropSingleNFT = (props) => {
           };
 
           console.log("data", data);
-          axios.post(`/${versionB}/marketplace/buy`, data).then(
-            (response) => {
+          marketplaceBuyVersioned(versionB, data)
+            .then((response) => {
               console.log(
                 "Transaction Hash sending on backend response: ",
                 response
               );
-            },
-            (error) => {
+            })
+            .catch((error) => {
               console.log(
                 "Transaction hash on backend error: ",
                 error.response
               );
-            }
-          );
+            });
 
           if (err !== null) {
             console.log("err", err);
@@ -279,18 +278,17 @@ const DropSingleNFT = (props) => {
 
   let getBidList = (nftId) => {
     let version = Cookies.get("Version");
-    axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
-      (response) => {
+    getNFTBidListPaginated(nftId, 0, 1000)
+      .then((response) => {
         console.log("Response from getting bid: ", response);
         console.log("Bid array: ", response.data.data);
         setBidDetail(response.data.data);
-      },
-      (err) => {
-        console.log("Error from getting bids: ", err);
-        console.log("Error response from getting bids: ", err);
+      })
+      .catch((error) => {
+        console.log("Error from getting bids: ", error);
+        console.log("Error response from getting bids: ", error);
         setBidDetail([]);
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -397,14 +395,13 @@ const DropSingleNFT = (props) => {
         txHash: trxHash,
       };
 
-      axios.post(`/auction/bid/accept`, data).then(
-        (response) => {
+      acceptAuctionBid(data)
+        .then((response) => {
           console.log("response", response);
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error: ", error);
-        }
-      );
+        });
     }
   };
 
@@ -416,14 +413,14 @@ const DropSingleNFT = (props) => {
       bidId: bidId,
     };
     handleCloseModal();
-    axios.post(`/auction/bid/accept`, data).then(
-      (response) => {
+    acceptAuctionBid(data)
+      .then((response) => {
         console.log("nft bid response", response.data);
         let variant = "success";
         enqueueSnackbar("Bid Accepted Successfully", { variant });
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -437,13 +434,11 @@ const DropSingleNFT = (props) => {
           ) {
             sessionStorage.removeItem("Authorization");
             Cookies.remove("Version");
-
             sessionStorage.removeItem("Address");
             window.location.reload();
           }
         }
-      }
-    );
+      });
   };
 
   return (
@@ -495,23 +490,20 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian 
-                    key={keys}
-                    properties={properties}
-                  />
-                  
+                  <PropertiesAccordian key={keys} properties={properties} />
                 </Col>
               </Row>
               {location.state.saleType === "auction" ? (
                 <Row style={{ marginTop: "5px" }}>
                   <Col>
-                    <AcceptBidAccordian 
+                    <AcceptBidAccordian
                       versionB={versionB}
                       bidDetail={bidDetail}
-                      isSold={location.state.nftDetail.currentMarketplaceId.isSold}
+                      isSold={
+                        location.state.nftDetail.currentMarketplaceId.isSold
+                      }
                       handleAcceptBid={handleAcceptBid}
                       handleOpenModal={handleOpenModal}
-
                     />
                   </Col>
                 </Row>

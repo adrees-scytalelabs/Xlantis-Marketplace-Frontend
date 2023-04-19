@@ -8,15 +8,15 @@ import {
 } from "@material-ui/core/";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
-import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
+import { createCollection, getMyCollectionsPaginated } from "../../../../components/API/AxiosInterceptor";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
 const useStyles = makeStyles({
   root: {
     minWidth: 250,
@@ -60,10 +60,8 @@ function MyCollection(props) {
 
   const classes = useStyles();
   let getCollections = (start, end) => {
-
     setOpen(true);
-    axios
-      .get(`/collection/myCollections/${start}/${end}`)
+    getMyCollectionsPaginated(start, end)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.Collectiondata);
@@ -111,8 +109,7 @@ function MyCollection(props) {
         collectiontitle: collectionTitle,
         artwork: collectionImage,
       };
-      axios
-        .post(`/collection/createcollection`, CollectionData)
+      createCollection(CollectionData)
         .then((response) => {
           setIsCreating(false);
           console.log("response.data", response);
@@ -194,8 +191,7 @@ function MyCollection(props) {
               </Spinner>
             </div>
           ) : collections.length === 0 ? (
-            <MessageCard msg = "No items to display"></MessageCard>
-
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (

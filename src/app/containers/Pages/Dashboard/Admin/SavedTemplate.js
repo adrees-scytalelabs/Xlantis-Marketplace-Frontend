@@ -1,7 +1,7 @@
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getSuperAdminTemplates } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
@@ -53,12 +53,12 @@ function SavedTemplate(props) {
   let handleSavedTemplate = async () => {
     handleShowBackdrop();
     try {
-      axios.get("/super-admin/template").then(
-        (response) => {
+      getSuperAdminTemplates()
+        .then((response) => {
           setTemplateData(response.data.templates);
           handleCloseBackdrop();
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -67,8 +67,7 @@ function SavedTemplate(props) {
 
           let variant = "error";
           enqueueSnackbar("Unable to Create Template", { variant });
-        }
-      );
+        });
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }

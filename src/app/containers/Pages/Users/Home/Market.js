@@ -1,11 +1,12 @@
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import TrendingAndTop from "./TrendingAndTop";
 import "../../../../assets/css/style.css";
-
+import {
+  getDropsInAuctionPaginated,
+  getDropsInFixedPriceSalePaginated,
+} from "../../../../components/API/AxiosInterceptor";
+import TrendingAndTop from "./TrendingAndTop";
 
 function MarketPlace(props) {
   const [bidableDrop, setBidableDrop] = useState([]);
@@ -21,56 +22,37 @@ function MarketPlace(props) {
     handleShowBackdrop();
 
     let version = Cookies.get("Version");
-    let endpoint;
-    if(version === undefined) {
-      endpoint  = `/drop/saleType/fixed-price/${start}/${end}`;
-    }
-    else {
-      endpoint = `/drop/saleType/fixed-price/${start}/${end}`
-    }
-    axios
-      .get(endpoint)
-      .then(
-        (response) => {
-          setFixedPriceDrop(response.data.data);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
+    getDropsInFixedPriceSalePaginated(start, end)
+      .then((response) => {
+        setFixedPriceDrop(response.data.data);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
         }
-      );
+        handleCloseBackdrop();
+      });
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
     let version = Cookies.get("Version");
-    let endpoint;
-
-    if(version === undefined) {
-      endpoint = `/drop/saleType/auction/${start}/${end}`;
-    }
-    else {
-      endpoint = `/drop/saleType/auction/${start}/${end}`
-    }
-    axios.get(endpoint).then(
-      (res) => {
-        console.log("res >>> ", res)
-        setBidableDrop(res.data.data);
+    getDropsInAuctionPaginated(start, end)
+      .then((response) => {
+        console.log("res >>> ", response);
+        setBidableDrop(response.data.data);
         handleCloseBackdrop();
-      },
-      (err) => {
-        console.log("could not get bidable drops ", err.response);
+      })
+      .catch((error) => {
+        console.log("could not get bidable drops ", error.response);
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {
-    getCubes(0, 4); 
+    getCubes(0, 4);
     getBidableDrops(0, 4);
   }, []);
 
