@@ -28,9 +28,11 @@ function SelectSupplyAndPrice({
                 <div className="filter-widget newNftWrapper">
                 <input
                     style={{
+                        backgroundColor:'black',
+                        color:'white',
                     border:
                         nftTokenSupply === 0
-                        ? "none"
+                        ? "2 px solid white"
                         : nftTokenSupply >= values
                         ? "3px solid green"
                         : "3px solid red",

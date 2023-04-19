@@ -149,6 +149,7 @@ function AddNFT(props) {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [nftList, setNftList] = useState([]);
+  const [buttonName, setbuttonName] = useState("bttn");
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [collection, setCollection] = useState("");
   const [isAdded, setIsAdded] = useState(false);
@@ -678,6 +679,7 @@ function AddNFT(props) {
             }
           );
           handleCloseBackdrop();
+          setbuttonName("updatebttn")
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
@@ -1056,7 +1058,7 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
-          
+          buttonName={buttonName}
         />
 
       </div>
