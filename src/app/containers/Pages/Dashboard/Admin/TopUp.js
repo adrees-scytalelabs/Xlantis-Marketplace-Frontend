@@ -6,6 +6,13 @@ import TopUpForm from "../../../../components/Forms/TopUpForm";
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = useState(false);
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
   let location = useLocation();
   const [amount, setAmount] = useState(0.1);
   useEffect(() => {
@@ -49,6 +56,7 @@ function TopUp(props) {
     });
   }, []);
   const handleTopUpAmount = (e) => {
+    handleShowBackdrop();
     e.preventDefault();
     let data = {
       amount: amount,
@@ -57,11 +65,13 @@ function TopUp(props) {
       (response) => {
         localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
+        handleCloseBackdrop();
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
+          handleCloseBackdrop();
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
