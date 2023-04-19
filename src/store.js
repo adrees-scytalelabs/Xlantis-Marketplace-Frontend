@@ -9,6 +9,8 @@ import getNewNftCollectionReducer from './app/redux/getNewNftCollectionSlice';
 import getNewNftDefaultTemplateReducer from './app/redux/getNewNftDefaultTemplateSlice';
 import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
 import UserProfileReducer from './app/redux/getUserProfileSlice';
+import getAdminProfileDataReducer from './app/redux/getAdminProfileDataSlice';
+import getHeaderNotificationReducer from './app/redux/getHeaderNotificationSlice';
 export const store = configureStore({
   reducer: {
     count: countReducer,
@@ -19,6 +21,8 @@ export const store = configureStore({
     NewNftCollection: getNewNftCollectionReducer,
     defaultTemplate: getNewNftDefaultTemplateReducer,
     newNftProperties: getNewNftPropertiesReducer,
-    marketPlaceSaleType: getMarketPlaceSaleTypeReducer
+    marketPlaceSaleType: getMarketPlaceSaleTypeReducer,
+    getAdminProfileData:getAdminProfileDataReducer,
+    getHeaderNotification:getHeaderNotificationReducer
   },
 });

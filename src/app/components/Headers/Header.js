@@ -31,6 +31,9 @@ import { io } from "socket.io-client";
 import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from "../../redux/getUserProfileSlice";
+import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 
 
 function HeaderHome(props) {
@@ -52,6 +55,9 @@ function HeaderHome(props) {
   const [notificationsList, setNotificationsList] = useState();
   const [notificationCount, setNotificationCount] = useState(0);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const {userData,loading } = useSelector((store) => store.userProfile);
+  const {notification,notificationLoading } = useSelector((store) => store.getHeaderNotification);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
@@ -158,20 +164,9 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
-    axios.get(`/notifications/${start}/${end}`).then(
-      (response) => {
-        //console.log("notification response", response);
-        setNotificationsList(response.data.notifications);
-        setNotificationCount(response.data.notifications.length);
-
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-      }
-    );
+    dispatch(getHeaderNotification({start,end}))
+        setNotificationsList(notification);
+        setNotificationCount(notification.length);
   }
 
   function readNotification(notificationId) {
@@ -373,26 +368,20 @@ function HeaderHome(props) {
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin !== "undefined") {
-      let version = Cookies.get("Version");
-
-      axios
-        .get(`${version}/user/profile`)
-        .then((response) => {
-          response.data.userData.imageURL && setProfileImg(response.data.userData.imageURL);
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(error.response);
-        });
+      dispatch(getUserProfile());
+      userData.imageURL && setProfileImg(userData.imageURL);
     }
 
   }
 
 
   useEffect(() => {
-    getProfile();
     getNotifications(0, 10);
-  }, []);
+  }, [notificationLoading]);
+
+  useEffect(() => {
+    getProfile();
+  }, [loading]);
 
   return (
     <header className={`header ${menuOpenedClass}`}>
