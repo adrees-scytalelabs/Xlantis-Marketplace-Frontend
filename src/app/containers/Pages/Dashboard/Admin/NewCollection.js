@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -63,6 +63,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NewCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
+  let history = useHistory();
   const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
@@ -81,7 +82,6 @@ function NewCollection(props) {
 
   const [isSaving, setIsSaving] = useState(false);
   const [collectionName, setCollectionName] = useState("");
-
   const [collectionDescription, setCollectionDescription] = useState("");
   const [collectionSymbol, setCollectionSymbol] = useState("");
   const [isUploadingIPFS,] = useState(false);
@@ -190,6 +190,7 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setIsSaving(false);
+            history.push({ pathname: '/dashboard/mycollection' });
           }
         );
       } else if (nftType === "721") {
