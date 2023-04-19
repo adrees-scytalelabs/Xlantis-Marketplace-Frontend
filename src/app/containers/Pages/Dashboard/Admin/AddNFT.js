@@ -137,6 +137,12 @@ function AddNFT(props) {
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
+    history.push({
+      pathname: `/dashboard/myDrops`,
+      state: {
+        value: 1,
+      },
+    });
   };
   const handleShowBackdrop = () => {
     setOpen(true);
