@@ -14,6 +14,7 @@ import getHeaderNotificationReducer from './app/redux/getHeaderNotificationSlice
 import getVerifiedAccountsDataReducer from './app/redux/getVerifiedAccountsDataSlice';
 import getManageAccountsDataReducer from './app/redux/getManageAccountsDataSlice';
 import getSuperAdminAccountsReducer from './app/redux/getSuperAdminAccountsSlice';
+import getSavedTemplateDataReducer from './app/redux/getSavedTemplateDataSlice';
 export const store = configureStore({
   reducer: {
     count: countReducer,
@@ -29,6 +30,7 @@ export const store = configureStore({
     getHeaderNotification:getHeaderNotificationReducer,
     getVerifiedAccountsData:getVerifiedAccountsDataReducer,
     getManageAccountsData:getManageAccountsDataReducer,
-    getSuperAdminAccounts:getSuperAdminAccountsReducer
+    getSuperAdminAccounts:getSuperAdminAccountsReducer,
+    getSavedTemplateData:getSavedTemplateDataReducer
   },
 });
