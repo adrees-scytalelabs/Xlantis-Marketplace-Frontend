@@ -96,7 +96,7 @@ function NewCollection(props) {
   const [doneLoader, setDoneLoader] = useState(false);
   const [nftType, setNftType] = useState("1155");
   const [version, setVersion] = useState("");
-  const [royaltyFee, setRoyaltyFee] = useState(0);
+  const [royaltyFee, setRoyaltyFee] = useState(null);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 

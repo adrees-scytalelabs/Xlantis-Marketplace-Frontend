@@ -168,7 +168,7 @@ function AddNFT(props) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [price, setPrice] = useState(0);
-  const [supply, setSupply] = useState(1);
+  const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
   const [nftType, setNftType] = useState("");
   const [versionB, setVersionB] = useState("");
