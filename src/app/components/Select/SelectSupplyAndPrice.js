@@ -10,10 +10,7 @@ function SelectSupplyAndPrice({
         setPrice,
         AlertMessage,
         setAlertMessage,
-
     }) {
-
-    
 
   return (
     <div>
