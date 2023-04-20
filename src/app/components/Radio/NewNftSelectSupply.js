@@ -74,7 +74,7 @@ function NewNftSelectSupply({
                             value="Variable Supply"
                             onChange={() => {
                               setSupplyType("Variable");
-                              setTokenSupply(1);
+                              setTokenSupply("");
                             }}
                             checked={supplyType === "Variable"}
                             control={<Radio color="secondary" />}
@@ -125,7 +125,7 @@ function NewNftSelectSupply({
                           <div className="filter-widget">
                             <input
                               type="number"
-                              placeholder="Enter Token price(USD)"
+                              placeholder="0"
                               required
                               value={tokenSupply}
                               className="form-control"

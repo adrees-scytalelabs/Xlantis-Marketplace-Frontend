@@ -38,6 +38,7 @@ function SelectSupplyAndPrice({
                         : "3px solid red",
                     }}
                     type="number"
+                    placeholder='0'
                     required
                     disabled={isDisabled}
                     value={values}

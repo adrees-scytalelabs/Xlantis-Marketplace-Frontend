@@ -43,7 +43,7 @@ function SelectRoyaltyFee({
             type="number"
             required
             value={values}
-            placeholder="Enter Royalty Fee"
+            placeholder="0"
             className="form-control newNftInput"
             onChange={(e) => {
             onChange(e.target.value);
