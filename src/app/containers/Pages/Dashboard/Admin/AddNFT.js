@@ -155,6 +155,8 @@ function AddNFT(props) {
   const [collection, setCollection] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [nftContractAddresses, setNftContractAddress] = useState("");
+  const [key, setKey] = useState("default");
+  const [grid, setGrid] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -167,6 +169,7 @@ function AddNFT(props) {
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
+  const [tokenList, setTokenList] = useState([]);
   const [price, setPrice] = useState(0);
   const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
@@ -359,6 +362,7 @@ function AddNFT(props) {
 
   useEffect(() => {
     setIsDisabled(false);
+    setGrid(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
     setDropId(location.state.dropId);
@@ -726,9 +730,11 @@ function AddNFT(props) {
       if (collection === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Collection", { variant });
+        handleCloseBackdrop();
       } else if (nftName === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Nft", { variant });
+        handleCloseBackdrop();
       } else if (
         supply === 0 ||
         supply === undefined ||
@@ -739,18 +745,23 @@ function AddNFT(props) {
       ) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply < 0) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be Negative", { variant });
+        handleCloseBackdrop();
       } else if (price === 0 || price === undefined || price === null) {
         let variant = "error";
         enqueueSnackbar("Price cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply > nftTokenSupply) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Supply cannot be greater than NFT token supply", {
           variant,
         });
       } else if (price < 0) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
@@ -778,7 +789,9 @@ function AddNFT(props) {
 
         axios.put(`/drop/nft`, data).then(
           async (response) => {
+            setGrid(true);
             setIsAdded(true);
+            setTokenList([...tokenList, nftDetail]);
             let found = false;
             if (nftType === "1155") {
               setDropInfo((current) =>
@@ -808,6 +821,23 @@ function AddNFT(props) {
 
               let variant = "success";
               enqueueSnackbar("NFT Added Successfully", { variant });
+              setNftName("");
+              setNftId("");
+              setNftURI("");
+              setTokenId("");
+              setNftTokenSupply(0);
+              setCollection("");
+              setCollectionId("");
+              setNftContractAddress("");
+              setNftList([]);
+              setNftDetail({});
+              setPrice(0);
+              setSupply(1);
+              if (key === "default") {
+                setKey("refresh");
+              } else {
+                setKey("default");
+              }
             }
             setIsUploadingData(false);
             handleCloseBackdrop();
@@ -958,7 +988,7 @@ function AddNFT(props) {
         <div className="row">
           <div className="col-md-12 col-lg-6">
             <form>
-              <div className="form-group">
+              <div className="form-group" key={key}>
                 <Autocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
@@ -998,6 +1028,17 @@ function AddNFT(props) {
                     }
                   }}
                 />
+                {nftName != "" && (
+                  <div
+                    className="mb-3"
+                    style={{ height: "270px", width: "230px" }}
+                  >
+                    <AddNFTDisplayCard
+                      nftDetail={nftDetail}
+                      classes={classes}
+                    />
+                  </div>
+                )}
 
                 <SelectSupplyAndPrice
                   nftType={nftType}
@@ -1023,27 +1064,37 @@ function AddNFT(props) {
           </div>
 
           <div className="col-md-12 col-lg-6">
-            {nftName != "" ? (
-              <form>
-                <div className="form-group mt-3 mt-lg-0">
+            <form>
+              <div className="form-group mt-3 mt-lg-0">
+                {grid === true && (
                   <div>
+                      <h3>Nft's in drop</h3>
+                      
                     <Grid
                       container
                       spacing={2}
                       direction="row"
                       justifyContent="flex-start"
+                      style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                      <Grid item xs={6} sm={4} md={4} lg={4}>
-                        <AddNFTDisplayCard
-                          nftDetail={nftDetail}
-                          classes={classes}
-                        />
-                      </Grid>
+                    
+                      {tokenList.map((i) => (
+                        <Grid
+                          item
+                          xs={6}
+                          sm={4}
+                          md={4}
+                          lg={3}
+                          style={{ height: "25vh" }}
+                        >
+                          <AddNFTDisplayCard nftDetail={i} classes={classes} />
+                        </Grid>
+                      ))}
                     </Grid>
                   </div>
-                </div>
-              </form>
-            ) : null}
+                )}
+              </div>
+            </form>
           </div>
         </div>
         <UpdateDropAndPublishDrop

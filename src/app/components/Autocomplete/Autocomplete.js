@@ -60,8 +60,6 @@ function AutocompleteAddNft({
         onChange,
     }) {
 
-    
-
   return (
     <div className="form-group">
     <label>{label}</label>
