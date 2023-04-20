@@ -68,6 +68,8 @@ const OnSaleCard = (props) => {
               state: {
                 saleType: props.i.saleType,
                 description: props.i.description,
+                bannerURL: props.i.bannerURL,
+                imageURL: props.i.image
               },
             }}
             style={{ width: "100%" }}
