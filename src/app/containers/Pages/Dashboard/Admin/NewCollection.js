@@ -3,7 +3,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link,useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -84,7 +84,7 @@ function NewCollection(props) {
   const [collectionName, setCollectionName] = useState("");
   const [collectionDescription, setCollectionDescription] = useState("");
   const [collectionSymbol, setCollectionSymbol] = useState("");
-  const [isUploadingIPFS,] = useState(false);
+  const [isUploadingIPFS] = useState(false);
   const [imageFile, setImageFile] = useState();
   const [fileURL, setFileURL] = useState(r1);
   const [collectionId, setCollectionId] = useState("");
@@ -99,7 +99,7 @@ function NewCollection(props) {
   const [royaltyFee, setRoyaltyFee] = useState(0);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  
+
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
@@ -190,7 +190,7 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setIsSaving(false);
-            history.push({ pathname: '/dashboard/mycollection' });
+            history.push({ pathname: "/dashboard/mycollection" });
           }
         );
       } else if (nftType === "721") {
@@ -623,24 +623,25 @@ function NewCollection(props) {
                   changeFile={onChangeFile}
                   class="co-12 col-md-auto profile-img mr-3"
                   accept=".png,.jpg,.jpeg,.gif"
+                  inputId="uploadPreviewImg"
                 />
                 <div className="form-group newNftFields">
                   <Select
-                    label ="Collection Name"
-                    values = {collectionName}
-                    placeholder= "Enter Name of Collection"
+                    label="Collection Name"
+                    values={collectionName}
+                    placeholder="Enter Name of Collection"
                     setValue={setCollectionName}
                   />
                   <Select
-                    label ="Collection Symbol"
-                    values = {collectionSymbol}
-                    placeholder= "Enter Symbol of Collection"
+                    label="Collection Symbol"
+                    values={collectionSymbol}
+                    placeholder="Enter Symbol of Collection"
                     setValue={setCollectionSymbol}
                   />
                   <SelectDescription
-                    label ="Collection Description"
-                    values = {collectionDescription}
-                    placeholder= "Enter Description of Collection"
+                    label="Collection Description"
+                    values={collectionDescription}
+                    placeholder="Enter Description of Collection"
                     setDescription={setCollectionDescription}
                   />
 
@@ -652,7 +653,7 @@ function NewCollection(props) {
 
                   <SelectNFTAndSaleType
                     label="Select NFT Type"
-                    onChangeWorkInProgress = {() => {
+                    onChangeWorkInProgress={() => {
                       console.log("721workinf");
                       setWorkProgressModalShow(true);
                     }}
@@ -663,18 +664,17 @@ function NewCollection(props) {
                     type={nftType}
                     radioType="nft"
                   />
-                  
                 </div>
               </div>
             </form>
           </div>
         </div>
         <SubmitButton
-         label = "Add Collection"
-         isSaving={isSaving}
-         version ={version}
-         handleSubmitEvent={handleSubmitEvent}
-         handleSubmitEventMetamask={handleSubmitEventMetamask}
+          label="Add Collection"
+          isSaving={isSaving}
+          version={version}
+          handleSubmitEvent={handleSubmitEvent}
+          handleSubmitEventMetamask={handleSubmitEventMetamask}
         />
       </div>
       <NetworkErrorModal
