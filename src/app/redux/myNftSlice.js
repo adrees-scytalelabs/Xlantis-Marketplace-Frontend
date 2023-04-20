@@ -8,6 +8,10 @@ const initialState = {
   loading:0
 };
 
+axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
+  "Authorization"
+)}`;
+
 export const myNft = createAsyncThunk(
   'myNft/getMyNft',
   async (name,thunkAPI) => {
