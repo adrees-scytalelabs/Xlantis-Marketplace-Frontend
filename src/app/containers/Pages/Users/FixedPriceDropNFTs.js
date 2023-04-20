@@ -71,6 +71,7 @@ const FixedPriceDropNFTs = () => {
     getNFTs(dropID.dropId, 0, 4);
     setTitleImage(location.state.imageURL);
     setBannerImage(location.state.bannerURL);
+    setDropTitle(location.state.dropTitle);
   }, []);
 
   return (

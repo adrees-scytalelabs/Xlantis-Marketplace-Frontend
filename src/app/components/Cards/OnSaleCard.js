@@ -69,7 +69,8 @@ const OnSaleCard = (props) => {
                 saleType: props.i.saleType,
                 description: props.i.description,
                 bannerURL: props.i.bannerURL,
-                imageURL: props.i.image
+                imageURL: props.i.image,
+                dropTitle: props.i.title
               },
             }}
             style={{ width: "100%" }}
