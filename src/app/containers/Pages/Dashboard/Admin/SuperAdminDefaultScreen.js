@@ -1,11 +1,9 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import React, { useEffect, useState } from "react";
-import {
-  getAdminCountsV1,
-  getAdminCountsV2,
-} from "../../../../components/API/AxiosInterceptor";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { getSuperAdminCountsType1, getSuperAdminCountsType2 } from "../../../../redux/getSuperAdminsCountsSlice";
 
 function SuperAdminDefaultScreen(props) {
   const [totalAdmins, setTotalAdmins] = useState(0);
@@ -15,44 +13,41 @@ function SuperAdminDefaultScreen(props) {
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
+  const { countsType1, countsType2, loadingType1, loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
+  const dispatch = useDispatch();
   let getCounts = () => {
     setOpen(true);
-    getAdminCountsV1()
-      .then((response) => {
-        getAdminCountsV2()
-          .then((response1) => {
-            setTotalAdmins(
-              response1.data.counts.totalAdmins +
-                response.data.counts.totalAdmins
-            );
-            setTotalVerifiedAdmins(
-              response1.data.counts.totalVerifiedAdmins +
-                response.data.counts.totalVerifiedAdmins
-            );
-            setTotalUnverifiedAdmins(
-              response1.data.counts.totalUnverifiedAdmins +
-                response.data.counts.totalUnverifiedAdmins
-            );
-            setTotalEnabled(
-              response1.data.counts.totalEnabledAdmins +
-                response.data.counts.totalEnabledAdmins
-            );
-            setTotalDisabled(
-              response1.data.counts.totalDisabledAdmins +
-                response.data.counts.totalDisabledAdmins
-            );
-            setOpen(false);
-          })
-          .catch((error) => {
-            console.log(error);
-            console.log(error.response);
-          });
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getSuperAdminCountsType1());
+    dispatch(getSuperAdminCountsType2());
+    console.log("dispatchResp", countsType1, countsType2);
+    if (loadingType1 === 1 && loadingType2 === 1) {
+      setTotalAdmins(
+        countsType2.totalAdmins +
+        countsType1.totalAdmins
+      );
+      setTotalVerifiedAdmins(
+        countsType2.totalVerifiedAdmins +
+        countsType1.totalVerifiedAdmins
+      );
+      setTotalUnverifiedAdmins(
+        countsType2.totalUnverifiedAdmins +
+        countsType1.totalUnverifiedAdmins
+      );
+      setTotalEnabled(
+        countsType2.totalEnabledAdmins +
+        countsType1.totalEnabledAdmins
+      );
+      setTotalDisabled(
+        countsType2.totalDisabledAdmins +
+        countsType1.totalDisabledAdmins
+      );
+      setOpen(false);
+    }
   };
+
+  useEffect(() => {
+    getCounts();
+  }, [loadingType1, loadingType2]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -66,7 +61,6 @@ function SuperAdminDefaultScreen(props) {
       template: "",
       saved: "",
     });
-    getCounts();
   }, []);
   return (
     <div className="container">

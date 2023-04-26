@@ -1,8 +1,9 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import React, { useEffect, useState } from "react";
-import { getAdminCountsV2 } from "../../../../components/API/AxiosInterceptor";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { getSuperAdminCountsType2 } from "../../../../redux/getSuperAdminsCountsSlice";
 
 function SuperAdminWalletScreen(props) {
   const [open, setOpen] = useState(false);
@@ -12,23 +13,20 @@ function SuperAdminWalletScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
+  const { countsType2, loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
+  const dispatch = useDispatch();
 
   let getCounts = () => {
     setOpen(true);
-
-    getAdminCountsV2()
-      .then((response) => {
-        setTotalAdmins(response.data.counts.totalAdmins);
-        setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
-        setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
-        setTotalEnabled(response.data.counts.totalEnabledAdmins);
-        setTotalDisabled(response.data.counts.totalDisabledAdmins);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getSuperAdminCountsType2());
+    if (loadingType2 === 1) {
+      setTotalAdmins(countsType2.totalAdmins);
+      setTotalVerifiedAdmins(countsType2.totalVerifiedAdmins);
+      setTotalUnverifiedAdmins(countsType2.totalUnverifiedAdmins);
+      setTotalEnabled(countsType2.totalEnabledAdmins);
+      setTotalDisabled(countsType2.totalDisabledAdmins);
+      setOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -44,8 +42,11 @@ function SuperAdminWalletScreen(props) {
       template: "",
       saved: "",
     });
-    getCounts();
   }, []);
+
+  useEffect(() => {
+    getCounts();
+  }, [loadingType2]);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">

@@ -2,13 +2,12 @@ import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from 'react-redux';
 import r1 from "../../../assets/img/patients/patient.jpg";
 import {
-  getAdminProfileSSO,
-  getUserProfileVersioned,
   updateAdminProfileSSO,
   updateUserProfileVersioned,
-  uploadImage,
+  uploadImage
 } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
@@ -16,6 +15,8 @@ import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
+import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
+import { getUserProfile } from "../../../redux/getUserProfileSlice";
 
 function SettingDashboardDefault(props) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -45,6 +46,9 @@ function SettingDashboardDefault(props) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
+  const { userData, loading } = useSelector((store) => store.userProfile);
+  const { adminUserData, adminLoading } = useSelector((store) => store.getAdminProfileData);
+  const dispatch = useDispatch();
 
   const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
@@ -123,39 +127,28 @@ function SettingDashboardDefault(props) {
   };
 
   let getProfile = () => {
-    let version = Cookies.get("Version");
-    getUserProfileVersioned(version)
-      .then((response) => {
-        setName(response.data.userData.username);
-        setBio(response.data.userData.bio);
-        response.data.userData.imageURL &&
-          setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getUserProfile());
+    setName(userData.username);
+    setBio(userData.bio);
+    userData.imageURL &&
+      setProfileImage(userData.imageURL);
+    userData.bannerURL &&
+      setBannerImage(userData.bannerURL);
   };
 
   const getAdminProfile = async () => {
-    getAdminProfileSSO()
-      .then((response) => {
-        setAdminOldData(response.data.userData);
-        setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-        setAdminCompanyName(response.data.userData.companyName);
-        setAdminDesignation(response.data.userData.designation);
-        setAdminDomain(response.data.userData.domain);
-        setAdminName(response.data.userData.username);
-        setAdminReasonForInterest(response.data.userData.reasonForInterest);
-        setAdminIndustry(response.data.userData.industryType);
-      })
-      .catch((error) => {
-        console.log("Error from getting Admin profile", error);
-      });
+    dispatch(getAdminProfileData());
+    console.log("dispatchResp", adminUserData);
+    setAdminOldData(adminUserData);
+    setProfileImage(adminUserData.imageURL);
+    adminUserData.bannerURL &&
+      setBannerImage(adminUserData.bannerURL);
+    setAdminCompanyName(adminUserData.companyName);
+    setAdminDesignation(adminUserData.designation);
+    setAdminDomain(adminUserData.domain);
+    setAdminName(adminUserData.username);
+    setAdminReasonForInterest(adminUserData.reasonForInterest);
+    setAdminIndustry(adminUserData.industryType);
   };
 
   const handleSubmitAdminProfile = (e) => {
@@ -243,11 +236,20 @@ function SettingDashboardDefault(props) {
     });
     if (props.user === "admin") {
       setIsAdmin(true);
-      getAdminProfile();
-    } else if (props.user === "user") {
-      getProfile();
     }
   }, []);
+
+  useEffect(() => {
+    if (props.user === "user") {
+      getProfile();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (props.user === "admin") {
+      getAdminProfile();
+    }
+  }, [adminLoading]);
 
   return (
     <div>

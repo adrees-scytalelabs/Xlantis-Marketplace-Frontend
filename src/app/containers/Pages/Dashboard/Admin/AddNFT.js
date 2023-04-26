@@ -11,29 +11,28 @@ import Web3 from "web3";
 import {
   addNFTToDrop,
   finalizeDrop,
-  getCollections,
-  getDropTxCostSummary,
   getNFTsThroughId,
   getValidateAdminBalance,
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash,
+  updateDropTxHash
 } from "../../../../components/API/AxiosInterceptor";
 import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
+import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import PublishDropModal from "../../../../components/Modals/PublishDropModal";
+import PublishSuccessfully from "../../../../components/Modals/PublishSuccessfully";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
+import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
 import AuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
-import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
-import PublishDropModal from "../../../../components/Modals/PublishDropModal";
-import TopUpModal from "../../../../components/Modals/TopUpModal";
-import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -141,7 +140,7 @@ function AddNFT(props) {
   const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-
+  const [transactionModal, setTransactionModal] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -160,10 +159,13 @@ function AddNFT(props) {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [nftList, setNftList] = useState([]);
+  const [buttonName, setbuttonName] = useState("bttn");
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [collection, setCollection] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [nftContractAddresses, setNftContractAddress] = useState("");
+  const [key, setKey] = useState("default");
+  const [grid, setGrid] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -176,8 +178,9 @@ function AddNFT(props) {
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const [price, setPrice] = useState(0);
-  const [supply, setSupply] = useState(1);
+  const [tokenList, setTokenList] = useState([]);
+  const [price, setPrice] = useState(null);
+  const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
   const [nftType, setNftType] = useState("");
   const [versionB, setVersionB] = useState("");
@@ -200,24 +203,22 @@ function AddNFT(props) {
   };
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
-    getDropTxCostSummary(dropId)
-      .then((response) => {
-        setData(response.data.data);
-        setMOdalOpen(true);
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-      });
   };
 
+  const handleRedirect = () => {
+    setTransactionModal(false);
+    history.push({
+      pathname: `/dashboard/myDrops`,
+      state: {
+        value: 1,
+      },
+    });
+  };
   const handleCloseModal = () => {
     setMOdalOpen(false);
+    setTransactionModal(true);
   };
-
-  let getCollection = () => {
+  let getCollections = () => {
     const version = Cookies.get("Version");
 
     getCollections(location.state.nftType)
@@ -351,7 +352,7 @@ function AddNFT(props) {
     const transak = new transakSDK(settings);
 
     transak.init();
-    transak.on(transak.ALL_EVENTS, (data) => {});
+    transak.on(transak.ALL_EVENTS, (data) => { });
 
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       transak.close();
@@ -366,6 +367,7 @@ function AddNFT(props) {
 
   useEffect(() => {
     setIsDisabled(false);
+    setGrid(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
     setDropId(location.state.dropId);
@@ -399,14 +401,33 @@ function AddNFT(props) {
     }
   };
   const handleSubmitEvent = async (event) => {
+    event.preventDefault();
     if (isAdded) {
-      event.preventDefault();
-      setIsDisabled(true);
-      setEnableTime(true);
+      handleShowBackdrop();
+      await handleBuyDetail();
     } else {
       let variant = "error";
       enqueueSnackbar("Please Add NFT to drop first", { variant });
     }
+  };
+  const getTxCost = async (e) => {
+    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        setData(response.data.data);
+        setMOdalOpen(true);
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar("Something went wrong", { variant });
+        } else {
+          let variant = "error";
+          enqueueSnackbar("Something went wrong", { variant });
+        }
+      }
+    );
   };
   const handleTimeEvent = async (event) => {
     event.preventDefault();
@@ -662,12 +683,20 @@ function AddNFT(props) {
       getValidateAdminBalance(dropId)
         .then((response) => {
           setCostInfo(response.data);
+          setIsDisabled(true);
+          setEnableTime(true);
+          let variant = "success";
+          enqueueSnackbar("Transaction Summary received", {
+            variant,
+          });
           handleCloseBackdrop();
+          setbuttonName("updatebttn");
         })
         .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
+            handleCloseBackdrop();
           }
         });
     } catch (e) {
@@ -693,9 +722,11 @@ function AddNFT(props) {
       if (collection === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Collection", { variant });
+        handleCloseBackdrop();
       } else if (nftName === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Nft", { variant });
+        handleCloseBackdrop();
       } else if (
         supply === 0 ||
         supply === undefined ||
@@ -706,18 +737,23 @@ function AddNFT(props) {
       ) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply < 0) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be Negative", { variant });
+        handleCloseBackdrop();
       } else if (price === 0 || price === undefined || price === null) {
         let variant = "error";
         enqueueSnackbar("Price cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply > nftTokenSupply) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Supply cannot be greater than NFT token supply", {
           variant,
         });
       } else if (price < 0) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
@@ -747,6 +783,7 @@ function AddNFT(props) {
           .then(async (response) => {
             await handleBuyDetail();
             setIsAdded(true);
+            setTokenList([...tokenList, nftDetail]);
             let found = false;
             if (nftType === "1155") {
               setDropInfo((current) =>
@@ -763,17 +800,33 @@ function AddNFT(props) {
                       prices: price,
                     };
                   }
+
                   return obj;
                 })
               );
               if (found === false) {
                 const dropp = [...dropInfo, newObject];
-                console.log("drop", dropp);
-                console.log("here");
                 setDropInfo(dropp);
               }
               let variant = "success";
               enqueueSnackbar("NFT Added Successfully", { variant });
+              setNftName("");
+              setNftId("");
+              setNftURI("");
+              setTokenId("");
+              setNftTokenSupply(0);
+              setCollection("");
+              setCollectionId("");
+              setNftContractAddress("");
+              setNftList([]);
+              setNftDetail({});
+              setPrice(0);
+              setSupply(1);
+              if (key === "default") {
+                setKey("refresh");
+              } else {
+                setKey("default");
+              }
             }
             setIsUploadingData(false);
             handleCloseBackdrop();
@@ -798,17 +851,13 @@ function AddNFT(props) {
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
-        console.log("AFTER CHECKS");
         handleShowBackdrop();
         setIsUploadingData(true);
 
         let Price = price;
         let data;
         let newObject;
-        console.log("before check");
         if (nftType === "721") {
-          console.log("ERC721 DATA");
-
           data = {
             nftId: nftId,
             dropId: dropId,
@@ -912,7 +961,7 @@ function AddNFT(props) {
         <div className="row">
           <div className="col-md-12 col-lg-6">
             <form>
-              <div className="form-group">
+              <div className="form-group" key={key}>
                 <Autocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
@@ -952,8 +1001,20 @@ function AddNFT(props) {
                     }
                   }}
                 />
+                {nftName != "" && (
+                  <div
+                    className="mb-3"
+                    style={{ height: "270px", width: "230px" }}
+                  >
+                    <AddNFTDisplayCard
+                      nftDetail={nftDetail}
+                      classes={classes}
+                    />
+                  </div>
+                )}
 
                 <SelectSupplyAndPrice
+                  price={price}
                   nftType={nftType}
                   nftTokenSupply={nftTokenSupply}
                   values={supply}
@@ -977,27 +1038,36 @@ function AddNFT(props) {
           </div>
 
           <div className="col-md-12 col-lg-6">
-            {nftName != "" ? (
-              <form>
-                <div className="form-group mt-3 mt-lg-0">
+            <form>
+              <div className="form-group mt-3 mt-lg-0">
+                {grid === true && (
                   <div>
+                    <h3>Nft's in drop</h3>
+
                     <Grid
                       container
                       spacing={2}
                       direction="row"
                       justifyContent="flex-start"
+                      style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                      <Grid item xs={6} sm={4} md={4} lg={4}>
-                        <AddNFTDisplayCard
-                          nftDetail={nftDetail}
-                          classes={classes}
-                        />
-                      </Grid>
+                      {tokenList.map((i) => (
+                        <Grid
+                          item
+                          xs={6}
+                          sm={4}
+                          md={4}
+                          lg={3}
+                          style={{ height: "25vh" }}
+                        >
+                          <AddNFTDisplayCard nftDetail={i} classes={classes} />
+                        </Grid>
+                      ))}
                     </Grid>
                   </div>
-                </div>
-              </form>
-            ) : null}
+                )}
+              </div>
+            </form>
           </div>
         </div>
         <UpdateDropAndPublishDrop
@@ -1015,6 +1085,7 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
+          buttonName={buttonName}
         />
       </div>
       <NetworkErrorModal
@@ -1043,6 +1114,11 @@ function AddNFT(props) {
           setTopUpModal={setTopUpModal}
         />
       )}
+      <PublishSuccessfully
+        show={transactionModal}
+        handleClose={handleRedirect}
+      />
+
       <TopUpModal
         show={topUpModal}
         handleClose={handleCloseTopUpModal}

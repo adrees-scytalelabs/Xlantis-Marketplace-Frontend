@@ -4,8 +4,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import {
-  getDropDetails,
-  getNFTsFromDropPaginatedWOBody,
+  getNFTsFromDropPaginatedWOBody
 } from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
@@ -64,20 +63,11 @@ const FixedPriceDropNFTs = () => {
       });
   };
 
-  const getDropData = async (dropId) => {
-    await getDropDetails(dropId)
-      .then((response) => {
-        setTitleImage(response.data.dropData.image);
-        setBannerImage(response.data.dropData.bannerURL);
-        setDropTitle(response.data.dropData.title);
-      })
-      .catch((error) => {
-        console.log("Error getting drop data", error);
-      });
-  };
   useEffect(() => {
-    getDropData(dropID.dropId);
     getNFTs(dropID.dropId, 0, 4);
+    setTitleImage(location.state.imageURL);
+    setBannerImage(location.state.bannerURL);
+    setDropTitle(location.state.dropTitle);
   }, []);
 
   return (

@@ -1,13 +1,49 @@
 import { useSnackbar } from "notistack";
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { default as React, default as React, useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { topUpAmount } from "../../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import TopUpForm from "../../../../components/Forms/TopUpForm";
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
+  const [open, setOpen] = useState(false);
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+  let location = useLocation();
   const [amount, setAmount] = useState(0.1);
   useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const id = searchParams.get("session_id");
+    const sessionId = localStorage.getItem('sessionId')
+    if (id != null) {
+      if (sessionId == id) {
+        const active = searchParams.get("active");
+        if (active == "true") {
+          let variant = "success";
+          enqueueSnackbar("Top Up Successfully", { variant });
+          localStorage.removeItem('sessionId');
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.delete('session_id');
+          searchParams.delete('active');
+          const newUrl = `${window.location.pathname}`;
+          window.history.replaceState(null, '', newUrl);
+        } else {
+          let variant = "error";
+          enqueueSnackbar("Top Up Unsccessfully", { variant });
+          localStorage.removeItem('sessionId');
+          const searchParams = new URLSearchParams(window.location.search);
+          searchParams.delete('session_id');
+          searchParams.delete('active');
+          const newUrl = `${window.location.pathname}`;
+          window.history.replaceState(null, '', newUrl);
+        }
+      }
+    }
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -21,6 +57,7 @@ function TopUp(props) {
     });
   }, []);
   const handleTopUpAmount = (e) => {
+    handleShowBackdrop();
     e.preventDefault();
     let data = {
       amount: amount,
@@ -33,6 +70,7 @@ function TopUp(props) {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
+          handleCloseBackdrop();
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
@@ -61,6 +99,7 @@ function TopUp(props) {
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
       />
+      <CircularBackdrop open={open} />
     </div>
   );
 }

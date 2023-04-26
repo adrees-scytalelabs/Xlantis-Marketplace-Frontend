@@ -4,12 +4,13 @@ import AdminInformationModal from "../../../../components/Modals/AdminInformatio
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import {
-  getEnabledWalletAdmins,
-  handleWalletDisable,
   handleModalOpen,
   handleModalClose,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import Notification from "../../../../components/Utils/Notification";
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getSuperAdminEnabledType2 } from "../../../../redux/getManageAccountsDataSlice";
 
 function WalletEnabled() {
   const [walletAdmins, setWalletAdmins] = useState([]);
@@ -22,9 +23,74 @@ function WalletEnabled() {
   const [load, setLoad] = useState(false);
   const [variant, setVariant] = useState("");
   const [notificationData, setNotificationData] = useState("");
+
+  const {
+    enabledType2Data,
+    enabledType2Loading
+  } = useSelector((store) => store.getManageAccountsData);
+const dispatch = useDispatch();
+
+const handleCloseBackdrop = (setOpen) => {
+  setOpen(false);
+};
+
+const handleShowBackdrop = (setOpen) => {
+  setOpen(true);
+};
+
+const getEnabledWalletAdmins = () => {
+  setOpen(true);
+  dispatch(getSuperAdminEnabledType2())
+  console.log("dispatchResp",enabledType2Data);
+  if(enabledType2Loading===1){
+      setWalletAdmins(enabledType2Data);
+      setWalletAdminCount(enabledType2Data.length);
+      setOpen(false);
+    }
+    else if(enabledType2Loading===2){
+      setOpen(false);
+    };
+};
+
+const handleWalletDisable = (
+  e,
+  verifyAdminId,
+  setOpen,
+  setWalletAdmins,
+  setWalletAdminCount,
+  setVariant,
+  setLoad,
+  setNotificationData
+) => {
+  e.preventDefault();
+  handleShowBackdrop(setOpen);
+  let data = {
+    adminId: verifyAdminId,
+  };
+
+  axios.patch("/super-admin/disable?userType=v2", data).then(
+    (response) => {
+      handleCloseBackdrop(setOpen);
+      getEnabledWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+      setVariant("success");
+      setNotificationData("Admin Disabled Successfully.");
+      setLoad(true);
+    },
+    (error) => {
+      console.log("Error on disable: ", error);
+      console.log("Error on disable: ", error.response);
+      handleCloseBackdrop(setOpen);
+      setVariant("error");
+      setNotificationData("Unable to Enable Admin.");
+      setLoad(true);
+    }
+  );
+};
+
   useEffect(() => {
-    getEnabledWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
-  }, []);
+    getEnabledWalletAdmins();
+  }, [enabledType2Loading]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };

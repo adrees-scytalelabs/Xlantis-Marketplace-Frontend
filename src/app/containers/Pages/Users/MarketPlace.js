@@ -1,18 +1,17 @@
 import { Grid } from "@material-ui/core/";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import {
-  getDropsInAuctionPaginated,
-  getDropsInFixedPriceSalePaginated,
-} from "../../../components/API/AxiosInterceptor";
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
+import { getMarketAuction, getMarketFixedPrice } from "../../../redux/getMarketPlaceDataSlice";
 
 function MarketPlace(props) {
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
+  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } = useSelector((store) => store.getMarketPlaceData);
+  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -23,47 +22,36 @@ function MarketPlace(props) {
 
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/saleType/fixed-price/${start}/${end}`;
-    } else {
-      endpoint = `/drop/saleType/fixed-price/${start}/${end}`;
+    dispatch(getMarketFixedPrice({ start, end }))
+    if (fixedPriceLoading) {
+      setFixedPriceDrop(fixedPriceData);
+      handleCloseBackdrop();
     }
-    getDropsInFixedPriceSalePaginated(start, end)
-      .then((response) => {
-        console.log("responseeeee", response);
-        setFixedPriceDrop(response.data.data);
-        handleCloseBackdrop();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        handleCloseBackdrop();
-      });
+    else if (fixedPriceLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
-    getDropsInAuctionPaginated(start, end)
-      .then((response) => {
-        console.log("Bidable drops response: ", response);
-        setBidableDrop(response.data.data);
-        handleCloseBackdrop();
-      })
-      .catch((error) => {
-        console.log("could not get bidable drops ", error.response);
-        handleCloseBackdrop();
-      });
+    dispatch(getMarketAuction({ start, end }));
+    if (auctionLoading === 1) {
+      setBidableDrop(auctionData);
+      handleCloseBackdrop();
+    }
+    else if (auctionLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
-    getCubes(0, 12);
-    getBidableDrops(0, 12);
-  }, []);
+    getBidableDrops(0, 4);
+  }, [auctionLoading]);
+
+  useEffect(() => {
+    getCubes(0, 4);
+  }, [fixedPriceLoading]);
+
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -82,7 +70,7 @@ function MarketPlace(props) {
                     container
                     spacing={2}
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                     item
                   >
                     <MarketPlaceTabs

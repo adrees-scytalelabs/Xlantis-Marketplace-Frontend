@@ -17,6 +17,7 @@ function UpdateDropAndPublishDrop({
         isSaving,
         handleOpenModal,
         handlePublishEvent,
+        buttonName
     }) {
 
     
@@ -31,7 +32,7 @@ function UpdateDropAndPublishDrop({
               handleSubmitEvent(e);
             }}
             style={{ float: "right", marginBottom: "5%" }}
-            className="bttn"
+            className={buttonName}
           >
             Update Drop
           </button>

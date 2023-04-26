@@ -2,7 +2,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
@@ -67,6 +67,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NewCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
+  let history = useHistory();
   const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
@@ -85,7 +86,6 @@ function NewCollection(props) {
 
   const [isSaving, setIsSaving] = useState(false);
   const [collectionName, setCollectionName] = useState("");
-
   const [collectionDescription, setCollectionDescription] = useState("");
   const [collectionSymbol, setCollectionSymbol] = useState("");
   const [isUploadingIPFS] = useState(false);
@@ -100,7 +100,7 @@ function NewCollection(props) {
   const [doneLoader, setDoneLoader] = useState(false);
   const [nftType, setNftType] = useState("1155");
   const [version, setVersion] = useState("");
-  const [royaltyFee, setRoyaltyFee] = useState(0);
+  const [royaltyFee, setRoyaltyFee] = useState(null);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
@@ -145,7 +145,7 @@ function NewCollection(props) {
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
     if (royaltyFee > 0) {
-      setIsSaving(true);
+      // setIsSaving(true);
 
       handleShowBackdrop();
       let collectionID;
@@ -609,6 +609,7 @@ function NewCollection(props) {
                   changeFile={onChangeFile}
                   class="co-12 col-md-auto profile-img mr-3"
                   accept=".png,.jpg,.jpeg,.gif"
+                  inputId="uploadPreviewImg"
                 />
                 <div className="form-group newNftFields">
                   <Select
@@ -633,7 +634,7 @@ function NewCollection(props) {
                   <SelectRoyaltyFee
                     RoyaltyFeeText={RoyaltyFeeText}
                     values={royaltyFee}
-                    onChange={setRoyaltyFee}
+                    setRoyaltyFee={setRoyaltyFee}
                   />
 
                   <SelectNFTAndSaleType

@@ -1,17 +1,17 @@
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import "../../../../assets/css/style.css";
-import {
-  getDropsInAuctionPaginated,
-  getDropsInFixedPriceSalePaginated,
-} from "../../../../components/API/AxiosInterceptor";
+import { getMarketAuction, getMarketFixedPrice } from "../../../../redux/getMarketPlaceDataSlice";
 import TrendingAndTop from "./TrendingAndTop";
+
 
 function MarketPlace(props) {
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [open, setOpen] = useState(false);
+  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } = useSelector((store) => store.getMarketPlaceData);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -20,41 +20,35 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-
-    let version = Cookies.get("Version");
-    getDropsInFixedPriceSalePaginated(start, end)
-      .then((response) => {
-        setFixedPriceDrop(response.data.data);
-        handleCloseBackdrop();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        handleCloseBackdrop();
-      });
+    dispatch(getMarketFixedPrice({ start, end }))
+    if (fixedPriceLoading) {
+      setFixedPriceDrop(fixedPriceData);
+      handleCloseBackdrop();
+    }
+    else if (fixedPriceLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
-    getDropsInAuctionPaginated(start, end)
-      .then((response) => {
-        console.log("res >>> ", response);
-        setBidableDrop(response.data.data);
-        handleCloseBackdrop();
-      })
-      .catch((error) => {
-        console.log("could not get bidable drops ", error.response);
-        handleCloseBackdrop();
-      });
+    dispatch(getMarketAuction({ start, end }));
+    if (auctionLoading === 1) {
+      setBidableDrop(auctionData);
+      handleCloseBackdrop();
+    }
+    else if (auctionLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
-    getCubes(0, 4);
     getBidableDrops(0, 4);
-  }, []);
+  }, [auctionLoading]);
+
+  useEffect(() => {
+    getCubes(0, 4);
+  }, [fixedPriceLoading]);
 
   return (
     <div className="container-fluid">

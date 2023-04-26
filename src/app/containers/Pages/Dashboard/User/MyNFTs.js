@@ -1,12 +1,12 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
-import { getMyNFTsPaginated } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { myNft } from "../../../../redux/myNftSlice";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -14,44 +14,34 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
+  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    getMyNFTsPaginated(start, end).then(
-      (response) => {
-        setTokenList(response.data.NFTdata);
-        setTotalNfts(response.data.Nftcount);
+    dispatch(myNft({ start, end }));
+    if (loading === 1) {
+      setTokenList(nftData);
+      setTotalNfts(nftCount);
 
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+      handleCloseBackdrop();
+    }
+    else if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
     getMyNFTs(0, rowsPerPage);
+  }, [loading]);
+
+  useEffect(() => {
     props.setActiveTab({
       dashboard: "",
       newNFT: "",

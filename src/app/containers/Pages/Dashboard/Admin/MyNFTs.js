@@ -71,7 +71,7 @@ function MyNFTs(props) {
   const [open, setOpen] = useState(false);
   const [, setVersionB] = useState("");
   const classes = useStyles();
-  const {nftData,nftCount } = useSelector((store) => store.myNft);
+  const {nftData,nftCount,loading } = useSelector((store) => store.myNft);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -94,9 +94,11 @@ function MyNFTs(props) {
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
-
     getMyNFTs(0, rowsPerPage);
+  }, [loading]);
+
+  useEffect(() => {
+    setVersionB(Cookies.get("Version"));
 
     props.setActiveTab({
       dashboard: "",
