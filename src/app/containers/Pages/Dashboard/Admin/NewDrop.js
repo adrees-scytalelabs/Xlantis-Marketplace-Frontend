@@ -1,15 +1,10 @@
 import { ThemeProvider, createTheme } from "@material-ui/core";
 import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Tooltip from "@material-ui/core/Tooltip";
 import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link, useHistory, useRouteMatch } from "react-router-dom";
 import Web3 from "web3";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
@@ -18,6 +13,10 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import UploadFile from "../../../../components/Upload/UploadFile";
+import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import Select from "../../../../components/Select/Select";
+import SubmitButton from "../../../../components/buttons/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -94,14 +93,7 @@ function NewDrop(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
-  const Text721 =
-    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 =
-    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
-  const AuctionText =
-    "Auction will have bidding for NFTs and after some time NFT will be sold to best bidder.";
-  const FixedPriceText =
-    "In Fixed-Price sale NFT will be sold to buyer on the spot.";
+
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -369,7 +361,6 @@ function NewDrop(props) {
   };
 
   let onChangeBannerFile = async (e) => {
-    //console.log("In banner change function: ", e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       setIsUploadingBanner(true);
@@ -456,6 +447,7 @@ function NewDrop(props) {
                       changeFile={onChangeBannerFile}
                       class="co-12 col-md-auto drop-banner-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadDropBannerImg"
                     />
                   </div>
                   <div className="form-group">
@@ -466,162 +458,56 @@ function NewDrop(props) {
                       changeFile={onChangeFile}
                       class="co-12 col-md-auto profile-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadPreviewImg"
                     />
                   </div>
+                  
                   <div className="form-group newNftFields">
-                    <label>Drop Name</label>
-                    <div className="form-group newNftWrapper">
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        placeholder="Enter Name of Drop"
-                        className="form-control newNftInput"
-                        onChange={(e) => {
-                          setName(e.target.value);
-                        }}
-                      />
-                    </div>
+                    <Select
+                      label ="Drop Name"
+                      values = {name}
+                      placeholder= "Enter Name of Drop"
+                      setValue={setName}
+                    />
 
-                    <div className="form-group newNftWrapper">
-                      <label>Drop Description</label>
-                      <textarea
-                        type="text"
-                        required
-                        rows="4"
-                        value={description}
-                        placeholder="Enter Description of Drop"
-                        className="form-control newNftInput"
-                        onChange={(e) => {
-                          setDescription(e.target.value);
-                        }}
-                      />
-                    </div>
+                    <SelectDescription
+                      label ="Drop Description"
+                      values = {description}
+                      placeholder= "Enter Description of Drop"
+                      setDescription={setDescription}
+                    />
+                  
                   </div>
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
-                      <label
-                        component="legend"
-                        style={{ fontWeight: "bold", fontFamily: "orbitron" }}
-                      >
-                        Select Sale Type
-                      </label>
-                      <RadioGroup
-                        row
-                        aria-label="position"
-                        name="position"
-                        defaultValue="top"
-                      >
-                        <Tooltip
-                          title={AuctionText}
-                          classes={{ tooltip: classes.tooltip }}
-                          placement="top-start"
-                          arrow={true}
-                        >
-                          <FormControlLabel
-                            style={{ color: "white" }}
-                            value="auction"
-                            onChange={() => {
-                              setWorkProgressModalShow(true);
-                            }}
-                            checked={saleType === "auction"}
-                            control={<Radio style={{ color: "#fff" }} />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                Auction{" "}
-                                <i
-                                  className="fa fa-info-circle"
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            }
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          title={FixedPriceText}
-                          classes={{ tooltip: classes.tooltip }}
-                          placement="top-start"
-                          arrow={true}
-                        >
-                          <FormControlLabel
-                            style={{ color: "white" }}
-                            value="fixed-price"
-                            onChange={() => {
-                              setSaleType("fixed-price");
-                            }}
-                            checked={saleType === "fixed-price"}
-                            control={<Radio style={{ color: "#fff" }} />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                Fixed-Price{" "}
-                                <i
-                                  className="fa fa-info-circle"
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            }
-                          />
-                        </Tooltip>
-                      </RadioGroup>
-                      <label
-                        component="legend"
-                        style={{ fontWeight: "bold", fontFamily: "orbitron" }}
-                      >
-                        Select Drop Type
-                      </label>
-                      <RadioGroup
-                        row
-                        aria-label="position"
-                        name="position"
-                        defaultValue="top"
-                      >
-                        <Tooltip
-                          title={Text721}
-                          classes={{ tooltip: classes.tooltip }}
-                        >
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC721"
-                            onChange={() => {
-                              setWorkProgressModalShow(true);
-                            }}
-                            checked={nftType === "721"}
-                            control={<Radio style={{ color: "#fff" }} />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                Single{" "}
-                                <i
-                                  className="fa fa-info-circle"
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            }
-                          />
-                        </Tooltip>
-                        <Tooltip
-                          title={Text1155}
-                          classes={{ tooltip: classes.tooltip }}
-                        >
-                          <FormControlLabel
-                            style={{ color: "black" }}
-                            value="ERC1155"
-                            onChange={() => {
-                              setNftType("1155");
-                            }}
-                            checked={nftType === "1155"}
-                            control={<Radio style={{ color: "#fff" }} />}
-                            label={
-                              <span style={{ fontSize: "0.9rem" }}>
-                                Multiple{" "}
-                                <i
-                                  className="fa fa-info-circle"
-                                  aria-hidden="true"
-                                ></i>
-                              </span>
-                            }
-                          />
-                        </Tooltip>
-                      </RadioGroup>
+                      <SelectNFTAndSaleType
+                        label="Select Sale Type"
+                        onChangeWorkInProgress = {() => {
+                          console.log("721workinf");
+                          setWorkProgressModalShow(true);
+                        }}
+                        onChange={() => {
+                          console.log("1155working");
+                          setSaleType("fixed-price");
+                        }}
+                        type={saleType}
+                        radioType="sale"
+                      />
+
+                      <SelectNFTAndSaleType
+                        label="Select Drop Type"
+                        onChangeWorkInProgress = {() => {
+                          console.log("721workinf");
+                          setWorkProgressModalShow(true);
+                        }}
+                        onChange={() => {
+                          console.log("1155working");
+                          setNftType("1155");
+                        }}
+                        type={nftType}
+                        radioType="nft"
+                      />
+                     
                     </FormControl>
                   </ThemeProvider>
                 </div>
@@ -629,27 +515,14 @@ function NewDrop(props) {
             </form>
           </div>
         </div>
-        {isSaving ? (
-          <div className="text-center">
-            <Spinner animation="border" role="status" style={{ color: "#fff" }}>
-              <span className="sr-only">Loading...</span>
-            </Spinner>
-          </div>
-        ) : (
-          <div className="submit-section">
-            <button
-              type="button"
-              onClick={(e) => {
-                versionB === "v1-sso"
-                  ? handleSubmitEvent(e)
-                  : handleSubmitEventMetamask(e);
-              }}
-              className="btn submit-btn propsActionBtn"
-            >
-              Create Drop
-            </button>
-          </div>
-        )}
+        <SubmitButton
+        label="Create Drop"
+         isSaving={isSaving}
+         version ={versionB}
+         handleSubmitEvent={handleSubmitEvent}
+         handleSubmitEventMetamask={handleSubmitEventMetamask}
+        />
+        
       </div>
       <NetworkErrorModal
         show={showNetworkModal}

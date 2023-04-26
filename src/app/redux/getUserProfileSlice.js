@@ -3,18 +3,17 @@ import axios from 'axios';
 import Cookies from "js-cookie";
 
 const initialState = {
-  userData:"",
+  userData:[],
+  loading:0
 };
 
 export const getUserProfile = createAsyncThunk(
   'user/getUserprofile',
   async ( thunkAPI) => {
-    let userLogin = sessionStorage.getItem("Authorization");
-    if (userLogin != "undefined") {
       let version = Cookies.get("Version");
     try {
-
       const resp = await axios(`${version}/user/profile`);
+      console.log("reduxResp",resp);
 
       return resp.data;
     } catch (error) {
@@ -22,7 +21,6 @@ export const getUserProfile = createAsyncThunk(
       return thunkAPI.rejectWithValue('something went wrong');
     }
   }
-}
 );
 
 const getUserProfileSlice = createSlice({
@@ -31,10 +29,12 @@ const getUserProfileSlice = createSlice({
   reducers: {},
   extraReducers:{
       [getUserProfile.fulfilled]: (state, action) => {
-        state.userData = action.payload.userData.username;
+        state.userData = action.payload.userData;
+        state.loading = 1
       },
       [getUserProfile.rejected]: (state, action) => {
         console.log(action);
+        state.loading = 2
       }
   },
 });

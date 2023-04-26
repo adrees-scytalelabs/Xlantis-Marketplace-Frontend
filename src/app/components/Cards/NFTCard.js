@@ -8,8 +8,9 @@ import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import { truncate } from "../../assets/js/utils";
 import TypographyText from "../Typography/TypographyText";
+import { truncate } from "../../assets/js/utils";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -76,7 +77,7 @@ function NFTCard(props) {
 
             </div>
             <div className="row no-gutters justify-content-start align-items-center">
-              <TypographyText variant = "body2" component="p" style={{ minHeight: "2.5rem" }} class={classes.cardDescriptions} value = {truncate(props.data.description, 35)} isSpan = {false}></TypographyText>         
+              <TypographyText variant = "body2" component="p" style={{ minHeight: "2.5rem" }} class={classes.cardDescriptions} value = {Math.trunc(props.data.description, 35)} isSpan = {false}></TypographyText>         
             </div>
           </CardContent>
         </div>

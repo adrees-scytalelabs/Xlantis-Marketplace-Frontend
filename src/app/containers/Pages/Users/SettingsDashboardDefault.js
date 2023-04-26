@@ -11,6 +11,9 @@ import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
+import { useDispatch, useSelector } from 'react-redux';
+import { getUserProfile } from "../../../redux/getUserProfileSlice";
+import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
 
 
 
@@ -42,6 +45,9 @@ function SettingDashboardDefault(props) {
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
+  const {userData,loading } = useSelector((store) => store.userProfile);
+  const {adminUserData,adminLoading } = useSelector((store) => store.getAdminProfileData);
+  const dispatch = useDispatch();
 
 
   const [profileImage, setProfileImage] = useState(
@@ -126,41 +132,28 @@ function SettingDashboardDefault(props) {
   };
 
   let getProfile = () => {
-    let version = Cookies.get("Version");
-    axios
-      .get(`${version}/user/profile`)
-      .then((response) => {
-        setName(response.data.userData.username);
-        setBio(response.data.userData.bio);
-        response.data.userData.imageURL &&
-          setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getUserProfile());
+        setName(userData.username);
+        setBio(userData.bio);
+        userData.imageURL &&
+          setProfileImage(userData.imageURL);
+        userData.bannerURL &&
+          setBannerImage(userData.bannerURL);
   };
 
   const getAdminProfile = async () => {
-    await axios.get(`/v1-sso/user/admin/profile`).then(
-      (response) => {
-        setAdminOldData(response.data.userData);
-        setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-        setAdminCompanyName(response.data.userData.companyName);
-        setAdminDesignation(response.data.userData.designation);
-        setAdminDomain(response.data.userData.domain);
-        setAdminName(response.data.userData.username);
-        setAdminReasonForInterest(response.data.userData.reasonForInterest);
-        setAdminIndustry(response.data.userData.industryType);
-      },
-      (error) => {
-        console.log("Error from getting Admin profile", error);
-      }
-    );
+    dispatch(getAdminProfileData());
+    console.log("dispatchResp",adminUserData);
+        setAdminOldData(adminUserData);
+        setProfileImage(adminUserData.imageURL);
+        adminUserData.bannerURL &&
+          setBannerImage(adminUserData.bannerURL);
+        setAdminCompanyName(adminUserData.companyName);
+        setAdminDesignation(adminUserData.designation);
+        setAdminDomain(adminUserData.domain);
+        setAdminName(adminUserData.username);
+        setAdminReasonForInterest(adminUserData.reasonForInterest);
+        setAdminIndustry(adminUserData.industryType);
   };
 
   const handleSubmitAdminProfile = (e) => {
@@ -250,11 +243,20 @@ function SettingDashboardDefault(props) {
     });
     if (props.user === "admin") {
       setIsAdmin(true);
-      getAdminProfile();
-    } else if (props.user === "user") {
+    } 
+  }, []);
+
+  useEffect(() => {
+  if (props.user === "user") {
       getProfile();
     }
-  }, []);
+  }, [loading]);
+
+  useEffect(() => {
+    if (props.user === "admin") {
+      getAdminProfile();
+    } 
+    }, [adminLoading]);
 
   return (
     <div>

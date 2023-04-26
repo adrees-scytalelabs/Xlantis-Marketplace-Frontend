@@ -1,15 +1,12 @@
 import { createTheme, ThemeProvider } from "@material-ui/core";
 import { Grid } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Autocomplete from "@material-ui/lab/Autocomplete";
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import DateTimePicker from "react-datetime-picker";
+
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -23,6 +20,10 @@ import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import PublishDropModal from "../../../../components/Modals/PublishDropModal";
 import TopUpModal from "../../../../components/Modals/TopUpModal";
+import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
+import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
+import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import PublishSuccessfully from "../../../../components/Modals/PublishSuccessfully";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -130,7 +131,7 @@ function AddNFT(props) {
   const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-
+  const [transactionModal, setTransactionModal] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
@@ -149,10 +150,13 @@ function AddNFT(props) {
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [nftList, setNftList] = useState([]);
+  const [buttonName, setbuttonName] = useState("bttn");
   const [collectionTypes, setCollectionTypes] = useState([]);
   const [collection, setCollection] = useState("");
   const [isAdded, setIsAdded] = useState(false);
   const [nftContractAddresses, setNftContractAddress] = useState("");
+  const [key, setKey] = useState("default");
+  const [grid, setGrid] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -165,8 +169,9 @@ function AddNFT(props) {
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const [price, setPrice] = useState(0);
-  const [supply, setSupply] = useState(1);
+  const [tokenList, setTokenList] = useState([]);
+  const [price, setPrice] = useState(null);
+  const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
   const [nftType, setNftType] = useState("");
   const [versionB, setVersionB] = useState("");
@@ -189,24 +194,21 @@ function AddNFT(props) {
   };
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
-        setData(response.data.data);
-        setMOdalOpen(true);
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-      }
-    );
   };
 
+  const handleRedirect = () => {
+    setTransactionModal(false);
+    history.push({
+      pathname: `/dashboard/myDrops`,
+      state: {
+        value: 1,
+      },
+    });
+  };
   const handleCloseModal = () => {
     setMOdalOpen(false);
+    setTransactionModal(true);
   };
-
   let getCollections = () => {
     const version = Cookies.get("Version");
 
@@ -360,6 +362,7 @@ function AddNFT(props) {
 
   useEffect(() => {
     setIsDisabled(false);
+    setGrid(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
     setDropId(location.state.dropId);
@@ -393,14 +396,33 @@ function AddNFT(props) {
     }
   };
   const handleSubmitEvent = async (event) => {
+    event.preventDefault();
     if (isAdded) {
-      event.preventDefault();
-      setIsDisabled(true);
-      setEnableTime(true);
+      handleShowBackdrop();
+      await handleBuyDetail();
     } else {
       let variant = "error";
       enqueueSnackbar("Please Add NFT to drop first", { variant });
     }
+  };
+  const getTxCost = async (e) => {
+    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
+      (response) => {
+        setData(response.data.data);
+        setMOdalOpen(true);
+      },
+      (error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+          let variant = "error";
+          enqueueSnackbar("Something went wrong", { variant });
+        } else {
+          let variant = "error";
+          enqueueSnackbar("Something went wrong", { variant });
+        }
+      }
+    );
   };
   const handleTimeEvent = async (event) => {
     event.preventDefault();
@@ -443,6 +465,7 @@ function AddNFT(props) {
 
       axios.patch(`/drop/start-time`, data).then(
         (response) => {
+          getTxCost(event);
           let variant = "success";
           enqueueSnackbar("Time Successfully Updated.", { variant });
         },
@@ -659,13 +682,29 @@ function AddNFT(props) {
       axios.get(`/drop/validate-admin-balance/${dropId}`).then(
         (response) => {
           setCostInfo(response.data);
+          setIsDisabled(true);
+          setEnableTime(true);
+          let variant = "success";
+          enqueueSnackbar("Transaction Summary received", {
+            variant,
+          });
           handleCloseBackdrop();
+          setbuttonName("updatebttn");
         },
         (error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
+            handleCloseBackdrop();
           }
+          let variant = "error";
+          enqueueSnackbar(
+            "Something went wrong with blockchain trancsaction try again",
+            {
+              variant,
+            }
+          );
+          handleCloseBackdrop();
         }
       );
     } catch (e) {
@@ -691,9 +730,11 @@ function AddNFT(props) {
       if (collection === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Collection", { variant });
+        handleCloseBackdrop();
       } else if (nftName === "") {
         let variant = "error";
         enqueueSnackbar("Please Select Nft", { variant });
+        handleCloseBackdrop();
       } else if (
         supply === 0 ||
         supply === undefined ||
@@ -704,18 +745,23 @@ function AddNFT(props) {
       ) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply < 0) {
         let variant = "error";
         enqueueSnackbar("Token Supply cannot be Negative", { variant });
+        handleCloseBackdrop();
       } else if (price === 0 || price === undefined || price === null) {
         let variant = "error";
         enqueueSnackbar("Price cannot be 0 or empty", { variant });
+        handleCloseBackdrop();
       } else if (supply > nftTokenSupply) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Supply cannot be greater than NFT token supply", {
           variant,
         });
       } else if (price < 0) {
+        handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
@@ -743,8 +789,9 @@ function AddNFT(props) {
 
         axios.put(`/drop/nft`, data).then(
           async (response) => {
-            await handleBuyDetail();
+            setGrid(true);
             setIsAdded(true);
+            setTokenList([...tokenList, nftDetail]);
             let found = false;
             if (nftType === "1155") {
               setDropInfo((current) =>
@@ -762,21 +809,38 @@ function AddNFT(props) {
                       prices: price,
                     };
                   }
+
                   return obj;
                 })
               );
 
               if (found === false) {
                 const dropp = [...dropInfo, newObject];
-                console.log("drop", dropp);
-                console.log("here");
                 setDropInfo(dropp);
               }
 
               let variant = "success";
               enqueueSnackbar("NFT Added Successfully", { variant });
+              setNftName("");
+              setNftId("");
+              setNftURI("");
+              setTokenId("");
+              setNftTokenSupply(0);
+              setCollection("");
+              setCollectionId("");
+              setNftContractAddress("");
+              setNftList([]);
+              setNftDetail({});
+              setPrice(0);
+              setSupply(1);
+              if (key === "default") {
+                setKey("refresh");
+              } else {
+                setKey("default");
+              }
             }
             setIsUploadingData(false);
+            handleCloseBackdrop();
           },
           (error) => {
             console.log("Error on drop add nft: ", error);
@@ -802,17 +866,13 @@ function AddNFT(props) {
         let variant = "error";
         enqueueSnackbar("Price cannot be Negative", { variant });
       } else {
-        console.log("AFTER CHECKS");
         handleShowBackdrop();
         setIsUploadingData(true);
 
         let Price = price;
         let data;
         let newObject;
-        console.log("before check");
         if (nftType === "721") {
-          console.log("ERC721 DATA");
-
           data = {
             nftId: nftId,
             dropId: dropId,
@@ -928,157 +988,70 @@ function AddNFT(props) {
         <div className="row">
           <div className="col-md-12 col-lg-6">
             <form>
-              <div className="form-group">
-                <div className="form-group">
-                  <label>Select Collection</label>
-                  <div className="filter-widget newNftWrapper">
-                    <Autocomplete
-                      id="combo-dox-demo"
-                      required
-                      disabled={isDisabled}
-                      options={collectionTypes}
-                      getOptionLabel={(option) => option.name}
-                      onChange={(e, value) => {
-                        if (value == null) setCollection("");
-                        else {
-                          console.log("hereee");
-                          setCollection(value.name);
-                          setCollectionId(value._id);
-                          setNftContractAddress(value.nftContractAddress);
-                          setNftList([]);
-                          setNftName("");
-                          getNfts(value._id);
-                        }
-                      }}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <div>
-                          <ThemeProvider theme={makeTheme}>
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select Collection"
-                            />
-                          </ThemeProvider>
-                        </div>
-                      )}
-                      style={{ padding: "6px 15px !important" }}
+              <div className="form-group" key={key}>
+                <Autocomplete
+                  label={"Select Collection"}
+                  options={collectionTypes}
+                  isDisabled={isDisabled}
+                  placeholder="Select Collection"
+                  onChange={(e, value) => {
+                    if (value == null) setCollection("");
+                    else {
+                      console.log("hereee");
+                      setCollection(value.name);
+                      setCollectionId(value._id);
+                      setNftContractAddress(value.nftContractAddress);
+                      setNftList([]);
+                      setNftName("");
+                      getNfts(value._id);
+                    }
+                  }}
+                />
+
+                <Autocomplete
+                  label={"Select NFT"}
+                  options={nftList}
+                  isDisabled={isDisabled}
+                  placeholder="Select NFT"
+                  onChange={(e, value) => {
+                    if (value == null) setNftName("");
+                    else {
+                      console.log("hereee");
+                      console.log("Selected NFT values: ", value);
+                      setNftName(value.title);
+                      setNftId(value._id);
+                      setNftURI(value.nftURI);
+                      setTokenId(value.nftId);
+                      setNftTokenSupply(value.tokenSupply);
+
+                      handleOpenNFTDetailModal(value);
+                    }
+                  }}
+                />
+                {nftName != "" && (
+                  <div
+                    className="mb-3"
+                    style={{ height: "270px", width: "230px" }}
+                  >
+                    <AddNFTDisplayCard
+                      nftDetail={nftDetail}
+                      classes={classes}
                     />
                   </div>
-                </div>
-
-                <div className="form-group">
-                  <label>Select NFT</label>
-                  <div className="filter-widget newNftWrapper">
-                    <Autocomplete
-                      id="combo-dox-demo"
-                      required
-                      disabled={isDisabled}
-                      options={nftList}
-                      getOptionLabel={(option) => option.title}
-                      onChange={(e, value) => {
-                        if (value == null) setNftName("");
-                        else {
-                          console.log("hereee");
-                          console.log("Selected NFT values: ", value);
-                          setNftName(value.title);
-                          setNftId(value._id);
-                          setNftURI(value.nftURI);
-                          setTokenId(value.nftId);
-                          setNftTokenSupply(value.tokenSupply);
-
-                          handleOpenNFTDetailModal(value);
-                        }
-                      }}
-                      filterSelectedOptions
-                      renderInput={(params) => (
-                        <div>
-                          <ThemeProvider theme={makeTheme}>
-                            <TextField
-                              {...params}
-                              variant="outlined"
-                              placeholder="Select NFT"
-                            />
-                          </ThemeProvider>
-                        </div>
-                      )}
-                    />
-                  </div>
-                </div>
-
-                {nftType === "1155" ? (
-                  <span>
-                    <label>Supply</label>
-                    <span style={{ float: "right", fontSize: "12px" }}>
-                      Out of ({nftTokenSupply})
-                    </span>
-                    <div className="form-group">
-                      <div className="filter-widget newNftWrapper">
-                        <input
-                          style={{
-                            border:
-                              nftTokenSupply === 0
-                                ? "none"
-                                : nftTokenSupply >= supply
-                                ? "3px solid green"
-                                : "3px solid red",
-                          }}
-                          type="number"
-                          required
-                          disabled={isDisabled}
-                          value={supply}
-                          className="form-control"
-                          onChange={(e) => {
-                            if (e.target.value >= 0) {
-                              if (e.target.value > nftTokenSupply) {
-                                setAlertMessage(true);
-                              } else {
-                                setAlertMessage(false);
-                              }
-                              setSupply(e.target.value);
-                            }
-                          }}
-                        />
-                        {AlertMessage ? (
-                          <span style={{ fontSize: "10px", color: "red" }}>
-                            Limit of supply is {nftTokenSupply}
-                          </span>
-                        ) : null}
-                      </div>
-                    </div>
-                  </span>
-                ) : null}
-
-                {location.state.saleType === "auction" ? (
-                  <label>Floor Price (USD)</label>
-                ) : (
-                  <label>Price (USD)</label>
                 )}
 
-                <div className="form-group">
-                  <div className="filter-widget newNftWrapper">
-                    <input
-                      disabled={isDisabled}
-                      style={{
-                        backgroundColor: "#000",
-                        color: "#fff",
-                        border: "1px solid #fff",
-                        borderRadius: "5px",
-                      }}
-                      type="number"
-                      required
-                      placeholder={0}
-                      className="form-control"
-                      onChange={(e) => {
-                        if (e.target.value > 0) {
-                          setPrice(e.target.value);
-                        } else {
-                          setPrice(0);
-                        }
-                      }}
-                    />
-                  </div>
-                </div>
+                <SelectSupplyAndPrice
+                  price={price}
+                  nftType={nftType}
+                  nftTokenSupply={nftTokenSupply}
+                  values={supply}
+                  isDisabled={isDisabled}
+                  setSupply={setSupply}
+                  saleType={saleType}
+                  setPrice={setPrice}
+                  AlertMessage={AlertMessage}
+                  setAlertMessage={setAlertMessage}
+                />
               </div>
               <button
                 className="bttn"
@@ -1092,112 +1065,55 @@ function AddNFT(props) {
           </div>
 
           <div className="col-md-12 col-lg-6">
-            {nftName != "" ? (
-              <form>
-                <div className="form-group mt-3 mt-lg-0">
+            <form>
+              <div className="form-group mt-3 mt-lg-0">
+                {grid === true && (
                   <div>
+                    <h3>Nft's in drop</h3>
+
                     <Grid
                       container
                       spacing={2}
                       direction="row"
                       justifyContent="flex-start"
+                      style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                      <Grid item xs={6} sm={4} md={4} lg={4}>
-                        <AddNFTDisplayCard
-                          nftDetail={nftDetail}
-                          classes={classes}
-                        />
-                      </Grid>
+                      {tokenList.map((i) => (
+                        <Grid
+                          item
+                          xs={6}
+                          sm={4}
+                          md={4}
+                          lg={3}
+                          style={{ height: "25vh" }}
+                        >
+                          <AddNFTDisplayCard nftDetail={i} classes={classes} />
+                        </Grid>
+                      ))}
                     </Grid>
                   </div>
-                </div>
-              </form>
-            ) : null}
+                )}
+              </div>
+            </form>
           </div>
         </div>
-        <div className="submit-section col-md-12 col-lg-6 col-sm-12">
-          <button
-            type="button"
-            disabled={isDisabled}
-            onClick={(e) => {
-              versionB === "v1-sso"
-                ? handleSubmitEvent(e)
-                : handleSubmitEvent(e);
-            }}
-            style={{ float: "right", marginBottom: "5%" }}
-            className="bttn"
-          >
-            Update Drop
-          </button>
-        </div>
-
-        {enableTime && (
-          <div
-            className="datePicker col-md-12 col-lg-6 col-sm-12"
-            style={{ marginTop: "5%" }}
-          >
-            <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
-              Starts At
-            </label>
-            <div className="form-group" style={{ borderRadius: "12px" }}>
-              <DateTimePicker
-                className="form-control"
-                onChange={(e) => {
-                  console.log(e);
-                  console.log("START", Math.round(e.getTime() / 1000));
-                  console.log("NOW", Math.round(Date.now() / 1000));
-
-                  setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
-                  setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
-
-                  setStartTime(e);
-                }}
-                value={startTime}
-              />
-            </div>
-            <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
-              Ends At
-            </label>
-            <div className="form-group newNftWrapper">
-              <DateTimePicker
-                className="form-control"
-                onChange={(e) => {
-                  console.log(e);
-                  console.log("e.getTime()", Math.round(e.getTime() / 1000));
-                  setEndTimeStamp(Math.round(e.getTime() / 1000));
-                  setEndTime(e);
-                }}
-                value={endTime}
-              />
-            </div>
-            <div className="submit-section" style={{ marginBottom: "3%" }}>
-              {isSaving ? (
-                <div className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#fff" }}
-                  >
-                    <span className="sr-only">Loading...</span>
-                  </Spinner>
-                </div>
-              ) : (
-                <button
-                  type="button"
-                  className="bttn"
-                  style={{ float: "right" }}
-                  onClick={(e) => {
-                    versionB === "v1-sso"
-                      ? handleOpenModal(e)
-                      : handlePublishEvent(e);
-                  }}
-                >
-                  Publish Drop
-                </button>
-              )}
-            </div>
-          </div>
-        )}
+        <UpdateDropAndPublishDrop
+          isDisabled={isDisabled}
+          versionB={versionB}
+          handleSubmitEvent={handleSubmitEvent}
+          enableTime={enableTime}
+          setCurrentTimeStamp={setCurrentTimeStamp}
+          setStartTimeStamp={setStartTimeStamp}
+          startTime={startTime}
+          setStartTime={setStartTime}
+          setEndTimeStamp={setEndTimeStamp}
+          endTime={endTime}
+          setEndTime={setEndTime}
+          isSaving={isSaving}
+          handlePublishEvent={handlePublishEvent}
+          handleOpenModal={handleOpenModal}
+          buttonName={buttonName}
+        />
       </div>
       <NetworkErrorModal
         show={show}
@@ -1225,6 +1141,11 @@ function AddNFT(props) {
           setTopUpModal={setTopUpModal}
         />
       )}
+      <PublishSuccessfully
+        show={transactionModal}
+        handleClose={handleRedirect}
+      />
+
       <TopUpModal
         show={topUpModal}
         handleClose={handleCloseTopUpModal}

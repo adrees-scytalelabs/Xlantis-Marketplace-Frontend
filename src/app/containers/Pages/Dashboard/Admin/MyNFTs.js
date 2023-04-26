@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { useDispatch, useSelector } from 'react-redux';
+import { myNft } from "../../../../redux/myNftSlice";
 
 const useStyles = makeStyles({
   root: {
@@ -70,6 +72,8 @@ function MyNFTs(props) {
   const [open, setOpen] = useState(false);
   const [, setVersionB] = useState("");
   const classes = useStyles();
+  const {nftData,nftCount,loading } = useSelector((store) => store.myNft);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -77,43 +81,25 @@ function MyNFTs(props) {
     setOpen(true);
   };
   let getMyNFTs = (start, end) => {
+    dispatch(myNft({start,end}));
     handleShowBackdrop();
-    axios.get(`/nft/myNFTs/${start}/${end}`).then(
-      (response) => {
-        let nfts = response.data.NFTdata;
+        let nfts = nftData;
+        console.log("data from redx",nftData,nftCount);
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };
         });
         setTokenList(newState);
-        setTotalNfts(response.data.Nftcount);
+        setTotalNfts(nftCount);
 
         handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
-
     getMyNFTs(0, rowsPerPage);
+  }, [loading]);
+
+  useEffect(() => {
+    setVersionB(Cookies.get("Version"));
 
     props.setActiveTab({
       dashboard: "",

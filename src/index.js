@@ -16,12 +16,11 @@ if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
 else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
 ReactDOM.render(
-  <Provider store={store}>
   <CookiesProvider>
-   
+    <Provider store={store}>
       <App />
-  </CookiesProvider>
-  </Provider>,
+    </Provider>
+  </CookiesProvider>,
   document.getElementById("root")
 );
 

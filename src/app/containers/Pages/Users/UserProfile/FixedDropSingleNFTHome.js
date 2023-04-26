@@ -538,6 +538,7 @@ const FixedDropSingleNFTHome = () => {
       (response) => {
         console.log("Transaction Hash sending on backend response: ", response);
         console.log("Stripe Url", response.data.stripeSession);
+        localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.stripeSession);
       },
       (error) => {

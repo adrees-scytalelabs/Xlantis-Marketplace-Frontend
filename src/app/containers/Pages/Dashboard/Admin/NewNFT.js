@@ -4,7 +4,7 @@ import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link,useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
+  const history = useHistory();
   const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
@@ -302,11 +303,13 @@ function NewNFT(props) {
       setDescription("");
       setRarity("");
       setTokenSupply(1);
-      setCollection("");
       setSupplyType("Single");
       setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
+      history.push({
+        pathname: `/dashboard/collection/nfts/${collectionId}`
+      });
     }
   };
 
@@ -805,7 +808,6 @@ function NewNFT(props) {
     };
     axios.put(`/batch-mint/collection`, updatedCollectionID).then(
       (response) => {
-        // console.log("Response after updating collection id: ", response);
       },
       (error) => {
         console.log("Error on updating collection id: ", error);
