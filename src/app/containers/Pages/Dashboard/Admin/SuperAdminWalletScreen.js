@@ -1,9 +1,11 @@
 import ListAltIcon from '@mui/icons-material/ListAlt';
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { useResolvedPath } from 'react-router-dom';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { getSuperAdminCountsType2 } from "../../../../redux/getSuperAdminsCountsSlice";
+
 function SuperAdminWalletScreen(props) {
   const [open, setOpen] = useState(false);
   const [totalAdmins, setTotalAdmins] = useState(0);
@@ -13,26 +15,20 @@ function SuperAdminWalletScreen(props) {
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
   const path = useResolvedPath("").pathname;
+  const { countsType2, loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
+  const dispatch = useDispatch();
 
   let getCounts = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
-    axios
-      .get(`/super-admin/admins/counts?userType=v2`)
-      .then((response) => {
-        setTotalAdmins(response.data.counts.totalAdmins);
-        setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
-        setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
-        setTotalEnabled(response.data.counts.totalEnabledAdmins);
-        setTotalDisabled(response.data.counts.totalDisabledAdmins);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getSuperAdminCountsType2());
+    if (loadingType2 === 1) {
+      setTotalAdmins(countsType2.totalAdmins);
+      setTotalVerifiedAdmins(countsType2.totalVerifiedAdmins);
+      setTotalUnverifiedAdmins(countsType2.totalUnverifiedAdmins);
+      setTotalEnabled(countsType2.totalEnabledAdmins);
+      setTotalDisabled(countsType2.totalDisabledAdmins);
+      setOpen(false);
+    }
   };
 
   useEffect(() => {
@@ -48,8 +44,11 @@ function SuperAdminWalletScreen(props) {
       template: "",
       saved: "",
     });
-    getCounts();
   }, []);
+
+  useEffect(() => {
+    getCounts();
+  }, [loadingType2]);
   return (
     <div className="container">
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">

@@ -12,11 +12,11 @@ function PropertiesAccordian({
 
     return (
         <div>
-            <Accordion style={{ backgroundColor: "black" }}>
+            <Accordion sx={{ backgroundColor: "black" }}>
                 <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                     <Typography
                         variant="body1"
-                        style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                        sx={{ color: "#F64D04", fontFamily: "orbitron" }}
                     >
                         <BlurLinearIcon />
                         <strong> Properties</strong>

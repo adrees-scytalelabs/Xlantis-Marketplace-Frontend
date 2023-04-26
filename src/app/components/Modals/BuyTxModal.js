@@ -1,8 +1,7 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Backdrop, Badge, Divider, Fade, Modal, ThemeProvider, Typography, createTheme } from '@mui/material';
-import axios from "axios";
 import React, { useEffect, useState } from "react";
-
+import { getDropTxCostSummary } from "../API/AxiosInterceptor";
 const styles = {
   modal: {
     display: "flex",
@@ -10,7 +9,6 @@ const styles = {
     justifyContent: "center",
   },
   paper: {
-
     border: "1px solid #fff",
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
@@ -44,7 +42,6 @@ const styles = {
     textAlign: "center",
   },
   wrapper: {
-
     padding: "4px 0px",
   },
   buttons: {
@@ -159,9 +156,7 @@ let data = {
 
 //console.log("json: ", data);
 
-
 const BuyTxModal = (props) => {
-
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
 
@@ -179,27 +174,22 @@ const BuyTxModal = (props) => {
   };
 
   const getTxSummary = (dropId) => {
-
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
+    getDropTxCostSummary(dropId)
+      .then((response) => {
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        data.collections.totalCollectionsToCreate =
+          response.data.collectionTxSummary.collectionCount;
         data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
         data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
         data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
         data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-
-
-
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -225,16 +215,11 @@ const BuyTxModal = (props) => {
             <div sx={styles.paper}>
               <div className="row no-gutters mb-3">
                 <div className="col-12 align-self-center">
-                  <Typography
-                    variant="h4"
-
-                    sx={styles.cardHeading}
-                  >
+                  <Typography variant="h4" sx={styles.cardHeading}>
                     Purchase Summary
                   </Typography>
                 </div>
               </div>
-
 
               <Divider />
 
@@ -250,22 +235,16 @@ const BuyTxModal = (props) => {
                   <Typography sx={styles.heading}>
                     Payment Token Approval <Badge badgeContent={4} color="primary" />
                   </Typography>
-                </AccordionSummary><AccordionDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {1}
                       </p>
                     </div>
@@ -274,19 +253,12 @@ const BuyTxModal = (props) => {
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle} >
                         Total Approval
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {1}
 
                       </p>
@@ -297,21 +269,13 @@ const BuyTxModal = (props) => {
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Estimated Gas
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {props.isOpen ? (props.dropData.data[0].estimatedGas) : (2150)}
-
                       </p>
                     </div>
                   </div>
@@ -341,12 +305,8 @@ const BuyTxModal = (props) => {
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p style={styles.cardTitle}>
                         {1}
-
                       </p>
                     </div>
                   </div>
@@ -355,25 +315,17 @@ const BuyTxModal = (props) => {
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Estimated Gas
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {props.isOpen ? (props.dropData.data[1].estimatedGas) : (1129)}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
-
               </Accordion>
               <Divider />
               <div className="mt-5">
@@ -381,19 +333,12 @@ const BuyTxModal = (props) => {
                   className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}
                 >
                   <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-
-                      sx={styles.cardTitle}
-                    >
+                    <Typography variant="h6" sx={styles.cardTitle} >
                       total cost
                     </Typography>
                   </div>
                   <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      sx={styles.cardTitle}
-
-                    >
+                    <p sx={styles.cardTitle}>
                       $115,780.00
                     </p>
                   </div>
@@ -402,11 +347,7 @@ const BuyTxModal = (props) => {
                   className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}
                 >
                   <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-
-                      sx={styles.cardTitle}
-                    >
+                    <Typography variant="h6" sx={styles.cardTitle}>
                       Estimated Time
                     </Typography>
                   </div>

@@ -1,9 +1,9 @@
-import { Grid } from '@mui/material';
-import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { getCollections } from '../../../../components/API/AxiosInterceptor';
 import NFTCard from '../../../../components/Cards/NFTCard';
+import { Grid } from "@mui/material";
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
@@ -17,13 +17,13 @@ function CollectionNfts(props) {
     let getCollectionNfts = () => {
         handleShowBackdrop();
 
-        axios.get("/collection/collections/" + collectionId).then(
-            (response) => {
+        getCollections(collectionId)
+            .then((response) => {
                 console.log("response", response);
                 setTokenList(response.data.Nftsdata);
                 handleCloseBackdrop();
-            },
-            (error) => {
+            })
+            .catch((error) => {
                 if (process.env.NODE_ENV === "development") {
                     console.log(error);
                     console.log(error.response);

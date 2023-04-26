@@ -1,7 +1,7 @@
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { Accordion, AccordionDetails, AccordionSummary, Alert, Backdrop, Badge, Divider, Fade, Modal, ThemeProvider, Typography, createTheme } from '@mui/material';
-import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { getDropTxCostSummarySSO } from "../API/AxiosInterceptor";
 
 const styles = {
   modal: {
@@ -10,7 +10,6 @@ const styles = {
     justifyContent: "center",
   },
   paper: {
-
     border: "1px solid #fff",
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
@@ -44,7 +43,6 @@ const styles = {
     textAlign: "center",
   },
   wrapper: {
-
     padding: "4px 0px",
   },
   buttons: {
@@ -158,9 +156,7 @@ let data = {
 
 //console.log("json: ", data);
 
-
 const BidTxModal = (props) => {
-
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
 
@@ -178,28 +174,23 @@ const BidTxModal = (props) => {
   };
 
   const getTxSummary = (dropId) => {
-
-    axios.get(`v1-sso/drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
+    getDropTxCostSummarySSO(dropId)
+      .then((response) => {
         console.log("response", response);
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        data.collections.totalCollectionsToCreate =
+          response.data.collectionTxSummary.collectionCount;
         data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
         data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
         data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
         data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-
-
-
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -225,16 +216,11 @@ const BidTxModal = (props) => {
             <div sx={styles.paper}>
               <div className="row no-gutters mb-3">
                 <div className="col-12 align-self-center">
-                  <Typography
-                    variant="h4"
-
-                    sx={styles.cardHeading}
-                  >
+                  <Typography variant="h4" sx={styles.cardHeading}>
                     Purchase Summary
                   </Typography>
                 </div>
               </div>
-
 
               <Divider />
 
@@ -250,22 +236,16 @@ const BidTxModal = (props) => {
                   <Typography sx={styles.heading}>
                     Payment Token Approval <Badge badgeContent={4} color="primary" />
                   </Typography>
-                </AccordionSummary><AccordionDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {1}
                       </p>
                     </div>
@@ -274,21 +254,13 @@ const BidTxModal = (props) => {
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Total Approval
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {1}
-
                       </p>
                     </div>
                   </div>
@@ -297,19 +269,12 @@ const BidTxModal = (props) => {
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Estimated Gas
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p className={styles.cardTitle}>
                         {props.isOpen ? (props.dropData.data[0].estimatedGas) : (2150)}
                       </p>
                     </div>
@@ -328,7 +293,7 @@ const BidTxModal = (props) => {
                   id="panel1a-header"
                 >
                   <Typography sx={styles.heading}>Bid On NFT</Typography>
-                </AccordionSummary><AccordionDetails>
+                </AccordionSummary > <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
                       <Typography
@@ -340,25 +305,17 @@ const BidTxModal = (props) => {
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        sx={styles.cardTitle}
-
-                      >
+                      <p sx={styles.cardTitle}>
                         {1}
-
                       </p>
-                    </div>
-                  </div>
-                </AccordionDetails>
+                    </div >
+                  </div >
+                </AccordionDetails >
 
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-
-                        sx={styles.cardTitle}
-                      >
+                      <Typography variant="h6" sx={styles.cardTitle}>
                         Estimated Gas
                       </Typography>
                     </div>
@@ -370,10 +327,9 @@ const BidTxModal = (props) => {
                         {props.isOpen ? (props.dropData.data[1].estimatedGas) : (2150)}
                       </p>
                     </div>
-                  </div>
-                </AccordionDetails>
-
-              </Accordion>
+                  </div >
+                </AccordionDetails >
+              </Accordion >
               <Divider />
               <div className="mt-5">
                 <div
@@ -395,8 +351,8 @@ const BidTxModal = (props) => {
                     >
                       $115,780.00
                     </p>
-                  </div>
-                </div>
+                  </div >
+                </div >
                 <div
                   className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}
                 >
@@ -416,9 +372,9 @@ const BidTxModal = (props) => {
                     >
                       1min 30sec
                     </p>
-                  </div>
-                </div>
-              </div>
+                  </div >
+                </div >
+              </div >
               <Divider />
               <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
                 <div className="col-12 col-sm-6 pr-sm-2">
@@ -456,11 +412,11 @@ const BidTxModal = (props) => {
                   )}
                 </div>
               </div>
-            </div>
-          </Fade>
-        </Modal>
-      </ThemeProvider>
-    </div>
+            </div >
+          </Fade >
+        </Modal >
+      </ThemeProvider >
+    </div >
   );
 };
 

@@ -8,7 +8,7 @@ const TypographyText = (props) => {
     <Typography
       variant={props.variant}
       color={props.color}
-      className={props.class ? props.class : null}
+      sx={props.class ? props.class : null}
       component={props.component ? props.component : null}
       style={props.style ? props.style : null}
     >

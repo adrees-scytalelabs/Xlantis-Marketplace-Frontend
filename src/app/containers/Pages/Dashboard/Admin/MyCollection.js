@@ -7,7 +7,7 @@ import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
-const useStyles ={
+const useStyles = {
   root: {
     minWidth: 250,
     backgroundColor: "black",

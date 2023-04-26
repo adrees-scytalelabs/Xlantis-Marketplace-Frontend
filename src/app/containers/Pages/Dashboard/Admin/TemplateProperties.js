@@ -16,7 +16,7 @@ function TemplateProperties(props) {
       template: "active",
       saved: "active",
     }); 
-    navigate({ pathname: "/superAdminDashboard/properties/savedTemplate" });
+    navigate("/superAdminDashboard/properties/savedTemplate");
   }, []);
   return (
     <div className="backgroundDefault">

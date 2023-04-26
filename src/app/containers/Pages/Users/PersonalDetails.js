@@ -1,7 +1,11 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import {
+  confirmUserPhoneNumber,
+  resendVerificationCode,
+  userSignUp,
+} from "../../../components/API/AxiosInterceptor";
 
 class PersonalDetails extends Component {
   constructor(props) {
@@ -39,8 +43,7 @@ class PersonalDetails extends Component {
       email: this.state.email,
     };
 
-    axios
-      .post("/api/v1/auth/user/confirmphonenumber", userData)
+    confirmUserPhoneNumber(userData)
       .then((response) => {
         console.log("response", response);
         if (response.status === 200)
@@ -71,8 +74,7 @@ class PersonalDetails extends Component {
     };
     console.log("clicked");
 
-    axios
-      .post("/api/v1/auth/user/resendverificationcode", userData)
+    resendVerificationCode(userData)
       .then((response) => {
         console.log("response", response);
         if (response.status === 200)
@@ -113,8 +115,7 @@ class PersonalDetails extends Component {
       };
       console.log(userData);
 
-      axios
-        .post("/v1-sso/user/auth/signup", userData)
+      userSignUp(userData)
         .then((response) => {
           console.log("response", response);
           if (response.status === 200)

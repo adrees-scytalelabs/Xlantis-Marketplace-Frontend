@@ -1,8 +1,8 @@
 import { Tooltip } from '@mui/material';
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
+import { superAdminTemplateUpdate } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
 
 function TemplateDetails(props) {
@@ -56,24 +56,21 @@ function TemplateDetails(props) {
     };
     try {
       console.log(data);
-      axios.put(`/super-admin/template`, data).then(
-        (response) => {
+      superAdminTemplateUpdate(data)
+        .then((response) => {
           console.log(response);
           let variant = "success";
           enqueueSnackbar("Template Updated Successfully", { variant });
           handleCloseBackdrop();
           props.handleClose();
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error on status pending nft: ", error);
           console.log("Error on status pending nft: ", error.response);
-
           handleCloseBackdrop();
-
           let variant = "error";
           enqueueSnackbar("Unable to update the template.", { variant });
-        }
-      );
+        });
     } catch (e) {
       console.log("Something wrong with updation", e);
     }

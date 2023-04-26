@@ -66,7 +66,7 @@ function App() {
 
   const PrivateRoute = ({ path, ...rest }) => {
     console.log("...rest", rest);
-    console.log("jwtDecoded",jwtDecoded);
+    console.log("jwtDecoded", jwtDecoded);
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (
@@ -145,6 +145,10 @@ function App() {
         <FixedPriceDropNFTs />
       ) : path === "/fixedDropNFTHome/:singleNFTid" ? (
         <FixedDropSingleNFTHome />
+      ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
+        <UserSettings />
+      ) : path === "/admin/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "admin"  ? (
+        <AdminSettings />
       ) : (
         <HomeScreen />
       )
@@ -171,33 +175,13 @@ function App() {
             <Route path="/fixedDropNFTHome/:singleNFTid" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />} />
             <Route path="/fixedDropNFTHome" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />} />
             <Route path="/fixdropnft/:dropId" element={<LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" />} />
-            <Route path="/users/emailverification/:email/:token" render={(routeProps) => <EmailVerification {...routeProps} />} />
+            <Route path="/users/emailverification/:email/:token" element={<EmailVerification />} />
             <Route path="/termsandconditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/dashboard/*" element={<PrivateRoute path="/dashboard/*" />} />
             <Route path="/superAdminDashboard/*" element={<PrivateRoute path="/superAdminDashboard/*" />} />
-            <Route
-              exact
-              path="/user/settings"
-              render={(routeProps) =>
-                isLoggedIn && jwtDecoded.role === "user" ? (
-                  <UserSettings {...routeProps} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
-            <Route
-              exact
-              path="/admin/settings"
-              render={(routeProps) =>
-                isLoggedIn && jwtDecoded.role === "admin" ? (
-                  <AdminSettings {...routeProps} />
-                ) : (
-                  <Navigate to="/" />
-                )
-              }
-            />
+            <Route path="/user/settings" element={<LoginRegisterRedirectCheck exact path="/user/settings" />} />
+            <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
         </BrowserRouter>
       </SnackbarProvider>

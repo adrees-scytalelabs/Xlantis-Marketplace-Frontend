@@ -1,24 +1,24 @@
 
 import { ThemeProvider, createTheme } from '@mui/material';
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useParams } from "react-router-dom";
+import { getSingleNFTDetail } from "../../../../components/API/AxiosInterceptor";
 import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
+
 const styles = {
   root: {
     flexGrow: 1,
-    width: "100%",
     // backgroundColor: theme.palette.background.paper,
   },
   media: {
     width: "100%",
     paddingTop: "100%",
   },
-  
+
 }
 
 const makeTheme = createTheme({
@@ -56,19 +56,17 @@ const SingleNftDetail = (props) => {
   const [properties, setProperties] = useState({});
 
   let getNftDetail = () => {
-
-    axios.get(`/nft/getSingleNFT/${nftId}`).then(
-      (response) => {
+    getSingleNFTDetail(nftId)
+      .then((response) => {
         setNftDetail(response.data.data[0]);
         setProperties(response.data.data[0].properties);
         const keys = Object.keys(response.data.data[0].properties);
         setKeys(keys);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Error: ", error);
         console.log("Error response: ", error.response);
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -119,11 +117,7 @@ const SingleNftDetail = (props) => {
               <SingleNFTDetailCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
-                  <PropertiesAccordian
-                    keys={keys}
-                    properties={properties}
-                  />
-
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col>
               </Row>
             </div>

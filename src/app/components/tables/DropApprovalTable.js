@@ -1,4 +1,4 @@
-import { Button, createTheme } from "@mui/material";
+import { Button } from "@mui/material";
 import React from "react";
 import Table from "react-bootstrap/Table";
 const styles = {
@@ -37,23 +37,6 @@ const styles = {
     },
   },
 }
-
-const makeTheme = createTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
 
 
 function DropApprovalTable({

@@ -1,5 +1,4 @@
 import { Grid, TablePagination } from '@mui/material';
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -7,6 +6,7 @@ import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { getDropsPaginated } from "../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
@@ -37,21 +37,21 @@ function AuctionDrops() {
   };
   let getMyDrops = (start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/drops/${start}/${end}`).then(
-      (response) => {
+
+    getDropsPaginated(start, end)
+      .then((response) => {
         console.log("response", response);
         setTokenList(response.data.Dropdata);
         setTotalDrops(response.data.Dropscount);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
   useEffect(() => {
     getMyDrops(0, rowsPerPage);

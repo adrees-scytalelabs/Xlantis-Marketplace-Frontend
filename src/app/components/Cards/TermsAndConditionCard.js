@@ -1,14 +1,10 @@
 import { Card, CardActions, CardContent, CardHeader, Typography } from '@mui/material';
 import React from 'react';
-const styles = {
-    root: {
-    },
-}
 
 function TermsAndConditionCard() {
     return (
         <div>
-            <Card sx={styles.root}>
+            <Card >
                 <CardHeader
                     title="Terms & Conditions "
                     subheader="Last Updated: September 14, 2016"

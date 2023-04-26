@@ -1,9 +1,8 @@
-
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { getCount } from "../../../../redux/getCountSlice";
-import ListAltIcon from '@mui/icons-material/ListAlt';
 
 function AdminDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);

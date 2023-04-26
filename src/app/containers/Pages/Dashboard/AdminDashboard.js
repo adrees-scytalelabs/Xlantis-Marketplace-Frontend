@@ -1,8 +1,7 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Router, Routes, useResolvedPath } from "react-router-dom";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -29,10 +28,6 @@ import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
 import TopUp from "./Admin/TopUp";
 import SingleNftDetail from "./Admin/singleNftDetail";
-
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function AdminDashboard(props) {
   console.log("propsprops", props);

@@ -1,8 +1,8 @@
 import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
-import axios from "axios";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React,{  useEffect, useState } from "react";
 import { Link, useLocation, useResolvedPath } from "react-router-dom";
+import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
 import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
@@ -179,38 +179,36 @@ function MyNFTs(props) {
     const version = Cookies.get("Version");
 
     if (nftIdLen != 0) {
-      axios
-        .get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data)
-        .then(
-          (response) => {
-            let nfts = response.data.data;
-            let newState = nfts.map((obj) => {
-              return { ...obj, isPlaying: false };
-            });
-            setTokenList(newState);
-            setTotalNfts(response.data.data.length);
+      getNFTsFromDropPaginated(location.state.dropId, start, end, data).then(
+        (response) => {
+          let nfts = response.data.data;
+          let newState = nfts.map((obj) => {
+            return { ...obj, isPlaying: false };
+          });
+          setTokenList(newState);
+          setTotalNfts(response.data.data.length);
 
-            handleCloseBackdrop();
-          },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
-            if (error.response.data !== undefined) {
-              if (
-                error.response.data === "Unauthorized access (invalid token) !!"
-              ) {
-                sessionStorage.removeItem("Authorization");
-                sessionStorage.removeItem("Address");
-                Cookies.remove("Version");
-
-                window.location.reload(false);
-              }
-            }
-            handleCloseBackdrop();
+          handleCloseBackdrop();
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
           }
-        );
+          if (error.response.data !== undefined) {
+            if (
+              error.response.data === "Unauthorized access (invalid token) !!"
+            ) {
+              sessionStorage.removeItem("Authorization");
+              sessionStorage.removeItem("Address");
+              Cookies.remove("Version");
+
+              window.location.reload(false);
+            }
+          }
+          handleCloseBackdrop();
+        }
+      );
     } else {
       handleCloseBackdrop();
     }

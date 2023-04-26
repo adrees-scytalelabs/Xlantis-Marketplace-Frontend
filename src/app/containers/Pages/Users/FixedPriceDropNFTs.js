@@ -1,13 +1,15 @@
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { Grid } from "@mui/material";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  getNFTsFromDropPaginatedWOBody
+} from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 const FixedPriceDropNFTs = () => {
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
@@ -47,43 +49,26 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    } else {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    }
-    axios.get(endpoint).then(
-      (response) => {
-        console.log("responseresponse", response);
+
+    getNFTsFromDropPaginatedWOBody(dropId, start, end)
+      .then((response) => {
         setDropData(response.data.data);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
-  const getDropData = async (dropId) => {
-    await axios.get(`/drop/${dropId}`).then(
-      (response) => {
-        setTitleImage(response.data.dropData.image);
-        setBannerImage(response.data.dropData.bannerURL);
-        setDropTitle(response.data.dropData.title);
-      },
-      (error) => {
-        console.log("Error getting drop data", error);
-      }
-    );
-  };
   useEffect(() => {
-    getDropData(dropID.dropId);
     getNFTs(dropID.dropId, 0, 4);
+    setTitleImage(location.state.imageURL);
+    setBannerImage(location.state.bannerURL);
+    setDropTitle(location.state.dropTitle);
   }, []);
 
   return (

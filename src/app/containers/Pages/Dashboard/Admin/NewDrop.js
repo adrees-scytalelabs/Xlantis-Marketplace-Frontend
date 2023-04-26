@@ -1,6 +1,5 @@
 
 import { FormControl, ThemeProvider, createTheme } from '@mui/material';
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
@@ -8,6 +7,10 @@ import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import {
+  createNewDrop,
+  uploadImage,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
@@ -55,7 +58,6 @@ function NewDrop(props) {
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
-
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -138,23 +140,24 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/drop/`, DropData).then(
-          (response) => {
+        createNewDrop(DropData)
+          .then((response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
             dropID = response.data.dropId;
             setIsSaving(false);
             handleCloseBackdrop();
-            navigate({
-              pathname: `${path}/addNft`,
-              state: {
-                dropId: dropID,
-                saleType: saleType,
-                nftType: nftType,
+            navigate(`${path}/addNft`,
+              {
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  nftType: nftType,
+                }
               },
-            });
-          },
-          (error) => {
+            );
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -164,8 +167,7 @@ function NewDrop(props) {
             setIsSaving(false);
             let variant = "error";
             enqueueSnackbar("Unable to Create Drop.", { variant });
-          }
-        );
+          });
       }
     } else if (nftType === "721") {
       e.preventDefault();
@@ -211,23 +213,23 @@ function NewDrop(props) {
             dropType: nftType,
           };
           console.log("Drop Data", DropData);
-          axios.post(`/drop/`, DropData).then(
-            (response) => {
+          createNewDrop(DropData)
+            .then((response) => {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
               dropID = response.data.dropId;
               setIsSaving(false);
               handleCloseBackdrop();
-              navigate({
-                pathname: `${path}/addNft`,
-                state: {
-                  dropId: dropID,
-                  saleType: saleType,
-                  nftType: nftType,
-                },
-              });
-            },
-            (error) => {
+              navigate(`${path}/addNft`,
+                {
+                  state: {
+                    dropId: dropID,
+                    saleType: saleType,
+                    nftType: nftType,
+                  }
+                });
+            })
+            .catch((error) => {
               if (process.env.NODE_ENV === "development") {
                 console.log(error);
                 console.log(error.response);
@@ -237,8 +239,7 @@ function NewDrop(props) {
               setIsSaving(false);
               let variant = "error";
               enqueueSnackbar("Unable to Create Drop.", { variant });
-            }
-          );
+            });
         }
       }
     }
@@ -289,24 +290,24 @@ function NewDrop(props) {
           dropType: nftType,
         };
         console.log("Drop Data", DropData);
-        axios.post(`/drop/`, DropData).then(
-          (response) => {
+        createNewDrop(DropData)
+          .then((response) => {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
             dropID = response.data.dropId;
             setIsSaving(false);
 
             handleCloseBackdrop();
-            navigate({
-              pathname: `${path}/addNft`,
-              state: {
-                dropId: dropID,
-                saleType: saleType,
-                nftType: nftType,
-              },
-            });
-          },
-          (error) => {
+            navigate(`${path}/addNft`,
+              {
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  nftType: nftType,
+                }
+              });
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -316,14 +317,12 @@ function NewDrop(props) {
             setIsSaving(false);
             let variant = "error";
             enqueueSnackbar("Unable to Create Drop.", { variant });
-          }
-        );
+          });
       }
     }
   };
 
   let onChangeBannerFile = async (e) => {
-    //console.log("In banner change function: ", e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       setIsUploadingBanner(true);
@@ -333,14 +332,14 @@ function NewDrop(props) {
       reader.readAsArrayBuffer(e.target.files[0]);
       let fileData = new FormData();
       fileData.append("image", imageNFT);
-      axios.post(`/upload/image`, fileData).then(
-        (response) => {
+      uploadImage(fileData)
+        .then((response) => {
           setBannerImage(response.data.url);
           setIsUploadingBanner(false);
           let variant = "success";
           enqueueSnackbar("Image Uploaded Successfully", { variant });
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -348,8 +347,7 @@ function NewDrop(props) {
           setIsUploadingBanner(false);
           let variant = "error";
           enqueueSnackbar("Unable to Upload Image", { variant });
-        }
-      );
+        });
     }
   };
 
@@ -361,14 +359,14 @@ function NewDrop(props) {
     reader.readAsArrayBuffer(e.target.files[0]);
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`/upload/image`, fileData).then(
-      (response) => {
+    uploadImage(fileData)
+      .then((response) => {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
         enqueueSnackbar("Image Uploaded Successfully", { variant });
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -376,8 +374,7 @@ function NewDrop(props) {
         setIsUploadingIPFS(false);
         let variant = "error";
         enqueueSnackbar("Unable to Upload Image", { variant });
-      }
-    );
+      });
   };
   return (
     <div className="backgroundDefault">
@@ -410,6 +407,7 @@ function NewDrop(props) {
                       changeFile={onChangeBannerFile}
                       class="co-12 col-md-auto drop-banner-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadDropBannerImg"
                     />
                   </div>
                   <div className="form-group">
@@ -420,6 +418,7 @@ function NewDrop(props) {
                       changeFile={onChangeFile}
                       class="co-12 col-md-auto profile-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadPreviewImg"
                     />
                   </div>
 
@@ -468,7 +467,6 @@ function NewDrop(props) {
                         type={nftType}
                         radioType="nft"
                       />
-
                     </FormControl>
                   </ThemeProvider>
                 </div>
@@ -483,7 +481,6 @@ function NewDrop(props) {
           handleSubmitEvent={handleSubmitEvent}
           handleSubmitEventMetamask={handleSubmitEventMetamask}
         />
-
       </div>
       <NetworkErrorModal
         show={showNetworkModal}

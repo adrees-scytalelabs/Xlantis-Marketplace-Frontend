@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState } from "react";
 import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
@@ -18,9 +17,6 @@ import MyDrops from "./User/MyDrops";
 import MyNFTs from "./User/MyNFTs";
 import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function UserDashboard(props) {
   const path = useResolvedPath("").pathname;

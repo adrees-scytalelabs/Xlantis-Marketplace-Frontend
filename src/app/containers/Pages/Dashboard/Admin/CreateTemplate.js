@@ -1,7 +1,10 @@
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import {
+  createNewSuperAdminTemplates,
+  getIsAvailableTemplates,
+} from "../../../../components/API/AxiosInterceptor";
 import SuperAdminCreateTemplate from "../../../../components/Utils/SuperAdminCreateTemplate";
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -13,22 +16,21 @@ function CreateTemplate(props) {
   let handleAvailibility = (e) => {
     e.preventDefault();
     let name = e.target.value;
-    axios.get(`/nft-properties/template/is-available/${name}`).then(
-      (response) => {
+    getIsAvailableTemplates(name)
+      .then((response) => {
         if (!response.data.isAvailable) {
           setValid("is-valid");
         } else {
           setValid("is-invalid");
         }
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           setValid("is-invalid");
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -64,16 +66,16 @@ function CreateTemplate(props) {
       data: properties,
     };
     try {
-      axios.post("/super-admin/template", templateData).then(
-        (response) => {
+      createNewSuperAdminTemplates(templateData)
+        .then((response) => {
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
           handleCloseBackdrop();
           let variant = "success";
           enqueueSnackbar("New Template Created Successfully", { variant });
           setValid("");
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -82,8 +84,7 @@ function CreateTemplate(props) {
 
           let variant = "error";
           enqueueSnackbar("Unable to Create Template", { variant });
-        }
-      );
+        });
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }

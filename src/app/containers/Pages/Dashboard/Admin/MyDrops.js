@@ -2,7 +2,7 @@
 import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DropsPage from "./DropsPage";
 
 function TabPanel(props) {
@@ -61,6 +61,7 @@ const styles = {
 }
 
 const MyDrops = (props) => {
+  let location = useLocation();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -72,6 +73,11 @@ const MyDrops = (props) => {
   };
 
   useEffect(() => {
+    if (location.state != null) {
+      console.log("i am here");
+      console.log("this is location of drop", location)
+      setValue(location.state.value);
+    }
     props.setActiveTab({
       dashboard: "",
       newCollection: "",

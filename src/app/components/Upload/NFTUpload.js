@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
@@ -75,6 +75,7 @@ const NFTUpload = (props) => {
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
             accept=".png,.jpg,.jpeg,.gif"
+            inputId="uploadPreviewImg1"
           />
         </div>
       ) : props.isMp3File ? (
@@ -129,6 +130,7 @@ const NFTUpload = (props) => {
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
             accept=".png,.jpg,.jpeg,.gif"
+            inputId="uploadPreviewImg"
           />
         </div>
       ) : (
@@ -139,6 +141,7 @@ const NFTUpload = (props) => {
             changeFile={props.onChangeFile}
             class="co-12 col-md-auto profile-img mr-3"
             accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+            inputId="upload"
           />
         </div>
       )}

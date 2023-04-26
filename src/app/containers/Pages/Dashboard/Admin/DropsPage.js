@@ -1,11 +1,11 @@
 import { Grid, TablePagination } from '@mui/material';
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { getMyDrop } from "../../../../redux/getMyDropsSlice";
 const styles = {
   root: {},
   media: {
@@ -54,6 +54,8 @@ function DropsPage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
+  const { myDropsData, loading } = useSelector((store) => store.getMyDrops);
+  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -63,36 +65,20 @@ function DropsPage(props) {
   };
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
-      (response) => {
-        setTokenList(response.data.data);
-        setTotalDrops(response.data.data.length);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+    dispatch(getMyDrop({ status, start, end }));
+    if (loading === 1) {
+      setTokenList(myDropsData);
+      setTotalDrops(myDropsData.length);
+      handleCloseBackdrop();
+    }
+    if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
-  }, []);
+  }, [loading]);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);

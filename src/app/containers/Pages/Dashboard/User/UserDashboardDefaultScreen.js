@@ -1,16 +1,16 @@
 import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { useResolvedPath } from 'react-router-dom';
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { getUserCount } from "../../../../redux/getUserCount";
 import { getUserProfile } from "../../../../redux/getUserProfileSlice";
-import { useResolvedPath } from 'react-router-dom';
 function UserDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
   const { nftCount } = useSelector((store) => store.userCount);
-  const { userData } = useSelector((store) => store.userProfile);
+  const { userData, loading } = useSelector((store) => store.userProfile);
   const dispatch = useDispatch();
   const path = useResolvedPath("").pathname;
   useEffect(() => {
@@ -19,9 +19,12 @@ function UserDashboardDefaultScreen(props) {
   }, [nftCount]);
 
   useEffect(() => {
-    dispatch(getUserProfile());
-    setUserName(userData);
-  }, [userData]);
+    let userLogin = sessionStorage.getItem("Authorization");
+    if (userLogin != "undefined") {
+      dispatch(getUserProfile());
+      setUserName(userData.username);
+    }
+  }, [loading]);
 
   useEffect(() => {
     props.setActiveTab({

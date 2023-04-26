@@ -1,25 +1,27 @@
 
 import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
+import {
+  getBuyNFTTxCostSummarySSO, marketplaceBuyVersioned,
+} from "../../../../components/API/AxiosInterceptor";
 import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
-import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import BuyButton from "../../../../components/buttons/Buy";
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 
 const styles = {
   root: {
@@ -81,18 +83,17 @@ const NFTBuy = (props) => {
   const handleOpenModal = async (e) => {
     const dropId = nftDetail.dropId;
     const nftId = nftDetail._id;
-    axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
-      (response) => {
+    getBuyNFTTxCostSummarySSO(dropId, nftId)
+      .then((response) => {
         setData(response.data.data);
         setMOdalOpen(true);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   const handleCloseModal = () => {
@@ -218,20 +219,19 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuyVersioned(versionB, data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
+                    });
 
                   if (err !== null) {
                     console.log("err", err);
@@ -273,20 +273,19 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuyVersioned(versionB, data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
+                    });
 
                   if (err !== null) {
                     console.log("err", err);
@@ -367,14 +366,14 @@ const NFTBuy = (props) => {
       nftId: nftDetail._id,
     };
     handleCloseModal();
-    axios.post(`/${versionB}/marketplace/buy`, data).then(
-      (response) => {
+    marketplaceBuyVersioned(versionB, data)
+      .then((response) => {
         console.log("nft buy response", response.data);
         let variant = "success";
         enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -393,10 +392,8 @@ const NFTBuy = (props) => {
             window.location.reload();
           }
         }
-      }
-    );
+      });
   }
-
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -447,7 +444,6 @@ const NFTBuy = (props) => {
                     properties={properties}
                     key={Object.keys(properties)}
                   />
-
                 </Col>
               </Row>
               <br></br>
@@ -459,7 +455,6 @@ const NFTBuy = (props) => {
                 handleOpenModal={handleOpenModal}
                 handleBuy={handleBuy}
               />
-
             </div>
           </div>
         </div>

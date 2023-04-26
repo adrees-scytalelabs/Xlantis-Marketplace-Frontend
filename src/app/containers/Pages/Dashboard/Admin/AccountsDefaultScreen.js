@@ -3,12 +3,12 @@ import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import {
-  getSSOAdmins,
-  getWalletAdmins,
   handleModalClose,
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSuperAdminAccountType1,getSuperAdminAccountType2 } from "../../../../redux/getSuperAdminAccountsSlice";
 function AccountsDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
   const [walletAdmins, setWalletAdmins] = useState([]);
@@ -19,15 +19,51 @@ function AccountsDefaultScreen(props) {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
+  const {
+    accountType1Data,
+  accountType1Loading,
+  accountType2Data,
+  accountType2Loading
+  } = useSelector((store) => store.getSuperAdminAccounts);
+const dispatch = useDispatch();
+
+const getSSOAdmins = (start, end) => {
+  setOpen(true);
+  dispatch(getSuperAdminAccountType1({start,end}));
+  if(accountType1Loading===1){
+      setAdmins(accountType1Data);
+      setAdminCount(accountType1Data.length);
+      setOpen(false);
+    }
+    else if(accountType1Loading===2){
+      setOpen(false);
+    }
+};
+
+useEffect(() => {
+  getSSOAdmins(0, rowsPerPage);
+}, [accountType1Loading]);
+
+const getWalletAdmins = (
+  start,
+  end,
+) => {
+  setOpen(true);
+  dispatch(getSuperAdminAccountType2({start,end}))
+  if(accountType2Loading===1) {
+      setWalletAdmins(accountType2Data);
+      setWalletAdminCount(accountType2Data.length);
+      setOpen(false);
+    }
+    else if(accountType2Loading===2){
+      setOpen(false);
+    }
+};
+useEffect(() => {
+  getWalletAdmins(0, rowsPerPage);
+}, [accountType2Loading]);
+
   useEffect(() => {
-    getWalletAdmins(
-      0,
-      rowsPerPage,
-      setOpen,
-      setWalletAdmins,
-      setWalletAdminCount
-    );
-    getSSOAdmins(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
     setShow(false);
     props.setActiveTab({
       dashboard: "",
@@ -46,9 +82,6 @@ function AccountsDefaultScreen(props) {
     getSSOAdmins(
       newPage * rowsPerPage,
       newPage * rowsPerPage + rowsPerPage,
-      setOpen,
-      setAdmins,
-      setAdminCount
     );
   };
   const handleChangeRowsPerPage = (event) => {
@@ -56,9 +89,6 @@ function AccountsDefaultScreen(props) {
     getSSOAdmins(
       0,
       parseInt(event.target.value, 10),
-      setOpen,
-      setAdmins,
-      setAdminCount
     );
     setPage(0);
   };

@@ -1,20 +1,22 @@
-import { TablePagination } from '@mui/material';
-import axios from "axios";
+
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
+import {
+  approveCollection,
+  getMyCollectionsPaginated,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
-
+import { TablePagination } from "@mui/material";
 
 function DropApproval(props) {
-
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
@@ -39,7 +41,6 @@ function DropApproval(props) {
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
-
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -138,17 +139,19 @@ function DropApproval(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
+          approveCollection(approvalData)
+            .then((response) => {
               setIsAuctionApproved(true);
               setApprovingAuction(false);
-            },
-            (err) => {
-              console.log("Err from auction approval: ", err);
-              console.log("Err response from auction approval: ", err.response);
+            })
+            .catch((error) => {
+              console.log("Err from auction approval: ", error);
+              console.log(
+                "Err response from auction approval: ",
+                error.response
+              );
               setApprovingAuction(false);
-            }
-          );
+            });
         });
     }
   };
@@ -209,9 +212,8 @@ function DropApproval(props) {
               collectionId: i._id,
               factoryType: "fixed-price",
             };
-
-            axios.put(`/collection/approve`, approvalData).then(
-              (response) => {
+            approveCollection(approvalData)
+              .then((response) => {
                 let variant = "success";
                 enqueueSnackbar(
                   "Collection Approved For Fixed Price Successfully",
@@ -219,18 +221,17 @@ function DropApproval(props) {
                 );
                 setIsFixedPriceApproved(true);
                 setApprovingFixedPrice(false);
-              },
-              (err) => {
+              })
+              .catch((error) => {
                 let variant = "error";
                 enqueueSnackbar("Unable to approve collection", { variant });
-                console.log("Err from approval Fixed-price: ", err);
+                console.log("Err from approval Fixed-price: ", error);
                 console.log(
                   "Err response from approval Fixed-price: ",
-                  err.response
+                  error.response
                 );
                 setApprovingFixedPrice(false);
-              }
-            );
+              });
           });
       }
     } catch (e) {
@@ -241,8 +242,7 @@ function DropApproval(props) {
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
     setOpen(true);
-    axios
-      .get(`/collection/myCollections/${start}/${end}`)
+    getMyCollectionsPaginated(start, end)
       .then((response) => {
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
@@ -267,7 +267,6 @@ function DropApproval(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -291,8 +290,6 @@ function DropApproval(props) {
             giveAuctionApproval={giveAuctionApproval}
             giveFixedPriceApproval={giveFixedPriceApproval}
           />
-
-
         </div>
       </div>
 
