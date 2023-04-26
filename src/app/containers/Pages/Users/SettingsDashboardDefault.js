@@ -369,7 +369,7 @@ function SettingDashboardDefault(props) {
                     {Cookies.get("Version") != "v2-wallet-login" && (
                       <ProfileDetailInput
                         type="email"
-                        label="Emial"
+                        label="Email"
                         placeholder="Enter Email"
                         set={setEmail}
                         value={email}

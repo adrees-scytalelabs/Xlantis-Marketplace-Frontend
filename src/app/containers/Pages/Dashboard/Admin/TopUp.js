@@ -1,5 +1,5 @@
 import { useSnackbar } from "notistack";
-import { default as React, default as React, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { topUpAmount } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";

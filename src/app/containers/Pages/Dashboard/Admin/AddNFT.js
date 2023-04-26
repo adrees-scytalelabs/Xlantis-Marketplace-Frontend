@@ -5,18 +5,19 @@ import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-
 import { Link, useHistory, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import {
   addNFTToDrop,
   finalizeDrop,
+  getCollections,
+  getDropTxCostSummary,
   getNFTsThroughId,
   getValidateAdminBalance,
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash
+  updateDropTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -33,6 +34,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -203,6 +205,17 @@ function AddNFT(props) {
   };
   const handleOpenModal = async (e) => {
     await handleTimeEvent(e);
+    getDropTxCostSummary(dropId)
+      .then((response) => {
+        setData(response.data.data);
+        setMOdalOpen(true);
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+      });
   };
 
   const handleRedirect = () => {
@@ -218,7 +231,8 @@ function AddNFT(props) {
     setMOdalOpen(false);
     setTransactionModal(true);
   };
-  let getCollections = () => {
+
+  let getCollection = () => {
     const version = Cookies.get("Version");
 
     getCollections(location.state.nftType)
@@ -411,7 +425,7 @@ function AddNFT(props) {
     }
   };
   const getTxCost = async (e) => {
-    axios.get(`/drop/${dropId}/tx-cost-summary`).then(
+    Axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
         setData(response.data.data);
         setMOdalOpen(true);
@@ -690,7 +704,6 @@ function AddNFT(props) {
             variant,
           });
           handleCloseBackdrop();
-          setbuttonName("updatebttn");
         })
         .catch((error) => {
           if (process.env.NODE_ENV === "development") {
@@ -961,7 +974,7 @@ function AddNFT(props) {
         <div className="row">
           <div className="col-md-12 col-lg-6">
             <form>
-              <div className="form-group" key={key}>
+              <div className="form-group">
                 <Autocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
@@ -1014,7 +1027,6 @@ function AddNFT(props) {
                 )}
 
                 <SelectSupplyAndPrice
-                  price={price}
                   nftType={nftType}
                   nftTokenSupply={nftTokenSupply}
                   values={supply}
@@ -1085,7 +1097,6 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
-          buttonName={buttonName}
         />
       </div>
       <NetworkErrorModal
