@@ -1,13 +1,11 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import "react-intl-tel-input/dist/main.css";
+import { adminLoginThroughSSO } from "../../../components/API/AxiosInterceptor";
 import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
-
-
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -25,12 +23,10 @@ const AdminLoginSignupForms = () => {
     setIsActive(!isActive);
   };
 
-
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      axios
-        .post("/v1-sso/user/auth/admin-login", { idToken: account })
+      adminLoginThroughSSO({ idToken: account })
         .then((response) => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
@@ -68,7 +64,6 @@ const AdminLoginSignupForms = () => {
   }, [account]);
 
   useEffect(() => {
-
     if (adminSignInData !== null) {
       if (
         adminSignInData.isInfoAdded === true &&
@@ -86,12 +81,10 @@ const AdminLoginSignupForms = () => {
   adminSignInData &&
     console.log("jwt after submission: //// ", adminSignInData);
 
-
   return (
     <>
       <div className="row no-gutters w-100">
         <div className="adminCredWrapper">
-
           <div
             className={
               isActive
@@ -119,7 +112,10 @@ const AdminLoginSignupForms = () => {
             }
           >
             <div className="adminSignupContainer">
-              <AdminSignUpForm setPhoneNum={setPhoneNum} handleSetActive={handleSetActive} />
+              <AdminSignUpForm
+                setPhoneNum={setPhoneNum}
+                handleSetActive={handleSetActive}
+              />
             </div>
           </div>
         </div>

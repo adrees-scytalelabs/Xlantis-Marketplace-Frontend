@@ -1,9 +1,7 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { useDispatch, useSelector } from 'react-redux';
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { getCount } from "../../../../redux/getCountSlice";
 
 function AdminDashboardDefaultScreen(props) {

@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
 import Modal from "@material-ui/core/Modal";
+import { makeStyles } from "@material-ui/core/styles";
 
-import Fade from "@material-ui/core/Fade";
+import { Backdrop, createTheme, ThemeProvider } from "@material-ui/core";
 import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
 import AccordionDetails from "@material-ui/core/AccordionDetails";
+import AccordionSummary from "@material-ui/core/AccordionSummary";
+import Badge from "@material-ui/core/Badge";
+import Divider from "@material-ui/core/Divider";
+import Fade from "@material-ui/core/Fade";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import { Backdrop, createTheme, ThemeProvider } from "@material-ui/core";
 import Alert from "@material-ui/lab/Alert";
-import Badge from "@material-ui/core/Badge";
-import axios from "axios";
-
-
+import { getDropTxCostSummary } from "../API/AxiosInterceptor";
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -24,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
   },
   paper: {
-    
     border: "1px solid #fff",
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
@@ -58,7 +55,6 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   wrapper: {
-    
     padding: "4px 0px",
   },
   buttons: {
@@ -172,9 +168,7 @@ let data = {
 
 //console.log("json: ", data);
 
-
 const AcceptBidTxModal = (props) => {
-  
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(false);
   const classes = useStyles();
@@ -193,28 +187,23 @@ const AcceptBidTxModal = (props) => {
   };
 
   const getTxSummary = (dropId) => {
-    
-    axios.get(`drop/${dropId}/tx-cost-summary`).then(
-      (response) => {
+    getDropTxCostSummary(dropId)
+      .then((response) => {
         console.log("response", response);
         data.collections.noOfTxs = response.data.collectionTxSummary.txsCount;
-        data.collections.totalCollectionsToCreate = response.data.collectionTxSummary.collectionCount;
+        data.collections.totalCollectionsToCreate =
+          response.data.collectionTxSummary.collectionCount;
         data.nfts.noOfTxs = response.data.NFTsTxSummary.txsCount;
         data.nfts.totalNftsToMint = response.data.NFTsTxSummary.NFTCount;
         data.approval.noOfTxs = response.data.approvalTxSummary.txsCount;
         data.drop.noOfTxs = response.data.dropTxSummary.txsCount;
-        
-        
-      
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-        
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -240,17 +229,13 @@ const AcceptBidTxModal = (props) => {
             <div className={classes.paper}>
               <div className="row no-gutters mb-3">
                 <div className="col-12 align-self-center">
-                  <Typography
-                    variant="h4"
-                    
-                    className={classes.cardHeading}
-                  >
+                  <Typography variant="h4" className={classes.cardHeading}>
                     Purchase Summary
                   </Typography>
                 </div>
               </div>
               <Divider />
-              
+
               <Accordion
                 expanded={expanded === "panel2"}
                 onChange={handleChange("panel2")}
@@ -263,95 +248,60 @@ const AcceptBidTxModal = (props) => {
                   <Typography className={classes.heading}>
                     Accept Bid On NFT <Badge badgeContent={4} color="primary" />
                   </Typography>
-                </AccordionSummary><AccordionDetails>
+                </AccordionSummary>
+                <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        
-                        className={classes.cardTitle}
-                      >
+                      <Typography variant="h6" className={classes.cardTitle}>
                         Number of Transactions
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        
-                      >
-                        {1} 
-                      </p>
+                      <p className={classes.cardTitle}>{1}</p>
                     </div>
                   </div>
                 </AccordionDetails>
                 <AccordionDetails>
                   <div className="row no-gutters justify-content-between w-100">
                     <div className="col-8 align-self-center">
-                      <Typography
-                        variant="h6"
-                        
-                        className={classes.cardTitle}
-                      >
+                      <Typography variant="h6" className={classes.cardTitle}>
                         Estimated Gas
                       </Typography>
                     </div>
                     <div className="col-4 align-self-center text-right p-0">
-                      <p
-                        className={classes.cardTitle}
-                        
-                      >
-                        {props.isOpen ? (props.dropData.data.estimatedGas) : (2150)}
-                        
+                      <p className={classes.cardTitle}>
+                        {props.isOpen ? props.dropData.data.estimatedGas : 2150}
                       </p>
                     </div>
                   </div>
                 </AccordionDetails>
               </Accordion>
               <Divider />
-              
-              
+
               <Divider />
               <div className="mt-5">
                 <div
                   className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                 >
                   <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-                      
-                      className={classes.cardTitle}
-                    >
+                    <Typography variant="h6" className={classes.cardTitle}>
                       total cost
                     </Typography>
                   </div>
                   <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      className={classes.cardTitle}
-                      
-                    >
-                      $115,780.00
-                    </p>
+                    <p className={classes.cardTitle}>$115,780.00</p>
                   </div>
                 </div>
                 <div
                   className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
                 >
                   <div className="col-8 align-self-center">
-                    <Typography
-                      variant="h6"
-                      
-                      className={classes.cardTitle}
-                    >
+                    <Typography variant="h6" className={classes.cardTitle}>
                       Estimated Time
                     </Typography>
                   </div>
                   <div className="col-4 align-self-center text-right p-0">
-                    <p
-                      className={classes.cardTitle}
-                      
-                    >
-                      1min 30sec
-                    </p>
+                    <p className={classes.cardTitle}>1min 30sec</p>
                   </div>
                 </div>
               </div>
@@ -374,7 +324,9 @@ const AcceptBidTxModal = (props) => {
                   ) : (
                     <button
                       className={classes.buttons}
-                      onClick={(e) => {props.handleAcceptBid(e)}}
+                      onClick={(e) => {
+                        props.handleAcceptBid(e);
+                      }}
                     >
                       Accept Bid
                     </button>

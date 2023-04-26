@@ -1,9 +1,8 @@
 import { Grid } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { getDropsPaginated } from "../../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../../components/Cards/OnAuctionDropCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 
@@ -13,20 +12,19 @@ function Drops() {
   const [open, setOpen] = useState(false);
   let getMyDrops = (start, end) => {
     setOpen(true);
-    axios.get(`/drop/drops/${start}/${end}`).then(
-      (response) => {
+    getDropsPaginated(start, end)
+      .then((response) => {
         console.log("response", response);
         setTokenList(response.data.Dropdata);
         setOpen(false);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         setOpen(false);
-      }
-    );
+      });
   };
   useEffect(() => {
     getMyDrops(0, rowsPerPage);

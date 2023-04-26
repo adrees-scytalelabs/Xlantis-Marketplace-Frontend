@@ -7,14 +7,13 @@ import {
   Paper,
   TextField,
   Typography,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { BlurLinear, ExpandMore } from "@material-ui/icons";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
 import ListIcon from "@material-ui/icons/List";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
@@ -23,6 +22,17 @@ import DateTimePicker from "react-datetime-picker";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import ReactTooltip from "react-tooltip";
 import Web3 from "web3";
+import {
+  finalizeAuctionBid,
+  getBuyNFTTxCostSummary,
+  getBuyNFTTxCostSummarySSO,
+  getDropDetails,
+  getNFTDetailInDrop,
+  marketplaceBuy,
+  marketplaceBuyVersioned,
+  sendBidData,
+  sendBidDataVersioned,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import FixedDropSingleNFTCard from "../../../../components/Cards/FixedDropSingleNFTCard";
 import Footer from "../../../../components/Footers/Footer";
@@ -230,22 +240,20 @@ const FixedDropSingleNFTHome = () => {
       let variant = "error";
       enqueueSnackbar("Bidding Value cannot be zero.", { variant });
     } else {
-      axios
-        .get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`)
-        .then(
-          (response) => {
-            console.log("response", response);
-            console.log("responeee", response.data.data.data[0]);
-            setData(response.data.data);
-            setMOdalOpen(true);
-          },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
+      getBuyNFTTxCostSummarySSO(dropId, nftId).then(
+        (response) => {
+          console.log("response", response);
+          console.log("responeee", response.data.data.data[0]);
+          setData(response.data.data);
+          setMOdalOpen(true);
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
           }
-        );
+        }
+      );
     }
   };
 
@@ -253,20 +261,20 @@ const FixedDropSingleNFTHome = () => {
     const dropId = nftData.dropId;
     const nftId = nftData._id;
     console.log("NFTDETAIL", nftData);
-    axios.get(`/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
-      (response) => {
+
+    getBuyNFTTxCostSummary(dropId, nftId)
+      .then((response) => {
         console.log("response", response);
         console.log("responeee", response.data.data.data[0]);
         setData(response.data.data);
         setMOdalOpen(true);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   let handleBidSubmit = async (event) => {
@@ -339,8 +347,8 @@ const FixedDropSingleNFTHome = () => {
         );
         let trxHash;
 
-        axios.post(`/auction/bid`, bidData).then(
-          (response) => {
+        sendBidData(bidData)
+          .then((response) => {
             console.log(
               "Response from sending bid data to backend: ",
               response
@@ -377,27 +385,25 @@ const FixedDropSingleNFTHome = () => {
                   txHash: trxHash,
                 };
 
-                axios.put(`/auction/bid/finalize`, finalizeBidData).then(
-                  (response) => {
+                finalizeAuctionBid(finalizeBidData)
+                  .then((response) => {
                     console.log("Response from finalize bid: ", response);
                     let variant = "success";
                     enqueueSnackbar("Bid Placed Successfully", { variant });
-                  },
-                  (err) => {
+                  })
+                  .catch((error) => {
                     let variant = "error";
                     enqueueSnackbar("Unable To Bid", { variant });
-                    console.log("Err from finalize bid: ", err);
-                    console.log("Err response from finalize bid: ", err);
-                  }
-                );
+                    console.log("Err from finalize bid: ", error);
+                    console.log("Err response from finalize bid: ", error);
+                  });
                 handleCloseBackdrop();
               });
-          },
-          (error) => {
+          })
+          .catch((error) => {
             console.log("Error from sending bid data to backend: ", error);
             handleCloseBackdrop();
-          }
-        );
+          });
       }
     }
   };
@@ -430,8 +436,8 @@ const FixedDropSingleNFTHome = () => {
       console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
       console.log("Bid data: ", bidData);
 
-      axios.post(`/${versionB}/auction/bid`, bidData).then(
-        (response) => {
+      sendBidDataVersioned(versionB, bidData)
+        .then((response) => {
           console.log("nft bid response", response.data);
           let variant = "success";
           enqueueSnackbar(
@@ -439,8 +445,8 @@ const FixedDropSingleNFTHome = () => {
             { variant }
           );
           handleCloseModal();
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -459,8 +465,7 @@ const FixedDropSingleNFTHome = () => {
               window.location.reload();
             }
           }
-        }
-      );
+        });
     }
   };
 
@@ -522,9 +527,6 @@ const FixedDropSingleNFTHome = () => {
     return hex;
   };
   let handlePurchase = async () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     console.log("Authorization", sessionStorage.getItem("Authorization"));
     console.log("Nft detail: ", nftData);
     let data = {
@@ -534,17 +536,16 @@ const FixedDropSingleNFTHome = () => {
     console.log("Data", data);
     console.log("Purchase Function Called");
     console.log("NFT ID");
-    axios.post(`marketplace/buy`, data).then(
-      (response) => {
+    marketplaceBuy(data)
+      .then((response) => {
         console.log("Transaction Hash sending on backend response: ", response);
         console.log("Stripe Url", response.data.stripeSession);
         localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.stripeSession);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Transaction hash on backend error: ", error.response);
-      }
-    );
+      });
   };
 
   let handleBuy = async () => {
@@ -625,21 +626,19 @@ const FixedDropSingleNFTHome = () => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuy(data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
-
+                    });
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -680,21 +679,19 @@ const FixedDropSingleNFTHome = () => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuyVersioned(versionB, data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
-
+                    });
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -730,14 +727,14 @@ const FixedDropSingleNFTHome = () => {
       nftId: nftData._id,
     };
     handleCloseModal();
-    axios.post(`/marketplace/buy`, data).then(
-      (response) => {
+    marketplaceBuy(data)
+      .then((response) => {
         console.log("nft buy response", response.data);
         let variant = "success";
         enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -756,8 +753,7 @@ const FixedDropSingleNFTHome = () => {
             window.location.reload();
           }
         }
-      }
-    );
+      });
   }
 
   const getNFTDetails = () => {
@@ -770,14 +766,15 @@ const FixedDropSingleNFTHome = () => {
     } else {
       endpoint = `/drop/nft/${singleNFTid}`;
     }
-    axios.get(endpoint).then(
-      (res) => {
+    getNFTDetailInDrop(singleNFTid)
+      .then((response) => {
         console.log(endpoint, " /// Endpoint for V2");
-        console.log("finding the price: ... ", res);
-        setNftData(res.data.data);
-      },
-      (err) => console.log("Could not get NFT details: ", err.response)
-    );
+        console.log("finding the price: ... ", response);
+        setNftData(response.data.data);
+      })
+      .catch((error) => {
+        console.log("Could not get NFT details: ", error.response);
+      });
   };
 
   let getTheDrop = () => {
@@ -788,17 +785,16 @@ const FixedDropSingleNFTHome = () => {
     } else {
       endpoint = `/drop/${dropID}`;
     }
-    axios.get(endpoint).then(
-      (res) => {
-        setTheDrop(res.data.dropData);
-        setStartTime(new Date(res.data.dropData.startTime));
-        setEndTime(new Date(res.data.dropData.endTime));
-        setDropCloneAddress(res.data.dropData.dropCloneAddress);
-      },
-      (err) => {
-        console.log("could not get the drop ", err.response);
-      }
-    );
+    getDropDetails(dropID)
+      .then((response) => {
+        setTheDrop(response.data.dropData);
+        setStartTime(new Date(response.data.dropData.startTime));
+        setEndTime(new Date(response.data.dropData.endTime));
+        setDropCloneAddress(response.data.dropData.dropCloneAddress);
+      })
+      .catch((error) => {
+        console.log("could not get the drop ", error.response);
+      });
   };
 
   useEffect(() => {

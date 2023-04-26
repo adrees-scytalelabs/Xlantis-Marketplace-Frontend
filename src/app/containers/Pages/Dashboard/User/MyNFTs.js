@@ -1,13 +1,11 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { useDispatch, useSelector } from 'react-redux';
 import { myNft } from "../../../../redux/myNftSlice";
 
 function MyNFTs(props) {
@@ -16,7 +14,7 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  const {nftData,nftCount,loading } = useSelector((store) => store.myNft);
+  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -27,14 +25,14 @@ function MyNFTs(props) {
 
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    dispatch(myNft({start,end}));
-    if(loading===1){
+    dispatch(myNft({ start, end }));
+    if (loading === 1) {
       setTokenList(nftData);
-        setTotalNfts(nftCount);
+      setTotalNfts(nftCount);
 
-        handleCloseBackdrop();
+      handleCloseBackdrop();
     }
-    else if(loading===2){
+    else if (loading === 2) {
       handleCloseBackdrop();
     }
   };
@@ -74,17 +72,17 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
-              <li className="breadcrumb-item slash" >
-                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
+              <li className="breadcrumb-item slash">
+                <Link style={{ color: "#777" }} to="/dashboard">
+                  Dashboard
+                </Link>
               </li>
               <li className="breadcrumb-item active">My NFTs</li>
             </ul>
@@ -98,7 +96,6 @@ function MyNFTs(props) {
             <WhiteSpinner />
           ) : tokenList.length === 0 ? (
             <MessageCard msg="No items to display"></MessageCard>
-
           ) : (
             <Grid container spacing={1} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (

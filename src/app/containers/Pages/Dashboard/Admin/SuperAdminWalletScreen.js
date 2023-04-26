@@ -1,8 +1,8 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
-import { useDispatch, useSelector } from 'react-redux';
 import { getSuperAdminCountsType2 } from "../../../../redux/getSuperAdminsCountsSlice";
 
 function SuperAdminWalletScreen(props) {
@@ -13,13 +13,13 @@ function SuperAdminWalletScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
-  const {countsType2,loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
+  const { countsType2, loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
   const dispatch = useDispatch();
 
   let getCounts = () => {
     setOpen(true);
     dispatch(getSuperAdminCountsType2());
-    if(loadingType2===1){
+    if (loadingType2 === 1) {
       setTotalAdmins(countsType2.totalAdmins);
       setTotalVerifiedAdmins(countsType2.totalVerifiedAdmins);
       setTotalUnverifiedAdmins(countsType2.totalUnverifiedAdmins);

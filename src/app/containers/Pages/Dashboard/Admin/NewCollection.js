@@ -1,25 +1,29 @@
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import {
+  approveCollection,
+  createNewCollection,
+  updateCollectionTxHash,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
+import Select from "../../../../components/Select/Select";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
+import UploadFile from "../../../../components/Upload/UploadFile";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import UploadFile from "../../../../components/Upload/UploadFile";
-import Select from "../../../../components/Select/Select";
-import SelectDescription from "../../../../components/Select/SelectDescription";
-import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
-import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 
 const useStyles = makeStyles((theme) => ({
@@ -157,8 +161,8 @@ function NewCollection(props) {
       let royaltyBlockchain = royaltyFee * 10000;
 
       if (nftType === "1155") {
-        axios.post(`/collection/`, fileData).then(
-          async (response) => {
+        createNewCollection(fileData)
+          .then(async (response) => {
             //console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
@@ -175,8 +179,8 @@ function NewCollection(props) {
             setIsSaving(false);
             handleCloseBackdrop();
             setIsSaving(false);
-          },
-          (error) => {
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -190,9 +194,7 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setIsSaving(false);
-            history.push({ pathname: "/dashboard/mycollection" });
-          }
-        );
+          });
       } else if (nftType === "721") {
         await loadWeb3();
         const web3 = window.web3;
@@ -203,8 +205,8 @@ function NewCollection(props) {
           setIsSaving(false);
           handleShow();
         } else {
-          axios.post(`/collection/`, fileData).then(
-            async (response) => {
+          createNewCollection(fileData)
+            .then(async (response) => {
               console.log("collection creation response", response);
               setCollectionId(response.data.collection._id);
               collectionID = response.data.collection._id;
@@ -224,24 +226,19 @@ function NewCollection(props) {
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -266,8 +263,8 @@ function NewCollection(props) {
                   setFileURL(r1);
                   handleCloseBackdrop();
                 });
-            },
-            (error) => {
+            })
+            .catch((error) => {
               if (process.env.NODE_ENV === "development") {
                 console.log(error);
                 console.log(error.response);
@@ -277,8 +274,7 @@ function NewCollection(props) {
               enqueueSnackbar("Unable to Create New Collection.", { variant });
               handleCloseBackdrop();
               setIsSaving(false);
-            }
-          );
+            });
         }
       }
     } else {
@@ -313,8 +309,8 @@ function NewCollection(props) {
 
         let royaltyBlockchain = royaltyFee * 10000;
 
-        axios.post(`/collection/`, fileData).then(
-          async (response) => {
+        createNewCollection(fileData)
+          .then(async (response) => {
             console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
@@ -343,24 +339,19 @@ function NewCollection(props) {
                       variant,
                     }
                   );
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -407,24 +398,19 @@ function NewCollection(props) {
                       variant,
                     }
                   );
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -450,8 +436,8 @@ function NewCollection(props) {
                   handleCloseBackdrop();
                 });
             }
-          },
-          (error) => {
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -461,8 +447,7 @@ function NewCollection(props) {
             enqueueSnackbar("Unable to Create New Collection.", { variant });
             handleCloseBackdrop();
             setIsSaving(false);
-          }
-        );
+          });
       }
     } else {
       let variant = "error";
@@ -488,8 +473,8 @@ function NewCollection(props) {
       factoryType: "fixed-price",
     };
 
-    axios.put(`/collection/approve`, approvalData).then(
-      (response) => {
+    approveCollection(approvalData)
+      .then((response) => {
         console.log("Response from approval of Fixed Price: ", response);
         let variant = "success";
         enqueueSnackbar("Collection Approved For Fixed Price Successfully", {
@@ -498,16 +483,15 @@ function NewCollection(props) {
         setIsFixedPriceApproved(true);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
-      },
-      (err) => {
+      })
+      .catch((error) => {
         let variant = "error";
         enqueueSnackbar("Unable to approve collection", { variant });
-        console.log("Err from approval Fixed-price: ", err);
-        console.log("Err response from approval Fixed-price: ", err.response);
+        console.log("Err from approval Fixed-price: ", error);
+        console.log("Err response from approval Fixed-price: ", error.response);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
-      }
-    );
+      });
   };
 
   let giveAuctionApproval = async () => {
@@ -560,8 +544,8 @@ function NewCollection(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
+          approveCollection(approvalData)
+            .then((response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";
               enqueueSnackbar("Collection Approved For Auction Successfully", {
@@ -570,16 +554,18 @@ function NewCollection(props) {
               setIsAuctionApproved(true);
               setApprovingAuction(false);
               setApprovalFlag(false);
-            },
-            (err) => {
+            })
+            .catch((error) => {
               let variant = "error";
               enqueueSnackbar("Unable to approve collection", { variant });
-              console.log("Err from auction approval: ", err);
-              console.log("Err response from auction approval: ", err.response);
+              console.log("Err from auction approval: ", error);
+              console.log(
+                "Err response from auction approval: ",
+                error.response
+              );
               setApprovingAuction(false);
               setApprovalFlag(false);
-            }
-          );
+            });
         });
     }
   };

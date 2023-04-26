@@ -5,14 +5,14 @@ import {
   createTheme,
   makeStyles,
 } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
 import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
-import DropBanner from "../../../../components/banners/DropBanner";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import DropBanner from "../../../../components/banners/DropBanner";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -207,38 +207,36 @@ function MyNFTs(props) {
     const version = Cookies.get("Version");
 
     if (nftIdLen != 0) {
-      axios
-        .get(`/drop/nfts/${location.state.dropId}/${start}/${end}`, data)
-        .then(
-          (response) => {
-            let nfts = response.data.data;
-            let newState = nfts.map((obj) => {
-              return { ...obj, isPlaying: false };
-            });
-            setTokenList(newState);
-            setTotalNfts(response.data.data.length);
+      getNFTsFromDropPaginated(location.state.dropId, start, end, data).then(
+        (response) => {
+          let nfts = response.data.data;
+          let newState = nfts.map((obj) => {
+            return { ...obj, isPlaying: false };
+          });
+          setTokenList(newState);
+          setTotalNfts(response.data.data.length);
 
-            handleCloseBackdrop();
-          },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
-            if (error.response.data !== undefined) {
-              if (
-                error.response.data === "Unauthorized access (invalid token) !!"
-              ) {
-                sessionStorage.removeItem("Authorization");
-                sessionStorage.removeItem("Address");
-                Cookies.remove("Version");
-
-                window.location.reload(false);
-              }
-            }
-            handleCloseBackdrop();
+          handleCloseBackdrop();
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
           }
-        );
+          if (error.response.data !== undefined) {
+            if (
+              error.response.data === "Unauthorized access (invalid token) !!"
+            ) {
+              sessionStorage.removeItem("Authorization");
+              sessionStorage.removeItem("Address");
+              Cookies.remove("Version");
+
+              window.location.reload(false);
+            }
+          }
+          handleCloseBackdrop();
+        }
+      );
     } else {
       handleCloseBackdrop();
     }
@@ -302,7 +300,7 @@ function MyNFTs(props) {
 
       <div className="card-body page-height px-0">
         <DropBanner />
-        
+
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
             <div className="col-12">
@@ -316,7 +314,6 @@ function MyNFTs(props) {
             <div className="row no-gutters justify-content-center">
               {open ? (
                 <WhiteSpinner />
-                
               ) : tokenList.length === 0 ? (
                 <MessageCardDropNfts msg="No items to display" />
               ) : (

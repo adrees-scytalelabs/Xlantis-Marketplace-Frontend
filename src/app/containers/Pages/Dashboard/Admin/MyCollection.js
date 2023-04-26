@@ -1,13 +1,12 @@
 import { Grid, TablePagination } from "@material-ui/core/";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { useDispatch, useSelector } from 'react-redux';
 import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
 const useStyles = makeStyles({
   root: {

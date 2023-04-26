@@ -18,4 +18,3 @@ const handleCloseBackdrop = (setOpen) => {
 const handleShowBackdrop = (setOpen) => {
   setOpen(true);
 };
-

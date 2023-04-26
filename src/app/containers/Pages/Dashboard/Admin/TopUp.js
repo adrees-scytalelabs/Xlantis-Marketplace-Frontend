@@ -1,9 +1,9 @@
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link,useLocation } from "react-router-dom";
-import TopUpForm from "../../../../components/Forms/TopUpForm";
+import { Link, useLocation } from "react-router-dom";
+import { topUpAmount } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import TopUpForm from "../../../../components/Forms/TopUpForm";
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -62,13 +62,11 @@ function TopUp(props) {
     let data = {
       amount: amount,
     };
-    axios.post(`/usd-payments/admin/topup`, data).then(
-      (response) => {
-        localStorage.setItem('sessionId', response.data.checkoutSessionId);
+    topUpAmount(data)
+      .then((response) => {
         window.location.replace(response.data.sessionUrl);
-        handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -76,8 +74,7 @@ function TopUp(props) {
           let variant = "error";
           enqueueSnackbar("Something went wrong", { variant });
         }
-      }
-    );
+      });
   };
 
   return (
@@ -97,12 +94,12 @@ function TopUp(props) {
           </div>
         </div>
       </div>
-      <TopUpForm 
+      <TopUpForm
         amount={amount}
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
-      />      
-       <CircularBackdrop open={open} />
+      />
+      <CircularBackdrop open={open} />
     </div>
   );
 }

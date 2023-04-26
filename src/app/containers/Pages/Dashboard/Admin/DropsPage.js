@@ -1,14 +1,12 @@
 import { Grid } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
 import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { useDispatch, useSelector } from 'react-redux';
 import { getMyDrop } from "../../../../redux/getMyDropsSlice";
 
 const useStyles = makeStyles((theme) => ({
@@ -80,7 +78,7 @@ function DropsPage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const {myDropsData,loading} = useSelector((store) => store.getMyDrops);
+  const { myDropsData, loading } = useSelector((store) => store.getMyDrops);
   const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
@@ -91,15 +89,15 @@ function DropsPage(props) {
   };
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
-    dispatch(getMyDrop({status,start,end}));
-    if(loading===1){
-        setTokenList(myDropsData);
-        setTotalDrops(myDropsData.length);
-        handleCloseBackdrop();
-      }
-      if(loading===2){
-        handleCloseBackdrop();
-      }
+    dispatch(getMyDrop({ status, start, end }));
+    if (loading === 1) {
+      setTokenList(myDropsData);
+      setTotalDrops(myDropsData.length);
+      handleCloseBackdrop();
+    }
+    if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {

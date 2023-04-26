@@ -1,14 +1,12 @@
 import { Grid, makeStyles } from "@material-ui/core/";
 import TablePagination from "@material-ui/core/TablePagination";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
+import { getMyDropsPaginated } from "../../../../components/API/AxiosInterceptor";
 import MyDropsCard from "../../../../components/Cards/MyDropsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-
-
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,17 +52,14 @@ function MyDrops(props) {
   };
   let getMyDrops = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-    axios.get(`/drop/mydrops/${start}/${end}`).then(
-      (response) => {
+    getMyDropsPaginated(start, end)
+      .then((response) => {
         console.log("response", response);
         setTokenList(response.data.Dropdata);
         setTotalDrops(response.data.Dropscount);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -81,8 +76,7 @@ function MyDrops(props) {
           }
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -153,14 +147,13 @@ function MyDrops(props) {
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
                     <MyDropsCard dropDetails={i} classes={classes} />
-                  </Link >
-                </Grid >
-              ))
-              }
-            </Grid >
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
           )}
-        </div >
-      </div >
+        </div>
+      </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -170,7 +163,7 @@ function MyDrops(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div >
+    </div>
   );
 }
 

@@ -1,8 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import Tooltip from "@material-ui/core/Tooltip";
-import axios from "axios";
-import { useSnackbar } from "notistack";
+import React from "react";
 
 function SuperAdminCreateTemplate(props) {
   return (

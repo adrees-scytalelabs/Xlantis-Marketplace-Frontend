@@ -1,12 +1,11 @@
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
-import { useDispatch, useSelector } from 'react-redux';
 import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
 
 function SavedTemplate(props) {
@@ -18,7 +17,7 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
-  const {templatesData,loading} = useSelector((store) => store.getSavedTemplateData);
+  const { templatesData, loading } = useSelector((store) => store.getSavedTemplateData);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -58,15 +57,15 @@ function SavedTemplate(props) {
     handleShowBackdrop();
     try {
       dispatch(getSavedTemplatesData());
-      if(loading===1) {
-          setTemplateData(templatesData);
-          handleCloseBackdrop();
-        }
-        else if(loading===2){
-          handleCloseBackdrop();
-          let variant = "error";
-          enqueueSnackbar("Unable to Create Template", { variant });
-        }
+      if (loading === 1) {
+        setTemplateData(templatesData);
+        handleCloseBackdrop();
+      }
+      else if (loading === 2) {
+        handleCloseBackdrop();
+        let variant = "error";
+        enqueueSnackbar("Unable to Create Template", { variant });
+      }
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
@@ -77,9 +76,9 @@ function SavedTemplate(props) {
     setUpdateModal(false);
     setModalState(true);
   };
-  useEffect(()=>{
+  useEffect(() => {
     handleSavedTemplate();
-  },[loading])
+  }, [loading])
   useEffect(() => {
     setDeleteState("");
 

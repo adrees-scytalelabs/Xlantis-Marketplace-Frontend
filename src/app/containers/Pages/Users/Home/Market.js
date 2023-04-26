@@ -1,17 +1,16 @@
-import { makeStyles } from "@material-ui/core/styles";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import TrendingAndTop from "./TrendingAndTop";
-import "../../../../assets/css/style.css";
 import { useDispatch, useSelector } from 'react-redux';
-import { getMarketFixedPrice,getMarketAuction } from "../../../../redux/getMarketPlaceDataSlice";
+import { Link } from "react-router-dom";
+import "../../../../assets/css/style.css";
+import { getMarketAuction, getMarketFixedPrice } from "../../../../redux/getMarketPlaceDataSlice";
+import TrendingAndTop from "./TrendingAndTop";
 
 
 function MarketPlace(props) {
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [open, setOpen] = useState(false);
-  const {fixedPriceData,fixedPriceLoading,auctionLoading,auctionData } = useSelector((store) => store.getMarketPlaceData);
+  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } = useSelector((store) => store.getMarketPlaceData);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -21,26 +20,26 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketFixedPrice({start,end}))
-    if(fixedPriceLoading){
-          setFixedPriceDrop(fixedPriceData);
-          handleCloseBackdrop();
-        }
-    else if(fixedPriceLoading===2){
-          handleCloseBackdrop();
-        }
+    dispatch(getMarketFixedPrice({ start, end }))
+    if (fixedPriceLoading) {
+      setFixedPriceDrop(fixedPriceData);
+      handleCloseBackdrop();
+    }
+    else if (fixedPriceLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketAuction({start,end}));
-    if(auctionLoading===1) {
-        setBidableDrop(auctionData);
-        handleCloseBackdrop();
-      }
-      else if(auctionLoading===2){
-        handleCloseBackdrop();
-      }
+    dispatch(getMarketAuction({ start, end }));
+    if (auctionLoading === 1) {
+      setBidableDrop(auctionData);
+      handleCloseBackdrop();
+    }
+    else if (auctionLoading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
@@ -48,7 +47,7 @@ function MarketPlace(props) {
   }, [auctionLoading]);
 
   useEffect(() => {
-    getCubes(0, 4); 
+    getCubes(0, 4);
   }, [fixedPriceLoading]);
 
   return (

@@ -1,9 +1,11 @@
 import { Grid } from "@material-ui/core/";
 import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router-dom";
+import {
+  getNFTsFromDropPaginatedWOBody
+} from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
@@ -46,25 +48,19 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    } else {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    }
-    axios.get(endpoint).then(
-      (response) => {
+
+    getNFTsFromDropPaginatedWOBody(dropId, start, end)
+      .then((response) => {
         setDropData(response.data.data);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {

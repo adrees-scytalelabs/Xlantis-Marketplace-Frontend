@@ -1,13 +1,10 @@
-import {
-  makeStyles,
-  Paper,
-} from "@material-ui/core";
+import { makeStyles, Paper } from "@material-ui/core";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row,  } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
@@ -20,11 +17,19 @@ import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/A
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
-import BidValue from "../../../../components/Select/BidValue";
 import Bids from "../../../../components/Accordian/Bids";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import {
+  finalizeAuctionBid,
+  getBuyNFTTxCostSummarySSO,
+  getDropDetails,
+  getNFTBidListPaginated,
+  getNFTDetailInDropVersioned,
+  sendBidData,
+  sendBidDataVersioned,
+} from "../../../../components/API/AxiosInterceptor";
+import BidValue from "../../../../components/Select/BidValue";
 
 const customTheme = createTheme({
   overrides: {
@@ -136,8 +141,7 @@ const AuctionNFT = (props) => {
     // handleShowBackdrop();
     let version = Cookies.get("Version");
 
-    axios
-      .get(`/${version}/drop/nft/${nftId}`)
+    getNFTDetailInDropVersioned(version, nftId)
       .then((response) => {
         console.log("Response getting NFT Detail: ", response);
         setNftDetail(response.data.data);
@@ -179,55 +183,51 @@ const AuctionNFT = (props) => {
       let variant = "error";
       enqueueSnackbar("Bidding Value cannot be zero.", { variant });
     } else {
-      axios
-        .get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`)
-        .then(
-          (response) => {
-            console.log("response", response);
-            console.log("responeee", response.data.data.data[0]);
-            setData(response.data.data);
-            setMOdalOpen(true);
-          },
-          (error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-            }
+      getBuyNFTTxCostSummarySSO(dropId, nftId).then(
+        (response) => {
+          console.log("response", response);
+          console.log("responeee", response.data.data.data[0]);
+          setData(response.data.data);
+          setMOdalOpen(true);
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
           }
-        );
+        }
+      );
     }
   };
 
   let getBidList = (nftId) => {
-    axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
-      (response) => {
+    getNFTBidListPaginated(nftId, 0, 1000)
+      .then((response) => {
         console.log("Response from getting bid: ", response);
         console.log("Bid array: ", response.data.data);
         setBidDetail(response.data.data);
-      },
-      (err) => {
-        console.log("Error from getting bids: ", err);
-        console.log("Error response from getting bids: ", err);
+      })
+      .catch((error) => {
+        console.log("Error from getting bids: ", error);
+        console.log("Error response from getting bids: ", error);
         setBidDetail([]);
-      }
-    );
+      });
   };
 
   let getDropCloneAddress = () => {
-    axios.get(`/drop/${dropId}`).then(
-      (response) => {
+    getDropDetails(dropId)
+      .then((response) => {
         console.log("Response from getting drop details: ", response);
         console.log(
           "Response from getting drop details: ",
           response.data.dropData.dropCloneAddress
         );
         setDropCloneAddress(response.data.dropData.dropCloneAddress);
-      },
-      (err) => {
-        console.log("Err from getting drop details: ", err);
-        console.log("Err response from getting drop details: ", err.response);
-      }
-    );
+      })
+      .catch((error) => {
+        console.log("Err from getting drop details: ", error);
+        console.log("Err response from getting drop details: ", error.response);
+      });
   };
 
   const handleCloseBackdrop = () => {
@@ -433,8 +433,8 @@ const AuctionNFT = (props) => {
         );
         let trxHash;
 
-        axios.post(`/auction/bid`, bidData).then(
-          (response) => {
+        sendBidData(bidData)
+          .then((response) => {
             console.log(
               "Response from sending bid data to backend: ",
               response
@@ -472,27 +472,25 @@ const AuctionNFT = (props) => {
                   txHash: trxHash,
                 };
 
-                axios.put(`/auction/bid/finalize`, finalizeBidData).then(
-                  (response) => {
+                finalizeAuctionBid(finalizeBidData)
+                  .then((response) => {
                     console.log("Response from finalize bid: ", response);
                     let variant = "success";
                     enqueueSnackbar("Bid Placed Successfully", { variant });
-                  },
-                  (err) => {
+                  })
+                  .catch((error) => {
                     let variant = "error";
                     enqueueSnackbar("Unable To Bid", { variant });
-                    console.log("Err from finalize bid: ", err);
-                    console.log("Err response from finalize bid: ", err);
-                  }
-                );
+                    console.log("Err from finalize bid: ", error);
+                    console.log("Err response from finalize bid: ", error);
+                  });
                 handleCloseBackdrop();
               });
-          },
-          (error) => {
+          })
+          .catch((error) => {
             console.log("Error from sending bid data to backend: ", error);
             handleCloseBackdrop();
-          }
-        );
+          });
       }
     }
   };
@@ -529,8 +527,8 @@ const AuctionNFT = (props) => {
       console.log("Type of time: ", typeof bidExpiryTime, bidExpiryTime);
       console.log("Bid data: ", bidData);
 
-      axios.post(`/${versionB}/auction/bid`, bidData).then(
-        (response) => {
+      sendBidDataVersioned(versionB, bidData)
+        .then((response) => {
           console.log("nft bid response", response.data);
           let variant = "success";
           enqueueSnackbar(
@@ -538,8 +536,8 @@ const AuctionNFT = (props) => {
             { variant }
           );
           handleCloseModal();
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -558,8 +556,7 @@ const AuctionNFT = (props) => {
               window.location.reload();
             }
           }
-        }
-      );
+        });
     }
   };
 
@@ -591,16 +588,12 @@ const AuctionNFT = (props) => {
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian 
-                    keys={keys}
-                    properties={properties}
-                  />
-                  
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col>
               </Row>
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <BidValue 
+                  <BidValue
                     biddingValue={biddingValue}
                     bidExpiryTime={bidExpiryTime}
                     setBidExpiryTime={setBidExpiryTime}
@@ -610,15 +603,12 @@ const AuctionNFT = (props) => {
                     handleOpenModal={handleOpenModal}
                     handleBidSubmit={handleBidSubmit}
                   />
-          
                 </Col>
               </Row>
 
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <Bids 
-                    bidDetail={bidDetail}
-                  />
+                  <Bids bidDetail={bidDetail} />
                 </Col>
               </Row>
             </div>

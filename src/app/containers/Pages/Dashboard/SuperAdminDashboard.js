@@ -1,4 +1,3 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
@@ -21,10 +20,6 @@ import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefault
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import TemplateProperties from "./Admin/TemplateProperties";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
-
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function SuperAdminDashboard(props) {
   let { path } = useRouteMatch();

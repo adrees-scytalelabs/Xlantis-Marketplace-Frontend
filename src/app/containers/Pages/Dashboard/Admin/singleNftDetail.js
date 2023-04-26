@@ -1,22 +1,16 @@
 import {
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
   createTheme,
   makeStyles,
-  ThemeProvider,
-  Typography,
+  ThemeProvider
 } from "@material-ui/core";
-import { BlurLinear, ExpandMore } from "@material-ui/icons";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
-import { Link, useParams } from "react-router-dom";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
+import { Link, useParams } from "react-router-dom";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import { getSingleNFTDetail } from "../../../../components/API/AxiosInterceptor";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -97,19 +91,17 @@ const SingleNftDetail = (props) => {
   const [properties, setProperties] = useState({});
 
   let getNftDetail = () => {
-
-    axios.get(`/nft/getSingleNFT/${nftId}`).then(
-      (response) => {
+    getSingleNFTDetail(nftId)
+      .then((response) => {
         setNftDetail(response.data.data[0]);
         setProperties(response.data.data[0].properties);
         const keys = Object.keys(response.data.data[0].properties);
         setKeys(keys);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Error: ", error);
         console.log("Error response: ", error.response);
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -160,11 +152,7 @@ const SingleNftDetail = (props) => {
               <SingleNFTDetailCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
-                  <PropertiesAccordian 
-                    keys={keys}
-                    properties={properties}
-                  />
-                  
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col>
               </Row>
             </div>
