@@ -11,6 +11,7 @@ import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
 import UserProfileReducer from './app/redux/getUserProfileSlice';
 import getAdminProfileDataReducer from './app/redux/getAdminProfileDataSlice';
 import getHeaderNotificationReducer from './app/redux/getHeaderNotificationSlice';
+import getSuperAdminsCountsReducer from './app/redux/getSuperAdminsCountsSlice';
 import getMarketPlaceDataReducer from './app/redux/getMarketPlaceDataSlice';
 import getVerifiedAccountsDataReducer from './app/redux/getVerifiedAccountsDataSlice';
 import getManageAccountsDataReducer from './app/redux/getManageAccountsDataSlice';
@@ -30,6 +31,7 @@ export const store = configureStore({
     marketPlaceSaleType: getMarketPlaceSaleTypeReducer,
     getAdminProfileData:getAdminProfileDataReducer,
     getHeaderNotification:getHeaderNotificationReducer,
+    getSuperAdminsCounts:getSuperAdminsCountsReducer,
     getMarketPlaceData:getMarketPlaceDataReducer,
     getVerifiedAccountsData:getVerifiedAccountsDataReducer,
     getManageAccountsData:getManageAccountsDataReducer,

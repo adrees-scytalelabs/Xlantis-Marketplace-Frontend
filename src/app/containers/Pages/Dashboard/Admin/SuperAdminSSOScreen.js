@@ -1,8 +1,9 @@
 import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSuperAdminCountsType1 } from "../../../../redux/getSuperAdminsCountsSlice";
 
 
 function SuperAdminSSOScreen(props) {
@@ -13,27 +14,20 @@ function SuperAdminSSOScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
+  const {countsType1,loadingType1 } = useSelector((store) => store.getSuperAdminsCounts);
+  const dispatch = useDispatch();
 
   let getCounts = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
-    axios
-
-      .get(`/super-admin/admins/counts?userType=v1`)
-      .then((response) => {
-        setTotalAdmins(response.data.counts.totalAdmins);
-        setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
-        setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
-        setTotalEnabled(response.data.counts.totalEnabledAdmins);
-        setTotalDisabled(response.data.counts.totalDisabledAdmins);
+    dispatch(getSuperAdminCountsType1());
+      if(loadingType1===1){
+        setTotalAdmins(countsType1.totalAdmins);
+        setTotalVerifiedAdmins(countsType1.totalVerifiedAdmins);
+        setTotalUnverifiedAdmins(countsType1.totalUnverifiedAdmins);
+        setTotalEnabled(countsType1.totalEnabledAdmins);
+        setTotalDisabled(countsType1.totalDisabledAdmins);
         setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+      }
   };
   useEffect(() => {
     props.setTab(1);
@@ -48,8 +42,11 @@ function SuperAdminSSOScreen(props) {
       template: "",
       saved: "",
     });
-    getCounts();
   }, []);
+
+  useEffect(() => {
+    getCounts();
+  }, [loadingType1]);
 
   return (
     <div className="container">
