@@ -126,7 +126,10 @@ function NewNftSelectSupply({
                   className="form-control"
                   onChange={(e) => {
                     if (e.target.value >= 0) {
-                      setTokenSupply(e.target.value);
+                      const regex = /^\d*$/;
+                      if (regex.test(e.target.value)) {
+                        setTokenSupply(e.target.value);
+                      }
                     }
                   }}
                 />
