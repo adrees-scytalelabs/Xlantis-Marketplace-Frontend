@@ -4,10 +4,11 @@ import AdminInformationModal from "../../../../components/Modals/AdminInformatio
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import {
-  getWalletAdmins,
   handleModalOpen,
   handleModalClose,
 } from "../../../../components/Utils/SuperAdminFunctions";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSuperAdminAccountType2 } from "../../../../redux/getSuperAdminAccountsSlice";
 
 function AccountsWallet(props) {
   const [modalData, setModalData] = useState();
@@ -17,14 +18,31 @@ function AccountsWallet(props) {
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
+  const {
+  accountType2Data,
+  accountType2Loading
+  } = useSelector((store) => store.getSuperAdminAccounts);
+const dispatch = useDispatch();
+
+const getWalletAdmins = (
+  start,
+  end,
+) => {
+  setOpen(true);
+  dispatch(getSuperAdminAccountType2({start,end}))
+  if(accountType2Loading===1) {
+      setWalletAdmins(accountType2Data);
+      setWalletAdminCount(accountType2Data.length);
+      setOpen(false);
+    }
+    else if(accountType2Loading===2){
+      setOpen(false);
+    }
+};
+useEffect(() => {
+  getWalletAdmins(0, rowsPerPage);
+}, [accountType2Loading]);
   useEffect(() => {
-    getWalletAdmins(
-      0,
-      rowsPerPage,
-      setOpen,
-      setWalletAdmins,
-      setWalletAdminCount
-    );
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
