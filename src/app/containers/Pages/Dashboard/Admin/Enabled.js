@@ -162,6 +162,9 @@ const handleWalletDisable = (
             admins={admins}
             walletAdmins={walletAdmins}
             handleModalOpen={handleModalOpen}
+            // handleModalOpen={() => {
+            //   console.log("Function called");
+            // }}
             ssoEnabled={true}
             walletEnabled={true}
             statusEnable={true}
