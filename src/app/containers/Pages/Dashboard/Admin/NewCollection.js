@@ -648,7 +648,7 @@ function NewCollection(props) {
                   <SelectRoyaltyFee
                     RoyaltyFeeText={RoyaltyFeeText}
                     values={royaltyFee}
-                    onChange={setRoyaltyFee}
+                    setRoyaltyFee={setRoyaltyFee}
                   />
 
                   <SelectNFTAndSaleType

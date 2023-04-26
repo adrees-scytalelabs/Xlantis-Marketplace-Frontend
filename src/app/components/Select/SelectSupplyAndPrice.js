@@ -1,6 +1,7 @@
 import React from "react";
 
 function SelectSupplyAndPrice({
+  price,
   nftType,
   nftTokenSupply,
   values,
@@ -36,7 +37,7 @@ function SelectSupplyAndPrice({
                 placeholder="0"
                 required
                 disabled={isDisabled}
-                value={values}
+                value={values ?? ""}
                 className="form-control"
                 onChange={(e) => {
                   if (e.target.value >= 0) {
@@ -84,6 +85,7 @@ function SelectSupplyAndPrice({
         <div className="filter-widget newNftWrapper">
           <input
             disabled={isDisabled}
+            value={price ?? ""}
             style={{
               backgroundColor: "#000",
               color: "#fff",
@@ -95,10 +97,8 @@ function SelectSupplyAndPrice({
             placeholder={0}
             className="form-control"
             onChange={(e) => {
-              if (e.target.value > 0) {
+              if (e.target.value >= 0) {
                 setPrice(e.target.value);
-              } else {
-                setPrice(0);
               }
             }}
           />

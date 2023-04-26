@@ -170,7 +170,7 @@ function AddNFT(props) {
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [tokenList, setTokenList] = useState([]);
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState(null);
   const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
   const [nftType, setNftType] = useState("");
@@ -1041,6 +1041,7 @@ function AddNFT(props) {
                 )}
 
                 <SelectSupplyAndPrice
+                  price={price}
                   nftType={nftType}
                   nftTokenSupply={nftTokenSupply}
                   values={supply}
@@ -1068,8 +1069,8 @@ function AddNFT(props) {
               <div className="form-group mt-3 mt-lg-0">
                 {grid === true && (
                   <div>
-                      <h3>Nft's in drop</h3>
-                      
+                    <h3>Nft's in drop</h3>
+
                     <Grid
                       container
                       spacing={2}
@@ -1077,7 +1078,6 @@ function AddNFT(props) {
                       justifyContent="flex-start"
                       style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                    
                       {tokenList.map((i) => (
                         <Grid
                           item
