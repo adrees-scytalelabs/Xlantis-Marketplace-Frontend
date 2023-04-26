@@ -6,6 +6,8 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
 
 function SavedTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,6 +18,8 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
+  const {templatesData,loading} = useSelector((store) => store.getSavedTemplateData);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -53,22 +57,16 @@ function SavedTemplate(props) {
   let handleSavedTemplate = async () => {
     handleShowBackdrop();
     try {
-      axios.get("/super-admin/template").then(
-        (response) => {
-          setTemplateData(response.data.templates);
+      dispatch(getSavedTemplatesData());
+      if(loading===1) {
+          setTemplateData(templatesData);
           handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
+        }
+        else if(loading===2){
           handleCloseBackdrop();
-
           let variant = "error";
           enqueueSnackbar("Unable to Create Template", { variant });
         }
-      );
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
@@ -79,10 +77,12 @@ function SavedTemplate(props) {
     setUpdateModal(false);
     setModalState(true);
   };
+  useEffect(()=>{
+    handleSavedTemplate();
+  },[loading])
   useEffect(() => {
     setDeleteState("");
 
-    handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",

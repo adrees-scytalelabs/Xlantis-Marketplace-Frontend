@@ -12,6 +12,11 @@ import UserProfileReducer from './app/redux/getUserProfileSlice';
 import getAdminProfileDataReducer from './app/redux/getAdminProfileDataSlice';
 import getHeaderNotificationReducer from './app/redux/getHeaderNotificationSlice';
 import getMarketPlaceDataReducer from './app/redux/getMarketPlaceDataSlice';
+import getVerifiedAccountsDataReducer from './app/redux/getVerifiedAccountsDataSlice';
+import getManageAccountsDataReducer from './app/redux/getManageAccountsDataSlice';
+import getSuperAdminAccountsReducer from './app/redux/getSuperAdminAccountsSlice';
+import getSavedTemplateDataReducer from './app/redux/getSavedTemplateDataSlice';
+import getUnverifiedAccountsDataReducer from './app/redux/getUnverifiedAccountsDataSLice';
 export const store = configureStore({
   reducer: {
     count: countReducer,
@@ -25,6 +30,11 @@ export const store = configureStore({
     marketPlaceSaleType: getMarketPlaceSaleTypeReducer,
     getAdminProfileData:getAdminProfileDataReducer,
     getHeaderNotification:getHeaderNotificationReducer,
-    getMarketPlaceData:getMarketPlaceDataReducer
+    getMarketPlaceData:getMarketPlaceDataReducer,
+    getVerifiedAccountsData:getVerifiedAccountsDataReducer,
+    getManageAccountsData:getManageAccountsDataReducer,
+    getSuperAdminAccounts:getSuperAdminAccountsReducer,
+    getSavedTemplateData:getSavedTemplateDataReducer,
+    getUnverifiedAccountsData:getUnverifiedAccountsDataReducer
   },
 });

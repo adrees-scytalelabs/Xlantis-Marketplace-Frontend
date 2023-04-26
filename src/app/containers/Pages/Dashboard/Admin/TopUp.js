@@ -3,6 +3,7 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link,useLocation } from "react-router-dom";
 import TopUpForm from "../../../../components/Forms/TopUpForm";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function TopUp(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -101,6 +102,7 @@ function TopUp(props) {
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
       />      
+       <CircularBackdrop open={open} />
     </div>
   );
 }

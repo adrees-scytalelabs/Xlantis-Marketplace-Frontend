@@ -141,7 +141,7 @@ function NewCollection(props) {
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
     if (royaltyFee > 0) {
-      setIsSaving(true);
+      // setIsSaving(true);
 
       handleShowBackdrop();
       let collectionID;
@@ -648,7 +648,7 @@ function NewCollection(props) {
                   <SelectRoyaltyFee
                     RoyaltyFeeText={RoyaltyFeeText}
                     values={royaltyFee}
-                    onChange={setRoyaltyFee}
+                    setRoyaltyFee={setRoyaltyFee}
                   />
 
                   <SelectNFTAndSaleType

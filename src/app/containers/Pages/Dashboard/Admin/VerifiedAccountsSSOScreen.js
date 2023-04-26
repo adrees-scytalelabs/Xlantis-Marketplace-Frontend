@@ -4,10 +4,11 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
-  getVerifiedSSOAdmins,
   handleModalOpen,
   handleModalClose,
 } from "../../../../components/Utils/SuperAdminFunctions";
+import { useDispatch, useSelector } from 'react-redux';
+import { getSuperAdminVerifiedType1 } from "../../../../redux/getVerifiedAccountsDataSlice";
 
 function VerifiedAccountsSSOScreen(props) {
   const [admins, setAdmins] = useState([]);
@@ -17,9 +18,31 @@ function VerifiedAccountsSSOScreen(props) {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
+  const {verifiedType1Data,verifiedType1Loading } = useSelector((store) => store.getVerifiedAccountsData);
+  const dispatch = useDispatch();
+
+  let getVerifiedSSOAdmins = (
+    start,
+    end,
+  ) => {
+    setOpen(true);
+    dispatch(getSuperAdminVerifiedType1({start,end}));
+    console.log("diapatchResp",verifiedType1Data);
+    if(verifiedType1Loading===1){
+        setAdmins(verifiedType1Data);
+        setAdminCount(verifiedType1Data.length);
+        setOpen(false);
+      }
+      if(verifiedType1Loading===2){
+        setOpen(false);
+      }
+  };
+
+  useEffect(()=>{
+    getVerifiedSSOAdmins(0, rowsPerPage);
+  },[verifiedType1Loading])
 
   useEffect(() => {
-    getVerifiedSSOAdmins(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",

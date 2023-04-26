@@ -13,7 +13,7 @@ export const getUserCount = createAsyncThunk(
     ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     try {
 
-      const resp = await axios(`user/getcounts`);
+      const resp = await axios(`/v1-sso/user/getCounts`);
 
       return resp.data;
     } catch (error) {
