@@ -41,12 +41,15 @@ function SelectSupplyAndPrice({
                 className="form-control"
                 onChange={(e) => {
                   if (e.target.value >= 0) {
-                    if (e.target.value > nftTokenSupply) {
-                      setAlertMessage(true);
-                    } else {
-                      setAlertMessage(false);
+                    const regex = /^\d*$/;
+                    if (regex.test(e.target.value)) {
+                      if (e.target.value > nftTokenSupply) {
+                        setAlertMessage(true);
+                      } else {
+                        setAlertMessage(false);
+                      }
+                      setSupply(e.target.value);
                     }
-                    setSupply(e.target.value);
                   }
                 }}
               />
