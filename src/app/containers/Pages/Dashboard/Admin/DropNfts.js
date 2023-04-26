@@ -1,36 +1,19 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import {
-  ThemeProvider,
-  createTheme,
-  makeStyles,
-} from "@material-ui/core/styles";
+import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
 import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
-import DropBanner from "../../../../components/banners/DropBanner";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-
-const useStyles = makeStyles((theme) => ({
+import DropBanner from "../../../../components/banners/DropBanner";
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
     backgroundColor: "#000 !important",
     border: "1px solid #fff",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
   card: {
     minWidth: 250,
   },
@@ -38,20 +21,15 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
-const cardStyles = makeStyles((theme) => ({
+const cardStyles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -61,11 +39,6 @@ const cardStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "1rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -81,7 +54,7 @@ const cardStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -135,9 +108,8 @@ const customTheme = createTheme({
 
 function MyNFTs(props) {
   let location = useLocation();
-  const classes = useStyles();
-  const cardClasses = cardStyles();
-  let { path } = useRouteMatch();
+
+  const path = useResolvedPath("").pathname;
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
   const [page, setPage] = useState(0);
@@ -302,7 +274,7 @@ function MyNFTs(props) {
 
       <div className="card-body page-height px-0">
         <DropBanner />
-        
+
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
             <div className="col-12">
@@ -316,7 +288,7 @@ function MyNFTs(props) {
             <div className="row no-gutters justify-content-center">
               {open ? (
                 <WhiteSpinner />
-                
+
               ) : tokenList.length === 0 ? (
                 <MessageCardDropNfts msg="No items to display" />
               ) : (
@@ -338,48 +310,44 @@ function MyNFTs(props) {
                       direction="row"
                       key={index}
                     >
-                      {location.state.saleType === "fixed-price" ? (
+                      {location.state?.saleType === "fixed-price" ? (
                         <Link
                           onClick={(e) => handleStop(e)}
-                          to={{
-                            pathname: `${path}/buy`,
-                            state: {
-                              nftDetail: i,
-                              startTime: location.state.startTime,
-                              endTime: location.state.endTime,
-                              nftId: location.state.nftId,
-                              dropId: location.state.dropId,
-                            },
+                          to={`${path}/buy`}
+                          state={{
+                            nftDetail: i,
+                            startTime: location.state?.startTime,
+                            endTime: location.state?.endTime,
+                            nftId: location.state?.nftId,
+                            dropId: location.state?.dropId,
                           }}
                         >
                           <DropNFTCard
                             details={i}
-                            classes={classes}
+                            classes={styles}
                             handlePlay={handlePlay}
                             handlePause={handlePause}
-                            cardClasses={cardClasses}
+                            cardClasses={cardStyles}
                           />
                         </Link>
                       ) : (
                         <Link
                           onClick={(e) => handleStop(e)}
-                          to={{
-                            pathname: `/dashboard/marketPlace/${i.dropId}/${i._id}`,
-                            state: {
-                              nftContractAddress:
-                                i.collectionId.nftContractAddress,
-                              endTime: location.state.endTime,
-                              contractType: i.collectionId.contractType,
-                              price: i.currentMarketplaceId.price,
-                            },
+                          to={`/dashboard/marketPlace/${i.dropId}/${i._id}`}
+                          state={{
+                            nftContractAddress:
+                              i.collectionId.nftContractAddress,
+                            endTime: location.state.endTime,
+                            contractType: i.collectionId.contractType,
+                            price: i.currentMarketplaceId.price,
                           }}
                         >
                           <DropNFTCard
                             deetails={i}
-                            classes={classes}
+                            classes={styles}
                             handlePlay={handlePlay}
                             handlePause={handlePause}
-                            cardClasses={cardClasses}
+                            cardClasses={cardStyles}
                           />
                         </Link>
                       )}
@@ -399,8 +367,8 @@ function MyNFTs(props) {
             </div>
           </ThemeProvider>
         </div>
-      </div>
-    </div>
+      </div >
+    </div >
   );
 }
 

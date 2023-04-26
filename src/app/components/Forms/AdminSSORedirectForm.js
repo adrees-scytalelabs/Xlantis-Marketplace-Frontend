@@ -1,8 +1,8 @@
 
 
 import React from 'react'
-import { Redirect } from "react-router-dom";
-import { Grid } from "@material-ui/core";
+import { Navigate } from "react-router-dom";
+import { Grid } from "@mui/material";
 
 
 function AdminSSORedirectForm({
@@ -129,7 +129,7 @@ function AdminSSORedirectForm({
                     <button className="signUpBtn-link" type="submit">
                     Save
                     </button>
-                    {success && <Redirect to="/updatRequestSent" />}
+                    {success && <Navigate to="/updatRequestSent" />}
                 </div>
                 </div>
             </Grid>

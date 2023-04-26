@@ -1,16 +1,15 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import Notification from "../../../../components/Utils/Notification";
 import {
   getUnverifiedAdminsWallet,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen,
   handleVerifyWallet,
 } from "../../../../components/Utils/SuperAdminFunctions";
-import Notification from "../../../../components/Utils/Notification";
-
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 function AccountApprovalWallet(props) {
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [load, setLoad] = useState(false);

@@ -1,16 +1,15 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import Notification from "../../../../components/Utils/Notification";
 import {
   getDisableSSOAdmins,
   handleEnableSSO,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
-
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 function SSODisabled() {
   const [admins, setAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);

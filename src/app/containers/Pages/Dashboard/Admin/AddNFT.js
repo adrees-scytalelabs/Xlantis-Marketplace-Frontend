@@ -1,56 +1,36 @@
-import { createTheme, ThemeProvider } from "@material-ui/core";
-import { Grid } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
+import { Autocomplete, Grid, createTheme } from '@mui/material';
 import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
+import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import PublishDropModal from "../../../../components/Modals/PublishDropModal";
+import TopUpModal from "../../../../components/Modals/TopUpModal";
+import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
 import AuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import AuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
-import PublishDropModal from "../../../../components/Modals/PublishDropModal";
-import TopUpModal from "../../../../components/Modals/TopUpModal";
-import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
-import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
   card: {
     minWidth: 250,
   },
   media: {
     width: "100%",
     paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -67,12 +47,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.2",
     fontSize: "1rem",
   },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "0.875rem",
-  },
-}));
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -125,9 +100,8 @@ const makeTheme = createTheme({
 
 function AddNFT(props) {
   let location = useLocation();
-  let history = useHistory();
+  let navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -210,7 +184,7 @@ function AddNFT(props) {
   let getCollections = () => {
     const version = Cookies.get("Version");
 
-    axios.get(`/collection/collections/${location.state.nftType}`).then(
+    axios.get(`/collection/collections/${location.state?.nftType}`).then(
       (response) => {
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
@@ -345,7 +319,7 @@ function AddNFT(props) {
     const transak = new transakSDK(settings);
 
     transak.init();
-    transak.on(transak.ALL_EVENTS, (data) => {});
+    transak.on(transak.ALL_EVENTS, (data) => { });
 
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       transak.close();
@@ -362,9 +336,9 @@ function AddNFT(props) {
     setIsDisabled(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
-    setDropId(location.state.dropId);
-    setSaleType(location.state.saleType);
-    let type = location.state.nftType;
+    setDropId(location.state?.dropId);
+    setSaleType(location.state?.saleType);
+    let type = location.state?.nftType;
     setNftType(type);
     getCollections();
 
@@ -538,7 +512,7 @@ function AddNFT(props) {
           setIsAdded(false);
           handleCloseBackdrop();
           setIsSaving(false);
-          history.goBack();
+          navigate(-1);
         });
     } catch (e) {
       console.log("Fixed Price not work properly", e);
@@ -605,7 +579,7 @@ function AddNFT(props) {
           setIsAdded(false);
           handleCloseBackdrop();
           setIsSaving(false);
-          history.goBack();
+          navigate(-1);
         });
     } catch (e) {
       console.log("Contract Issue", e);
@@ -930,7 +904,7 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                <Autocomplete 
+                <Autocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
                   isDisabled={isDisabled}
@@ -949,7 +923,7 @@ function AddNFT(props) {
                   }}
                 />
 
-                <Autocomplete 
+                <Autocomplete
                   label={"Select NFT"}
                   options={nftList}
                   isDisabled={isDisabled}
@@ -970,7 +944,7 @@ function AddNFT(props) {
                   }}
                 />
 
-                <SelectSupplyAndPrice 
+                <SelectSupplyAndPrice
                   nftType={nftType}
                   nftTokenSupply={nftTokenSupply}
                   values={supply}
@@ -1008,7 +982,7 @@ function AddNFT(props) {
                       <Grid item xs={6} sm={4} md={4} lg={4}>
                         <AddNFTDisplayCard
                           nftDetail={nftDetail}
-                          classes={classes}
+                          classes={styles}
                         />
                       </Grid>
                     </Grid>
@@ -1018,7 +992,7 @@ function AddNFT(props) {
             ) : null}
           </div>
         </div>
-        <UpdateDropAndPublishDrop 
+        <UpdateDropAndPublishDrop
           isDisabled={isDisabled}
           versionB={versionB}
           handleSubmitEvent={handleSubmitEvent}
@@ -1033,7 +1007,7 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
-          
+
         />
 
       </div>

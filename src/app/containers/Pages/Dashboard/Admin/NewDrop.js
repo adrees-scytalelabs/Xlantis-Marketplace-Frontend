@@ -1,57 +1,21 @@
-import { ThemeProvider, createTheme } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import { makeStyles } from "@material-ui/core/styles";
+
+import { FormControl, ThemeProvider, createTheme } from '@mui/material';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import UploadFile from "../../../../components/Upload/UploadFile";
 import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
-import SelectDescription from "../../../../components/Select/SelectDescription";
 import Select from "../../../../components/Select/Select";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
 
 const makeTheme = createTheme({
   overrides: {
@@ -71,9 +35,7 @@ const makeTheme = createTheme({
 
 function NewDrop(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let { path } = useRouteMatch();
-
-  const classes = useStyles();
+  const path = useResolvedPath("").pathname;
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -103,7 +65,7 @@ function NewDrop(props) {
     setOpen(true);
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -183,7 +145,7 @@ function NewDrop(props) {
             dropID = response.data.dropId;
             setIsSaving(false);
             handleCloseBackdrop();
-            history.push({
+            navigate({
               pathname: `${path}/addNft`,
               state: {
                 dropId: dropID,
@@ -256,7 +218,7 @@ function NewDrop(props) {
               dropID = response.data.dropId;
               setIsSaving(false);
               handleCloseBackdrop();
-              history.push({
+              navigate({
                 pathname: `${path}/addNft`,
                 state: {
                   dropId: dropID,
@@ -335,7 +297,7 @@ function NewDrop(props) {
             setIsSaving(false);
 
             handleCloseBackdrop();
-            history.push({
+            navigate({
               pathname: `${path}/addNft`,
               state: {
                 dropId: dropID,
@@ -460,28 +422,28 @@ function NewDrop(props) {
                       accept=".png,.jpg,.jpeg,.gif"
                     />
                   </div>
-                  
+
                   <div className="form-group newNftFields">
                     <Select
-                      label ="Drop Name"
-                      values = {name}
-                      placeholder= "Enter Name of Drop"
+                      label="Drop Name"
+                      values={name}
+                      placeholder="Enter Name of Drop"
                       setValue={setName}
                     />
 
                     <SelectDescription
-                      label ="Drop Description"
-                      values = {description}
-                      placeholder= "Enter Description of Drop"
+                      label="Drop Description"
+                      values={description}
+                      placeholder="Enter Description of Drop"
                       setDescription={setDescription}
                     />
-                  
+
                   </div>
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <SelectNFTAndSaleType
                         label="Select Sale Type"
-                        onChangeWorkInProgress = {() => {
+                        onChangeWorkInProgress={() => {
                           console.log("721workinf");
                           setWorkProgressModalShow(true);
                         }}
@@ -495,7 +457,7 @@ function NewDrop(props) {
 
                       <SelectNFTAndSaleType
                         label="Select Drop Type"
-                        onChangeWorkInProgress = {() => {
+                        onChangeWorkInProgress={() => {
                           console.log("721workinf");
                           setWorkProgressModalShow(true);
                         }}
@@ -506,7 +468,7 @@ function NewDrop(props) {
                         type={nftType}
                         radioType="nft"
                       />
-                     
+
                     </FormControl>
                   </ThemeProvider>
                 </div>
@@ -515,13 +477,13 @@ function NewDrop(props) {
           </div>
         </div>
         <SubmitButton
-        label="Create Drop"
-         isSaving={isSaving}
-         version ={versionB}
-         handleSubmitEvent={handleSubmitEvent}
-         handleSubmitEventMetamask={handleSubmitEventMetamask}
+          label="Create Drop"
+          isSaving={isSaving}
+          version={versionB}
+          handleSubmitEvent={handleSubmitEvent}
+          handleSubmitEventMetamask={handleSubmitEventMetamask}
         />
-        
+
       </div>
       <NetworkErrorModal
         show={showNetworkModal}

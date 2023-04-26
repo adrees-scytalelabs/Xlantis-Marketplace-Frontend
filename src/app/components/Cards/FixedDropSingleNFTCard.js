@@ -1,7 +1,6 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-
 const FixedDropSingleNFTCard = (props) => {
   return (
     <Card style={{ backgroundColor: "black" }}>

@@ -1,118 +1,69 @@
 
 
-import React from 'react'
-import {
-  makeStyles,
-  Accordion,
-  AccordionDetails,
-  AccordionSummary,
-  Typography,
-  Tooltip,
-} from "@material-ui/core";
-import {  ExpandMore } from "@material-ui/icons";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import ListIcon from '@mui/icons-material/List';
+import { Accordion, AccordionDetails, AccordionSummary, Tooltip, Typography } from '@mui/material';
+import React from 'react';
 import { Table } from "react-bootstrap";
-import ListIcon from "@material-ui/icons/List";
-const useStyles = makeStyles((theme) => ({
-    root: {
-      flexGrow: 1,
-      width: "100%",
-      backgroundColor: theme.palette.background.paper,
-    },
-    noMaxWidth: {
-      maxWidth: "none",
-    },
-    badge: {
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: "#fff",
-    },
-  
-    card: {
-      minWidth: 250,
-    },
-    media1: {
-      height: 300,
-    },
-    media: {
-      height: 0,
-      paddingTop: "100%",
-    },
-    bullet: {
-      display: "inline-block",
-      margin: "0 2px",
-      transform: "scale(0.8)",
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
-    heading: {
-      fontSize: theme.typography.pxToRem(15),
-      fontWeight: theme.typography.fontWeightRegular,
-    },
-  }));
+const styles = {
+
+  noMaxWidth: {
+    maxWidth: "none",
+  }
+};
 
 
 function Bids({
-        bidDetail,
-    }) {
-
-  const classes = useStyles();
-  
+  bidDetail,
+}) {
 
   return (
     <div>
-        <Accordion>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-            <Typography variant="body1" style={{ color: "#F64D04" }}>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+          <Typography variant="body1" style={{ color: "#F64D04" }}>
             <ListIcon />
             <strong> Offers</strong>
-            </Typography>
+          </Typography>
         </AccordionSummary>
         <AccordionDetails>
-            <Table striped hover bordered size="sm" responsive>
+          <Table striped hover bordered size="sm" responsive>
             <thead>
-                <tr>
+              <tr>
                 <th style={{ padding: "0.75rem" }}>#</th>
                 <th style={{ padding: "0.75rem" }}>Bidder</th>
                 <th style={{ padding: "0.75rem" }}>Bid</th>
-                </tr>
+              </tr>
             </thead>
             <tbody>
-                {bidDetail?.map((bid, index) => (
+              {bidDetail?.map((bid, index) => (
                 <tr key={index}>
-                    <td style={{ padding: "0.75rem" }}>
+                  <td style={{ padding: "0.75rem" }}>
                     {index + 1}
-                    </td>
-                    <td style={{ padding: "0.75rem" }}>
+                  </td>
+                  <td style={{ padding: "0.75rem" }}>
                     <Tooltip
-                        classes={{ tooltip: classes.noMaxWidth }}
-                        leaveDelay={1500}
-                        title={bid.bidderAddress}
-                        arrow
+                      classes={{ tooltip: styles.noMaxWidth }}
+                      leaveDelay={1500}
+                      title={bid.bidderAddress}
+                      arrow
                     >
-                        <span>
+                      <span>
                         {bid.bidderAddress.slice(0, 8)}...
-                        </span>
+                      </span>
                     </Tooltip>
-                    </td>
-                    <td style={{ padding: "0.75rem" }}>
+                  </td>
+                  <td style={{ padding: "0.75rem" }}>
                     {bid.bidAmount}
-                    </td>
+                  </td>
                 </tr>
-                ))}
+              ))}
             </tbody>
-            </Table>
+          </Table>
         </AccordionDetails>
-        </Accordion>
+      </Accordion>
     </div>
-    
+
 
   )
 }

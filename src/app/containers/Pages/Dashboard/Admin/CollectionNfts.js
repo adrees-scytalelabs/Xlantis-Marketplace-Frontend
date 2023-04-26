@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core/";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -6,7 +6,6 @@ import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);

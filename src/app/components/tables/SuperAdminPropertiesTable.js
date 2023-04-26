@@ -1,10 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
 import React from "react";
 import Table from "react-bootstrap/Table";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     maxWidth: 345,
   },
@@ -14,22 +13,8 @@ const useStyles = makeStyles((theme) => ({
   noMaxWidth: {
     maxWidth: "none",
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
   card: {
     minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -57,27 +42,27 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}));
+}
 function SuperAdminPropertiesTable(props) {
-  const classes = useStyles();
+
   return (
     <Table responsive>
       <thead>
         <tr>
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Template Name
             </div>
           </th>
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               No of Properties
             </div>
           </th>
-          <th className={`${classes.tableHeader}`}>
+          <th sx={styles.tableHeader}>
             <div className="ml-5">Details</div>
           </th>
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Delete/Edit
             </div>
@@ -87,14 +72,14 @@ function SuperAdminPropertiesTable(props) {
       {props.templateData.map((i, index) => (
         <tbody>
           <tr>
-            <td className={classes.collectionTitle}>{i.name}</td>
-            <td className={`${classes.collectionTitle}`}>
+            <td sx={styles.collectionTitle}>{i.name}</td>
+            <td sx={styles.collectionTitle}>
               <div className="justify-content-center align-items-center ml-5">
                 {" "}
                 {i.properties.length}{" "}
               </div>
             </td>
-            <td className={classes.collectionTitle}>
+            <td sx={styles.collectionTitle}>
               <button
                 className="btn submit-btn propsActionBtn "
                 onClick={(e) => props.handleOpen(e, i)}
@@ -102,7 +87,7 @@ function SuperAdminPropertiesTable(props) {
                 View
               </button>
             </td>
-            <td className={classes.collectionTitle}>
+            <td sx={styles.collectionTitle}>
               <span className="ml-4">
                 <button style={{ background: "transparent", border: "none" }}>
                   <DeleteIcon

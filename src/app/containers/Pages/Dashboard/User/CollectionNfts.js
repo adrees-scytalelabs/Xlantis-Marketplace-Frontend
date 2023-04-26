@@ -1,10 +1,9 @@
-import { Grid } from '@material-ui/core/';
+import { Grid } from '@mui/material';
 import axios from 'axios';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import NFTCard from '../../../../components/Cards/NFTCard';
-
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
@@ -86,7 +85,7 @@ function CollectionNfts(props) {
                                 spacing={2}
                                 direction="row"
                                 justify="flex-start"
-                            
+
                             >
                                 {tokenList.map((i, index) => (
                                     <NFTCard data={i[0]} key={index} />

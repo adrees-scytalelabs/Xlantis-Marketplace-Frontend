@@ -1,9 +1,8 @@
-import transakSDK from "@transak/transak-sdk";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route, Router, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -36,7 +35,10 @@ axios.defaults.headers.common[
 ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
 
 function AdminDashboard(props) {
-  let { path } = useRouteMatch();
+  console.log("propsprops", props);
+  // const path = useResolvedPath("").pathname;
+  const path = useResolvedPath("").pathname;
+  console.log("path", path);
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [slideNavClass, setSlideNavClass] = useState();
 
@@ -158,94 +160,94 @@ function AdminDashboard(props) {
       </div>
 
       <AdminSidebar
-        match={props.match}
+        match={path}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <Switch>
-            <Route exact path={`${path}`}>
+          <Routes>
+            <Route path={`/`} element={
               <AdminDashboardDefaultScreen
-                match={props.match}
+                match={path}
+                setActiveTab={setActiveTab} />
+            }
+            />
+
+            <Route path={`newNFT`}
+              element={<NewNFT setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`myNFTs`}
+              element={<MyNFTs setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`dropApproval`}
+              element={<DropApproval setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`topUp`}
+              element={<TopUp setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`newDrop`}
+              element={<NewDrop setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`newDrop/addNft`}
+              element={<AddNFT setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`myDrops`}
+              element={<MyDrops setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`myDrops/nfts`}
+              element={<MyDropNFTs setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`myDrops/nfts/singleNft`}
+              element={<DropSingleNFT setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`createNewCollection`}
+              element={<NewCollection setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`myCollection`}
+              element={<MyCollection setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`nftDetail/:nftId`}
+              element={<SingleNftDetail setActiveTab={setActiveTab} />}
+            />
+
+
+            <Route exact path={`collection/nfts/:collectionId`}
+              element={<CollectionNfts setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`marketPlace`}
+              element={<MarketPlace setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`marketPlace/drops/nfts`}
+              element={<DropNfts setActiveTab={setActiveTab} />}
+            />
+            <Route exact path={`marketPlace/drops/nfts/buy`}
+              element={<NFTBuy setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`marketPlace/:dropId/:nftId`}
+              element={<AuctionNFT setActiveTab={setActiveTab} />}
+            />
+
+            <Route path={`/`}
+              element={<AdminDashboardDefaultScreen
+                match={path}
                 setActiveTab={setActiveTab}
-              />
-            </Route>
+              />}
+            />
 
-            <Route exact path={`${path}/newNFT`}>
-              <NewNFT setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/myNFTs`}>
-              <MyNFTs setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/dropApproval`}>
-              <DropApproval setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/topUp`}>
-              <TopUp setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/newDrop`}>
-              <NewDrop setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/newDrop/addNft`}>
-              <AddNFT setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myDrops`}>
-              <MyDrops setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myDrops/nfts`}>
-              <MyDropNFTs setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myDrops/nfts/singleNft`}>
-              <DropSingleNFT setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/createNewCollection`}>
-              <NewCollection setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/myCollection`}>
-              <MyCollection setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/nftDetail/:nftId`}>
-              <SingleNftDetail setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/collection/nfts/:collectionId`}>
-              <CollectionNfts setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/marketPlace`}>
-              <MarketPlace setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/marketPlace/drops/nfts`}>
-              <DropNfts setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/marketPlace/drops/nfts/buy`}>
-              <NFTBuy setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/marketPlace/:dropId/:nftId`}>
-              <AuctionNFT setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route path={`${path}`}>
-              <AdminDashboardDefaultScreen
-                match={props.match}
-                setActiveTab={setActiveTab}
-              />
-            </Route>
-          </Switch>
+          </Routes>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

@@ -1,18 +1,18 @@
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
-import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { useDispatch, useSelector } from 'react-redux';
-import {getUserCount} from "../../../../redux/getUserCount";
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { getUserCount } from "../../../../redux/getUserCount";
 import { getUserProfile } from "../../../../redux/getUserProfileSlice";
-
+import { useResolvedPath } from 'react-router-dom';
 function UserDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
-  const {nftCount } = useSelector((store) => store.userCount);
-  const {userData } = useSelector((store) => store.userProfile);
+  const { nftCount } = useSelector((store) => store.userCount);
+  const { userData } = useSelector((store) => store.userProfile);
   const dispatch = useDispatch();
-
+  const path = useResolvedPath("").pathname;
   useEffect(() => {
     dispatch(getUserCount());
     setTotalNFTs(nftCount);
@@ -60,7 +60,7 @@ function UserDashboardDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/myNFTs`}
+            linkTo={`${path}/myNFTs`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"

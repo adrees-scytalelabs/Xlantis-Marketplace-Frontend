@@ -1,10 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import TrendingAndTop from "./TrendingAndTop";
 import "../../../../assets/css/style.css";
+import TrendingAndTop from "./TrendingAndTop";
 
 
 function MarketPlace(props) {
@@ -22,8 +21,8 @@ function MarketPlace(props) {
 
     let version = Cookies.get("Version");
     let endpoint;
-    if(version === undefined) {
-      endpoint  = `/drop/saleType/fixed-price/${start}/${end}`;
+    if (version === undefined) {
+      endpoint = `/drop/saleType/fixed-price/${start}/${end}`;
     }
     else {
       endpoint = `/drop/saleType/fixed-price/${start}/${end}`
@@ -50,7 +49,7 @@ function MarketPlace(props) {
     let version = Cookies.get("Version");
     let endpoint;
 
-    if(version === undefined) {
+    if (version === undefined) {
       endpoint = `/drop/saleType/auction/${start}/${end}`;
     }
     else {
@@ -70,7 +69,7 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
-    getCubes(0, 4); 
+    getCubes(0, 4);
     getBidableDrops(0, 4);
   }, []);
 

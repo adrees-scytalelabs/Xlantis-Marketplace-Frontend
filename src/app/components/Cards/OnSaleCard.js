@@ -1,80 +1,32 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import useMediaQuery from "@material-ui/core/useMediaQuery";
-import OpenInNewIcon from "@material-ui/icons/OpenInNew";
-import Alert from "@material-ui/lab/Alert";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Alert, Card, CardContent, CardMedia, Typography, useMediaQuery } from '@mui/material';
 import React from "react";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 import { truncate } from "../../assets/js/utils";
 
-const useStyles = makeStyles((theme) => ({
-  cardTheme: {
-    boxShadow: "none",
-  },
-  media: {
-    width: "100%",
-    paddingTop: "100%",
-  },
-  cardTitle: {
-    color: "#fff",
-    fontFamily: "orbitron",
-    fontWeight: "bold",
-    textTransform: "capitalize",
-    marginTop: "0rem",
-    fontSize: "12px",
-    lineHeight: 1,
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "12px",
-  },
-  price: {
-    color: "hsla(350, 93%, 61%, 1)",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  textAlert: {
-    justifyContent: "center",
-    fontSize: "1rem",
-  },
-  textAlertMd: {
-    justifyContent: "center",
-    fontSize: "12px",
-  },
-  exploreBtn: {
-    padding: "0.75rem 2rem",
-    border: "none",
-    fontWeight: "bold",
-  },
-}));
-
 const OnSaleCard = (props) => {
-  const styles = useStyles();
   const matchScrn = useMediaQuery("(max-width: 991px)");
-
+  console.log("propsprops", props);
   return (
     <div className="col-12 p-2">
       <Card id="marketCardProps">
         <div className="row no-gutters mdColHeight">
           <Link
-            to={{
-              pathname: `/fixdropnft/${props.i._id}`,
-              state: {
-                saleType: props.i.saleType,
-                description: props.i.description,
-              },
+            to={`/fixdropnft/${props.i._id}`}
+            state={{
+              saleType: props.i.saleType,
+              description: props.i.description,
             }}
             style={{ width: "100%" }}
           >
             <div className="nftImgWrapper">
               <CardMedia
-                className={styles.media}
+                sx={{
+                  width: "100%",
+                  paddingTop: "100%",
+                }}
                 image={props.i.image}
                 title="Drop Image"
               />
@@ -110,13 +62,11 @@ const OnSaleCard = (props) => {
                   <div className="col-8 w-100 text-right align-self-end">
 
                     <Link
-                      to={{
-                        pathname: `/fixdropnft/${props.i._id}`,
-                        state: {
-                          saleType: props.i.saleType,
-                          startTime: props.i.startTime,
-                          endTime: props.i.endTime
-                        },
+                      to={`/fixdropnft/${props.i._id}`}
+                      state={{
+                        saleType: props.i.saleType,
+                        startTime: props.i.startTime,
+                        endTime: props.i.endTime
                       }}
                     >
                       <button className="exploreBtn">
@@ -141,14 +91,27 @@ const OnSaleCard = (props) => {
                 <Typography
                   variant="h6"
                   component="p"
-                  className={styles.cardTitle}
+                  sx={{
+                    color: "#fff",
+                    fontFamily: "orbitron",
+                    fontWeight: "bold",
+                    textTransform: "capitalize",
+                    marginTop: "0rem",
+                    fontSize: "12px",
+                    lineHeight: 1,
+                  }}
                 >
                   {props.i.title}
                 </Typography>
                 <Typography
                   variant="body2"
                   component="p"
-                  className={styles.cardDescriptions}
+
+                  sx={{
+                    color: "#999",
+                    fontFamily: "inter",
+                    fontSize: "12px",
+                  }}
                 >
                   {truncate(props.i.description, 20)}
                 </Typography>
@@ -173,9 +136,13 @@ const OnSaleCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="info"
-                    className={
-                      matchScrn ? styles.textAlertMd : styles.textAlert
-                    }
+                    sx={matchScrn ? {
+                      justifyContent: "center",
+                      fontSize: "12px",
+                    } : {
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                    }}
                   >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
@@ -196,14 +163,18 @@ const OnSaleCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="warning"
-                    className={
-                      matchScrn ? styles.textAlertMd : styles.textAlert
-                    }
+                    sx={matchScrn ? {
+                      justifyContent: "center",
+                      fontSize: "12px",
+                    } : {
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                    }}
                   >
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
-                      Sale Ends At:{" "}
+                      Sale Ends Att:{" "}
                     </span>
                     <span>
                       <Countdown
@@ -224,9 +195,13 @@ const OnSaleCard = (props) => {
                 >
                   <Alert
                     severity="error"
-                    className={
-                      matchScrn ? styles.textAlertMd : styles.textAlert
-                    }
+                    sx={matchScrn ? {
+                      justifyContent: "center",
+                      fontSize: "12px",
+                    } : {
+                      justifyContent: "center",
+                      fontSize: "1rem",
+                    }}
                     style={{ fontWeight: "bold" }}
                   >
                     Sale Ended
@@ -236,8 +211,8 @@ const OnSaleCard = (props) => {
             </Typography>
           </CardContent>
         </div>
-      </Card>
-    </div>
+      </Card >
+    </div >
   );
 };
 

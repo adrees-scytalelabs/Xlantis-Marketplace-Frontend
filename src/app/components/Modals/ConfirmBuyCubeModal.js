@@ -1,4 +1,4 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import React from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
@@ -38,7 +38,7 @@ function ConfirmBuyCubeModal(props) {
                         <Typography variant="h6" gutterBottom  >You will Pay:</Typography>
                     </Col>
                     <Col className="text-right">
-                        <Typography variant="h6" gutterBottom color="textSecondary" >{props.salePrice/ 10 ** 18}</Typography>
+                        <Typography variant="h6" gutterBottom color="textSecondary" >{props.salePrice / 10 ** 18}</Typography>
                     </Col>
                 </Row>
 
@@ -48,10 +48,10 @@ function ConfirmBuyCubeModal(props) {
             <Modal.Footer>
                 <Button variant="primary" onClick={props.handleClose}>
                     Close
-    </Button>
+                </Button>
                 <Button variant="primary" onClick={props.ConfirmBuyCube}>
                     Yes, Proceed!
-    </Button>
+                </Button>
             </Modal.Footer>
         </Modal>
 

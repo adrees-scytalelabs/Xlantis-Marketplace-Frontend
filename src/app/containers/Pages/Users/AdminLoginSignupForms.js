@@ -2,7 +2,6 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import "react-intl-tel-input/dist/main.css";
 import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";

@@ -1,33 +1,10 @@
-import { Typography, makeStyles } from "@material-ui/core";
-import CancelIcon from "@material-ui/icons/Cancel";
+import { Typography } from '@mui/material';
 import React from "react";
 import { Link } from "react-router-dom";
 import HeaderHome from "../../../../components/Headers/Header";
-
-const useStyles = makeStyles((theme) => ({
-  mainInfoHeading: {
-    fontFamily: "orbitron",
-    fontWeight: "bold",
-    color: "#F64D04",
-    textAlign: "center",
-  },
-  infoIcon: {
-    fontSize: "3rem",
-    color: "#F64D04",
-  },
-  infoMessage: {
-    marginTop: "16px",
-    padding: "8px",
-    textAlign: "center",
-  },
-  infoOK: {
-    color: "#009850",
-    marginLeft: "5px",
-  },
-}));
+import CancelIcon from '@mui/icons-material/Cancel';
 
 function Failed() {
-  const classes = useStyles();
   return (
     <>
       <div style={{ minHeight: "95px" }}>
@@ -41,13 +18,24 @@ function Failed() {
           >
             <div className="col-12 col-md-6">
               <div className="redirectInfoBoxWrapper">
-                <Typography variant="h3" className={classes.mainInfoHeading}>
+                <Typography variant="h3" style={{
+                  fontFamily: "orbitron",
+                  fontWeight: "bold",
+                  color: "#F64D04",
+                  textAlign: "center",
+                }}>
                   Payment Unsuccessful!{" "}
-                  <CancelIcon className={classes.infoIcon} />
+                  <CancelIcon style={{
+                    fontSize: "3rem",
+                    color: "#F64D04",
+                  }} />
                 </Typography>
                 <div className="row no-gutters justify-content-end align-items-center w-100 mt-4 detailRedirectWrapper border-0">
                   <Link to="/" className="w-100">
-                    <button>OK</button>
+                    <button style={{
+                      color: "#009850",
+                      marginLeft: "5px",
+                    }}>OK</button>
                   </Link>
                 </div>
               </div>

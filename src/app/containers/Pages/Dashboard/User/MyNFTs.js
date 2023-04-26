@@ -1,5 +1,4 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
+import { Grid, TablePagination } from '@mui/material';
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";

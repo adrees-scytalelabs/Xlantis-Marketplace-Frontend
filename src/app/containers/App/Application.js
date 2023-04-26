@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
 import React, { useEffect } from "react";
-import { BrowserRouter, Redirect, Route, Switch } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "../../components/context/AuthContext";
 import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
 import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
@@ -54,165 +54,128 @@ function App() {
     };
   }, [jwt]);
 
+  useEffect(() => {
+    const controller = new AbortController();
+    checkLoginStatus();
+    return () => {
+      controller.abort();
+    };
+  }, []);
+
   jwt !== null && console.log();
 
   const PrivateRoute = ({ path, ...rest }) => {
+    console.log("...rest", rest);
+    console.log("jwtDecoded",jwtDecoded);
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (
-          <Route
-            {...rest}
-            render={(props) =>
-              version === "v1-sso" ? (
-                isLoggedIn && isVerified ? (
-                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              ) : version === "v2-wallet-login" ? (
-                isLoggedIn && isVerified ? (
-                  <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
-                ) : (
-                  <Redirect to="/" />
-                )
-              ) : isLoggedIn ? (
-                <AdminDashboard {...props} jwtDecoded={jwtDecoded} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
+          version === "v1-sso" ? (
+            isLoggedIn && isVerified ? (
+              <AdminDashboard jwtDecoded={jwtDecoded} />
+            ) : (
+              <Navigate to="/" />
+            )
+          ) : version === "v2-wallet-login" ? (
+            isLoggedIn && isVerified ? (
+              <AdminDashboard jwtDecoded={jwtDecoded} />
+            ) : (
+              <Navigate to="/" />
+            )
+          ) : isLoggedIn ? (
+            <AdminDashboard jwtDecoded={jwtDecoded} />
+          ) : (
+            <Navigate to="/" />
+          )
         );
       } else if (jwtDecoded.role === "super-admin") {
         return (
-          <Route
-            {...rest}
-            render={(props) =>
-              isLoggedIn ? (
-                <SuperAdminDashboard {...props} jwtDecoded={jwtDecoded} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
+          isLoggedIn ? (
+            <SuperAdminDashboard jwtDecoded={jwtDecoded} />
+          ) : (
+            <Navigate to="/" />
+          )
+
         );
       } else if (jwtDecoded.role === "user") {
         return (
-          <Route
-            {...rest}
-            render={(props) =>
-              isLoggedIn ? (
-                <UserDashboard {...props} jwtDecoded={jwtDecoded} />
-              ) : (
-                <Redirect to="/" />
-              )
-            }
-          />
+          isLoggedIn ? (
+            <UserDashboard jwtDecoded={jwtDecoded} />
+          ) : (
+            <Navigate to="/" />
+          )
         );
       }
     } else {
-      return <Redirect to="/" />;
+      return <Navigate to="/" />;
     }
   };
 
   const LoginRegisterRedirectCheck = ({ path, ...rest }) => {
     checkLoginStatus();
-    if (
-      jwtDecoded &&
-      isLoggedIn &&
-      version === "v1-sso" &&
-      isVerified &&
-      jwtDecoded.role === "admin"
-    ) {
-      return <Redirect to="/dashboard" />;
-    } else if (
-      jwtDecoded &&
-      isLoggedIn &&
-      version === "v2-wallet-login" &&
-      isVerified &&
-      jwtDecoded.role === "admin"
-    ) {
-      return <Redirect to="/dashboard" />;
-    } else if (jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin") {
-      return <Redirect to="/superAdminDashboard" />;
-    } else if (path === "/checkout") {
-      return <Route component={CheckoutScreen} />;
-    } else if (path === "/user-account") {
-      return <Route component={UserLoginSignup} />;
-    } else if (path === "/admin-account") {
-      return <Route component={AdminLoginSignup} />;
-    } else if (path === "/super-admin-account") {
-      return <Route component={SuperAdminLogin} />;
-    } else if (path === "/admin-signup-details") {
-      return <Route component={AdminSSORedirect} />;
-    } else if (path === "/updatRequestSent") {
-      return <Route component={UpdateRequestSent} />;
-    } else if (path === "/marketPlace") {
-      return <Route component={MarketPlace} />;
-    } else if (path === "/auctionDrops") {
-      return <Route component={AuctionDrops} />;
-    } else if (path === "/fixedDropNFTHome") {
-      return <Route component={FixedDropSingleNFTHome} />;
-    } else if (path === "/usd_payment/success") {
-      return <Route component={Success} />;
-    } else if (path === "/usd_payment/failed") {
-      return <Route component={Failed} />;
-    } else if (path === "/fixdropnft/:dropId") {
-      return (
-        <Route
-          exact
-          path="/fixdropnft/:dropId"
-          component={FixedPriceDropNFTs}
-        />
-      );
-    } else if (path === "/fixedDropNFTHome/:singleNFTid") {
-      return (
-        <Route
-          exact
-          path="/fixedDropNFTHome/:singleNFTid"
-          component={FixedDropSingleNFTHome}
-        />
-      );
-    } else {
-      return <Route component={HomeScreen} />;
-    }
+    return (
+      jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin" ? (
+        <Navigate to="/superAdminDashboard" />
+      ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ||
+        version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ? (
+        <Navigate to="/dashboard" />
+      ) : path === "/checkout" ? (
+        <CheckoutScreen />
+      ) : path === "/user-account" ? (
+        <UserLoginSignup />
+      ) : path === "/admin-account" ? (
+        <AdminLoginSignup />
+      ) : path === "/super-admin-account" ? (
+        <SuperAdminLogin />
+      ) : path === "/admin-signup-details" ? (
+        <AdminSSORedirect />
+      ) : path === "/updatRequestSent" ? (
+        <UpdateRequestSent />
+      ) : path === "/marketPlace" ? (
+        <MarketPlace />
+      ) : path === "/auctionDrops" ? (
+        <AuctionDrops />
+      ) : path === "/fixedDropNFTHome" ? (
+        <FixedDropSingleNFTHome />
+      ) : path === "/usd_payment/success" ? (
+        <Success />
+      ) : path === "/usd_payment/failed" ? (
+        <Failed />
+      ) : path === "/fixdropnft/:dropId" ? (
+        <FixedPriceDropNFTs />
+      ) : path === "/fixedDropNFTHome/:singleNFTid" ? (
+        <FixedDropSingleNFTHome />
+      ) : (
+        <HomeScreen />
+      )
+    );
   };
+
 
   return (
     <AuthContextProvider>
       <SnackbarProvider maxSnack={3}>
         <BrowserRouter>
-          <Switch>
-            <LoginRegisterRedirectCheck exact path="/" />
-            <LoginRegisterRedirectCheck exact path="/marketPlace" />
-            <LoginRegisterRedirectCheck exact path="/user-account" />
-            <LoginRegisterRedirectCheck exact path="/super-admin-account" />
-            <LoginRegisterRedirectCheck exact path="/admin-account" />
-            <LoginRegisterRedirectCheck exact path="/checkout" />
-            <LoginRegisterRedirectCheck exact path="/admin-signup-details" />
-            <LoginRegisterRedirectCheck exact path="/updatRequestSent" />
-            <LoginRegisterRedirectCheck exact path="/usd_payment/success" />
-            <LoginRegisterRedirectCheck exact path="/usd_payment/failed" />
-            <LoginRegisterRedirectCheck exact path="/auctionDrops" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixedDropNFTHome/:singleNFTid"
-            />
-            <LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />
-            <LoginRegisterRedirectCheck
-              exact
-              path="/fixdropnft/:dropId"
-              component={FixedPriceDropNFTs}
-            />
-            <Route
-              path="/users/emailverification/:email/:token"
-              render={(routeProps) => <EmailVerification {...routeProps} />}
-            />
-            <Route path="/termsandconditions" component={TermsAndConditions} />
-            <Route path="/privacy-policy" component={PrivacyPolicy} />
-
-            <PrivateRoute path="/dashboard" />
-            <PrivateRoute path="/superAdminDashboard" />
+          <Routes>
+            <Route path="/" element={<LoginRegisterRedirectCheck exact path="/" />} />
+            <Route path="/marketPlace" element={<LoginRegisterRedirectCheck exact path="/marketPlace" />} />
+            <Route path="/user-account" element={<LoginRegisterRedirectCheck exact path="/user-account" />} />
+            <Route path="/super-admin-account" element={<LoginRegisterRedirectCheck exact path="/super-admin-account" />} />
+            <Route path="/admin-account" element={<LoginRegisterRedirectCheck exact path="/admin-account" />} />
+            <Route path="/checkout" element={<LoginRegisterRedirectCheck exact path="/checkout" />} />
+            <Route path="/admin-signup-details" element={<LoginRegisterRedirectCheck exact path="/admin-signup-details" />} />
+            <Route path="/updatRequestSent" element={<LoginRegisterRedirectCheck exact path="/updatRequestSent" />} />
+            <Route path="/usd_payment/success" element={<LoginRegisterRedirectCheck exact path="/usd_payment/success" />} />
+            <Route path="/usd_payment/failed" element={<LoginRegisterRedirectCheck exact path="/usd_payment/failed" />} />
+            <Route path="/auctionDrops" element={<LoginRegisterRedirectCheck exact path="/auctionDrops" />} />
+            <Route path="/fixedDropNFTHome/:singleNFTid" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />} />
+            <Route path="/fixedDropNFTHome" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />} />
+            <Route path="/fixdropnft/:dropId" element={<LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" />} />
+            <Route path="/users/emailverification/:email/:token" render={(routeProps) => <EmailVerification {...routeProps} />} />
+            <Route path="/termsandconditions" element={<TermsAndConditions />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+            <Route path="/dashboard/*" element={<PrivateRoute path="/dashboard/*" />} />
+            <Route path="/superAdminDashboard/*" element={<PrivateRoute path="/superAdminDashboard/*" />} />
             <Route
               exact
               path="/user/settings"
@@ -220,7 +183,7 @@ function App() {
                 isLoggedIn && jwtDecoded.role === "user" ? (
                   <UserSettings {...routeProps} />
                 ) : (
-                  <Redirect to="/" />
+                  <Navigate to="/" />
                 )
               }
             />
@@ -231,11 +194,11 @@ function App() {
                 isLoggedIn && jwtDecoded.role === "admin" ? (
                   <AdminSettings {...routeProps} />
                 ) : (
-                  <Redirect to="/" />
+                  <Navigate to="/" />
                 )
               }
             />
-          </Switch>
+          </Routes>
         </BrowserRouter>
       </SnackbarProvider>
     </AuthContextProvider>

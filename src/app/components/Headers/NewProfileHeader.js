@@ -1,36 +1,15 @@
-import { Divider } from "@material-ui/core";
-import AppBar from "@material-ui/core/AppBar";
-import Avatar from "@material-ui/core/Avatar";
-import CssBaseline from "@material-ui/core/CssBaseline";
-import IconButton from "@material-ui/core/IconButton";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
-import { makeStyles } from "@material-ui/core/styles";
-import Toolbar from "@material-ui/core/Toolbar";
-import MenuIcon from "@material-ui/icons/Menu";
+import { Divider } from '@mui/material';
 import clsx from "clsx";
-import Cookies from "js-cookie";
 import React from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink, useNavigate, useResolvedPath } from "react-router-dom";
 import logo from "../../assets/img/logo3.png";
-
 const drawerWidth = 280;
-const useStyles = makeStyles((theme) => ({
+const styles = {
   appBar: {
     backgroundColor: "#ffffff",
     transition: theme.transitions.create(["margin", "width"], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
-    }),
-    zIndex: theme.zIndex.drawer + 1,
-  },
-  appBarShift: {
-    backgroundColor: "#ffffff",
-    width: `calc(100% - ${drawerWidth}px)`,
-    marginLeft: drawerWidth,
-    transition: theme.transitions.create(["margin", "width"], {
-      easing: theme.transitions.easing.easeOut,
-      duration: theme.transitions.duration.enteringScreen,
     }),
     zIndex: theme.zIndex.drawer + 1,
   },
@@ -51,12 +30,12 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(1),
     },
   },
-}));
+}
 
 export default function HeaderMenuAppBar(props) {
-  let history = useHistory();
-  const classes = useStyles();
+  let navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const path = useResolvedPath("").pathname;
   const open = Boolean(anchorEl);
 
   const handleMenu = (event) => {
@@ -68,12 +47,12 @@ export default function HeaderMenuAppBar(props) {
   };
 
   const handleDashboard = () => {
-    history.push("/dashboard");
+    navigate("/dashboard");
     handleClose();
   };
 
   const handleProfileSetting = () => {
-    history.push(`${props.match.url}/profilesettings`);
+    navigate(`${path}/profilesettings`);
     handleClose();
   };
 
@@ -82,22 +61,22 @@ export default function HeaderMenuAppBar(props) {
     sessionStorage.removeItem("Authorization");
     web3Modal.clearCachedProvider();
 
-    history.push("/");
+    navigate("/");
     window.location.reload(false);
   };
 
-  
-  
-  
+
+
+
 
   return (
-    <div className={classes.root}>
+    <div sx={styles.root}>
       <CssBaseline />
-      <AppBar position="fixed" className={clsx(classes.appBar)}>
+      <AppBar position="fixed" className={clsx(styles.appBar)}>
         <Toolbar>
           <IconButton
             edge="start"
-            className={classes.menuButton}
+            sx={styles.menuButton}
             color="inherit"
             aria-label="menu"
             onClick={props.handleDrawerToggle}
@@ -105,14 +84,14 @@ export default function HeaderMenuAppBar(props) {
             <MenuIcon />
           </IconButton>
 
-          <div className={classes.title}>
+          <div sx={styles.title}>
             <NavLink to={"/"}>
               <img src={logo} alt={"Robot Drop"} width="80" height="70" />
               Robot Drop
             </NavLink>
           </div>
           <div>
-            <div className={classes.avatarRoot}>
+            <div sx={styles.avatarRoot}>
               {props.userData !== undefined ? (
                 <>
                   <Avatar

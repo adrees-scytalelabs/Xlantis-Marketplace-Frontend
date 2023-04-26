@@ -1,10 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import Tooltip from "@material-ui/core/Tooltip";
 import axios from "axios";
 import { useSnackbar } from "notistack";
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import SuperAdminCreateTemplate from "../../../../components/Utils/SuperAdminCreateTemplate";
-
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [valid, setValid] = useState("");

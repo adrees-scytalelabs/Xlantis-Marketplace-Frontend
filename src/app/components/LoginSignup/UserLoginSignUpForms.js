@@ -1,19 +1,15 @@
-import { Typography } from "@material-ui/core";
-import {
-  makeStyles
-} from "@material-ui/core/styles";
-import CloseIcon from "@material-ui/icons/Close";
-import InfoIcon from "@material-ui/icons/Info";
+import CloseIcon from '@mui/icons-material/Close';
+import InfoIcon from '@mui/icons-material/Info';
+import { Typography } from '@mui/material';
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   signInOptionLabel: {
     margin: "16px auto",
     color: "#ccc",
@@ -28,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "inter",
     transition: "all 3s ease-in-out",
   },
-}));
+}
 
 
 const AdminLoginSignupForms = () => {
@@ -39,12 +35,10 @@ const AdminLoginSignupForms = () => {
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const classes = useStyles();
-
 
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
@@ -54,7 +48,7 @@ const AdminLoginSignupForms = () => {
   };
 
   const handleGoBack = () => {
-    history.push(`/`);
+    navigate(`/`);
   };
 
   useEffect(() => {
@@ -89,8 +83,8 @@ const AdminLoginSignupForms = () => {
     const controller = new AbortController();
 
     if (adminSignInData !== null) {
-      history.push("/");
-      history.go(0);
+      navigate("/");
+      // history.go(0);
     }
 
     return () => {
@@ -169,7 +163,7 @@ const AdminLoginSignupForms = () => {
                     <div className="text-center">
                       <Typography
                         variant="body2"
-                        className={classes.signInOptionLabel}
+                        sx={styles.signInOptionLabel}
                       >
                         OR
                       </Typography>
@@ -202,7 +196,7 @@ const AdminLoginSignupForms = () => {
                       <div className="text-center">
                         <Typography
                           variant="body2"
-                          className={classes.errorVerification}
+                          sx={styles.errorVerification}
                         >
                           <InfoIcon /> ID Token Verification Failed!
                         </Typography>

@@ -1,6 +1,5 @@
-import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
-
 const AddNFTDisplayCard = (props) => {
   return (
     <Card style={{ height: "100%" }} id="nftCardProps">

@@ -1,4 +1,3 @@
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -10,60 +9,21 @@ import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
+import Select from "../../../../components/Select/Select";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
+import UploadFile from "../../../../components/Upload/UploadFile";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import UploadFile from "../../../../components/Upload/UploadFile";
-import Select from "../../../../components/Select/Select";
-import SelectDescription from "../../../../components/Select/SelectDescription";
-import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
-import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
 
 function NewCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
   const [approvalModalShow, setApprovalModalShow] = useState(false);
@@ -99,7 +59,7 @@ function NewCollection(props) {
   const [royaltyFee, setRoyaltyFee] = useState(0);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  
+
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
@@ -625,21 +585,21 @@ function NewCollection(props) {
                 />
                 <div className="form-group newNftFields">
                   <Select
-                    label ="Collection Name"
-                    values = {collectionName}
-                    placeholder= "Enter Name of Collection"
+                    label="Collection Name"
+                    values={collectionName}
+                    placeholder="Enter Name of Collection"
                     setValue={setCollectionName}
                   />
                   <Select
-                    label ="Collection Symbol"
-                    values = {collectionSymbol}
-                    placeholder= "Enter Symbol of Collection"
+                    label="Collection Symbol"
+                    values={collectionSymbol}
+                    placeholder="Enter Symbol of Collection"
                     setValue={setCollectionSymbol}
                   />
                   <SelectDescription
-                    label ="Collection Description"
-                    values = {collectionDescription}
-                    placeholder= "Enter Description of Collection"
+                    label="Collection Description"
+                    values={collectionDescription}
+                    placeholder="Enter Description of Collection"
                     setDescription={setCollectionDescription}
                   />
 
@@ -651,7 +611,7 @@ function NewCollection(props) {
 
                   <SelectNFTAndSaleType
                     label="Select NFT Type"
-                    onChangeWorkInProgress = {() => {
+                    onChangeWorkInProgress={() => {
                       console.log("721workinf");
                       setWorkProgressModalShow(true);
                     }}
@@ -662,18 +622,18 @@ function NewCollection(props) {
                     type={nftType}
                     radioType="nft"
                   />
-                  
+
                 </div>
               </div>
             </form>
           </div>
         </div>
         <SubmitButton
-         label = "Add Collection"
-         isSaving={isSaving}
-         version ={version}
-         handleSubmitEvent={handleSubmitEvent}
-         handleSubmitEventMetamask={handleSubmitEventMetamask}
+          label="Add Collection"
+          isSaving={isSaving}
+          version={version}
+          handleSubmitEvent={handleSubmitEvent}
+          handleSubmitEventMetamask={handleSubmitEventMetamask}
         />
       </div>
       <NetworkErrorModal

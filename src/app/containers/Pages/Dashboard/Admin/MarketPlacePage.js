@@ -1,15 +1,13 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import { Link, useRouteMatch } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useResolvedPath } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { useDispatch, useSelector } from 'react-redux';
 import { getSaleType } from "../../../../redux/getMarketPlaceSaleTypeSlice";
 
-const cardStyles = makeStyles((theme) => ({
+const cardStyles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -20,11 +18,6 @@ const cardStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontSize: "1rem",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "0.875rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -40,9 +33,9 @@ const cardStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     borderRadius: 0,
   },
@@ -50,39 +43,24 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
 function MarketPlacePage(props) {
-  const classes = useStyles();
-  const cardClasses = cardStyles();
-  let { path } = useRouteMatch();
+
+  const path = useResolvedPath("").pathname;
   const [tokenList, setTokenList] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const {saleTypeData,loading} = useSelector((store) => store.marketPlaceSaleType);
+  const { saleTypeData, loading } = useSelector((store) => store.marketPlaceSaleType);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -93,15 +71,15 @@ function MarketPlacePage(props) {
 
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    dispatch(getSaleType({saleType,start,end}))
-    if(loading===1){
-        setTokenList(saleTypeData);
-        setTotalDrops(saleTypeData.length);
-        handleCloseBackdrop();
-      }
-      else if(loading===2){
-        handleCloseBackdrop();
-      }
+    dispatch(getSaleType({ saleType, start, end }))
+    if (loading === 1) {
+      setTokenList(saleTypeData);
+      setTotalDrops(saleTypeData.length);
+      handleCloseBackdrop();
+    }
+    else if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
@@ -152,21 +130,19 @@ function MarketPlacePage(props) {
                   key={index}
                 >
                   <Link
-                    to={{
-                      pathname: `${path}/drops/nfts`,
-                      state: {
-                        nftId: i.NFTIds,
-                        dropId: i._id,
-                        startTime: i.startTime,
-                        endTime: i.endTime,
-                        saleType: i.saleType,
-                      },
+                    to={`${path}/drops/nfts`}
+                    state={{
+                      nftId: i.NFTIds,
+                      dropId: i._id,
+                      startTime: i.startTime,
+                      endTime: i.endTime,
+                      saleType: i.saleType,
                     }}
                   >
                     <DropsPageCard
                       dropDetails={i}
-                      classes={classes}
-                      cardClasses={cardClasses}
+                      classes={styles}
+                      cardClasses={cardStyles}
                     />
                   </Link>
                 </Grid>
@@ -186,7 +162,7 @@ function MarketPlacePage(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-    </div>
+    </div >
   );
 }
 

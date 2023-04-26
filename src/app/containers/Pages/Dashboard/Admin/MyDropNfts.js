@@ -1,28 +1,17 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, TablePagination } from '@mui/material';
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
+    // backgroundColor: theme.palette.background.paper,
   },
   cardTitle: {
     color: "#fff",
@@ -30,11 +19,6 @@ const useStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "1rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -49,24 +33,18 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
 function MyDropNFTs(props) {
   let location = useLocation();
-  const classes = useStyles();
 
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
   const [page, setPage] = useState(0);
@@ -235,22 +213,20 @@ function MyDropNFTs(props) {
                   <Grid item xs={12} sm={6} md={3} key={index}>
                     <Link
                       onClick={(e) => handleStop(e)}
-                      to={{
-                        pathname: `${path}/singleNft`,
-                        state: {
-                          nftDetail: i,
-                          saleType: location.state.saleType,
-                          status: location.state.status,
-                          nftId: location.state.nftId,
-                          dropId: location.state.dropId,
-                        },
+                      to={`${path}/singleNft`}
+                      state={{
+                        nftDetail: i,
+                        saleType: location.state?.saleType,
+                        status: location.state?.status,
+                        nftId: location.state?.nftId,
+                        dropId: location.state?.dropId,
                       }}
                     >
                       <MyDropNFTsCard
                         nftDetails={i}
                         handlePlay={handlePlay}
                         handlePause={handlePause}
-                        classes={classes}
+                        classes={styles}
                       />
                     </Link>
                   </Grid>

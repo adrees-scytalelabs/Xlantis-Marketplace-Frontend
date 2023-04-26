@@ -1,4 +1,4 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
@@ -78,7 +78,7 @@ function AccountsDefaultScreen(props) {
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
-        count={adminCount+adminWalletCount}
+        count={adminCount + adminWalletCount}
         rowsPerPage={rowsPerPage}
         page={page}
         onPageChange={handleChangePage}

@@ -1,4 +1,4 @@
-import { Check } from "@material-ui/icons";
+import CheckIcon from '@mui/icons-material/Check';
 import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import BlackSpinner from "../Spinners/BlackSpinner";
@@ -34,7 +34,7 @@ const RequestApprovalModal = (props) => {
               {props.approvingFixedPrice ? (
                 <BlackSpinner />
               ) : props.isFixedPriceApproved ? (
-                <Check color="success" style={{ color: "green" }}></Check>
+                <CheckIcon color="success" style={{ color: "green" }} />
               ) : (
                 <button
                   className="btn"

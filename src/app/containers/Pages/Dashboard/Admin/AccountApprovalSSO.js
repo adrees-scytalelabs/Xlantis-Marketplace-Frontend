@@ -1,4 +1,4 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
@@ -10,7 +10,6 @@ import {
   handleVerify,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-
 function AccountApprovalSSO(props) {
   const [admins, setAdmins] = useState([]);
   const [modalData, setModalData] = useState();

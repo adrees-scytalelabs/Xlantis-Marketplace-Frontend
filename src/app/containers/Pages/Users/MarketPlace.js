@@ -1,4 +1,4 @@
-import { Grid } from "@material-ui/core/";
+import { Grid } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -27,8 +27,7 @@ function MarketPlace(props) {
     if (version === undefined) {
       endpoint = `/drop/saleType/fixed-price/${start}/${end}`
     }
-    else
-    {
+    else {
       endpoint = `/drop/saleType/fixed-price/${start}/${end}`
     }
     axios
@@ -56,8 +55,7 @@ function MarketPlace(props) {
     if (version === undefined) {
       endpoint = `/drop/saleType/auction/${start}/${end}`
     }
-    else
-    {
+    else {
       endpoint = `/drop/saleType/auction/${start}/${end}`
     }
     axios.get(endpoint).then(
@@ -74,14 +72,14 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
-    getCubes(0, 12); 
+    getCubes(0, 12);
     getBidableDrops(0, 12);
   }, []);
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} role={null}/>
+          <HeaderHome selectedNav={"Market"} role={null} />
         </div>
         <div className="row no-gutters mt-5">
           <div className="container-fluid">

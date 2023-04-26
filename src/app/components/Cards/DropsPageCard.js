@@ -1,12 +1,12 @@
 import {
+  Alert,
   Card,
   CardActionArea,
   CardActions,
   CardContent,
   CardMedia,
   Typography,
-} from "@material-ui/core";
-import { Alert } from "@material-ui/lab";
+} from "@mui/material";
 import React from "react";
 import Countdown from "react-countdown";
 import { truncate } from "../../assets/js/utils";

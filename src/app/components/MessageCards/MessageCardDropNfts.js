@@ -1,6 +1,6 @@
 import React from "react";
-import Typography from "@material-ui/core/Typography";
-import { Card } from "@material-ui/core";
+
+import { Card, Typography } from '@mui/material';
 const MessageCardDropNfts = (props) => {
   return (
     <Card

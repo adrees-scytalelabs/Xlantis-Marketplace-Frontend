@@ -1,9 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
@@ -23,25 +23,14 @@ import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
-import { useDispatch, useSelector } from 'react-redux';
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
 import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
+    // backgroundColor: theme.palette.background.paper,
   },
 
   card: {
@@ -49,11 +38,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -67,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
   tooltip: {
     fontSize: "16px",
   },
-}));
+}
 
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
+
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -167,20 +151,20 @@ function NewNFT(props) {
 
   const [previewImage, setPreviewImage] = useState(r1);
   const [versionB, setVersionB] = useState("");
-  const {collectionData,loading} = useSelector((store) => store.NewNftCollection);
-  const {defaultTemplate,loadingDefault} = useSelector((store) => store.defaultTemplate);
-  const {templates,propertiesLoading} = useSelector((store) => store.newNftProperties);
+  const { collectionData, loading } = useSelector((store) => store.NewNftCollection);
+  const { defaultTemplate, loadingDefault } = useSelector((store) => store.defaultTemplate);
+  const { templates, propertiesLoading } = useSelector((store) => store.newNftProperties);
   const dispatch = useDispatch();
 
 
   let getCollections = (collectionType) => {
-      setCollection("");
-      dispatch(getNewNftCollection(collectionType));
-      // console.log("collectionResp",collectionData);
-      if (collectionType === "1155") {
-        setChangeCollectionList(collectionData);
-      }
-      setCollectionTypes(collectionData);
+    setCollection("");
+    dispatch(getNewNftCollection(collectionType));
+    // console.log("collectionResp",collectionData);
+    if (collectionType === "1155") {
+      setChangeCollectionList(collectionData);
+    }
+    setCollectionTypes(collectionData);
   };
   useEffect(() => {
     getCollections(NFTType);
@@ -209,7 +193,7 @@ function NewNFT(props) {
     dispatch(getNewNftDefaultTemplate());
     // console.log("redxdefaltRResp",defaultTemplate);
     setDefaultTemplates(defaultTemplate);
-    if(loadingDefault===1){
+    if (loadingDefault === 1) {
       if (defaultTemplate !== null) {
         handleSetProperties(defaultTemplate.properties);
       }
@@ -223,12 +207,12 @@ function NewNFT(props) {
     if (role === "admin") {
     }
     dispatch(getNewNftProperties(role));
-      //  console.log("reduxdefaultResp",templates);
-        if (role === "admin") {
-          setTemplateData(templates);
-        } else {
-          setStandardTemplates(templates);
-        }
+    //  console.log("reduxdefaultResp",templates);
+    if (role === "admin") {
+      setTemplateData(templates);
+    } else {
+      setStandardTemplates(templates);
+    }
   };
 
   useEffect(() => {
@@ -1101,7 +1085,7 @@ function NewNFT(props) {
 
                   <NewNftSelectNft
                     tokenList={tokenList}
-                    classes={classes}
+                    classes={styles}
                     setWorkProgressModalShow={setWorkProgressModalShow}
                     NFTType={NFTType}
                     setNFTType={setNFTType}
@@ -1116,7 +1100,7 @@ function NewNFT(props) {
 
                   <NewNftSelectSupply
                     NFTType={NFTType}
-                    classes={classes}
+                    classes={styles}
                     setSupplyType={setSupplyType}
                     setTokenSupply={setTokenSupply}
                     supplyType={supplyType}
@@ -1141,7 +1125,7 @@ function NewNFT(props) {
             tokenList={tokenList}
             handleOpenNFTDetailModal={handleOpenNFTDetailModal}
             setEditObjectIndex={setEditObjectIndex}
-            classes={classes}
+            classes={styles}
             handleRemoveClick={handleRemoveClick}
           />
         </div>

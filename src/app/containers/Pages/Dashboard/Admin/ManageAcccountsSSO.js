@@ -1,18 +1,10 @@
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography
-} from "@material-ui/core";
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import SSODisabled from "./SSODisabled";
 import SSOEnabled from "./SSOEnabled";
-
-const useStyles = makeStyles(() => ({
+const useStyles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -22,7 +14,7 @@ const useStyles = makeStyles(() => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -103,7 +95,6 @@ function a11yProps(index) {
 
 const ManageAccountsSSO = (props) => {
   const location = useLocation();
-  const classes = useStyles();
   const [value, setValue] = useState(0);
   const handleChange = (event, newValue) => {
     setValue(newValue);
@@ -122,15 +113,15 @@ const ManageAccountsSSO = (props) => {
       accounts: "",
       sso: "active",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
-    }); 
+      properties: "",
+      template: "",
+      saved: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -151,7 +142,7 @@ const ManageAccountsSSO = (props) => {
           </div>
         </div>
       </div>
-      
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
@@ -165,12 +156,12 @@ const ManageAccountsSSO = (props) => {
               >
                 <Tab
                   label="Enabled"
-                  className={classes.tabsProps}
+                  sx={useStyles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="Disabled"
-                  className={classes.tabsProps}
+                  sx={useStyles.tabsProps}
                   {...a11yProps(1)}
                 />
               </Tabs>

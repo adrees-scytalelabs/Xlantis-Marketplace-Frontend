@@ -1,14 +1,9 @@
+import CloseIcon from '@mui/icons-material/Close';
 import React from "react";
 import { FixedSizeList as List } from "react-window";
-import CloseIcon from "@material-ui/icons/Close";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import { grey } from "@material-ui/core/colors";
-
 import "../../assets/css/notificationStyle.css";
-
-
-
+import { ListItem, ListItemText } from '@mui/material';
+import { grey } from '@mui/material/colors';
 export default function NotificationList(props) {
   function handleNotificationClick(event) {
     console.log("clicked");
@@ -26,7 +21,6 @@ export default function NotificationList(props) {
     return (
       <ListItem
         divider
-  
         className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
         style={style}
         key={index}
@@ -34,7 +28,7 @@ export default function NotificationList(props) {
       >
         <ListItemText
           secondary={arr[index].message}
-  
+
         />
         <CloseIcon
           style={{ fontSize: 15, color: grey[600] }}

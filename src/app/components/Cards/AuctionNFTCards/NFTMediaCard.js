@@ -1,15 +1,14 @@
-import { Card, CardMedia } from "@material-ui/core";
+import { Card, CardMedia } from "@mui/material";
 import React from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-
 const NFTMediaCard = (props) => {
   return (
-    <Card className={props.classes.root}>
+    <Card sx={props.classes.root}>
       <div>
         {props.nftDetail.nftFormat === "glb" ||
-        props.nftDetail.nftFormat === "gltf" ? (
+          props.nftDetail.nftFormat === "gltf" ? (
           <div>
             <div
               style={{
@@ -48,7 +47,7 @@ const NFTMediaCard = (props) => {
             </div>
             <div style={{ marginTop: "20px" }}>
               <CardMedia
-                className={props.classes.media}
+                sx={props.classes.media}
                 title="NFT Artwork"
                 image={props.nftDetail.previewImageURI}
               />
@@ -57,7 +56,7 @@ const NFTMediaCard = (props) => {
         ) : props.nftDetail.nftFormat === "mp3" ? (
           <div>
             <CardMedia
-              className={props.classes.media}
+              sx={props.classes.media}
               title="NFT Artwork"
               image={
                 props.nftDetail.previewImageURI
@@ -80,7 +79,7 @@ const NFTMediaCard = (props) => {
           </div>
         ) : (
           <CardMedia
-            className={props.classes.media}
+            sx={props.classes.media}
             title="NFT Artwork"
             image={props.nftDetail.nftURI}
           />

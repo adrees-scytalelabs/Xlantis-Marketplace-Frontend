@@ -1,12 +1,9 @@
-import { createTheme } from "@material-ui/core";
-import { TablePagination } from "@material-ui/core/";
-
-import { makeStyles } from "@material-ui/core/styles";
+import { TablePagination } from '@mui/material';
 import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
@@ -14,7 +11,6 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
-
 
 
 function DropApproval(props) {
@@ -296,7 +292,7 @@ function DropApproval(props) {
             giveFixedPriceApproval={giveFixedPriceApproval}
           />
 
-          
+
         </div>
       </div>
 

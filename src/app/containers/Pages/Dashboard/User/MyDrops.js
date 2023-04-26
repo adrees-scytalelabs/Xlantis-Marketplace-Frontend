@@ -1,5 +1,3 @@
-import { Grid, makeStyles } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
 import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -9,38 +7,17 @@ import MyDropsCard from "../../../../components/Cards/MyDropsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 
-
-const useStyles = makeStyles((theme) => ({
+import { Grid, TablePagination } from '@mui/material';
+const styles = {
   root: {
     maxWidth: 345,
   },
   media: {
     height: 0,
     paddingTop: "100%",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+  }
+}
 function MyDrops(props) {
-  const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalDrops, setTotalDrops] = useState(0);
@@ -152,7 +129,7 @@ function MyDrops(props) {
               {tokenList.map((i, index) => (
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
-                    <MyDropsCard dropDetails={i} classes={classes} />
+                    <MyDropsCard dropDetails={i} classes={styles} />
                   </Link >
                 </Grid >
               ))

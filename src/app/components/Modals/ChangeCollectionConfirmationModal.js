@@ -1,10 +1,6 @@
-import { Button, TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Autocomplete, Button, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-
 const ChangeCollectionConfirmationModal = (props) => {
 
     const [collection, setCollection] = useState({});
@@ -15,7 +11,7 @@ const ChangeCollectionConfirmationModal = (props) => {
         setCollections(props.collectionDetails);
     })
 
-    return ( 
+    return (
         <Modal show={props.show} onHide={props.handleClose} size="lg" >
             <Modal.Header closeButton>
                 <Modal.Title> Change Collection? </Modal.Title>
@@ -28,21 +24,21 @@ const ChangeCollectionConfirmationModal = (props) => {
                         <Autocomplete
                             id="combo-dox-demo"
                             options={collections}
-                            
+
                             getOptionLabel={(option) =>
                                 option.name
                             }
                             onChange={(event, value) => {
                                 if (value == null) setCollectionName("");
                                 else {
-                                        console.log(value);
-                                        setCollectionName(value.name);
-                                        setCollection(value);
-                                        console.log("Value: ", value);
-                                    }
+                                    console.log(value);
+                                    setCollectionName(value.name);
+                                    setCollection(value);
+                                    console.log("Value: ", value);
                                 }
                             }
-                            inputValue = {collectionName}
+                            }
+                            inputValue={collectionName}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -55,31 +51,31 @@ const ChangeCollectionConfirmationModal = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button 
-                    variant="primary" 
+                <Button
+                    variant="primary"
                     onClick={() => {
                         setCollection({});
                         setCollectionName("");
                         props.handleClose();
-                    }} 
+                    }}
                 >
                     Cancle
                 </Button>
-                <button 
-                    type='button' 
-                    className="btn btn-submit" 
+                <button
+                    type='button'
+                    className="btn btn-submit"
                     onClick={() => {
                         setCollection({});
                         setCollectionName("");
                         props.updateChangeCollection(collection)
-                    }} 
+                    }}
                 >
                     Change
                 </button>
             </Modal.Footer>
         </Modal>
-        
+
     );
 }
- 
+
 export default ChangeCollectionConfirmationModal;

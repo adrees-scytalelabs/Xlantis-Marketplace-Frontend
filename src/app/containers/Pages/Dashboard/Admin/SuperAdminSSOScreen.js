@@ -1,10 +1,9 @@
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useResolvedPath } from 'react-router-dom';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
-
-
 function SuperAdminSSOScreen(props) {
   const [totalAdmins, setTotalAdmins] = useState(0);
   const [open, setOpen] = useState(false);
@@ -13,6 +12,7 @@ function SuperAdminSSOScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
+  const path = useResolvedPath("").pathname;
 
   let getCounts = () => {
     axios.defaults.headers.common[
@@ -58,7 +58,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accounts`}
+            linkTo={`${path}/accounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -76,10 +76,8 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/SSO`,
-              state: { current: "enabled" },
-            }}
+            linkTo={`${path}/manageAccounts/SSO`}
+            state={{ current: "enabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -97,10 +95,8 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/SSO`,
-              state: { current: "disabled" },
-            }}
+            linkTo={`${path}/manageAccounts/SSO`}
+            state={{ current: "disabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -118,7 +114,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/verifiedAccounts`}
+            linkTo={`${path}/verifiedAccounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -136,7 +132,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accountApproval`}
+            linkTo={`${path}/accountApproval`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"

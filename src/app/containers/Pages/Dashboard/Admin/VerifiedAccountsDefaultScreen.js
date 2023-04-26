@@ -1,14 +1,14 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
   getVerifiedSSOAdmins,
   getVerifiedWalletAdmins,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 
 function VerifiedAccountsDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);

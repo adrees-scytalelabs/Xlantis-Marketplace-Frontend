@@ -1,17 +1,9 @@
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography
-} from "@material-ui/core";
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import MarketPlacePage from "./MarketPlacePage";
 import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
+import MarketPlacePage from "./MarketPlacePage";
+const styles = {
   root: {},
   tabsProps: {
     textTransform: "capitalize",
@@ -22,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -101,7 +93,6 @@ function a11yProps(index) {
 }
 
 const MarketPlace = (props) => {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
   const handleChange = (newValue) => {
     setValue(newValue);
@@ -152,12 +143,12 @@ const MarketPlace = (props) => {
               >
                 <Tab
                   label="Auction"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="Fixed Price"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(1)}
                 />
               </Tabs>
