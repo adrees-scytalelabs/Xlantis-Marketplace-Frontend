@@ -1,8 +1,7 @@
-import { makeStyles } from "@material-ui/core/styles";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
@@ -26,49 +25,9 @@ import Factory721Contract from "../../../../components/blockchain/Abis/Factory72
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
 
 function NewCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let history = useHistory();
-  const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
   const [approvalModalShow, setApprovalModalShow] = useState(false);

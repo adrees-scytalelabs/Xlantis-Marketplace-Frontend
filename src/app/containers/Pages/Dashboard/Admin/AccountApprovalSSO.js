@@ -1,5 +1,7 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import Notification from "../../../../components/Utils/Notification";
@@ -8,8 +10,6 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
 import { getSuperAdminUnverifiedType1 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalSSO(props) {
@@ -35,24 +35,24 @@ function AccountApprovalSSO(props) {
   const handleShowBackdrop = (setOpen) => {
     setOpen(true);
   };
-  
+
 
   const getUnverifiedAdminsSSO = (
     start,
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType1({start,end}))
-   if(unverifiedType1Loading===1){
-        setAdmins(unverifiedType1Data);
-        setAdminCount(unverifiedType1Data.length);
-        setOpen(false);
-      }
-      else if(unverifiedType1Loading===2){
-        
-       
-        setOpen(false);
-      }
+    dispatch(getSuperAdminUnverifiedType1({ start, end }))
+    if (unverifiedType1Loading === 1) {
+      setAdmins(unverifiedType1Data);
+      setAdminCount(unverifiedType1Data.length);
+      setOpen(false);
+    }
+    else if (unverifiedType1Loading === 2) {
+
+
+      setOpen(false);
+    }
   };
 
   const handleVerify = (
@@ -71,7 +71,7 @@ function AccountApprovalSSO(props) {
     let data = {
       adminId: verifyAdminId,
     };
-  
+
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         handleCloseBackdrop(setOpen);
@@ -83,7 +83,7 @@ function AccountApprovalSSO(props) {
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-  
+
         handleCloseBackdrop(setOpen);
         setVariant("error");
         setNotificationData("Unable to Verify Admin.");
@@ -92,9 +92,9 @@ function AccountApprovalSSO(props) {
     );
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
-  },[unverifiedType1Loading])
+  }, [unverifiedType1Loading])
 
   useEffect(() => {
     props.setActiveTab({

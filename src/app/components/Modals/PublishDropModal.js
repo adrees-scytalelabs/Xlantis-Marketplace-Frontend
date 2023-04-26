@@ -1,19 +1,9 @@
-import { createTheme, ThemeProvider } from "@material-ui/core";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import Badge from "@material-ui/core/Badge";
-import Box from "@material-ui/core/Box";
-import Divider from "@material-ui/core/Divider";
-import Fade from "@material-ui/core/Fade";
-import Modal from "@material-ui/core/Modal";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { Accordion, AccordionDetails, AccordionSummary, Badge, Box, createTheme, Divider, Fade, Modal, ThemeProvider, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   modal: {
     display: "flex",
     alignItems: "center",
@@ -21,8 +11,8 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     border: "1px solid #fff",
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 3),
+    // boxShadow: theme.shadows[5],
+    // padding: theme.spacing(2, 4, 3),
     backgroundColor: "#000",
     marginTop: "70px",
   },
@@ -77,7 +67,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "orbitron",
     cursor: "default !important",
   },
-}));
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -139,7 +129,6 @@ const PublishDropModal = (props) => {
   const [costInfo, setCostInfo] = useState({});
   const [amount, setAmount] = useState(5);
   const [topUpModal, setTopUpModal] = useState(false);
-  const classes = useStyles();
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -168,19 +157,19 @@ const PublishDropModal = (props) => {
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            className={classes.modal}
+            sx={styles.modal}
             open={props.open}
             onClose={props.handleClose}
             closeAfterTransition
           >
             <Box>
               <Fade in={props.open}>
-                <div className={classes.paper}>
+                <div sx={styles.paper}>
                   <div className="row no-gutters mb-3">
                     <div className="col-12 align-self-center">
                       <Typography
                         variant="h4"
-                        className={classes.cardHeading}
+                        sx={styles.cardHeading}
                       >
                         Purchase Summary
                       </Typography>
@@ -195,7 +184,7 @@ const PublishDropModal = (props) => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className={classes.heading}>
+                      <Typography sx={styles.heading}>
                         Collections
                         <Badge
                           badgeContent={
@@ -210,14 +199,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Number of Transactions
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.collectionTxSummary.txsCount}
                           </p>
@@ -229,14 +218,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Total Collection(s) To Create
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.collectionTxSummary.collectionCount}
                           </p>
@@ -244,18 +233,18 @@ const PublishDropModal = (props) => {
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                      <div className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Cost
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.collection}
@@ -274,7 +263,7 @@ const PublishDropModal = (props) => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className={classes.heading}>
+                      <Typography sx={styles.heading}>
                         NFTs{" "}
                         <Badge
                           badgeContent={props.dropData.NFTsTxSummary.NFTCount}
@@ -287,14 +276,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Number of Transactions
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.NFTsTxSummary.txsCount}
                           </p>
@@ -306,14 +295,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Total NFTs To Mint
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.NFTsTxSummary.NFTCount}
                           </p>
@@ -321,18 +310,18 @@ const PublishDropModal = (props) => {
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                      <div className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Cost
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.nftMint}
@@ -351,7 +340,7 @@ const PublishDropModal = (props) => {
                       aria-controls="panel1a-content"
                       id="panel1a-header"
                     >
-                      <Typography className={classes.heading}>
+                      <Typography sx={styles.heading}>
                         Approval{" "}
                         <Badge
                           badgeContent={props.dropData.approvalSummary.NFTCount}
@@ -364,14 +353,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Number of Transactions
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.approvalSummary.txsCount}
                           </p>
@@ -384,14 +373,14 @@ const PublishDropModal = (props) => {
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Nft's for approval
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             {props.dropData.approvalSummary.superAdminApprovalPending}
                           </p>
@@ -399,18 +388,18 @@ const PublishDropModal = (props) => {
                       </div>
                     </AccordionDetails>
                     <AccordionDetails>
-                      <div className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}>
+                      <div className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}>
                         <div className="col-8 align-self-center">
                           <Typography
                             variant="h6"
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                           >
                             Cost
                           </Typography>
                         </div>
                         <div className="col-4 align-self-center text-right p-0" >
                           <p
-                            className={classes.cardTitle}
+                            sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
                             ${props.cost.estimates.superAdminApproval}
@@ -422,19 +411,19 @@ const PublishDropModal = (props) => {
                   <Divider />
                   <div className="mt-5">
                     <div
-                      className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
+                      className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}
                     >
                       <div className="col-8 align-self-center">
                         <Typography
                           variant="h6"
-                          className={classes.cardTitle}
+                          sx={styles.cardTitle}
                         >
                           Your Balance
                         </Typography>
                       </div>
                       <div className="col-4 align-self-center text-right p-0">
                         <p
-                          className={classes.cardTitle}
+                          sx={styles.cardTitle}
                           style={{ wordWrap: "break-word" }}
                         >
                           ${props.cost.balance.dollar}
@@ -442,21 +431,21 @@ const PublishDropModal = (props) => {
                       </div>
                     </div>
                     <div
-                      className={`row no-gutters justify-content-between w-100 ${classes.wrapper}`}
+                      className={`row no-gutters justify-content-between w-100 ${styles.wrapper}`}
                     >
                       <div className="col-8 align-self-center">
                         <Typography
                           variant="h6"
-                          className={classes.cardTitle}
+                          sx={styles.cardTitle}
                         >
                           Total cost
                         </Typography>
                       </div>
                       <div
-                        className={`col-4 align-self-center text-right p-0 ${classes.wrapper}`}
+                        className={`col-4 align-self-center text-right p-0 ${styles.wrapper}`}
                       >
                         <p
-                          className={classes.cardTitle}
+                          sx={styles.cardTitle}
                           style={{ wordWrap: "break-word" }}
                         >
                           ${props.cost.estimates.totalCostInDollars}
@@ -468,7 +457,7 @@ const PublishDropModal = (props) => {
                   <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5">
                     <div className="col-12 col-sm-6 pr-sm-2">
                       <button
-                        className={classes.buttons}
+                        sx={styles.buttons}
                         onClick={props.handleClose}
                       >
                         Reject
@@ -476,7 +465,7 @@ const PublishDropModal = (props) => {
                     </div>
                     <div className="col-12 col-sm-6 pl-sm-2">
                       <button
-                        className={classes.buttons}
+                        sx={styles.buttons}
                         onClick={(e) => handleConfirm(e)}
                       >
                         Confirm
@@ -488,7 +477,7 @@ const PublishDropModal = (props) => {
             </Box>
           </Modal>
         </ThemeProvider>
-       
+
       </div>
     )
   );

@@ -1,8 +1,4 @@
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
@@ -10,61 +6,6 @@ import "../../assets/css/style.css";
 import { truncate } from "../../assets/js/utils";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    width: "100%",
-    paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  cardTitle: {
-    color: "#fff",
-    fontFamily: "orbitron",
-    fontWeight: "bold",
-    textTransform: "capitalize",
-    margin: "0.625rem 0rem 0.25rem 0rem",
-    fontSize: "1rem",
-    lineHeight: 1,
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "0.875rem",
-  },
-  cardMediaImg: {
-    width: "100%",
-  },
-}));
-
-
 
 const unCommon = {
   fontFamily: "orbitron",
@@ -100,7 +41,6 @@ const defaultStyles = {
 
 
 function FixedDropNFTCard(props) {
-  const classes = useStyles();
   const rarity = props.type;
   let singleNFTid = props.data._id;
   const selectedRarity = {
@@ -108,35 +48,36 @@ function FixedDropNFTCard(props) {
       rarity === "Common"
         ? defaultStyles
         : rarity === "Uncommon"
-        ? unCommon
-        : rarity === "Rare"
-        ? rare
-        : rarity === "Epic"
-        ? epic
-        : rarity === "Legendary"
-        ? legendary
-        : rarity === "Mastercraft"
-        ? mastercraft
-        : defaultStyles,
+          ? unCommon
+          : rarity === "Rare"
+            ? rare
+            : rarity === "Epic"
+              ? epic
+              : rarity === "Legendary"
+                ? legendary
+                : rarity === "Mastercraft"
+                  ? mastercraft
+                  : defaultStyles,
   };
 
   return (
     <Link
-      to={{
-        pathname: `/fixedDropNFTHome/${singleNFTid}`,
-        state: {
-          nftDetails: props.data,
-          dropId: props.data.dropId,
-          saleType: props.saleType,
-          description: props.description,
-         
-        },
+      to={`/fixedDropNFTHome/${singleNFTid}`}
+      state={{
+        nftDetails: props.data,
+        dropId: props.data.dropId,
+        saleType: props.saleType,
+        description: props.description,
+
       }}
     >
       <Card style={{ height: "100%" }} id="nftCardProps">
         <div className="row no-gutters mb-3">
           <CardMedia
-            className={classes.media}
+            sx={{
+              width: "100%",
+              paddingTop: "100%",
+            }}
             image={props.data.nftURI}
             title="NFT Image"
           />
@@ -150,7 +91,15 @@ function FixedDropNFTCard(props) {
                 <Typography
                   variant="h6"
                   component="div"
-                  className={classes.cardTitle}
+                  sx={{
+                    color: "#fff",
+                    fontFamily: "orbitron",
+                    fontWeight: "bold",
+                    textTransform: "capitalize",
+                    margin: "0.625rem 0rem 0.25rem 0rem",
+                    fontSize: "1rem",
+                    lineHeight: 1,
+                  }}
                 >
                   {props.data.title}
                 </Typography>
@@ -168,7 +117,11 @@ function FixedDropNFTCard(props) {
             <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
                 variant="body2"
-                className={classes.cardDescriptions}
+                sx={{
+                  color: "#999",
+                  fontFamily: "inter",
+                  fontSize: "0.875rem",
+                }}
                 component="p"
               >
                 {truncate(props.data.description, 30)}
@@ -177,7 +130,11 @@ function FixedDropNFTCard(props) {
             <Typography
               variant="body2"
               component="p"
-              className={classes.cardDescriptions}
+              sx={{
+                color: "#999",
+                fontFamily: "inter",
+                fontSize: "0.875rem",
+              }}
             >
               <strong>Token Supply: </strong>
               {props.data.tokenSupply}

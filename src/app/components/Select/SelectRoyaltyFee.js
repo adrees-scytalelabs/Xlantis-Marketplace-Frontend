@@ -1,22 +1,19 @@
+import { Tooltip } from "@mui/material";
 import React from "react";
-import Tooltip from "@material-ui/core/Tooltip";
-import { makeStyles } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   tooltip: {
     fontSize: "16px",
   },
-}));
-
+}
 function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
-  const classes = useStyles();
 
   return (
     <div>
       <div>
         <Tooltip
           title={RoyaltyFeeText}
-          classes={{ tooltip: classes.tooltip }}
+          classes={{ tooltip: styles.tooltip }}
           placement="top-start"
           arrow={true}
         >

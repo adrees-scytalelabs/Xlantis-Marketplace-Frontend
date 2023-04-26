@@ -1,10 +1,10 @@
-import { Grid } from "@material-ui/core/";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
 import { getMarketAuction, getMarketFixedPrice } from "../../../redux/getMarketPlaceDataSlice";
+import { Grid } from "@mui/material";
 
 function MarketPlace(props) {
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);

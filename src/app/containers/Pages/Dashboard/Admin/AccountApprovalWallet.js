@@ -1,15 +1,15 @@
-import { TablePagination } from "@material-ui/core/";
-import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import {
-  handleModalOpen,
-  handleModalClose,
-} from "../../../../components/Utils/SuperAdminFunctions";
-import Notification from "../../../../components/Utils/Notification";
+import { TablePagination } from '@mui/material';
 import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import Notification from "../../../../components/Utils/Notification";
+import {
+  handleModalClose,
+  handleModalOpen
+} from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalWallet(props) {
@@ -41,15 +41,15 @@ function AccountApprovalWallet(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({start,end}))
-    if(unverifiedType2Loading===1){
-        setWalletAdmins(unverifiedType2Data);
-        setAdminCount(unverifiedType2Data.length);
-        setOpen(false);
-      }
-    else if(unverifiedType2Loading===2){
-        setOpen(false);
-      }
+    dispatch(getSuperAdminUnverifiedType2({ start, end }))
+    if (unverifiedType2Loading === 1) {
+      setWalletAdmins(unverifiedType2Data);
+      setAdminCount(unverifiedType2Data.length);
+      setOpen(false);
+    }
+    else if (unverifiedType2Loading === 2) {
+      setOpen(false);
+    }
   };
 
   const handleVerifyWallet = (
@@ -68,7 +68,7 @@ function AccountApprovalWallet(props) {
     let data = {
       adminId: verifyAdminId,
     };
-  
+
     axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         handleCloseBackdrop(setOpen);
@@ -94,9 +94,9 @@ function AccountApprovalWallet(props) {
     );
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
-  },[unverifiedType2Loading])
+  }, [unverifiedType2Loading])
 
 
   useEffect(() => {

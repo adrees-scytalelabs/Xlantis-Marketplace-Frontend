@@ -1,6 +1,7 @@
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
+import { useResolvedPath } from 'react-router-dom';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { getSuperAdminCountsType2 } from "../../../../redux/getSuperAdminsCountsSlice";
@@ -13,6 +14,7 @@ function SuperAdminWalletScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
+  const path = useResolvedPath("").pathname;
   const { countsType2, loadingType2 } = useSelector((store) => store.getSuperAdminsCounts);
   const dispatch = useDispatch();
 
@@ -54,7 +56,7 @@ function SuperAdminWalletScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accounts`}
+            linkTo={`${path}/accounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -72,10 +74,8 @@ function SuperAdminWalletScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/Wallet`,
-              state: { current: "enabled" },
-            }}
+            linkTo={`${path}/manageAccounts/Wallet`}
+            state={{ current: "enabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -93,10 +93,8 @@ function SuperAdminWalletScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/Wallet`,
-              state: { current: "disabled" },
-            }}
+            linkTo={`${path}/manageAccounts/Wallet`}
+            state={{ current: "disabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -114,7 +112,7 @@ function SuperAdminWalletScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/verifiedAccounts`}
+            linkTo={`${path}/verifiedAccounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -132,7 +130,7 @@ function SuperAdminWalletScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accountApproval`}
+            linkTo={`${path}/accountApproval`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"

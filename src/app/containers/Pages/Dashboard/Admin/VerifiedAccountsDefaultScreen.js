@@ -1,14 +1,14 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
-import { useDispatch, useSelector } from 'react-redux';
-import { getSuperAdminVerifiedType1,getSuperAdminVerifiedType2 } from "../../../../redux/getVerifiedAccountsDataSlice";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import { getSuperAdminVerifiedType1, getSuperAdminVerifiedType2 } from "../../../../redux/getVerifiedAccountsDataSlice";
 
 function VerifiedAccountsDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
@@ -20,11 +20,11 @@ function VerifiedAccountsDefaultScreen(props) {
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
-  const {verifiedType1Data,
-        verifiedType1Loading,
-        verifiedType2Data,
-        verifiedType2Loading 
-      } = useSelector((store) => store.getVerifiedAccountsData);
+  const { verifiedType1Data,
+    verifiedType1Loading,
+    verifiedType2Data,
+    verifiedType2Loading
+  } = useSelector((store) => store.getVerifiedAccountsData);
   const dispatch = useDispatch();
 
   let getVerifiedSSOAdmins = (
@@ -32,15 +32,15 @@ function VerifiedAccountsDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminVerifiedType1({start,end}));
-    if(verifiedType1Loading===1){
-        setAdmins(verifiedType1Data);
-        setAdminCount(verifiedType1Data.length);
-        setOpen(false);
-      }
-    else if(verifiedType1Loading===2){
-        setOpen(false);
-      }
+    dispatch(getSuperAdminVerifiedType1({ start, end }));
+    if (verifiedType1Loading === 1) {
+      setAdmins(verifiedType1Data);
+      setAdminCount(verifiedType1Data.length);
+      setOpen(false);
+    }
+    else if (verifiedType1Loading === 2) {
+      setOpen(false);
+    }
   };
 
   const getVerifiedWalletAdmins = (
@@ -48,24 +48,24 @@ function VerifiedAccountsDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminVerifiedType2({start,end}));
-    if(verifiedType2Loading===1){
-        setWalletAdmins(verifiedType2Data);
-        setWalletAdminCount(verifiedType2Data.length);
-        setOpen(false);
-      }
-    else if(verifiedType2Loading===2){
-        setOpen(false);
-      }
+    dispatch(getSuperAdminVerifiedType2({ start, end }));
+    if (verifiedType2Loading === 1) {
+      setWalletAdmins(verifiedType2Data);
+      setWalletAdminCount(verifiedType2Data.length);
+      setOpen(false);
+    }
+    else if (verifiedType2Loading === 2) {
+      setOpen(false);
+    }
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getVerifiedSSOAdmins(0, rowsPerPage);
-  },[verifiedType1Loading])
+  }, [verifiedType1Loading])
 
-  useEffect(()=>{
+  useEffect(() => {
     getVerifiedWalletAdmins(0, rowsPerPage);
-  },[verifiedType2Loading])
+  }, [verifiedType2Loading])
 
   useEffect(() => {
     props.setActiveTab({

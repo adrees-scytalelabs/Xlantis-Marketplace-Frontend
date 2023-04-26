@@ -1,4 +1,4 @@
-import Tooltip from "@material-ui/core/Tooltip";
+import { Tooltip } from '@mui/material';
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";

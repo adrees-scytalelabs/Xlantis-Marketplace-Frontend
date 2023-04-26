@@ -1,13 +1,13 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import {
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
-import { useDispatch, useSelector } from 'react-redux';
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminVerifiedType2 } from "../../../../redux/getVerifiedAccountsDataSlice";
 
 function VerifiedAccountsWalletScreen(props) {
@@ -23,29 +23,29 @@ function VerifiedAccountsWalletScreen(props) {
   const [open, setOpen] = useState(false);
   const {
     verifiedType2Data,
-    verifiedType2Loading 
+    verifiedType2Loading
   } = useSelector((store) => store.getVerifiedAccountsData);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const getVerifiedWalletAdmins = (
-  start,
-  end,
-) => {
-  setOpen(true);
-  dispatch(getSuperAdminVerifiedType2({start,end}));
-  if(verifiedType2Loading===1){
+  const getVerifiedWalletAdmins = (
+    start,
+    end,
+  ) => {
+    setOpen(true);
+    dispatch(getSuperAdminVerifiedType2({ start, end }));
+    if (verifiedType2Loading === 1) {
       setWalletAdmins(verifiedType2Data);
       setWalletAdminCount(verifiedType2Data.length);
       setOpen(false);
     }
-  else if(verifiedType2Loading===2){
+    else if (verifiedType2Loading === 2) {
       setOpen(false);
     }
-};
+  };
 
-useEffect(()=>{
-  getVerifiedWalletAdmins(0, rowsPerPage);
-},[verifiedType2Loading])
+  useEffect(() => {
+    getVerifiedWalletAdmins(0, rowsPerPage);
+  }, [verifiedType2Loading])
 
   useEffect(() => {
     props.setActiveTab({

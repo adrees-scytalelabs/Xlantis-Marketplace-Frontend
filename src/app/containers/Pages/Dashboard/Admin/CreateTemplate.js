@@ -6,7 +6,6 @@ import {
   getIsAvailableTemplates,
 } from "../../../../components/API/AxiosInterceptor";
 import SuperAdminCreateTemplate from "../../../../components/Utils/SuperAdminCreateTemplate";
-
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [valid, setValid] = useState("");

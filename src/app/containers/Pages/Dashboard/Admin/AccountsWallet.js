@@ -1,13 +1,13 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import {
-  handleModalOpen,
-  handleModalClose,
-} from "../../../../components/Utils/SuperAdminFunctions";
 import { useDispatch, useSelector } from 'react-redux';
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import {
+  handleModalClose,
+  handleModalOpen
+} from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminAccountType2 } from "../../../../redux/getSuperAdminAccountsSlice";
 
 function AccountsWallet(props) {
@@ -19,29 +19,29 @@ function AccountsWallet(props) {
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const {
-  accountType2Data,
-  accountType2Loading
+    accountType2Data,
+    accountType2Loading
   } = useSelector((store) => store.getSuperAdminAccounts);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const getWalletAdmins = (
-  start,
-  end,
-) => {
-  setOpen(true);
-  dispatch(getSuperAdminAccountType2({start,end}))
-  if(accountType2Loading===1) {
+  const getWalletAdmins = (
+    start,
+    end,
+  ) => {
+    setOpen(true);
+    dispatch(getSuperAdminAccountType2({ start, end }))
+    if (accountType2Loading === 1) {
       setWalletAdmins(accountType2Data);
       setWalletAdminCount(accountType2Data.length);
       setOpen(false);
     }
-    else if(accountType2Loading===2){
+    else if (accountType2Loading === 2) {
       setOpen(false);
     }
-};
-useEffect(() => {
-  getWalletAdmins(0, rowsPerPage);
-}, [accountType2Loading]);
+  };
+  useEffect(() => {
+    getWalletAdmins(0, rowsPerPage);
+  }, [accountType2Loading]);
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",

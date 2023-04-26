@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath } from "react-router-dom";
 import "../../../../assets/css/superAdmin.css";
 
 function SuperAdminSidebar(props) {
@@ -10,6 +10,7 @@ function SuperAdminSidebar(props) {
   const [walletStyle, setWalletStyle] = useState("");
   const [templateStyle, setTemplateStyle] = useState("");
   const [SavedStyle, setSavedStyle] = useState("");
+  const path = useResolvedPath("").pathname;
   let changeStyle = (e) => {
     if (style === "dropdown-container1") {
       setStyle("dropdown-container2");
@@ -89,7 +90,7 @@ function SuperAdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard} onClick={closedDropdown}>
-              <Link to={`${props.match.url}`} className="sidebarLink">
+              <Link to={`${path}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
@@ -98,7 +99,7 @@ function SuperAdminSidebar(props) {
               onClick={closedDropdown}
             >
               <Link
-                to={`${props.match.url}/verifiedAccounts`}
+                to={`${path}/verifiedAccounts`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -110,7 +111,7 @@ function SuperAdminSidebar(props) {
               onClick={closedDropdown}
             >
               <Link
-                to={`${props.match.url}/accountApproval`}
+                to={`${path}/accountApproval`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -122,7 +123,7 @@ function SuperAdminSidebar(props) {
               onClick={changeStyle}
             >
               <Link
-                to={`${props.match.url}/manageAccounts`}
+                to={`${path}/manageAccounts`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -135,7 +136,7 @@ function SuperAdminSidebar(props) {
                   onClick={subMenuSSOClick}
                 >
                   <li className={`${props.activeTab.sso} ssoSidebar`}>
-                    <Link to={`${props.match.url}/manageAccounts/SSO`}>
+                    <Link to={`${path}/manageAccounts/SSO`}>
                       SSO
                     </Link>
                   </li>
@@ -146,7 +147,7 @@ function SuperAdminSidebar(props) {
                 >
                   <li className={`${props.activeTab.wallet}`}>
                     <Link
-                      to={`${props.match.url}/manageAccounts/Wallet`}
+                      to={`${path}/manageAccounts/Wallet`}
                       className="wallet-sidebar"
                     >
                       Wallet
@@ -156,7 +157,7 @@ function SuperAdminSidebar(props) {
               </div>
             </li>
             <li className={props.activeTab.accounts} onClick={closedDropdown}>
-              <Link to={`${props.match.url}/Accounts`} className="sidebarLink">
+              <Link to={`${path}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>
             </li>
@@ -165,7 +166,7 @@ function SuperAdminSidebar(props) {
               onClick={changeStyle1}
             >
               <Link
-                to={`${props.match.url}/properties`}
+                to={`${path}/properties`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -178,7 +179,7 @@ function SuperAdminSidebar(props) {
                   onClick={templateClick}
                 >
                   <li className={`${props.activeTab.template} ssoSidebar`}>
-                    <Link to={`${props.match.url}/properties/createTemplate`}>
+                    <Link to={`${path}/properties/createTemplate`}>
                       Create Template
                     </Link>
                   </li>
@@ -189,7 +190,7 @@ function SuperAdminSidebar(props) {
                 >
                   <li className={`${props.activeTab.saved}`}>
                     <Link
-                      to={`${props.match.url}/properties/savedTemplate`}
+                      to={`${path}/properties/savedTemplate`}
                       className="wallet-sidebar"
                     >
                       Saved Template

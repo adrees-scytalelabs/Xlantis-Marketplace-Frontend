@@ -1,16 +1,16 @@
-import { TablePagination } from "@material-ui/core/";
-import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import {
-  handleModalOpen,
-  handleModalClose,
-} from "../../../../components/Utils/SuperAdminFunctions";
-import Notification from "../../../../components/Utils/Notification";
+import { TablePagination } from '@mui/material';
 import axios from 'axios';
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { getSuperAdminUnverifiedType1,getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import Notification from "../../../../components/Utils/Notification";
+import {
+  handleModalClose,
+  handleModalOpen
+} from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import { getSuperAdminUnverifiedType1, getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
@@ -38,24 +38,24 @@ function AccountApprovalDefaultScreen(props) {
   const handleShowBackdrop = (setOpen) => {
     setOpen(true);
   };
-  
+
 
   const getUnverifiedAdminsSSO = (
     start,
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType1({start,end}))
-   if(unverifiedType1Loading===1){
-        setAdmins(unverifiedType1Data);
-        setAdminCount(unverifiedType1Data.length);
-        setOpen(false);
-      }
-      else if(unverifiedType1Loading===2){
-        
-       
-        setOpen(false);
-      }
+    dispatch(getSuperAdminUnverifiedType1({ start, end }))
+    if (unverifiedType1Loading === 1) {
+      setAdmins(unverifiedType1Data);
+      setAdminCount(unverifiedType1Data.length);
+      setOpen(false);
+    }
+    else if (unverifiedType1Loading === 2) {
+
+
+      setOpen(false);
+    }
   };
 
   const handleVerify = (
@@ -74,7 +74,7 @@ function AccountApprovalDefaultScreen(props) {
     let data = {
       adminId: verifyAdminId,
     };
-  
+
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
         handleCloseBackdrop(setOpen);
@@ -86,7 +86,7 @@ function AccountApprovalDefaultScreen(props) {
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-  
+
         handleCloseBackdrop(setOpen);
         setVariant("error");
         setNotificationData("Unable to Verify Admin.");
@@ -95,24 +95,24 @@ function AccountApprovalDefaultScreen(props) {
     );
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
-  },[unverifiedType1Loading])
+  }, [unverifiedType1Loading])
 
   const getUnverifiedAdminsWallet = (
     start,
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({start,end}))
-    if(unverifiedType2Loading===1){
-        setWalletAdmins(unverifiedType2Data);
-        setAdminCount(unverifiedType2Data.length);
-        setOpen(false);
-      }
-    else if(unverifiedType2Loading===2){
-        setOpen(false);
-      }
+    dispatch(getSuperAdminUnverifiedType2({ start, end }))
+    if (unverifiedType2Loading === 1) {
+      setWalletAdmins(unverifiedType2Data);
+      setAdminCount(unverifiedType2Data.length);
+      setOpen(false);
+    }
+    else if (unverifiedType2Loading === 2) {
+      setOpen(false);
+    }
   };
 
   const handleVerifyWallet = (
@@ -131,7 +131,7 @@ function AccountApprovalDefaultScreen(props) {
     let data = {
       adminId: verifyAdminId,
     };
-  
+
     axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
         handleCloseBackdrop(setOpen);
@@ -157,9 +157,9 @@ function AccountApprovalDefaultScreen(props) {
     );
   };
 
-  useEffect(()=>{
+  useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
-  },[unverifiedType2Loading])
+  }, [unverifiedType2Loading])
 
   useEffect(() => {
     props.setActiveTab({

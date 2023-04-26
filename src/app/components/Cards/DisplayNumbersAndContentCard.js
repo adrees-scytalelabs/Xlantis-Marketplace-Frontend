@@ -1,7 +1,6 @@
-import { Card } from "@material-ui/core";
+import { Card } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
-
 const DisplayNumbersAndContentCard = (props) => {
   return (
     <Card
@@ -13,7 +12,7 @@ const DisplayNumbersAndContentCard = (props) => {
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >
-      <Link to={props.linkTo}>
+      <Link to={props.linkTo} state={props?.state}>
         <div className="row no-gutters justify-content-between">
           <div className="col align-self-end">
             <section>

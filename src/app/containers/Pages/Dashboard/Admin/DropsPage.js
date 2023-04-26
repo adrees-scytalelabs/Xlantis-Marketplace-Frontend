@@ -1,6 +1,4 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
@@ -8,26 +6,11 @@ import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { getMyDrop } from "../../../../redux/getMyDropsSlice";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {},
   media: {
     height: 0,
     paddingTop: "100%",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -35,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
-const cardStyles = makeStyles((theme) => ({
+const cardStyles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -47,11 +30,6 @@ const cardStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "1rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -67,11 +45,9 @@ const cardStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
 function DropsPage(props) {
-  const classes = useStyles();
-  const cardClasses = cardStyles();
   const [tokenList, setTokenList] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -148,39 +124,35 @@ function DropsPage(props) {
                 >
                   {props.status === "draft" ? (
                     <Link
-                      to={{
-                        pathname: `/dashboard/newDrop/addNft`,
-                        state: {
-                          dropId: i._id,
-                          saleType: i.saleType,
-                          startTime: i.startTime,
-                          endTime: i.endTime,
-                          nftType: i.dropType,
-                        },
+                      to={`/dashboard/newDrop/addNft`}
+                      state={{
+                        dropId: i._id,
+                        saleType: i.saleType,
+                        startTime: i.startTime,
+                        endTime: i.endTime,
+                        nftType: i.dropType,
                       }}
                     >
                       <DropsPageCard
                         dropDetails={i}
-                        classes={classes}
-                        cardClasses={cardClasses}
+                        classes={styles}
+                        cardClasses={cardStyles}
                       />
                     </Link>
                   ) : (
                     <Link
-                      to={{
-                        pathname: `/dashboard/myDrops/nfts`,
-                        state: {
-                          nftId: i.NFTIds,
-                          dropId: i._id,
-                          saleType: i.saleType,
-                          status: i.status,
-                        },
+                      to={`/dashboard/myDrops/nfts`}
+                      state={{
+                        nftId: i.NFTIds,
+                        dropId: i._id,
+                        saleType: i.saleType,
+                        status: i.status,
                       }}
                     >
                       <DropsPageCard
                         dropDetails={i}
-                        classes={classes}
-                        cardClasses={cardClasses}
+                        classes={styles}
+                        cardClasses={cardStyles}
                       />
                     </Link>
                   )}

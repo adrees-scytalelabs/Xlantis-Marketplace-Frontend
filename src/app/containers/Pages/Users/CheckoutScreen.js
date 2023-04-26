@@ -1,16 +1,12 @@
-import { ThemeProvider, createTheme } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Divider, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
 import CheckoutScreenForm from "../../../components/Forms/CheckoutScreenForm";
+import HeaderHome from "../../../components/Headers/Header";
 import CheckoutScreenTable from "../../../components/tables/CheckoutScreenTable";
 
-const useStyles = makeStyles((theme) => ({
+const styles ={
   root: {
     flexGrow: 1,
   },
@@ -64,7 +60,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}));
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -103,7 +99,6 @@ const makeTheme = createTheme({
 const CheckoutScreen = () => {
   const [country, setCountry] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const classes = useStyles();
   const selectCountry = (val) => {
     setCountry(val);
   };
@@ -121,35 +116,35 @@ const CheckoutScreen = () => {
           <div className="container py-4">
             <div className="row no-gutters justify-content-center align-items-center w-100 mt-5">
               <div className="col-12 text-center">
-                <Typography variant="h5" className={classes.mainHeading}>
+                <Typography variant="h5" sx={styles.mainHeading}>
                   CHECKOUT
                 </Typography>
               </div>
             </div>
-            <Divider className={classes.divider} />
+            <Divider sx={styles.divider} />
             <div className="row no-gutters justify-content-center mb-5 pb-5">
               <Grid container spacing={3} style={{ paddingtop: "16px" }}>
                 <Grid item xs={12} md={8}>
-                  <CheckoutScreenForm classes={classes} country={country} selectCountry={selectCountry} />
+                  <CheckoutScreenForm classes={styles} country={country} selectCountry={selectCountry} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Grid container spacing={2}>
                     <Grid item>
-                      <h4 className={classes.formHeadings}>You Order</h4>
-                      <CheckoutScreenTable classes={classes} />
+                      <h4 sx={styles.formHeadings}>You Order</h4>
+                      <CheckoutScreenTable classes={styles} />
                       <div className="row no-gutters mt-5 justif-content-center align-items-center">
                         <div className="col-12">
-                          <Divider className={classes.divider} />
+                          <Divider sx={styles.divider} />
                           <Typography variant="body2">
                             Your Personal data will be used to process your
                             order, support your experience throughout this
                             website, and for other purposes described in our{" "}
-                            <Link to="/" className={classes.checkoutPolicy}>
+                            <Link to="/" sx={styles.checkoutPolicy}>
                               privay policy
                             </Link>
                             .
                           </Typography>
-                          <Divider className={classes.divider} />
+                          <Divider sx={styles.divider} />
                         </div>
                         <label
                           for="acceptedTerms"
@@ -162,7 +157,7 @@ const CheckoutScreen = () => {
                             onChange={handleTermsAccepted}
                           />{" "}
                           I have read and agreed to the website{" "}
-                          <Link className={classes.checkoutPolicy}>
+                          <Link sx={styles.checkoutPolicy}>
                             terms and conditions*
                           </Link>
                         </label>
@@ -170,7 +165,7 @@ const CheckoutScreen = () => {
                       </div>
                       <div className="row no-gutters justify-content-center align-items-center mt-3">
                         <div className="col-12">
-                          <button className={classes.CheckoutBtn}>
+                          <button sx={styles.CheckoutBtn}>
                             Place Order
                           </button>
                         </div>

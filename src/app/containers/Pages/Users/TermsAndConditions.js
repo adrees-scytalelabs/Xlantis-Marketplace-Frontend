@@ -1,7 +1,5 @@
-import { red } from "@material-ui/core/colors";
-import { makeStyles } from "@material-ui/core/styles";
+
 import React from "react";
-import windowSize from "react-window-size";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
@@ -10,29 +8,8 @@ import TermsAndConditionsCard from "../../../components/Cards/TermsAndConditions
 import Footer from "../../../components/Footers/Footer";
 import Header from "../../../components/Headers/Header";
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
-  media: {
-    height: 0,
-    paddingTop: "56.25%",
-  },
-  expand: {
-    transform: "rotate(0deg)",
-    marginLeft: "auto",
-    transition: theme.transitions.create("transform", {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: "rotate(180deg)",
-  },
-  avatar: {
-    backgroundColor: red[500],
-  },
-}));
 
 function TermsAndConditions(props) {
-  const classes = useStyles();
 
   return (
     <div className="account-page">
@@ -46,7 +23,7 @@ function TermsAndConditions(props) {
           >
             <div className="container-fluid">
               <div className="row">
-                <TermsAndConditionsCard classes={classes} />
+                <TermsAndConditionsCard />
               </div>
             </div>
           </div>
@@ -57,4 +34,4 @@ function TermsAndConditions(props) {
   );
 }
 
-export default windowSize(TermsAndConditions);
+export default TermsAndConditions;

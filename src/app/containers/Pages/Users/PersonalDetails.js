@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
-import "react-intl-tel-input/dist/main.css";
 import { Link } from "react-router-dom";
 import {
   confirmUserPhoneNumber,

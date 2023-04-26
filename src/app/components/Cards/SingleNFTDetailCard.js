@@ -1,17 +1,19 @@
-import { Card, CardContent, Typography } from "@material-ui/core";
+import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
-
 const SingleNFTDetailCard = (props) => {
   return (
-    <Card>
-      <CardContent>
+    <Card sx={{
+      backgroundColor: "#000",
+      border: "1px solid #fff",
+    }}>
+      <CardContent sx={{ color: "#fff", }}>
         <Row>
           <Col>
             <Typography
               variant="body1"
               component="p"
-              style={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#fff", fontFamily: "orbitron" }}
             >
               <strong>NFT Title </strong>
             </Typography>
@@ -23,7 +25,7 @@ const SingleNFTDetailCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              style={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#fff", fontFamily: "orbitron" }}
             >
               <strong>NFT Description </strong>
             </Typography>
@@ -35,7 +37,7 @@ const SingleNFTDetailCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              style={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#fff", fontFamily: "orbitron" }}
             >
               <strong>Token Supply </strong>
             </Typography>

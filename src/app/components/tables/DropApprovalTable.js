@@ -1,162 +1,128 @@
-import { createTheme } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button } from "@mui/material";
 import React from "react";
 import Table from "react-bootstrap/Table";
-import Button from "@material-ui/core/Button";
-const useStyles = makeStyles((theme) => ({
-    root: {
-      maxWidth: 345,
+const styles = {
+  root: {
+    maxWidth: 345,
+  },
+  media: {
+    height: 300,
+  },
+  card: {
+    minWidth: 250,
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+  tableHeader: {
+    color: "#000",
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
+  collectionTitle: {
+    color: "#fff",
+    fontSize: "1rem",
+  },
+  approveBtn: {
+    backgroundColor: "transparent",
+    color: "#fff",
+    padding: "6px 24px",
+    border: "1px solid #F64D04",
+    borderRadius: "0px 15px",
+    "&:hover": {
+      background: "#f00",
     },
-    media: {
-      height: 300,
-    },
-    backdrop: {
-      zIndex: theme.zIndex.drawer + 1,
-      color: "#fff",
-    },
-    badge: {
-      "& > *": {
-        margin: theme.spacing(1),
-      },
-    },
-    card: {
-      minWidth: 250,
-    },
-    bullet: {
-      display: "inline-block",
-      margin: "0 2px",
-      transform: "scale(0.8)",
-    },
-    title: {
-      fontSize: 14,
-    },
-    pos: {
-      marginBottom: 12,
-    },
-    tableHeader: {
-      color: "#000",
-      fontSize: "1.25rem",
-      fontWeight: "bold",
-    },
-    collectionTitle: {
-      color: "#fff",
-      fontSize: "1rem",
-    },
-    approveBtn: {
-      backgroundColor: "transparent",
-      color: "#fff",
-      padding: "6px 24px",
-      border: "1px solid #F64D04",
-      borderRadius: "0px 15px",
-      "&:hover": {
-        background: "#f00",
-      },
-    },
-  }));
-  
-  const makeTheme = createTheme({
-    overrides: {
-      MuiButton: {
-        root: {
-          backgroundColor: "#000",
-          color: "#fff",
-          padding: "10px 30px",
-          border: "1px solid #F64D04",
-          borderRadius: "0px 15px",
-          "&$hover": {
-            boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-          },
-        },
-      },
-    },
-  });
+  },
+}
 
 
 function DropApprovalTable({
-    collections,
-    giveAuctionApproval,
-    giveFixedPriceApproval
+  collections,
+  giveAuctionApproval,
+  giveFixedPriceApproval
 }) {
-  const classes = useStyles();
   return (
     <Table responsive>
-    <thead>
+      <thead>
         <tr>
-        <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
-            Collection
+              Collection
             </div>
-        </th>
-        <th className={classes.tableHeader}>
+          </th>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-center align-items-center">
-            Auction
+              Auction
             </div>
-        </th>
-        <th className={classes.tableHeader}>
+          </th>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-center align-items-center">
-            Fixed Price
+              Fixed Price
             </div>
-        </th>
+          </th>
         </tr>
-    </thead>
-    {collections.map((i, index) => (
+      </thead>
+      {collections.map((i, index) => (
         <tbody>
-        <tr>
-            <td className={classes.collectionTitle}>{i.name}</td>
+          <tr>
+            <td sx={styles.collectionTitle}>{i.name}</td>
             <td>
 
-            {i.isAuctionDropVerified ? (
+              {i.isAuctionDropVerified ? (
                 <div className="row no-gutters justify-content-center align-items-center">
-                <Button disabled>
+                  <Button disabled>
                     <span className="text-white">Approved </span>
                     <i
-                    className="fas fa-check ml-2"
-                    style={{ color: "green" }}
+                      className="fas fa-check ml-2"
+                      style={{ color: "green" }}
                     ></i>{" "}
-                </Button>
+                  </Button>
                 </div>
-            ) : (
+              ) : (
                 <div className="row no-gutters justify-content-center align-items-center">
-                <Button
-                    className={classes.approveBtn}
+                  <Button
+                    sx={styles.approveBtn}
 
                     onClick={(e) => {
-                    giveAuctionApproval(i);
+                      giveAuctionApproval(i);
                     }}
-                >
+                  >
                     Approve
-                </Button>
+                  </Button>
                 </div>
-            )}
+              )}
 
             </td>
             <td>
-            {i.isFixedPriceDropVerified ? (
+              {i.isFixedPriceDropVerified ? (
                 <div className="row no-gutters justify-content-center align-items-center">
-                <Button disabled>
+                  <Button disabled>
                     <span style={{ color: "#fff" }}>Approved</span>{" "}
                     <i
-                    className="fas fa-check ml-2"
-                    style={{ color: "green" }}
+                      className="fas fa-check ml-2"
+                      style={{ color: "green" }}
                     ></i>{" "}
-                </Button>
+                  </Button>
                 </div>
-            ) : (
+              ) : (
                 <div className="row no-gutters justify-content-center align-items-center">
-                <Button
-                    className={classes.approveBtn}
+                  <Button
+                    sx={styles.approveBtn}
                     onClick={(e) => {
-                    giveFixedPriceApproval(i);
+                      giveFixedPriceApproval(i);
                     }}
-                >
+                  >
                     Approve
-                </Button>
+                  </Button>
                 </div>
-            )}
+              )}
             </td>
-        </tr>
+          </tr>
         </tbody>
-    ))}
+      ))}
     </Table>
   );
 }

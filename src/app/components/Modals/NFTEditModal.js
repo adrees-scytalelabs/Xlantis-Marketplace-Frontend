@@ -1,20 +1,12 @@
-import {
-    Button,
-    FormControl,
-    FormControlLabel,
-    Radio,
-    RadioGroup,
-    TextField
-} from "@material-ui/core";
-import { Autocomplete } from "@material-ui/lab";
+import { Autocomplete, Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Col, Modal, Row, Spinner } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import r1 from "../../assets/img/patients/patient.jpg";
-import ipfs from "../../components/IPFS/ipfs";
+import r1 from '../../assets/img/patients/patient.jpg';
+import ipfs from '../../components/IPFS/ipfs';
 import { uploadToS3 } from "../API/AxiosInterceptor";
 
 const NFTEditModal = (props) => {

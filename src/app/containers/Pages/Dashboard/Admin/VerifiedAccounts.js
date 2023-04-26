@@ -1,24 +1,18 @@
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath } from "react-router-dom";
 import VerifiedAccountsDefaultScreen from "./VerifiedAccountsDefaultScreen";
 import VerifiedAccountsSSOScreen from "./VerifiedAccountsSSOScreen";
 import VerifiedAccountsWalletScreen from "./VerifiedAccountsWalletScreen";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#fff",
   },
-  tabPanelProps: {
-    backgroundColor: "#000",
-  },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -64,6 +58,7 @@ const customTheme = createTheme({
 });
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
+  console.log("props", props);
   return (
     <div
       role="tabpanel"
@@ -95,8 +90,8 @@ function a11yProps(index) {
 }
 
 function VerifiedAccounts(props) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
+  const path = useResolvedPath("").pathname;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -115,13 +110,13 @@ function VerifiedAccounts(props) {
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
-      verifiedAccounts:"active",
+      verifiedAccounts: "active",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
-    }); 
+      properties: "",
+      template: "",
+      saved: "",
+    });
   }, []);
 
   return (
@@ -141,7 +136,7 @@ function VerifiedAccounts(props) {
           </div>
         </div>
       </div>
-      
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
@@ -155,35 +150,35 @@ function VerifiedAccounts(props) {
               >
                 <Tab
                   label="All"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="SSO"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(1)}
                 />
                 <Tab
                   label="Wallet"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(2)}
                 />
               </Tabs>
               <TabPanel value={value} index={0} className="">
                 <VerifiedAccountsDefaultScreen
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel className="" value={value} index={1}>
                 <VerifiedAccountsSSOScreen
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel value={value} index={2} className="">
                 <VerifiedAccountsWalletScreen
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>

@@ -1,10 +1,9 @@
-import { makeStyles } from "@material-ui/core/styles";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
@@ -38,21 +37,11 @@ import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
 import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
+    // backgroundColor: theme.palette.background.paper,
   },
 
   card: {
@@ -60,11 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -78,12 +62,12 @@ const useStyles = makeStyles((theme) => ({
   tooltip: {
     fontSize: "16px",
   },
-}));
+}
 
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const history = useHistory();
-  const classes = useStyles();
+
+  const navigate = useNavigate();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -322,9 +306,7 @@ function NewNFT(props) {
       setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
-      history.push({
-        pathname: `/dashboard/collection/nfts/${collectionId}`
-      });
+      navigate(`/dashboard/collection/nfts/${collectionId}`);
     }
   };
 
@@ -1109,7 +1091,7 @@ function NewNFT(props) {
 
                   <NewNftSelectNft
                     tokenList={tokenList}
-                    classes={classes}
+                    classes={styles}
                     setWorkProgressModalShow={setWorkProgressModalShow}
                     NFTType={NFTType}
                     setNFTType={setNFTType}
@@ -1124,7 +1106,7 @@ function NewNFT(props) {
 
                   <NewNftSelectSupply
                     NFTType={NFTType}
-                    classes={classes}
+                    classes={styles}
                     setSupplyType={setSupplyType}
                     setTokenSupply={setTokenSupply}
                     supplyType={supplyType}
@@ -1149,7 +1131,7 @@ function NewNFT(props) {
             tokenList={tokenList}
             handleOpenNFTDetailModal={handleOpenNFTDetailModal}
             setEditObjectIndex={setEditObjectIndex}
-            classes={classes}
+            classes={styles}
             handleRemoveClick={handleRemoveClick}
           />
         </div>

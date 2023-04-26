@@ -1,5 +1,4 @@
-import { Grid, TablePagination } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, TablePagination } from '@mui/material';
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,15 +7,10 @@ import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
-const useStyles = makeStyles({
+const useStyles = {
   root: {
     minWidth: 250,
     backgroundColor: "black",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -31,7 +25,7 @@ const useStyles = makeStyles({
     height: 0,
     paddingTop: "100%",
   },
-});
+}
 
 function MyCollection(props) {
   const [collections, setCollections] = useState([]);
@@ -41,18 +35,16 @@ function MyCollection(props) {
 
   const [collectionCount, setCollectionCount] = useState(0);
   const [, setVersionB] = useState("");
-  const {collectionData,collectionCont } = useSelector((store) => store.MyCollection);
+  const { collectionData, collectionCont } = useSelector((store) => store.MyCollection);
   const dispatch = useDispatch();
-
-  const classes = useStyles();
 
   let getCollections = (start, end) => {
     setOpen(true);
-      dispatch(getMyCollection({start,end}));
-      console.log("collectionResp",collectionData,collectionCont);
-      setCollections(collectionData);
-        setCollectionCount(collectionCont);
-        setOpen(false);
+    dispatch(getMyCollection({ start, end }));
+    console.log("collectionResp", collectionData, collectionCont);
+    setCollections(collectionData);
+    setCollectionCount(collectionCont);
+    setOpen(false);
   };
   useEffect(() => {
     getCollections(0, rowsPerPage);
@@ -106,7 +98,7 @@ function MyCollection(props) {
       </div>
 
       <div className="card-body page-height">
-        <div className={classes.root}>
+        <div sx={useStyles.root}>
           {open ? (
             <div align="center" className="text-center">
               <WhiteSpinner />

@@ -1,4 +1,4 @@
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
@@ -9,15 +9,15 @@ function AdminDashboardDefaultScreen(props) {
   const [totalCollections, setTotalCollections] = useState(0);
   const [hover, setHover] = useState(false);
   const [hoverCollections, setHoverCollections] = useState(false);
-   const {nftCount,collectionCount } = useSelector((store) => store.count);
-     const dispatch = useDispatch();
+  const { nftCount, collectionCount } = useSelector((store) => store.count);
+  const dispatch = useDispatch();
 
 
-     useEffect(() => {
-      dispatch(getCount());
-      setTotalNFTs(nftCount);
-      setTotalCollections(collectionCount);
-    }, [nftCount]);
+  useEffect(() => {
+    dispatch(getCount());
+    setTotalNFTs(nftCount);
+    setTotalCollections(collectionCount);
+  }, [nftCount]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -51,7 +51,7 @@ function AdminDashboardDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/myNFTs`}
+            linkTo={`${props.match}/myNFTs`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -69,7 +69,7 @@ function AdminDashboardDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHoverCollections(true)}
             onMouseLeave={() => setHoverCollections(false)}
-            linkTo={`${props.match.url}/myCollection`}
+            linkTo={`${props.match}/myCollection`}
             hoverH4={
               hoverCollections
                 ? "totalCollectionsAdminDashHeadingHover totalCollectionsAdminDashHeading"

@@ -1,10 +1,13 @@
-import { makeStyles, Paper } from "@material-ui/core";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import {
+  createTheme,
+  Paper,
+  ThemeProvider
+} from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Col, Row, } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
@@ -59,54 +62,19 @@ const customTheme = createTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media1: {
-    height: 300,
+    // backgroundColor: theme.palette.background.paper,
   },
   media: {
     height: 0,
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-}));
+}
 
 const AuctionNFT = (props) => {
-  const classes = useStyles();
   const { enqueueSnackbar } = useSnackbar();
   const { nftId, dropId } = useParams();
   const [bidDetail, setBidDetail] = useState([]);
@@ -581,14 +549,18 @@ const AuctionNFT = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
+                <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian keys={keys} properties={properties} />
+                  <PropertiesAccordian
+                    keys={keys}
+                    properties={properties}
+                  />
+
                 </Col>
               </Row>
               <Row style={{ marginTop: "5px" }}>

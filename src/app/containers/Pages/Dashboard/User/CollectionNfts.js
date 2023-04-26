@@ -1,10 +1,9 @@
-import { Grid } from '@material-ui/core/';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getCollections } from '../../../../components/API/AxiosInterceptor';
 import NFTCard from '../../../../components/Cards/NFTCard';
-
+import { Grid } from "@mui/material";
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
@@ -20,17 +19,17 @@ function CollectionNfts(props) {
 
         getCollections(collectionId)
             .then((response) => {
-            console.log("response", response);
-            setTokenList(response.data.Nftsdata);
-            handleCloseBackdrop();
+                console.log("response", response);
+                setTokenList(response.data.Nftsdata);
+                handleCloseBackdrop();
             })
             .catch((error) => {
-            if (process.env.NODE_ENV === "development") {
-                console.log(error);
-                console.log(error.response);
-            }
-            handleCloseBackdrop();
-        })
+                if (process.env.NODE_ENV === "development") {
+                    console.log(error);
+                    console.log(error.response);
+                }
+                handleCloseBackdrop();
+            })
     }
 
     useEffect(() => {
@@ -86,7 +85,7 @@ function CollectionNfts(props) {
                                 spacing={2}
                                 direction="row"
                                 justify="flex-start"
-                            
+
                             >
                                 {tokenList.map((i, index) => (
                                     <NFTCard data={i[0]} key={index} />

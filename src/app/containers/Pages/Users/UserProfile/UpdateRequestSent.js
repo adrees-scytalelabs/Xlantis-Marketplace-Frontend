@@ -1,32 +1,10 @@
+import CheckCircleIcon from '@mui/icons-material/CheckCircle';
+import InfoIcon from '@mui/icons-material/Info';
+import { Typography } from '@mui/material';
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
-import CheckCircleIcon from "@material-ui/icons/CheckCircle";
-import InfoIcon from "@material-ui/icons/Info";
 import { Link } from "react-router-dom";
-const useStyles = makeStyles((theme) => ({
-  mainInfoHeading: {
-    fontFamily: "orbitron",
-    fontWeight: "bold",
-    color: "#F64D04",
-    textAlign: "center",
-  },
-  infoIcon: {
-    fontSize: "3rem",
-    color: "#F64D04",
-  },
-  infoMessage: {
-    marginTop: "16px",
-    padding: "8px",
-    textAlign: "center",
-  },
-  infoOK: {
-    color: "#009850",
-    marginLeft: "5px",
-  },
-}));
+
 const UpdateRequestSent = () => {
-  const classes = useStyles();
   return (
     <div className="main-wrapper">
       <div className="container px-md-0">
@@ -36,12 +14,27 @@ const UpdateRequestSent = () => {
         >
           <div className="col-12 col-md-6">
             <div className="redirectInfoBoxWrapper">
-              <Typography variant="h3" className={classes.mainInfoHeading}>
-                <InfoIcon className={classes.infoIcon} /> Information
+              <Typography variant="h3" sx={{
+                fontFamily: "orbitron",
+                fontWeight: "bold",
+                color: "#F64D04",
+                textAlign: "center",
+              }}>
+                <InfoIcon sx={{
+                  fontSize: "3rem",
+                  color: "#F64D04",
+                }} /> Information
               </Typography>
-              <Typography variant="body2" className={classes.infoMessage}>
+              <Typography variant="body2" sx={{
+                marginTop: "16px",
+                padding: "8px",
+                textAlign: "center",
+              }}>
                 Your request has been sent to the super admin for approval!{" "}
-                <CheckCircleIcon className={classes.infoOK} />
+                <CheckCircleIcon sx={{
+                  color: "#009850",
+                  marginLeft: "5px",
+                }} />
               </Typography>
               <div className="row no-gutters justify-content-end align-items-center w-100 mt-4 detailRedirectWrapper border-0">
                 <Link to="/" className="w-100">

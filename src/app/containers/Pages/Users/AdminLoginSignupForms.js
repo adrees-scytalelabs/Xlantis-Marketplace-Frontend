@@ -1,9 +1,8 @@
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import "react-intl-tel-input/dist/main.css";
-import { adminLoginThroughSSO } from "../../../components/API/AxiosInterceptor";
 import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
+import { adminLoginThroughSSO } from "../../../components/API/AxiosInterceptor";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 

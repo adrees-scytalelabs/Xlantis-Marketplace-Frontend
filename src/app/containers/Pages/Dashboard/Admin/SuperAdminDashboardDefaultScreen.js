@@ -1,24 +1,19 @@
 
-import React, { useEffect, useState } from "react";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import SuperAdminDefaultScreen from "./SuperAdminDefaultScreen";
 import SuperAdminSSOScreen from "./SuperAdminSSOScreen";
 import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
-
-const useStyles = makeStyles((theme) => ({
+import { useResolvedPath } from 'react-router-dom';
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#fff",
   },
-  tabPanelProps: {
-    backgroundColor: "#000",
-  },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -97,8 +92,8 @@ function a11yProps(index) {
 
 
 function SuperAdminDashboardDefaultScreen(props) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
+  const path = useResolvedPath("").pathname;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -112,10 +107,10 @@ function SuperAdminDashboardDefaultScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
-    }); 
+      properties: "",
+      template: "",
+      saved: "",
+    });
   }, []);
 
   return (
@@ -149,23 +144,23 @@ function SuperAdminDashboardDefaultScreen(props) {
                 >
                   <Tab
                     label="All"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(0)}
                   />
                   <Tab
                     label="SSO"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(1)}
                   />
                   <Tab
                     label="Wallet"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(2)}
                   />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                   <SuperAdminDefaultScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -173,7 +168,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <SuperAdminSSOScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -181,7 +176,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   <SuperAdminWalletScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}

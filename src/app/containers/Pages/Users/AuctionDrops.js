@@ -1,6 +1,4 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -14,7 +12,7 @@ import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MessageCard from "../../../components/MessageCards/MessageCard";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     maxWidth: 345,
   },
@@ -22,30 +20,10 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+
+}
 
 function AuctionDrops() {
-  const classes = useStyles();
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(12);
   const [totalDrops, setTotalDrops] = useState(0);
@@ -124,7 +102,7 @@ function AuctionDrops() {
                   {tokenList.map((i, index) => (
                     <Grid item xs={12} sm={6} md={3} key={index}>
                       <Link to={"/auctionDrops/DropCubes/" + i._id}>
-                        <OnAuctionDropCard dropDetails={i} classes={classes} />
+                        <OnAuctionDropCard dropDetails={i} classes={styles} />
                       </Link>
                     </Grid>
                   ))}

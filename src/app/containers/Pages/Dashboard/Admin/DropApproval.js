@@ -1,4 +1,3 @@
-import { TablePagination } from "@material-ui/core/";
 
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -15,6 +14,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
+import { TablePagination } from "@mui/material";
 
 function DropApproval(props) {
   const [network, setNetwork] = useState("");

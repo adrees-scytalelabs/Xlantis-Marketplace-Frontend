@@ -1,7 +1,5 @@
-import { ThemeProvider, createTheme } from "@material-ui/core";
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
+
+import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
@@ -10,8 +8,7 @@ import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import { myNft } from "../../../../redux/myNftSlice";
-
-const useStyles = makeStyles({
+const useStyles = {
   root: {
     borderRadius: 12,
     border: 0,
@@ -27,7 +24,7 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontFamily: "poppins",
   },
-});
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -70,8 +67,7 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [, setVersionB] = useState("");
-  const classes = useStyles();
-  const {nftData,nftCount,loading } = useSelector((store) => store.myNft);
+  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -80,17 +76,17 @@ function MyNFTs(props) {
     setOpen(true);
   };
   let getMyNFTs = (start, end) => {
-    dispatch(myNft({start,end}));
+    dispatch(myNft({ start, end }));
     handleShowBackdrop();
-        let nfts = nftData;
-        console.log("data from redx",nftData,nftCount);
-        let newState = nfts.map((obj) => {
-          return { ...obj, isPlaying: false };
-        });
-        setTokenList(newState);
-        setTotalNfts(nftCount);
+    let nfts = nftData;
+    console.log("data from redx", nftData, nftCount);
+    let newState = nfts.map((obj) => {
+      return { ...obj, isPlaying: false };
+    });
+    setTokenList(newState);
+    setTotalNfts(nftCount);
 
-        handleCloseBackdrop();
+    handleCloseBackdrop();
   };
 
   useEffect(() => {
@@ -177,9 +173,9 @@ function MyNFTs(props) {
             onPageChange={handleChangePage}
             onRowsPerPageChange={handleChangeRowsPerPage}
             classes={{
-              root: classes.root,
-              label: classes.label,
-              body2: classes.body2,
+              root: useStyles.root,
+              label: useStyles.label,
+              body2: useStyles.body2,
             }}
           />
         </div>

@@ -1,16 +1,16 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import Notification from "../../../../components/Utils/Notification";
 import {
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getSuperAdminDisabledType1 } from "../../../../redux/getManageAccountsDataSlice";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import { getSuperAdminDisabledType1 } from '../../../../redux/getManageAccountsDataSlice';
 
 function SSODisabled() {
   const [admins, setAdmins] = useState([]);
@@ -40,50 +40,50 @@ function SSODisabled() {
   const getDisableSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
     setOpen(true);
     dispatch(getSuperAdminDisabledType1())
-    console.log("dispatchRes",disabledType1Data);
-    if(disabledType1Loading===1){
-        setAdmins(disabledType1Data);
-        setAdminCount(disabledType1Data.length);
-        setOpen(false);
-      }
-    else if(disabledType1Loading===2){
-        setOpen(false);
-      }
+    console.log("dispatchRes", disabledType1Data);
+    if (disabledType1Loading === 1) {
+      setAdmins(disabledType1Data);
+      setAdminCount(disabledType1Data.length);
+      setOpen(false);
+    }
+    else if (disabledType1Loading === 2) {
+      setOpen(false);
+    }
   };
 
   const handleEnableSSO = (
-      e,
-      verifyAdminId,
-      setOpen,
-      setAdmins,
-      setAdminCount,
-      setVariant,
-      setLoad,
-      setNotificationData
-    ) => {
-      e.preventDefault();
-      handleShowBackdrop(setOpen);
-      let data = {
-        adminId: verifyAdminId,
-      };
-      axios.patch(`/super-admin/enable?userType=v1`, data).then(
-        (response) => {
-          handleCloseBackdrop(setOpen);
-          getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
-          setVariant("success");
-          setNotificationData("Admin Enabled Successfully.");
-          setLoad(true);
-        },
-        (error) => {
-          console.log("Error during enable: ", error);
-          console.log("Error response: ", error.response);
-          handleCloseBackdrop(setOpen);
-          setVariant("error");
-          setNotificationData("Unable to Enabled Admin.");
-          setLoad(true);
-        }
-      );
+    e,
+    verifyAdminId,
+    setOpen,
+    setAdmins,
+    setAdminCount,
+    setVariant,
+    setLoad,
+    setNotificationData
+  ) => {
+    e.preventDefault();
+    handleShowBackdrop(setOpen);
+    let data = {
+      adminId: verifyAdminId,
     };
+    axios.patch(`/super-admin/enable?userType=v1`, data).then(
+      (response) => {
+        handleCloseBackdrop(setOpen);
+        getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
+        setVariant("success");
+        setNotificationData("Admin Enabled Successfully.");
+        setLoad(true);
+      },
+      (error) => {
+        console.log("Error during enable: ", error);
+        console.log("Error response: ", error.response);
+        handleCloseBackdrop(setOpen);
+        setVariant("error");
+        setNotificationData("Unable to Enabled Admin.");
+        setLoad(true);
+      }
+    );
+  };
 
   useEffect(() => {
     getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);

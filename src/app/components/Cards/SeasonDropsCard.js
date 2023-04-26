@@ -1,15 +1,7 @@
-import React from 'react'
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
-import { CardHeader } from '@material-ui/core/';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
+import { Card, CardActions, CardContent, CardHeader, CardMedia, Typography } from '@mui/material';
+import React from 'react';
 import Countdown from 'react-countdown';
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
     root: {
         maxWidth: 345,
     },
@@ -17,83 +9,62 @@ const useStyles = makeStyles((theme) => ({
         height: 0,
         paddingTop: '100%',
     },
-    badge: {
-        '& > *': {
-            margin: theme.spacing(1),
-        },
-    },
-    backdrop: {
-        zIndex: theme.zIndex.drawer + 1,
-        color: '#fff',
-    },
-    bullet: {
-        display: 'inline-block',
-        margin: '0 2px',
-        transform: 'scale(0.8)',
-    },
-    title: {
-        fontSize: 14,
-    },
-    pos: {
-        marginBottom: 12,
-    },
-}));
+}
 
-function SeasonDropsCard({i}) {
-    const classes = useStyles();
-  return (
-    <div>
-          <Card style={{ height: "100%" }} variant="outlined" className={classes.root}>
-                                            <CardActionArea>
-                                                <CardHeader className="text-center"
-                                                    title={i[0].title}
-                                                />
-                                                <CardMedia
-                                                    className={classes.media}
-                                                    image={i[0].image}
-                                                    title=""
-                                                >
-                                                </CardMedia>
-                                                <CardContent>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Drop Description: </strong>{i[0].description}
-                                                    </Typography>
-                                                    <Typography variant="body2" color="textSecondary" component="p">
-                                                        <strong>Minimum Bid: </strong>{i[0].MinimumBid / 10 ** 18} WETH
-                                                    </Typography>
-                                                    <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
-                                                        {new Date() < new Date(i[0].AuctionStartsAt) ? (
-                                                            <div style={{ color: "#00FF00" }} >
+function SeasonDropsCard({ i }) {
+    return (
+        <div>
+            <Card style={{ height: "100%" }} variant="outlined" sx={styles.root}>
+                <CardActionArea>
+                    <CardHeader className="text-center"
+                        title={i[0].title}
+                    />
+                    <CardMedia
+                        sx={styles.media}
+                        image={i[0].image}
+                        title=""
+                    >
+                    </CardMedia>
+                    <CardContent>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Drop Description: </strong>{i[0].description}
+                        </Typography>
+                        <Typography variant="body2" color="textSecondary" component="p">
+                            <strong>Minimum Bid: </strong>{i[0].MinimumBid / 10 ** 18} WETH
+                        </Typography>
+                        <Typography variant="h6" gutterBottom color="textSecondary" className="text-center">
+                            {new Date() < new Date(i[0].AuctionStartsAt) ? (
+                                <div style={{ color: "#00FF00" }} >
 
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Starts At:</strong>
-                                                                </Typography>
-                                                                {console.log("Date(i[0].AuctionStartsAt)", Date(i[0].AuctionStartsAt))}
-                                                                <Countdown daysInHours date={new Date(i[0].AuctionStartsAt)}>
-                                                                </Countdown>
-                                                            </div>
-                                                        ) : new Date() > new Date(i[0].AuctionStartsAt) && new Date() < new Date(i[0].AuctionEndsAt) ? (
-                                                            <div style={{ color: "#FF0000" }}>
-                                                                {console.log("Date(i[0].AuctionStartsAt)", Date(i[0].AuctionEndsAt.toLoca))}
-                                                                <Typography variant="body2" color="textSecondary" component="p">
-                                                                    <strong>Auction Ends At:</strong>
-                                                                </Typography>
-                                                                <Countdown daysInHours date={new Date(i[0].AuctionEndsAt)}>
-                                                                </Countdown>
-                                                            </div>) : (
-                                                            <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
-                                                                <strong>Auction Ended</strong>
-                                                            </Typography>
-                                                        )}
-                                                    </Typography>
-                                                </CardContent>
-                                            </CardActionArea>
-                                            <CardActions>
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        <strong>Auction Starts At:</strong>
+                                    </Typography>
+                                    {console.log("Date(i[0].AuctionStartsAt)", Date(i[0].AuctionStartsAt))}
+                                    <Countdown daysInHours date={new Date(i[0].AuctionStartsAt)}>
+                                    </Countdown>
+                                </div>
+                            ) : new Date() > new Date(i[0].AuctionStartsAt) && new Date() < new Date(i[0].AuctionEndsAt) ? (
+                                <div style={{ color: "#FF0000" }}>
+                                    {console.log("Date(i[0].AuctionStartsAt)", Date(i[0].AuctionEndsAt.toLoca))}
+                                    <Typography variant="body2" color="textSecondary" component="p">
+                                        <strong>Auction Ends At:</strong>
+                                    </Typography>
+                                    <Countdown daysInHours date={new Date(i[0].AuctionEndsAt)}>
+                                    </Countdown>
+                                </div>) : (
+                                <Typography variant="body2" style={{ color: "#FF0000" }} component="p">
+                                    <strong>Auction Ended</strong>
+                                </Typography>
+                            )}
+                        </Typography>
+                    </CardContent>
+                </CardActionArea>
+                <CardActions>
 
-                                            </CardActions>
-                                        </Card>
-    </div>
-  )
+                </CardActions>
+            </Card>
+        </div>
+    )
 }
 
 export default SeasonDropsCard

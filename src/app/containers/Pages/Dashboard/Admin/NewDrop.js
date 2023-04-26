@@ -1,10 +1,9 @@
-import { ThemeProvider, createTheme } from "@material-ui/core";
-import FormControl from "@material-ui/core/FormControl";
-import { makeStyles } from "@material-ui/core/styles";
+
+import { FormControl, ThemeProvider, createTheme } from '@mui/material';
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useRouteMatch } from "react-router-dom";
+import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
 import r1 from "../../../../assets/img/patients/patient.jpg";
@@ -20,41 +19,6 @@ import Select from "../../../../components/Select/Select";
 import SelectDescription from "../../../../components/Select/SelectDescription";
 import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
 
 const makeTheme = createTheme({
   overrides: {
@@ -74,9 +38,7 @@ const makeTheme = createTheme({
 
 function NewDrop(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let { path } = useRouteMatch();
-
-  const classes = useStyles();
+  const path = useResolvedPath("").pathname;
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -105,7 +67,7 @@ function NewDrop(props) {
     setOpen(true);
   };
 
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -185,14 +147,15 @@ function NewDrop(props) {
             dropID = response.data.dropId;
             setIsSaving(false);
             handleCloseBackdrop();
-            history.push({
-              pathname: `${path}/addNft`,
-              state: {
-                dropId: dropID,
-                saleType: saleType,
-                nftType: nftType,
+            navigate(`${path}/addNft`,
+              {
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  nftType: nftType,
+                }
               },
-            });
+            );
           })
           .catch((error) => {
             if (process.env.NODE_ENV === "development") {
@@ -257,14 +220,14 @@ function NewDrop(props) {
               dropID = response.data.dropId;
               setIsSaving(false);
               handleCloseBackdrop();
-              history.push({
-                pathname: `${path}/addNft`,
-                state: {
-                  dropId: dropID,
-                  saleType: saleType,
-                  nftType: nftType,
-                },
-              });
+              navigate(`${path}/addNft`,
+                {
+                  state: {
+                    dropId: dropID,
+                    saleType: saleType,
+                    nftType: nftType,
+                  }
+                });
             })
             .catch((error) => {
               if (process.env.NODE_ENV === "development") {
@@ -335,14 +298,14 @@ function NewDrop(props) {
             setIsSaving(false);
 
             handleCloseBackdrop();
-            history.push({
-              pathname: `${path}/addNft`,
-              state: {
-                dropId: dropID,
-                saleType: saleType,
-                nftType: nftType,
-              },
-            });
+            navigate(`${path}/addNft`,
+              {
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  nftType: nftType,
+                }
+              });
           })
           .catch((error) => {
             if (process.env.NODE_ENV === "development") {
@@ -473,6 +436,7 @@ function NewDrop(props) {
                       placeholder="Enter Description of Drop"
                       setDescription={setDescription}
                     />
+
                   </div>
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">

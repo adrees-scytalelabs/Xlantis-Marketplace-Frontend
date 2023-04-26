@@ -1,8 +1,6 @@
-import Badge from "@material-ui/core/Badge";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import { Badge, Paper, Popper } from '@mui/material';
 import transakSDK from "@transak/transak-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -11,7 +9,8 @@ import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import WalletLink from "walletlink";
 import Web3 from "web3";
@@ -21,12 +20,12 @@ import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
+import { getUserProfile } from "../../redux/getUserProfileSlice";
 import {
   adminLoginThroughWallet,
-  getNotifications,
-  getUserProfileVersioned,
   readNotifications,
-  userLoginThroughWallet,
+  userLoginThroughWallet
 } from "../API/AxiosInterceptor";
 import NotificationList from "../Cards/NotificationList Card";
 import CartModal from "../Modals/CartModal";
@@ -34,16 +33,13 @@ import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserProfile } from "../../redux/getUserProfileSlice";
-import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  let history = useHistory();
+  let navigate = useNavigate();
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [adminSignInData, setAdminSignInData] = useState(null);
@@ -59,8 +55,8 @@ function HeaderHome(props) {
   const [notificationsList, setNotificationsList] = useState();
   const [notificationCount, setNotificationCount] = useState(0);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const {userData,loading } = useSelector((store) => store.userProfile);
-  const {notification,notificationLoading } = useSelector((store) => store.getHeaderNotification);
+  const { userData, loading } = useSelector((store) => store.userProfile);
+  const { notification, notificationLoading } = useSelector((store) => store.getHeaderNotification);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -167,9 +163,9 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
-    dispatch(getHeaderNotification({start,end}))
-        setNotificationsList(notification);
-        setNotificationCount(notification.length);
+    dispatch(getHeaderNotification({ start, end }))
+    setNotificationsList(notification);
+    setNotificationCount(notification.length);
   }
 
   function readNotification(notificationId) {
@@ -325,7 +321,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     setUserId("");
-    history.push({ pathname: "/" });
+    navigate({ pathname: '/' });
     window.location.reload(false);
   };
 
@@ -333,7 +329,7 @@ function HeaderHome(props) {
     if (anchorEl !== event.currentTarget) {
       setAnchorEl(event.currentTarget);
     }
-    history.push("/user/settings");
+    navigate("/user/settings");
   }
 
   function handleMenuClose() {
@@ -394,9 +390,10 @@ function HeaderHome(props) {
 
   return (
     <header className={`header ${menuOpenedClass}`}>
-      {adminSignInData !== null && adminSignInData.isInfoAdded === false && (
-        <Redirect to="/admin-signup-details" />
-      )}
+      {adminSignInData !== null &&
+        adminSignInData.isInfoAdded === false && (
+          <Navigate to="/admin-signup-details" />
+        )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -460,8 +457,8 @@ function HeaderHome(props) {
           >
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {(sessionStorage.getItem("Address") && props.role === "admin") ||
-              sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                sessionStorage.getItem("Address") ||
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <div
                   className="header-profile-image"
                   onClick={handleClick}
@@ -503,7 +500,7 @@ function HeaderHome(props) {
             </li>
 
             {location.pathname.match("/dashboard") ||
-            location.pathname.match("/user/settings") ? (
+              location.pathname.match("/user/settings") ? (
               <>
                 <li className="sidebar-items">
                   <Link to={`/dashboard/myNFTs`}>
@@ -559,8 +556,8 @@ function HeaderHome(props) {
               </span>
             </li>
             {(sessionStorage.getItem("Address") && props.role === "admin") ||
-            sessionStorage.getItem("Address") ||
-            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <li
                 className="login-link"
                 style={{ padding: "15px 20px" }}
@@ -595,7 +592,7 @@ function HeaderHome(props) {
               props.role === "admin" ? null : sessionStorage.getItem(
                 "Address"
               ) ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div
                 className="header-profile-image"
                 onClick={handleClick}
@@ -607,44 +604,45 @@ function HeaderHome(props) {
             ) : null}
           </li>
           <li className="header-item-rht">
-            {sessionStorage.getItem("Address") &&
-            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-              <>
-                <Link to="/dashboard" style={{ color: "#fff" }}>
-                  Dashboard
-                </Link>
-              </>
-            ) : props.role === "admin" ? (
-              <>
-                <span
-                  className={hoverClassStyleTest(props.selectedNav).Community}
-                  style={selectedNavStyle.Community}
-                  onClick={() => {
-                    setWorkProgressModalShow(true);
-                  }}
-                >
-                  Sign in with wallet
-                </span>
-              </>
-            ) : (
-              <>
-                <span
-                  className={hoverClassStyleTest(props.selectedNav).Community}
-                  style={selectedNavStyle.Community}
-                  onClick={handleOpenModal}
-                >
-                  Login/SignUp
-                </span>
-                {userSignOut && <Redirect to="/" />}
-              </>
-            )}
+            {
+              sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                <>
+                  <Link to="/dashboard" style={{ color: "#fff" }}>
+                    Dashboard
+                  </Link>
+                </>
+              ) : props.role === "admin" ? (
+                <>
+                  <span
+                    className={hoverClassStyleTest(props.selectedNav).Community}
+                    style={selectedNavStyle.Community}
+                    onClick={() => {
+                      setWorkProgressModalShow(true);
+                    }}
+                  >
+                    Sign in with wallet
+                  </span>
+                </>
+              ) : (
+                <>
+                  <span
+                    className={hoverClassStyleTest(props.selectedNav).Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleOpenModal}
+                  >
+                    Login/SignUp
+                  </span>
+                  {userSignOut && <Navigate to="/" />}
+                </>
+
+              )
+            }
           </li>
 
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
@@ -658,7 +656,7 @@ function HeaderHome(props) {
           </li>
           <li>
             {sessionStorage.getItem("Address") ||
-            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
                 <Badge color="secondary" badgeContent={1}>
                   <NotificationsIcon

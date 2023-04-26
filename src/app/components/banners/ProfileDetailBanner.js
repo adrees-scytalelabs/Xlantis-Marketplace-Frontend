@@ -1,7 +1,6 @@
-import React from 'react'
+import EditIcon from '@mui/icons-material/Edit';
+import React from 'react';
 import { Spinner } from "react-bootstrap";
-import Edit from "@material-ui/icons/Edit";
-
 function ProfileDetailBanner({
   bannerImage,
   isUploadingBannerIPFS,
@@ -12,7 +11,7 @@ function ProfileDetailBanner({
 }) {
   return (
     <div>
-        <div className="row no-gutters">
+      <div className="row no-gutters">
         <div className="col-12">
           <div
             className="banner-img"
@@ -32,7 +31,7 @@ function ProfileDetailBanner({
             ) : (
               <label htmlFor="banner-file-input" className="banner-input-label">
                 <div className="banner-dark-layer">
-                  <Edit fontSize="large" id="banner-icon" />
+                  <EditIcon fontSize="large" id="banner-icon" />
                 </div>
               </label>
             )}
@@ -67,7 +66,7 @@ function ProfileDetailBanner({
                 className="profile-input-label"
               >
                 <div className="profile-dark-layer">
-                  <Edit fontSize="medium" id="profile-icon" />
+                  <EditIcon fontSize="medium" id="profile-icon" />
                 </div>
               </label>
             )}

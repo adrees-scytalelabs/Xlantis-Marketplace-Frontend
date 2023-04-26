@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -19,7 +19,7 @@ import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
 
 function UserDashboard(props) {
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
 
   const [activeTab, setActiveTab] = useState({
@@ -48,56 +48,53 @@ function UserDashboard(props) {
       <HeaderHome selectedNav={""} role={null} />
 
       <UserSidebar
-        match={props.match}
+        match={path}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
       />
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <Switch>
-            <Route exact path={`${path}/dashboard`}>
+          <Routes>
+            <Route exact path={`dashboard`} element={
               <UserDashboardDefaultScreen
-                match={props.match}
+                match={path}
                 setActiveTab={setActiveTab}
               />
-            </Route>
+            } />
 
-            <Route exact path={`${path}/myNFTs`}>
+            <Route exact path={`myNFTs`} element={
               <MyNFTs setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/nftDetail/:nftId`}>
+            } />
+            <Route exact path={`nftDetail/:nftId`} element={
               <SingleNftDetail setActiveTab={setActiveTab} />
-            </Route>
-
-            <Route exact path={`${path}/myDrops`}>
+            } />
+            <Route exact path={`myDrops`} element={
               <MyDrops setActiveTab={setActiveTab} />
-            </Route>
+            } />
 
-            <Route exact path={`${path}/myCollection`}>
+            <Route exact path={`myCollection`} element={
               <MyCollection setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/marketPlace`}>
+            } />
+            <Route exact path={`marketPlace`} element={
               <MarketPlace setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/marketPlace/drops/nfts`}>
+            } />
+            <Route exact path={`marketPlace/drops/nfts`} element={
               <DropNfts setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/marketPlace/drops/nfts/buy`}>
+            } />
+            <Route exact path={`marketPlace/drops/nfts/buy`} element={
               <NFTBuy setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/marketPlace/:dropId/:nftId`}>
+            } />
+            <Route exact path={`marketPlace/:dropId/:nftId`} element={
               <AuctionNFT setActiveTab={setActiveTab} />
-            </Route>
-            <Route exact path={`${path}/collection/nfts/:collectionId`}>
-              <CollectionNfts setActiveTab={setActiveTab} />
-            </Route>
-            <Route path={`${path}`}>
+            } />
+            <Route exact path={`collection/nfts/:collectionId`} element={
+              <CollectionNfts setActiveTab={setActiveTab} />} />
+            <Route path={`/`} element={
               <UserDashboardDefaultScreen
-                match={props.match}
+                match={path}
                 setActiveTab={setActiveTab}
-              />
-            </Route>
-          </Switch>
+              />} />
+          </Routes>
         </div>
       </div>
     </div>

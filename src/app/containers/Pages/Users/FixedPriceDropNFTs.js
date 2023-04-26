@@ -1,8 +1,8 @@
-import { Grid } from "@material-ui/core/";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import {
   getNFTsFromDropPaginatedWOBody
 } from "../../../components/API/AxiosInterceptor";
@@ -10,13 +10,12 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-
 const FixedPriceDropNFTs = () => {
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
-  const [dropData, setDropData] = useState("");
+  const [dropData, setDropData] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
   const [titleImage, setTitleImage] = useState(
@@ -25,14 +24,16 @@ const FixedPriceDropNFTs = () => {
   const [bannerImage, setBannerImage] = useState(
     "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
   );
-  let history = useHistory();
+  let navigate = useNavigate();
   const dropID = useParams();
   const location = useLocation();
-  const saleType = location.state.saleType;
-  const description = location.state.description;
-  const startTime = location.state.startTime;
-  const endTime = location.state.endTime;
+  console.log("location", location);
+  const saleType = location.state?.saleType;
+  const description = location.state?.description;
+  const startTime = location.state?.startTime;
+  const endTime = location.state?.endTime;
 
+  console.log("dropDatadropData", dropData);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -41,7 +42,7 @@ const FixedPriceDropNFTs = () => {
   };
 
   const handleGoBack = () => {
-    history.push(`/marketPlace`);
+    navigate(`/marketPlace`);
   };
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
@@ -129,8 +130,8 @@ const FixedPriceDropNFTs = () => {
               </div>
               <div className="row no-gutters w-100">
                 <Grid container spacing={3}>
-                  {dropData &&
-                    dropData.map((i, index) => (
+                  {dropData && dropData.length &&
+                    dropData?.map((i, index) => (
                       <Grid
                         item
                         xs={12}

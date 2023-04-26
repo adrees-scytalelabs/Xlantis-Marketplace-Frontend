@@ -1,59 +1,25 @@
-import {
-  createTheme,
-  makeStyles,
-  ThemeProvider
-} from "@material-ui/core";
+
+import { ThemeProvider, createTheme } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useParams } from "react-router-dom";
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import { getSingleNFTDetail } from "../../../../components/API/AxiosInterceptor";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media1: {
-    height: 300,
+    // backgroundColor: theme.palette.background.paper,
   },
   media: {
     width: "100%",
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-}));
+
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -84,7 +50,6 @@ const makeTheme = createTheme({
 });
 
 const SingleNftDetail = (props) => {
-  const classes = useStyles();
   const { nftId } = useParams();
   const [nftDetail, setNftDetail] = useState({});
   const [keys, setKeys] = useState([]);
@@ -146,7 +111,7 @@ const SingleNftDetail = (props) => {
         <div className="card-body p-0">
           <div className="row">
             <div className="col-md-12 col-lg-4">
-              <NFTMediaCard nftDetail={nftDetail} classes={classes} />
+              <NFTMediaCard nftDetail={nftDetail} classes={styles} />
             </div>
             <div className="col-md-12 col-lg-8">
               <SingleNFTDetailCard nftDetail={nftDetail} />

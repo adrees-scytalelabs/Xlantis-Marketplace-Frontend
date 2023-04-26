@@ -1,9 +1,5 @@
-import React from "react";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Tooltip from "@material-ui/core/Tooltip";
+import { FormControl, FormControlLabel, Radio, RadioGroup, Tooltip } from '@mui/material';
+import React from 'react';
 
 function NewNftSelectSupply({
   NFTType,

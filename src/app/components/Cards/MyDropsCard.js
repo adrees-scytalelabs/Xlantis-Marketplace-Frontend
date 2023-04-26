@@ -5,10 +5,9 @@ import {
   CardHeader,
   CardMedia,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
 import Countdown from "react-countdown";
-
 const MyDropsCard = (props) => {
   return (
     <Card

@@ -1,12 +1,11 @@
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useState } from "react";
-import "react-intl-tel-input/dist/main.css";
-import { useHistory } from "react-router-dom";
 import { superAdminLoginThroughSSO } from "../API/AxiosInterceptor";
 
+
 const SuperAdminLoginForms = () => {
-  let history = useHistory();
+
   const { enqueueSnackbar } = useSnackbar();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

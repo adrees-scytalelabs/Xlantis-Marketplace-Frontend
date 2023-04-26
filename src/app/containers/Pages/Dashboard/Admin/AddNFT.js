@@ -1,11 +1,10 @@
-import { createTheme } from "@material-ui/core";
-import { Grid } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
+import { Autocomplete, Grid } from '@mui/material';
 import transakSDK from "@transak/transak-sdk";
+import Axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import {
   addNFTToDrop,
@@ -19,7 +18,6 @@ import {
   updateDropStatus,
   updateDropTxHash,
 } from "../../../../components/API/AxiosInterceptor";
-import Autocomplete from "../../../../components/Autocomplete/Autocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
@@ -34,35 +32,19 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
-import Axios from "axios";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
+    // backgroundColor: theme.palette.background.paper,
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
   card: {
     minWidth: 250,
   },
   media: {
     width: "100%",
     paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -79,67 +61,12 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "1.2",
     fontSize: "1rem",
   },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "0.875rem",
-  },
-}));
-
-const makeTheme = createTheme({
-  overrides: {
-    MuiTextField: {
-      root: {
-        border: "1px solid #fff",
-        borderRadius: 5,
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "1px solid #fff",
-        "&$focused": {},
-      },
-    },
-    MuiInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "none",
-        borderRadius: 5,
-        padding: "6px 15px !important",
-        "&$focused": {},
-      },
-      underline: {
-        "&$before": {},
-        "&::after": {
-          border: "none !important",
-        },
-      },
-    },
-    MuiAutocomplete: {
-      inputRoot: {},
-    },
-    MuiIconButton: {
-      root: {
-        color: "#fff !important",
-      },
-    },
-    MuiFormControlLabel: {
-      label: {
-        color: "white",
-        fontFamily: "inter",
-      },
-    },
-  },
-});
+}
 
 function AddNFT(props) {
   let location = useLocation();
-  let history = useHistory();
+  let navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
   const [transactionModal, setTransactionModal] = useState(false);
@@ -220,12 +147,12 @@ function AddNFT(props) {
 
   const handleRedirect = () => {
     setTransactionModal(false);
-    history.push({
-      pathname: `/dashboard/myDrops`,
-      state: {
-        value: 1,
-      },
-    });
+    navigate(`/dashboard/myDrops`,
+      {
+        state: {
+          value: 1,
+        }
+      });
   };
   const handleCloseModal = () => {
     setMOdalOpen(false);
@@ -384,9 +311,9 @@ function AddNFT(props) {
     setGrid(false);
     setVersionB(Cookies.get("Version"));
     setEnableTime(false);
-    setDropId(location.state.dropId);
-    setSaleType(location.state.saleType);
-    let type = location.state.nftType;
+    setDropId(location.state?.dropId);
+    setSaleType(location.state?.saleType);
+    let type = location.state?.nftType;
     setNftType(type);
     getCollection();
 
@@ -577,7 +504,7 @@ function AddNFT(props) {
           setIsAdded(false);
           handleCloseBackdrop();
           setIsSaving(false);
-          history.goBack();
+          navigate(-1);
         });
     } catch (e) {
       console.log("Fixed Price not work properly", e);
@@ -643,7 +570,7 @@ function AddNFT(props) {
           setIsAdded(false);
           handleCloseBackdrop();
           setIsSaving(false);
-          history.goBack();
+          navigate(-1);
         });
     } catch (e) {
       console.log("Contract Issue", e);
@@ -1021,7 +948,7 @@ function AddNFT(props) {
                   >
                     <AddNFTDisplayCard
                       nftDetail={nftDetail}
-                      classes={classes}
+                      classes={styles}
                     />
                   </div>
                 )}
@@ -1063,25 +990,20 @@ function AddNFT(props) {
                       justifyContent="flex-start"
                       style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                      {tokenList.map((i) => (
-                        <Grid
-                          item
-                          xs={6}
-                          sm={4}
-                          md={4}
-                          lg={3}
-                          style={{ height: "25vh" }}
-                        >
-                          <AddNFTDisplayCard nftDetail={i} classes={classes} />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </div>
-                )}
-              </div>
-            </form>
-          </div>
-        </div>
+                      <Grid item xs={6} sm={4} md={4} lg={4}>
+                        <AddNFTDisplayCard
+                          nftDetail={nftDetail}
+                          classes={styles}
+                        />
+                      </Grid>
+                    </Grid >
+                  </div >
+                )
+                }
+              </div >
+            </form >
+          </div >
+        </div >
         <UpdateDropAndPublishDrop
           isDisabled={isDisabled}
           versionB={versionB}
@@ -1098,7 +1020,7 @@ function AddNFT(props) {
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
         />
-      </div>
+      </div >
       <NetworkErrorModal
         show={show}
         handleClose={handleClose}
@@ -1110,21 +1032,23 @@ function AddNFT(props) {
         nftDetail={nftDetail}
         handleEdit={handleEdit}
       />
-      {modalOpen === true && (
-        <PublishDropModal
-          handleClose={handleCloseModal}
-          open={modalOpen}
-          handlePublish={handlePublish}
-          handlePay={openTransak}
-          dropData={data}
-          isOpen={modalOpen}
-          dropStatus={(e) => dropStatus(e)}
-          dropId={dropId}
-          cost={costInfo}
-          setOpen={setMOdalOpen}
-          setTopUpModal={setTopUpModal}
-        />
-      )}
+      {
+        modalOpen === true && (
+          <PublishDropModal
+            handleClose={handleCloseModal}
+            open={modalOpen}
+            handlePublish={handlePublish}
+            handlePay={openTransak}
+            dropData={data}
+            isOpen={modalOpen}
+            dropStatus={(e) => dropStatus(e)}
+            dropId={dropId}
+            cost={costInfo}
+            setOpen={setMOdalOpen}
+            setTopUpModal={setTopUpModal}
+          />
+        )
+      }
       <PublishSuccessfully
         show={transactionModal}
         handleClose={handleRedirect}
@@ -1139,7 +1063,7 @@ function AddNFT(props) {
         setOpen={setMOdalOpen}
       />
       <CircularBackdrop open={open} />
-    </div>
+    </div >
   );
 }
 

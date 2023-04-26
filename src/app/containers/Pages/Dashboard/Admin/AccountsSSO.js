@@ -1,13 +1,13 @@
-import { TablePagination } from "@material-ui/core/";
+import { TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import {
-  handleModalOpen,
-  handleModalClose,
-} from "../../../../components/Utils/SuperAdminFunctions";
 import { useDispatch, useSelector } from 'react-redux';
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import {
+  handleModalClose,
+  handleModalOpen
+} from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminAccountType1 } from "../../../../redux/getSuperAdminAccountsSlice";
 
 function AccountsSSO(props) {
@@ -15,31 +15,31 @@ function AccountsSSO(props) {
   const [admins, setAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); 
+  const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
   const {
     accountType1Data,
-  accountType1Loading,
+    accountType1Loading,
   } = useSelector((store) => store.getSuperAdminAccounts);
-const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-const getSSOAdmins = (start, end) => {
-  setOpen(true);
-  dispatch(getSuperAdminAccountType1({start,end}));
-  if(accountType1Loading===1){
+  const getSSOAdmins = (start, end) => {
+    setOpen(true);
+    dispatch(getSuperAdminAccountType1({ start, end }));
+    if (accountType1Loading === 1) {
       setAdmins(accountType1Data);
       setAdminCount(accountType1Data.length);
       setOpen(false);
     }
-    else if(accountType1Loading===2){
+    else if (accountType1Loading === 2) {
       setOpen(false);
     }
-};
+  };
 
-useEffect(() => {
-  getSSOAdmins(0, rowsPerPage);
-}, [accountType1Loading]);
+  useEffect(() => {
+    getSSOAdmins(0, rowsPerPage);
+  }, [accountType1Loading]);
 
   useEffect(() => {
     props.setActiveTab({

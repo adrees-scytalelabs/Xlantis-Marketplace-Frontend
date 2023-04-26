@@ -1,11 +1,5 @@
-import {
-  Box,
-  Tab,
-  Tabs,
-  Typography
-} from "@material-ui/core";
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
+
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -56,8 +50,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {},
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -65,14 +58,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     fontFamily: "orbitron",
   },
-  tabPanelProps: {
-    backgroundColor: "#000",
-  },
-}));
+}
 
 const MyDrops = (props) => {
   let location = useLocation();
-  const classes = useStyles();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -84,9 +73,9 @@ const MyDrops = (props) => {
   };
 
   useEffect(() => {
-    if(location.state!=null){
+    if (location.state != null) {
       console.log("i am here");
-      console.log("this is location of drop",location)
+      console.log("this is location of drop", location)
       setValue(location.state.value);
     }
     props.setActiveTab({
@@ -130,22 +119,22 @@ const MyDrops = (props) => {
           >
             <Tab
               label="Draft"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(0)}
             />
             <Tab
               label="Pending"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(1)}
             />
             <Tab
               label="Active"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(2)}
             />
             <Tab
               label="Close"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(3)}
             />
           </Tabs>
