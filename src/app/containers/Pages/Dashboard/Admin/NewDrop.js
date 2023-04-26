@@ -361,7 +361,6 @@ function NewDrop(props) {
   };
 
   let onChangeBannerFile = async (e) => {
-    //console.log("In banner change function: ", e.target.files[0]);
     const file = e.target.files[0];
     if (file) {
       setIsUploadingBanner(true);
@@ -448,6 +447,7 @@ function NewDrop(props) {
                       changeFile={onChangeBannerFile}
                       class="co-12 col-md-auto drop-banner-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadDropBannerImg"
                     />
                   </div>
                   <div className="form-group">
@@ -458,6 +458,7 @@ function NewDrop(props) {
                       changeFile={onChangeFile}
                       class="co-12 col-md-auto profile-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
+                      inputId="uploadPreviewImg"
                     />
                   </div>
                   

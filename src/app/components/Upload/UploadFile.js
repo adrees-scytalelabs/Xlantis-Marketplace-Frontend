@@ -10,13 +10,13 @@ const UploadFile = (props) => {
             <img src={props.fileURL} alt="Selfie" />
           </div>
           <div className="co-12 col-md-auto">
-            <label htmlFor="uploadPreviewImg" className="uploadLabel">
+            <label htmlFor={props.inputId} className="uploadLabel">
               {props.isUploading ? <WhiteSpinner /> : "Choose File"}
             </label>
             <input
               name="sampleFile"
               type="file"
-              id="uploadPreviewImg"
+              id={props.inputId}
               accept={props.accept}
               onChange={props.changeFile}
               hidden

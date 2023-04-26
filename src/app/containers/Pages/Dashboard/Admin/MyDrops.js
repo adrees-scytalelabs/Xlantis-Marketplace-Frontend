@@ -8,7 +8,7 @@ import { ThemeProvider, createTheme } from "@material-ui/core/styles";
 import { makeStyles } from "@material-ui/styles";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import DropsPage from "./DropsPage";
 
 function TabPanel(props) {
@@ -71,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const MyDrops = (props) => {
+  let location = useLocation();
   const classes = useStyles();
   const [value, setValue] = useState(0);
 
@@ -83,6 +84,11 @@ const MyDrops = (props) => {
   };
 
   useEffect(() => {
+    if(location.state!=null){
+      console.log("i am here");
+      console.log("this is location of drop",location)
+      setValue(location.state.value);
+    }
     props.setActiveTab({
       dashboard: "",
       newCollection: "",

@@ -7,6 +7,8 @@ import { Link } from "react-router-dom";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { useDispatch, useSelector } from 'react-redux';
+import { myNft } from "../../../../redux/myNftSlice";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -14,47 +16,34 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
+  const {nftData,nftCount,loading } = useSelector((store) => store.myNft);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-      "Authorization"
-    )}`;
-    axios.get(`/nft/myNFTs/${start}/${end}`).then(
-      (response) => {
-        setTokenList(response.data.NFTdata);
-        setTotalNfts(response.data.Nftcount);
+    dispatch(myNft({start,end}));
+    if(loading===1){
+      setTokenList(nftData);
+        setTotalNfts(nftCount);
 
         handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+    }
+    else if(loading===2){
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
     getMyNFTs(0, rowsPerPage);
+  }, [loading]);
+
+  useEffect(() => {
     props.setActiveTab({
       dashboard: "",
       newNFT: "",

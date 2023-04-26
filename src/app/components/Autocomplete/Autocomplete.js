@@ -60,8 +60,6 @@ function AutocompleteAddNft({
         onChange,
     }) {
 
-    
-
   return (
     <div className="form-group">
     <label>{label}</label>
@@ -71,7 +69,7 @@ function AutocompleteAddNft({
         required
         disabled={isDisabled}
         options={options}
-        getOptionLabel={(option) => option.name}
+        getOptionLabel={(option) => (label==="Select NFT")?(option.title):(option.name)}
         onChange={onChange}
         filterSelectedOptions
         renderInput={(params) => (
