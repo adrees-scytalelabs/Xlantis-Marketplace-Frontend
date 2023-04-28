@@ -1,9 +1,10 @@
-import CloseIcon from '@mui/icons-material/Close';
-import InfoIcon from '@mui/icons-material/Info';
-import { Typography } from '@mui/material';
+import CloseIcon from "@mui/icons-material/Close";
+import InfoIcon from "@mui/icons-material/Info";
+import { Typography } from "@mui/material";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { useNavigate } from "react-router-dom";
@@ -24,7 +25,7 @@ const styles = {
     fontFamily: "inter",
     transition: "all 3s ease-in-out",
   },
-}
+};
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -54,7 +55,8 @@ const AdminLoginSignupForms = () => {
     if (account !== null) {
       userLoginThroughSSO({ idToken: account })
         .then((response) => {
-          console.log("JWT submitted: ", response);
+          console.log("checker response", response);
+          console.log("JWT submitted: ", response.data);
           if (response.status === 200) {
             Cookies.set("Version", "v1-sso", {});
             response.data.raindropToken &&
@@ -80,8 +82,9 @@ const AdminLoginSignupForms = () => {
     const controller = new AbortController();
 
     if (adminSignInData !== null) {
-      navigate("/");
-      // history.go(0);
+      let decode = jwtDecode(adminSignInData.raindropToken);
+      sessionStorage.setItem("userId", decode.userId);
+      navigate(`/`);
     }
 
     return () => {
@@ -150,10 +153,7 @@ const AdminLoginSignupForms = () => {
                       Sign In
                     </button>
                     <div className="text-center">
-                      <Typography
-                        variant="body2"
-                        sx={styles.signInOptionLabel}
-                      >
+                      <Typography variant="body2" sx={styles.signInOptionLabel}>
                         OR
                       </Typography>
                     </div>

@@ -1,5 +1,5 @@
+import React, { useEffect, useState } from "react";
 import CloseIcon from '@mui/icons-material/Close';
-import React from "react";
 import { FixedSizeList as List } from "react-window";
 import "../../assets/css/notificationStyle.css";
 import { ListItem, ListItemText } from '@mui/material';
@@ -8,44 +8,54 @@ export default function NotificationList(props) {
   function handleNotificationClick(event) {
     console.log("clicked");
   }
-  function handleIconClick(id) {
+  function handleIconClick(e, id) {
     console.log("id", id);
     props.close(id);
     console.log("Icon clicked");
   }
   function Row({ index, style }) {
-    let arr = props.notifications;
-    console.log("array", arr);
-    console.log("message", arr[index]);
-    let read = [true, true, false, true, false, true, true, false, false, true];
+    useEffect(() => {});
     return (
       <ListItem
         divider
-        className={arr[index].isRead ? "ListItemRead" : "ListItemUnread"}
-        style={style}
-        key={index}
+        style={{
+          backgroundColor: "white",
+          color: "white",
+          border: "1px solid black",
+        }}
         onClick={handleNotificationClick}
       >
         <ListItemText
-          secondary={arr[index].message}
-
+          secondary={data[index].message}
+          style={{ wordWrap: "break-word" }}
         />
         <CloseIcon
           style={{ fontSize: 15, color: grey[600] }}
-          onClick={handleIconClick(arr[index]._id)}
+          onClick={(e) => {
+            handleIconClick(e, data[index]._id);
+          }}
         />
       </ListItem>
     );
   }
-  return (
+  const [data, setData] = useState(props.notifications);
+
+  useEffect(() => {
+    setData(props.notifications);
+    console.log("array", props.notifications);
+  }, [props]);
+  return props.notifications.length != 0 ? (
     <List
-      className="List"
-      height={400}
+      className={props.notifications}
+      height={300}
       itemCount={props.itemCount}
-      itemSize={46}
-      width={400}
+      itemSize={47}
+      width={300}
+      style={{ backgroundColor: "black", color: "white" }}
     >
       {Row}
     </List>
+  ) : (
+   <div style={{backgroundColor:'black',color:'white'}}>No Notification</div>
   );
 }

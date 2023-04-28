@@ -1,6 +1,6 @@
-import NotificationsIcon from '@mui/icons-material/Notifications';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import { Badge, Paper, Popper } from '@mui/material';
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge, Paper, Popper } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -9,7 +9,8 @@ import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios'
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { io } from "socket.io-client";
 import WalletLink from "walletlink";
@@ -25,7 +26,7 @@ import { getUserProfile } from "../../redux/getUserProfileSlice";
 import {
   adminLoginThroughWallet,
   readNotifications,
-  userLoginThroughWallet
+  userLoginThroughWallet,
 } from "../API/AxiosInterceptor";
 import NotificationList from "../Cards/NotificationList Card";
 import CartModal from "../Modals/CartModal";
@@ -52,24 +53,67 @@ function HeaderHome(props) {
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
   const openPopper = Boolean(anchorElPopper);
-  const [notificationsList, setNotificationsList] = useState();
+  const [notificationsList, setNotificationsList] = useState({});
   const [notificationCount, setNotificationCount] = useState(0);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const { userData, loading } = useSelector((store) => store.userProfile);
-  const { notification, notificationLoading } = useSelector((store) => store.getHeaderNotification);
+  const [open, setOpen] = useState(false);
+  const { notification, notificationLoading } = useSelector(
+    (store) => store.getHeaderNotification
+  );
   const dispatch = useDispatch();
 
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   useEffect(() => {
-    if (userId !== "" && socket !== null) {
-      socket.emit("user-logged-in", userId);
-    } else if (userId === "" && socket !== null) {
-      socket.emit("user-logged-out", userId);
+    let userLogin = sessionStorage.getItem("Authorization");
+    console.log("auth",userLogin)
+    let userIdentity = sessionStorage.getItem("userId");
+    if (userLogin != null) {
+      setUserId(userIdentity);
+      if (userId !== "" && socket !== null) {
+        socket.emit("user-logged-in", userIdentity);
+        socket.on("Notification", (notification) => {
+          setNotificationsList((previousData) => [
+            ...previousData,
+            notification,
+          ]);
+        });
+      } else if (userIdentity === "" && socket !== null) {
+        socket.emit("user-logged-out", userIdentity);
+      }
     }
   }, [socket, userId]);
+  useEffect(() => {
+    let userLogin = sessionStorage.getItem("Authorization");
+    console.log("auth",userLogin)
+    let userIdentity = sessionStorage.getItem("userId");
+    if (userLogin != null) {
+      console.log("user Identity",userIdentity);
+      setUserId(userIdentity);
+      getNotifications(0, 10);
+    }
+  }, [notificationLoading]);
 
+  useEffect(() => {
+    getProfile();
+  }, [loading]);
+
+  useEffect(() => {
+    if (adminSignInData !== null) {
+      if (
+        adminSignInData.isInfoAdded === true &&
+        adminSignInData.isVerified === false
+      ) {
+        let variant = "info";
+        enqueueSnackbar(
+          "Your request is under process. Waiting for approval by the Super Admin",
+          { variant }
+        );
+      }
+    }
+  }, [adminSignInData]);
   const handleOpenModal = () => {
     setMOdalOpen(!modalOpen);
   };
@@ -163,9 +207,9 @@ function HeaderHome(props) {
   };
 
   function getNotifications(start, end) {
-    dispatch(getHeaderNotification({ start, end }))
-    setNotificationsList(notification);
-    setNotificationCount(notification.length);
+    dispatch(getHeaderNotification({ start, end, setNotificationsList }));
+    // setNotificationsList(notification);
+    // setNotificationCount(notification.length);
   }
 
   function readNotification(notificationId) {
@@ -173,16 +217,15 @@ function HeaderHome(props) {
       notificationId,
     };
 
-    console.log("data", data);
-
-    readNotifications(data)
-      .then((response) => {
-        console.log("notification hide response: ", response);
-      })
-      .catch((error) => {
+    axios.patch("/notifications/hide", data).then(
+      (response) => {
+        getNotifications(0, 10);
+      },
+      (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-      });
+      }
+    );
   }
 
   async function handleLogin() {
@@ -220,9 +263,18 @@ function HeaderHome(props) {
         walletAddress: address,
         signature: signatureHash,
       };
+      let route;
       if (props.role === "admin") {
-        adminLoginThroughWallet(loginData)
-          .then((response) => {
+        route = "v2-wallet-login/user/auth/admin-login";
+      } else {
+        route = "v2-wallet-login/user/auth/login";
+      }
+
+      console.log(route);
+      axios.post(route, loginData).then(
+        (response) => {
+          console.log("response", response);
+          if (props.role === "admin") {
             console.log("admin sett");
             console.log("admin data set");
             Cookies.set("Version", "v2-wallet-login", {});
@@ -242,17 +294,7 @@ function HeaderHome(props) {
               window.location.reload(false);
             }
             setAdminSignInData(response.data);
-          })
-          .catch((error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-              if (error) setTokenVerification(false);
-            }
-          });
-      } else {
-        userLoginThroughWallet(loginData)
-          .then((response) => {
+          } else {
             console.log("Running user", response.data);
             Cookies.set("Version", "v2-wallet-login", {});
             sessionStorage.setItem(
@@ -263,15 +305,16 @@ function HeaderHome(props) {
             sessionStorage.setItem("Address", accounts[0]);
             setUserId(accounts[0]);
             window.location.reload();
-          })
-          .catch((error) => {
-            if (process.env.NODE_ENV === "development") {
-              console.log(error);
-              console.log(error.response);
-              if (error) setTokenVerification(false);
-            }
-          });
-      }
+          }
+        },
+        (error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+            if (error) setTokenVerification(false);
+          }
+        }
+      );
     }
 
     setMOdalOpen(false);
@@ -313,7 +356,6 @@ function HeaderHome(props) {
   };
 
   let Logout = (e) => {
-    console.log("akjdf");
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("InfoAdded");
@@ -321,7 +363,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     setUserId("");
-    navigate({ pathname: '/' });
+    navigate("/" );
     window.location.reload(false);
   };
 
@@ -351,27 +393,6 @@ function HeaderHome(props) {
     }
   }
 
-  useEffect(() => {
-    if (adminSignInData !== null) {
-      if (
-        adminSignInData.isInfoAdded === true &&
-        adminSignInData.isVerified === false
-      ) {
-        let variant = "info";
-        enqueueSnackbar(
-          "Your request is under process. Waiting for approval by the Super Admin",
-          { variant }
-        );
-      }
-    }
-  }, [adminSignInData]);
-
-  adminSignInData &&
-    console.log(
-      "jwt after submission in HeaderHome: //// ",
-      adminSignInData.raindropToken
-    );
-
   let getProfile = () => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin !== "undefined") {
@@ -380,20 +401,11 @@ function HeaderHome(props) {
     }
   };
 
-  useEffect(() => {
-    getNotifications(0, 10);
-  }, [notificationLoading]);
-
-  useEffect(() => {
-    getProfile();
-  }, [loading]);
-
   return (
     <header className={`header ${menuOpenedClass}`}>
-      {adminSignInData !== null &&
-        adminSignInData.isInfoAdded === false && (
-          <Navigate to="/admin-signup-details" />
-        )}
+      {adminSignInData !== null && adminSignInData.isInfoAdded === false && (
+        <Navigate to="/admin-signup-details" />
+      )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
         style={{ width: "100%" }}
@@ -457,8 +469,8 @@ function HeaderHome(props) {
           >
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {(sessionStorage.getItem("Address") && props.role === "admin") ||
-                sessionStorage.getItem("Address") ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <div
                   className="header-profile-image"
                   onClick={handleClick}
@@ -500,7 +512,7 @@ function HeaderHome(props) {
             </li>
 
             {location.pathname.match("/dashboard") ||
-              location.pathname.match("/user/settings") ? (
+            location.pathname.match("/user/settings") ? (
               <>
                 <li className="sidebar-items">
                   <Link to={`/dashboard/myNFTs`}>
@@ -556,8 +568,8 @@ function HeaderHome(props) {
               </span>
             </li>
             {(sessionStorage.getItem("Address") && props.role === "admin") ||
-              sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            sessionStorage.getItem("Address") ||
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <li
                 className="login-link"
                 style={{ padding: "15px 20px" }}
@@ -592,7 +604,7 @@ function HeaderHome(props) {
               props.role === "admin" ? null : sessionStorage.getItem(
                 "Address"
               ) ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div
                 className="header-profile-image"
                 onClick={handleClick}
@@ -604,45 +616,44 @@ function HeaderHome(props) {
             ) : null}
           </li>
           <li className="header-item-rht">
-            {
-              sessionStorage.getItem("Address") && props.role === "admin" ? null : sessionStorage.getItem("Address") || (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-                <>
-                  <Link to="/dashboard" style={{ color: "#fff" }}>
-                    Dashboard
-                  </Link>
-                </>
-              ) : props.role === "admin" ? (
-                <>
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={() => {
-                      setWorkProgressModalShow(true);
-                    }}
-                  >
-                    Sign in with wallet
-                  </span>
-                </>
-              ) : (
-                <>
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                  </span>
-                  {userSignOut && <Navigate to="/" />}
-                </>
-
-              )
-            }
+            {sessionStorage.getItem("Address") &&
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <>
+                <Link to="/dashboard" style={{ color: "#fff" }}>
+                  Dashboard
+                </Link>
+              </>
+            ) : props.role === "admin" ? (
+              <>
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={() => {
+                    setWorkProgressModalShow(true);
+                  }}
+                >
+                  Sign in with wallet
+                </span>
+              </>
+            ) : (
+              <>
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                </span>
+                {userSignOut && <Navigate to="/" />}
+              </>
+            )}
           </li>
 
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
@@ -656,9 +667,12 @@ function HeaderHome(props) {
           </li>
           <li>
             {sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
-                <Badge color="secondary" badgeContent={1}>
+                <Badge
+                  color="secondary"
+                  badgeContent={notificationsList.length}
+                >
                   <NotificationsIcon
                     type="button"
                     onClick={(event) => {
@@ -669,6 +683,7 @@ function HeaderHome(props) {
                   />
                 </Badge>
                 <Popper
+                  key={notificationsList}
                   id={openPopper ? "simple-popper" : undefined}
                   open={openPopper}
                   anchorEl={anchorElPopper}
@@ -679,9 +694,9 @@ function HeaderHome(props) {
                   }}
                 >
                   <div>
-                    <Paper elevation={3} variant="outlined" square>
+                    <Paper elevation={10} variant="outlined" square>
                       <NotificationList
-                        itemCount={notificationCount}
+                        itemCount={notificationsList.length}
                         notifications={notificationsList}
                         close={readNotification}
                       />

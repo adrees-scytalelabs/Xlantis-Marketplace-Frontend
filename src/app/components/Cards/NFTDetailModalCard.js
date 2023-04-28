@@ -21,7 +21,6 @@ const NFTDetailModalCard = (props) => {
   useEffect(() => {
     console.log("Props are: ", props);
   }, []);
-
   return (
     <Card>
       <div
