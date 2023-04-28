@@ -1,19 +1,9 @@
-import { Backdrop, ThemeProvider, createTheme } from "@material-ui/core";
-import Fade from "@material-ui/core/Fade";
-import Modal from "@material-ui/core/Modal";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from "react";
+import { Backdrop, Fade, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material';
+import React from "react";
+import { Modal } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   modal: {
     display: "flex",
     alignItems: "center",
@@ -23,8 +13,8 @@ const useStyles = makeStyles((theme) => ({
 
     border: "1px solid #fff",
     borderRadius: 5,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 5),
+    // boxShadow: theme.shadows[5],
+    // padding: theme.spacing(2, 4, 5),
     backgroundColor: "#000",
     marginTop: "70px",
   },
@@ -99,7 +89,7 @@ const useStyles = makeStyles((theme) => ({
     height: 120,
     objectFit: "cover",
   },
-}));
+}
 
 const makeTheme = createTheme({
   overrides: {
@@ -170,7 +160,6 @@ let tableData = [
 ];
 
 const CartModal = (props) => {
-  const classes = useStyles();
 
   return (
     <div>
@@ -178,7 +167,7 @@ const CartModal = (props) => {
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          className={classes.modal}
+          sx={styles.modal}
           open={props.open}
           onClose={props.handleClose}
           closeAfterTransition
@@ -188,16 +177,16 @@ const CartModal = (props) => {
           }}
         >
           <Fade in={props.open}>
-            <div className={classes.paper}>
+            <div sx={styles.paper}>
               <div className="row no-gutters mb-3">
                 <div className="col-12 align-self-center">
-                  <Typography variant="h5" className={classes.cardHeading}>
+                  <Typography variant="h5" sx={styles.cardHeading}>
                     Your Cart
                   </Typography>
                 </div>
               </div>
               <TableContainer>
-                <Table className={classes.table} aria-label="simple table">
+                <Table sx={styles.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Delete</TableCell>
@@ -217,7 +206,7 @@ const CartModal = (props) => {
                         <TableCell align="right">
                           <img
                             src={data.NFTurl}
-                            className={classes.cartNftThumb}
+                            sx={styles.cartNftThumb}
                             alt="NFT cart thumbnail"
                           />
                         </TableCell>
@@ -249,7 +238,7 @@ const CartModal = (props) => {
                       </TableCell>
                       <TableCell align="right">
                         <Link to="/dashboard/checkout">
-                          <button className={classes.CheckoutBtn}>
+                          <button sx={styles.CheckoutBtn}>
                             Proceed To Checkout
                           </button>
                         </Link>

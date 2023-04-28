@@ -4,9 +4,8 @@ import {
   CardContent,
   CardHeader,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
-
 const PrivacyPolicyCard = (props) => {
   return (
     <Card>

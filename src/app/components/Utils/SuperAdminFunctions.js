@@ -161,6 +161,7 @@ export let getVerifiedSSOAdmins = (
   axios
     .get(`/super-admin/admins/verified/${start}/${end}?userType=v1`)
     .then((response) => {
+      console.log("/super-admin/admins/verifi", response);
       setAdmins(response.data.verifiedAdmins);
       setAdminCount(response.data.verifiedAdmins.length);
       setOpen(false);

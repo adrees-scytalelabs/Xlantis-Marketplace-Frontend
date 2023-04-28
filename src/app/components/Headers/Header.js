@@ -1,46 +1,46 @@
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { Badge, Paper, Popper } from "@mui/material";
+import transakSDK from "@transak/transak-sdk";
+import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { Link, Redirect, useHistory, useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import axios from 'axios'
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { io } from "socket.io-client";
+import WalletLink from "walletlink";
 import Web3 from "web3";
+import Web3Modal from "web3modal";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/logo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
+import { getUserProfile } from "../../redux/getUserProfileSlice";
+import {
+  adminLoginThroughWallet,
+  readNotifications,
+  userLoginThroughWallet,
+} from "../API/AxiosInterceptor";
+import NotificationList from "../Cards/NotificationList Card";
+import CartModal from "../Modals/CartModal";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
-
-import jwtDecode from "jwt-decode";
-
-import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
-import transakSDK from "@transak/transak-sdk";
-import WalletConnectProvider from "@walletconnect/web3-provider";
-import axios from "axios";
-import WalletLink from "walletlink";
-import Web3Modal from "web3modal";
-import CartModal from "../Modals/CartModal";
-
-import Badge from "@material-ui/core/Badge";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-import { io } from "socket.io-client";
-import NotificationList from "../Cards/NotificationList Card";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
-import { useDispatch, useSelector } from "react-redux";
-import { getUserProfile } from "../../redux/getUserProfileSlice";
-import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
-  let history = useHistory();
+  let navigate = useNavigate();
   const [modalOpen, setMOdalOpen] = useState(false);
   const [cartOpen, setCartOpen] = useState(false);
   const [adminSignInData, setAdminSignInData] = useState(null);
@@ -68,6 +68,7 @@ function HeaderHome(props) {
   }, []);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
+    console.log("auth",userLogin)
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
       setUserId(userIdentity);
@@ -86,8 +87,10 @@ function HeaderHome(props) {
   }, [socket, userId]);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
+    console.log("auth",userLogin)
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
+      console.log("user Identity",userIdentity);
       setUserId(userIdentity);
       getNotifications(0, 10);
     }
@@ -224,6 +227,7 @@ function HeaderHome(props) {
       }
     );
   }
+
   async function handleLogin() {
     await loadWeb3();
     const web3 = window.web3;
@@ -359,7 +363,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     setUserId("");
-    history.push({ pathname: "/" });
+    navigate("/" );
     window.location.reload(false);
   };
 
@@ -367,7 +371,7 @@ function HeaderHome(props) {
     if (anchorEl !== event.currentTarget) {
       setAnchorEl(event.currentTarget);
     }
-    history.push("/user/settings");
+    navigate("/user/settings");
   }
 
   function handleMenuClose() {
@@ -400,7 +404,7 @@ function HeaderHome(props) {
   return (
     <header className={`header ${menuOpenedClass}`}>
       {adminSignInData !== null && adminSignInData.isInfoAdded === false && (
-        <Redirect to="/admin-signup-details" />
+        <Navigate to="/admin-signup-details" />
       )}
       <nav
         className="navbar navbar-expand-lg header-nav px-3 mainNav"
@@ -641,7 +645,7 @@ function HeaderHome(props) {
                 >
                   Login/SignUp
                 </span>
-                {userSignOut && <Redirect to="/" />}
+                {userSignOut && <Navigate to="/" />}
               </>
             )}
           </li>

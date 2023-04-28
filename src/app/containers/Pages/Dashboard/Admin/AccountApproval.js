@@ -1,14 +1,11 @@
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
-import { ThemeProvider, createTheme } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useResolvedPath } from "react-router-dom";
 import AccountApprovalDefaultScreen from "./AccountApprovalDefaultScreen";
 import AccountApprovalSSO from "./AccountApprovalSSO";
 import AccountApprovalWallet from "./AccountApprovalWallet";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -18,7 +15,7 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
 const customTheme = createTheme({
   palette: {
@@ -96,9 +93,9 @@ function a11yProps(index) {
 }
 
 function AccountApproval(props) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
-  const handleChange = ( newValue) => {
+  const path = useResolvedPath("").pathname;
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
@@ -155,35 +152,35 @@ function AccountApproval(props) {
               >
                 <Tab
                   label="All"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="SSO"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(1)}
                 />
                 <Tab
                   label="Wallet"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(2)}
                 />
               </Tabs>
               <TabPanel value={value} index={0} className="">
                 <AccountApprovalDefaultScreen
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel className="" value={value} index={1}>
                 <AccountApprovalSSO
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel value={value} index={2} className="">
                 <AccountApprovalWallet
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>

@@ -1,73 +1,38 @@
-import {
-  makeStyles,
-  Paper,
-} from "@material-ui/core";
-
+import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
+import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
+import AcceptBidAccordian from "../../../../components/Accordian/AcceptBidAccordian";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import {
+  acceptAuctionBid,
+  getAuctionAcceptBidTxSummary,
+  getNFTBidListPaginated,
+  marketplaceBuyVersioned,
+} from "../../../../components/API/AxiosInterceptor";
 import abiAuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
 import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
 import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
-import Cookies from "js-cookie";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
-import AcceptBidAccordian from "../../../../components/Accordian/AcceptBidAccordian";
-
-const useStyles = makeStyles((theme) => ({
+import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media1: {
-    height: 300,
+    // backgroundColor: theme.palette.background.paper,
   },
   media: {
     height: 0,
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-}));
+}
 
 const customTheme = createTheme({
   overrides: {
@@ -99,7 +64,6 @@ const customTheme = createTheme({
 
 const DropSingleNFT = (props) => {
   let location = useLocation();
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
@@ -139,20 +103,19 @@ const DropSingleNFT = (props) => {
   const handleOpenModal = async (e, bidId) => {
     setBidId(bidId);
     console.log("NFTDETAIL", nftDetail);
-    axios.get(`/auction/bid/accept/tx-cost-summary`).then(
-      (response) => {
+    getAuctionAcceptBidTxSummary()
+      .then((response) => {
         console.log("response", response);
         console.log("responeee", response.data.data);
         setData(response.data.data);
         setMOdalOpen(true);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   function openTransak() {
@@ -248,20 +211,19 @@ const DropSingleNFT = (props) => {
           };
 
           console.log("data", data);
-          axios.post(`/${versionB}/marketplace/buy`, data).then(
-            (response) => {
+          marketplaceBuyVersioned(versionB, data)
+            .then((response) => {
               console.log(
                 "Transaction Hash sending on backend response: ",
                 response
               );
-            },
-            (error) => {
+            })
+            .catch((error) => {
               console.log(
                 "Transaction hash on backend error: ",
                 error.response
               );
-            }
-          );
+            });
 
           if (err !== null) {
             console.log("err", err);
@@ -279,18 +241,17 @@ const DropSingleNFT = (props) => {
 
   let getBidList = (nftId) => {
     let version = Cookies.get("Version");
-    axios.get(`/auction/bids/${nftId}/${0}/${1000}`).then(
-      (response) => {
+    getNFTBidListPaginated(nftId, 0, 1000)
+      .then((response) => {
         console.log("Response from getting bid: ", response);
         console.log("Bid array: ", response.data.data);
         setBidDetail(response.data.data);
-      },
-      (err) => {
-        console.log("Error from getting bids: ", err);
-        console.log("Error response from getting bids: ", err);
+      })
+      .catch((error) => {
+        console.log("Error from getting bids: ", error);
+        console.log("Error response from getting bids: ", error);
         setBidDetail([]);
-      }
-    );
+      });
   };
 
   useEffect(() => {
@@ -397,14 +358,13 @@ const DropSingleNFT = (props) => {
         txHash: trxHash,
       };
 
-      axios.post(`/auction/bid/accept`, data).then(
-        (response) => {
+      acceptAuctionBid(data)
+        .then((response) => {
           console.log("response", response);
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error: ", error);
-        }
-      );
+        });
     }
   };
 
@@ -416,14 +376,14 @@ const DropSingleNFT = (props) => {
       bidId: bidId,
     };
     handleCloseModal();
-    axios.post(`/auction/bid/accept`, data).then(
-      (response) => {
+    acceptAuctionBid(data)
+      .then((response) => {
         console.log("nft bid response", response.data);
         let variant = "success";
         enqueueSnackbar("Bid Accepted Successfully", { variant });
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -437,13 +397,11 @@ const DropSingleNFT = (props) => {
           ) {
             sessionStorage.removeItem("Authorization");
             Cookies.remove("Version");
-
             sessionStorage.removeItem("Address");
             window.location.reload();
           }
         }
-      }
-    );
+      });
   };
 
   return (
@@ -464,14 +422,12 @@ const DropSingleNFT = (props) => {
                 </li>
               </Link>
               <Link
-                to={{
-                  pathname: `/dashboard/myDrops/nfts`,
-                  state: {
-                    nftId: location.state.nftId,
-                    dropId: location.state.dropId,
-                    saleType: location.state.saleType,
-                    status: location.state.status,
-                  },
+                to={`/dashboard/myDrops/nfts`}
+                state={{
+                  nftId: location.state?.nftId,
+                  dropId: location.state?.dropId,
+                  saleType: location.state?.saleType,
+                  status: location.state?.status,
                 }}
               >
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
@@ -488,38 +444,35 @@ const DropSingleNFT = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
+                <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian 
-                    key={keys}
-                    properties={properties}
-                  />
-                  
-                </Col>
-              </Row>
-              {location.state.saleType === "auction" ? (
-                <Row style={{ marginTop: "5px" }}>
-                  <Col>
-                    <AcceptBidAccordian 
-                      versionB={versionB}
-                      bidDetail={bidDetail}
-                      isSold={location.state.nftDetail.currentMarketplaceId.isSold}
-                      handleAcceptBid={handleAcceptBid}
-                      handleOpenModal={handleOpenModal}
-
-                    />
-                  </Col>
-                </Row>
-              ) : null}
-            </div>
-          </div>
-        </div>
-      </ThemeProvider>
+                  <PropertiesAccordian key={keys} properties={properties} />
+                </Col >
+              </Row >
+              {
+                location.state.saleType === "auction" ? (
+                  <Row style={{ marginTop: "5px" }}>
+                    <Col>
+                      <AcceptBidAccordian
+                        versionB={versionB}
+                        bidDetail={bidDetail}
+                        isSold={location.state?.nftDetail.currentMarketplaceId.isSold}
+                        handleAcceptBid={handleAcceptBid}
+                        handleOpenModal={handleOpenModal}
+                      />
+                    </Col>
+                  </Row>
+                ) : null
+              }
+            </div >
+          </div >
+        </div >
+      </ThemeProvider >
       <AcceptBidTxModal
         handleClose={handleCloseModalTx}
         open={modalOpen}
@@ -528,7 +481,7 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-    </div>
+    </div >
   );
 };
 

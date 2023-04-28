@@ -1,8 +1,7 @@
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -22,12 +21,8 @@ import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import TemplateProperties from "./Admin/TemplateProperties";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
 
-axios.defaults.headers.common[
-  "Authorization"
-] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-
 function SuperAdminDashboard(props) {
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [slideNavClass, setSlideNavClass] = useState();
 
@@ -161,7 +156,7 @@ function SuperAdminDashboard(props) {
       </div>
 
       <SuperAdminSidebar
-        match={props.match}
+        match={path}
         activeTab={activeTab}
         tab={tab}
         setTab={setTab}
@@ -169,84 +164,73 @@ function SuperAdminDashboard(props) {
       />
       <div className="page-wrapper">
         <div className="content container-fluid">
-          <Switch>
-            <Route exact path={`${path}`}>
+          <Routes>
+            <Route exact path={`/`} element={
               <SuperAdminDashboardDefaultScreen
-                match={props.match}
+                match={path}
                 tab={tab}
                 setTab={setTab}
                 setActiveTab={setActiveTab}
-              />
-            </Route>
-            <Route exact path={`${path}/verifiedAccounts`}>
+              />} />
+            <Route exact path={`verifiedAccounts`} element={
               <VerifiedAccounts
-                match={props.match}
+                match={path}
                 tab={tab}
                 setTab={setTab}
                 setActiveTab={setActiveTab}
-              />
-            </Route>
-            <Route exact path={`${path}/accountApproval`}>
+              />} />
+            <Route exact path={`accountApproval`} element={
               <AccountApproval
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/manageAccounts`}>
+              />} />
+            <Route exact path={`manageAccounts`} element={
               <ManageAccounts
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/manageAccounts/SSO`}>
+              />} />
+            <Route exact path={`manageAccounts/SSO`} element={
               <ManageAccountsSSO
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/manageAccounts/Wallet`}>
+              />} />
+            <Route exact path={`manageAccounts/Wallet`} element={
               <ManageAccountsWallet
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/accounts`}>
-              <Accounts setActiveTab={setActiveTab} tab={tab} setTab={setTab} />
-            </Route>
-            <Route exact path={`${path}/properties`}>
+              />} />
+            <Route exact path={`accounts`} element={
+              <Accounts setActiveTab={setActiveTab} tab={tab} setTab={setTab} />} />
+            <Route exact path={`properties`} element={
               <TemplateProperties
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/properties/createTemplate`}>
+              />} />
+            <Route exact path={`properties/createTemplate`} element={
               <CreateTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route exact path={`${path}/properties/savedTemplate`}>
+              />} />
+            <Route exact path={`properties/savedTemplate`} element={
               <SavedTemplate
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-            <Route path={`${path}`}>
+              />} />
+            <Route path={`/`} element={
               <SuperAdminDashboardDefaultScreen
-                match={props.match}
+                match={path}
                 setActiveTab={setActiveTab}
                 tab={tab}
                 setTab={setTab}
-              />
-            </Route>
-          </Switch>
+              />} />
+          </Routes>
         </div>
       </div>
     </div>

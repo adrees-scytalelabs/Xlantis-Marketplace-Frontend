@@ -70,3 +70,9 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 ### `npm run build` fails to minify
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+<!-- 
+"react-corner-ribbon": "0.0.5",
+    "react-intl-tel-input": "^8.0.4",
+
+
+ -->

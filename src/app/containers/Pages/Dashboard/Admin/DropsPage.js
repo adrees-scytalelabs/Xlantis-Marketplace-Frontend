@@ -1,33 +1,16 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-
-const useStyles = makeStyles((theme) => ({
+import { getMyDrop } from "../../../../redux/getMyDropsSlice";
+const styles = {
   root: {},
   media: {
     height: 0,
     paddingTop: "100%",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -35,9 +18,9 @@ const useStyles = makeStyles((theme) => ({
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
-const cardStyles = makeStyles((theme) => ({
+const cardStyles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -47,11 +30,6 @@ const cardStyles = makeStyles((theme) => ({
     fontWeight: "bold",
     textTransform: "capitalize",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "1rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -67,17 +45,17 @@ const cardStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
 function DropsPage(props) {
-  const classes = useStyles();
-  const cardClasses = cardStyles();
   const [tokenList, setTokenList] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
+  const { myDropsData, loading } = useSelector((store) => store.getMyDrops);
+  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -87,36 +65,20 @@ function DropsPage(props) {
   };
   let getMyDrops = (status, start, end) => {
     handleShowBackdrop();
-    axios.get(`/drop/myDrops/${status}/${start}/${end}`).then(
-      (response) => {
-        setTokenList(response.data.data);
-        setTotalDrops(response.data.data.length);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+    dispatch(getMyDrop({ status, start, end }));
+    if (loading === 1) {
+      setTokenList(myDropsData);
+      setTotalDrops(myDropsData.length);
+      handleCloseBackdrop();
+    }
+    if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
-  }, []);
+  }, [loading]);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -162,39 +124,35 @@ function DropsPage(props) {
                 >
                   {props.status === "draft" ? (
                     <Link
-                      to={{
-                        pathname: `/dashboard/newDrop/addNft`,
-                        state: {
-                          dropId: i._id,
-                          saleType: i.saleType,
-                          startTime: i.startTime,
-                          endTime: i.endTime,
-                          nftType: i.dropType,
-                        },
+                      to={`/dashboard/newDrop/addNft`}
+                      state={{
+                        dropId: i._id,
+                        saleType: i.saleType,
+                        startTime: i.startTime,
+                        endTime: i.endTime,
+                        nftType: i.dropType,
                       }}
                     >
                       <DropsPageCard
                         dropDetails={i}
-                        classes={classes}
-                        cardClasses={cardClasses}
+                        classes={styles}
+                        cardClasses={cardStyles}
                       />
                     </Link>
                   ) : (
                     <Link
-                      to={{
-                        pathname: `/dashboard/myDrops/nfts`,
-                        state: {
-                          nftId: i.NFTIds,
-                          dropId: i._id,
-                          saleType: i.saleType,
-                          status: i.status,
-                        },
+                      to={`/dashboard/myDrops/nfts`}
+                      state={{
+                        nftId: i.NFTIds,
+                        dropId: i._id,
+                        saleType: i.saleType,
+                        status: i.status,
                       }}
                     >
                       <DropsPageCard
                         dropDetails={i}
-                        classes={classes}
-                        cardClasses={cardClasses}
+                        classes={styles}
+                        cardClasses={cardStyles}
                       />
                     </Link>
                   )}

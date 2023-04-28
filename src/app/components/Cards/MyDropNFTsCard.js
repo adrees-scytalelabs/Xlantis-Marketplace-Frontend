@@ -1,8 +1,8 @@
-import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
-import { Pause, PlayArrow } from "@material-ui/icons";
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import CornerRibbon from "react-corner-ribbon";
-
 const MyDropNFTsCard = (props) => {
   return (
     <Card
@@ -35,16 +35,16 @@ const MyDropNFTsCard = (props) => {
               props.nftDetails.type === "Mastercraft"
                 ? "4px solid #ff0000"
                 : props.nftDetails.type === "Legendary"
-                ? "4px solid #FFD700"
-                : props.nftDetails.type === "Epic"
-                ? "4px solid #9400D3"
-                : props.nftDetails.type === "Rare"
-                ? "4px solid #0000FF"
-                : props.nftDetails.type === "Uncommon"
-                ? "4px solid #008000"
-                : props.nftDetails.type === "Common"
-                ? "4px solid #FFFFFF"
-                : "none",
+                  ? "4px solid #FFD700"
+                  : props.nftDetails.type === "Epic"
+                    ? "4px solid #9400D3"
+                    : props.nftDetails.type === "Rare"
+                      ? "4px solid #0000FF"
+                      : props.nftDetails.type === "Uncommon"
+                        ? "4px solid #008000"
+                        : props.nftDetails.type === "Common"
+                          ? "4px solid #FFFFFF"
+                          : "none",
           }}
           className={props.classes.media}
           image={
@@ -73,7 +73,7 @@ const MyDropNFTsCard = (props) => {
                 }}
                 onClick={(e) => props.handlePlay(e, props.nftDetails)}
               >
-                <PlayArrow />
+                <PlayArrowIcon />
               </button>
             ) : (
               <button
@@ -85,7 +85,7 @@ const MyDropNFTsCard = (props) => {
                 }}
                 onClick={(e) => props.handlePause(e, props.nftDetails)}
               >
-                <Pause />
+                <PauseIcon />
               </button>
             )}
           </div>

@@ -1,4 +1,4 @@
-import { Button } from "@material-ui/core";
+import { Button } from "@mui/material";
 import React, { useEffect } from "react";
 import { Modal } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";

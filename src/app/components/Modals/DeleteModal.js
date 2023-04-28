@@ -1,7 +1,7 @@
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
+
 import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 function DeleteModal(props) {
   return (
     <Modal

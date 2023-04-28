@@ -1,4 +1,4 @@
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import Cropper from "react-easy-crop";

@@ -1,11 +1,12 @@
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
+import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
 
 function SavedTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -16,6 +17,8 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
+  const { templatesData, loading } = useSelector((store) => store.getSavedTemplateData);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -53,22 +56,16 @@ function SavedTemplate(props) {
   let handleSavedTemplate = async () => {
     handleShowBackdrop();
     try {
-      axios.get("/super-admin/template").then(
-        (response) => {
-          setTemplateData(response.data.templates);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
-
-          let variant = "error";
-          enqueueSnackbar("Unable to Create Template", { variant });
-        }
-      );
+      dispatch(getSavedTemplatesData());
+      if (loading === 1) {
+        setTemplateData(templatesData);
+        handleCloseBackdrop();
+      }
+      else if (loading === 2) {
+        handleCloseBackdrop();
+        let variant = "error";
+        enqueueSnackbar("Unable to Create Template", { variant });
+      }
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
@@ -80,9 +77,11 @@ function SavedTemplate(props) {
     setModalState(true);
   };
   useEffect(() => {
+    handleSavedTemplate();
+  }, [loading])
+  useEffect(() => {
     setDeleteState("");
 
-    handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",

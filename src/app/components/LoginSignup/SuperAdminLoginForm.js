@@ -1,23 +1,18 @@
-import axios from "axios";
 import Cookies from "js-cookie";
-import { useSnackbar } from 'notistack';
+import { useSnackbar } from "notistack";
 import React, { useState } from "react";
-import "react-intl-tel-input/dist/main.css";
-import { useHistory } from "react-router-dom";
+import { superAdminLoginThroughSSO } from "../API/AxiosInterceptor";
 
 
 const SuperAdminLoginForms = () => {
 
-  let history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleSignIn = (e) => {
-
     e.preventDefault();
     setIsLoading(true);
 
@@ -25,34 +20,30 @@ const SuperAdminLoginForms = () => {
       email: email.toLowerCase(),
       password: password,
     };
-    axios.post("/v1-sso/user/auth/super-admin-login", loginData).then(
-      (response) => {
+
+    superAdminLoginThroughSSO(loginData)
+      .then((response) => {
         console.log("response", response);
         Cookies.set("Version", "v1-sso", {});
         sessionStorage.setItem("Authorization", response.data.token, {});
         setIsLoading(false);
         let variant = "success";
-        enqueueSnackbar('Logged In Successfully', { variant });
+        enqueueSnackbar("Logged In Successfully", { variant });
         window.location.reload();
-
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         let variant = "error";
-        enqueueSnackbar('Unable To Login', { variant });
+        enqueueSnackbar("Unable To Login", { variant });
         setIsLoading(false);
-      }
-    );
-
+      });
   };
-
 
   return (
     <div className="userLoginWrapper">
-
       <div
         className={
           isActive
@@ -95,15 +86,11 @@ const SuperAdminLoginForms = () => {
               </div>
             </div>
           </div>
-          <button type="submit" >Sign In</button>
+          <button type="submit">Sign In</button>
 
-
-          <div className="signUp-link">
-          </div>
+          <div className="signUp-link"></div>
         </form>
       </div>
-
-
     </div>
   );
 };

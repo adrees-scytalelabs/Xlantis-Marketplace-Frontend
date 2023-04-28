@@ -4,12 +4,11 @@ import {
   CardContent,
   CardHeader,
   Typography,
-} from "@material-ui/core";
+} from "@mui/material";
 import React from "react";
-
 const TermsAndConditionsCard = (props) => {
   return (
-    <Card className={props.classes.root}>
+    <Card>
       <CardHeader
         title="Terms & Conditions "
         subheader="Last Updated: September 14, 2016"

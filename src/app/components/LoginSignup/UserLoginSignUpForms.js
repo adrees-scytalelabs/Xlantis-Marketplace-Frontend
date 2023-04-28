@@ -1,18 +1,16 @@
-import { Typography } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import CloseIcon from "@material-ui/icons/Close";
-import InfoIcon from "@material-ui/icons/Info";
+import CloseIcon from "@mui/icons-material/Close";
+import InfoIcon from "@mui/icons-material/Info";
+import { Typography } from "@mui/material";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import axios from "axios";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { userLoginThroughSSO } from "../API/AxiosInterceptor";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   signInOptionLabel: {
     margin: "16px auto",
     color: "#ccc",
@@ -27,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "inter",
     transition: "all 3s ease-in-out",
   },
-}));
+};
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -36,11 +34,10 @@ const AdminLoginSignupForms = () => {
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const classes = useStyles();
 
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
@@ -50,14 +47,13 @@ const AdminLoginSignupForms = () => {
   };
 
   const handleGoBack = () => {
-    history.push(`/`);
+    navigate(`/`);
   };
 
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      axios
-        .post("/v1-sso/user/auth/user-login", { idToken: account })
+      userLoginThroughSSO({ idToken: account })
         .then((response) => {
           console.log("checker response", response);
           console.log("JWT submitted: ", response.data);
@@ -87,15 +83,8 @@ const AdminLoginSignupForms = () => {
 
     if (adminSignInData !== null) {
       let decode = jwtDecode(adminSignInData.raindropToken);
-      history.push({
-        pathname: `/`,
-    
-      });
-      sessionStorage.setItem(
-        "userId",
-        decode.userId,
-      );
-      history.go(0);
+      sessionStorage.setItem("userId", decode.userId);
+      navigate(`/`);
     }
 
     return () => {
@@ -164,10 +153,7 @@ const AdminLoginSignupForms = () => {
                       Sign In
                     </button>
                     <div className="text-center">
-                      <Typography
-                        variant="body2"
-                        className={classes.signInOptionLabel}
-                      >
+                      <Typography variant="body2" sx={styles.signInOptionLabel}>
                         OR
                       </Typography>
                     </div>
@@ -198,7 +184,7 @@ const AdminLoginSignupForms = () => {
                       <div className="text-center">
                         <Typography
                           variant="body2"
-                          className={classes.errorVerification}
+                          sx={styles.errorVerification}
                         >
                           <InfoIcon /> ID Token Verification Failed!
                         </Typography>

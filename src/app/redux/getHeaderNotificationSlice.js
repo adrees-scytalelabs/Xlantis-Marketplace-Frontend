@@ -12,6 +12,7 @@ export const getHeaderNotification = createAsyncThunk(
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
+    console.log("auth checker",sessionStorage.getItem("Authorization"))
     try {
       const resp = await axios(`/notifications/${name.start}/${name.end}`);
       console.log("reduxResp notificiation", resp);

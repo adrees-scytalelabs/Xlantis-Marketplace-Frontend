@@ -1,15 +1,17 @@
-import { TablePagination } from "@material-ui/core/";
+
+import { TablePagination } from '@mui/material';
+import axios from 'axios';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import Notification from "../../../../components/Utils/Notification";
 import {
-  getDisableWalletAdmins,
-  handleEnableWallet,
-  handleModalOpen,
   handleModalClose,
+  handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
+import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import { getSuperAdminDisabledType2 } from "../../../../redux/getManageAccountsDataSlice";
 
 function WalletDisabled() {
   const [walletAdminCount, setWalletAdminCount] = useState(0);
@@ -22,9 +24,76 @@ function WalletDisabled() {
   const [variant, setVariant] = useState("");
   const [notificationData, setNotificationData] = useState("");
   const [open, setOpen] = useState(false);
+
+  const {
+    disabledType2Data,
+    disabledType2Loading,
+  } = useSelector((store) => store.getManageAccountsData);
+  const dispatch = useDispatch();
+
+  const handleCloseBackdrop = (setOpen) => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = (setOpen) => {
+    setOpen(true);
+  };
+
+  const getDisableWalletAdmins = (
+    setOpen,
+    setWalletAdmins,
+    setWalletAdminCount
+  ) => {
+    setOpen(true);
+    dispatch(getSuperAdminDisabledType2());
+    console.log("dispatchWaller", disabledType2Data);
+    if (disabledType2Loading === 1) {
+      setWalletAdmins(disabledType2Data);
+      setWalletAdminCount(disabledType2Data.length);
+      setOpen(false);
+    }
+    else if (disabledType2Loading === 2) {
+      setOpen(false);
+    }
+  };
+
+  const handleEnableWallet = (
+    e,
+    verifyAdminId,
+    setOpen,
+    setWalletAdmins,
+    setWalletAdminCount,
+    setVariant,
+    setLoad,
+    setNotificationData
+  ) => {
+    e.preventDefault();
+    handleShowBackdrop(setOpen);
+    let data = {
+      adminId: verifyAdminId,
+    };
+    axios.patch(`/super-admin/enable?userType=v2`, data).then(
+      (response) => {
+        handleCloseBackdrop(setOpen);
+        getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+        setVariant("success");
+        setNotificationData("Admin Enabled Successfully.");
+        setLoad(true);
+      },
+      (error) => {
+        console.log("Error: ", error);
+        console.log("Error response: ", error.response);
+        handleCloseBackdrop(setOpen);
+        setVariant("error");
+        setNotificationData("Unable to Enabled Admin.");
+        setLoad(true);
+      }
+    );
+  };
+
   useEffect(() => {
     getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
-  }, []);
+  }, [disabledType2Loading]);
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -63,7 +132,7 @@ function WalletDisabled() {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-       <Notification
+      <Notification
         variant={variant}
         notificationData={notificationData}
         setLoad={setLoad}

@@ -1,30 +1,26 @@
 import {
-	CardContent,
-	CardMedia,
-	Paper,
-	Typography,
-	makeStyles,
-} from "@material-ui/core";
+  CardContent,
+  CardMedia,
+  Paper,
+  Typography
+} from "@mui/material";
 import React, { useEffect } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import ReactAudioPlayer from "react-audio-player";
 import { Card, Col, Row, Table } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
-
-const useStyles = makeStyles(() => ({
+const styles = {
   media: {
     height: 0,
     paddingTop: "60%",
   },
-}));
+}
 
 const NFTDetailModalCard = (props) => {
-  const classes = useStyles();
 
   useEffect(() => {
     console.log("Props are: ", props);
   }, []);
-
   return (
     <Card>
       <div
@@ -91,18 +87,18 @@ const NFTDetailModalCard = (props) => {
                   props.nftDetail.rarity === "Mastercraft"
                     ? "4px solid #ff0000"
                     : props.nftDetail.rarity === "Legendary"
-                    ? "4px solid #FFD700"
-                    : props.nftDetail.rarity === "Epic"
-                    ? "4px solid #9400D3"
-                    : props.nftDetail.rarity === "Rare"
-                    ? "4px solid #0000FF"
-                    : props.nftDetail.rarity === "Uncommon"
-                    ? "4px solid #008000"
-                    : props.nftDetail.rarity === "Common"
-                    ? "4px solid #FFFFFF"
-                    : "none",
+                      ? "4px solid #FFD700"
+                      : props.nftDetail.rarity === "Epic"
+                        ? "4px solid #9400D3"
+                        : props.nftDetail.rarity === "Rare"
+                          ? "4px solid #0000FF"
+                          : props.nftDetail.rarity === "Uncommon"
+                            ? "4px solid #008000"
+                            : props.nftDetail.rarity === "Common"
+                              ? "4px solid #FFFFFF"
+                              : "none",
               }}
-              className={classes.media}
+              sx={styles.media}
               image={
                 props.nftDetail.previewImageURI === ""
                   ? props.nftDetail.nftURI

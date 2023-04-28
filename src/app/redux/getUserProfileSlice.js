@@ -10,6 +10,9 @@ const initialState = {
 export const getUserProfile = createAsyncThunk(
   'user/getUserprofile',
   async ( thunkAPI) => {
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
       let version = Cookies.get("Version");
     try {
       const resp = await axios(`${version}/user/profile`);

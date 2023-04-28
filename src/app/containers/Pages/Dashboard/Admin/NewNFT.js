@@ -1,12 +1,23 @@
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link,useHistory } from "react-router-dom";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import {
+  addNFTToBatch,
+  createNewBatch,
+  deleteBatch,
+  deleteNFTFromBatch,
+  lazyMintNFTs,
+  mintBatchNFTs,
+  sendVoucherForLazyMint,
+  updateCollectionIdInBatch,
+  updateNFT,
+  uploadImage,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import RemoveNft from "../../../../components/Cards/RemoveNft";
 import ipfs from "../../../../components/IPFS/ipfs";
@@ -23,25 +34,14 @@ import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
-import { useDispatch, useSelector } from 'react-redux';
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
 import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
+    // backgroundColor: theme.palette.background.paper,
   },
 
   card: {
@@ -49,11 +49,6 @@ const useStyles = makeStyles((theme) => ({
   },
   media: {
     paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
   },
   title: {
     fontSize: 14,
@@ -67,12 +62,12 @@ const useStyles = makeStyles((theme) => ({
   tooltip: {
     fontSize: "16px",
   },
-}));
+}
 
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const history = useHistory();
-  const classes = useStyles();
+
+  const navigate = useNavigate();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
 
@@ -168,20 +163,25 @@ function NewNFT(props) {
 
   const [previewImage, setPreviewImage] = useState(r1);
   const [versionB, setVersionB] = useState("");
-  const {collectionData,loading} = useSelector((store) => store.NewNftCollection);
-  const {defaultTemplate,loadingDefault} = useSelector((store) => store.defaultTemplate);
-  const {templates,propertiesLoading} = useSelector((store) => store.newNftProperties);
+  const { collectionData, loading } = useSelector(
+    (store) => store.NewNftCollection
+  );
+  const { defaultTemplate, loadingDefault } = useSelector(
+    (store) => store.defaultTemplate
+  );
+  const { templates, propertiesLoading } = useSelector(
+    (store) => store.newNftProperties
+  );
   const dispatch = useDispatch();
 
-
   let getCollections = (collectionType) => {
-      setCollection("");
-      dispatch(getNewNftCollection(collectionType));
-      // console.log("collectionResp",collectionData);
-      if (collectionType === "1155") {
-        setChangeCollectionList(collectionData);
-      }
-      setCollectionTypes(collectionData);
+    setCollection("");
+    dispatch(getNewNftCollection(collectionType));
+    // console.log("collectionResp",collectionData);
+    if (collectionType === "1155") {
+      setChangeCollectionList(collectionData);
+    }
+    setCollectionTypes(collectionData);
   };
   useEffect(() => {
     getCollections(NFTType);
@@ -206,11 +206,10 @@ function NewNFT(props) {
   };
 
   const getDefaultTemplate = () => {
-
     dispatch(getNewNftDefaultTemplate());
     // console.log("redxdefaltRResp",defaultTemplate);
     setDefaultTemplates(defaultTemplate);
-    if(loadingDefault===1){
+    if (loadingDefault === 1) {
       if (defaultTemplate !== null) {
         handleSetProperties(defaultTemplate.properties);
       }
@@ -224,12 +223,12 @@ function NewNFT(props) {
     if (role === "admin") {
     }
     dispatch(getNewNftProperties(role));
-      //  console.log("reduxdefaultResp",templates);
-        if (role === "admin") {
-          setTemplateData(templates);
-        } else {
-          setStandardTemplates(templates);
-        }
+    //  console.log("reduxdefaultResp",templates);
+    if (role === "admin") {
+      setTemplateData(templates);
+    } else {
+      setStandardTemplates(templates);
+    }
   };
 
   useEffect(() => {
@@ -307,9 +306,7 @@ function NewNFT(props) {
       setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
-      history.push({
-        pathname: `/dashboard/collection/nfts/${collectionId}`
-      });
+      navigate(`/dashboard/collection/nfts/${collectionId}`);
     }
   };
 
@@ -361,8 +358,8 @@ function NewNFT(props) {
               blockchainIds: ids,
             };
 
-            axios.put(`/batch-mint/minted/${batchId}`, data).then(
-              (response) => {
+            mintBatchNFTs(batchId, data)
+              .then((response) => {
                 let variant = "success";
                 enqueueSnackbar("Nfts Created Successfully.", { variant });
                 Cookies.remove("Batch-ID");
@@ -380,8 +377,8 @@ function NewNFT(props) {
                 setCollectionId("");
                 handleCloseBackdrop();
                 setIsSaving(false);
-              },
-              (error) => {
+              })
+              .catch((error) => {
                 if (process.env.NODE_ENV === "development") {
                   console.log(error);
                   console.log(error.response);
@@ -392,38 +389,35 @@ function NewNFT(props) {
 
                 handleCloseBackdrop();
                 setIsSaving(false);
-              }
-            );
+              });
           });
       }
     }
   };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
-      axios.delete(`/batch-mint/${batchId}`).then(
-        (response) => {
+      deleteBatch(batchId)
+        .then((response) => {
           Cookies.remove("NFT-Detail");
           Cookies.remove("Batch-ID");
           setTokenList([]);
           setBatchId("");
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error on deleting response: ", error);
-        }
-      );
+        });
     } else {
-      axios.delete(`/batch-mint/nft/${tokenList[index].nftId}`).then(
-        (response) => {
+      deleteNFTFromBatch(tokenList[index].nftId)
+        .then((response) => {
           const list = [...tokenList];
           list.splice(index, 1);
           Cookies.remove("NFT-Detail");
           Cookies.set("NFT-Detail", list, {});
           setTokenList(list);
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error for delete nft from batch: ", error);
-        }
-      );
+        });
     }
   };
 
@@ -503,8 +497,8 @@ function NewNFT(props) {
           }
 
           if (batchId === "") {
-            axios.post(`/batch-mint/`, data).then(
-              (response) => {
+            createNewBatch(data)
+              .then((response) => {
                 setBatchId(response.data.batchId);
                 setNftId(response.data.nftId);
                 setTokenList([
@@ -548,15 +542,14 @@ function NewNFT(props) {
                 Cookies.set("Batch-ID", response.data.batchId, {});
 
                 Cookies.set("NFT-Detail", cookieData, {});
-              },
-              (error) => {
+              })
+              .catch((error) => {
                 console.log("Error on batch mint: ", error);
-              }
-            );
+              });
           } else {
             data["batchId"] = batchId;
-            axios.post(`/batch-mint/nft`, data).then(
-              (response) => {
+            addNFTToBatch(data)
+              .then((response) => {
                 setNftId(response.data.nftId);
                 setTokenList([
                   ...tokenList,
@@ -597,11 +590,10 @@ function NewNFT(props) {
                 Cookies.remove("NFT-Detail");
 
                 Cookies.set("NFT-Detail", cookieData, {});
-              },
-              (error) => {
+              })
+              .catch((error) => {
                 console.log("Batch minting into existing batch error: ", error);
-              }
-            );
+              });
           }
 
           setProperties([{ key: "", value: "" }]);
@@ -680,14 +672,14 @@ function NewNFT(props) {
     };
     let fileData = new FormData();
     fileData.append("image", imageNFT);
-    axios.post(`/upload/image`, fileData).then(
-      (response) => {
+    uploadImage(fileData)
+      .then((response) => {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
         enqueueSnackbar("Image Uploaded Successfully", { variant });
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -695,8 +687,7 @@ function NewNFT(props) {
         setIsUploadingIPFS(false);
         let variant = "error";
         enqueueSnackbar("Unable to Upload Image", { variant });
-      }
-    );
+      });
   };
 
   let handleOpenNFTDetailModal = (nftObject) => {
@@ -764,14 +755,13 @@ function NewNFT(props) {
 
         Cookies.set("NFT-Detail", data, {});
 
-        axios.put(`/nft/${data[editObjectIndex].nftId}`, updatedObject).then(
-          (response) => {
+        updateNFT(data[editObjectIndex].nftId, updatedObject)
+          .then((response) => {
             //  console.log("Response of updated nft: ", response);
-          },
-          (error) => {
+          })
+          .catch((error) => {
             console.log("Error of updated nft: ", error);
-          }
-        );
+          });
 
         setTokenList(data);
         setIsUploadingData(false);
@@ -806,13 +796,13 @@ function NewNFT(props) {
       batchId: batchId,
       collectionId: collectionObj._id,
     };
-    axios.put(`/batch-mint/collection`, updatedCollectionID).then(
-      (response) => {
-      },
-      (error) => {
+    updateCollectionIdInBatch(updatedCollectionID)
+      .then((response) => {
+        // console.log("Response after updating collection id: ", response);
+      })
+      .catch((error) => {
         console.log("Error on updating collection id: ", error);
-      }
-    );
+      });
     handleChangeCollectionClose();
   };
 
@@ -909,20 +899,19 @@ function NewNFT(props) {
         }
 
         console.log("NFT Data: ", nftData);
-        await axios.post(`/lazy-mint/NFT`, nftData).then(
-          async (response) => {
+        await lazyMintNFTs(nftData)
+          .then(async (response) => {
             console.log("Response from backend on free mint: ", response);
             lazyMintId = response.data.nftObjectId;
             nftIdHex = response.data.nftId;
-          },
-          (err) => {
-            console.log("Err from backend on free mint: ", err);
+          })
+          .catch((error) => {
+            console.log("Err from backend on free mint: ", error);
             console.log(
               "Err response from backend on free mint: ",
-              err.response
+              error.response
             );
-          }
-        );
+          });
 
         let signature = await signTypedData(nftIdHex, nftURI);
         let voucherData = {
@@ -930,18 +919,17 @@ function NewNFT(props) {
           signature: signature,
         };
 
-        await axios.patch(`/lazy-mint/voucher`, voucherData).then(
-          (response) => {
+        await sendVoucherForLazyMint(voucherData)
+          .then((response) => {
             console.log("Response from sending voucher sign: ", response);
-          },
-          (err) => {
-            console.log("Err from sending voucher sign: ", err);
+          })
+          .catch((error) => {
+            console.log("Err from sending voucher sign: ", error);
             console.log(
               "Err response from sending voucher sign: ",
-              err.response
+              error.response
             );
-          }
-        );
+          });
         setProperties([{ key: "", value: "" }]);
         setNftId("");
         setNftURI("");
@@ -1103,7 +1091,7 @@ function NewNFT(props) {
 
                   <NewNftSelectNft
                     tokenList={tokenList}
-                    classes={classes}
+                    classes={styles}
                     setWorkProgressModalShow={setWorkProgressModalShow}
                     NFTType={NFTType}
                     setNFTType={setNFTType}
@@ -1118,7 +1106,7 @@ function NewNFT(props) {
 
                   <NewNftSelectSupply
                     NFTType={NFTType}
-                    classes={classes}
+                    classes={styles}
                     setSupplyType={setSupplyType}
                     setTokenSupply={setTokenSupply}
                     supplyType={supplyType}
@@ -1143,7 +1131,7 @@ function NewNFT(props) {
             tokenList={tokenList}
             handleOpenNFTDetailModal={handleOpenNFTDetailModal}
             setEditObjectIndex={setEditObjectIndex}
-            classes={classes}
+            classes={styles}
             handleRemoveClick={handleRemoveClick}
           />
         </div>

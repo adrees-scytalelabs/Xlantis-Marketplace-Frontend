@@ -1,10 +1,8 @@
-import { Tooltip } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { Button, Tooltip } from "@mui/material";
 import React from "react";
 import Table from "react-bootstrap/Table";
-import Button from "@material-ui/core/Button";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   noMaxWidth: {
     maxWidth: "none",
   },
@@ -31,51 +29,50 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}));
+}
 function SuperAdminTable(props) {
-  const classes = useStyles();
   return (
     <Table responsive>
       <thead>
         <tr>
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Username
             </div>
           </th>
           {props.ssoEnabled === true && (
-            <th className={classes.tableHeader}>
+            <th sx={styles.tableHeader}>
               <div className="row no-gutters justify-content-start align-items-center ml-3">
                 Email
               </div>
             </th>
           )}
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Wallet Address
             </div>
           </th>
-          <th className={classes.tableHeader}>
+          <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center ml-5">
               Details
             </div>
           </th>
           {props.ssoEnabled === true && props.walletEnabled === true && (
-            <th className={classes.tableHeader}>
+            <th sx={styles.tableHeader}>
               <div className="row no-gutters justify-content-start align-items-center">
                 Login Type
               </div>
             </th>
           )}
           {props.approval === true && (
-            <th className={classes.tableHeader}>
+            <th sx={styles.tableHeader}>
               <div className="row no-gutters justify-content-center align-items-center">
                 Approval Status
               </div>
             </th>
           )}
           {props.manageAccounts === true && (
-            <th className={classes.tableHeader}>
+            <th sx={styles.tableHeader}>
               <div className="row no-gutters justify-content-center align-items-center">
                 Status
               </div>
@@ -89,12 +86,12 @@ function SuperAdminTable(props) {
           return (
             <tbody>
               <tr>
-                <td className={classes.collectionTitle}>{i.username}</td>
-                <td className={classes.collectionTitle}>{i.email}</td>
-                <td className={classes.collectionTitle}>
+                <td sx={styles.collectionTitle}>{i.username}</td>
+                <td sx={styles.collectionTitle}>{i.email}</td>
+                <td sx={styles.collectionTitle}>
                   {i.walletAddress !== undefined ? (
                     <Tooltip
-                      classes={{ tooltip: classes.noMaxWidth }}
+                      classes={{ tooltip: styles.noMaxWidth }}
                       leaveDelay={1500}
                       title={i.walletAddress}
                       arrow
@@ -107,7 +104,7 @@ function SuperAdminTable(props) {
                     <label className="ml-4">N/A</label>
                   )}
                 </td>
-                <td className={classes.collectionTitle}>
+                <td sx={styles.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
                     onClick={(e) =>
@@ -123,7 +120,7 @@ function SuperAdminTable(props) {
                   </button>
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td className={classes.collectionTitle}>
+                  <td sx={styles.collectionTitle}>
                     <span className="ml-1">
                       <label className="ml-5">SSO</label>
                     </span>
@@ -133,7 +130,7 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className={classes.approveBtn}
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleVerify(
                             e,
@@ -157,7 +154,7 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center ml-4">
                       <Button
-                        className={classes.approveBtn}
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleDisable(
                             e,
@@ -180,7 +177,8 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className={`${classes.approveBtn} ml-4`}
+                        className='ml-4'
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleEnableSSO(
                             e,
@@ -208,15 +206,15 @@ function SuperAdminTable(props) {
           return (
             <tbody>
               <tr>
-                <td className={classes.collectionTitle}>{i.username}</td>
+                <td sx={styles.collectionTitle}>{i.username}</td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td className={classes.collectionTitle}>
+                  <td sx={styles.collectionTitle}>
                     <label className="ml-4">N/A</label>
                   </td>
                 )}
-                <td className={classes.collectionTitle}>
+                <td sx={styles.collectionTitle}>
                   <Tooltip
-                    classes={{ tooltip: classes.noMaxWidth }}
+                    classes={{ tooltip: styles.noMaxWidth }}
                     leaveDelay={1500}
                     title={i.walletAddress}
                     arrow
@@ -226,7 +224,7 @@ function SuperAdminTable(props) {
                     </span>
                   </Tooltip>
                 </td>
-                <td className={classes.collectionTitle}>
+                <td sx={styles.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
                     onClick={(e) =>
@@ -242,7 +240,7 @@ function SuperAdminTable(props) {
                   </button>
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td className={classes.collectionTitle}>
+                  <td sx={styles.collectionTitle}>
                     <label className="ml-5">Wallet</label>
                   </td>
                 )}
@@ -250,7 +248,7 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className={classes.approveBtn}
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleVerifyWallet(
                             e,
@@ -274,7 +272,7 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center ml-4">
                       <Button
-                        className={classes.approveBtn}
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleWalletDisable(
                             e,
@@ -297,7 +295,8 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className={`${classes.approveBtn} ml-4`}
+                        className='ml-4'
+                        sx={styles.approveBtn}
                         onClick={(e) => {
                           props.handleEnableWallet(
                             e,

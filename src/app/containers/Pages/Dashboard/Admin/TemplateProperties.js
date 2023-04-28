@@ -1,9 +1,9 @@
 import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function TemplateProperties(props) {
-  let history = useHistory();
+  let navigate = useNavigate();
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
@@ -16,7 +16,7 @@ function TemplateProperties(props) {
       template: "active",
       saved: "active",
     }); 
-    history.push({ pathname: "/superAdminDashboard/properties/savedTemplate" });
+    navigate("/superAdminDashboard/properties/savedTemplate");
   }, []);
   return (
     <div className="backgroundDefault">

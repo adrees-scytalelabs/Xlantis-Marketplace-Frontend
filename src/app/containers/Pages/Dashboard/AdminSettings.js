@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
@@ -12,7 +12,7 @@ import SettingDashboardDefault from "../Users/SettingsDashboardDefault";
 import AdminSidebar from "./Admin/AdminSidebar";
 
 function UserSettings(props) {
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
 
   const [match] = useState({
     isExact: true,
@@ -151,16 +151,15 @@ function UserSettings(props) {
         />
         <div className="page-wrapper">
           <div className="content container-fluid">
-            <Switch>
-              <Route exact path={`${path}`}>
-                <SettingDashboardDefault
+            <Routes>
+              <Route exact path={`${path}`} element=
+                {<SettingDashboardDefault
                   user="admin"
                   setActiveTab={setActiveTab}
                   updateProfile={updateProfile}
                   setUpdateProfile={setUpdateProfile}
-                />
-              </Route>
-            </Switch>
+                />}/>
+            </Routes>
           </div>
         </div>
       </div>

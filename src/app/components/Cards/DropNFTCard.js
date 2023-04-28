@@ -1,9 +1,9 @@
-import { Card, CardContent, CardMedia, Typography } from "@material-ui/core";
-import { Pause, PlayArrow } from "@material-ui/icons";
+import PauseIcon from '@mui/icons-material/Pause';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import CornerRibbon from "react-corner-ribbon";
 import { truncate } from "../../assets/js/utils";
-
 const DropNFTCard = (props) => {
   return (
     <Card
@@ -43,7 +43,7 @@ const DropNFTCard = (props) => {
                 }}
                 onClick={(e) => props.handlePlay(e, props.details)}
               >
-                <PlayArrow />
+                <PlayArrowIcon />
               </button>
             ) : (
               <button
@@ -55,7 +55,7 @@ const DropNFTCard = (props) => {
                 }}
                 onClick={(e) => props.handlePause(e, props.details)}
               >
-                <Pause />
+                <PauseIcon />
               </button>
             )}
           </div>

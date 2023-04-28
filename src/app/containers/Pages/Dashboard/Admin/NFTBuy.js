@@ -1,72 +1,40 @@
-import {
-  makeStyles,
-  Paper,
-} from "@material-ui/core";
-import {ThemeProvider } from "@material-ui/core/styles";
+
+import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Col, Row, } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
+import {
+  getBuyNFTTxCostSummarySSO, marketplaceBuyVersioned,
+} from "../../../../components/API/AxiosInterceptor";
+import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
+import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
-import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
-import BuyTxModal from "../../../../components/Modals/BuyTxModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import BuyButton from "../../../../components/buttons/Buy";
-import { createTheme } from "@material-ui/core";
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
     backgroundColor: "black",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media1: {
-    height: 300,
-  },
   media: {
     height: 0,
     paddingTop: "100%",
   },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  heading: {
-    fontSize: theme.typography.pxToRem(15),
-    fontWeight: theme.typography.fontWeightRegular,
-  },
-}));
+
+}
 
 const customTheme = createTheme({
   overrides: {
@@ -98,7 +66,6 @@ const customTheme = createTheme({
 
 const NFTBuy = (props) => {
   let location = useLocation();
-  const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
   const [properties, setProperties] = useState([]);
@@ -116,18 +83,17 @@ const NFTBuy = (props) => {
   const handleOpenModal = async (e) => {
     const dropId = nftDetail.dropId;
     const nftId = nftDetail._id;
-    axios.get(`v1-sso/marketplace/buy/tx-cost-summary/${dropId}/${nftId}`).then(
-      (response) => {
+    getBuyNFTTxCostSummarySSO(dropId, nftId)
+      .then((response) => {
         setData(response.data.data);
         setMOdalOpen(true);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
+      });
   };
 
   const handleCloseModal = () => {
@@ -253,20 +219,19 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuyVersioned(versionB, data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
+                    });
 
                   if (err !== null) {
                     console.log("err", err);
@@ -308,20 +273,19 @@ const NFTBuy = (props) => {
                   };
 
                   console.log("data", data);
-                  axios.post(`/${versionB}/marketplace/buy`, data).then(
-                    (response) => {
+                  marketplaceBuyVersioned(versionB, data)
+                    .then((response) => {
                       console.log(
                         "Transaction Hash sending on backend response: ",
                         response
                       );
-                    },
-                    (error) => {
+                    })
+                    .catch((error) => {
                       console.log(
                         "Transaction hash on backend error: ",
                         error.response
                       );
-                    }
-                  );
+                    });
 
                   if (err !== null) {
                     console.log("err", err);
@@ -402,14 +366,14 @@ const NFTBuy = (props) => {
       nftId: nftDetail._id,
     };
     handleCloseModal();
-    axios.post(`/${versionB}/marketplace/buy`, data).then(
-      (response) => {
+    marketplaceBuyVersioned(versionB, data)
+      .then((response) => {
         console.log("nft buy response", response.data);
         let variant = "success";
         enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -428,10 +392,8 @@ const NFTBuy = (props) => {
             window.location.reload();
           }
         }
-      }
-    );
+      });
   }
-
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -450,12 +412,10 @@ const NFTBuy = (props) => {
                 </li>
               </Link>
               <Link
-                to={{
-                  pathname: `/dashboard/marketPlace/drops/nfts`,
-                  state: {
-                    nftId: location.state.nftId,
-                    dropId: location.state.dropId,
-                  },
+                to={`/dashboard/marketPlace/drops/nfts`}
+                state={{
+                  nftId: location.state.nftId,
+                  dropId: location.state.dropId,
                 }}
               >
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
@@ -473,30 +433,28 @@ const NFTBuy = (props) => {
           <div className="row">
             <div className="col-md-12 col-lg-4">
               <Paper elevation={5}>
-                <NFTMediaCard nftDetail={nftDetail} classes={classes} />
+                <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </Paper>
             </div>
             <div className="col-md-12 col-lg-8">
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
-                  <PropertiesAccordian 
+                  <PropertiesAccordian
                     properties={properties}
                     key={Object.keys(properties)}
                   />
-                  
                 </Col>
               </Row>
               <br></br>
               <BuyButton
-                isSold={location.state.nftDetail.currentMarketplaceId.isSold} 
+                isSold={location.state.nftDetail.currentMarketplaceId.isSold}
                 startTime={location.state.startTime}
                 endTime={location.state.endTime}
                 versionB={versionB}
                 handleOpenModal={handleOpenModal}
                 handleBuy={handleBuy}
               />
-              
             </div>
           </div>
         </div>

@@ -1,12 +1,12 @@
-import { Grid } from "@material-ui/core/";
-import axios from "axios";
+
+import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { getNFTsFromSingleCollection } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
@@ -20,19 +20,18 @@ function CollectionNfts(props) {
   };
   let getCollectionNfts = () => {
     handleShowBackdrop();
-    axios.get(`/collection/${collectionId}`).then(
-      (response) => {
+    getNFTsFromSingleCollection(collectionId)
+      .then((response) => {
         setTokenList(response.data.nftsdata);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {

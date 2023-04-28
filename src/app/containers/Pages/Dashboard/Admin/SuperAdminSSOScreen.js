@@ -1,9 +1,10 @@
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { useResolvedPath } from 'react-router-dom';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
-
+import { getSuperAdminCountsType1 } from "../../../../redux/getSuperAdminsCountsSlice";
 
 function SuperAdminSSOScreen(props) {
   const [totalAdmins, setTotalAdmins] = useState(0);
@@ -13,27 +14,21 @@ function SuperAdminSSOScreen(props) {
   const [totalEnabled, setTotalEnabled] = useState(0);
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
+  const path = useResolvedPath("").pathname;
+  const { countsType1, loadingType1 } = useSelector((store) => store.getSuperAdminsCounts);
+  const dispatch = useDispatch();
 
   let getCounts = () => {
-    axios.defaults.headers.common[
-      "Authorization"
-    ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
     setOpen(true);
-    axios
-
-      .get(`/super-admin/admins/counts?userType=v1`)
-      .then((response) => {
-        setTotalAdmins(response.data.counts.totalAdmins);
-        setTotalVerifiedAdmins(response.data.counts.totalVerifiedAdmins);
-        setTotalUnverifiedAdmins(response.data.counts.totalUnverifiedAdmins);
-        setTotalEnabled(response.data.counts.totalEnabledAdmins);
-        setTotalDisabled(response.data.counts.totalDisabledAdmins);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getSuperAdminCountsType1());
+    if (loadingType1 === 1) {
+      setTotalAdmins(countsType1.totalAdmins);
+      setTotalVerifiedAdmins(countsType1.totalVerifiedAdmins);
+      setTotalUnverifiedAdmins(countsType1.totalUnverifiedAdmins);
+      setTotalEnabled(countsType1.totalEnabledAdmins);
+      setTotalDisabled(countsType1.totalDisabledAdmins);
+      setOpen(false);
+    }
   };
   useEffect(() => {
     props.setTab(1);
@@ -48,8 +43,11 @@ function SuperAdminSSOScreen(props) {
       template: "",
       saved: "",
     });
-    getCounts();
   }, []);
+
+  useEffect(() => {
+    getCounts();
+  }, [loadingType1]);
 
   return (
     <div className="container">
@@ -58,7 +56,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accounts`}
+            linkTo={`${path}/accounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -76,10 +74,8 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/SSO`,
-              state: { current: "enabled" },
-            }}
+            linkTo={`${path}/manageAccounts/SSO`}
+            state={{ current: "enabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -97,10 +93,8 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={{
-              pathname: `${props.match.url}/manageAccounts/SSO`,
-              state: { current: "disabled" },
-            }}
+            linkTo={`${path}/manageAccounts/SSO`}
+            state={{ current: "disabled" }}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -118,7 +112,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/verifiedAccounts`}
+            linkTo={`${path}/verifiedAccounts`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -136,7 +130,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match.url}/accountApproval`}
+            linkTo={`${path}/accountApproval`}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
