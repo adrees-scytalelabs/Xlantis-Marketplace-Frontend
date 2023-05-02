@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
+import { useSnackbar } from "notistack";
 import {
   handleModalClose,
   handleModalOpen
@@ -13,6 +13,7 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import { getSuperAdminEnabledType2 } from "../../../../redux/getManageAccountsDataSlice";
 
 function WalletEnabled() {
+  const { enqueueSnackbar } = useSnackbar();
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [walletCount, setWalletAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -20,31 +21,23 @@ function WalletEnabled() {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
-
   const {
-    enabledType2Data,
     enabledType2Loading
   } = useSelector((store) => store.getManageAccountsData);
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
 
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
   const getEnabledWalletAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminEnabledType2())
-    console.log("dispatchResp", enabledType2Data);
+    dispatch(getSuperAdminEnabledType2({setWalletAdmins,setWalletAdminCount}))
     if (enabledType2Loading === 1) {
-      setWalletAdmins(enabledType2Data);
-      setWalletAdminCount(enabledType2Data.length);
       setOpen(false);
     }
     else if (enabledType2Loading === 2) {
@@ -55,34 +48,26 @@ function WalletEnabled() {
   const handleWalletDisable = (
     e,
     verifyAdminId,
-    setOpen,
-    setWalletAdmins,
-    setWalletAdminCount,
-    setVariant,
-    setLoad,
-    setNotificationData
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch("/super-admin/disable?userType=v2", data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getEnabledWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
-        setVariant("success");
-        setNotificationData("Admin Disabled Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getEnabledWalletAdmins();
+        let variant = "success"
+        enqueueSnackbar("Admin Disabled Successfully.", { variant });
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Enable Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
   };
@@ -112,12 +97,6 @@ function WalletEnabled() {
             manageAccounts={true}
             setShow={setShow}
             setModalData={setModalData}
-            setVariant={setVariant}
-            setLoad={setLoad}
-            setNotificationData={setNotificationData}
-            setWalletAdmins={setWalletAdmins}
-            setWalletAdminCount={setWalletAdminCount}
-            setOpen={setOpen}
           />
         </div>
       </div>
@@ -131,12 +110,6 @@ function WalletEnabled() {
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CircularBackdrop open={open} />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
-      />
       <AdminInformationModal
         show={show}
         handleClose={handleModalClose}
