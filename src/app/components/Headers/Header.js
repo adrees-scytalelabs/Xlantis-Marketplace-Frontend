@@ -68,7 +68,6 @@ function HeaderHome(props) {
   }, []);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
-    console.log("auth",userLogin)
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
       setUserId(userIdentity);
@@ -87,10 +86,8 @@ function HeaderHome(props) {
   }, [socket, userId]);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
-    console.log("auth",userLogin)
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
-      console.log("user Identity",userIdentity);
       setUserId(userIdentity);
       getNotifications(0, 10);
     }

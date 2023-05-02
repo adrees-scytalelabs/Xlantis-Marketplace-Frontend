@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
+import { useSnackbar } from "notistack";
 import {
   handleModalClose,
   handleModalOpen
@@ -14,41 +14,31 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import { getSuperAdminDisabledType2 } from "../../../../redux/getManageAccountsDataSlice";
 
 function WalletDisabled() {
+  const { enqueueSnackbar } = useSnackbar();
   const [walletAdminCount, setWalletAdminCount] = useState(0);
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
   const [open, setOpen] = useState(false);
 
   const {
-    disabledType2Data,
     disabledType2Loading,
   } = useSelector((store) => store.getManageAccountsData);
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
-  const getDisableWalletAdmins = (
-    setOpen,
-    setWalletAdmins,
-    setWalletAdminCount
-  ) => {
+  const getDisableWalletAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminDisabledType2());
-    console.log("dispatchWaller", disabledType2Data);
+    dispatch(getSuperAdminDisabledType2({setWalletAdmins,setWalletAdminCount}));
     if (disabledType2Loading === 1) {
-      setWalletAdmins(disabledType2Data);
-      setWalletAdminCount(disabledType2Data.length);
       setOpen(false);
     }
     else if (disabledType2Loading === 2) {
@@ -58,40 +48,32 @@ function WalletDisabled() {
 
   const handleEnableWallet = (
     e,
-    verifyAdminId,
-    setOpen,
-    setWalletAdmins,
-    setWalletAdminCount,
-    setVariant,
-    setLoad,
-    setNotificationData
+    verifyAdminId
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
     axios.patch(`/super-admin/enable?userType=v2`, data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
-        setVariant("success");
-        setNotificationData("Admin Enabled Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getDisableWalletAdmins();
+        let variant = "success"
+        enqueueSnackbar("Admin Enabled Successfully.", { variant });
       },
       (error) => {
         console.log("Error: ", error);
         console.log("Error response: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Enabled Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
   };
 
   useEffect(() => {
-    getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+    getDisableWalletAdmins();
   }, [disabledType2Loading]);
 
   const handleChangePage = (event, newPage) => {
@@ -114,12 +96,6 @@ function WalletDisabled() {
             manageAccounts={true}
             setShow={setShow}
             setModalData={setModalData}
-            setVariant={setVariant}
-            setLoad={setLoad}
-            setNotificationData={setNotificationData}
-            setWalletAdmins={setWalletAdmins}
-            setWalletAdminCount={setWalletAdminCount}
-            setOpen={setOpen}
           />
         </div>
       </div>
@@ -131,12 +107,6 @@ function WalletDisabled() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal
