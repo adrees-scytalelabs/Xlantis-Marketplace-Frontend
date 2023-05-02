@@ -2,7 +2,7 @@ import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
@@ -62,7 +62,7 @@ const styles = {
   tooltip: {
     fontSize: "16px",
   },
-}
+};
 
 function NewNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
@@ -154,7 +154,7 @@ function NewNFT(props) {
   const [nftId, setNftId] = useState("");
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [isGlbFile, setIsGlbFile] = useState(false);
-  const [previewImageURI, setPreviewImageURI] = useState(r1);
+  const [previewImageURI, setPreviewImageURI] = useState("");
   const [isUploadingPreview, setIsUploadingPreview] = useState(false);
   const [isMp3File, setIsMp3File] = useState(false);
   const [contractType, setContractType] = useState("");
@@ -623,6 +623,8 @@ function NewNFT(props) {
     setIsUploadingIPFS(true);
     setIsGlbFile(false);
     setIsMp3File(false);
+    setNftURI("");
+
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
     let typeImage;
@@ -630,7 +632,8 @@ function NewNFT(props) {
     if (e.target.files[0].name.includes(".glb")) {
       typeImage = "glb";
       setImageType("glb");
-      setImage(e.target.files[0]);
+      // setImage(e.target.files[0]);
+      setImage(r1);
     } else if (
       e.target.files[0].type.split("/")[1] === "mp3" ||
       e.target.files[0].name.includes(".mp3")
@@ -638,11 +641,12 @@ function NewNFT(props) {
       typeImage = "mp3";
       setIsMp3File(true);
       setImageType("mp3");
-      setImage(e.target.files[0]);
+      // setImage(e.target.files[0]);
+      setImage(r1);
     } else {
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
-      setImage(e.target.files[0]);
+      // setImage(e.target.files[0]);
 
       if (previewImageURI !== "") {
         setPreviewImageURI("");
@@ -663,6 +667,7 @@ function NewNFT(props) {
 
         setIpfsHash(result[0].hash);
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+        console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
         enqueueSnackbar("Image Uploaded to IPFS", { variant });
         if (typeImage === "glb") {
