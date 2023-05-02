@@ -1,9 +1,17 @@
-import React, { useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import UploadFile from "./UploadFile";
+import r1 from "../../assets/img/patients/patient.jpg";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+
+function Model(props) {
+  const { scene } = useGLTF(props.nftURI);
+  return <primitive object={scene} />;
+}
 
 const NFTUpload = (props) => {
   return (
@@ -12,33 +20,27 @@ const NFTUpload = (props) => {
         <div>
           <div className="form-group">
             <div className="row no-gutters align-items-end justify-content-start">
-              <div className="co-12 col-md-auto profile-img mr-3">
-                <GLTFModel src={props.nftURI} width={250} height={250}>
-                  <AmbientLight color={0xffffff} />
-                  <AmbientLight color={0xffffff} />
-                  <AmbientLight color={0xffffff} />
-                  <AmbientLight color={0xffffff} />
-                  <DirectionLight
-                    color={0xffffff}
-                    position={{ x: 100, y: 200, z: 100 }}
-                  />
-                  <DirectionLight
-                    color={0xffffff}
-                    position={{ x: 50, y: 200, z: 100 }}
-                  />
-                  <DirectionLight
-                    color={0xffffff}
-                    position={{ x: 0, y: 0, z: 0 }}
-                  />
-                  <DirectionLight
-                    color={0xffffff}
-                    position={{ x: 0, y: 100, z: 200 }}
-                  />
-                  <DirectionLight
-                    color={0xffffff}
-                    position={{ x: -100, y: 200, z: -100 }}
-                  />
-                </GLTFModel>
+              <div
+                className="co-12 col-md-auto profile-img mr-3"
+                style={{
+                  border: "1px solid red",
+                  background: "white",
+                  height: "250px",
+                  width: "250px",
+                }}
+              >
+                {props.isGlbFile && props.nftURI ? (
+                  <Canvas
+                    // pixelRatio={[1, 2]}
+                    camera={{ position: [-10, 15, 15], fov: 60 }}
+                  >
+                    <ambientLight intensity={3} />
+                    <Suspense fallback={null}>
+                      <Model nftURI={props.nftURI} />
+                    </Suspense>
+                    <OrbitControls />
+                  </Canvas>
+                ) : null}
               </div>
               <div className="co-12 col-md-auto">
                 <label htmlFor="uploadGlbFile" className="uploadLabel">
@@ -58,7 +60,7 @@ const NFTUpload = (props) => {
                   name="sampleFile"
                   type="file"
                   id="uploadGlbFile"
-                  accept=".png,.jpg,.jpeg,.gif,.glb.,mp3"
+                  accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
                   onChange={props.onChangeFile}
                   hidden
                 />
@@ -70,7 +72,7 @@ const NFTUpload = (props) => {
           </div>
           <label>Select Preview Image</label>
           <UploadFile
-            fileURL={props.previewImageURI}
+            fileURL={props.previewImageURI ? props.previewImageURI : r1}
             isUploading={props.isUploadingPreview}
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
@@ -125,7 +127,7 @@ const NFTUpload = (props) => {
           </div>
           <label>Select Preview Image</label>
           <UploadFile
-            fileURL={props.previewImageURI}
+            fileURL={props.previewImageURI ? props.previewImageURI : r1}
             isUploading={props.isUploadingPreview}
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
@@ -136,7 +138,7 @@ const NFTUpload = (props) => {
       ) : (
         <div>
           <UploadFile
-            fileURL={props.image}
+            fileURL={props.nftURI ? props.nftURI : r1}
             isUploading={props.isUploadingIPFS}
             changeFile={props.onChangeFile}
             class="co-12 col-md-auto profile-img mr-3"
