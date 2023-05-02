@@ -161,7 +161,7 @@ function App() {
       <SnackbarProvider maxSnack={3}>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LoginRegisterRedirectCheck exact path="/" />} />
+            <Route path="/*" element={<LoginRegisterRedirectCheck exact path="/" />} />
             <Route path="/marketPlace" element={<LoginRegisterRedirectCheck exact path="/marketPlace" />} />
             <Route path="/user-account" element={<LoginRegisterRedirectCheck exact path="/user-account" />} />
             <Route path="/super-admin-account" element={<LoginRegisterRedirectCheck exact path="/super-admin-account" />} />
