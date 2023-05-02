@@ -178,8 +178,8 @@ function App() {
             <Route path="/users/emailverification/:email/:token" element={<EmailVerification />} />
             <Route path="/termsandconditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/dashboard/" element={<PrivateRoute path="/dashboard/" />} />
-            <Route path="/superAdminDashboard/" element={<PrivateRoute path="/superAdminDashboard/" />} />
+            <Route path="/dashboard/*" element={<PrivateRoute path="/dashboard/*" />} />
+            <Route path="/superAdminDashboard/*" element={<PrivateRoute path="/superAdminDashboard/*" />} />
             <Route path="/user/settings" element={<LoginRegisterRedirectCheck exact path="/user/settings" />} />
             <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
