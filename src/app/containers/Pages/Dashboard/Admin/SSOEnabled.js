@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
+import { useSnackbar } from "notistack";
 import {
   handleModalClose,
   handleModalOpen,
@@ -14,6 +14,7 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import { getSuperAdminEnabledType1 } from "../../../../redux/getManageAccountsDataSlice";
 
 function SSOEnabled() {
+  const { enqueueSnackbar } = useSnackbar();
   const [admins, setSSOAdmins] = useState([]);
   const [adminCount, setSSOAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -21,30 +22,23 @@ function SSOEnabled() {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
   const {
-    enabledType1Data,
     enabledType1Loading,
   } = useSelector((store) => store.getManageAccountsData);
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
 
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
   const getEnabledSSOAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminEnabledType1());
-    console.log("dispatchResp", enabledType1Data);
+    dispatch(getSuperAdminEnabledType1({setSSOAdmins,setSSOAdminCount}));
     if (enabledType1Loading === 1) {
-      setSSOAdmins(enabledType1Data);
-      setSSOAdminCount(enabledType1Data.length);
       setOpen(false);
     }
     else if (enabledType1Loading === 2) {
@@ -55,34 +49,26 @@ function SSOEnabled() {
   let handleSSODisable = (
     e,
     verifyAdminId,
-    setOpen,
-    setAdmins,
-    setAdminCount,
-    setVariant,
-    setLoad,
-    setNotificationData
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch("/super-admin/disable?userType=v1", data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getEnabledSSOAdmins(setOpen, setAdmins, setAdminCount);
-        setVariant("success");
-        setNotificationData("Admin Disabled Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getEnabledSSOAdmins();
+        let variant = "success"
+        enqueueSnackbar("Admin Disabled Successfully.", { variant });
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Disable Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
   };
@@ -113,12 +99,6 @@ function SSOEnabled() {
             manageAccounts={true}
             setShow={setShow}
             setModalData={setModalData}
-            setVariant={setVariant}
-            setLoad={setLoad}
-            setNotificationData={setNotificationData}
-            setAdmins={setSSOAdmins}
-            setAdminCount={setSSOAdminCount}
-            setOpen={setOpen}
           />
         </div>
       </div>
@@ -130,12 +110,6 @@ function SSOEnabled() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal

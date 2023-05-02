@@ -1,7 +1,7 @@
-import { TablePagination } from '@mui/material';
-import axios from 'axios';
+import { TablePagination } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import { useSnackbar } from "notistack";
@@ -10,8 +10,10 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import { getSuperAdminEnabledType1, getSuperAdminEnabledType2 } from "../../../../redux/getManageAccountsDataSlice";
-
+import {
+  getSuperAdminEnabledType1,
+  getSuperAdminEnabledType2,
+} from "../../../../redux/getManageAccountsDataSlice";
 
 function Enabled() {
   const { enqueueSnackbar } = useSnackbar();
@@ -24,89 +26,81 @@ function Enabled() {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const {
-    enabledType1Loading,
-    enabledType2Loading
-  } = useSelector((store) => store.getManageAccountsData);
+  const { enabledType1Loading, enabledType2Loading } = useSelector(
+    (store) => store.getManageAccountsData
+  );
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
 
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
   const getEnabledSSOAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminEnabledType1({setSSOAdmins,setSSOAdminCount}));
-    if (enabledType1Loading === 1) {   
-      setOpen(false);   
-    }
-    else if (enabledType1Loading === 2) {
-      setOpen(false); 
+    dispatch(getSuperAdminEnabledType1({ setSSOAdmins, setSSOAdminCount }));
+    if (enabledType1Loading === 1) {
+      setOpen(false);
+    } else if (enabledType1Loading === 2) {
+      setOpen(false);
     }
   };
   const getEnabledWalletAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminEnabledType2({setWalletAdmins,setWalletAdminCount}))
+    dispatch(
+      getSuperAdminEnabledType2({ setWalletAdmins, setWalletAdminCount })
+    );
     if (enabledType2Loading === 1) {
-     
-      setOpen(false);    
-    }
-    else if (enabledType2Loading === 2) {
       setOpen(false);
-    };
+    } else if (enabledType2Loading === 2) {
+      setOpen(false);
+    }
   };
-  const handleSSODisable = (
-    e,
-    verifyAdminId,
-  ) => {
+  const handleSSODisable = (e, verifyAdminId) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
-  
+
     axios.patch("/super-admin/disable?userType=v1", data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
+        handleCloseBackdrop();
         getEnabledSSOAdmins();
-        let variant = "success"
+        let variant = "success";
         enqueueSnackbar("Admin Disabled Successfully.", { variant });
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-        handleCloseBackdrop(setOpen);
-        let variant = "error"
+        handleCloseBackdrop();
+        let variant = "error";
         enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
   };
-  const handleWalletDisable = (
-    e,
-    verifyAdminId,
-  ) => {
+  const handleWalletDisable = (e, verifyAdminId) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch("/super-admin/disable?userType=v2", data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
+        handleCloseBackdrop();
         getEnabledWalletAdmins();
-        let variant = "success"
+        let variant = "success";
         enqueueSnackbar("Admin Disable Successfully.", { variant });
       },
       (error) => {
         console.log("Error on disable: ", error);
         console.log("Error on disable: ", error.response);
-        handleCloseBackdrop(setOpen);
-        let variant = "error"
+        handleCloseBackdrop();
+        let variant = "error";
         enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
@@ -117,7 +111,7 @@ function Enabled() {
   }, [enabledType2Loading]);
 
   useEffect(() => {
-    getEnabledSSOAdmins()
+    getEnabledSSOAdmins();
   }, [enabledType1Loading]);
 
   const handleChangePage = (newPage) => {

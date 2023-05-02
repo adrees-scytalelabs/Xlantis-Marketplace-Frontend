@@ -4,15 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
 import {
   handleModalClose,
   handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
+import { useSnackbar } from "notistack";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminDisabledType1 } from '../../../../redux/getManageAccountsDataSlice';
 
 function SSODisabled() {
+  const { enqueueSnackbar } = useSnackbar();
   const [admins, setAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -20,30 +21,23 @@ function SSODisabled() {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
 
   const {
-    disabledType1Data,
     disabledType1Loading,
   } = useSelector((store) => store.getManageAccountsData);
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
-  const getDisableSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
+  const getDisableSSOAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminDisabledType1())
-    console.log("dispatchRes", disabledType1Data);
+    dispatch(getSuperAdminDisabledType1({setAdmins,setAdminCount}))
     if (disabledType1Loading === 1) {
-      setAdmins(disabledType1Data);
-      setAdminCount(disabledType1Data.length);
       setOpen(false);
     }
     else if (disabledType1Loading === 2) {
@@ -53,40 +47,32 @@ function SSODisabled() {
 
   const handleEnableSSO = (
     e,
-    verifyAdminId,
-    setOpen,
-    setAdmins,
-    setAdminCount,
-    setVariant,
-    setLoad,
-    setNotificationData
+    verifyAdminId
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
     axios.patch(`/super-admin/enable?userType=v1`, data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
-        setVariant("success");
-        setNotificationData("Admin Enabled Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getDisableSSOAdmins();
+        let variant = "success"
+        enqueueSnackbar("Admin Enabled Successfully.", { variant });
       },
       (error) => {
         console.log("Error during enable: ", error);
         console.log("Error response: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Enabled Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        enqueueSnackbar("Unable to Disable Admin.", { variant });
       }
     );
   };
 
   useEffect(() => {
-    getDisableSSOAdmins(setOpen, setAdmins, setAdminCount);
+    getDisableSSOAdmins();
   }, [disabledType1Loading]);
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -108,12 +94,6 @@ function SSODisabled() {
             manageAccounts={true}
             setShow={setShow}
             setModalData={setModalData}
-            setVariant={setVariant}
-            setLoad={setLoad}
-            setNotificationData={setNotificationData}
-            setAdmins={setAdmins}
-            setAdminCount={setAdminCount}
-            setOpen={setOpen}
           />
         </div>
       </div>
@@ -125,12 +105,6 @@ function SSODisabled() {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
       />
       <CircularBackdrop open={open} />
       <AdminInformationModal

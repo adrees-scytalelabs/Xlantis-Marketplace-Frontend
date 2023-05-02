@@ -115,7 +115,7 @@ function Disabled() {
   };
 
   useEffect(() => {
-    getDisableWalletAdmins(setOpen, setWalletAdmins, setWalletAdminCount);
+    getDisableWalletAdmins();
   }, [disabledType2Loading]);
 
   const handleChangePage = (event, newPage) => {
