@@ -84,13 +84,22 @@ const AdminLoginSignupForms = () => {
     if (adminSignInData !== null) {
       let decode = jwtDecode(adminSignInData.raindropToken);
       sessionStorage.setItem("userId", decode.userId);
-      navigate(`/`);
+      navigate(0);
     }
 
     return () => {
       controller.abort();
     };
   }, [adminSignInData]);
+
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("Authorization") &&
+      sessionStorage.getItem("userId")
+    ) {
+      navigate(`/`);
+    }
+  }, []);
 
   adminSignInData &&
     console.log(
