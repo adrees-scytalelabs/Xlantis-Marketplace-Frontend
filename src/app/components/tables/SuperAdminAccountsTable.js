@@ -159,12 +159,6 @@ function SuperAdminTable(props) {
                           props.handleDisable(
                             e,
                             i._id,
-                            props.setOpen,
-                            props.setAdmins,
-                            props.setAdminCount,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
                           );
                         }}
                       >
@@ -182,13 +176,7 @@ function SuperAdminTable(props) {
                         onClick={(e) => {
                           props.handleEnableSSO(
                             e,
-                            i._id,
-                            props.setOpen,
-                            props.setAdmins,
-                            props.setAdminCount,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
+                            i._id
                           );
                         }}
                       >
@@ -277,12 +265,6 @@ function SuperAdminTable(props) {
                           props.handleWalletDisable(
                             e,
                             i._id,
-                            props.setOpen,
-                            props.setWalletAdmins,
-                            props.setWalletAdminCount,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
                           );
                         }}
                       >
@@ -300,13 +282,7 @@ function SuperAdminTable(props) {
                         onClick={(e) => {
                           props.handleEnableWallet(
                             e,
-                            i._id,
-                            props.setOpen,
-                            props.setWalletAdmins,
-                            props.setWalletAdminCount,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
+                            i._id
                           );
                         }}
                       >

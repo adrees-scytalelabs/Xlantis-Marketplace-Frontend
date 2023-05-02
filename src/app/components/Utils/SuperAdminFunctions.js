@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { getSuperAdminEnabledType1, getSuperAdminEnabledType2 } from "../../redux/getManageAccountsDataSlice";
 
 const handleClose = (setShow) => setShow(false);
 const handleShow = (setShow) => setShow(true);
@@ -255,29 +256,6 @@ export let getWalletAdmins = (
     });
 };
 
-export let getEnabledSSOAdmins = (setOpen, setAdmins, setAdminCount) => {
-  setOpen(true);
-  axios
-    .get(`/super-admin/admins/enabled?userType=v1`)
-    .then((response) => {
-      setAdmins(response.data.admins);
-      setAdminCount(response.data.admins.length);
-      setOpen(false);
-    })
-    .catch((error) => {
-      console.log(error.response.data);
-      if (error.response.data !== undefined) {
-        if (error.response.data === "Unauthorized access (invalid token) !!") {
-          sessionStorage.removeItem("Authorization");
-          sessionStorage.removeItem("Address");
-          Cookies.remove("Version");
-
-          window.location.reload(false);
-        }
-      }
-      setOpen(false);
-    });
-};
 export let getEnabledWalletAdmins = (
   setOpen,
   setWalletAdmins,
@@ -306,40 +284,7 @@ export let getEnabledWalletAdmins = (
     });
 };
 
-export let handleSSODisable = (
-  e,
-  verifyAdminId,
-  setOpen,
-  setAdmins,
-  setAdminCount,
-  setVariant,
-  setLoad,
-  setNotificationData
-) => {
-  e.preventDefault();
-  handleShowBackdrop(setOpen);
-  let data = {
-    adminId: verifyAdminId,
-  };
 
-  axios.patch("/super-admin/disable?userType=v1", data).then(
-    (response) => {
-      handleCloseBackdrop(setOpen);
-      getEnabledSSOAdmins(setOpen, setAdmins, setAdminCount);
-      setVariant("success");
-      setNotificationData("Admin Disabled Successfully.");
-      setLoad(true);
-    },
-    (error) => {
-      console.log("Error on disable: ", error);
-      console.log("Error on disable: ", error.response);
-      handleCloseBackdrop(setOpen);
-      setVariant("error");
-      setNotificationData("Unable to Disable Admin.");
-      setLoad(true);
-    }
-  );
-};
 export let handleWalletDisable = (
   e,
   verifyAdminId,
