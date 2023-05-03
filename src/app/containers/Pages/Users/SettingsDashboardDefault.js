@@ -23,6 +23,7 @@ function SettingDashboardDefault(props) {
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   const [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
@@ -134,6 +135,8 @@ function SettingDashboardDefault(props) {
       setProfileImage(userData.imageURL);
     userData.bannerURL &&
       setBannerImage(userData.bannerURL);
+    setEmail(userData.email);
+    setWalletAddress(userData.walletAddress)
   };
 
   const getAdminProfile = async () => {
@@ -373,13 +376,16 @@ function SettingDashboardDefault(props) {
                         placeholder="Enter Email"
                         set={setEmail}
                         value={email}
+                        disabled
                       />
                     )}
                     <ProfileDetailInput
                       type="text"
                       label="Wallet Address"
                       placeholder="Wallet Address"
-                      value={sessionStorage.getItem("Address")}
+                      set={setWalletAddress}
+                      value={walletAddress}
+                      disabled
                     />
                     {isSaving ? (
                       <div className="text-center">
