@@ -14,8 +14,6 @@ export const getSuperAdminVerifiedType1 = createAsyncThunk(
   async (name,thunkAPI) => {
     try {
       const resp = await axios(`/super-admin/admins/verified/${name.start}/${name.end}?userType=v1`);
-    //   console.log("reduxResp",resp);
-
       return resp.data;
     } catch (error) {
         console.log(error.response.data);
