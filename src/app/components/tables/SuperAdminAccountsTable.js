@@ -33,7 +33,7 @@ const styles = {
 function SuperAdminTable(props) {
   return (
     <Table responsive>
-      <thead>
+      <thead style={{color:'black'}}>
         <tr>
           <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
@@ -84,7 +84,7 @@ function SuperAdminTable(props) {
       {props.ssoEnabled === true &&
         props.admins.map((i, index) => {
           return (
-            <tbody>
+            <tbody style={{color:'white'}}>
               <tr>
                 <td sx={styles.collectionTitle}>{i.username}</td>
                 <td sx={styles.collectionTitle}>{i.email}</td>
@@ -121,8 +121,8 @@ function SuperAdminTable(props) {
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
                   <td sx={styles.collectionTitle}>
-                    <span className="ml-1">
-                      <label className="ml-5">SSO</label>
+                    <span>
+                      <label className="ml-4">SSO</label>
                     </span>
                   </td>
                 )}
@@ -192,7 +192,7 @@ function SuperAdminTable(props) {
       {props.walletEnabled === true &&
         props.walletAdmins.map((i, index) => {
           return (
-            <tbody>
+            <tbody style={{color:'white'}}>
               <tr>
                 <td sx={styles.collectionTitle}>{i.username}</td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
@@ -229,7 +229,7 @@ function SuperAdminTable(props) {
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
                   <td sx={styles.collectionTitle}>
-                    <label className="ml-5">Wallet</label>
+                    <label className="ml-4">Wallet</label>
                   </td>
                 )}
                 {props.approval === true && (
