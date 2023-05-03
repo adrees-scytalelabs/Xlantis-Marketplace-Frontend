@@ -21,7 +21,7 @@ function DeleteModal(props) {
       </Modal.Header>
       <Modal.Body
         style={{
-          border: "1px solid black",
+          border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
           backgroundColor: "black",

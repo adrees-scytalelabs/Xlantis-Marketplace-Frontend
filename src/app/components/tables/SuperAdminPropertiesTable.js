@@ -47,7 +47,7 @@ function SuperAdminPropertiesTable(props) {
 
   return (
     <Table responsive>
-      <thead>
+      <thead style={{color:'black'}}>
         <tr>
           <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
@@ -70,7 +70,7 @@ function SuperAdminPropertiesTable(props) {
         </tr>
       </thead>
       {props.templateData.map((i, index) => (
-        <tbody>
+        <tbody style={{color:'white'}}>
           <tr>
             <td sx={styles.collectionTitle}>{i.name}</td>
             <td sx={styles.collectionTitle}>
