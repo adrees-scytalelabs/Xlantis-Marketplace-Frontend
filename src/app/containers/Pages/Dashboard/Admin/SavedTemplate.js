@@ -1,97 +1,15 @@
-import { createMuiTheme } from "@material-ui/core";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import DeleteIcon from "@material-ui/icons/Delete";
-import EditIcon from "@material-ui/icons/Edit";
-import axios from "axios";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
+import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
+import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  noMaxWidth: {
-    maxWidth: "none",
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-    fontFamily: "inter",
-  },
-  approveBtn: {
-    backgroundColor: "#F64D04",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&$hover": {
-      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-    },
-  },
-}));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
 function SavedTemplate(props) {
-  const classes = useStyles();
-  const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
-  let [isSaving, setIsSaving] = useState(false);
-  const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0);
-  const [showNetworkModal, setShowNetworkModal] = useState(false);
-  const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const [templateData, setTemplateData] = useState([]);
   const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -99,6 +17,8 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
+  const { templatesData, loading } = useSelector((store) => store.getSavedTemplateData);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -133,36 +53,19 @@ function SavedTemplate(props) {
     e.preventDefault();
     await deleteResponse(deleteData);
   };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-
-    setPage(0);
-  };
-
   let handleSavedTemplate = async () => {
     handleShowBackdrop();
     try {
-      axios.get("/super-admin/template").then(
-        (response) => {
-          setTemplateData(response.data.templates);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
-
-          let variant = "error";
-          enqueueSnackbar("Unable to Create Template", { variant });
-        }
-      );
+      dispatch(getSavedTemplatesData());
+      if (loading === 1) {
+        setTemplateData(templatesData);
+        handleCloseBackdrop();
+      }
+      else if (loading === 2) {
+        handleCloseBackdrop();
+        let variant = "error";
+        enqueueSnackbar("Unable to Create Template", { variant });
+      }
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
@@ -174,9 +77,11 @@ function SavedTemplate(props) {
     setModalState(true);
   };
   useEffect(() => {
+    handleSavedTemplate();
+  }, [loading])
+  useEffect(() => {
     setDeleteState("");
 
-    handleSavedTemplate();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -191,7 +96,6 @@ function SavedTemplate(props) {
   }, [modalData]);
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -213,79 +117,14 @@ function SavedTemplate(props) {
         </div>
       </div>
       <div className="row no-gutters">
-
-        <Table responsive>
-          <thead>
-            <tr>
-              <th className={classes.tableHeader}>
-                <div className="row no-gutters justify-content-start align-items-center">
-                  Template Name
-                </div>
-              </th>
-              <th className={classes.tableHeader}>
-                <div className="row no-gutters justify-content-start align-items-center">
-                  No of Properties
-                </div>
-              </th>
-              <th className={`${classes.tableHeader}`}>
-                <div className="ml-5">Details</div>
-              </th>
-              <th className={classes.tableHeader}>
-                <div className="row no-gutters justify-content-start align-items-center">
-                  Delete/Edit
-                </div>
-              </th>
-            </tr>
-          </thead>
-          {templateData.map((i, index) => (
-            <tbody>
-              <tr>
-                <td className={classes.collectionTitle}>{i.name}</td>
-                <td className={`${classes.collectionTitle}`}>
-                  <div className="justify-content-center align-items-center ml-5">
-                    {" "}
-                    {i.properties.length}{" "}
-                  </div>
-                </td>
-                <td className={classes.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) => handleOpen(e, i)}
-                  >
-                    View
-                  </button>
-                </td>
-                <td className={classes.collectionTitle}>
-                  <span className="ml-4">
-                    <button
-                      style={{ background: "transparent", border: "none" }}
-                    >
-                      <DeleteIcon
-                        color="action"
-                        style={{ color: "red" }}
-                        onClick={(e) => handleDeleteModal(e, i)}
-                      ></DeleteIcon>
-                    </button>
-                  </span>
-                  <span className="ml-1">
-                    <button
-                      style={{ background: "transparent", border: "none" }}
-                    >
-                      <EditIcon
-                        style={{ color: `green` }}
-                        onClick={(e) => handleUpdatedData(e, i)}
-                      ></EditIcon>
-                    </button>
-                  </span>
-                </td>
-              </tr>
-            </tbody>
-          ))}
-        </Table>
+        <SuperAdminPropertiesTable
+          templateData={templateData}
+          handleOpen={handleOpen}
+          handleDeleteModal={handleDeleteModal}
+          handleUpdatedData={handleUpdatedData}
+        ></SuperAdminPropertiesTable>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
       {modalState === true && (
         <TemplateDetails
           show={modalState}

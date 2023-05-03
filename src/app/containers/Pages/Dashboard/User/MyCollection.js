@@ -1,35 +1,16 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  TablePagination,
-  Typography,
-} from "@material-ui/core/";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+import { Card, CardActionArea, CardContent, CardMedia, Grid, TablePagination, Typography } from '@mui/material';
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import { createCollection, getMyCollectionsPaginated } from "../../../../components/API/AxiosInterceptor";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
-const useStyles = makeStyles({
+const styles = {
   root: {
     minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
   },
   cardHeight: {
     maxWidth: 345,
@@ -38,17 +19,17 @@ const useStyles = makeStyles({
     height: 0,
     paddingTop: "100%",
   },
-});
+}
 
 function MyCollection(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
-  let [isCreating, setIsCreating] = useState(false);
-  let [open, setOpen] = useState(false);
+  const [isCreating, setIsCreating] = useState(false);
+  const [open, setOpen] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
+  const [collectionCount, setCollectionCount] = useState(0);
   const [openCollectionModal, setOpenCollectionModal] = useState(false);
   const handleCloseCollectionModal = () => {
     setOpenCollectionModal(false);
@@ -57,12 +38,9 @@ function MyCollection(props) {
     setOpenCollectionModal(true);
   };
 
-  const classes = useStyles();
   let getCollections = (start, end) => {
-
     setOpen(true);
-    axios
-      .get(`/collection/myCollections/${start}/${end}`)
+    getMyCollectionsPaginated(start, end)
       .then((response) => {
         console.log("response.data", response.data);
         setCollections(response.data.Collectiondata);
@@ -110,8 +88,7 @@ function MyCollection(props) {
         collectiontitle: collectionTitle,
         artwork: collectionImage,
       };
-      axios
-        .post(`/collection/createcollection`, CollectionData)
+      createCollection(CollectionData)
         .then((response) => {
           setIsCreating(false);
           console.log("response.data", response);
@@ -181,7 +158,7 @@ function MyCollection(props) {
         </button>
       </div>
       <div className="card-body">
-        <div className={classes.root}>
+        <div sx={styles.root}>
           {open ? (
             <div align="center" className="text-center">
               <Spinner
@@ -193,23 +170,7 @@ function MyCollection(props) {
               </Spinner>
             </div>
           ) : collections.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                color="textSecondary"
-                component="p"
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (
@@ -218,11 +179,11 @@ function MyCollection(props) {
                     <Card
                       style={{ height: "100%" }}
                       variant="outlined"
-                      className={classes.cardHeight}
+                      sx={styles.cardHeight}
                     >
                       <CardActionArea>
                         <CardMedia
-                          className={classes.media}
+                          sx={styles.media}
                           image={i.artwork}
                           title="Collection Image"
                         />
@@ -251,8 +212,8 @@ function MyCollection(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <CreateNewCollectionModal
         show={openCollectionModal}

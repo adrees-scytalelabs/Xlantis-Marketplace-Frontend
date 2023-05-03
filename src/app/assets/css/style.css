@@ -514,6 +514,8 @@ form.checkoutForm label {
   border: 5px solid white;
   bottom: -1.5rem;
   position: absolute;
+  width: 190px;
+  height: 190px;
   /* z-index: 2; */
 }
 
@@ -604,12 +606,7 @@ button.bttn:hover {
 
 .table-striped tbody tr:nth-of-type(even) {
   background-color: rgba(0, 0, 0, 0.05) !important;
-}
-
-
-
-
-/*-----------------
+}/*-----------------
 	1. General
 -----------------------*/
 
@@ -10788,4 +10785,7 @@ object:hover {
     font-size: 0.7rem;
     ;
   }
+}
+.updatebttn{
+  display: none;
 }

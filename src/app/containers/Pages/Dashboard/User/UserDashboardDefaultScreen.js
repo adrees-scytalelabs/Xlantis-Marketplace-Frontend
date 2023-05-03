@@ -1,52 +1,30 @@
-
-import { Card } from "@material-ui/core";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import axios from "axios";
-import Cookies from "js-cookie";
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { useResolvedPath } from 'react-router-dom';
+import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
+import { getUserCount } from "../../../../redux/getUserCount";
+import { getUserProfile } from "../../../../redux/getUserProfileSlice";
 function UserDashboardDefaultScreen(props) {
-  let [totalCubes, setTotalCubes] = useState(0);
-  let [totalNFTs, setTotalNFTs] = useState(0);
-  let [totalDrops, setTotalDrops] = useState(0);
-  let [totalSeasons, setTotalSeasons] = useState(0);
-  let [totalCollections, setTotalCollections] = useState(0);
-  let [hover, setHover] = useState(false);
-  let [userName, setUserName] = useState("");
+  const [totalNFTs, setTotalNFTs] = useState(0);
+  const [hover, setHover] = useState(false);
+  const [userName, setUserName] = useState("");
+  const { nftCount } = useSelector((store) => store.userCount);
+  const { userData, loading } = useSelector((store) => store.userProfile);
+  const dispatch = useDispatch();
+  const path = useResolvedPath("").pathname;
+  useEffect(() => {
+    dispatch(getUserCount());
+    setTotalNFTs(nftCount);
+  }, [nftCount]);
 
-  let getCounts = () => {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-      "Authorization"
-    )}`;
-    axios
-      .get("user/getcounts")
-      .then((response) => {
-        setTotalNFTs(response.data.NFTscount);
-        setTotalCollections(response.data.Collectionscount);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
-  };
-  let getProfile = () => {
+  useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
     if (userLogin != "undefined") {
-      let version = Cookies.get("Version");
-      axios
-        .get(`${version}/user/profile`)
-        .then((response) => {
-          setUserName(response.data.userData.username);
-        })
-        .catch((error) => {
-          console.log(error);
-          console.log(error.response);
-        });
+      dispatch(getUserProfile());
+      setUserName(userData.username);
     }
-
-  }
+  }, [loading]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -54,9 +32,7 @@ function UserDashboardDefaultScreen(props) {
       newNFT: "",
       orders: "",
       myNFTs: "",
-      myCubes: "",
       myDrops: "",
-      mySeason: "",
       settings: "",
       privacyPolicy: "",
       termsandconditions: "",
@@ -66,14 +42,10 @@ function UserDashboardDefaultScreen(props) {
       newCollection: "",
       newRandomDrop: "",
     });
-    getCounts();
-    getProfile();
-
   }, []);
 
   return (
     <>
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -86,53 +58,25 @@ function UserDashboardDefaultScreen(props) {
           </div>
         </div>
       </div>
-
-
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12 col-sm-5 col-xl-4 mr-sm-2 mb-2 mb-sm-0 totalNftsAdminDash">
-          <Card
-            style={{
-              padding: "1rem",
-              borderRadius: 0,
-            }}
-            id="totalNftsAdminDash"
+          <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-          >
-            <Link to={`${props.match.url}/myNFTs`}>
-              <div className="row no-gutters justify-content-between">
-                <div className="col align-self-end">
-                  <section>
-                    <h4
-                      className={
-                        hover
-                          ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                          : "totalNftsAdminDashHeading"
-                      }
-                    >
-                      <span>
-                        <ListAltIcon />{" "}
-                      </span>
-                      Total NFTs
-                    </h4>
-                  </section>
-                </div>
-                <div className="col">
-                  <h1
-                    className={
-                      hover
-                        ? "totalNftsAdminDashCountHover"
-                        : "totalNftsAdminDashCount"
-                    }
-                  >
-                    {totalNFTs}
-                  </h1>
-                </div>
-              </div>
-            </Link>
-          </Card>
+            linkTo={`${path}/myNFTs`}
+            hoverH4={
+              hover
+                ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                : "totalNftsAdminDashHeading"
+            }
+            hoverH1={
+              hover ? "totalNftsAdminDashCountHover" : "totalNftsAdminDashCount"
+            }
+            content={totalNFTs}
+            message="Total NFTs"
+            icon={<ListAltIcon />}
+          />
         </div>
-        
       </div>
     </>
   );

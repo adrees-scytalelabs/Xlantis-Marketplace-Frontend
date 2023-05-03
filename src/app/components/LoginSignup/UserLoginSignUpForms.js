@@ -1,36 +1,16 @@
-import React, { useEffect, useState } from "react";
-import { Redirect, useHistory } from "react-router-dom";
-
-import axios from "axios";
-import IntlTelInput from "react-intl-tel-input";
-import GoogleButton from "react-google-button";
-
-import { Divider, Typography } from "@material-ui/core";
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-  useTheme,
-} from "@material-ui/core/styles";
-import Snackbar from "@material-ui/core/Snackbar";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Button from "@material-ui/core/Button";
-import MuiAlert from "@material-ui/lab/Alert";
-import InfoIcon from "@material-ui/icons/Info";
-
-import { UserAuth } from "../../components/context/AuthContext";
-
-import { GoogleOAuthProvider } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
-
-import "react-intl-tel-input/dist/main.css";
-import { async } from "@firebase/util";
-import { useCookies } from "react-cookie";
+import CloseIcon from "@mui/icons-material/Close";
+import InfoIcon from "@mui/icons-material/Info";
+import { Typography } from "@mui/material";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import jwtDecode from "jwt-decode";
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
+import { useNavigate } from "react-router-dom";
+import { userLoginThroughSSO } from "../API/AxiosInterceptor";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   signInOptionLabel: {
     margin: "16px auto",
     color: "#ccc",
@@ -45,23 +25,19 @@ const useStyles = makeStyles((theme) => ({
     fontFamily: "inter",
     transition: "all 3s ease-in-out",
   },
-}));
-
+};
 
 const AdminLoginSignupForms = () => {
-  
   const [account, setAccount] = useState(null);
   const [isActive, setIsActive] = useState(false);
-  const [phoneNum, setPhoneNum] = useState();
+  const [, setPhoneNum] = useState();
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const classes = useStyles();
 
-  
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
-  let history = useHistory();
+  let navigate = useNavigate();
 
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
@@ -71,16 +47,16 @@ const AdminLoginSignupForms = () => {
   };
 
   const handleGoBack = () => {
-    history.push(`/`);
+    navigate(`/`);
   };
 
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      axios
-        .post("/v1-sso/user/auth/user-login", { idToken: account })
+      userLoginThroughSSO({ idToken: account })
         .then((response) => {
-          console.log("JWT submitted: ", response);
+          console.log("checker response", response);
+          console.log("JWT submitted: ", response.data);
           if (response.status === 200) {
             Cookies.set("Version", "v1-sso", {});
             response.data.raindropToken &&
@@ -96,7 +72,6 @@ const AdminLoginSignupForms = () => {
           console.log("JWT could not be submitted,", error);
           if (error) setTokenVerification(false);
         });
-      // adminAccount(account);
     }
     return () => {
       controller.abort();
@@ -107,8 +82,9 @@ const AdminLoginSignupForms = () => {
     const controller = new AbortController();
 
     if (adminSignInData !== null) {
-      history.push("/");
-      history.go(0);
+      let decode = jwtDecode(adminSignInData.raindropToken);
+      sessionStorage.setItem("userId", decode.userId);
+      navigate(0);
     }
 
     return () => {
@@ -116,19 +92,25 @@ const AdminLoginSignupForms = () => {
     };
   }, [adminSignInData]);
 
+  useEffect(() => {
+    if (
+      sessionStorage.getItem("Authorization") &&
+      sessionStorage.getItem("userId")
+    ) {
+      navigate(`/`);
+    }
+  }, []);
+
   adminSignInData &&
     console.log(
       "user token before refresh /// ",
       sessionStorage.getItem("Authorization", adminSignInData.raindropToken, {})
     );
-  //console.log(Cookies.get("Version"), " /// Version for user");
 
-  
   return (
     <>
       <div className="row no-gutters w-100">
         <div className="adminCredWrapper">
-          
           <div
             className={
               isActive
@@ -155,12 +137,9 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="email"
                           required
-                          
                           placeholder="Email"
                           className="form-control-login -login newNftInput"
-                          onChange={(e) => {
-                            
-                          }}
+                          onChange={(e) => {}}
                         />
                       </div>
                       <label>Password</label>
@@ -168,12 +147,9 @@ const AdminLoginSignupForms = () => {
                         <input
                           type="password"
                           required
-                          
                           placeholder="Password"
                           className="form-control-login  newNftInput"
-                          onChange={(e) => {
-                            
-                          }}
+                          onChange={(e) => {}}
                         />
                       </div>
                     </div>
@@ -186,10 +162,7 @@ const AdminLoginSignupForms = () => {
                       Sign In
                     </button>
                     <div className="text-center">
-                      <Typography
-                        variant="body2"
-                        className={classes.signInOptionLabel}
-                      >
+                      <Typography variant="body2" sx={styles.signInOptionLabel}>
                         OR
                       </Typography>
                     </div>
@@ -207,7 +180,6 @@ const AdminLoginSignupForms = () => {
                         Don’t have an account?{" "}
                         <button
                           className="signUpBtn-link"
-                          
                           onClick={() => {
                             setWorkProgressModalShow(true);
                           }}
@@ -221,7 +193,7 @@ const AdminLoginSignupForms = () => {
                       <div className="text-center">
                         <Typography
                           variant="body2"
-                          className={classes.errorVerification}
+                          sx={styles.errorVerification}
                         >
                           <InfoIcon /> ID Token Verification Failed!
                         </Typography>
@@ -232,7 +204,7 @@ const AdminLoginSignupForms = () => {
               </div>
             </div>
           </div>
-          
+
           <div
             className={
               isActive
@@ -254,8 +226,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Full Name"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Email</label>
@@ -265,8 +236,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Email"
                             className="form-control-login -login newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Password</label>
@@ -276,8 +246,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Password"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                       </div>
@@ -291,8 +260,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Username"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                         <label>Phone Number</label>
@@ -310,8 +278,7 @@ const AdminLoginSignupForms = () => {
                             required
                             placeholder="Wallet Address"
                             className="form-control-login  newNftInput"
-                            onChange={(e) => {
-                            }}
+                            onChange={(e) => {}}
                           />
                         </div>
                       </div>
@@ -337,7 +304,6 @@ const AdminLoginSignupForms = () => {
             </div>
           </div>
         </div>
-        {/* <Alert severity="error">This is an error message!</Alert> */}
       </div>
       <WorkInProgressModal
         show={workProgressModalShow}

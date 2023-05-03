@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
@@ -12,16 +12,16 @@ import SettingDashboardDefault from "../Users/SettingsDashboardDefault";
 import AdminSidebar from "./Admin/AdminSidebar";
 
 function UserSettings(props) {
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
 
-  let [match] = useState({
+  const [match] = useState({
     isExact: true,
     params: {},
     path: "/dashboard",
     url: "/dashboard",
   });
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -34,11 +34,7 @@ function UserSettings(props) {
     }
   };
 
-  useEffect(() => {
-    //console.log("Props in admin settings are: ", props);
-  }, []);
-
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: "",
   });
@@ -155,16 +151,15 @@ function UserSettings(props) {
         />
         <div className="page-wrapper">
           <div className="content container-fluid">
-            <Switch>
-              <Route exact path={`${path}`}>
-                <SettingDashboardDefault
+            <Routes>
+              <Route exact path={`${path}`} element=
+                {<SettingDashboardDefault
                   user="admin"
                   setActiveTab={setActiveTab}
                   updateProfile={updateProfile}
                   setUpdateProfile={setUpdateProfile}
-                />
-              </Route>
-            </Switch>
+                />}/>
+            </Routes>
           </div>
         </div>
       </div>

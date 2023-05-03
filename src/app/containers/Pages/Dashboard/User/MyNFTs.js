@@ -1,14 +1,11 @@
-import { Grid } from "@material-ui/core/";
-import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import NFTCard from "../../../../components/Cards/NFTCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import { myNft } from "../../../../redux/myNftSlice";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -16,48 +13,34 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
+  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-      "Authorization"
-    )}`;
-    axios.get(`/nft/myNFTs/${start}/${end}`).then(
-      (response) => {
-        //console.log("response", response);
-        setTokenList(response.data.NFTdata);
-        setTotalNfts(response.data.Nftcount);
+    dispatch(myNft({ start, end }));
+    if (loading === 1) {
+      setTokenList(nftData);
+      setTotalNfts(nftCount);
 
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+      handleCloseBackdrop();
+    }
+    else if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
     getMyNFTs(0, rowsPerPage);
+  }, [loading]);
+
+  useEffect(() => {
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -74,13 +57,11 @@ function MyNFTs(props) {
       newCube: "",
       newCollection: "",
       newRandomDrop: "",
-    }); 
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
-    //console.log("Start", newPage * rowsPerPage);
-    //console.log("End", newPage * rowsPerPage + rowsPerPage);
     getMyNFTs(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
@@ -90,50 +71,30 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  //onsole.log("token list: ", tokenList);
-
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">My NFTs</h3>
             <ul className="breadcrumb">
-            <li className="breadcrumb-item slash" >
-                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
+              <li className="breadcrumb-item slash">
+                <Link style={{ color: "#777" }} to="/dashboard">
+                  Dashboard
+                </Link>
               </li>
               <li className="breadcrumb-item active">My NFTs</li>
             </ul>
           </div>
         </div>
       </div>
-      
+
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <WhiteSpinner />
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={1} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
@@ -150,10 +111,9 @@ function MyNFTs(props) {
           count={totalNfts}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
-        {/* </form> */}
       </div>
     </div>
   );

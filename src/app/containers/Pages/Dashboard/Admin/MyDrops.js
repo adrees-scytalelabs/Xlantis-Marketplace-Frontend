@@ -1,19 +1,9 @@
-import {
-  AppBar,
-  Box,
-  Card,
-  CardHeader,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import DropsPage from "./DropsPage";
-import { Link } from "react-router-dom";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -35,7 +25,7 @@ function TabPanel(props) {
   );
 }
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -60,9 +50,7 @@ function a11yProps(index) {
   };
 }
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -70,14 +58,10 @@ const useStyles = makeStyles((theme) => ({
     color: "#fff",
     fontFamily: "orbitron",
   },
-  tabPanelProps: {
-    backgroundColor: "#000",
-  },
-}));
+}
 
 const MyDrops = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
+  let location = useLocation();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
@@ -89,30 +73,26 @@ const MyDrops = (props) => {
   };
 
   useEffect(() => {
+    if (location.state != null) {
+      console.log("i am here");
+      console.log("this is location of drop", location)
+      setValue(location.state.value);
+    }
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
-      myNFTs: "",
       newCollection: "",
-      mySeason: "",
-      tradeListOrders: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
       myDrops: "active",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-      marketPlace: "",
-    }); 
+      topUp: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -139,22 +119,22 @@ const MyDrops = (props) => {
           >
             <Tab
               label="Draft"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(0)}
             />
             <Tab
               label="Pending"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(1)}
             />
             <Tab
               label="Active"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(2)}
             />
             <Tab
               label="Close"
-              className={classes.tabsProps}
+              sx={styles.tabsProps}
               {...a11yProps(3)}
             />
           </Tabs>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Switch, useRouteMatch } from "react-router-dom";
+import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
@@ -10,8 +10,8 @@ import SettingDashboardDefault from "./SettingsDashboardDefault";
 
 
 function UserSettings(props) {
-  let { path } = useRouteMatch();
-  let [activeTab, setActiveTab] = useState({
+  const path = useResolvedPath("").pathname;
+  const [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: ""
 
@@ -26,23 +26,23 @@ function UserSettings(props) {
         />
 
         <UserSidebar
-          match={props.match}
+          match={path}
           activeTab={activeTab}
           setActiveTab={setActiveTab} />
 
         <div className="page-wrapper">
           <div className="content container-fluid">
-            <Switch>
-              <Route exact path={`${path}`}>
+            <Routes>
+              <Route exact path={`/`} element={
                 <SettingDashboardDefault
                   user="user"
                   setActiveTab={setActiveTab}
                   updateProfile={updateProfile}
                   setUpdateProfile={setUpdateProfile}
                 />
-              </Route>
+              } />
 
-            </Switch>
+            </Routes>
           </div>
         </div>
       </div>

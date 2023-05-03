@@ -1,21 +1,18 @@
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import BusinessIcon from '@mui/icons-material/Business';
+import ListAltIcon from '@mui/icons-material/ListAlt';
+import StorageIcon from '@mui/icons-material/Storage';
 import Cookies from "js-cookie";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import StorageIcon from "@material-ui/icons/Storage";
-import ListAltIcon from "@material-ui/icons/ListAlt";
-import BusinessIcon from "@material-ui/icons/Business";
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
-import { useState } from "react";
-import { useEffect } from "react";
-
 function AdminSidebar(props) {
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
-    
+
     window.location.reload(false);
   };
 
@@ -32,22 +29,22 @@ function AdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard}>
-              <Link to={`${props.match.url}`} className="sidebarLink">
+              <Link to={`${props.match}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li className={props.activeTab.createNewCollection}>
+            <li className={props.activeTab.newCollection}>
               <Link
-                to={`${props.match.url}/createNewCollection`}
+                to={`${props.match}/createNewCollection`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
                 <span>New Collection</span>
               </Link>
             </li>
-            <li className={props.activeTab.newCollection}>
+            <li className={props.activeTab.myCollections}>
               <Link
-                to={`${props.match.url}/myCollection`}
+                to={`${props.match}/myCollection`}
                 className="sidebarLink"
               >
                 <i className="fas fa-layer-group"></i>
@@ -55,38 +52,26 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.newNFT}>
-              <Link to={`${props.match.url}/newNFT`} className="sidebarLink">
+              <Link to={`${props.match}/newNFT`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>New NFT</span>
               </Link>
             </li>
             <li className={props.activeTab.myNFTs}>
-              <Link to={`${props.match.url}/myNFTs`} className="sidebarLink">
+              <Link to={`${props.match}/myNFTs`} className="sidebarLink">
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.marketPlace}>
+            <li className={props.activeTab.marketplace}>
               <Link
-                to={`${props.match.url}/marketPlace`}
+                to={`${props.match}/marketPlace`}
                 className="sidebarLink"
               >
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newCube}>
-              <Link to={`${props.match.url}/newCube`}>
-                <i className="fas fa-cube"></i> <span>New Cube</span>
-              </Link>
-            </li> 
-             <li className={props.activeTab.myCubes}>
-              <Link to={`${props.match.url}/myCubes`}>
-                <i className="fas fa-cubes"></i><span>My Cubes</span>
-              </Link>
-            </li>  */}
-
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
-                <Link to={`${props.match.url}/dropApproval`}>
+                <Link to={`${props.match}/dropApproval`}>
                   <i className="fas fa-check-circle"></i>{" "}
                   <span>Drop Approval</span>
                 </Link>
@@ -94,37 +79,20 @@ function AdminSidebar(props) {
             ) : null}
 
             <li className={props.activeTab.newDrop}>
-              <Link to={`${props.match.url}/newDrop`}>
+              <Link to={`${props.match}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
             <li className={props.activeTab.topUp}>
-              <Link to={`${props.match.url}/topUp`}>
+              <Link to={`${props.match}/topUp`}>
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
               </Link>
             </li>
             <li className={props.activeTab.myDrops}>
-              <Link to={`${props.match.url}/myDrops`}>
+              <Link to={`${props.match}/myDrops`}>
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-
-            {/* <li className={props.activeTab.newRandomDrop}>
-              <Link to={`${props.match.url}/newRandomDrop`}>
-                <i className="fas fa-random"></i> <span>New Random Drop</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.newSeason}>
-              <Link to={`${props.match.url}/newSeason`}>
-                <i className="fas fa-boxes"></i> <span>New Season</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.mySeason}>
-              <Link to={`${props.match.url}/mySeason`}>
-                <LibraryBooksIcon/> <span>My Season</span>
-              </Link>
-            </li> */}
-
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

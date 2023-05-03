@@ -1,17 +1,11 @@
-
-import React, { useEffect, useState } from "react";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
+import { Link, useResolvedPath } from "react-router-dom";
 import AccountApprovalDefaultScreen from "./AccountApprovalDefaultScreen";
 import AccountApprovalSSO from "./AccountApprovalSSO";
 import AccountApprovalWallet from "./AccountApprovalWallet";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -21,9 +15,9 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -99,9 +93,9 @@ function a11yProps(index) {
 }
 
 function AccountApproval(props) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
-  const handleChange = (event, newValue) => {
+  const path = useResolvedPath("").pathname;
+  const handleChange = (newValue) => {
     setValue(newValue);
   };
 
@@ -121,18 +115,14 @@ function AccountApproval(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
+      properties: "",
+      template: "",
+      saved: "",
     });
-    
   }, []);
-
-  //console.log("props in super admin dashboard: ", props);
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -148,12 +138,11 @@ function AccountApproval(props) {
           </div>
         </div>
       </div>
-      
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -163,36 +152,35 @@ function AccountApproval(props) {
               >
                 <Tab
                   label="All"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="SSO"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(1)}
                 />
                 <Tab
                   label="Wallet"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(2)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0} className="">
                 <AccountApprovalDefaultScreen
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel className="" value={value} index={1}>
                 <AccountApprovalSSO
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>
               <TabPanel value={value} index={2} className="">
                 <AccountApprovalWallet
-                  match={props.match}
+                  match={path}
                   setActiveTab={props.setActiveTab}
                 />
               </TabPanel>

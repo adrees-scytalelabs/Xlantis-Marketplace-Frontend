@@ -1,7 +1,6 @@
-import { Button } from "@material-ui/core";
+import CheckIcon from '@mui/icons-material/Check';
 import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { Check } from "@material-ui/icons";
 import BlackSpinner from "../Spinners/BlackSpinner";
 
 const RequestApprovalModal = (props) => {
@@ -35,7 +34,7 @@ const RequestApprovalModal = (props) => {
               {props.approvingFixedPrice ? (
                 <BlackSpinner />
               ) : props.isFixedPriceApproved ? (
-                <Check color="success" style={{ color: "green" }}></Check>
+                <CheckIcon color="success" style={{ color: "green" }} />
               ) : (
                 <button
                   className="btn"
@@ -56,33 +55,6 @@ const RequestApprovalModal = (props) => {
               )}
             </Col>
           </Row>
-          {/* <Row className="justify-content-end align-items-center no-gutters">
-            <Col style={{ color: "#000" }}>Give Approval to Auction Drop.</Col>
-            <Col className="text-right">
-              {props.approvingAuction ? (
-                <BlackSpinner />
-              ) : props.isAuctionApproved ? (
-                <Check color="success" style={{ color: "green" }}></Check>
-              ) : (
-                <button
-                  className="btn"
-                  type="button"
-                  disabled={props.approvalFlag ? true : false}
-                  style={{
-                    margin: "10px",
-                    marginRight: 0,
-                    backgroundColor: "black",
-                    border: "1px solid #fff",
-                    borderRadius: 0,
-                    padding: 10,
-                  }}
-                  onClick={props.giveAuctionApproval}
-                >
-                  Approve
-                </button>
-              )}
-            </Col>
-          </Row> */}
         </div>
       </Modal.Body>
       <Modal.Footer>

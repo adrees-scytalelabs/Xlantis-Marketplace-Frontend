@@ -1,123 +1,46 @@
-import { createMuiTheme } from "@material-ui/core";
-import { TablePagination } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import Table from "react-bootstrap/Table";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Web3 from "web3";
+import {
+  approveCollection,
+  getMyCollectionsPaginated,
+} from "../../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  card: {
-    minWidth: 250,
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
-  },
-  collectionTitle: {
-    color: "#fff",
-    fontSize: "1rem",
-  },
-  approveBtn: {
-    backgroundColor: "transparent",
-    color: "#fff",
-    padding: "6px 24px",
-    border: "1px solid #F64D04",
-    borderRadius: "0px 15px",
-    "&:hover": {
-      background: "#f00",
-    },
-  },
-}));
-
-const makeTheme = createMuiTheme({
-  overrides: {
-    MuiButton: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        padding: "10px 30px",
-        border: "1px solid #F64D04",
-        borderRadius: "0px 15px",
-        "&$hover": {
-          boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
-        },
-      },
-    },
-  },
-});
+import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
+import { TablePagination } from "@mui/material";
 
 function DropApproval(props) {
-  const classes = useStyles();
-
   const [network, setNetwork] = useState("");
   const { enqueueSnackbar } = useSnackbar();
 
-  let [collections, setCollections] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
+  const [collections, setCollections] = useState([]);
+  const [isSaving, setIsSaving] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
+  const [collectionCount, setCollectionCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
-  let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
-  let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
-  let [isAuctionApproved, setIsAuctionApproved] = useState(false);
-  let [approvingAuction, setApprovingAuction] = useState(false);
+  const [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
+  const [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
+  const [isAuctionApproved, setIsAuctionApproved] = useState(false);
+  const [approvingAuction, setApprovingAuction] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
-  const handleShowNetworkModal = () => setShowNetworkModal(true);
   const [show, setShow] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
 
-  const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
-
-  const history = useHistory();
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -216,17 +139,19 @@ function DropApproval(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
+          approveCollection(approvalData)
+            .then((response) => {
               setIsAuctionApproved(true);
               setApprovingAuction(false);
-            },
-            (err) => {
-              console.log("Err from auction approval: ", err);
-              console.log("Err response from auction approval: ", err.response);
+            })
+            .catch((error) => {
+              console.log("Err from auction approval: ", error);
+              console.log(
+                "Err response from auction approval: ",
+                error.response
+              );
               setApprovingAuction(false);
-            }
-          );
+            });
         });
     }
   };
@@ -287,9 +212,8 @@ function DropApproval(props) {
               collectionId: i._id,
               factoryType: "fixed-price",
             };
-
-            axios.put(`/collection/approve`, approvalData).then(
-              (response) => {
+            approveCollection(approvalData)
+              .then((response) => {
                 let variant = "success";
                 enqueueSnackbar(
                   "Collection Approved For Fixed Price Successfully",
@@ -297,18 +221,17 @@ function DropApproval(props) {
                 );
                 setIsFixedPriceApproved(true);
                 setApprovingFixedPrice(false);
-              },
-              (err) => {
+              })
+              .catch((error) => {
                 let variant = "error";
                 enqueueSnackbar("Unable to approve collection", { variant });
-                console.log("Err from approval Fixed-price: ", err);
+                console.log("Err from approval Fixed-price: ", error);
                 console.log(
                   "Err response from approval Fixed-price: ",
-                  err.response
+                  error.response
                 );
                 setApprovingFixedPrice(false);
-              }
-            );
+              });
           });
       }
     } catch (e) {
@@ -319,8 +242,7 @@ function DropApproval(props) {
   let getCollections = (start, end) => {
     const version = Cookies.get("Version");
     setOpen(true);
-    axios
-      .get(`/collection/myCollections/${start}/${end}`)
+    getMyCollectionsPaginated(start, end)
       .then((response) => {
         setCollections(response.data.collectionData);
         setCollectionCount(response.data.collectionCount);
@@ -345,7 +267,6 @@ function DropApproval(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -364,86 +285,11 @@ function DropApproval(props) {
 
       <div className="card-body">
         <div className="row">
-
-          <Table responsive>
-            <thead>
-              <tr>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Collection
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Auction
-                  </div>
-                </th>
-                <th className={classes.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Fixed Price
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            {collections.map((i, index) => (
-              <tbody>
-                <tr>
-                  <td className={classes.collectionTitle}>{i.name}</td>
-                  <td>
-
-                    {i.isAuctionDropVerified ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button disabled>
-                          <span className="text-white">Approved </span>
-                          <i
-                            className="fas fa-check ml-2"
-                            style={{ color: "green" }}
-                          ></i>{" "}
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-
-                          onClick={(e) => {
-                            giveAuctionApproval(i);
-                          }}
-                        >
-                          Approve
-                        </Button>
-                      </div>
-                    )}
-
-                  </td>
-                  <td>
-                    {i.isFixedPriceDropVerified ? (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button disabled>
-                          <span style={{ color: "#fff" }}>Approved</span>{" "}
-                          <i
-                            className="fas fa-check ml-2"
-                            style={{ color: "green" }}
-                          ></i>{" "}
-                        </Button>
-                      </div>
-                    ) : (
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className={classes.approveBtn}
-                          onClick={(e) => {
-                            giveFixedPriceApproval(i);
-                          }}
-                        >
-                          Approve
-                        </Button>
-                      </div>
-                    )}
-                  </td>
-                </tr>
-              </tbody>
-            ))}
-          </Table>
+          <DropApprovalTable
+            collections={collections}
+            giveAuctionApproval={giveAuctionApproval}
+            giveFixedPriceApproval={giveFixedPriceApproval}
+          />
         </div>
       </div>
 
@@ -453,17 +299,15 @@ function DropApproval(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
       <NetworkErrorModal
         show={showNetworkModal}
         handleClose={handleCloseNetworkModal}
         network={network}
       ></NetworkErrorModal>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

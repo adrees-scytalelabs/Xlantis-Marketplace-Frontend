@@ -1,47 +1,10 @@
-import {
-  AppBar,
-  Box,
-  Card,
-  CardHeader,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import MarketPlacePage from "./MarketPlacePage";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-
-const paginationStyles = makeStyles({
-  base: {
-    
-    border: 0,
-    color: "#fff",
-    padding: "0 30px",
-    fontWeight: "bold",
-    fontFamily: "orbitron",
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "#fff",
-  },
-  body2: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontFamily: "orbitron",
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    
-    
-  },
+import MarketPlacePage from "./MarketPlacePage";
+const styles = {
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -51,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -129,64 +92,48 @@ function a11yProps(index) {
   };
 }
 
-
 const MarketPlace = (props) => {
-  const classes = useStyles();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
-
-  const handleChange = (event, newValue) => {
+  const handleChange = (newValue) => {
     setValue(newValue);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
   };
 
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
-      myNFTs: "",
       newCollection: "",
-      mySeason: "",
-      tradeListOrders: "",
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "active",
+      newDrop: "",
       myDrops: "",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-      marketPlace: "active",
-    }); 
+      topUp: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">MarketPlace</h3>
             <ul className="breadcrumb">
-            <li className="breadcrumb-item slash" >
-                <Link style={{ color: "#777" }} to="/dashboard">Dashboard</Link>
+              <li className="breadcrumb-item slash">
+                <Link style={{ color: "#777" }} to="/dashboard">
+                  Dashboard
+                </Link>
               </li>
               <li className="breadcrumb-item active">MarketPlace</li>
             </ul>
           </div>
         </div>
       </div>
-      
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -196,16 +143,15 @@ const MarketPlace = (props) => {
               >
                 <Tab
                   label="Auction"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="Fixed Price"
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                   {...a11yProps(1)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0}>
                 <MarketPlacePage saleType="auction" />
               </TabPanel>

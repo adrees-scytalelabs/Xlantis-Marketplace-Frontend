@@ -1,20 +1,11 @@
-import {
-  useMediaQuery
-} from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import OpenInNewIcon from "@material-ui/icons/OpenInNew";
-import { Alert } from "@material-ui/lab";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Alert, Card, CardContent, CardMedia, Typography, useMediaQuery } from '@mui/material';
 import React from "react";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
 import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 import { truncate } from "../../assets/js/utils";
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -54,10 +45,9 @@ const useStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
 const OnAuctionCard = (props) => {
-  const styles = useStyles();
   const matchScrn = useMediaQuery("(max-width: 991px)");
 
   return (
@@ -66,17 +56,15 @@ const OnAuctionCard = (props) => {
         <div className="row no-gutters mdColHeight">
           <Link
             style={{ width: "100%" }}
-            to={{
-              pathname: `/fixdropnft/${props.i._id}`,
-              state: {
-                saleType: props.i.saleType,
-                description: props.i.description,
-              },
+            to={`/fixdropnft/${props.i._id}`}
+            state={{
+              saleType: props.i.saleType,
+              description: props.i.description,
             }}
           >
             <div className="nftImgWrapper">
               <CardMedia
-                className={styles.media}
+                sx={styles.media}
                 image={props.i.image}
                 title="Drop Image"
               />
@@ -108,19 +96,15 @@ const OnAuctionCard = (props) => {
                           }}
                         />
                       </div>
-                      {/* Creator Name */}
                     </Link>
                   </div>
-                  {/* Explore Button */}
                   <div className="col w-100 text-right align-self-end">
                     <Link
-                      to={{
-                        pathname: `/fixdropnft/${props.i._id}`,
-                        state: {
-                          saleType: props.i.saleType,
-                          startTime: props.i.startTime,
-                          endTime: props.i.endTime
-                        },
+                      to={`/fixdropnft/${props.i._id}`}
+                      state={{
+                        saleType: props.i.saleType,
+                        startTime: props.i.startTime,
+                        endTime: props.i.endTime
                       }}
                     >
                       <button className="exploreBtn">
@@ -130,7 +114,7 @@ const OnAuctionCard = (props) => {
                         </span>
                       </button>
                     </Link>
-                    
+
                   </div>
                 </div>
               </div>
@@ -145,14 +129,14 @@ const OnAuctionCard = (props) => {
                 <Typography
                   variant="h6"
                   component="p"
-                  className={styles.cardTitle}
+                  sx={styles.cardTitle}
                 >
                   {props.i.title}
                 </Typography>
                 <Typography
                   variant="body2"
                   component="p"
-                  className={styles.cardDescriptions}
+                  sx={styles.cardDescriptions}
                 >
                   {truncate(props.i.description, 20)}
                 </Typography>
@@ -164,9 +148,9 @@ const OnAuctionCard = (props) => {
                     : `${props.i.NFTIds.length} NFT`}
                 </p>
               </div>
-             
+
             </div>
-            
+
             <Typography
               variant="h6"
               gutterBottom

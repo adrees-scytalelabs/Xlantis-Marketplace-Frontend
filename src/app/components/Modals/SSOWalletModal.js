@@ -1,26 +1,10 @@
-import React, { useEffect, useState } from "react";
-// REACT ROUTER DOM
+import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import EmailIcon from '@mui/icons-material/Email';
+import { Backdrop, Fade, Grid, Modal, ThemeProvider, Typography, createTheme } from "@mui/material";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Divider from "@material-ui/core/Divider";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-import Alert from "@material-ui/lab/Alert";
-import Grid from "@material-ui/core/Grid";
-// MUI ICONS
-import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
-import EmailIcon from "@material-ui/icons/Email";
-
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   gridRoot: {
     flexGrow: 1,
     marginTop: "8px",
@@ -32,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
   },
   paper: {
     border: "1px solid #fff",
-    boxShadow: theme.shadows[5],
     borderRadius: 5,
     backgroundColor: "#000",
     "&:focus-visible": {
@@ -97,9 +80,9 @@ const useStyles = makeStyles((theme) => ({
     margin: "8px 0 0 0",
     textAlign: "center",
   },
-}));
+}
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiAccordion: {
       root: {
@@ -139,22 +122,20 @@ const makeTheme = createMuiTheme({
 });
 
 const SSOWalletModal = (props) => {
-  
+
   const [expanded, setExpanded] = useState("panel1");
   const [disabled, setDisabled] = useState(true);
-  const classes = useStyles();
-
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
   };
 
-  //   Content
+
   return (
     <ThemeProvider theme={makeTheme}>
       <Modal
         aria-labelledby="transition-modal-title"
         aria-describedby="transition-modal-description"
-        className={classes.modal}
+        sx={styles.modal}
         open={props.open}
         onClose={props.handleClose}
         closeAfterTransition
@@ -165,10 +146,10 @@ const SSOWalletModal = (props) => {
         }}
       >
         <Fade in={props.open}>
-          <div className={classes.paper}>
+          <div sx={styles.paper}>
             <div className="row no-gutters ssoModalwrapper">
               <div className="col-12">
-                <Typography variant="h5" className={classes.cardHeading}>
+                <Typography variant="h5" sx={styles.cardHeading}>
                   Welcome back!
                 </Typography>
               </div>
@@ -179,11 +160,10 @@ const SSOWalletModal = (props) => {
                   <Typography variant="body2">Continue with</Typography>
                 </div>
               </div>
-              <Grid container className={classes.gridRoot} spacing={1}>
+              <Grid container sx={styles.gridRoot} spacing={1}>
                 <Grid item xs={12} sm={6}>
                   <button
                     className="ssoModalCard"
-                    // onClick={props.metamaskLogin}
                     onClick={() => {
                       props.openWorkProgressModal();
                     }}
@@ -195,7 +175,7 @@ const SSOWalletModal = (props) => {
                       <div className="col-12">
                         <Typography
                           variant="body1"
-                          className={classes.loginType}
+                          sx={styles.loginType}
                         >
                           Wallet
                         </Typography>
@@ -213,7 +193,7 @@ const SSOWalletModal = (props) => {
                         <div className="col-12">
                           <Typography
                             variant="body1"
-                            className={classes.loginType}
+                            sx={styles.loginType}
                           >
                             Email
                           </Typography>

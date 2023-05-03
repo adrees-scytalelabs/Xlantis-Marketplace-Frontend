@@ -1,7 +1,7 @@
-import React from "react";
-import { Col, Modal, Row, Button } from "react-bootstrap";
-import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 
+import React from "react";
+import { Col, Modal, Row } from "react-bootstrap";
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 function DeleteModal(props) {
   return (
     <Modal
@@ -21,20 +21,18 @@ function DeleteModal(props) {
       </Modal.Header>
       <Modal.Body
         style={{
-          border: "1px solid black",
+          border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
           backgroundColor: "black",
           justifyContent: "center",
-          border: "1px solid white",
-          borderBottom: "none",
         }}
       >
         <h3 style={{ textAlign: "center" }}>
           {" "}
           <HighlightOffIcon
             fontSize="large"
-            style={{ color: "red",fontSize:'4.7rem' }}
+            style={{ color: "red", fontSize: '4.7rem' }}
             className="mb-3"
           ></HighlightOffIcon>
           <br></br>

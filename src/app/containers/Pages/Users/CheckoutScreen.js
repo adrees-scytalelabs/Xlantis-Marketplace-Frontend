@@ -1,21 +1,12 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import Divider from "@material-ui/core/Divider";
-import Grid from "@material-ui/core/Grid";
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
+import { Divider, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import React, { useState } from "react";
-import { CountryDropdown } from "react-country-region-selector";
 import { Link } from "react-router-dom";
 import Footer from "../../../components/Footers/Footer";
+import CheckoutScreenForm from "../../../components/Forms/CheckoutScreenForm";
 import HeaderHome from "../../../components/Headers/Header";
+import CheckoutScreenTable from "../../../components/tables/CheckoutScreenTable";
 
-const useStyles = makeStyles((theme) => ({
+const styles ={
   root: {
     flexGrow: 1,
   },
@@ -69,9 +60,9 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}));
+}
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiDivider: {
       root: {
@@ -108,7 +99,6 @@ const makeTheme = createMuiTheme({
 const CheckoutScreen = () => {
   const [country, setCountry] = useState("");
   const [accepted, setAccepted] = useState(false);
-  const classes = useStyles();
   const selectCountry = (val) => {
     setCountry(val);
   };
@@ -126,213 +116,36 @@ const CheckoutScreen = () => {
           <div className="container py-4">
             <div className="row no-gutters justify-content-center align-items-center w-100 mt-5">
               <div className="col-12 text-center">
-                <Typography variant="h5" className={classes.mainHeading}>
+                <Typography variant="h5" sx={styles.mainHeading}>
                   CHECKOUT
                 </Typography>
               </div>
             </div>
-            <Divider className={classes.divider} />
+            <Divider sx={styles.divider} />
             <div className="row no-gutters justify-content-center mb-5 pb-5">
               <Grid container spacing={3} style={{ paddingtop: "16px" }}>
                 <Grid item xs={12} md={8}>
-                  <form action="" autoComplete="off" className="checkoutForm">
-                    <h4 className={classes.formHeadings}>Billing Details</h4>
-                    <Grid container spacing={1}>
-                      <Grid item xs={12} md={6}>
-                        <label>First Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12} md={6}>
-                        <label>First Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Country</label>
-                        <div className="form-group newNftWrapper checkoutCountryWrapper">
-                          <CountryDropdown
-                            value={country}
-                            onChange={(val) => selectCountry(val)}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Street Address</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Town/City</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>State/County</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Zip/Postcode</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="number"
-                            required
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Company Name</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                      <Grid item xs={12}>
-                        <label>Appartment Address</label>
-                        <div className="form-group newNftWrapper">
-                          <input
-                            type="text"
-                            placeholder=""
-                            className="form-control-login -login newNftInput w-100"
-                            onChange={(e) => {
-                            }}
-                          />
-                        </div>
-                      </Grid>
-                    </Grid>
-                  </form>
+                  <CheckoutScreenForm classes={styles} country={country} selectCountry={selectCountry} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                   <Grid container spacing={2}>
                     <Grid item>
-                      <h4 className={classes.formHeadings}>You Order</h4>
-                      <TableContainer>
-                        <Table
-                          className={classes.table}
-                          aria-label="simple table"
-                        >
-                          <TableHead>
-                            <TableRow>
-                              <TableCell>Product</TableCell>
-                              <TableCell align="right">Subtotal</TableCell>
-                            </TableRow>
-                          </TableHead>
-                          <TableBody>
-                            <TableRow
-                              style={{ borderBottom: "2px solid black" }}
-                            >
-                              <TableCell className={classes.tableBodyCell}>
-                                Common x3
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className={classes.tableBodyCell}>
-                                Anciet x3
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow
-                              style={{ borderBottom: "2px solid black" }}
-                            >
-                              <TableCell className={classes.subtotal}>
-                                Subtotal
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.tableBodyCell}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                            <TableRow>
-                              <TableCell className={classes.total}>
-                                Total
-                              </TableCell>
-                              <TableCell
-                                align="right"
-                                className={classes.total}
-                              >
-                                $115,780.00
-                              </TableCell>
-                            </TableRow>
-                          </TableBody>
-                        </Table>
-                      </TableContainer>
+                      <h4 sx={styles.formHeadings}>You Order</h4>
+                      <CheckoutScreenTable classes={styles} />
                       <div className="row no-gutters mt-5 justif-content-center align-items-center">
                         <div className="col-12">
-                          <Divider className={classes.divider} />
+                          <Divider sx={styles.divider} />
                           <Typography variant="body2">
                             Your Personal data will be used to process your
                             order, support your experience throughout this
                             website, and for other purposes described in our{" "}
-                            <Link to="/" className={classes.checkoutPolicy}>
+                            <Link to="/" sx={styles.checkoutPolicy}>
                               privay policy
                             </Link>
                             .
                           </Typography>
-                          <Divider className={classes.divider} />
+                          <Divider sx={styles.divider} />
                         </div>
-                        {/* <div className="col-12"> */}
                         <label
                           for="acceptedTerms"
                           className="checkoutAcceptedTermsCheckbox"
@@ -344,7 +157,7 @@ const CheckoutScreen = () => {
                             onChange={handleTermsAccepted}
                           />{" "}
                           I have read and agreed to the website{" "}
-                          <Link className={classes.checkoutPolicy}>
+                          <Link sx={styles.checkoutPolicy}>
                             terms and conditions*
                           </Link>
                         </label>
@@ -352,7 +165,7 @@ const CheckoutScreen = () => {
                       </div>
                       <div className="row no-gutters justify-content-center align-items-center mt-3">
                         <div className="col-12">
-                          <button className={classes.CheckoutBtn}>
+                          <button sx={styles.CheckoutBtn}>
                             Place Order
                           </button>
                         </div>
@@ -363,7 +176,6 @@ const CheckoutScreen = () => {
               </Grid>
             </div>
           </div>
-          {/* Footer */}
           <Footer position={"relative"} />
         </div>
       </ThemeProvider>

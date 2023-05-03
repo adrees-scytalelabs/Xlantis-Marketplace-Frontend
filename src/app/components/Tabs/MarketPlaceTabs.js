@@ -1,21 +1,10 @@
-import React, { useState } from "react";
-
-import { Card } from "@material-ui/core";
-import Box from "@material-ui/core/Box";
-import {
-  createMuiTheme,
-  makeStyles,
-  ThemeProvider,
-  useTheme
-} from "@material-ui/core/styles";
-import Tab from "@material-ui/core/Tab";
-import TablePagination from "@material-ui/core/TablePagination";
-import Tabs from "@material-ui/core/Tabs";
-import Typography from "@material-ui/core/Typography";
+import { Box, Tab, TablePagination, Tabs, ThemeProvider, Typography, createTheme, useTheme } from '@mui/material';
 import PropTypes from "prop-types";
+import React, { useState } from "react";
 import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
+import MessageCard from "../MessageCards/MessageCard";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 function TabPanel(props) {
@@ -51,7 +40,7 @@ function a11yProps(index) {
   };
 }
 
-const paginationStyles = makeStyles({
+const paginationStyles = {
   base: {
     border: 0,
     color: "#fff",
@@ -68,11 +57,10 @@ const paginationStyles = makeStyles({
     color: "#fff",
     fontFamily: "orbitron",
   },
-});
+}
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-  },
+const styles = {
+  root: {},
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -82,9 +70,9 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -133,8 +121,6 @@ const customTheme = createMuiTheme({
 });
 
 const MarketPlaceTabs = (props) => {
-  const classes = useStyles();
-  const paginationClasses = paginationStyles();
   const theme = useTheme();
   const [value, setValue] = useState(0);
   const [rowsPerSalePage, setRowsPerSalePage] = useState(6);
@@ -176,8 +162,7 @@ const MarketPlaceTabs = (props) => {
   return (
     <div className="w-100">
       <ThemeProvider theme={customTheme}>
-        <div className={classes.root}>
-          {/* Tabs */}
+        <div sx={styles.root}>
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{
@@ -198,12 +183,12 @@ const MarketPlaceTabs = (props) => {
                 <Tab
                   label="Fixed Price Drops"
                   {...a11yProps(0)}
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                 />
                 <Tab
                   label="Bidable Drops"
                   {...a11yProps(1)}
-                  className={classes.tabsProps}
+                  sx={styles.tabsProps}
                 />
               </Tabs>
             </div>
@@ -212,7 +197,7 @@ const MarketPlaceTabs = (props) => {
             value={value}
             index={0}
             dir={theme.direction}
-            className={classes.tabPanelProps}
+            sx={styles.tabPanelProps}
           >
             <div
               className="row no-gutters align-items-center justify-content-center"
@@ -230,9 +215,9 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative">
                     {(rowsPerSalePage > 0
                       ? props.fixedPriceDrop.slice(
-                          salePage * rowsPerSalePage,
-                          salePage * rowsPerSalePage + rowsPerSalePage
-                        )
+                        salePage * rowsPerSalePage,
+                        salePage * rowsPerSalePage + rowsPerSalePage
+                      )
                       : props.fixedPriceDrop
                     ).map((i, index) => (
                       <div
@@ -244,24 +229,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      <strong>No items to display </strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg="No items to display" />
                 )}
               </div>
             </div>
@@ -273,12 +241,12 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerSalePage}
                 labelRowsPerPage={"Drops per page"}
                 page={salePage}
-                onChangePage={handleChangeSalePage}
-                onChangeRowsPerPage={handleChangeRowsPerSalePage}
+                onPageChange={handleChangeSalePage}
+                onRowsPerPageChange={handleChangeRowsPerSalePage}
                 paginationClasses={{
-                  base: classes.root,
-                  label: classes.label,
-                  body2: classes.body2,
+                  base: paginationStyles.root,
+                  label: paginationStyles.label,
+                  body2: paginationStyles.body2,
                 }}
               />
             </div>
@@ -287,7 +255,7 @@ const MarketPlaceTabs = (props) => {
             value={value}
             index={1}
             dir={theme.direction}
-            className={classes.tabPanelProps}
+            sx={styles.tabPanelProps}
           >
             <div
               className="row no-gutters align-items-center justify-content-center"
@@ -305,9 +273,9 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative ">
                     {(rowsPerAuctionPage > 0
                       ? props.bidableDrop.slice(
-                          AuctionPage * rowsPerAuctionPage,
-                          AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
-                        )
+                        AuctionPage * rowsPerAuctionPage,
+                        AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
+                      )
                       : props.bidableDrop
                     ).map((i, index) => (
                       <div
@@ -319,25 +287,7 @@ const MarketPlaceTabs = (props) => {
                     ))}
                   </div>
                 ) : (
-                  <Card
-                    variant="outlined"
-                    style={{
-                      padding: "40px",
-                      marginTop: "20px",
-                      marginBottom: "20px",
-                      backgroundColor: "#000",
-                    }}
-                  >
-                    <Typography
-                      variant="body2"
-                      className="text-center"
-                      component="p"
-                      style={{ color: "#fff" }}
-                    >
-                      {/* <strong>No items to display </strong> */}
-                      <strong>This feature is coming soon</strong>
-                    </Typography>
-                  </Card>
+                  <MessageCard msg="This feature is coming soon" />
                 )}
               </div>
             </div>
@@ -349,12 +299,12 @@ const MarketPlaceTabs = (props) => {
                 rowsPerPage={rowsPerAuctionPage}
                 labelRowsPerPage={"Drops per page"}
                 page={AuctionPage}
-                onChangePage={handleChangeAuctionPage}
-                onChangeRowsPerPage={handleChangeRowsPerAuctionPage}
+                onPageChange={handleChangeAuctionPage}
+                onRowsPerPageChange={handleChangeRowsPerAuctionPage}
                 paginationClasses={{
-                  base: classes.root,
-                  label: classes.label,
-                  body2: classes.body2,
+                  base: styles.root,
+                  label: styles.label,
+                  body2: styles.body2,
                 }}
               />
             </div>

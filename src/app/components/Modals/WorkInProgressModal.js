@@ -10,7 +10,6 @@ const WorkInProgressModal = (props) => {
       <Modal.Body style={{ backgroundColor: "#000000" }}>
         <div
           style={{
-            // backgroundColor: "#000000",
             color: "#ffffff",
             fontWeight: "bold",
             fontSize: "1.175rem",
@@ -27,7 +26,6 @@ const WorkInProgressModal = (props) => {
           style={{
             margin: "10px",
             marginRight: 0,
-            // backgroundColor: "rgb(246, 77, 4)",
             backgroundColor: "#000000",
             border: "1px solid #fff",
             borderRadius: 0,

@@ -1,38 +1,20 @@
-import React, { useEffect, useState } from "react";
+import { Backdrop, Fade, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material';
+import React from "react";
+import { Modal } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Modal from "@material-ui/core/Modal";
-import Backdrop from "@material-ui/core/Backdrop";
-import Fade from "@material-ui/core/Fade";
-import Typography from "@material-ui/core/Typography";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
-// MUI TABLE
-import Table from "@material-ui/core/Table";
-import TableBody from "@material-ui/core/TableBody";
-import TableCell from "@material-ui/core/TableCell";
-import TableContainer from "@material-ui/core/TableContainer";
-import TableHead from "@material-ui/core/TableHead";
-import TableRow from "@material-ui/core/TableRow";
-import TableFooter from "@material-ui/core/TableFooter";
-import TablePagination from "@material-ui/core/TablePagination";
-// MUI CARD
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-
-
-const useStyles = makeStyles((theme) => ({
+const styles = {
   modal: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
   },
   paper: {
-    
+
     border: "1px solid #fff",
     borderRadius: 5,
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 5),
+    // boxShadow: theme.shadows[5],
+    // padding: theme.spacing(2, 4, 5),
     backgroundColor: "#000",
     marginTop: "70px",
   },
@@ -63,7 +45,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
   },
   wrapper: {
-    
+
     padding: "4px 0px",
   },
   buttons: {
@@ -107,9 +89,9 @@ const useStyles = makeStyles((theme) => ({
     height: 120,
     objectFit: "cover",
   },
-}));
+}
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiIconButton: {
       root: {
@@ -177,48 +159,15 @@ let tableData = [
   },
 ];
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3),
-  createData("Eclair", 262, 16.0, 24, 6.0),
-  createData("Cupcake", 305, 3.7, 67, 4.3),
-  createData("Gingerbread", 356, 16.0, 49, 3.9),
-];
-
 const CartModal = (props) => {
-  
-  const [expanded, setExpanded] = useState("panel1");
-  const [disabled, setDisabled] = useState(true);
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(2);
-  const classes = useStyles();
 
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    console.log("changing rows: ", event);
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
-
-  //   Content
   return (
     <div>
       <ThemeProvider theme={makeTheme}>
         <Modal
           aria-labelledby="transition-modal-title"
           aria-describedby="transition-modal-description"
-          className={classes.modal}
+          sx={styles.modal}
           open={props.open}
           onClose={props.handleClose}
           closeAfterTransition
@@ -228,16 +177,16 @@ const CartModal = (props) => {
           }}
         >
           <Fade in={props.open}>
-            <div className={classes.paper}>
+            <div sx={styles.paper}>
               <div className="row no-gutters mb-3">
                 <div className="col-12 align-self-center">
-                  <Typography variant="h5" className={classes.cardHeading}>
+                  <Typography variant="h5" sx={styles.cardHeading}>
                     Your Cart
                   </Typography>
                 </div>
               </div>
               <TableContainer>
-                <Table className={classes.table} aria-label="simple table">
+                <Table sx={styles.table} aria-label="simple table">
                   <TableHead>
                     <TableRow>
                       <TableCell>Delete</TableCell>
@@ -257,7 +206,7 @@ const CartModal = (props) => {
                         <TableCell align="right">
                           <img
                             src={data.NFTurl}
-                            className={classes.cartNftThumb}
+                            sx={styles.cartNftThumb}
                             alt="NFT cart thumbnail"
                           />
                         </TableCell>
@@ -289,29 +238,13 @@ const CartModal = (props) => {
                       </TableCell>
                       <TableCell align="right">
                         <Link to="/dashboard/checkout">
-                          <button className={classes.CheckoutBtn}>
+                          <button sx={styles.CheckoutBtn}>
                             Proceed To Checkout
                           </button>
                         </Link>
                       </TableCell>
                     </TableRow>
                   </TableBody>
-                  {/* <TableFooter>
-                    <TableRow>
-                      <TablePagination
-                        align="center"
-                        rowsPerPageOptions={[2, 5]}
-                        component="div"
-                        rowSpan={1}
-                        colSpan={6}
-                        count={tableData.length}
-                        rowsPerPage={rowsPerPage}
-                        page={page}
-                        onPageChange={handleChangePage}
-                        onRowsPerPageChange={handleChangeRowsPerPage}
-                      />
-                    </TableRow>
-                  </TableFooter> */}
                 </Table>
               </TableContainer>
             </div>

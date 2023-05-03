@@ -1,19 +1,17 @@
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import ListAltIcon from "@material-ui/icons/ListAlt";
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import ListAltIcon from '@mui/icons-material/ListAlt';
 import Cookies from "js-cookie";
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 function AdminSidebar(props) {
-  //console.log(props);
-  let history = useHistory();
+  let navigate = useNavigate();
   let handleLogout = (e) => {
     sessionStorage.clear();
     sessionStorage.removeItem("Address");
     sessionStorage.removeItem("Authorization");
     Cookies.remove("Version");
 
-    history.push({ pathname: '/' });
+    navigate({ pathname: '/' });
     window.location.reload(false);
   };
 
@@ -44,7 +42,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.profile}>
               <Link to={`/user/settings`}>
-                <AccountCircle /> <span>Profile</span>
+                <AccountCircleIcon /> <span>Profile</span>
               </Link>
             </li>
             <li>

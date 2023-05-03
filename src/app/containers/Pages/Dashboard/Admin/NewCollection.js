@@ -1,81 +1,36 @@
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import FormControl from "@material-ui/core/FormControl";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Radio from "@material-ui/core/Radio";
-import RadioGroup from "@material-ui/core/RadioGroup";
-import Tooltip from "@material-ui/core/Tooltip";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
+import {
+  approveCollection,
+  createNewCollection,
+  updateCollectionTxHash,
+} from "../../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
+import Select from "../../../../components/Select/Select";
+import SelectDescription from "../../../../components/Select/SelectDescription";
+import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
+import UploadFile from "../../../../components/Upload/UploadFile";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
+import SubmitButton from "../../../../components/buttons/SubmitButton";
 
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-  tooltip: {
-    fontSize: "16px",
-  },
-}));
 
 function NewCollection(props) {
-  const [propertyKey, setPropertyKey] = useState("");
-  const [propertyValue, setPropertyValue] = useState("");
-  const [openDialog, setOpenDialog] = useState(false);
-  const [properties, setProperties] = useState([]);
-  const [levelValues, setLevelValues] = useState([
-    { name: "", lowLevel: 0, highLevel: 0 },
-  ]);
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
-  let [network, setNetwork] = useState(false);
+  const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-  let [approvalModalShow, setApprovalModalShow] = useState(false);
+  const [approvalModalShow, setApprovalModalShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
@@ -88,34 +43,26 @@ function NewCollection(props) {
     setOpen(true);
   };
 
-  const [tokenList, setTokenList] = useState([]);
-  let [isSaving, setIsSaving] = useState(false);
-  let [collectionName, setCollectionName] = useState("");
-  let [website, setWebsite] = useState("");
-  let [aboutTheArt, setAboutTheArt] = useState("");
-  let [ipfsHash, setIpfsHash] = useState(null);
-  let [collectionDescription, setCollectionDescription] = useState("");
-  let [collectionSymbol, setCollectionSymbol] = useState("");
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [image, setImage] = useState(r1);
-  let [imageFile, setImageFile] = useState();
-  let [fileURL, setFileURL] = useState(r1);
-  let [collectionId, setCollectionId] = useState("");
-  let [nftContractAddress, setNftContractAddress] = useState("");
-  let [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
-  let [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
-  let [isAuctionApproved, setIsAuctionApproved] = useState(false);
-  let [approvingAuction, setApprovingAuction] = useState(false);
-  let [doneLoader, setDoneLoader] = useState(false);
-  let [nftType, setNftType] = useState("1155");
-  let [version, setVersion] = useState("");
-  let [royaltyFee, setRoyaltyFee] = useState(0);
-  let [approvalFlag, setApprovalFlag] = useState(false);
-  let [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const Text721 =
-    "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
-  const Text1155 =
-    "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+  const [isSaving, setIsSaving] = useState(false);
+  const [collectionName, setCollectionName] = useState("");
+  const [collectionDescription, setCollectionDescription] = useState("");
+  const [collectionSymbol, setCollectionSymbol] = useState("");
+  const [isUploadingIPFS] = useState(false);
+  const [imageFile, setImageFile] = useState();
+  const [fileURL, setFileURL] = useState(r1);
+  const [collectionId, setCollectionId] = useState("");
+  const [nftContractAddress, setNftContractAddress] = useState("");
+  const [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
+  const [approvingFixedPrice, setApprovingFixedPrice] = useState(false);
+  const [isAuctionApproved, setIsAuctionApproved] = useState(false);
+  const [approvingAuction, setApprovingAuction] = useState(false);
+  const [doneLoader, setDoneLoader] = useState(false);
+  const [nftType, setNftType] = useState("1155");
+  const [version, setVersion] = useState("");
+  const [royaltyFee, setRoyaltyFee] = useState(null);
+  const [approvalFlag, setApprovalFlag] = useState(false);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
@@ -124,22 +71,15 @@ function NewCollection(props) {
 
     props.setActiveTab({
       dashboard: "",
+      newCollection: "active",
+      myCollection: "",
       newNFT: "",
-      orders: "",
-      settings: "",
       myNFTs: "",
-      mySeason: "",
-      myDrops: "",
-      myCubes: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
+      marketplace: "",
       newDrop: "",
-      newCube: "",
-      createNewCollection: "active",
-      newCollection: "",
-      newRandomDrop: "",
-    }); 
+      myDrops: "",
+      topUp: "",
+    });
   }, []);
 
   let loadWeb3 = async () => {
@@ -164,7 +104,7 @@ function NewCollection(props) {
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
     if (royaltyFee > 0) {
-      setIsSaving(true);
+      // setIsSaving(true);
 
       handleShowBackdrop();
       let collectionID;
@@ -180,8 +120,8 @@ function NewCollection(props) {
       let royaltyBlockchain = royaltyFee * 10000;
 
       if (nftType === "1155") {
-        axios.post(`/collection/`, fileData).then(
-          async (response) => {
+        createNewCollection(fileData)
+          .then(async (response) => {
             //console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
@@ -198,8 +138,8 @@ function NewCollection(props) {
             setIsSaving(false);
             handleCloseBackdrop();
             setIsSaving(false);
-          },
-          (error) => {
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -213,8 +153,7 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(r1);
             setIsSaving(false);
-          }
-        );
+          });
       } else if (nftType === "721") {
         await loadWeb3();
         const web3 = window.web3;
@@ -225,8 +164,8 @@ function NewCollection(props) {
           setIsSaving(false);
           handleShow();
         } else {
-          axios.post(`/collection/`, fileData).then(
-            async (response) => {
+          createNewCollection(fileData)
+            .then(async (response) => {
               console.log("collection creation response", response);
               setCollectionId(response.data.collection._id);
               collectionID = response.data.collection._id;
@@ -246,24 +185,19 @@ function NewCollection(props) {
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -288,8 +222,8 @@ function NewCollection(props) {
                   setFileURL(r1);
                   handleCloseBackdrop();
                 });
-            },
-            (error) => {
+            })
+            .catch((error) => {
               if (process.env.NODE_ENV === "development") {
                 console.log(error);
                 console.log(error.response);
@@ -299,8 +233,7 @@ function NewCollection(props) {
               enqueueSnackbar("Unable to Create New Collection.", { variant });
               handleCloseBackdrop();
               setIsSaving(false);
-            }
-          );
+            });
         }
       }
     } else {
@@ -335,8 +268,8 @@ function NewCollection(props) {
 
         let royaltyBlockchain = royaltyFee * 10000;
 
-        axios.post(`/collection/`, fileData).then(
-          async (response) => {
+        createNewCollection(fileData)
+          .then(async (response) => {
             console.log("collection creation response", response);
             setCollectionId(response.data.collection._id);
             collectionID = response.data.collection._id;
@@ -365,24 +298,19 @@ function NewCollection(props) {
                       variant,
                     }
                   );
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -429,24 +357,19 @@ function NewCollection(props) {
                       variant,
                     }
                   );
-                  axios
-                    .put(`/collection/txHash/${collectionID}`, {
-                      txHash: response,
-                    })
-                    .then(
-                      (response) => {
-                        console.log(
-                          "Transaction Hash sending on backend response: ",
-                          response
-                        );
-                      },
-                      (error) => {
-                        console.log(
-                          "Transaction hash on backend error: ",
-                          error
-                        );
-                      }
-                    );
+                  updateCollectionTxHash(collectionID, {
+                    txHash: response,
+                  }).then(
+                    (response) => {
+                      console.log(
+                        "Transaction Hash sending on backend response: ",
+                        response
+                      );
+                    },
+                    (error) => {
+                      console.log("Transaction hash on backend error: ", error);
+                    }
+                  );
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
@@ -472,8 +395,8 @@ function NewCollection(props) {
                   handleCloseBackdrop();
                 });
             }
-          },
-          (error) => {
+          })
+          .catch((error) => {
             if (process.env.NODE_ENV === "development") {
               console.log(error);
               console.log(error.response);
@@ -483,8 +406,7 @@ function NewCollection(props) {
             enqueueSnackbar("Unable to Create New Collection.", { variant });
             handleCloseBackdrop();
             setIsSaving(false);
-          }
-        );
+          });
       }
     } else {
       let variant = "error";
@@ -505,36 +427,30 @@ function NewCollection(props) {
   };
 
   let giveFixedPriceApproval = async () => {
-
     let approvalData = {
       collectionId: collectionId,
       factoryType: "fixed-price",
     };
 
-    axios.put(`/collection/approve`, approvalData).then(
-      (response) => {
+    approveCollection(approvalData)
+      .then((response) => {
         console.log("Response from approval of Fixed Price: ", response);
         let variant = "success";
-        enqueueSnackbar(
-          "Collection Approved For Fixed Price Successfully",
-          { variant }
-        );
+        enqueueSnackbar("Collection Approved For Fixed Price Successfully", {
+          variant,
+        });
         setIsFixedPriceApproved(true);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
-      },
-      (err) => {
+      })
+      .catch((error) => {
         let variant = "error";
         enqueueSnackbar("Unable to approve collection", { variant });
-        console.log("Err from approval Fixed-price: ", err);
-        console.log(
-          "Err response from approval Fixed-price: ",
-          err.response
-        );
+        console.log("Err from approval Fixed-price: ", error);
+        console.log("Err response from approval Fixed-price: ", error.response);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
-      }
-    );
+      });
   };
 
   let giveAuctionApproval = async () => {
@@ -587,8 +503,8 @@ function NewCollection(props) {
             factoryType: "auction",
           };
 
-          axios.put(`/collection/approve`, approvalData).then(
-            (response) => {
+          approveCollection(approvalData)
+            .then((response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";
               enqueueSnackbar("Collection Approved For Auction Successfully", {
@@ -597,16 +513,18 @@ function NewCollection(props) {
               setIsAuctionApproved(true);
               setApprovingAuction(false);
               setApprovalFlag(false);
-            },
-            (err) => {
+            })
+            .catch((error) => {
               let variant = "error";
               enqueueSnackbar("Unable to approve collection", { variant });
-              console.log("Err from auction approval: ", err);
-              console.log("Err response from auction approval: ", err.response);
+              console.log("Err from auction approval: ", error);
+              console.log(
+                "Err response from auction approval: ",
+                error.response
+              );
               setApprovingAuction(false);
               setApprovalFlag(false);
-            }
-          );
+            });
         });
     }
   };
@@ -623,7 +541,6 @@ function NewCollection(props) {
 
   return (
     <div className="backgroundDefault">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -644,197 +561,66 @@ function NewCollection(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                {/* Upload Image */}
                 <label>Select Preview Image</label>
-                <div className="filter-widget">
-                  <div className="form-group">
-                    <div className="row no-gutters align-items-end justify-content-start">
-                      <div className="co-12 col-md-auto profile-img mr-3">
-                        <img src={fileURL} alt="Collection Thumb" />
-                      </div>
-                      <div className="co-12 col-md-auto">
-                        <label
-                          htmlFor="uploadPreviewImg"
-                          className="uploadLabel"
-                        >
-                          {isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
-                        </label>
-                        <input
-                          name="sampleFile"
-                          type="file"
-                          id="uploadPreviewImg"
-                          accept=".png,.jpg,.jpeg,.gif"
-                          onChange={onChangeFile}
-                          hidden
-                        />
-                        <small className="form-text text-muted">
-                          Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                        </small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Feilds */}
+                <UploadFile
+                  fileURL={fileURL}
+                  isUploading={isUploadingIPFS}
+                  changeFile={onChangeFile}
+                  class="co-12 col-md-auto profile-img mr-3"
+                  accept=".png,.jpg,.jpeg,.gif"
+                  inputId="uploadPreviewImg"
+                />
                 <div className="form-group newNftFields">
-                  <label>Collection Name</label>
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="text"
-                      required
-                      value={collectionName}
-                      placeholder="Enter Name of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionName(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <label>Collection Symbol</label>
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="text"
-                      required
-                      value={collectionSymbol}
-                      placeholder="Enter Symbol of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionSymbol(e.target.value);
-                      }}
-                    />
-                  </div>
-                  <div>
-                    <label>Collection Description</label>
-                    <small style={{ marginLeft: "5px" }}></small>
-                  </div>
+                  <Select
+                    label="Collection Name"
+                    values={collectionName}
+                    placeholder="Enter Name of Collection"
+                    setValue={setCollectionName}
+                  />
+                  <Select
+                    label="Collection Symbol"
+                    values={collectionSymbol}
+                    placeholder="Enter Symbol of Collection"
+                    setValue={setCollectionSymbol}
+                  />
+                  <SelectDescription
+                    label="Collection Description"
+                    values={collectionDescription}
+                    placeholder="Enter Description of Collection"
+                    setDescription={setCollectionDescription}
+                  />
 
-                  <div className="form-group newNftWrapper">
-                    {/* <label>About the Art</label> */}
-                    <textarea
-                      type="text"
-                      required
-                      rows="4"
-                      value={collectionDescription}
-                      placeholder="Enter Description of Collection"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setCollectionDescription(e.target.value);
-                      }}
-                    />
-                  </div>
+                  <SelectRoyaltyFee
+                    RoyaltyFeeText={RoyaltyFeeText}
+                    values={royaltyFee}
+                    setRoyaltyFee={setRoyaltyFee}
+                  />
 
-                  <div>
-                    <Tooltip
-                      title={RoyaltyFeeText}
-                      classes={{ tooltip: classes.tooltip }}
-                      placement="top-start"
-                      arrow={true}
-                    >
-                      <label>
-                        Royalty Fee{" "}
-                        <i className="fa fa-info-circle" aria-hidden="true"></i>
-                      </label>
-                    </Tooltip>
-
-                    <small style={{ marginLeft: "5px" }}></small>
-                  </div>
-
-                  <div className="form-group newNftWrapper">
-                    <input
-                      type="number"
-                      required
-                      value={royaltyFee}
-                      placeholder="Enter Royalty Fee"
-                      className="form-control newNftInput"
-                      onChange={(e) => {
-                        setRoyaltyFee(e.target.value);
-                      }}
-                    />
-                  </div>
-
-                  <FormControl component="fieldset">
-                    <label
-                      component="legend"
-                      style={{ fontWeight: "bold", fontFamily: "orbitron" }}
-                    >
-                      Select NFT Type
-                    </label>
-                    <RadioGroup
-                      row
-                      aria-label="position"
-                      name="position"
-                      defaultValue="top"
-                    >
-                      <Tooltip
-                        title={Text721}
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC721"
-                          onChange={() => {
-                            setWorkProgressModalShow(true);
-                          }}
-                          checked={nftType === "721"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Single{" "}
-                              <i
-                                className="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
-                      </Tooltip>
-                      <Tooltip
-                        title={Text1155}
-                        classes={{ tooltip: classes.tooltip }}
-                      >
-                        <FormControlLabel
-                          style={{ color: "white" }}
-                          value="ERC1155"
-                          onChange={() => {
-                            setNftType("1155");
-                          }}
-                          checked={nftType === "1155"}
-                          control={<Radio style={{ color: "#fff" }} />}
-                          label={
-                            <span style={{ fontSize: "0.9rem" }}>
-                              Multiple{" "}
-                              <i
-                                className="fa fa-info-circle"
-                                aria-hidden="true"
-                              ></i>
-                            </span>
-                          }
-                        />
-                      </Tooltip>
-                    </RadioGroup>
-                  </FormControl>
+                  <SelectNFTAndSaleType
+                    label="Select NFT Type"
+                    onChangeWorkInProgress={() => {
+                      console.log("721workinf");
+                      setWorkProgressModalShow(true);
+                    }}
+                    onChange={() => {
+                      console.log("1155working");
+                      setNftType("1155");
+                    }}
+                    type={nftType}
+                    radioType="nft"
+                  />
                 </div>
               </div>
             </form>
           </div>
         </div>
-        {isSaving ? (
-          <WhiteSpinner />
-        ) : (
-          <div className="submit-section">
-            <button
-              type="button"
-              onClick={(e) => {
-                version === "v1-sso"
-                  ? handleSubmitEvent(e)
-                  : handleSubmitEventMetamask(e);
-              }}
-              className="btn submit-btn propsActionBtn"
-            >
-              Add Collection
-            </button>
-          </div>
-        )}
+        <SubmitButton
+          label="Add Collection"
+          isSaving={isSaving}
+          version={version}
+          handleSubmitEvent={handleSubmitEvent}
+          handleSubmitEventMetamask={handleSubmitEventMetamask}
+        />
       </div>
       <NetworkErrorModal
         show={show}
@@ -858,9 +644,7 @@ function NewCollection(props) {
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

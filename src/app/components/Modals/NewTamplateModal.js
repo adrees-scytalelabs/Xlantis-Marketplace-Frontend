@@ -1,33 +1,22 @@
-import React, { useState } from "react";
-// BOOTSTRAP
-import { Col, Modal, Row } from "react-bootstrap";
-import { Button } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
-import Tooltip from "@material-ui/core/Tooltip";
-import axios from "axios";
-import Backdrop from "@material-ui/core/Backdrop";
+import { Tooltip } from "@mui/material";
 import { useSnackbar } from "notistack";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
-
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
+import {
+  createNewAdminTemplates,
+  getIsAvailableTemplates,
+} from "../API/AxiosInterceptor";
+import CircularBackdrop from "../Backdrop/Backdrop";
 
 const NewTamplateModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
 
-  let [title, setTitle] = useState("");
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
-  let [defaultt, setDefault] = useState(false);
+  const [title, setTitle] = useState("");
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [defaultt, setDefault] = useState(false);
   const [open, setOpen] = useState(false);
-  let [available, setAvailable] = useState();
-  let [checking, setChecking] = useState(false);
+  const [available, setAvailable] = useState();
+  const [checking, setChecking] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -64,24 +53,20 @@ const NewTamplateModal = (props) => {
     setChecking(true);
     let namee = e.target.value;
 
-    axios.get(`/nft-properties/template/is-available/${namee}`).then(
-      (response) => {
+    getIsAvailableTemplates(namee)
+      .then((response) => {
         console.log("response", response);
         setAvailable(response.data.isAvailable);
         setChecking(false);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           setChecking(false);
 
           console.log(error);
           console.log(error.response);
         }
-      }
-    );
-    // setTimeout(() => {
-    //   setChecking(false);
-    // }, 2000);
+      });
   };
 
   let handleSaveTemplate = (e) => {
@@ -98,8 +83,8 @@ const NewTamplateModal = (props) => {
       data: properties,
     };
 
-    axios.post("/nft-properties/admin/template", templateData).then(
-      (response) => {
+    createNewAdminTemplates(templateData)
+      .then((response) => {
         console.log("response", response);
 
         setTitle("");
@@ -109,18 +94,16 @@ const NewTamplateModal = (props) => {
         let variant = "success";
         enqueueSnackbar("New Template Created Successfully", { variant });
         props.handleClose();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-
         let variant = "error";
         enqueueSnackbar("Unable to Create Template", { variant });
-      }
-    );
+      });
   };
 
   const getIcon = () => {
@@ -162,9 +145,7 @@ const NewTamplateModal = (props) => {
               right: "5px",
               transform: "translateY(-50%)",
               color: "red",
-              // cursor: 'pointer',
             }}
-            // onClick={handleClearClick}
           >
             X
           </div>
@@ -180,8 +161,13 @@ const NewTamplateModal = (props) => {
       centered
       backdrop="static"
     >
-      <Modal.Header className="NewTemplateHeader" style={{background: 'black'}}>
-        <Modal.Title style={{color:'white'}}>Create New Template</Modal.Title>
+      <Modal.Header
+        className="NewTemplateHeader"
+        style={{ background: "black" }}
+      >
+        <Modal.Title style={{ color: "white" }}>
+          Create New Template
+        </Modal.Title>
       </Modal.Header>
       <Modal.Body className="NewTemplateBody">
         <div>
@@ -351,9 +337,7 @@ const NewTamplateModal = (props) => {
             </h6>
           </div>
         </div>
-        <Backdrop className={classes.backdrop} open={open}>
-          <CircularProgress color="inherit" />
-        </Backdrop>
+        <CircularBackdrop open={open} />
       </Modal.Body>
     </Modal>
   );

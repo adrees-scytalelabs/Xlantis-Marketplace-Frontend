@@ -1,47 +1,17 @@
-import { Grid } from "@material-ui/core/";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    maxWidth: 345,
-  },
-  media: {
-    height: 300,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+import { getMarketAuction, getMarketFixedPrice } from "../../../redux/getMarketPlaceDataSlice";
+import { Grid } from "@mui/material";
 
 function MarketPlace(props) {
-  const classes = useStyles();
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
-
+  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } = useSelector((store) => store.getMarketPlaceData);
+  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -50,69 +20,43 @@ function MarketPlace(props) {
     setOpen(true);
   };
 
-
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/saleType/fixed-price/${start}/${end}`
+    dispatch(getMarketFixedPrice({ start, end }))
+    if (fixedPriceLoading) {
+      setFixedPriceDrop(fixedPriceData);
+      handleCloseBackdrop();
     }
-    else
-    {
-      endpoint = `/drop/saleType/fixed-price/${start}/${end}`
+    else if (fixedPriceLoading === 2) {
+      handleCloseBackdrop();
     }
-    axios
-      .get(endpoint)
-      .then(
-        (response) => {
-          console.log("responseeeee", response);
-          setFixedPriceDrop(response.data.data);
-          handleCloseBackdrop();
-        },
-        (error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
-        }
-      );
   };
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    let version = Cookies.get("Version");
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/saleType/auction/${start}/${end}`
+    dispatch(getMarketAuction({ start, end }));
+    if (auctionLoading === 1) {
+      setBidableDrop(auctionData);
+      handleCloseBackdrop();
     }
-    else
-    {
-      endpoint = `/drop/saleType/auction/${start}/${end}`
+    else if (auctionLoading === 2) {
+      handleCloseBackdrop();
     }
-    axios.get(endpoint).then(
-      (res) => {
-        console.log("Bidable drops response: ", res);
-        setBidableDrop(res.data.data);
-        handleCloseBackdrop();
-      },
-      (err) => {
-        console.log("could not get bidable drops ", err.response);
-        handleCloseBackdrop();
-      }
-    );
   };
 
   useEffect(() => {
-    getCubes(0, 12); 
-    getBidableDrops(0, 12);
-  }, []);
+    getBidableDrops(0, 4);
+  }, [auctionLoading]);
+
+  useEffect(() => {
+    getCubes(0, 4);
+  }, [fixedPriceLoading]);
+
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} role={null}/>
+          <HeaderHome selectedNav={"Market"} role={null} />
         </div>
         <div className="row no-gutters mt-5">
           <div className="container-fluid">
@@ -126,7 +70,7 @@ function MarketPlace(props) {
                     container
                     spacing={2}
                     direction="row"
-                    justify="flex-start"
+                    justifyContent="flex-start"
                     item
                   >
                     <MarketPlaceTabs

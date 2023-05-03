@@ -1,18 +1,14 @@
-import { ThemeProvider, createMuiTheme } from "@material-ui/core";
-import { Grid } from "@material-ui/core/";
-import Card from "@material-ui/core/Card";
-import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+
+import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
-import { nftImage } from "../../../../assets/js/images";
 import NFTCard from "../../../../components/Cards/NFTCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-
-const useStyles = makeStyles({
+import { myNft } from "../../../../redux/myNftSlice";
+const useStyles = {
   root: {
     borderRadius: 12,
     border: 0,
@@ -28,9 +24,9 @@ const useStyles = makeStyles({
     fontWeight: "bold",
     fontFamily: "poppins",
   },
-});
+}
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiTablePagination: {
       caption: {
@@ -64,16 +60,15 @@ const makeTheme = createMuiTheme({
   },
 });
 
-//console.log("nft images: ", nftImage);
-
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalNfts, setTotalNfts] = useState(0);
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
-  const classes = useStyles();
+  const [, setVersionB] = useState("");
+  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -81,66 +76,37 @@ function MyNFTs(props) {
     setOpen(true);
   };
   let getMyNFTs = (start, end) => {
+    dispatch(myNft({ start, end }));
     handleShowBackdrop();
-    const version = Cookies.get("Version");
-    //console.log("version", version);
-    axios.get(`/nft/myNFTs/${start}/${end}`).then(
-      (response) => {
-       // console.log("response", response);
-        let nfts = response.data.NFTdata;
-        let newState = nfts.map((obj) => {
-          return { ...obj, isPlaying: false };
-        });
-        //console.log("NFTS", nfts);
-        //console.log("Updated", newState);
-        setTokenList(newState);
-        setTotalNfts(response.data.Nftcount);
+    let nfts = nftData;
+    console.log("data from redx", nftData, nftCount);
+    let newState = nfts.map((obj) => {
+      return { ...obj, isPlaying: false };
+    });
+    setTokenList(newState);
+    setTotalNfts(nftCount);
 
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+    handleCloseBackdrop();
   };
+
+  useEffect(() => {
+    getMyNFTs(0, rowsPerPage);
+  }, [loading]);
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-    getMyNFTs(0, rowsPerPage);
-
     props.setActiveTab({
       dashboard: "",
-      newNFT: "",
-      orders: "",
-      myNFTs: "active",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
-      newDrop: "",
-      newCube: "",
       newCollection: "",
-      newRandomDrop: "",
-    }); 
+      myCollections: "",
+      newNFT: "",
+      myNFTs: "active",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
+    });
   }, []);
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -156,12 +122,8 @@ function MyNFTs(props) {
     setPage(0);
   };
 
-  //console.log("the tokenList length: ", tokenList.length);
-  //console.log(tokenList.length !== 0 && "page-height");
-
   return (
     <div className="backgroundDefault position-relative">
-
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -179,7 +141,6 @@ function MyNFTs(props) {
       </div>
 
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
-        {/* <form> */}
         <div className="form-group">
           {open ? (
             <div className="row no-gutters justify-content-center align-items-center">
@@ -188,24 +149,7 @@ function MyNFTs(props) {
               </div>
             </div>
           ) : tokenList.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {tokenList.map((i, index) => (
@@ -226,12 +170,12 @@ function MyNFTs(props) {
             rowsPerPage={rowsPerPage}
             labelRowsPerPage={"Items per page"}
             page={page}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
             classes={{
-              root: classes.root,
-              label: classes.label,
-              body2: classes.body2,
+              root: useStyles.root,
+              label: useStyles.label,
+              body2: useStyles.body2,
             }}
           />
         </div>

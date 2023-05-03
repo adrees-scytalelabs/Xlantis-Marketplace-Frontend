@@ -1,60 +1,37 @@
+import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Col, Row } from "react-bootstrap";
-import { Button } from "@material-ui/core";
-import { Check } from "@material-ui/icons";
-import Tooltip from "@material-ui/core/Tooltip";
-import axios from "axios";
-import Backdrop from "@material-ui/core/Backdrop";
-import { useSnackbar } from "notistack";
-import { makeStyles } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+import {
+  createNewSuperAdminTemplates,
+  getIsAvailableTemplates,
+} from "../../../../components/API/AxiosInterceptor";
+import SuperAdminCreateTemplate from "../../../../components/Utils/SuperAdminCreateTemplate";
 function CreateTemplate(props) {
   const { enqueueSnackbar } = useSnackbar();
-  const classes = useStyles();
-  let [valid, setValid] = useState("");
-  let [title, setTitle] = useState("");
-  let [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
+  const [valid, setValid] = useState("");
+  const [title, setTitle] = useState("");
+  const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const [open, setOpen] = useState(false);
 
   let handleAvailibility = (e) => {
     e.preventDefault();
     let name = e.target.value;
-
-
-    axios.get(`/nft-properties/template/is-available/${name}`).then(
-      (response) => {
-        // console.log("response", response);
-        // console.log("Check response",response.data.isAvailable)
-        if(!response.data.isAvailable){
-          setValid("is-valid")
+    getIsAvailableTemplates(name)
+      .then((response) => {
+        if (!response.data.isAvailable) {
+          setValid("is-valid");
+        } else {
+          setValid("is-invalid");
         }
-        else{
-          setValid("is-invalid")
-        }
-
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
-          setValid("is-invalid")
+          setValid("is-invalid");
           console.log(error);
           console.log(error.response);
         }
-
-
-      }
-    );
-    // setTimeout(() => {
-    //   setChecking(false);
-    // }, 2000);
-  }
+      });
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -66,8 +43,6 @@ function CreateTemplate(props) {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
     setProperties([...properties, newData]);
-    // console.log("Add button pressed.");
-    // console.log("Properties: ", properties);
   };
 
   let handleRemoveProperty = (e, index) => {
@@ -78,10 +53,7 @@ function CreateTemplate(props) {
   };
 
   let handlePropertyChange = (index, event) => {
-   // console.log(properties, " /// properties");
     let data = [...properties];
-  //  console.log("the datat change: ", event.target);
-  //  console.log("the data index /// ", data[index][event.target.name]);
     data[index][event.target.name] = event.target.value;
     setProperties(data);
   };
@@ -89,28 +61,21 @@ function CreateTemplate(props) {
   let handleSaveTemplate = (e) => {
     e.preventDefault();
     handleShowBackdrop();
-
-  //  console.log("Properties : ", properties);
-  //  console.log("Title", title);
-
     let templateData = {
       name: title,
       data: properties,
     };
-
-  //  console.log("Template Data", templateData);
     try {
-      axios.post("/super-admin/template", templateData).then(
-        (response) => {
-       //   console.log("response", response);
+      createNewSuperAdminTemplates(templateData)
+        .then((response) => {
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
           handleCloseBackdrop();
           let variant = "success";
           enqueueSnackbar("New Template Created Successfully", { variant });
           setValid("");
-        },
-        (error) => {
+        })
+        .catch((error) => {
           if (process.env.NODE_ENV === "development") {
             console.log(error);
             console.log(error.response);
@@ -119,8 +84,7 @@ function CreateTemplate(props) {
 
           let variant = "error";
           enqueueSnackbar("Unable to Create Template", { variant });
-        }
-      );
+        });
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
@@ -137,11 +101,10 @@ function CreateTemplate(props) {
       properties: "active",
       template: "active",
       saved: "",
-    }); 
+    });
   }, []);
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -162,7 +125,6 @@ function CreateTemplate(props) {
           </div>
         </div>
       </div>
-      {/*Page Content */}
       <div className="page-content mt-5">
         <div className="row">
           <div className="col-12 col-lg-6 col-sm-12 col-md-8">
@@ -176,11 +138,10 @@ function CreateTemplate(props) {
                 value={title}
                 className={`newNftProps form-control ${valid}`}
                 onChange={(e) => {
-                //  console.log("title", e.target.value);
                   handleAvailibility(e);
                   setTitle(e.target.value);
                 }}
-                style={{backgroundColor:'transparent',color:'white'}}
+                style={{ backgroundColor: "transparent", color: "white" }}
               />
             </div>
           </div>
@@ -188,60 +149,12 @@ function CreateTemplate(props) {
 
         {properties.map((property, index) => {
           return (
-            <div key={index} className="row mt-3">
-              <div className="col-12 col-md-4 col-lg-4 col-sm-12">
-                <label>
-                  Key<span style={{ color: "#F64D04" }}>&#42;</span>
-                </label>
-                <div className="filter-widget">
-                  <input
-                    name="key"
-                    type="text"
-                    placeholder="Enter key of the property"
-                    required
-                    value={property.key}
-                    className="newNftProps"
-                    onChange={(e) => handlePropertyChange(index, e)}
-                  />
-                </div>
-              </div>
-
-              <div className="col-12 col-md-2 col-lg-1 col-sm-12 ml-2">
-                <label className="ml-lg-2 ml-md-2">
-                  Type<span style={{ color: "#F64D04" }}>&#42;</span>
-                </label>
-                <div className="position-relative">
-                  <select
-                    name="type"
-                    id="valueType"
-                    className="templatesSelect"
-                    placeholder="Select a Type"
-                    onChange={(e) => handlePropertyChange(index, e)}
-                    style={{ padding: "9px" }}
-                  >
-                    <option value="boolean" defaultValue>
-                      Boolean
-                    </option>
-                    <option value="string">String</option>
-                    <option value="number">Number</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="col-12 col-md-5 col-lg-1 ml-lg-5 ml-md-5 ml-sm-2 ml-xs-2 mt-4 mt-md-0 ml-2 ml-md-0">
-                <label>Action</label>
-                <div className="filter-widget">
-                  <Tooltip title="Remove a property" placement="bottom">
-                    <button
-                      className="btn btn-submit btn-lg propsActionBtn"
-                      onClick={(e) => handleRemoveProperty(e, index)}
-                    >
-                      -
-                    </button>
-                  </Tooltip>
-                </div>
-              </div>
-            </div>
+            <SuperAdminCreateTemplate
+              handlePropertyChange={handlePropertyChange}
+              handleRemoveProperty={handleRemoveProperty}
+              property={property}
+              index={index}
+            />
           );
         })}
         <div className="row mt-5">
@@ -269,5 +182,4 @@ function CreateTemplate(props) {
     </div>
   );
 }
-
 export default CreateTemplate;

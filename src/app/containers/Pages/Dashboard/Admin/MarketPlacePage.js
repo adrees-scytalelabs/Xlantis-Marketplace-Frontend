@@ -1,24 +1,13 @@
-import { CardHeader, Grid, Tooltip } from "@material-ui/core/";
-import Alert from "@material-ui/lab/Alert";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import { makeStyles } from "@material-ui/core/styles";
-import TablePagination from "@material-ui/core/TablePagination";
-import Typography from "@material-ui/core/Typography";
-import axios from "axios";
-import Cookies from "js-cookie";
+import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
-import { Link } from "react-router-dom";
-import { useRouteMatch } from "react-router-dom";
-import Countdown from "react-countdown";
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useResolvedPath } from "react-router-dom";
+import DropsPageCard from "../../../../components/Cards/DropsPageCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { truncate } from "../../../../assets/js/utils";
+import { getSaleType } from "../../../../redux/getMarketPlaceSaleTypeSlice";
 
-const cardStyles = makeStyles((theme) => ({
+const cardStyles = {
   cardTheme: {
     boxShadow: "none",
   },
@@ -29,11 +18,6 @@ const cardStyles = makeStyles((theme) => ({
     textTransform: "capitalize",
     fontSize: "1rem",
     marginTop: "0rem",
-  },
-  cardDescriptions: {
-    color: "#999",
-    fontFamily: "inter",
-    fontSize: "0.875rem",
   },
   price: {
     color: "hsla(350, 93%, 61%, 1)",
@@ -49,9 +33,9 @@ const cardStyles = makeStyles((theme) => ({
     border: "none",
     fontWeight: "bold",
   },
-}));
+}
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     borderRadius: 0,
   },
@@ -59,83 +43,49 @@ const useStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: "100%",
   },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
   title: {
     fontSize: 14,
   },
   pos: {
     marginBottom: 12,
   },
-}));
+}
 
 function MarketPlacePage(props) {
-  const classes = useStyles();
-  const cardClasses = cardStyles();
-  let { path } = useRouteMatch();
+
+  const path = useResolvedPath("").pathname;
   const [tokenList, setTokenList] = useState([]);
 
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const { saleTypeData, loading } = useSelector((store) => store.marketPlaceSaleType);
+  const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
   const handleShowBackdrop = () => {
     setOpen(true);
   };
+
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    const version = Cookies.get("Version");
-   // console.log("version", version);
-    axios.get(`/drop/saleType/${saleType}/${start}/${end}`).then(
-      (response) => {
-      //  console.log("response", response);
-        setTokenList(response.data.data);
-        setTotalDrops(response.data.data.length);
-        handleCloseBackdrop();
-      },
-      (error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        handleCloseBackdrop();
-      }
-    );
+    dispatch(getSaleType({ saleType, start, end }))
+    if (loading === 1) {
+      setTokenList(saleTypeData);
+      setTotalDrops(saleTypeData.length);
+      handleCloseBackdrop();
+    }
+    else if (loading === 2) {
+      handleCloseBackdrop();
+    }
   };
 
   useEffect(() => {
-    setVersionB(Cookies.get("Version"));
-
     getMyDrops(props.saleType, 0, rowsPerPage);
-    
-  }, []);
+  }, [loading]);
+
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -160,30 +110,13 @@ function MarketPlacePage(props) {
           {open ? (
             <WhiteSpinner />
           ) : totalDrops === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "#000",
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                component="div"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid
               container
               spacing={2}
               direction="row"
-              justify="flex-start"
+              justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
                 <Grid
@@ -197,207 +130,20 @@ function MarketPlacePage(props) {
                   key={index}
                 >
                   <Link
-                    to={{
-                      pathname: `${path}/drops/nfts`,
-                      state: {
-                        nftId: i.NFTIds,
-                        dropId: i._id,
-                        startTime: i.startTime,
-                        endTime: i.endTime,
-                        saleType: i.saleType,
-                      },
+                    to={`${path}/drops/nfts`}
+                    state={{
+                      nftId: i.NFTIds,
+                      dropId: i._id,
+                      startTime: i.startTime,
+                      endTime: i.endTime,
+                      saleType: i.saleType,
                     }}
                   >
-                    <Card
-                      id="marketCardProps"
-                      style={{ height: "100%" }}
-                      variant="outlined"
-                      className={classes.root}
-                    >
-                      <CardActionArea>
-                        <CardMedia
-                          className={classes.media}
-                          image={i.image}
-                          title="Drop Image"
-                        ></CardMedia>
-                        <CardContent>
-                          <div
-                            className="row no-gutters justify-content-between"
-                            style={{ minHeight: "60px" }}
-                          >
-                            <div className="col-8 align-self-end">
-                              <Typography
-                                variant="h6"
-                                component="div"
-                                className={cardClasses.cardTitle}
-                              >
-                                {truncate(i.title, 15)}
-                              </Typography>
-                              <Typography
-                                variant="body2"
-                                component="p"
-                                className={cardClasses.cardDescriptions}
-                              >
-                                {truncate(i.description, 25)}
-                              </Typography>
-                            </div>
-                            <div className="col-4 align-self-end text-right p-0">
-                              <p
-                                className="nftPrice mb-0 p-0"
-                                style={{ lineHeight: "1.6" }}
-                              >
-                                {i.totalNFTs} NFTs
-                              </p>
-                            </div>
-                          </div>
-                          <br></br>
-                          {i.saleType === "auction" ? (
-                            <Typography
-                              variant="h6"
-                              gutterBottom
-                              className="text-center mb-0"
-                            >
-                              {new Date() < new Date(i.startTime) ? (
-                                <div style={{ marginTop: "1rem" }}>
-                                  <Alert
-                                    severity="info"
-                                    className={cardClasses.textAlert}
-                                  >
-                                    <span
-                                      style={{
-                                        fontFamily: "orbitron",
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      Auction Starts At:{" "}
-                                    </span>
-                                    <span>
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.startTime)}
-                                        style={{ fontFamily: "orbitron" }}
-                                      ></Countdown>
-                                    </span>
-                                  </Alert>
-                                </div>
-                              ) : new Date() > new Date(i.startTime) &&
-                                new Date() < new Date(i.endTime) ? (
-                                <div style={{ marginTop: "1rem" }}>
-                                  <Alert
-                                    severity="warning"
-                                    className={cardClasses.textAlert}
-                                  >
-                                    <span
-                                      style={{
-                                        fontFamily: "orbitron",
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      Auction Ends At:{" "}
-                                    </span>
-                                    <span>
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.endTime)}
-                                        style={{ fontFamily: "orbitron" }}
-                                      ></Countdown>
-                                    </span>
-                                  </Alert>
-                                </div>
-                              ) : (
-                                <Typography
-                                  variant="body2"
-                                  style={{
-                                    marginTop: "1rem",
-                                  }}
-                                  component="p"
-                                >
-                                  <Alert
-                                    severity="error"
-                                    className={cardClasses.textAlert}
-                                    style={{ fontWeight: "bold" }}
-                                  >
-                                    Auction Ended
-                                  </Alert>
-                                </Typography>
-                              )}
-                            </Typography>
-                          ) : (
-                            <Typography
-                              variant="h6"
-                              gutterBottom
-                              className="text-center mb-0"
-                            >
-                              {new Date() < new Date(i.startTime) ? (
-                                <div style={{ marginTop: "1rem" }}>
-                                  <Alert
-                                    severity="info"
-                                    className={cardClasses.textAlert}
-                                  >
-                                    <span
-                                      style={{
-                                        fontFamily: "orbitron",
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      Sale Starts At:{" "}
-                                    </span>
-                                    <span>
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.startTime)}
-                                        style={{ fontFamily: "orbitron" }}
-                                      ></Countdown>
-                                    </span>
-                                  </Alert>
-                                </div>
-                              ) : new Date() > new Date(i.startTime) &&
-                                new Date() < new Date(i.endTime) ? (
-                                <div style={{ marginTop: "1rem" }}>
-                                  <Alert
-                                    severity="warning"
-                                    className={cardClasses.textAlert}
-                                  >
-                                    <span
-                                      style={{
-                                        fontFamily: "orbitron",
-                                        fontWeight: "bold",
-                                      }}
-                                    >
-                                      Sale Ends At:{" "}
-                                    </span>
-                                    <span>
-                                      <Countdown
-                                        daysInHours
-                                        date={new Date(i.endTime)}
-                                        style={{ fontFamily: "orbitron" }}
-                                      ></Countdown>
-                                    </span>
-                                  </Alert>
-                                </div>
-                              ) : (
-                                <Typography
-                                  variant="body2"
-                                  style={{
-                                    marginTop: "1rem",
-                                  }}
-                                  component="p"
-                                >
-                                  <Alert
-                                    severity="error"
-                                    className={cardClasses.textAlert}
-                                    style={{ fontWeight: "bold" }}
-                                  >
-                                    Sale Ended
-                                  </Alert>
-                                </Typography>
-                              )}
-                            </Typography>
-                          )}
-
-                          </CardContent>
-                      </CardActionArea>
-                      </Card>
+                    <DropsPageCard
+                      dropDetails={i}
+                      classes={styles}
+                      cardClasses={cardStyles}
+                    />
                   </Link>
                 </Grid>
               ))}
@@ -412,11 +158,11 @@ function MarketPlacePage(props) {
           count={totalDrops}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-    </div>
+    </div >
   );
 }
 

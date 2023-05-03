@@ -17,8 +17,8 @@ const mapStateToProps = (state) => {
 };
 
 function ProfileHeader(props) {
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -82,14 +82,12 @@ function ProfileHeader(props) {
                     width="50"
                     alt="Ryan Taylor"
                   />
-                  {/* ) : ( */}
                   <img
                     className="avatar-sm rounded-circle"
                     src={patient}
                     width="50"
                     alt="Ryan Taylor"
                   />
-                  {/* )} */}
                 </span>
               </Dropdown.Toggle>
 
