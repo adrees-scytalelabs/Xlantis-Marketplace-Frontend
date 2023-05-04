@@ -67,6 +67,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     console.log("...rest", rest);
     console.log("jwtDecoded", jwtDecoded);
+    checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (

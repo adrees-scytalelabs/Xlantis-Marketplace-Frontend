@@ -1,6 +1,6 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -18,7 +18,7 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 const cardStyles = {
   cardTheme: {
@@ -45,7 +45,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 function DropsPage(props) {
   const [tokenList, setTokenList] = useState([]);
@@ -107,21 +107,12 @@ function DropsPage(props) {
           ) : (
             <Grid
               container
-              spacing={3}
               direction="row"
+              spacing={3}
               justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  spacing={1}
-                  direction="row"
-                  key={index}
-                >
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                   {props.status === "draft" ? (
                     <Link
                       to={`/dashboard/newDrop/addNft`}

@@ -32,7 +32,7 @@ function UpdateDropAndPublishDrop({
               handleSubmitEvent(e);
             }}
             style={{ float: "right", marginBottom: "5%" }}
-            className={buttonName}
+            className="bttn"
           >
             Update Drop
           </button>

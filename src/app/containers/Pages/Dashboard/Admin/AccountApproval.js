@@ -95,7 +95,7 @@ function a11yProps(index) {
 function AccountApproval(props) {
   const [value, setValue] = useState(0);
   const path = useResolvedPath("").pathname;
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 

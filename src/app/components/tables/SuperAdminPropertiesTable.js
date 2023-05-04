@@ -49,20 +49,20 @@ function SuperAdminPropertiesTable(props) {
     <Table responsive>
       <thead style={{color:'black'}}>
         <tr>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Template Name
             </div>
           </th>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               No of Properties
             </div>
           </th>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="ml-5">Details</div>
           </th>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Delete/Edit
             </div>
@@ -72,14 +72,14 @@ function SuperAdminPropertiesTable(props) {
       {props.templateData.map((i, index) => (
         <tbody style={{color:'white'}}>
           <tr>
-            <td sx={styles.collectionTitle}>{i.name}</td>
-            <td sx={styles.collectionTitle}>
+            <td style={styles.collectionTitle}>{i.name}</td>
+            <td style={styles.collectionTitle}>
               <div className="justify-content-center align-items-center ml-5">
                 {" "}
                 {i.properties.length}{" "}
               </div>
             </td>
-            <td sx={styles.collectionTitle}>
+            <td style={styles.collectionTitle}>
               <button
                 className="btn submit-btn propsActionBtn "
                 onClick={(e) => props.handleOpen(e, i)}
@@ -87,7 +87,7 @@ function SuperAdminPropertiesTable(props) {
                 View
               </button>
             </td>
-            <td sx={styles.collectionTitle}>
+            <td style={styles.collectionTitle}>
               <span className="ml-4">
                 <button style={{ background: "transparent", border: "none" }}>
                   <DeleteIcon
