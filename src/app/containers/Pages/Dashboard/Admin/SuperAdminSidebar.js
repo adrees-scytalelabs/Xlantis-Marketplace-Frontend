@@ -1,8 +1,8 @@
 import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import { Link, useResolvedPath } from "react-router-dom";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
 import "../../../../assets/css/superAdmin.css";
-import AttachMoneyIcon from '@material-ui/icons/AttachMoney';
 
 
 function SuperAdminSidebar(props) {
@@ -202,12 +202,14 @@ function SuperAdminSidebar(props) {
               </div>
             </li>
             <li className={props.activeTab.platformFee}>
-              <Link to={`${props.match.url}/platformFee`}
+              <Link to={`${path}/platformFee`}
                 className="sidebarLink"
               >
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Platform Fee</span>
               </Link>
             </li>
+
+            
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

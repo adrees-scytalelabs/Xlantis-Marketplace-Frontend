@@ -1,36 +1,21 @@
-import { Avatar, CardHeader, Grid } from "@material-ui/core/";
-import Backdrop from "@material-ui/core/Backdrop";
-import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
-
-import CardMedia from "@material-ui/core/CardMedia";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { Link, } from "react-router-dom";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import { useResolvedPath } from "react-router-dom";
+import { ThemeProvider, createTheme } from "@mui/material";
 import axios from "axios";
 
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
-import { useHistory, useRouteMatch } from "react-router-dom";
 
-const useStyles = makeStyles((theme) => ({
+const styles = {
   root: {
     maxWidth: 345,
   },
   media: {
     height: 300,
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
+ 
   card: {
     minWidth: 250,
   },
@@ -48,9 +33,9 @@ const useStyles = makeStyles((theme) => ({
   tooltip: {
     fontSize: "16px",
   },
-}));
+}
 
-const makeTheme = createMuiTheme({
+const makeTheme = createTheme({
   overrides: {
     MuiFormControlLabel: {
       label: {
@@ -68,13 +53,11 @@ const makeTheme = createMuiTheme({
 
 function PlatformFee(props) {
   const { enqueueSnackbar } = useSnackbar();
-  let { path } = useRouteMatch();
   const [value, setValue] = useState(0);
 
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
 
-  const classes = useStyles();
   useEffect(() => {
     if (props.tab === 1) {
       setValue(1);
@@ -97,6 +80,35 @@ function PlatformFee(props) {
       platformFee:"active",
     }); 
   }, []);
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    handleShowBackdrop();
+    let data = {
+      platformFee: PlatformFee,
+    };
+
+    axios.post("/platform-fee/admin", data).then(
+      (response) => {
+        handleCloseBackdrop();
+        let variant = "success";
+        enqueueSnackbar("Platform Fee Set Successfully", { variant });
+      },
+      (error) => {
+
+        handleCloseBackdrop();
+        let variant = "error";
+        enqueueSnackbar("Unable to set Platform fee", { variant });
+      }
+    );
+  };
   
 
   return (
@@ -143,18 +155,18 @@ function PlatformFee(props) {
         </div>
         <div className="row mt-5">
           <div className="col-lg-6 col-md-6 col-sm-12">
-            <button
+            <button 
               className="newTemplateBtn mb-3"
               style={{ backgroundColor: "black", float: "right" }}
+              onClick={(e) => handleSubmit(e)}
             >
               Proceed
             </button>
           </div>
         </div>
       </div>
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
+
     </div>
   );
 }
