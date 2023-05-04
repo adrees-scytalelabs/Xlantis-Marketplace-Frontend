@@ -175,7 +175,7 @@ function NewNFT(props) {
   const dispatch = useDispatch();
 
   let getCollections = (collectionType) => {
-    setCollection("");
+    // setCollection("");
     dispatch(getNewNftCollection(collectionType));
     // console.log("collectionResp",collectionData);
     if (collectionType === "1155") {
@@ -238,6 +238,7 @@ function NewNFT(props) {
 
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
+    console.log("NFT-Detail: ", data);
     let batchMintId = Cookies.get("Batch-ID");
     if (
       (data && batchMintId) !== null &&
@@ -247,6 +248,7 @@ function NewNFT(props) {
       setTokenList(JSON.parse(data));
       setBatchId(batchMintId);
       setCollection(JSON.parse(data)[0].collectiontitle);
+      console.log("Collection title:",JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
     }

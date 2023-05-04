@@ -35,44 +35,44 @@ function SuperAdminTable(props) {
     <Table responsive>
       <thead>
         <tr>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Username
             </div>
           </th>
           {props.ssoEnabled === true && (
-            <th sx={styles.tableHeader}>
+            <th style={styles.tableHeader}>
               <div className="row no-gutters justify-content-start align-items-center ml-3">
                 Email
               </div>
             </th>
           )}
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
               Wallet Address
             </div>
           </th>
-          <th sx={styles.tableHeader}>
+          <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center ml-5">
               Details
             </div>
           </th>
           {props.ssoEnabled === true && props.walletEnabled === true && (
-            <th sx={styles.tableHeader}>
+            <th style={styles.tableHeader}>
               <div className="row no-gutters justify-content-start align-items-center">
                 Login Type
               </div>
             </th>
           )}
           {props.approval === true && (
-            <th sx={styles.tableHeader}>
+            <th style={styles.tableHeader}>
               <div className="row no-gutters justify-content-center align-items-center">
                 Approval Status
               </div>
             </th>
           )}
           {props.manageAccounts === true && (
-            <th sx={styles.tableHeader}>
+            <th style={styles.tableHeader}>
               <div className="row no-gutters justify-content-center align-items-center">
                 Status
               </div>
@@ -84,11 +84,11 @@ function SuperAdminTable(props) {
       {props.ssoEnabled === true &&
         props.admins.map((i, index) => {
           return (
-            <tbody>
+            <tbody key={index}>
               <tr>
-                <td sx={styles.collectionTitle}>{i.username}</td>
-                <td sx={styles.collectionTitle}>{i.email}</td>
-                <td sx={styles.collectionTitle}>
+                <td style={styles.collectionTitle}>{i.username}</td>
+                <td style={styles.collectionTitle}>{i.email}</td>
+                <td style={styles.collectionTitle}>
                   {i.walletAddress !== undefined ? (
                     <Tooltip
                       classes={{ tooltip: styles.noMaxWidth }}
@@ -104,7 +104,7 @@ function SuperAdminTable(props) {
                     <label className="ml-4">N/A</label>
                   )}
                 </td>
-                <td sx={styles.collectionTitle}>
+                <td style={styles.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
                     onClick={(e) =>
@@ -120,7 +120,7 @@ function SuperAdminTable(props) {
                   </button>
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td sx={styles.collectionTitle}>
+                  <td style={styles.collectionTitle}>
                     <span className="ml-1">
                       <label className="ml-5">SSO</label>
                     </span>
@@ -194,13 +194,13 @@ function SuperAdminTable(props) {
           return (
             <tbody>
               <tr>
-                <td sx={styles.collectionTitle}>{i.username}</td>
+                <td style={styles.collectionTitle}>{i.username}</td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td sx={styles.collectionTitle}>
+                  <td style={styles.collectionTitle}>
                     <label className="ml-4">N/A</label>
                   </td>
                 )}
-                <td sx={styles.collectionTitle}>
+                <td style={styles.collectionTitle}>
                   <Tooltip
                     classes={{ tooltip: styles.noMaxWidth }}
                     leaveDelay={1500}
@@ -212,7 +212,7 @@ function SuperAdminTable(props) {
                     </span>
                   </Tooltip>
                 </td>
-                <td sx={styles.collectionTitle}>
+                <td style={styles.collectionTitle}>
                   <button
                     className="btn submit-btn propsActionBtn "
                     onClick={(e) =>
@@ -228,7 +228,7 @@ function SuperAdminTable(props) {
                   </button>
                 </td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td sx={styles.collectionTitle}>
+                  <td style={styles.collectionTitle}>
                     <label className="ml-5">Wallet</label>
                   </td>
                 )}

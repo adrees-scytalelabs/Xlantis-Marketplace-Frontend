@@ -32,6 +32,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import AutocompleteAddNft from '../../../../components/Autocomplete/Autocomplete';
 
 const styles = {
   root: {
@@ -231,6 +232,7 @@ function AddNFT(props) {
   let getNfts = (id) => {
     getNFTsThroughId(id)
       .then((response) => {
+        console.log("Response from getting NFTs: ", response);
         const nft = response.data.data;
         setNftList(response.data.data);
       })
@@ -902,7 +904,7 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                <Autocomplete
+                <AutocompleteAddNft
                   label={"Select Collection"}
                   options={collectionTypes}
                   isDisabled={isDisabled}
@@ -919,9 +921,10 @@ function AddNFT(props) {
                       getNfts(value._id);
                     }
                   }}
+                  type="collection"
                 />
 
-                <Autocomplete
+                <AutocompleteAddNft
                   label={"Select NFT"}
                   options={nftList}
                   isDisabled={isDisabled}
@@ -940,6 +943,7 @@ function AddNFT(props) {
                       handleOpenNFTDetailModal(value);
                     }
                   }}
+                  type="nft"
                 />
                 {nftName != "" && (
                   <div
@@ -963,6 +967,7 @@ function AddNFT(props) {
                   setPrice={setPrice}
                   AlertMessage={AlertMessage}
                   setAlertMessage={setAlertMessage}
+                  price={price}
                 />
               </div>
               <button
@@ -1019,6 +1024,7 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
+          buttonName={buttonName}
         />
       </div >
       <NetworkErrorModal

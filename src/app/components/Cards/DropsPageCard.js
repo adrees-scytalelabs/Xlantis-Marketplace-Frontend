@@ -17,11 +17,11 @@ const DropsPageCard = (props) => {
       id="marketCardProps"
       style={{ height: "100%" }}
       variant="outlined"
-      className={props.classes.root}
+      sx={props.classes.root}
     >
       <CardActionArea>
         <CardMedia
-          className={props.classes.media}
+          sx={props.classes.media}
           image={props.dropDetails.image}
           title="Drop Image"
         />
@@ -34,14 +34,14 @@ const DropsPageCard = (props) => {
               <Typography
                 variant="h6"
                 component="div"
-                className={props.cardClasses.cardTitle}
+                sx={props.cardClasses.cardTitle}
               >
                 {props.dropDetails.title}
               </Typography>
               <Typography
                 variant="body2"
                 component="p"
-                className={props.cardClasses.cardDescriptions}
+                sx={props.cardClasses.cardDescriptions}
               >
                 {truncate(props.dropDetails.description, 25)}
               </Typography>
@@ -60,7 +60,7 @@ const DropsPageCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="info"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                   >
                     <span
                       style={{
@@ -84,7 +84,7 @@ const DropsPageCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="warning"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                   >
                     <span
                       style={{
@@ -111,7 +111,7 @@ const DropsPageCard = (props) => {
                 >
                   <Alert
                     severity="error"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                     style={{ fontWeight: "bold" }}
                   >
                     Auction Ended
@@ -125,7 +125,7 @@ const DropsPageCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="info"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                   >
                     <span
                       style={{
@@ -149,7 +149,7 @@ const DropsPageCard = (props) => {
                 <div style={{ marginTop: "1rem" }}>
                   <Alert
                     severity="warning"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                   >
                     <span
                       style={{
@@ -178,7 +178,7 @@ const DropsPageCard = (props) => {
                 >
                   <Alert
                     severity="error"
-                    className={props.cardClasses.textAlert}
+                    sx={props.cardClasses.textAlert}
                     style={{ fontWeight: "bold" }}
                   >
                     Sale Ended

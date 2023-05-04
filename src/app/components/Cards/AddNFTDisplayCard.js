@@ -5,7 +5,7 @@ const AddNFTDisplayCard = (props) => {
     <Card style={{ height: "100%" }} id="nftCardProps">
       <CardMedia
         variant="outlined"
-        className={props.classes.media}
+        sx={props.classes.media}
         image={
           props.nftDetail.previewImageURI
             ? props.nftDetail.previewImageURI
@@ -24,7 +24,7 @@ const AddNFTDisplayCard = (props) => {
           <Typography
             variant="h6"
             component="p"
-            className={props.classes.cardTitle}
+            sx={props.classes.cardTitle}
           >
             {props.nftDetail.title}
           </Typography>
