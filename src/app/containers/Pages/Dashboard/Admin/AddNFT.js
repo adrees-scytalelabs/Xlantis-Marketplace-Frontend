@@ -989,7 +989,7 @@ function AddNFT(props) {
         <UpdateDropAndPublishDrop
           isDisabled={isDisabled}
           versionB={versionB}
-          handleSubmitEvent={handleOpenModal}
+          handleSubmitEvent={handleSubmitEvent}
           enableTime={enableTime}
           setCurrentTimeStamp={setCurrentTimeStamp}
           setStartTimeStamp={setStartTimeStamp}
