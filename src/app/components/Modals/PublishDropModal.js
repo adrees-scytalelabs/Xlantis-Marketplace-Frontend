@@ -222,8 +222,7 @@ const PublishDropModal = (props) => {
                         Collections
                         <Badge
                           badgeContent={
-                            // props.dropData.collectionTxSummary.collectionCount
-                            1
+                            props.dropData.collectionTxSummary.collectionCount
                           }
                           color="primary"
                         />
@@ -238,8 +237,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p>
-                            {/* {props.dropData.collectionTxSummary.txsCount} */}
-                            2
+                            {props.dropData.collectionTxSummary.txsCount}
                           </p>
                         </div>
                       </div>
@@ -253,8 +251,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p sx={styles.cardTitle}>
-                            3
-                            {/* {props.dropData.collectionTxSummary.collectionCount} */}
+                            {props.dropData.collectionTxSummary.collectionCount}
                           </p>
                         </div>
                       </div>
@@ -273,7 +270,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            4{/* ${props.cost.estimates.collection} */}
+                            ${props.cost.estimates.collection}
                           </p>
                         </div>
                       </div>
@@ -293,7 +290,7 @@ const PublishDropModal = (props) => {
                         NFTs{" "}
                         <Badge
                           badgeContent={
-                            5 /*props.dropData.NFTsTxSummary.NFTCount*/
+                            props.dropData.NFTsTxSummary.NFTCount
                           }
                           color="primary"
                         />
@@ -308,7 +305,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p sx={styles.cardTitle}>
-                            {/* {props.dropData.NFTsTxSummary.txsCount} */}6
+                            {props.dropData.NFTsTxSummary.txsCount}
                           </p>
                         </div>
                       </div>
@@ -322,7 +319,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p sx={styles.cardTitle}>
-                            {/* {props.dropData.NFTsTxSummary.NFTCount} */}7
+                            {props.dropData.NFTsTxSummary.NFTCount}
                           </p>
                         </div>
                       </div>
@@ -341,7 +338,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            {/* ${props.cost.estimates.nftMint} */}8
+                            ${props.cost.estimates.nftMint}
                           </p>
                         </div>
                       </div>
@@ -361,7 +358,7 @@ const PublishDropModal = (props) => {
                         Approval{" "}
                         <Badge
                           badgeContent={
-                            10 /*props.dropData.approvalSummary.NFTCount*/
+                            props.dropData.approvalSummary.NFTCount
                           }
                           color="primary"
                         />
@@ -376,8 +373,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p sx={styles.cardTitle}>
-                            {/* {props.dropData.approvalSummary.txsCount} */}
-                            11
+                            {props.dropData.approvalSummary.txsCount}
                           </p>
                         </div>
                       </div>
@@ -392,8 +388,7 @@ const PublishDropModal = (props) => {
                         </div>
                         <div className="col-4 align-self-center text-right p-0">
                           <p sx={styles.cardTitle}>
-                            {/* {props.dropData.approvalSummary.superAdminApprovalPending} */}
-                            12
+                            {props.dropData.approvalSummary.superAdminApprovalPending}
                           </p>
                         </div>
                       </div>
@@ -412,8 +407,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            {/* ${props.cost.estimates.superAdminApproval} */}
-                            13
+                            ${props.cost.estimates.superAdminApproval}
                           </p>
                         </div>
                       </div>
@@ -435,8 +429,7 @@ const PublishDropModal = (props) => {
                           sx={styles.cardTitle}
                           style={{ wordWrap: "break-word" }}
                         >
-                          {/* ${props.cost.balance.dollar} */}
-                          14
+                          ${props.cost.balance.dollar}
                         </p>
                       </div>
                     </div>
@@ -456,8 +449,7 @@ const PublishDropModal = (props) => {
                           sx={styles.cardTitle}
                           style={{ wordWrap: "break-word", }}
                         >
-                          {/* ${props.cost.estimates.totalCostInDollars} */}
-                          15
+                          ${props.cost.estimates.totalCostInDollars}
                         </p>
                       </div>
                     </div>

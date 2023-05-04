@@ -132,8 +132,7 @@ function AddNFT(props) {
     setTopUpModal(false);
   };
   const handleOpenModal = async (e) => {
-    // await handleTimeEvent(e);
-    setMOdalOpen(true)
+    await handleTimeEvent(e);    
   };
   const handleRedirect = () => {
     setTransactionModal(false);
