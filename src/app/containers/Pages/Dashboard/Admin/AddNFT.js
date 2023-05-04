@@ -145,7 +145,7 @@ function AddNFT(props) {
   };
   const handleCloseModal = () => {
     setMOdalOpen(false);
-    setTransactionModal(true);
+    //setTransactionModal(true);
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
@@ -326,7 +326,7 @@ function AddNFT(props) {
     } else {
       let variant = "error";
       enqueueSnackbar("Please Add NFT to drop first", { variant });
-    }
+     }
   };
   const getTxCost = async (e) => {
     Axios.get(`/drop/${dropId}/tx-cost-summary`).then(
