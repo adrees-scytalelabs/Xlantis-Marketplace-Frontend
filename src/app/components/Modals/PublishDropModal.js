@@ -188,7 +188,7 @@ const PublishDropModal = (props) => {
 
   return (
     props.open === true && (
-      <div>
+      <div className="mt-5">
         <ThemeProvider theme={makeTheme}>
           <Modal
             aria-labelledby="transition-modal-title"
@@ -197,9 +197,10 @@ const PublishDropModal = (props) => {
             open={props.open}
             onClose={props.handleClose}
             closeAfterTransition
-            className="mt-3"
+            className="mt-5"
+            
           >
-            <Box style={{backgroundColor:'black'}}>
+            <Box className="mt-4" style={{backgroundColor:'black',border:'2px solid white'}}>
               <Fade in={props.open}>
                 <div sx={styles.paper}>
                   <div className="row no-gutters mb-3 mt-2">
