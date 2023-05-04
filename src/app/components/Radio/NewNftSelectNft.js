@@ -1,58 +1,110 @@
-import { Autocomplete, FormControl, FormControlLabel, Radio, RadioGroup, TextField, ThemeProvider, Tooltip, createTheme } from "@mui/material";
-import React from "react";
+import {
+  Autocomplete,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+  ThemeProvider,
+  Tooltip,
+  createTheme,
+} from "@mui/material";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-
 const makeTheme = createTheme({
-  overrides: {
+  components: {
     MuiTextField: {
-      root: {
-        border: "1px solid #fff",
-        borderRadius: 5,
-      },
-    },
-    MuiOutlinedInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "1px solid #fff",
-        "&$focused": {},
-      },
-    },
-    MuiInputBase: {
-      input: {
-        color: "#777",
-        fontFamily: "inter",
-      },
-    },
-    MuiInput: {
-      root: {
-        fontFamily: "orbitron",
-        color: "#fff",
-        border: "none",
-        borderRadius: 5,
-        padding: "6px 15px !important",
-        "&$focused": {},
-      },
-      underline: {
-        "&:$before": {},
-        "&::after": {
-          border: "none !important",
+      styleOverrides: {
+        root: {
+          border: "1px solid #fff !important",
+          borderRadius: 5,
         },
       },
     },
-    MuiAutocomplete: {
-      inputRoot: {},
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          fontFamily: "orbitron",
+          color: "#fff",
+          border: "1px solid white",
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: "none !important",
+          },
+        },
+        input: {
+          "&.Mui-disabled": {
+            WebkitTextFillColor: "#fff",
+          },
+        },
+      },
+    },
+    MuiInputBase: {
+      styleOverrides: {
+        input: {
+          color: "#fff",
+          fontFamily: "inter",
+        },
+        root: {
+          border: "1px solid red",
+        },
+      },
+    },
+    MuiInput: {
+      styleOverrides: {
+        root: {
+          fontFamily: "orbitron",
+          color: "#fff",
+          border: "1px solid white",
+          borderRadius: 5,
+          padding: "6px 15px !important",
+          "&$focused": {},
+        },
+        underline: {
+          "&:$before": {},
+          "&::after": {
+            border: "none !important",
+          },
+        },
+      },
     },
     MuiIconButton: {
-      root: {
-        color: "#fff !important",
+      styleOverrides: {
+        root: {
+          color: "#fff !important",
+        },
       },
     },
     MuiFormControlLabel: {
-      label: {
-        color: "white",
-        fontFamily: "inter",
+      styleOverrides: {
+        label: {
+          color: "white",
+          fontFamily: "inter",
+          "&.Mui-disabled": {
+            color: "white",
+          },
+        },
+        labelPlacementEnd: {
+          color: "white",
+          fontFamily: "inter",
+          "&.Mui-disabled": {
+            color: "white",
+          },
+        },
+      },
+    },
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          color: "white",
+        },
+      },
+    },
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          color: "white !important",
+        },
       },
     },
   },
@@ -70,13 +122,31 @@ function NewNftSelectNft({
   setCollectionId,
   setNftContractAddress,
   collection,
-  setContractType
+  setContractType,
 }) {
   let navigate = useNavigate();
   const Text721 =
     "ERC-721 is a standard for representing ownership of non-fungible tokens, that is, where each token is unique and cannot be exchanged on a one-to-one basis with other tokens.";
   const Text1155 =
     "ERC-1155 tokens are semi-fungible tokens, which means that each token can represent multiple, identical assets. For example, an ERC-1155 token could represent 10 units of a particular item, and those 10 units can be traded or transferred individually.";
+
+  useEffect(() => {
+    console.log("PropsPropsPropsProps: ", {
+      tokenList,
+      classes,
+      setWorkProgressModalShow,
+      NFTType,
+      setNFTType,
+      getCollections,
+      collectionTypes,
+      setCollection,
+      setCollectionId,
+      setNftContractAddress,
+      collection,
+      setContractType,
+    });
+  }, []);
+
   return (
     <div>
       <ThemeProvider theme={makeTheme}>
@@ -101,22 +171,19 @@ function NewNftSelectNft({
               name="position"
               defaultValue="top"
             >
-              <Tooltip
-                title={Text721}
-                classes={{ tooltip: classes.tooltip }}
-              >
+              <Tooltip title={Text721} classes={{ tooltip: classes.tooltip }}>
                 <FormControlLabel
-                  style={{ color: "white" }}
+                  style={{ color: "white !important" }}
                   disabled
                   value="ERC721"
                   onChange={() => {
                     setWorkProgressModalShow(true);
                   }}
                   checked={NFTType === "721"}
-                  control={<Radio />}
+                  control={<Radio color="secondary" />}
                   label={
                     <span
-                      style={{ fontSize: "0.9rem", color: "white" }}
+                      style={{ fontSize: "0.9rem", color: "white !important" }}
                     >
                       Single
                     </span>
@@ -124,10 +191,7 @@ function NewNftSelectNft({
                 />
               </Tooltip>
 
-              <Tooltip
-                title={Text1155}
-                classes={{ tooltip: classes.tooltip }}
-              >
+              <Tooltip title={Text1155} classes={{ tooltip: classes.tooltip }}>
                 <FormControlLabel
                   style={{ color: "white" }}
                   disabled
@@ -139,9 +203,7 @@ function NewNftSelectNft({
                   checked={NFTType === "1155"}
                   control={<Radio color="secondary" />}
                   label={
-                    <span
-                      style={{ fontSize: "0.9rem", color: "white" }}
-                    >
+                    <span style={{ fontSize: "0.9rem", color: "white" }}>
                       Multiple
                     </span>
                   }
@@ -150,7 +212,14 @@ function NewNftSelectNft({
             </RadioGroup>
           </FormControl>
         ) : (
-          <FormControl component="fieldset">
+          <FormControl
+            component="fieldset"
+            style={{
+              color: "#fff",
+              fontFamily: "orbitron",
+              fontWeight: "bold",
+            }}
+          >
             <label
               component="legend"
               style={{ fontWeight: "bold", fontFamily: "poppins" }}
@@ -163,12 +232,9 @@ function NewNftSelectNft({
               name="position"
               defaultValue="top"
             >
-              <Tooltip
-                title={Text721}
-                classes={{ tooltip: classes.tooltip }}
-              >
+              <Tooltip title={Text721} classes={{ tooltip: classes.tooltip }}>
                 <FormControlLabel
-                  style={{ color: "black" }}
+                  style={{ color: "black", marginLeft: ".8rem" }}
                   value="ERC721"
                   onChange={() => {
                     setWorkProgressModalShow(true);
@@ -176,21 +242,17 @@ function NewNftSelectNft({
                   checked={NFTType === "721"}
                   control={<Radio color="secondary" />}
                   label={
-                    <span style={{ fontSize: "0.9rem" }}>
+                    <span
+                      style={{ fontSize: "0.9rem", color: "white !important" }}
+                    >
                       Single{" "}
-                      <i
-                        className="fa fa-info-circle"
-                        aria-hidden="true"
-                      ></i>
+                      <i className="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
                   }
                 />
               </Tooltip>
 
-              <Tooltip
-                title={Text1155}
-                classes={{ tooltip: classes.tooltip }}
-              >
+              <Tooltip title={Text1155} classes={{ tooltip: classes.tooltip }}>
                 <FormControlLabel
                   style={{ color: "black", marginLeft: ".8rem" }}
                   value="ERC1155"
@@ -201,12 +263,11 @@ function NewNftSelectNft({
                   checked={NFTType === "1155"}
                   control={<Radio color="secondary" />}
                   label={
-                    <span style={{ fontSize: "0.9rem" }}>
+                    <span
+                      style={{ fontSize: "0.9rem", color: "white !important" }}
+                    >
                       Multiple{" "}
-                      <i
-                        className="fa fa-info-circle"
-                        aria-hidden="true"
-                      ></i>
+                      <i className="fa fa-info-circle" aria-hidden="true"></i>
                     </span>
                   }
                 />
@@ -218,9 +279,7 @@ function NewNftSelectNft({
 
       {tokenList.length > 0 ? (
         <div className="form-group">
-          <label
-            style={{ fontWeight: "bold", fontFamily: "poppins" }}
-          >
+          <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
             Select Collection
           </label>
           <div className="filter-widget">
@@ -249,6 +308,7 @@ function NewNftSelectNft({
                   <TextField
                     {...params}
                     placeholder="Collections"
+                    sx={{ border: "1px solid white !important" }}
                   />
                 </ThemeProvider>
               )}
@@ -257,9 +317,7 @@ function NewNftSelectNft({
         </div>
       ) : (
         <div className="form-group">
-          <label
-            style={{ fontWeight: "bold", fontFamily: "poppins" }}
-          >
+          <label style={{ fontWeight: "bold", fontFamily: "poppins" }}>
             Select Collection
           </label>
           <div className="filter-widget">
@@ -289,6 +347,7 @@ function NewNftSelectNft({
                   <TextField
                     {...params}
                     placeholder="Collections"
+                    sx={{ border: "1px solid white !important" }}
                   />
                 </ThemeProvider>
               )}
@@ -297,7 +356,7 @@ function NewNftSelectNft({
         </div>
       )}
     </div>
-  )
+  );
 }
 
-export default NewNftSelectNft
+export default NewNftSelectNft;

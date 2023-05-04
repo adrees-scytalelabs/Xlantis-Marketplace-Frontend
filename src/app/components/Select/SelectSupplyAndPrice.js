@@ -100,6 +100,7 @@ function SelectSupplyAndPrice({
             placeholder={0}
             className="form-control"
             onChange={(e) => {
+              console.log("On change function: ", e.target.value);
               if (e.target.value >= 0) {
                 setPrice(e.target.value);
               }

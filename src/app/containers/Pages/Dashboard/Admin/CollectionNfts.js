@@ -41,8 +41,8 @@ function CollectionNfts(props) {
 
     props.setActiveTab({
       dashboard: "",
-      newCollection: "active",
-      myCollections: "",
+      newCollection: "",
+      myCollections: "active",
       newNFT: "",
       myNFTs: "",
       marketplace: "",

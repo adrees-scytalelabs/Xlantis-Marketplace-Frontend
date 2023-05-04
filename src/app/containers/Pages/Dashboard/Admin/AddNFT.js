@@ -232,6 +232,7 @@ function AddNFT(props) {
   let getNfts = (id) => {
     getNFTsThroughId(id)
       .then((response) => {
+        console.log("Response from getting NFTs: ", response);
         const nft = response.data.data;
         setNftList(response.data.data);
       })
@@ -920,6 +921,7 @@ function AddNFT(props) {
                       getNfts(value._id);
                     }
                   }}
+                  type="collection"
                 />
 
                 <AutocompleteAddNft
@@ -940,6 +942,7 @@ function AddNFT(props) {
                       handleOpenNFTDetailModal(value);
                     }
                   }}
+                  type="nft"
                 />
                 {nftName != "" && (
                   <div
@@ -964,6 +967,7 @@ function AddNFT(props) {
                   setPrice={setPrice}
                   AlertMessage={AlertMessage}
                   setAlertMessage={setAlertMessage}
+                  price={price}
                 />
               </div>
               <button
@@ -1021,6 +1025,7 @@ function AddNFT(props) {
           isSaving={isSaving}
           handlePublishEvent={handlePublishEvent}
           handleOpenModal={handleOpenModal}
+          buttonName={buttonName}
         />
       </div >
       <NetworkErrorModal
