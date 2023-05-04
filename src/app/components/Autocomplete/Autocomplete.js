@@ -1,5 +1,12 @@
-import { Autocomplete, TextField, ThemeProvider, createTheme } from '@mui/material';
-import React from 'react';
+import {
+  Autocomplete,
+  TextField,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
+import React from "react";
+import { styled } from "@mui/material/styles";
+
 const makeTheme = createTheme({
   overrides: {
     MuiTextField: {
@@ -60,31 +67,50 @@ function AutocompleteAddNft({
     <div className="form-group">
       <label>{label}</label>
       <div className="filter-widget newNftWrapper">
-        <Autocomplete
-          id="combo-dox-demo"
-          required
-          disabled={isDisabled}
-          options={options}
-          getOptionLabel={(option) => option.name}
-          onChange={onChange}
-          filterSelectedOptions
-          renderInput={(params) => (
-            <div>
-              <ThemeProvider theme={makeTheme}>
+        <ThemeProvider theme={makeTheme}>
+          <Autocomplete
+            style={{ border: "1px solid white" }}
+            id="combo-dox-demo"           
+            required
+            disabled={isDisabled}
+            options={options}
+            getOptionLabel={(option) => (label==="Select NFT")?(option.title):(option.name)}
+            onChange={onChange}
+            filterSelectedOptions
+            renderInput={(params) => (
+              <div>
                 <TextField
+                  sx={{
+                    "& input": {
+                      color: "white",
+                    },
+                    "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator": {
+                      color: "white",
+                      visibility: "visible",
+                    },
+                    "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator": {
+                      color: "white",
+                      visibility: "visible",
+                    },
+                    "& .MuiButtonBase-root.MuiAutocomplete-arr": {
+                      color: "white",
+                      visibility: "visible",
+                    },
+                  }}
+                  InputLabelProps={{
+                    style: { color: "white" }
+                  }}
                   {...params}
                   variant="outlined"
                   placeholder={placeholder}
                 />
-              </ThemeProvider>
-            </div>
-          )}
-          style={{ padding: "6px 15px !important" }}
-        />
+              </div>
+            )}
+          />
+        </ThemeProvider>
       </div>
     </div>
-
-  )
+  );
 }
 
 export default AutocompleteAddNft;

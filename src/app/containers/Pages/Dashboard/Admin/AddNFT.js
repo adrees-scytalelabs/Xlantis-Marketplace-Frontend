@@ -32,6 +32,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import AutocompleteAddNft from '../../../../components/Autocomplete/Autocomplete';
 
 const styles = {
   root: {
@@ -902,7 +903,7 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group">
-                <Autocomplete
+                <AutocompleteAddNft
                   label={"Select Collection"}
                   options={collectionTypes}
                   isDisabled={isDisabled}
@@ -921,7 +922,7 @@ function AddNFT(props) {
                   }}
                 />
 
-                <Autocomplete
+                <AutocompleteAddNft
                   label={"Select NFT"}
                   options={nftList}
                   isDisabled={isDisabled}
@@ -936,7 +937,6 @@ function AddNFT(props) {
                       setNftURI(value.nftURI);
                       setTokenId(value.nftId);
                       setNftTokenSupply(value.tokenSupply);
-
                       handleOpenNFTDetailModal(value);
                     }
                   }}
@@ -946,6 +946,7 @@ function AddNFT(props) {
                     className="mb-3"
                     style={{ height: "270px", width: "230px" }}
                   >
+                    {console.log("nft detailssss",nftDetail)}
                     <AddNFTDisplayCard
                       nftDetail={nftDetail}
                       classes={styles}
@@ -991,6 +992,7 @@ function AddNFT(props) {
                       style={{ height: "50vh", overflowY: "scroll" }}
                     >
                       <Grid item xs={6} sm={4} md={4} lg={4}>
+                        {console.log("nft details",nftDetail)}
                         <AddNFTDisplayCard
                           nftDetail={nftDetail}
                           classes={styles}
