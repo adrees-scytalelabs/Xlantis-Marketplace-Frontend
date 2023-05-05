@@ -54,7 +54,25 @@ const DropsPageCard = (props) => {
           </div>
           <br></br>
 
-          {props.dropDetails.saleType === "auction" ? (
+          {props.dropDetails.status === "draft" ? (
+            <Typography variant="h6" gutterBottom className="text-center">
+               (
+                <Typography
+                  variant="body2"
+                  style={{ marginTop: "1rem" }}
+                  component="p"
+                >
+                  <Alert
+                    severity="info"
+                    sx={props.cardClasses.textAlert}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Publish Drop
+                  </Alert>
+                </Typography>
+              )
+            </Typography>
+          ) :props.dropDetails.saleType === "auction" ? (
             <Typography variant="h6" gutterBottom className="text-center">
               {new Date() < new Date(props.dropDetails.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
