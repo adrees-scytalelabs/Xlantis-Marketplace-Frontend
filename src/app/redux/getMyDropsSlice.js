@@ -14,6 +14,8 @@ export const getMyDrop = createAsyncThunk(
       // console.log("nameThunk",name);
       const resp = await axios(`/drop/myDrops/${name.status}/${name.start}/${name.end}`);
       console.log("reduxResp", resp);
+      name.setTokenList(resp.data.data)
+      name.setTotalDrops(resp.data.data.length)
       return resp.data;
     } catch (error) {
       if (process.env.NODE_ENV === "development") {
@@ -40,10 +42,6 @@ const getMyDropsSlice = createSlice({
   name: 'myDrops',
   initialState,
   reducers: {
-    reset: (state) => {
-      state.myDropsData = [0];
-      state.loading = 0;
-    },
   },
   extraReducers: {
     [getMyDrop.fulfilled]: (state, action) => {
@@ -56,8 +54,6 @@ const getMyDropsSlice = createSlice({
     }
   },
 });
-
-export const { reset } = getMyDropsSlice.actions;
 
 export default getMyDropsSlice.reducer;
 

@@ -65,15 +65,9 @@ function DropsPage(props) {
   };
   let getMyDrops = async (status, start, end) => {
     handleShowBackdrop();
-    dispatch(getMyDrop({ status, start, end }));
-    console.log("status", status);
-    console.log("myDropsData", myDropsData);
-    console.log("loading", loading);
+    dispatch(getMyDrop({ status, start, end, setTokenList, setTotalDrops }));
     if (loading === 1) {
-      setTokenList(myDropsData);
-      setTotalDrops(myDropsData.length);
       handleCloseBackdrop();
-
     }
     if (loading === 2) {
       handleCloseBackdrop();
@@ -84,10 +78,10 @@ function DropsPage(props) {
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
   }, [loading]);
-  
-  useEffect(() => {
-    dispatch(reset())
-  }, [props.status])
+
+  // useEffect(() => {
+  //   dispatch(reset())
+  // }, [props.status])
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
