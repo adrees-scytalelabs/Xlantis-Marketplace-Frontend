@@ -20,6 +20,8 @@ function TopUp(props) {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
     const sessionId = localStorage.getItem('sessionId')
+    console.log("params",id);
+    console.log("local Storage",sessionId);
     if (id != null) {
       if (sessionId == id) {
         const active = searchParams.get("active");
@@ -64,7 +66,9 @@ function TopUp(props) {
     };
     topUpAmount(data)
       .then((response) => {
+        localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
+        handleCloseBackdrop();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
