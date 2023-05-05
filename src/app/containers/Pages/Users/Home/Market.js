@@ -22,6 +22,7 @@ function MarketPlace(props) {
     handleShowBackdrop();
     dispatch(getMarketFixedPrice({ start, end }))
     if (fixedPriceLoading) {
+      console.log("data of fixed price",fixedPriceData)
       setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
     }
@@ -43,6 +44,7 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
+    console.log("i am in this")
     getBidableDrops(0, 4);
   }, [auctionLoading]);
 

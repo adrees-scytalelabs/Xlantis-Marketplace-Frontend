@@ -159,6 +159,7 @@ const TrendingAndTop = (props) => {
   }
 
   useEffect(() => {
+    console.log("now i am here");
     const controller = new AbortController();
     getWindowWidth();
 
@@ -232,7 +233,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : activeFixedDrop.length === 0 ? (
-                    <MessageCard msg="No Drops on Sale"></MessageCard>
+                    <MessageCard msg="No items to display"></MessageCard>
                   ) : (
                     <div
                       className="row no-gutters w-100 align-items-center position-relative "
@@ -292,7 +293,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingFixedDrop.length === 0 ? (
-                    <MessageCard msg="No Upcoming Drop Sales"></MessageCard>
+                    <MessageCard msg="No items to display"></MessageCard>
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">

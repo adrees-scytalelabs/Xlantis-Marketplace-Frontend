@@ -220,12 +220,14 @@ const MarketPlaceTabs = (props) => {
                       )
                       : props.fixedPriceDrop
                     ).map((i, index) => (
+                      (i.status!='draft' && i.status!='closed' &&
                       <div
                         className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
                       >
                         <OnSaleCard i={i} />
                       </div>
+                      )
                     ))}
                   </div>
                 ) : (
