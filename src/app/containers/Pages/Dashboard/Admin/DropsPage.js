@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { getMyDrop } from "../../../../redux/getMyDropsSlice";
+import { getMyDrop, reset } from "../../../../redux/getMyDropsSlice";
 const styles = {
   root: {},
   media: {
@@ -63,22 +63,31 @@ function DropsPage(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  let getMyDrops = (status, start, end) => {
+  let getMyDrops = async (status, start, end) => {
     handleShowBackdrop();
     dispatch(getMyDrop({ status, start, end }));
+    console.log("status", status);
+    console.log("myDropsData", myDropsData);
+    console.log("loading", loading);
     if (loading === 1) {
       setTokenList(myDropsData);
       setTotalDrops(myDropsData.length);
       handleCloseBackdrop();
+
     }
     if (loading === 2) {
       handleCloseBackdrop();
     }
   };
 
+
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
   }, [loading]);
+  
+  useEffect(() => {
+    dispatch(reset())
+  }, [props.status])
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
