@@ -1,50 +1,10 @@
-import {
-  AppBar,
-  Box,
-  Card,
-  CardHeader,
-  Grid,
-  Tab,
-  Tabs,
-  Typography,
-} from "@material-ui/core";
-import React, { useEffect } from "react";
-import { useState } from "react";
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { useLocation } from "react-router-dom";
-import { makeStyles, useTheme } from "@material-ui/styles";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import MarketPlacePage from "./MarketPlacePage";
-import { Link } from "react-router-dom";
-import Enabled from "./Enabled";
+import React, { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Disabled from "./Disabled";
-
-// STYLING
-const paginationStyles = makeStyles({
-  base: {
-    // borderRadius: 12,
-    border: 0,
-    color: "#fff",
-    padding: "0 30px",
-    fontWeight: "bold",
-    fontFamily: "orbitron",
-  },
-  label: {
-    textTransform: "capitalize",
-    color: "#fff",
-  },
-  body2: {
-    fontWeight: "bold",
-    color: "#fff",
-    fontFamily: "orbitron",
-  },
-});
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
-  },
+import Enabled from "./Enabled";
+const useStyles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
@@ -54,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}));
+}
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -132,21 +92,14 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 const ManageAccounts = (props) => {
-  const classes = useStyles();
   const location = useLocation();
-  const theme = useTheme();
   const [value, setValue] = useState(0);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
-  };
-
   useEffect(() => {
     props.setTab(0);
     if (location.state != null) {
@@ -161,15 +114,15 @@ const ManageAccounts = (props) => {
       accounts: "",
       sso: "active",
       wallet: "active",
-      properties:"",
-      template:"",
-      saved:"",
-    }); // eslint-disable-next-line
+      properties: "",
+      template: "",
+      saved: "",
+    });
   }, []);
 
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
+
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -185,12 +138,11 @@ const ManageAccounts = (props) => {
           </div>
         </div>
       </div>
-      {/* Page Content */}
+
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
             <div className="col-md-12">
-              {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
               <Tabs
                 value={value}
                 onChange={handleChange}
@@ -200,16 +152,15 @@ const ManageAccounts = (props) => {
               >
                 <Tab
                   label="Enabled"
-                  className={classes.tabsProps}
+                  sx={useStyles.tabsProps}
                   {...a11yProps(0)}
                 />
                 <Tab
                   label="Disabled"
-                  className={classes.tabsProps}
+                  sx={useStyles.tabsProps}
                   {...a11yProps(1)}
                 />
               </Tabs>
-              {/* </AppBar> */}
               <TabPanel value={value} index={0}>
                 <Enabled />
               </TabPanel>

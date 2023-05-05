@@ -1,29 +1,21 @@
-import { Button, TextField } from '@material-ui/core';
-import { Autocomplete } from '@material-ui/lab';
-import React from 'react';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { Autocomplete, Button, TextField } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { Modal } from 'react-bootstrap';
-
 const ChangeCollectionConfirmationModal = (props) => {
 
-    let [collection, setCollection] = useState({});
-    let [collections, setCollections] = useState([]);
-    let [collectionName, setCollectionName] = useState("");
+    const [collection, setCollection] = useState({});
+    const [collections, setCollections] = useState([]);
+    const [collectionName, setCollectionName] = useState("");
 
     useEffect(() => {
         setCollections(props.collectionDetails);
-        // let collectionList = [...props.collectionDetails];
-        // collectionList.splice(0, 1);
-        // setCollections(collectionList);
     })
 
-    return ( 
+    return (
         <Modal show={props.show} onHide={props.handleClose} size="lg" >
             <Modal.Header closeButton>
                 <Modal.Title> Change Collection? </Modal.Title>
             </Modal.Header>
-            {/* <Modal.Body className="text-center"> <i className="fas fa-times-circle fa-10x"></i></Modal.Body> */}
             <Modal.Body>It will change collection for all <strong>NFTs.</strong> Are you sure you want to change <strong>Collection?</strong></Modal.Body>
             <Modal.Body>
                 <div className="form-group">
@@ -32,21 +24,21 @@ const ChangeCollectionConfirmationModal = (props) => {
                         <Autocomplete
                             id="combo-dox-demo"
                             options={collections}
-                            // disabled={isDisabledImporter}
+
                             getOptionLabel={(option) =>
                                 option.name
                             }
                             onChange={(event, value) => {
                                 if (value == null) setCollectionName("");
                                 else {
-                                        console.log(value);
-                                        setCollectionName(value.name);
-                                        setCollection(value);
-                                        console.log("Value: ", value);
-                                    }
+                                    console.log(value);
+                                    setCollectionName(value.name);
+                                    setCollection(value);
+                                    console.log("Value: ", value);
                                 }
                             }
-                            inputValue = {collectionName}
+                            }
+                            inputValue={collectionName}
                             renderInput={(params) => (
                                 <TextField
                                     {...params}
@@ -59,31 +51,31 @@ const ChangeCollectionConfirmationModal = (props) => {
                 </div>
             </Modal.Body>
             <Modal.Footer>
-                <Button 
-                    variant="primary" 
+                <Button
+                    variant="primary"
                     onClick={() => {
                         setCollection({});
                         setCollectionName("");
                         props.handleClose();
-                    }} 
+                    }}
                 >
                     Cancle
                 </Button>
-                <button 
-                    type='button' 
-                    className="btn btn-submit" 
+                <button
+                    type='button'
+                    className="btn btn-submit"
                     onClick={() => {
                         setCollection({});
                         setCollectionName("");
                         props.updateChangeCollection(collection)
-                    }} 
+                    }}
                 >
                     Change
                 </button>
             </Modal.Footer>
         </Modal>
-        
+
     );
 }
- 
+
 export default ChangeCollectionConfirmationModal;

@@ -1,8 +1,11 @@
-import axios from "axios";
 import React, { Component } from "react";
 import { Spinner } from "react-bootstrap";
-import "react-intl-tel-input/dist/main.css";
 import { Link } from "react-router-dom";
+import {
+  confirmUserPhoneNumber,
+  resendVerificationCode,
+  userSignUp,
+} from "../../../components/API/AxiosInterceptor";
 
 class PersonalDetails extends Component {
   constructor(props) {
@@ -40,8 +43,7 @@ class PersonalDetails extends Component {
       email: this.state.email,
     };
 
-    axios
-      .post("/api/v1/auth/user/confirmphonenumber", userData)
+    confirmUserPhoneNumber(userData)
       .then((response) => {
         console.log("response", response);
         if (response.status === 200)
@@ -53,7 +55,6 @@ class PersonalDetails extends Component {
             isSuccess: true,
             isPinVarified: true,
           });
-        // this.props.history.push('/login')
       })
       .catch((error) => {
         console.log(error);
@@ -73,8 +74,7 @@ class PersonalDetails extends Component {
     };
     console.log("clicked");
 
-    axios
-      .post("/api/v1/auth/user/resendverificationcode", userData)
+    resendVerificationCode(userData)
       .then((response) => {
         console.log("response", response);
         if (response.status === 200)
@@ -115,8 +115,7 @@ class PersonalDetails extends Component {
       };
       console.log(userData);
 
-      axios
-        .post("/v1-sso/user/auth/signup", userData)
+      userSignUp(userData)
         .then((response) => {
           console.log("response", response);
           if (response.status === 200)
@@ -147,7 +146,6 @@ class PersonalDetails extends Component {
               <input
                 type="text"
                 className="form-control floating"
-                // onChange={this.props.handleChange('name')}
                 onChange={(e) => {
                   this.setState({
                     name: e.target.value,
@@ -229,10 +227,6 @@ class PersonalDetails extends Component {
             Already have an account?
           </Link>
         </div>
-        {/* <div>
-                  <button className="btn login-btn" style={{ textAlign: "left" }} onClick={this.back}>Back</button>
-
-              </div> */}
         <br />
         <div>
           {this.state.isLoading ? (

@@ -1,29 +1,27 @@
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
 import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import HeaderHome from "../../../components/Headers/Header";
-import { Link, Route, Switch, useRouteMatch } from "react-router-dom";
 import SettingDashboardDefault from "../Users/SettingsDashboardDefault";
 import AdminSidebar from "./Admin/AdminSidebar";
-// import UserSidebar from "../../Pages/Dashboard/User/UserSidebar";
 
 function UserSettings(props) {
-  let { path } = useRouteMatch();
+  const path = useResolvedPath("").pathname;
 
-  let [match] = useState({
+  const [match] = useState({
     isExact: true,
     params: {},
     path: "/dashboard",
     url: "/dashboard",
   });
-  let [menuOpenedClass, setMenuOpenedClass] = useState();
-  let [slideNavClass, setSlideNavClass] = useState();
+  const [menuOpenedClass, setMenuOpenedClass] = useState();
+  const [slideNavClass, setSlideNavClass] = useState();
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -36,11 +34,7 @@ function UserSettings(props) {
     }
   };
 
-  useEffect(() => {
-    //console.log("Props in admin settings are: ", props);
-  }, []);
-
-  let [activeTab, setActiveTab] = useState({
+  const [activeTab, setActiveTab] = useState({
     profile: "active",
     offer: "",
   });
@@ -49,12 +43,10 @@ function UserSettings(props) {
     <div className="main-wrapper">
       <div className="home-section home-full-height">
         <div className={`admin-header ${menuOpenedClass}`}>
-          {/* <!-- Logo --> */}
           <div className="header-left">
             <a
               href="/"
               className="navbar-brand logo"
-              // onClick={(e) => e.preventDefault()}
               style={{ width: "210px" }}
             >
               <img
@@ -69,12 +61,10 @@ function UserSettings(props) {
                   padding: "5px 15px",
                 }}
               />
-              {/* Robot Drop */}
             </a>
             <a
               href="/"
               className="logo logo-small"
-              // onClick={(e) => e.preventDefault()}
               style={{ width: "210px" }}
             >
               <img
@@ -88,16 +78,8 @@ function UserSettings(props) {
                   padding: "5px 15px",
                 }}
               />
-              {/* Robot Drop */}
             </a>
           </div>
-          {/* <!-- /Logo --> */}
-          {/* 
-        <a href="" id="toggle_btn">
-          <i className="fa fa-align-left"></i>
-        </a> */}
-
-          {/* <!-- Mobile Menu Toggle --> */}
           <a
             href="/"
             className="mobile_btn"
@@ -106,11 +88,7 @@ function UserSettings(props) {
           >
             <i className="fa fa-bars"></i>
           </a>
-          {/* <!-- /Mobile Menu Toggle --> */}
-
-          {/* <!-- Header Right Menu --> */}
           <ul className="nav user-menu">
-            {/* <!-- User Menu --> */}
 
             <li className="nav-item dropdown has-arrow">
               <Dropdown>
@@ -145,18 +123,12 @@ function UserSettings(props) {
                       Profile Settings
                     </Link>
                   </Dropdown.Item>
-                  {/* <Dropdown.Item>
-                  <span style={{ color: "white" }} onClick={openTransak}>
-                    Buy Crypto
-                  </span>
-                </Dropdown.Item> */}
                   <Dropdown.Item>
                     <Link
                       onClick={() => {
                         sessionStorage.clear();
-                        // Cookies.remove("Authorization");
                         sessionStorage.removeItem("Address");
-                        // web3Modal.clearCachedProvider();
+
 
                         Cookies.remove("PNT");
                         window.location.reload(false);
@@ -170,32 +142,24 @@ function UserSettings(props) {
                 </Dropdown.Menu>
               </Dropdown>
             </li>
-            {/* <!-- /User Menu --> */}
           </ul>
-          {/* <!-- /Header Right Menu --> */}
         </div>
         <AdminSidebar
-          // match={props.match}
           match={match}
           activeTab={activeTab}
           setActiveTab={setActiveTab}
         />
         <div className="page-wrapper">
           <div className="content container-fluid">
-            <Switch>
-              <Route exact path={`${path}`}>
-                <SettingDashboardDefault
+            <Routes>
+              <Route exact path={`${path}`} element=
+                {<SettingDashboardDefault
                   user="admin"
-                  // match={props.match}
                   setActiveTab={setActiveTab}
                   updateProfile={updateProfile}
                   setUpdateProfile={setUpdateProfile}
-                />
-              </Route>
-              {/* <Route exact path={`${path}/myCubes`}>
-              <MyCubes setActiveTab={setActiveTab} />
-            </Route> */}
-            </Switch>
+                />}/>
+            </Routes>
           </div>
         </div>
       </div>

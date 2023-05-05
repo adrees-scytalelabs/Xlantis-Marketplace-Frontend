@@ -1,11 +1,10 @@
-import { Typography } from "@material-ui/core";
+import { Typography } from "@mui/material";
 import React from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-
 function ConfirmBidModal(props) {
     return (
         <Modal show={props.show} onHide={props.handleClose}>
@@ -56,10 +55,10 @@ function ConfirmBidModal(props) {
             <Modal.Footer>
                 <Button variant="primary" onClick={props.handleClose}>
                     Close
-    </Button>
+                </Button>
                 <Button variant="primary" onClick={props.ConfirmBidding}>
                     Yes, Proceed!
-    </Button>
+                </Button>
             </Modal.Footer>
         </Modal>
 

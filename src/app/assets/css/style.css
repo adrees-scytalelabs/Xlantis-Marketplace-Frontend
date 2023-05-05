@@ -606,12 +606,7 @@ button.bttn:hover {
 
 .table-striped tbody tr:nth-of-type(even) {
   background-color: rgba(0, 0, 0, 0.05) !important;
-}
-
-
-
-
-/*-----------------
+}/*-----------------
 	1. General
 -----------------------*/
 
@@ -7544,6 +7539,10 @@ html.menu-opened body {
 	33. Voice call
 -----------------------*/
 
+body.modal-open {
+  overflow-y: scroll !important;
+}
+
 .modal-open .main-wrapper {
   -webkit-filter: blur(1px);
   -moz-filter: blur(1px);
@@ -10670,7 +10669,7 @@ object:hover {
 .banner-img {
   width: 100%;
   height: 350px;
-  /* background-position: center; */
+  background-position: center;
   background-repeat: no-repeat;
   background-size: cover
 }

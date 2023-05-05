@@ -1,10 +1,12 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import "./index.css";
 import * as serviceWorker from "./serviceWorker";
 import App from "./app/containers/App/Application";
 import axios from "axios";
 import { CookiesProvider } from "react-cookie";
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 // axios.defaults.withCredentials = true;
 
@@ -13,11 +15,15 @@ if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
 //else axios.defaults.baseURL = `http://localhost:3000`;
 else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
-ReactDOM.render(
-  <CookiesProvider>
-    <App />
-  </CookiesProvider>,
-  document.getElementById("root")
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(
+  <React.StrictMode>
+    <CookiesProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </CookiesProvider>
+  </React.StrictMode>
 );
 
 // If you want your app to work offline and load faster, you can change

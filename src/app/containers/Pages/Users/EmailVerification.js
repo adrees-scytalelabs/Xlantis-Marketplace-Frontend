@@ -1,35 +1,24 @@
-import React, { useState, useEffect } from "react";
-import "../../../assets/css/bootstrap.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/css/style.css";
-import Header from "../../../components/Headers/Header";
-import success from "../../../assets/img/success.png";
-import failure from "../../../assets/img/failure.png";
+import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import axios from "axios";
-import { makeStyles } from "@material-ui/core/styles";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
+import "../../../assets/css/bootstrap.min.css";
+import "../../../assets/css/style.css";
+import failure from "../../../assets/img/failure.png";
+import success from "../../../assets/img/success.png";
+import "../../../assets/plugins/fontawesome/css/all.min.css";
+import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { getUserEmailVerification } from "../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
+import Header from "../../../components/Headers/Header";
 
 function EmailVerification(props) {
   const { email, token } = useParams();
-  const classes = useStyles();
 
-  let [isConfirming, setIsConfirming] = useState(false);
-  let [isSuccess, setIsSuccess] = useState("");
+  const [isConfirming, setIsConfirming] = useState(false);
+  const [isSuccess, setIsSuccess] = useState("");
   let handleEmailVerification = () => {
     setIsSuccess("");
     setIsConfirming(true);
-    axios
-      .get(`/users/emailverification/${email}/${token}`)
+    getUserEmailVerification(email, token)
       .then((response) => {
         setIsSuccess(true);
         setIsConfirming(false);
@@ -42,8 +31,8 @@ function EmailVerification(props) {
   };
 
   useEffect(() => {
-    handleEmailVerification();// eslint-disable-next-line
-  },[]);
+    handleEmailVerification();
+  }, []);
   return (
     <div className="main-wrapper">
       <div
@@ -53,9 +42,7 @@ function EmailVerification(props) {
         <Header setlocal={props.setlocal} selectedNav={"home"} />
         {isConfirming ? (
           <>
-            <Backdrop className={classes.backdrop} open={isConfirming}>
-              <CircularProgress color="inherit" />
-            </Backdrop>
+            <CircularBackdrop open={isConfirming} />
           </>
         ) : null}
         {isSuccess === true ? (
@@ -67,7 +54,7 @@ function EmailVerification(props) {
             </div>
             <div className="row">
               <div className="col-12 text-center">
-                <img src={success} alt='success'/>
+                <img src={success} alt="success" />
               </div>
             </div>
           </div>
@@ -81,7 +68,7 @@ function EmailVerification(props) {
             </div>
             <div className="row">
               <div className="col-12 text-center email-verification-failure">
-                <img src={failure} alt='falure' />
+                <img src={failure} alt="falure" />
               </div>
             </div>
           </div>

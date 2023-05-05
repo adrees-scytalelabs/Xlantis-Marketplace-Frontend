@@ -1,18 +1,17 @@
-import { Grid } from "@material-ui/core/";
-import axios from "axios";
+
+import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
+import { getNFTsFromSingleCollection } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
-import Card from "@material-ui/core/Card";
-import Typography from "@material-ui/core/Typography";
-
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  let [versionB, setVersionB] = useState("");
+  const [versionB, setVersionB] = useState("");
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -21,45 +20,36 @@ function CollectionNfts(props) {
   };
   let getCollectionNfts = () => {
     handleShowBackdrop();
-    axios.get(`/collection/${collectionId}`).then(
-      (response) => {
-        //console.log("response", response);
+    getNFTsFromSingleCollection(collectionId)
+      .then((response) => {
         setTokenList(response.data.nftsdata);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
     getCollectionNfts();
-    // getCollections();?
 
     props.setActiveTab({
       dashboard: "",
+      newCollection: "",
+      myCollections: "active",
       newNFT: "",
-      orders: "",
       myNFTs: "",
-      myCubes: "",
-      myDrops: "",
-      settings: "",
-      mySeason: "",
-      privacyPolicy: "",
-      termsandconditions: "",
-      changePassword: "",
+      marketplace: "",
       newDrop: "",
-      newCube: "",
-      newCollection: "active",
-      newRandomDrop: "",
-    }); // eslint-disable-next-line
+      myDrops: "",
+      topUp: "",
+    });
   }, []);
 
   return (
@@ -99,26 +89,14 @@ function CollectionNfts(props) {
                 </span>
               </div>
             ) : tokenList.length === 0 ? (
-              <Card
-                variant="outlined"
-                style={{
-                  padding: "40px",
-                  marginTop: "20px",
-                  marginBottom: "20px",
-                  backgroundColor: "#000",
-                }}
-              >
-                <Typography
-                  variant="body2"
-                  className="text-center"
-                  component="p"
-                  style={{ color: "#fff" }}
-                >
-                  <strong>No items to display </strong>
-                </Typography>
-              </Card>
+              <MessageCard msg="No items to display" />
             ) : (
-              <Grid container spacing={2} direction="row" justify="flex-start">
+              <Grid
+                container
+                spacing={2}
+                direction="row"
+                justifyContent="flex-start"
+              >
                 {tokenList.map((i, index) => (
                   <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
                     <NFTCard data={i[0]} />
