@@ -63,8 +63,17 @@ function AcceptBidAccordian({
                       <span>Expired</span>
                     ) : (
                       <Countdown
-                        daysInHour
                         date={new Date(bid.expiryTime)}
+                        renderer={props => {  
+                            if (props.days==0){
+                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                            }
+                            else {
+                              return <span>{props.days}days {props.hours}hr</span>
+                            }
+                          }
+                        }
+
                       />
                     )}
                   </td>

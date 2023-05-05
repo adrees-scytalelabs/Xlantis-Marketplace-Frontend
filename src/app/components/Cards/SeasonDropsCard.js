@@ -40,7 +40,16 @@ function SeasonDropsCard({ i }) {
                                         <strong>Auction Starts At:</strong>
                                     </Typography>
                                     {console.log("Date(i[0].AuctionStartsAt)", Date(i[0].AuctionStartsAt))}
-                                    <Countdown daysInHours date={new Date(i[0].AuctionStartsAt)}>
+                                    <Countdown  date={new Date(i[0].AuctionStartsAt)}
+                                    renderer={props => {  
+                                        if (props.days==0){
+                                        return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                                        }
+                                        else {
+                                          return <span>{props.days}days {props.hours}hr</span>
+                                        }
+                                      }
+                                    }>
                                     </Countdown>
                                 </div>
                             ) : new Date() > new Date(i[0].AuctionStartsAt) && new Date() < new Date(i[0].AuctionEndsAt) ? (
@@ -49,7 +58,16 @@ function SeasonDropsCard({ i }) {
                                     <Typography variant="body2" color="textSecondary" component="p">
                                         <strong>Auction Ends At:</strong>
                                     </Typography>
-                                    <Countdown daysInHours date={new Date(i[0].AuctionEndsAt)}>
+                                    <Countdown  date={new Date(i[0].AuctionEndsAt)}
+                                    renderer={props => {  
+                                        if (props.days==0){
+                                        return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                                        }
+                                        else {
+                                          return <span>{props.days}days {props.hours}hr</span>
+                                        }
+                                      }
+                                    }>
                                     </Countdown>
                                 </div>) : (
                                 <Typography variant="body2" style={{ color: "#FF0000" }} component="p">

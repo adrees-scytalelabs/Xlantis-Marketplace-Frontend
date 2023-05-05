@@ -72,9 +72,18 @@ const DropsPageCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -96,9 +105,17 @@ const DropsPageCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -137,9 +154,17 @@ const DropsPageCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -161,9 +186,18 @@ const DropsPageCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>

@@ -154,9 +154,18 @@ const OnSaleCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.i.startTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       ></Countdown>
                     </span>
                   </Alert>
@@ -181,9 +190,18 @@ const OnSaleCard = (props) => {
                     </span>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.i.endTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days}days {props.hours}hr</span>
+                          }
+                        }
+                      }
                       ></Countdown>
                     </span>
                   </Alert>

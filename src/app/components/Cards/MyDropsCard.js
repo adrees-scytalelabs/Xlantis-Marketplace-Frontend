@@ -47,8 +47,17 @@ const MyDropsCard = (props) => {
                   Date(props.dropDetails.AuctionStartsAt)
                 )}
                 <Countdown
-                  daysInHours
+                  
                   date={new Date(props.dropDetails.AuctionStartsAt)}
+                  renderer={props => {  
+                    if (props.days==0){
+                    return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                    }
+                    else {
+                      return <span>{props.days}days {props.hours}hr</span>
+                    }
+                  }
+                }
                 />
               </div>
             ) : new Date() > new Date(props.dropDetails.AuctionStartsAt) &&
@@ -62,8 +71,17 @@ const MyDropsCard = (props) => {
                   <strong>Auction Ends At:</strong>
                 </Typography>
                 <Countdown
-                  daysInHours
+                  
                   date={new Date(props.dropDetails.AuctionEndsAt)}
+                  renderer={props => {  
+                    if (props.days==0){
+                    return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                    }
+                    else {
+                      return <span>{props.days}days {props.hours}hr</span>
+                    }
+                  }
+                }
                 />
               </div>
             ) : (
