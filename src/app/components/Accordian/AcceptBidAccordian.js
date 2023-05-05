@@ -69,7 +69,7 @@ function AcceptBidAccordian({
                             return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                             }
                             else {
-                              return <span>{props.days}days {props.hours}hr</span>
+                              return <span>{props.days} days {props.hours} hr</span>
                             }
                           }
                         }

@@ -68,8 +68,9 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Auction Starts At:{" "}
+                      Auction Starts At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
                         
@@ -80,7 +81,7 @@ const DropsPageCard = (props) => {
                           return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
-                            return <span>{props.days}days {props.hours}hr</span>
+                            return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
                       }
@@ -101,8 +102,9 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Auction Ends At:{" "}
+                      Auction Ends At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
                         date={new Date(props.dropDetails.endTime)}
@@ -112,7 +114,7 @@ const DropsPageCard = (props) => {
                           return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
-                            return <span>{props.days}days {props.hours}hr</span>
+                            return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
                       }
@@ -150,8 +152,9 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Sale Starts At:{" "}
+                      Sale Starts At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
                         date={new Date(props.dropDetails.startTime)}
@@ -161,7 +164,7 @@ const DropsPageCard = (props) => {
                           return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
-                            return <span>{props.days}days {props.hours}hr</span>
+                            return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
                       }
@@ -182,8 +185,9 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Sale Ends At:{" "}
+                      Sale Ends At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
                         
@@ -194,7 +198,7 @@ const DropsPageCard = (props) => {
                           return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
-                            return <span>{props.days}days {props.hours}hr</span>
+                            return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
                       }
