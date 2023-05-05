@@ -1,8 +1,18 @@
-
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ListIcon from '@mui/icons-material/List';
-import { Accordion, AccordionDetails, AccordionSummary, Card, CardMedia, Paper, TextField, ThemeProvider, Typography, createTheme } from '@mui/material';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ListIcon from "@mui/icons-material/List";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Card,
+  CardMedia,
+  Paper,
+  TextField,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
@@ -40,7 +50,7 @@ import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory72
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 
-import BlurLinearIcon from '@mui/icons-material/BlurLinear';
+import BlurLinearIcon from "@mui/icons-material/BlurLinear";
 
 const customTheme = createTheme({
   overrides: {
@@ -110,9 +120,9 @@ const FixedDropSingleNFTHome = () => {
   let account = sessionStorage.getItem("Authorization");
   const { singleNFTid } = useParams();
   const handleGoBack = () => {
-    navigate(
-      `/fixdropnft/${dropID}`,
-      {state: { saleType: saleType, description: description },});
+    navigate(`/fixdropnft/${dropID}`, {
+      state: { saleType: saleType, description: description },
+    });
   };
 
   let handleChangeBiddingValue = (event) => {
@@ -483,7 +493,7 @@ const FixedDropSingleNFTHome = () => {
       .then((response) => {
         console.log("Transaction Hash sending on backend response: ", response);
         console.log("Stripe Url", response.data.stripeSession);
-        localStorage.setItem('sessionId', response.data.checkoutSessionId);
+        localStorage.setItem("sessionId", response.data.checkoutSessionId);
         window.location.replace(response.data.stripeSession);
       })
       .catch((error) => {
@@ -743,7 +753,7 @@ const FixedDropSingleNFTHome = () => {
   useEffect(() => {
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
-    console.log("location.state",location.state);
+    console.log("location.state", location.state);
     setNftData(location.state?.nftDetails);
     setNftBlockChainId(location.state?.nftDetails?.nftId);
     setNftProperties(Object.entries(location.state?.nftDetails?.properties));
@@ -783,11 +793,13 @@ const FixedDropSingleNFTHome = () => {
               >
                 <div className="col-md-12 col-lg-4 pr-md-3">
                   <Paper elevation={5}>
-                    <Card sx={{
-                      flexGrow: 1,
-                      width: "100%",
-                      backgroundColor: "black",
-                    }}>
+                    <Card
+                      sx={{
+                        flexGrow: 1,
+                        width: "100%",
+                        backgroundColor: "black",
+                      }}
+                    >
                       <div style={{ marginTop: "20px" }}>
                         <CardMedia
                           sx={{
@@ -805,8 +817,12 @@ const FixedDropSingleNFTHome = () => {
                   <FixedDropSingleNFTCard nftData={nftData} price={price} />
                   <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                     <Col>
-                      <Accordion>
-                        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+                      <Accordion style={{ background: "black" }}>
+                        <AccordionSummary
+                          expandIcon={
+                            <ExpandMoreIcon style={{ color: "white" }} />
+                          }
+                        >
                           <Typography
                             variant="body1"
                             style={{ color: "#F64D04", fontFamily: "orbitron" }}
@@ -816,22 +832,27 @@ const FixedDropSingleNFTHome = () => {
                           </Typography>
                         </AccordionSummary>
                         <AccordionDetails>
-                          <Table striped bordered hover>
-                            <thead>
-                              <tr>
-                                <th>Key</th>
-                                <th>Value</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {nftProperties?.map((i, index) => (
-                                <tr key={index}>
-                                  <td>{i[0]}</td>
-                                  <td>{i[1]}</td>
+                          {nftProperties[0][0] !== "" &&
+                          nftProperties.length != 0 ? (
+                            <Table striped bordered hover>
+                              <thead style={{ background: "black" }}>
+                                <tr>
+                                  <th>Key</th>
+                                  <th>Value</th>
                                 </tr>
-                              ))}
-                            </tbody>
-                          </Table>
+                              </thead>
+                              <tbody style={{ background: "black" }}>
+                                {nftProperties?.map((i, index) => (
+                                  <tr key={index}>
+                                    <td>{i[0]}</td>
+                                    <td>{i[1]}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </Table>
+                          ) : (
+                            <MessageCard msg="No Properties"></MessageCard>
+                          )}
                         </AccordionDetails>
                       </Accordion>
                     </Col>
@@ -840,9 +861,9 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
-                        nftData?.currentMarketplaceId.isSold === false &&
-                        new Date() >= startTime &&
-                        new Date() < endTime ? (
+                      nftData?.currentMarketplaceId.isSold === false &&
+                      new Date() >= startTime &&
+                      new Date() < endTime ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
