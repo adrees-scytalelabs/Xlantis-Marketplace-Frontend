@@ -68,13 +68,23 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Auction Starts At:{" "}
+                      Auction Starts At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days} days {props.hours} hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -92,13 +102,22 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Auction Ends At:{" "}
+                      Auction Ends At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
-                        daysInHours
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days} days {props.hours} hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -133,13 +152,22 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Sale Starts At:{" "}
+                      Sale Starts At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
-                        daysInHours
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days} days {props.hours} hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -157,13 +185,23 @@ const DropsPageCard = (props) => {
                         fontWeight: "bold",
                       }}
                     >
-                      Sale Ends At:{" "}
+                      Sale Ends At
                     </span>
+                    <br></br>
                     <span>
                       <Countdown
-                        daysInHours
+                        
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
+                        renderer={props => {  
+                          if (props.days==0){
+                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                          }
+                          else {
+                            return <span>{props.days} days {props.hours} hr</span>
+                          }
+                        }
+                      }
                       />
                     </span>
                   </Alert>

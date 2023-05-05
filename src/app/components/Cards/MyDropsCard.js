@@ -40,15 +40,25 @@ const MyDropsCard = (props) => {
             {new Date() < new Date(props.dropDetails.AuctionStartsAt) ? (
               <div style={{ color: "#00FF00" }}>
                 <Typography variant="body2" color="textSecondary" component="p">
-                  <strong>Auction Starts At:</strong>
+                  <strong>Auction Starts At</strong>
                 </Typography>
                 {console.log(
                   "Date(i.AuctionStartsAt)",
                   Date(props.dropDetails.AuctionStartsAt)
                 )}
+                <br></br>
                 <Countdown
-                  daysInHours
+                  
                   date={new Date(props.dropDetails.AuctionStartsAt)}
+                  renderer={props => {  
+                    if (props.days==0){
+                    return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                    }
+                    else {
+                      return <span>{props.days} days {props.hours} hr</span>
+                    }
+                  }
+                }
                 />
               </div>
             ) : new Date() > new Date(props.dropDetails.AuctionStartsAt) &&
@@ -59,11 +69,21 @@ const MyDropsCard = (props) => {
                   Date(props.dropDetails.AuctionEndsAt.toLoca)
                 )}
                 <Typography variant="body2" color="textSecondary" component="p">
-                  <strong>Auction Ends At:</strong>
+                  <strong>Auction Ends At</strong>
                 </Typography>
+                <br></br>
                 <Countdown
-                  daysInHours
+                  
                   date={new Date(props.dropDetails.AuctionEndsAt)}
+                  renderer={props => {  
+                    if (props.days==0){
+                    return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                    }
+                    else {
+                      return <span>{props.days} days {props.hours} hr</span>
+                    }
+                  }
+                }
                 />
               </div>
             ) : (

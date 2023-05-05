@@ -66,8 +66,17 @@ function NewSeasonCard({ i, handleRemoveClick, index }) {
                     Date(i.AuctionStartsAt)
                   )}
                   <Countdown
-                    daysInHours
+                    
                     date={new Date(i.AuctionStartsAt)}
+                    renderer={props => {  
+                      if (props.days==0){
+                      return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                      }
+                      else {
+                        return <span>{props.days}days {props.hours}hr</span>
+                      }
+                    }
+                  }
                   ></Countdown>
                 </div>
               ) : new Date() >
@@ -86,8 +95,17 @@ function NewSeasonCard({ i, handleRemoveClick, index }) {
                     <strong>Auction Ends At:</strong>
                   </Typography>
                   <Countdown
-                    daysInHours
+                    
                     date={new Date(i.AuctionEndsAt)}
+                    renderer={props => {  
+                      if (props.days==0){
+                      return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                      }
+                      else {
+                        return <span>{props.days}days {props.hours}hr</span>
+                      }
+                    }
+                  }
                   ></Countdown>
                 </div>
               ) : (
