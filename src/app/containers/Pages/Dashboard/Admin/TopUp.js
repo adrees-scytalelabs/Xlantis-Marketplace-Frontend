@@ -64,7 +64,9 @@ function TopUp(props) {
     };
     topUpAmount(data)
       .then((response) => {
+        localStorage.setItem('sessionId', response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
+        handleCloseBackdrop();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
