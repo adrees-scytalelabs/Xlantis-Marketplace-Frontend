@@ -1,30 +1,21 @@
-// eslint-disable-next-line
-import React, { useEffect, useState } from "react";
+
+import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
 import PropTypes from "prop-types";
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { makeStyles } from "@material-ui/styles";
-import { Box, Tab, Tabs, Typography } from "@material-ui/core";
+import React, { useEffect, useState } from "react";
 import SuperAdminDefaultScreen from "./SuperAdminDefaultScreen";
 import SuperAdminSSOScreen from "./SuperAdminSSOScreen";
 import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    // backgroundColor: theme.palette.background.paper,
-    // width: 500,
-  },
+import { useResolvedPath } from 'react-router-dom';
+const styles = {
   tabsProps: {
     textTransform: "capitalize",
     fontSize: "1.5rem",
     fontWeight: "bold",
     color: "#fff",
   },
-  tabPanelProps: {
-    backgroundColor: "#000",
-  },
-}));
+}
 
-const customTheme = createMuiTheme({
+const customTheme = createTheme({
   palette: {
     primary: {
       main: "#fff",
@@ -99,10 +90,10 @@ function a11yProps(index) {
   };
 }
 
-// COMPONENT FUNCTION
+
 function SuperAdminDashboardDefaultScreen(props) {
-  const classes = useStyles();
   const [value, setValue] = useState(0);
+  const path = useResolvedPath("").pathname;
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
@@ -116,20 +107,15 @@ function SuperAdminDashboardDefaultScreen(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
-
+      properties: "",
+      template: "",
+      saved: "",
     });
-    // eslint-disable-next-line
   }, []);
-
- // console.log("props in super admin dashboard: ", props);
 
   return (
     <>
       <div className="backgroundDefault">
-        {/* <!-- Page Header --> */}
         <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
           <div className="row">
             <div className="col-sm-12">
@@ -145,12 +131,10 @@ function SuperAdminDashboardDefaultScreen(props) {
             </div>
           </div>
         </div>
-        {/* <!-- /Page Content --> */}
         <div className="card-body page-height px-0">
           <ThemeProvider theme={customTheme}>
             <div className="row no-gutters">
               <div className="col-md-12 col-lg-12 col-xl-12">
-                {/* <AppBar position="static" color="white" elevation={0} style={{ width: "max-content", borderBottom: "1px solid #A70000" }} > */}
                 <Tabs
                   value={value}
                   onChange={handleChange}
@@ -160,24 +144,23 @@ function SuperAdminDashboardDefaultScreen(props) {
                 >
                   <Tab
                     label="All"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(0)}
                   />
                   <Tab
                     label="SSO"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(1)}
                   />
                   <Tab
                     label="Wallet"
-                    className={classes.tabsProps}
+                    sx={styles.tabsProps}
                     {...a11yProps(2)}
                   />
                 </Tabs>
-                {/* </AppBar> */}
                 <TabPanel value={value} index={0}>
                   <SuperAdminDefaultScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -185,7 +168,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <SuperAdminSSOScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -193,7 +176,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   <SuperAdminWalletScreen
-                    match={props.match}
+                    match={path}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}

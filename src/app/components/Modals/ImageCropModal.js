@@ -1,6 +1,6 @@
-import { CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import { Modal, Spinner } from "react-bootstrap";
 import Cropper from "react-easy-crop";
 
 const ImageCropModal = (props) => {
@@ -40,16 +40,24 @@ const ImageCropModal = (props) => {
             className="btn"
             type="button"
             style={{
-              width: "25px !important",
+              width: "25%",
               margin: "10px",
               marginRight: 0,
               backgroundColor: "black",
               border: "1px solid #fff",
               borderRadius: 0,
               padding: 10,
+              height: "46px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <CircularProgress color="white" />
+            <Spinner
+              animation="border"
+              role="status"
+              style={{ color: "#fbfeff" }}
+            ></Spinner>
           </button>
         ) : (
           <button
@@ -62,6 +70,8 @@ const ImageCropModal = (props) => {
               border: "1px solid #fff",
               borderRadius: 0,
               padding: 10,
+              width: "25%",
+              height: "46px",
             }}
             onClick={() => props.uploadImage()}
           >

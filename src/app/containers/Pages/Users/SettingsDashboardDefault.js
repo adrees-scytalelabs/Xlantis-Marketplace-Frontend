@@ -1,103 +1,61 @@
-// eslint-disable-next-line
-import axios from "axios"; // eslint-disable-next-line
-import React, { useCallback, useEffect, useState } from "react";
-import Edit from "@material-ui/icons/Edit";
 import Cookies from "js-cookie";
-import Backdrop from "@material-ui/core/Backdrop";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import { makeStyles } from "@material-ui/core/styles";
-import { isUndefined } from "lodash";
 import { useSnackbar } from "notistack";
+import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from 'react-redux';
 import r1 from "../../../assets/img/patients/patient.jpg";
+import {
+  updateAdminProfileSSO,
+  updateUserProfileVersioned,
+  uploadImage
+} from "../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
+import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
-import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-    width: "100%",
-    backgroundColor: theme.palette.background.paper,
-  },
-  badge: {
-    "& > *": {
-      margin: theme.spacing(1),
-    },
-  },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-
-  card: {
-    minWidth: 250,
-  },
-  media: {
-    height: 0,
-    paddingTop: "100%", // 16:9
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
-  },
-  title: {
-    fontSize: 14,
-  },
-  pos: {
-    marginBottom: 12,
-  },
-}));
+import getCroppedImg from "../../../components/Utils/Crop";
+import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
+import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
+import { getUserProfile } from "../../../redux/getUserProfileSlice";
 
 function SettingDashboardDefault(props) {
-  let [isAdmin, setIsAdmin] = useState(false);
-  let [name, setName] = useState("");
-  let [bio, setBio] = useState("");
-  let [email, setEmail] = useState("");
-  let [editProfile, setEditProfile] = useState(false);
-  let [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  let [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [email, setEmail] = useState("");
+  const [walletAddress, setWalletAddress] = useState("");
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [isUploadingBannerIPFS, setIsUploadingBannerIPFS] = useState(false);
   const [open, setOpen] = useState(false);
-  let [isSaving, setIsSaving] = useState(false);
-  let [isUploadingData, setIsUploadingData] = useState(false);
-  let [isBannerSelected, setIsBannerSelected] = useState(false);
-  let [isProfileSelected, setIsProfileSelected] = useState(false);
-  let [imageSrc, setImageSrc] = useState("");
-  let [crop, setCrop] = useState({ x: 0, y: 0 });
-  let [zoom, setZoom] = useState(1);
-  let [aspect, setAspect] = useState(1 / 1);
-  let [showCropModal, setShowCropModal] = useState(false);
-  let [selectedImage, setSelectedImage] = useState("");
-  let [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
-  let [imageCounter, setImageCounter] = useState(0);
-  let [adminName, setAdminName] = useState("");
-  let [adminCompanyName, setAdminCompanyName] = useState("");
-  let [adminDomain, setAdminDomain] = useState("");
-  let [adminDesignation, setAdminDesignation] = useState("");
-  let [adminOldData, setAdminOldData] = useState({});
-  let [adminReasonForInterest, setAdminReasonForInterest] = useState("");
-  let [adminIndustry, setAdminIndustry] = useState("");
-  let [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [, setIsUploadingData] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [adminName, setAdminName] = useState("");
+  const [adminCompanyName, setAdminCompanyName] = useState("");
+  const [adminDomain, setAdminDomain] = useState("");
+  const [adminDesignation, setAdminDesignation] = useState("");
+  const [adminOldData, setAdminOldData] = useState({});
+  const [adminReasonForInterest, setAdminReasonForInterest] = useState("");
+  const [adminIndustry, setAdminIndustry] = useState("");
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
+  const { userData, loading } = useSelector((store) => store.userProfile);
+  const { adminUserData, adminLoading } = useSelector((store) => store.getAdminProfileData);
+  const dispatch = useDispatch();
 
-  const classes = useStyles();
-
-  let [profileImage, setProfileImage] = useState(
+  const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  let [bannerImage, setBannerImage] = useState(r1);
-
+  const [bannerImage, setBannerImage] = useState(r1);
   const { enqueueSnackbar } = useSnackbar();
-
-  const handleOverlay = (e) => {
-    e.target.style.opacity = 1;
-  };
-
-  const handleRemoveOverlay = (e) => {
-    e.target.style.opacity = 0;
-  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -119,30 +77,22 @@ function SettingDashboardDefault(props) {
       bannerURL: bannerImage,
     };
 
-    //console.log("data", data);
-
-    axios.put(`/${Cookies.get("Version")}/user/profile`, data).then(
-      (response) => {
-        //console.log("profile update response: ", response);
+    updateUserProfileVersioned(Cookies.get("Version"), data)
+      .then((response) => {
         let variant = "success";
         enqueueSnackbar("Profile Updated Succesfully", { variant });
         setIsUploadingData(false);
         handleCloseBackdrop();
         props.setUpdateProfile(profileImage);
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Error on profile update: ", error);
         console.log("Error on profile update: ", error.response);
-
         setIsUploadingData(false);
-
         handleCloseBackdrop();
-
         let variant = "error";
         enqueueSnackbar("Unable to Update Profile", { variant });
-      }
-    );
-
+      });
     setIsSaving(false);
   };
 
@@ -178,45 +128,30 @@ function SettingDashboardDefault(props) {
   };
 
   let getProfile = () => {
-    let version = Cookies.get("Version");
-   // console.log("Version: ", version);
-    //console.log("UserId:", sessionStorage.getItem("Authorization"));
-    axios
-      .get(`${version}/user/profile`)
-      .then((response) => {
-      //  console.log("Response from getting user: ", response);
-        setName(response.data.userData.username);
-        setBio(response.data.userData.bio);
-        response.data.userData.imageURL &&
-          setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-      })
-      .catch((error) => {
-        console.log(error);
-        console.log(error.response);
-      });
+    dispatch(getUserProfile());
+    setName(userData.username);
+    setBio(userData.bio);
+    userData.imageURL &&
+      setProfileImage(userData.imageURL);
+    userData.bannerURL &&
+      setBannerImage(userData.bannerURL);
+    setEmail(userData.email);
+    setWalletAddress(userData.walletAddress)
   };
 
   const getAdminProfile = async () => {
-    await axios.get(`/v1-sso/user/admin/profile`).then(
-      (response) => {
-        //console.log("Response from getting admin profile", response);
-        setAdminOldData(response.data.userData);
-        setProfileImage(response.data.userData.imageURL);
-        response.data.userData.bannerURL &&
-          setBannerImage(response.data.userData.bannerURL);
-        setAdminCompanyName(response.data.userData.companyName);
-        setAdminDesignation(response.data.userData.designation);
-        setAdminDomain(response.data.userData.domain);
-        setAdminName(response.data.userData.username);
-        setAdminReasonForInterest(response.data.userData.reasonForInterest);
-        setAdminIndustry(response.data.userData.industryType);
-      },
-      (error) => {
-        console.log("Error from getting Admin profile", error);
-      }
-    );
+    dispatch(getAdminProfileData());
+    console.log("dispatchResp", adminUserData);
+    setAdminOldData(adminUserData);
+    setProfileImage(adminUserData.imageURL);
+    adminUserData.bannerURL &&
+      setBannerImage(adminUserData.bannerURL);
+    setAdminCompanyName(adminUserData.companyName);
+    setAdminDesignation(adminUserData.designation);
+    setAdminDomain(adminUserData.domain);
+    setAdminName(adminUserData.username);
+    setAdminReasonForInterest(adminUserData.reasonForInterest);
+    setAdminIndustry(adminUserData.industryType);
   };
 
   const handleSubmitAdminProfile = (e) => {
@@ -241,22 +176,19 @@ function SettingDashboardDefault(props) {
   const updateData = async () => {
     let data = {
       companyName: adminCompanyName,
-      // bio: adminDomain,
       imageURL: profileImage,
       bannerURL: bannerImage,
       username: adminName,
     };
-    await axios.put(`/v1-sso/user/admin/update-info`, data).then(
-      (response) => {
-        //console.log("Response from updating admin data: ", response);
+    await updateAdminProfileSSO(data)
+      .then((response) => {
         setShowConfirmationModal(false);
         let variant = "success";
         enqueueSnackbar("Data updated successfully", { variant });
-      },
-      (error) => {
+      })
+      .catch((error) => {
         console.log("Error from updating admin data: ", error);
-      }
-    );
+      });
   };
 
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
@@ -272,12 +204,10 @@ function SettingDashboardDefault(props) {
         imageCounter,
         0
       );
-     // console.log("Done: ", { croppedImage });
       let formData = new FormData();
       formData.append("image", croppedImage);
-      await axios.post("/upload/image/", formData).then(
-        (response) => {
-         // console.log("Response from uploading Image", response);
+      await uploadImage(formData)
+        .then((response) => {
           if (selectedImage === "banner") {
             setBannerImage(response.data.url);
             setIsUploadingBannerIPFS(false);
@@ -293,11 +223,10 @@ function SettingDashboardDefault(props) {
           setImageCounter(imageCounter + 1);
           let variant = "success";
           enqueueSnackbar("Image uploaded successfully", { variant });
-        },
-        (error) => {
+        })
+        .catch((error) => {
           console.log("Error from uploading image", error);
-        }
-      );
+        });
     } catch (e) {
       console.log("Error: ", e);
     }
@@ -310,86 +239,31 @@ function SettingDashboardDefault(props) {
     });
     if (props.user === "admin") {
       setIsAdmin(true);
-      getAdminProfile();
-    } else if (props.user === "user") {
-      getProfile();
     }
   }, []);
 
+  useEffect(() => {
+    if (props.user === "user") {
+      getProfile();
+    }
+  }, [loading]);
+
+  useEffect(() => {
+    if (props.user === "admin") {
+      getAdminProfile();
+    }
+  }, [adminLoading]);
+
   return (
     <div>
-      <div className="row no-gutters">
-        <div className="col-12">
-          <div
-            className="banner-img"
-            style={{ backgroundImage: `url(${bannerImage})` }}
-          >
-            {/* banner */}
-            {isUploadingBannerIPFS ? (
-              <div
-                className="text-center"
-                style={{ position: "relative", top: "150px", right: "10px" }}
-              >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
-              </div>
-            ) : (
-              <label htmlFor="banner-file-input" className="banner-input-label">
-                <div className="banner-dark-layer">
-                  <Edit fontSize="large" id="banner-icon" />
-                </div>
-              </label>
-            )}
-
-            <input
-              id="banner-file-input"
-              type="file"
-              onChange={onChangeBannerFile}
-            />
-          </div>
-
-          {/* profile pic */}
-
-          <div
-            style={{
-              backgroundImage: `url(${profileImage})`,
-              marginLeft: "1%",
-            }}
-            className="profile-backgrnd"
-          >
-            {isUploadingIPFS ? (
-              <div
-                className="text-center"
-                style={{ position: "relative", top: "70px" }}
-              >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
-              </div>
-            ) : (
-              <label
-                htmlFor="profile-file-input"
-                className="profile-input-label"
-              >
-                <div className="profile-dark-layer">
-                  <Edit fontSize="medium" id="profile-icon" />
-                </div>
-              </label>
-            )}
-
-            <input
-              id="profile-file-input"
-              type="file"
-              onChange={onChangeFile}
-            />
-          </div>
-        </div>
-      </div>
+      <ProfileDetailBanner
+        bannerImage={bannerImage}
+        isUploadingBannerIPFS={isUploadingBannerIPFS}
+        onChangeBannerFile={onChangeBannerFile}
+        profileImage={profileImage}
+        isUploadingIPFS={isUploadingIPFS}
+        onChangeFile={onChangeFile}
+      />
       {isAdmin ? (
         <>
           <div className="row pt-5">
@@ -400,88 +274,47 @@ function SettingDashboardDefault(props) {
               <div className="col-md-12 col-lg-6">
                 <form>
                   <div className="form-group">
-                    <label>Name</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        value={adminName}
-                        placeholder="Enter Name"
-                        className="form-control"
-                        onChange={(e) => {
-                          setAdminName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <label>Company Name</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        value={adminCompanyName}
-                        required
-                        // rows="4"
-                        // value={description}
-                        placeholder="Enter Company Name"
-                        className="form-control"
-                        onChange={(e) => {
-                          setAdminCompanyName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    {/* {Cookies.get("Version") != "v2-wallet-login" && ( */}
-                    <>
-                      <label>Domain</label>
-                      <div className="form-group">
-                        <input
-                          type="text"
-                          required
-                          disabled
-                          value={adminDomain}
-                          placeholder="Enter Domain"
-                          className="form-control"
-                          // onChange={(e) => {
-                          //   setAdminDomain(e.target.value);
-                          // }}
-                        />
-                      </div>
-                    </>
-                    <label>Designation</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        disabled
-                        value={adminDesignation}
-                        placeholder="Enter Designation"
-                        className="form-control"
-                        // onChange={(e) => {
-                        //   setAdminDesignation(e.target.value);
-                        // }}
-                      />
-                    </div>
-                    <label>Industry</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        disabled
-                        value={adminIndustry}
-                        // placeholder="Enter Designation"
-                        className="form-control"
-                      />
-                    </div>
-                    <label>Reason For Interest</label>
-                    <div className="form-group">
-                      <textarea
-                        type="text"
-                        required
-                        rows="4"
-                        disabled
-                        value={adminReasonForInterest}
-                        // placeholder="Enter Designation"
-                        className="form-control"
-                      />
-                    </div>
+                    <ProfileDetailInput
+                      type="text"
+                      label="Name"
+                      placeholder="Enter Name"
+                      set={setAdminName}
+                      value={adminName}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Company Name"
+                      placeholder="Enter Company Name"
+                      set={setAdminCompanyName}
+                      value={adminCompanyName}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Domain"
+                      placeholder="Enter Domain"
+                      disabled={true}
+                      value={adminDomain}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Designation"
+                      placeholder="Enter Designation"
+                      disabled={true}
+                      value={adminDesignation}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Industry"
+                      disabled={true}
+                      value={adminIndustry}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Reason For Interest"
+                      disabled={true}
+                      value={adminReasonForInterest}
+                      row="4"
+                    />
                     {isSaving ? (
                       <div className="text-center">
                         <Spinner
@@ -520,63 +353,40 @@ function SettingDashboardDefault(props) {
               <div className="col-md-12 col-lg-6">
                 <form>
                   <div className="form-group">
-                    <label>Username</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        required
-                        value={name}
-                        placeholder="Enter Username"
-                        className="form-control"
-                        onChange={(e) => {
-                          setName(e.target.value);
-                        }}
-                      />
-                    </div>
-                    <label>Bio</label>
-                    <div className="form-group">
-                      <textarea
-                        type="text"
-                        value={bio}
-                        required
-                        rows="4"
-                        placeholder="Tell the world your story!"
-                        className="form-control"
-                        onChange={(e) => {
-                          setBio(e.target.value);
-                        }}
-                      />
-                    </div>
+                    <ProfileDetailInput
+                      type="text"
+                      label="Username"
+                      placeholder="Enter Username"
+                      set={setName}
+                      value={name}
+                    />
+                    <ProfileDetailInput
+                      type="text"
+                      label="Bio"
+                      placeholder="Tell the world your story!"
+                      set={setBio}
+                      value={bio}
+                      row="4"
+                    />
+
                     {Cookies.get("Version") != "v2-wallet-login" && (
-                      <>
-                        <label>Email</label>
-                        <div className="form-group">
-                          <input
-                            type="email"
-                            required
-                            value={email}
-                            placeholder="Enter Email"
-                            className="form-control"
-                            onChange={(e) => {
-                              setEmail(e.target.value);
-                            }}
-                          />
-                        </div>
-                      </>
-                    )}
-                    <label>Wallet Address</label>
-                    <div className="form-group">
-                      <input
-                        type="text"
-                        readOnly={true}
-                        value={sessionStorage.getItem("Address")}
-                        placeholder="Wallet Address"
-                        className="form-control"
-                        // onChange={(e) => {
-                        //     setName(e.target.value)
-                        // }}
+                      <ProfileDetailInput
+                        type="email"
+                        label="Email"
+                        placeholder="Enter Email"
+                        set={setEmail}
+                        value={email}
+                        disabled
                       />
-                    </div>
+                    )}
+                    <ProfileDetailInput
+                      type="text"
+                      label="Wallet Address"
+                      placeholder="Wallet Address"
+                      set={setWalletAddress}
+                      value={walletAddress}
+                      disabled
+                    />
                     {isSaving ? (
                       <div className="text-center">
                         <Spinner
@@ -625,9 +435,7 @@ function SettingDashboardDefault(props) {
         handleClose={() => setShowConfirmationModal(false)}
         updateData={updateData}
       />
-      <Backdrop className={classes.backdrop} open={open}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

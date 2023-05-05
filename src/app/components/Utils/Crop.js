@@ -45,7 +45,6 @@ export default async function getCroppedImg(
     rotation
   );
 
-  // set canvas size to match the bounding box
   canvas.width = bBoxWidth;
   canvas.height = bBoxHeight;
 
@@ -70,8 +69,11 @@ export default async function getCroppedImg(
 
   return new Promise((resolve, reject) => {
     canvas.toBlob((blob) => {
-      //   resolve(URL.createObjectURL(file));
-      const file = new File([blob], `cropped-image-${imageCounter}.png`, { type: "image/png" });
+      const file = new File(
+        [blob],
+        `cropped-image-${imageCounter}-${Date.now()}.png`,
+        { type: "image/png" }
+      );
       resolve(file);
     }, "image/jpeg");
   });

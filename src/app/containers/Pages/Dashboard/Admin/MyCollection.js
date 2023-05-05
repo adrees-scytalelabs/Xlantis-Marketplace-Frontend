@@ -1,32 +1,16 @@
-import {
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  TablePagination,
-  Typography,
-} from "@material-ui/core/";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import { makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
+import { Grid, TablePagination } from '@mui/material';
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
-// COMPONENTS
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-
-const useStyles = makeStyles({
+import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
+const useStyles = {
   root: {
     minWidth: 250,
-    backgroundColor: "black"
-  },
-  bullet: {
-    display: "inline-block",
-    margin: "0 2px",
-    transform: "scale(0.8)",
+    backgroundColor: "black",
   },
   title: {
     fontSize: 14,
@@ -38,83 +22,35 @@ const useStyles = makeStyles({
     maxWidth: 345,
   },
   media: {
-    // height: 140,
     height: 0,
-    paddingTop: "100%", // 16:9
+    paddingTop: "100%",
   },
-});
+}
 
 function MyCollection(props) {
-  // eslint-disable-next-line
-  const { enqueueSnackbar } = useSnackbar();
-  let [collections, setCollections] = useState([]); // eslint-disable-next-line
-  let [collection, setCollection] = useState("");
+  const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
-  const [page, setPage] = useState(0); // eslint-disable-next-line
-  let [isCreating, setIsCreating] = useState(false);
-  let [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
 
-  let [collectionCount, setCollectionCount] = useState(0);
-  let [versionB, setVersionB] = useState("");
+  const [collectionCount, setCollectionCount] = useState(0);
+  const [, setVersionB] = useState("");
+  const { collectionData, collectionCont } = useSelector((store) => store.MyCollection);
+  const dispatch = useDispatch();
 
-  const classes = useStyles();
   let getCollections = (start, end) => {
-    const version = Cookies.get("Version");
-    //console.log("version", version);
-
-    // axios.defaults.headers.common["Authorization"] = `Bearer ${sessionStorage.getItem(
-    //     "Authorization"
-    // )}`;
     setOpen(true);
-    const url = `/collection/myCollections/${start}/${end}`;
-    axios
-      .get(url)
-      .then((response) => {
-       // console.log("response.data", response.data);
-        setCollections(response.data.collectionData);
-        setCollectionCount(response.data.collectionCount);
-        setOpen(false);
-      })
-      .catch((error) => {
-        console.log(error.response.data);
-        if (error.response.data !== undefined) {
-          if (
-            error.response.data === "Unauthorized access (invalid token) !!"
-          ) {
-            sessionStorage.removeItem("Authorization");
-            sessionStorage.removeItem("Address");
-            Cookies.remove("Version");
-
-            window.location.reload(false);
-          }
-        }
-        setOpen(false);
-      });
+    dispatch(getMyCollection({ start, end }));
+    console.log("collectionResp", collectionData, collectionCont);
+    setCollections(collectionData);
+    setCollectionCount(collectionCont);
+    setOpen(false);
   };
+  useEffect(() => {
+    getCollections(0, rowsPerPage);
+  }, [collectionCont]);
 
-  // let createCollections = () => {
-  //     setIsCreating(true);
-  //     let CollectionData = {
-  //         collectiontitle: collection
-  //     }
-  //     axios
-  //         .post(`/collection/createcollection`, CollectionData)
-  //         .then((response) => {
-  //             setIsCreating(false);
-  //             console.log("response.data", response);
-  //             setCollection("response.data.Collectiondata");
 
-  //             let variant = "success";
-  //             enqueueSnackbar('Collection Created Successfully .', { variant });
-  //             getCollections()
-  //         })
-  //         .catch((error) => {
-  //             console.log(error.response);
-  //             setIsCreating(false);
-  //             let variant = "error";
-  //             enqueueSnackbar('Unable to Create Collection .', { variant });
-  //         });
-  // };
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -131,37 +67,26 @@ function MyCollection(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
-   // console.log("Entered in my collection tab");
-    getCollections(0, rowsPerPage);
     props.setActiveTab({
       dashboard: "",
-      totalUserAccount: "",
-      pendingUserAccount: "",
-      newCube: "",
+      newCollection: "",
+      myCollections: "active",
+      newNFT: "",
       myNFTs: "",
-      newCollection: "active",
-      mySeason: "",
-      tradeListOrders: "",
+      marketplace: "",
+      newDrop: "",
       myDrops: "",
-      myCubes: "",
-      referralEarnings: "",
-      disputedOrders: "",
-      resolvedDisputedOrders: "",
-      settings: "",
-      changePassword: "",
-      newRandomDrop: "",
-    }); // eslint-disable-next-line
+      topUp: "",
+    });
   }, []);
   return (
     <div className="backgroundDefault">
-      {/* Page Header */}
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
             <h3 className="page-title">Collections</h3>
             <ul className="breadcrumb">
-            <Link to={`/dashboard`}>
+              <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                   Dashboard
                 </li>
@@ -172,40 +97,8 @@ function MyCollection(props) {
         </div>
       </div>
 
-      {/* <div className="container">
-                <Row>
-                    <Col>
-                        <Row>
-                            <Col>
-                                <input type='text' onChange={(e) => setCollection(e.target.value)} value={collection} placeholder="Collection Name" className="form-control" />
-
-                            </Col>
-                            <div class="input-group-prepend">
-                                {collection !== "" ? (
-                                    isCreating ? (
-                                        <div className="text-center">
-                                            <Spinner
-                                                animation="border"
-                                                role="status"
-                                                style={{ color: "#ff0000" }}
-                                            >
-                                                <span className="sr-only">Loading...</span>
-                                            </Spinner>
-                                        </div>
-                                    ) : (
-                                        <button type="button" onClick={() => createCollections()} className="btn submit-btn">Create New Collection</button>
-                                    )
-                                ) : (<button type="button" disabled className="btn submit-btn">Create New Collection</button>)}
-
-                            </div>
-                        </Row>
-                    </Col>
-                    <Col>
-                    </Col>
-                </Row>
-            </div> */}
       <div className="card-body page-height">
-        <div className={classes.root}>
+        <div sx={useStyles.root}>
           {open ? (
             <div align="center" className="text-center">
               <WhiteSpinner />
@@ -214,44 +107,23 @@ function MyCollection(props) {
               </span>
             </div>
           ) : collections.length === 0 ? (
-            <Card
-              variant="outlined"
-              style={{
-                padding: "40px",
-                marginTop: "20px",
-                marginBottom: "20px",
-                backgroundColor: "black"
-              }}
-            >
-              <Typography
-                variant="body2"
-                className="text-center"
-                // color="textSecondary"
-                component="p"
-                style={{ color: "#fff" }}
-              >
-                <strong>No items to display </strong>
-              </Typography>
-            </Card>
+            <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
               {collections.map((i, index) => (
-               
-                   <Grid
-                    item
-                    xs={12}
-                    sm={4}
-                    md={3}
-                    lg={2}
-                    // xl={2}
-                    direction="row"
-                    key={index}
-                  >
-                    <Link to={"/dashboard/collection/nfts/" + i._id}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={4}
+                  md={3}
+                  lg={2}
+                  direction="row"
+                  key={index}
+                >
+                  <Link to={"/dashboard/collection/nfts/" + i._id}>
                     <MyCollectionsCard i={i} />
-                    </Link>
-                  </Grid>
-               
+                  </Link>
+                </Grid>
               ))}
             </Grid>
           )}
@@ -263,8 +135,8 @@ function MyCollection(props) {
         count={collectionCount}
         rowsPerPage={rowsPerPage}
         page={page}
-        onChangePage={handleChangePage}
-        onChangeRowsPerPage={handleChangeRowsPerPage}
+        onPageChange={handleChangePage}
+        onRowsPerPageChange={handleChangeRowsPerPage}
       />
     </div>
   );

@@ -1,27 +1,21 @@
-// REACT
-import React, { useState, useEffect } from "react";
-// REACT ROUTER
-import { useHistory, useParams, useLocation } from "react-router-dom";
-// MUI
-import { Grid } from "@material-ui/core/";
-import ArrowBackIcon from "@material-ui/icons/ArrowBack";
-// COMPONENTS
-import HeaderHome from "../../../components/Headers/Header";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import { Grid } from "@mui/material";
+import Cookies from "js-cookie";
+import React, { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import {
+  getNFTsFromDropPaginatedWOBody
+} from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
-// AXIOS
-import axios from "axios";
-import Cookies from "js-cookie";
+import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-
-// COMPONENT FUNCTION
 const FixedPriceDropNFTs = () => {
-  // States
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
-  const [dropData, setDropData] = useState("");
+  const [dropData, setDropData] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
   const [titleImage, setTitleImage] = useState(
@@ -30,15 +24,16 @@ const FixedPriceDropNFTs = () => {
   const [bannerImage, setBannerImage] = useState(
     "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
   );
-  let history = useHistory();
+  let navigate = useNavigate();
   const dropID = useParams();
   const location = useLocation();
-  const saleType = location.state.saleType;
-  const description = location.state.description;
-  const startTime = location.state.startTime;
-  const endTime = location.state.endTime;
+  console.log("location", location);
+  const saleType = location.state?.saleType;
+  const description = location.state?.description;
+  const startTime = location.state?.startTime;
+  const endTime = location.state?.endTime;
 
-  // Handlers
+  console.log("dropDatadropData", dropData);
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -47,40 +42,30 @@ const FixedPriceDropNFTs = () => {
   };
 
   const handleGoBack = () => {
-    history.push(`/marketPlace`);
+    navigate(`/marketPlace`);
   };
-
-  // Queries
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-    let endpoint;
-    if (version === undefined) {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    } else {
-      endpoint = `/drop/nfts/${dropId}/${start}/${end}`;
-    }
-    axios.get(endpoint).then(
-      (response) => {
-        //console.log("getting a nft", response);
+
+    getNFTsFromDropPaginatedWOBody(dropId, start, end)
+      .then((response) => {
         setDropData(response.data.data);
         handleCloseBackdrop();
-      },
-      (error) => {
+      })
+      .catch((error) => {
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
         }
         handleCloseBackdrop();
-      }
-    );
+      });
   };
 
-  // Side Effects
   useEffect(() => {
-    getNFTs(dropID.dropId, 0, 4); // eslint-disable-next-line
+    getNFTs(dropID.dropId, 0, 4);
     setTitleImage(location.state.imageURL);
     setBannerImage(location.state.bannerURL);
     setDropTitle(location.state.dropTitle);
@@ -89,12 +74,9 @@ const FixedPriceDropNFTs = () => {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        {/* Header */}
         <div style={{ minHeight: "95px" }}>
           <HeaderHome selectedNav={"Market"} role={null} />
         </div>
-        {/* Body */}
-        {/* Banner and Thumb */}
         {!dropData ? (
           <div
             className="row no-gutters w-100 justify-content-center align-items-center"
@@ -109,21 +91,16 @@ const FixedPriceDropNFTs = () => {
             <div className="row no-gutters">
               <div className="col-12">
                 <div className="bannerWrapper">
-                  {/* banner */}
                   <img src={bannerImage} className="bannerImg" />
 
-                  {/* thumbg */}
                   <div className="dropThumbWrapper">
                     <img src={titleImage} className="thumbImg" />
                   </div>
                 </div>
               </div>
             </div>
-            {/* NFTs */}
             <div className="container-fluid mt-5">
-              {/* Heading */}
               <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
-                {/* On Sale */}
                 <div className="col-12">
                   <h1 className="marketCatHeadings">NFTs inside {dropTitle}</h1>
                 </div>
@@ -151,11 +128,10 @@ const FixedPriceDropNFTs = () => {
                   </button>
                 </div>
               </div>
-              {/* NFT Cards */}
               <div className="row no-gutters w-100">
                 <Grid container spacing={3}>
-                  {dropData &&
-                    dropData.map((i, index) => (
+                  {dropData && dropData.length &&
+                    dropData?.map((i, index) => (
                       <Grid
                         item
                         xs={12}
@@ -182,7 +158,6 @@ const FixedPriceDropNFTs = () => {
           </>
         )}
       </div>
-      {/* FOOTER */}
       <div className="row no-gutters">
         <div className="col-12">
           <Footer />

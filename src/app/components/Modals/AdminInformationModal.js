@@ -1,19 +1,7 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles((theme) => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: "#fff",
-  },
-}));
 function AdminInformationModal(props) {
-  const classes = useStyles();
-  useEffect(() => {
-    //console.log(props.adminData);
-    //console.log("Reach Template Data", props);
-  }, [props]);
   return (
     props.show == true && (
       <Modal
@@ -24,9 +12,9 @@ function AdminInformationModal(props) {
       >
         <Modal.Header
           className="NewTemplateHeader"
-          style={{ background: "black"}}
+          style={{ background: "black" }}
         >
-          <Modal.Title style={{color: "white" }}>
+          <Modal.Title style={{ color: "white" }}>
             Admin Details
           </Modal.Title>
         </Modal.Header>
@@ -44,11 +32,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.username}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Company Name
                 <input
@@ -56,11 +44,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.companyName}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Designation
                 <input
@@ -68,11 +56,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.designation}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Domain
                 <input
@@ -80,11 +68,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.domain}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Industry Type
                 <input
@@ -92,11 +80,11 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.industryType}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
-            <Row className="justify-content-center align-items-center no-gutters mt-1">
+            <Row className="justify-content-center align-items-center no-gutters mt-3">
               <Col>
                 Reason of Interest
                 <input
@@ -104,7 +92,7 @@ function AdminInformationModal(props) {
                   type="text"
                   disabled
                   value={props.adminData.reasonForInterest}
-                  className="newNftProps mt-1"
+                  className="newNftProps mt-3"
                 />
               </Col>
             </Row>
@@ -117,7 +105,7 @@ function AdminInformationModal(props) {
             borderTop: "none",
           }}
         >
-          <button className="newTemplateBtn mb-3" onClick={props.handleClose}>
+          <button className="newTemplateBtn mb-3" onClick={(e) => props.handleClose(e, props.setShow)}>
             Close
           </button>
         </Modal.Footer>

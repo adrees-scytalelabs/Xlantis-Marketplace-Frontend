@@ -1,12 +1,9 @@
-// REACT
 import React, { useEffect, useState } from "react";
-// STYLESHEETS
+
 import "../../assets/css/carousel.css";
 
 const Carousel = (props) => {
-  // Props
   const { children, show, infiniteLoop } = props;
-  // States
   const [currentIndex, setCurrentIndex] = useState(infiniteLoop);
   const [length, setLength] = useState(children.length);
 
@@ -17,7 +14,6 @@ const Carousel = (props) => {
 
   const [touchPosition, setTouchPosition] = useState(null);
 
-  // Handlers
   const next = () => {
     if (isRepeating || currentIndex < length - show) {
       setCurrentIndex((prevState) => prevState + 1);
@@ -84,8 +80,6 @@ const Carousel = (props) => {
     }
     return output;
   };
-
-  // Side Effects
   useEffect(() => {
     setLength(children.length);
     setIsRepeating(infiniteLoop && children.length > show);
@@ -99,11 +93,9 @@ const Carousel = (props) => {
     }
   }, [currentIndex, isRepeating, show, length]);
 
-  // Content
   return (
     <div className="carousel-container">
       <div className="carousel-wrapper">
-        {/* You can alwas change the content of the button to other things */}
         {(isRepeating || currentIndex > 0) && (
           <button onClick={prev} className="left-arrow">
             &lt;
@@ -128,7 +120,6 @@ const Carousel = (props) => {
             {length > show && isRepeating && renderExtraNext()}
           </div>
         </div>
-        {/* You can alwas change the content of the button to other things */}
         {(isRepeating || currentIndex < length - show) && (
           <button onClick={next} className="right-arrow">
             &gt;
