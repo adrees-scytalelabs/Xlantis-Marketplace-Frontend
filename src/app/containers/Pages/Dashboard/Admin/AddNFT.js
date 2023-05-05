@@ -145,7 +145,7 @@ function AddNFT(props) {
   };
   const handleCloseModal = () => {
     setMOdalOpen(false);
-    //setTransactionModal(true);
+    setTransactionModal(true);
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
@@ -241,11 +241,6 @@ function AddNFT(props) {
     };
     finalizeDrop(dropData).then(
       (response) => {
-        let variant = "success";
-        enqueueSnackbar(
-          "Drop Is Being Finalized. Transactions Are In Process",
-          { variant }
-        );
         handleCloseModal();
       },
       (error) => {
@@ -1026,7 +1021,7 @@ function AddNFT(props) {
           dropStatus={(e) => dropStatus(e)}
           dropId={dropId}
           cost={costInfo}
-          setOpen={setMOdalOpen}
+          onHide={() => setMOdalOpen(false)}
           setTopUpModal={setTopUpModal}
         />
       )}

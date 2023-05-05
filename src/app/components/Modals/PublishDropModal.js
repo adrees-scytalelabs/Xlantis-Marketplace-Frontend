@@ -457,7 +457,7 @@ const PublishDropModal = (props) => {
                   <Divider />
                   <div className="row no-gutters justify-content-center justify-content-sm-between align-items-center mt-5 ml-4 mb-3">
                     <div className="col-12 col-sm-6 pr-sm-2">
-                      <button className="bttn" onClick={props.handleClose}>
+                      <button className="bttn" onClick={props.onHide}>
                         Reject
                       </button>
                     </div>
