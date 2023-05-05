@@ -161,7 +161,7 @@ const makeTheme = createTheme({
 
 const PublishDropModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
-  const [expanded, setExpanded] = useState("panel1");
+  const [expanded, setExpanded] = useState("");
   const [disabled, setDisabled] = useState(false);
   const [costInfo, setCostInfo] = useState({});
   const [amount, setAmount] = useState(5);
@@ -198,7 +198,6 @@ const PublishDropModal = (props) => {
             onClose={props.handleClose}
             closeAfterTransition
             className="mt-5"
-            
           >
             <Box className="mt-4" style={{backgroundColor:'black',border:'2px solid white'}}>
               <Fade in={props.open}>
