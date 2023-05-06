@@ -14,8 +14,8 @@ export const getSuperAdminUnverifiedType1 = createAsyncThunk(
   async (name,thunkAPI) => {
     try {
       const resp = await axios(`/super-admin/admins/unverified/${name.start}/${name.end}?userType=v1`);
-    //   console.log("reduxResp",resp);
-
+      name.setAdmins(resp.data.unverifiedAdmins)
+      name.setAdminCount(resp.data.unverifiedAdmins.length)
       return resp.data;
     } catch (error) {
         console.log(error.response.data);
@@ -37,7 +37,8 @@ export const getSuperAdminUnverifiedType2 = createAsyncThunk(
       try {
         const resp = await axios(`/super-admin/admins/unverified/${name.start}/${name.end}?userType=v2`);
         // console.log("reduxResp",resp);
-  
+        name.setWalletAdmins(resp.data.unverifiedAdmins)
+        name.setAdminCount(resp.data.unverifiedAdmins.length)
         return resp.data;
       } catch (error) {
         console.log(error.response.data);
