@@ -1,6 +1,15 @@
-import { Box, Tab, TablePagination, Tabs, ThemeProvider, Typography, createTheme, useTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  TablePagination,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+  useTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
@@ -57,7 +66,7 @@ const paginationStyles = {
     color: "#fff",
     fontFamily: "orbitron",
   },
-}
+};
 
 const styles = {
   root: {},
@@ -70,7 +79,7 @@ const styles = {
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -215,20 +224,21 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative">
                     {(rowsPerSalePage > 0
                       ? props.fixedPriceDrop.slice(
-                        salePage * rowsPerSalePage,
-                        salePage * rowsPerSalePage + rowsPerSalePage
-                      )
+                          salePage * rowsPerSalePage,
+                          salePage * rowsPerSalePage + rowsPerSalePage
+                        )
                       : props.fixedPriceDrop
-                    ).map((i, index) => (
-                      (i.status!='draft' && i.status!='closed' &&
-                      <div
-                        className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
-                        key={index}
-                      >
-                        <OnSaleCard i={i} />
-                      </div>
-                      )
-                    ))}
+                    ).map(
+                      (i, index) =>
+                      
+                          <div
+                            className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
+                            key={index}
+                          >
+                            <OnSaleCard i={i} />
+                          </div>
+                        
+                    )}
                   </div>
                 ) : (
                   <MessageCard msg="No items to display" />
@@ -275,9 +285,9 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative ">
                     {(rowsPerAuctionPage > 0
                       ? props.bidableDrop.slice(
-                        AuctionPage * rowsPerAuctionPage,
-                        AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
-                      )
+                          AuctionPage * rowsPerAuctionPage,
+                          AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
+                        )
                       : props.bidableDrop
                     ).map((i, index) => (
                       <div
