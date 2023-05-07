@@ -339,7 +339,7 @@ function MyNFTs(props) {
                               i.collectionId.nftContractAddress,
                             endTime: location.state.endTime,
                             contractType: i.collectionId.contractType,
-                            price: i.currentMarketplaceId.price,
+                            price: i.currentOrderListingId.price,
                           }}
                         >
                           <DropNFTCard
