@@ -1,4 +1,11 @@
-import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -14,7 +21,7 @@ const styles = {
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -26,34 +33,40 @@ const customTheme = createTheme({
     fontFamily: "orbitron",
     color: "#fff",
   },
-  overrides: {
+  components: {
     MuiTablePagination: {
-      caption: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      input: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      selectIcon: {
-        color: "#fff",
-      },
-      actions: {
-        color: "#fff",
+      styleOverrides: {
+        caption: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        input: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        selectIcon: {
+          color: "#fff",
+        },
+        actions: {
+          color: "#fff",
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: "#fff",
-      },
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     Mui: {
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
   },
@@ -94,7 +107,7 @@ function a11yProps(index) {
 
 const MarketPlace = (props) => {
   const [value, setValue] = useState(0);
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -141,11 +154,7 @@ const MarketPlace = (props) => {
                 indicatorColor="primary"
                 textColor="primary"
               >
-                <Tab
-                  label="Auction"
-                  sx={styles.tabsProps}
-                  {...a11yProps(0)}
-                />
+                <Tab label="Auction" sx={styles.tabsProps} {...a11yProps(0)} />
                 <Tab
                   label="Fixed Price"
                   sx={styles.tabsProps}

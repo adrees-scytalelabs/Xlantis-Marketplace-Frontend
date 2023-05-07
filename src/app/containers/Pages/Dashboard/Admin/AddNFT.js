@@ -1,4 +1,4 @@
-import {Grid } from "@mui/material";
+import { Grid } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Axios from "axios";
 import Cookies from "js-cookie";
@@ -33,6 +33,7 @@ import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory72
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
+import { getNFTsFromDropPaginatedWOBody } from "../../../../components/API/AxiosInterceptor";
 
 const styles = {
   root: {
@@ -132,15 +133,14 @@ function AddNFT(props) {
     setTopUpModal(false);
   };
   const handleOpenModal = async (e) => {
-    await handleTimeEvent(e);    
+    await handleTimeEvent(e);
   };
   const handleRedirect = () => {
     setTransactionModal(false);
-    navigate(`/dashboard/myDrops`,
-    {
+    navigate(`/dashboard/myDrops`, {
       state: {
         value: 1,
-      }
+      },
     });
   };
   const handleCloseModal = () => {
@@ -191,13 +191,20 @@ function AddNFT(props) {
     return hex;
   };
   const handleTopUpAmount = () => {
+    handleShowBackdrop();
+    console.log("Inside top up function");
     let data = {
       amount: amount,
     };
+    console.log("Before calling top up endpoint");
     topUpAmount(data).then(
       (response) => {
-        let variant = "success";
-        enqueueSnackbar("Balance Updated", { variant });
+        console.log("Response from top up endpoint: ", response);
+        localStorage.setItem("sessionId", response.data.checkoutSessionId);
+        window.location.replace(response.data.sessionUrl);
+        handleCloseBackdrop();
+        // let variant = "success";
+        // enqueueSnackbar("Balance Updated", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -279,6 +286,26 @@ function AddNFT(props) {
       handleOpenModal();
     });
   }
+
+  const getNFTsInDrop = (dropId) => {
+    handleShowBackdrop();
+    getNFTsFromDropPaginatedWOBody(dropId, 0, 1000)
+      .then((response) => {
+        console.log("Response from getting drop NFTs: ", response);
+        if (response.data.data.length > 0) {
+          setTokenList(response.data.data);
+          setGrid(true);
+          setIsAdded(true);
+        }
+        handleCloseBackdrop();
+        console.log("NFT contract address: ", nftContractAddresses);
+      })
+      .catch((error) => {
+        handleCloseBackdrop();
+        console.log("Error from getting drop NFTs: ", error);
+      });
+  };
+
   useEffect(() => {
     setIsDisabled(false);
     setGrid(false);
@@ -289,6 +316,8 @@ function AddNFT(props) {
     let type = location.state.nftType;
     setNftType(type);
     getCollection();
+    console.log("Location.state in Add NFT: ", location.state);
+    getNFTsInDrop(location.state.dropId);
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -321,7 +350,7 @@ function AddNFT(props) {
     } else {
       let variant = "error";
       enqueueSnackbar("Please Add NFT to drop first", { variant });
-     }
+    }
   };
   const getTxCost = async (e) => {
     Axios.get(`/drop/${dropId}/tx-cost-summary`).then(
@@ -592,6 +621,7 @@ function AddNFT(props) {
     try {
       getValidateAdminBalance(dropId).then(
         (response) => {
+          console.log("Get validate admin balance: ", response.data);
           setCostInfo(response.data);
           setIsDisabled(true);
           setEnableTime(true);
@@ -599,6 +629,9 @@ function AddNFT(props) {
           enqueueSnackbar("Transaction Summary received", {
             variant,
           });
+          if (response.data.isTopupRequired) {
+            setTopUpModal(true);
+          }
           handleCloseBackdrop();
           setbuttonName("updatebttn");
         },
@@ -951,7 +984,9 @@ function AddNFT(props) {
               <div className="form-group mt-3 mt-lg-0">
                 {grid === true && (
                   <div>
-                    <h3>Nft's in drop</h3>
+                    <span className="text-center">
+                      <h3>NFTs in drop</h3>
+                    </span>
 
                     <Grid
                       container
@@ -960,8 +995,9 @@ function AddNFT(props) {
                       justifyContent="flex-start"
                       style={{ height: "50vh", overflowY: "scroll" }}
                     >
-                      {tokenList.map((i) => (
+                      {tokenList.map((i, index) => (
                         <Grid
+                          key={index}
                           item
                           xs={6}
                           sm={4}

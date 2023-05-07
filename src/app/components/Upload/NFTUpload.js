@@ -1,6 +1,5 @@
 import React, { Suspense, useEffect } from "react";
 import { Spinner } from "react-bootstrap";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import UploadFile from "./UploadFile";

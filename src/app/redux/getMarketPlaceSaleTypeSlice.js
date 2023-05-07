@@ -14,7 +14,9 @@ export const getSaleType = createAsyncThunk(
 
         // console.log("nameThunk",name);
       const resp = await axios(`/drop/saleType/${name.saleType}/${name.start}/${name.end}`);
-    //    console.log("reduxResp",resp);
+       console.log("reduxResp",resp);
+      name.setTokenList(resp.data.data);
+      name.setTotalDrops(resp.data.data.length);
 
       return resp.data;
     } catch (error) {

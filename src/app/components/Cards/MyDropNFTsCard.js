@@ -1,5 +1,5 @@
-import PauseIcon from '@mui/icons-material/Pause';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import CornerRibbon from "react-corner-ribbon";
@@ -13,7 +13,7 @@ const MyDropNFTsCard = (props) => {
         color: "white",
       }}
       variant="outlined"
-      className={props.classes.cardHeight}
+      sx={props.classes.cardHeight}
     >
       <div style={{ position: "relative" }}>
         {props.nftDetails.currentOrderListingId.isSold === true ? (
@@ -35,18 +35,18 @@ const MyDropNFTsCard = (props) => {
               props.nftDetails.type === "Mastercraft"
                 ? "4px solid #ff0000"
                 : props.nftDetails.type === "Legendary"
-                  ? "4px solid #FFD700"
-                  : props.nftDetails.type === "Epic"
-                    ? "4px solid #9400D3"
-                    : props.nftDetails.type === "Rare"
-                      ? "4px solid #0000FF"
-                      : props.nftDetails.type === "Uncommon"
-                        ? "4px solid #008000"
-                        : props.nftDetails.type === "Common"
-                          ? "4px solid #FFFFFF"
-                          : "none",
+                ? "4px solid #FFD700"
+                : props.nftDetails.type === "Epic"
+                ? "4px solid #9400D3"
+                : props.nftDetails.type === "Rare"
+                ? "4px solid #0000FF"
+                : props.nftDetails.type === "Uncommon"
+                ? "4px solid #008000"
+                : props.nftDetails.type === "Common"
+                ? "4px solid #FFFFFF"
+                : "none",
           }}
-          className={props.classes.media}
+          sx={props.classes.media}
           image={
             props.nftDetails.previewImageURI
               ? props.nftDetails.previewImageURI
@@ -97,17 +97,14 @@ const MyDropNFTsCard = (props) => {
           style={{ minHeight: "60px" }}
         >
           <div className="col-8 align-self-end">
-            <Typography variant="h6" className={props.classes.cardTitle}>
+            <Typography variant="h6" sx={props.classes.cardTitle}>
               {props.nftDetails.title.length > 12 ? (
                 <span>{props.nftDetails.title.slice(0, 7)}...</span>
               ) : (
                 props.nftDetails.title
               )}
             </Typography>
-            <Typography
-              variant="body2"
-              className={props.classes.cardDescriptions}
-            >
+            <Typography variant="body2" sx={props.classes.cardDescriptions}>
               <strong>Artwork Description: </strong>
               {props.nftDetails.description}
             </Typography>

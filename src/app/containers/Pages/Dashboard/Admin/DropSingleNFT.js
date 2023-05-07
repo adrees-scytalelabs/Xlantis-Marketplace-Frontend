@@ -32,31 +32,37 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 const customTheme = createTheme({
-  overrides: {
+  components: {
     MuiAccordionSummary: {
-      root: {
-        borderBottom: "1px solid white",
-        backgroundColor: "black",
-      },
-      expandIcon: {
-        color: "white",
+      styleOverrides: {
+        root: {
+          borderBottom: "1px solid white",
+          backgroundColor: "black",
+        },
+        expandIcon: {
+          color: "white",
+        },
       },
     },
     MuiAccordionDetails: {
-      root: {
-        padding: "8px 0px 16px",
-        backgroundColor: "black",
+      styleOverrides: {
+        root: {
+          padding: "8px 0px 16px",
+          backgroundColor: "black",
+        },
       },
     },
     MuiOutlinedInput: {
-      input: {
-        border: "1px solid white",
-        color: "white",
-        borderRadius: "5px",
-        padding: "16px 14px",
+      styleOverrides: {
+        input: {
+          border: "1px solid white",
+          color: "white",
+          borderRadius: "5px",
+          padding: "16px 14px",
+        },
       },
     },
   },
@@ -481,7 +487,7 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-    </div >
+    </div>
   );
 };
 

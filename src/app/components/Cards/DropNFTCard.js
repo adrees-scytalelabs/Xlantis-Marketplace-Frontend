@@ -8,7 +8,7 @@ const DropNFTCard = (props) => {
   return (
     <Card
       variant="outlined"
-      className={props.classes.cardHeight}
+      sx={props.classes.cardHeight}
       style={{
         borderRadius: 0,
         border: "1px solid #fff",
@@ -16,7 +16,7 @@ const DropNFTCard = (props) => {
     >
       <div style={{ position: "relative" }}>
         <CardMedia
-          className={props.classes.media}
+          sx={props.classes.media}
           image={
             props.details.previewImageURI
               ? props.details.previewImageURI
@@ -80,7 +80,7 @@ const DropNFTCard = (props) => {
             <Typography
               variant="h6"
               component="div"
-              className={props.cardClasses.cardTitle}
+              sx={props.cardClasses.cardTitle}
             >
               {props.details.title.length > 12 ? (
                 <span>{props.details.title.slice(0, 7)}...</span>
@@ -91,7 +91,7 @@ const DropNFTCard = (props) => {
             <Typography
               variant="body2"
               component="p"
-              className={props.cardClasses.cardDescriptions}
+              sx={props.cardClasses.cardDescriptions}
             >
               {truncate(props.details.description, 25)}
             </Typography>

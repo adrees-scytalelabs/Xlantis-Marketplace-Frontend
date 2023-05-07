@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
@@ -25,8 +25,8 @@ import Factory721Contract from "../../../../components/blockchain/Abis/Factory72
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 
-
 function NewCollection(props) {
+  const navigate = useNavigate();
   const { enqueueSnackbar } = useSnackbar();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
@@ -130,6 +130,7 @@ function NewCollection(props) {
             enqueueSnackbar("New Collection Created Successfully.", {
               variant,
             });
+            navigate("/dashboard/myCollection");
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");

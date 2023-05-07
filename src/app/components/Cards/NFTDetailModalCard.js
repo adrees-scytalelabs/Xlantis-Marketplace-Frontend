@@ -1,9 +1,4 @@
-import {
-  CardContent,
-  CardMedia,
-  Paper,
-  Typography
-} from "@mui/material";
+import { CardContent, CardMedia, Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import ReactAudioPlayer from "react-audio-player";
@@ -14,10 +9,9 @@ const styles = {
     height: 0,
     paddingTop: "60%",
   },
-}
+};
 
 const NFTDetailModalCard = (props) => {
-
   useEffect(() => {
     console.log("Props are: ", props);
   }, []);
@@ -87,16 +81,16 @@ const NFTDetailModalCard = (props) => {
                   props.nftDetail.rarity === "Mastercraft"
                     ? "4px solid #ff0000"
                     : props.nftDetail.rarity === "Legendary"
-                      ? "4px solid #FFD700"
-                      : props.nftDetail.rarity === "Epic"
-                        ? "4px solid #9400D3"
-                        : props.nftDetail.rarity === "Rare"
-                          ? "4px solid #0000FF"
-                          : props.nftDetail.rarity === "Uncommon"
-                            ? "4px solid #008000"
-                            : props.nftDetail.rarity === "Common"
-                              ? "4px solid #FFFFFF"
-                              : "none",
+                    ? "4px solid #FFD700"
+                    : props.nftDetail.rarity === "Epic"
+                    ? "4px solid #9400D3"
+                    : props.nftDetail.rarity === "Rare"
+                    ? "4px solid #0000FF"
+                    : props.nftDetail.rarity === "Uncommon"
+                    ? "4px solid #008000"
+                    : props.nftDetail.rarity === "Common"
+                    ? "4px solid #FFFFFF"
+                    : "none",
               }}
               sx={styles.media}
               image={
@@ -119,18 +113,6 @@ const NFTDetailModalCard = (props) => {
               <Col style={{ justifyContent: "right" }}>
                 <Typography variant="body2" color="textSecondary" component="p">
                   {props.nftDetail.description}
-                </Typography>
-              </Col>
-            </Row>
-            <Row style={{ marginBottom: "5px" }}>
-              <Col>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  <strong>Rarity: </strong>
-                </Typography>
-              </Col>
-              <Col>
-                <Typography variant="body2" color="textSecondary" component="p">
-                  {props.nftDetail.rarity}
                 </Typography>
               </Col>
             </Row>
