@@ -2,7 +2,6 @@ import { Card, CardMedia } from "@mui/material";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense } from "react";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -22,16 +21,7 @@ const NFTMediaCard = (props) => {
               style={{
                 border: "1px solid red",
                 background: "white",
-                // height: "250px",
-                // width: "250px",
               }}
-
-              // style={{
-              //   display: "flex",
-              //   margin: "10px",
-              //   justifyContent: "center",
-              //   alignItems: "center",
-              // }}
             >
               <Canvas
                 // pixelRatio={[1, 2]}
@@ -43,32 +33,6 @@ const NFTMediaCard = (props) => {
                 </Suspense>
                 <OrbitControls />
               </Canvas>
-              {/* <GLTFModel src={props.nftDetail.nftURI} width={250} height={250}>
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 100, y: 200, z: 100 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 50, y: 200, z: 100 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 0, y: 0, z: 0 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 0, y: 100, z: 200 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: -100, y: 200, z: -100 }}
-                />
-              </GLTFModel> */}
             </div>
             <div></div>
             <div className="mt-100">

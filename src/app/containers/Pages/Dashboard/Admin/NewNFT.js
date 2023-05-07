@@ -248,7 +248,7 @@ function NewNFT(props) {
       setTokenList(JSON.parse(data));
       setBatchId(batchMintId);
       setCollection(JSON.parse(data)[0].collectiontitle);
-      console.log("Collection title:",JSON.parse(data)[0].collectiontitle);
+      console.log("Collection title:", JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
     }
@@ -1140,6 +1140,7 @@ function NewNFT(props) {
             setEditObjectIndex={setEditObjectIndex}
             classes={styles}
             handleRemoveClick={handleRemoveClick}
+            setWorkProgressModalShow={setWorkProgressModalShow}
           />
         </div>
         <BatchCreateNft

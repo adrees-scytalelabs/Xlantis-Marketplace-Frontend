@@ -14,6 +14,7 @@ const styles = {
     // backgroundColor: theme.palette.background.paper,
   },
   media: {
+    marginTop: "15px",
     width: "100%",
     paddingTop: "100%",
   },
