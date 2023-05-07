@@ -9,7 +9,7 @@ import {
   useTheme,
 } from "@mui/material";
 import PropTypes from "prop-types";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../../assets/css/mediaQueries.css";
 import OnAuctionCard from "../Cards/OnAuctionCard";
 import OnSaleCard from "../Cards/OnSaleCard";
@@ -237,18 +237,14 @@ const MarketPlaceTabs = (props) => {
                           salePage * rowsPerSalePage + rowsPerSalePage
                         )
                       : props.fixedPriceDrop
-                    ).map(
-                      (i, index) =>
-                        i.status != "draft" &&
-                        i.status != "closed" && (
-                          <div
-                            className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
-                            key={index}
-                          >
-                            <OnSaleCard i={i} />
-                          </div>
-                        )
-                    )}
+                    ).map((i, index) => (
+                      <div
+                        className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
+                        key={index}
+                      >
+                        <OnSaleCard i={i} />
+                      </div>
+                    ))}
                   </div>
                 ) : (
                   <MessageCard msg="No items to display" />
