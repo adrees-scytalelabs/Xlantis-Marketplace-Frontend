@@ -131,6 +131,12 @@ function MyNFTs(props) {
   const [nftIds, setNftIds] = useState([]);
   const [audio, setAudio] = useState();
   const [versionB, setVersionB] = useState("");
+  const [dropTitleImage, setDropTitleImage] = useState(
+    "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
+  );
+  const [dropBannerImage, setDropBannerImage] = useState(
+    "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
+  );
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
@@ -194,6 +200,7 @@ function MyNFTs(props) {
     if (nftIdLen != 0) {
       getNFTsFromDropPaginated(location.state.dropId, start, end, data).then(
         (response) => {
+          console.log("Response from getting NFTs: ", response);
           let nfts = response.data.data;
           let newState = nfts.map((obj) => {
             return { ...obj, isPlaying: false };
@@ -230,6 +237,8 @@ function MyNFTs(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
     setNftIds(location.state.nftId);
+    setDropBannerImage(location.state.bannerURL);
+    setDropTitleImage(location.state.titleURL);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
 
@@ -283,7 +292,7 @@ function MyNFTs(props) {
       </div>
 
       <div className="card-body page-height px-0">
-        <DropBanner />
+        <DropBanner bannerURL={dropBannerImage} titleURL={dropTitleImage} />
 
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
