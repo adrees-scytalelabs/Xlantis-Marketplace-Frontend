@@ -60,7 +60,7 @@ const DropNFTCard = (props) => {
             )}
           </div>
         ) : null}
-        {props.details.currentMarketplaceId.isSold === true ? (
+        {props.details.currentOrderListingId.isSold === true ? (
           <CornerRibbon
             position="top-right"
             fontColor="#f0f0f0"
@@ -98,7 +98,7 @@ const DropNFTCard = (props) => {
           </div>
           <div className="col-lg-4 align-self-end text-center text-lg-right py-3  p-lg-0">
             <p className="nftPrice mb-0 p-0" style={{ lineHeight: "1.6" }}>
-              {props.details.currentMarketplaceId.price} USD
+              {props.details.currentOrderListingId.price} USD
             </p>
           </div>
         </div>

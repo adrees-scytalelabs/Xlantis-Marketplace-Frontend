@@ -53,7 +53,7 @@ const AdminLoginSignupForms = () => {
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      userLoginThroughSSO({ idToken: account })
+      userLoginThroughSSO({ idToken: account})
         .then((response) => {
           console.log("checker response", response);
           console.log("JWT submitted: ", response.data);

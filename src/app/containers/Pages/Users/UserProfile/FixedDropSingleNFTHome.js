@@ -539,7 +539,7 @@ const FixedDropSingleNFTHome = () => {
         .balanceOf(accounts[0])
         .call();
       console.log(userBalance);
-      if (userBalance < nftData?.currentMarketplaceId.price) {
+      if (userBalance < nftData?.currentOrderListingId.price) {
         let variant = "error";
         enqueueSnackbar("User have insufficient funds to buy this NFT", {
           variant,
@@ -548,7 +548,7 @@ const FixedDropSingleNFTHome = () => {
         handleCloseBackdrop();
       } else {
         erc20Instance.methods
-          .approve(addressApprove, nftData?.currentMarketplaceId.price)
+          .approve(addressApprove, nftData?.currentOrderListingId.price)
           .send({ from: accounts[0] }, (err, response) => {
             console.log("get transaction", err, response);
           })
@@ -566,7 +566,7 @@ const FixedDropSingleNFTHome = () => {
                   nftData?.collectionId.nftContractAddress,
                   nftData?.nftId,
                   nftData?.tokenSupply,
-                  nftData?.currentMarketplaceId.price
+                  nftData?.currentOrderListingId.price
                 )
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("get transaction", err, response);
@@ -618,7 +618,7 @@ const FixedDropSingleNFTHome = () => {
                   nftData?.collectionId.nftContractAddress,
                   nftData?.nftId,
                   nftData?.nftURI,
-                  nftData?.currentMarketplaceId.price,
+                  nftData?.currentOrderListingId.price,
                   nftData?.voucherSignature
                 )
                 .send({ from: accounts[0] }, (err, response) => {
@@ -756,7 +756,8 @@ const FixedDropSingleNFTHome = () => {
     setNftBlockChainId(location.state?.nftDetails?.nftId);
     setNftProperties(Object.entries(location.state?.nftDetails?.properties));
     getTheDrop();
-    let priceCal = location.state?.nftDetails?.currentMarketplaceId.price;
+    let priceCal = location.state?.nftDetails?.currentOrderListingId
+    .price;
     setPrice(priceCal);
 
     return () => {
@@ -859,7 +860,7 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
-                      nftData?.currentMarketplaceId.isSold === false &&
+                      nftData?.currentOrderListingId.isSold === false &&
                       new Date() >= startTime &&
                       new Date() < endTime ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
@@ -900,7 +901,7 @@ const FixedDropSingleNFTHome = () => {
                             >
                               Please Login First!
                             </ReactTooltip>
-                          ) : nftData?.currentMarketplaceId.isSold === true ? (
+                          ) : nftData?.currentOrderListingId.isSold === true ? (
                             <ReactTooltip
                               id="registerTip"
                               place="top"

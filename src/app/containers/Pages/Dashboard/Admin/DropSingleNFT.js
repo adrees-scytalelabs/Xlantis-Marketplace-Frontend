@@ -200,7 +200,7 @@ const DropSingleNFT = (props) => {
           nftDetail.collectionId.nftContractAddress,
           nftDetail.nftId,
           nftDetail.tokenSupply,
-          nftDetail.currentMarketplaceId.price
+          nftDetail.currentOrderListingId.price
         )
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
@@ -461,7 +461,7 @@ const DropSingleNFT = (props) => {
                       <AcceptBidAccordian
                         versionB={versionB}
                         bidDetail={bidDetail}
-                        isSold={location.state?.nftDetail.currentMarketplaceId.isSold}
+                        isSold={location.state?.nftDetail.currentOrderListingId.isSold}
                         handleAcceptBid={handleAcceptBid}
                         handleOpenModal={handleOpenModal}
                       />
