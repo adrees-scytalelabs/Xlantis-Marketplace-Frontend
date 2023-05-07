@@ -1,6 +1,6 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useResolvedPath } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -33,7 +33,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 const styles = {
   root: {
@@ -49,10 +49,9 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 function MarketPlacePage(props) {
-
   const path = useResolvedPath("").pathname;
   const [tokenList, setTokenList] = useState([]);
 
@@ -60,7 +59,9 @@ function MarketPlacePage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const { saleTypeData, loading } = useSelector((store) => store.marketPlaceSaleType);
+  const { saleTypeData, loading } = useSelector(
+    (store) => store.marketPlaceSaleType
+  );
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -71,13 +72,14 @@ function MarketPlacePage(props) {
 
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    dispatch(getSaleType({ saleType, start, end, setTokenList, setTotalDrops }));
+    dispatch(
+      getSaleType({ saleType, start, end, setTokenList, setTotalDrops })
+    );
     if (loading === 1) {
       // setTokenList(saleTypeData);
       // setTotalDrops(saleTypeData.length);
       handleCloseBackdrop();
-    }
-    else if (loading === 2) {
+    } else if (loading === 2) {
       handleCloseBackdrop();
     }
   };
@@ -137,6 +139,8 @@ function MarketPlacePage(props) {
                       startTime: i.startTime,
                       endTime: i.endTime,
                       saleType: i.saleType,
+                      bannerURL: i.bannerURL,
+                      titleURL: i.image,
                     }}
                   >
                     <DropsPageCard
@@ -162,7 +166,7 @@ function MarketPlacePage(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-    </div >
+    </div>
   );
 }
 
