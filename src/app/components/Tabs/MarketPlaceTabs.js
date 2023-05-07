@@ -1,4 +1,13 @@
-import { Box, Tab, TablePagination, Tabs, ThemeProvider, Typography, createTheme, useTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  TablePagination,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+  useTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useState } from "react";
 import "../../assets/css/mediaQueries.css";
@@ -57,7 +66,7 @@ const paginationStyles = {
     color: "#fff",
     fontFamily: "orbitron",
   },
-}
+};
 
 const styles = {
   root: {},
@@ -70,7 +79,7 @@ const styles = {
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -82,39 +91,48 @@ const customTheme = createTheme({
     fontFamily: "orbitron",
     color: "#fff",
   },
-  overrides: {
+
+  components: {
     MuiTablePagination: {
-      caption: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      input: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      selectIcon: {
-        color: "#fff",
-      },
-      actions: {
-        color: "#fff",
+      styleOverrides: {
+        caption: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        input: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        selectIcon: {
+          color: "#fff",
+        },
+        actions: {
+          color: "#fff",
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: "#fff",
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
       },
     },
     Mui: {
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     MuiAlert: {
-      message: {
-        fontSize: 12,
-      },
-      icon: {
-        fontSize: 12,
+      styleOverrides: {
+        message: {
+          fontSize: 12,
+        },
+        icon: {
+          fontSize: 12,
+        },
       },
     },
   },
@@ -175,7 +193,7 @@ const MarketPlaceTabs = (props) => {
                 onChange={handleChange}
                 indicatorColor="primary"
                 textColor="primary"
-                centered
+                // centered
                 variant="scrollable"
                 scrollButtons="auto"
                 aria-label="trending and top collections"
@@ -215,20 +233,22 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative">
                     {(rowsPerSalePage > 0
                       ? props.fixedPriceDrop.slice(
-                        salePage * rowsPerSalePage,
-                        salePage * rowsPerSalePage + rowsPerSalePage
-                      )
+                          salePage * rowsPerSalePage,
+                          salePage * rowsPerSalePage + rowsPerSalePage
+                        )
                       : props.fixedPriceDrop
-                    ).map((i, index) => (
-                      (i.status!='draft' && i.status!='closed' &&
-                      <div
-                        className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
-                        key={index}
-                      >
-                        <OnSaleCard i={i} />
-                      </div>
-                      )
-                    ))}
+                    ).map(
+                      (i, index) =>
+                        i.status != "draft" &&
+                        i.status != "closed" && (
+                          <div
+                            className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
+                            key={index}
+                          >
+                            <OnSaleCard i={i} />
+                          </div>
+                        )
+                    )}
                   </div>
                 ) : (
                   <MessageCard msg="No items to display" />
@@ -275,9 +295,9 @@ const MarketPlaceTabs = (props) => {
                   <div className="row no-gutters w-100 align-items-center position-relative ">
                     {(rowsPerAuctionPage > 0
                       ? props.bidableDrop.slice(
-                        AuctionPage * rowsPerAuctionPage,
-                        AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
-                      )
+                          AuctionPage * rowsPerAuctionPage,
+                          AuctionPage * rowsPerAuctionPage + rowsPerAuctionPage
+                        )
                       : props.bidableDrop
                     ).map((i, index) => (
                       <div

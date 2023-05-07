@@ -34,7 +34,10 @@ function RemoveNft({
                     }}
                   >
                     <Card>
-                      <CardMedia sx={classes.media} image={i.nftURI} />
+                      <CardMedia
+                        sx={classes.media}
+                        image={i.previewImageURI ? i.previewImageURI : i.nftURI}
+                      />
                     </Card>
                   </CardActionArea>
                   <CardActions>
