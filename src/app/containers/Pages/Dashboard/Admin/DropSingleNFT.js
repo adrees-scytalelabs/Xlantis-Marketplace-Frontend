@@ -457,7 +457,7 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian key={keys} properties={properties} />
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col >
               </Row >
               {
