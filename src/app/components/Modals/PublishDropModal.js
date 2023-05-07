@@ -199,7 +199,7 @@ const PublishDropModal = (props) => {
             closeAfterTransition
             className="mt-5"
           >
-            <Box className="mt-4" style={{backgroundColor:'black',border:'2px solid white'}}>
+            <Box className="mt-4 p-4" style={{backgroundColor:'black',border:'2px solid white'}}>
               <Fade in={props.open}>
                 <div sx={styles.paper}>
                   <div className="row no-gutters mb-3 mt-2">

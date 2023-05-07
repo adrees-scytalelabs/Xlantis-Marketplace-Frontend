@@ -13,6 +13,7 @@ function RemoveNft({
   setEditObjectIndex,
   classes,
   handleRemoveClick,
+  setWorkProgressModalShow,
 }) {
   return (
     <div className="col-sm-12 col-md-6 col-lg-5" style={{ marginLeft: "10px" }}>
@@ -29,12 +30,16 @@ function RemoveNft({
                 <Grid item xs={12} sm={6} md={6} lg={5} xl={4} key={index}>
                   <CardActionArea
                     onClick={() => {
-                      handleOpenNFTDetailModal(i);
-                      setEditObjectIndex(index);
+                      // handleOpenNFTDetailModal(i);
+                      // setEditObjectIndex(index);
+                      setWorkProgressModalShow(true);
                     }}
                   >
                     <Card>
-                      <CardMedia sx={classes.media} image={i.nftURI} />
+                      <CardMedia
+                        sx={classes.media}
+                        image={i.previewImageURI ? i.previewImageURI : i.nftURI}
+                      />
                     </Card>
                   </CardActionArea>
                   <CardActions>

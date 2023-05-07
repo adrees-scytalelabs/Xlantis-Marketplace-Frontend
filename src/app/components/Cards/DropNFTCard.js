@@ -8,7 +8,7 @@ const DropNFTCard = (props) => {
   return (
     <Card
       variant="outlined"
-      className={props.classes.cardHeight}
+      sx={props.classes.cardHeight}
       style={{
         borderRadius: 0,
         border: "1px solid #fff",
@@ -16,7 +16,7 @@ const DropNFTCard = (props) => {
     >
       <div style={{ position: "relative" }}>
         <CardMedia
-          className={props.classes.media}
+          sx={props.classes.media}
           image={
             props.details.previewImageURI
               ? props.details.previewImageURI
@@ -60,7 +60,7 @@ const DropNFTCard = (props) => {
             )}
           </div>
         ) : null}
-        {props.details.currentMarketplaceId.isSold === true ? (
+        {props.details.currentOrderListingId.isSold === true ? (
           <CornerRibbon
             position="top-right"
             fontColor="#f0f0f0"
@@ -80,7 +80,7 @@ const DropNFTCard = (props) => {
             <Typography
               variant="h6"
               component="div"
-              className={props.cardClasses.cardTitle}
+              sx={props.cardClasses.cardTitle}
             >
               {props.details.title.length > 12 ? (
                 <span>{props.details.title.slice(0, 7)}...</span>
@@ -91,14 +91,14 @@ const DropNFTCard = (props) => {
             <Typography
               variant="body2"
               component="p"
-              className={props.cardClasses.cardDescriptions}
+              sx={props.cardClasses.cardDescriptions}
             >
               {truncate(props.details.description, 25)}
             </Typography>
           </div>
           <div className="col-lg-4 align-self-end text-center text-lg-right py-3  p-lg-0">
             <p className="nftPrice mb-0 p-0" style={{ lineHeight: "1.6" }}>
-              {props.details.currentMarketplaceId.price} USD
+              {props.details.currentOrderListingId.price} USD
             </p>
           </div>
         </div>

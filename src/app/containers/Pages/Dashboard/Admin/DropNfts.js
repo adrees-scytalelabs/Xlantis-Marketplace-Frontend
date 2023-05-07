@@ -1,6 +1,11 @@
-import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
+import {
+  Grid,
+  TablePagination,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import Cookies from "js-cookie";
-import React,{  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
@@ -27,7 +32,7 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 const cardStyles = {
   cardTheme: {
@@ -54,7 +59,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -66,41 +71,49 @@ const customTheme = createTheme({
     fontFamily: "orbitron",
     color: "#fff",
   },
-  overrides: {
+  components: {
     MuiTablePagination: {
-      caption: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      input: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      selectIcon: {
-        color: "#fff",
-      },
-      actions: {
-        color: "#fff",
+      styleOverrides: {
+        caption: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        input: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        selectIcon: {
+          color: "#fff",
+        },
+        actions: {
+          color: "#fff",
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: "#fff",
-      },
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     Mui: {
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     MuiPaper: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        border: "1px solid #fff",
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000",
+          color: "#fff",
+          border: "1px solid #fff",
+        },
       },
     },
   },
@@ -216,7 +229,6 @@ function MyNFTs(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
     setNftIds(location.state.nftId);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
@@ -286,7 +298,6 @@ function MyNFTs(props) {
             <div className="row no-gutters justify-content-center">
               {open ? (
                 <WhiteSpinner />
-
               ) : tokenList.length === 0 ? (
                 <MessageCardDropNfts msg="No items to display" />
               ) : (
@@ -298,16 +309,7 @@ function MyNFTs(props) {
                   style={{ marginBottom: "24px" }}
                 >
                   {tokenList.map((i, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      md={6}
-                      lg={3}
-                      spacing={1}
-                      direction="row"
-                      key={index}
-                    >
+                    <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
                       {location.state?.saleType === "fixed-price" ? (
                         <Link
                           onClick={(e) => handleStop(e)}
@@ -337,7 +339,7 @@ function MyNFTs(props) {
                               i.collectionId.nftContractAddress,
                             endTime: location.state.endTime,
                             contractType: i.collectionId.contractType,
-                            price: i.currentMarketplaceId.price,
+                            price: i.currentOrderListingId.price,
                           }}
                         >
                           <DropNFTCard
@@ -365,8 +367,8 @@ function MyNFTs(props) {
             </div>
           </ThemeProvider>
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 

@@ -24,7 +24,12 @@ function MarketPlace(props) {
     handleShowBackdrop();
     dispatch(getMarketFixedPrice({ start, end }))
     if (fixedPriceLoading) {
-      setFixedPriceDrop(fixedPriceData);
+      for (let i = 0; i < fixedPriceData.length; i++) {
+        if (fixedPriceData[i].status === "active" || fixedPriceData[i].status === "pending") {
+          setFixedPriceDrop([...fixedPriceDrop, fixedPriceData[i]]);
+        }
+      }
+     // setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
     }
     else if (fixedPriceLoading === 2) {

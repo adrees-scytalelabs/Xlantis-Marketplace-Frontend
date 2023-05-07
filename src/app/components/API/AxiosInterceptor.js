@@ -70,11 +70,11 @@ export const sendBidDataVersioned = (version, body) => {
 };
 
 export const marketplaceBuyVersioned = (version, body) => {
-  return Axios.post(`/${version}/marketplace/buy`, body);
+  return Axios.post(`/${version}/order-listing/buy`, body);
 };
 
 export const marketplaceBuy = (body) => {
-  return Axios.post(`/marketplace/buy`, body);
+  return Axios.post(`/order-listing/buy`, body);
 };
 
 export const acceptAuctionBid = (body) => {

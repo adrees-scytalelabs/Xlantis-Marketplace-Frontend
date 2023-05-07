@@ -32,31 +32,37 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 const customTheme = createTheme({
-  overrides: {
+  components: {
     MuiAccordionSummary: {
-      root: {
-        borderBottom: "1px solid white",
-        backgroundColor: "black",
-      },
-      expandIcon: {
-        color: "white",
+      styleOverrides: {
+        root: {
+          borderBottom: "1px solid white",
+          backgroundColor: "black",
+        },
+        expandIcon: {
+          color: "white",
+        },
       },
     },
     MuiAccordionDetails: {
-      root: {
-        padding: "8px 0px 16px",
-        backgroundColor: "black",
+      styleOverrides: {
+        root: {
+          padding: "8px 0px 16px",
+          backgroundColor: "black",
+        },
       },
     },
     MuiOutlinedInput: {
-      input: {
-        border: "1px solid white",
-        color: "white",
-        borderRadius: "5px",
-        padding: "16px 14px",
+      styleOverrides: {
+        input: {
+          border: "1px solid white",
+          color: "white",
+          borderRadius: "5px",
+          padding: "16px 14px",
+        },
       },
     },
   },
@@ -200,7 +206,7 @@ const DropSingleNFT = (props) => {
           nftDetail.collectionId.nftContractAddress,
           nftDetail.nftId,
           nftDetail.tokenSupply,
-          nftDetail.currentMarketplaceId.price
+          nftDetail.currentOrderListingId.price
         )
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
@@ -451,7 +457,7 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian key={keys} properties={properties} />
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col >
               </Row >
               {
@@ -461,7 +467,7 @@ const DropSingleNFT = (props) => {
                       <AcceptBidAccordian
                         versionB={versionB}
                         bidDetail={bidDetail}
-                        isSold={location.state?.nftDetail.currentMarketplaceId.isSold}
+                        isSold={location.state?.nftDetail.currentOrderListingId.isSold}
                         handleAcceptBid={handleAcceptBid}
                         handleOpenModal={handleOpenModal}
                       />
@@ -481,7 +487,7 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-    </div >
+    </div>
   );
 };
 

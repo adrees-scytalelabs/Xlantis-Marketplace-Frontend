@@ -1,5 +1,4 @@
-
-import { ThemeProvider, createTheme } from '@mui/material';
+import { ThemeProvider, createTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
@@ -11,39 +10,47 @@ import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCar
 
 const styles = {
   root: {
-    flexGrow: 1,
+    // flexGrow: 1,
     // backgroundColor: theme.palette.background.paper,
   },
   media: {
+    marginTop: "15px",
     width: "100%",
     paddingTop: "100%",
   },
-
-}
+};
 
 const makeTheme = createTheme({
-  overrides: {
+  components: {
     MuiAccordion: {
-      root: {
-        backgroundColor: "#000",
-        border: "1px solid white",
-        borderRadius: "0px",
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000",
+          border: "1px solid white",
+          borderRadius: "0px",
+        },
       },
     },
     MuiSvgIcon: {
-      root: {
-        color: "white",
+      styleOverrides: {
+        root: {
+          color: "white",
+        },
       },
     },
     MuiCard: {
-      root: {
-        backgroundColor: "#000",
-        border: "1px solid #fff",
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000",
+          border: "1px solid #fff",
+        },
       },
     },
     MuiCardContent: {
-      root: {
-        color: "#fff",
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
       },
     },
   },

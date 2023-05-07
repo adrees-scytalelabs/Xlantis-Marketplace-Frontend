@@ -71,10 +71,10 @@ function MarketPlacePage(props) {
 
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    dispatch(getSaleType({ saleType, start, end }))
+    dispatch(getSaleType({ saleType, start, end, setTokenList, setTotalDrops }));
     if (loading === 1) {
-      setTokenList(saleTypeData);
-      setTotalDrops(saleTypeData.length);
+      // setTokenList(saleTypeData);
+      // setTotalDrops(saleTypeData.length);
       handleCloseBackdrop();
     }
     else if (loading === 2) {

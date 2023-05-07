@@ -181,7 +181,7 @@ const NFTBuy = (props) => {
         .balanceOf(accounts[0])
         .call();
       console.log(userBalance);
-      if (userBalance < nftDetail.currentMarketplaceId.price) {
+      if (userBalance < nftDetail.currentOrderListingId.price) {
         let variant = "error";
         enqueueSnackbar("User have insufficient funds to buy this NFT", {
           variant,
@@ -190,7 +190,7 @@ const NFTBuy = (props) => {
         handleCloseBackdrop();
       } else {
         erc20Instance.methods
-          .approve(addressApprove, nftDetail.currentMarketplaceId.price)
+          .approve(addressApprove, nftDetail.currentOrderListingId.price)
           .send({ from: accounts[0] }, (err, response) => {
             console.log("get transaction", err, response);
           })
@@ -208,7 +208,7 @@ const NFTBuy = (props) => {
                   nftDetail.collectionId.nftContractAddress,
                   nftDetail.nftId,
                   nftDetail.tokenSupply,
-                  nftDetail.currentMarketplaceId.price
+                  nftDetail.currentOrderListingId.price
                 )
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("get transaction", err, response);
@@ -261,7 +261,7 @@ const NFTBuy = (props) => {
                   nftDetail.collectionId.nftContractAddress,
                   nftDetail.nftId,
                   nftDetail.nftURI,
-                  nftDetail.currentMarketplaceId.price,
+                  nftDetail.currentOrderListingId.price,
                   nftDetail.voucherSignature
                 )
                 .send({ from: accounts[0] }, (err, response) => {
@@ -336,7 +336,7 @@ const NFTBuy = (props) => {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
     setNftDetail(location.state.nftDetail);
-    setPrice(location.state.nftDetail.currentMarketplaceId.price);
+    setPrice(location.state.nftDetail.currentOrderListingId.price);
     setProperties(location.state.nftDetail.properties);
 
     props.setActiveTab({
@@ -448,7 +448,7 @@ const NFTBuy = (props) => {
               </Row>
               <br></br>
               <BuyButton
-                isSold={location.state.nftDetail.currentMarketplaceId.isSold}
+                isSold={location.state.nftDetail.currentOrderListingId.isSold}
                 startTime={location.state.startTime}
                 endTime={location.state.endTime}
                 versionB={versionB}
