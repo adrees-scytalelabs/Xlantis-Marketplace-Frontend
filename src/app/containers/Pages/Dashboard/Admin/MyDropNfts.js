@@ -1,4 +1,4 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
@@ -39,7 +39,7 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 function MyDropNFTs(props) {
   let location = useLocation();
