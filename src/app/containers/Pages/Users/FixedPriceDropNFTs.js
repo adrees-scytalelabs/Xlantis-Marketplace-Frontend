@@ -1,15 +1,62 @@
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import {
-  getNFTsFromDropPaginatedWOBody
-} from "../../../components/API/AxiosInterceptor";
+import { getNFTsFromDropPaginatedWOBody } from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
+const styles = {
+  root: {
+    flexGrow: 1,
+    width: "100%",
+    backgroundColor: "#000 !important",
+    border: "1px solid #fff",
+  },
+  card: {
+    minWidth: 250,
+  },
+  media: {
+    height: 0,
+    paddingTop: "100%",
+  },
+  title: {
+    fontSize: 14,
+  },
+  pos: {
+    marginBottom: 12,
+  },
+};
+
+const cardStyles = {
+  cardTheme: {
+    boxShadow: "none",
+  },
+  cardTitle: {
+    color: "#fff",
+    fontFamily: "orbitron",
+    fontWeight: "bold",
+    textTransform: "capitalize",
+    marginTop: "0rem",
+  },
+  price: {
+    color: "hsla(350, 93%, 61%, 1)",
+    fontSize: "1.25rem",
+    fontWeight: "bold",
+  },
+  textAlert: {
+    justifyContent: "center",
+    fontSize: "1rem",
+  },
+  exploreBtn: {
+    padding: "0.75rem 2rem",
+    border: "none",
+    fontWeight: "bold",
+  },
+};
+
 const FixedPriceDropNFTs = () => {
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
@@ -129,8 +176,15 @@ const FixedPriceDropNFTs = () => {
                 </div>
               </div>
               <div className="row no-gutters w-100">
-                <Grid container spacing={3}>
-                  {dropData && dropData.length &&
+                <Grid
+                  container
+                  spacing={3}
+                  direction="row"
+                  justifyContent="flex-start"
+                  style={{ marginBottom: "24px" }}
+                >
+                  {dropData &&
+                    dropData.length &&
                     dropData?.map((i, index) => (
                       <Grid
                         item
@@ -149,6 +203,8 @@ const FixedPriceDropNFTs = () => {
                           description={description}
                           startTime={startTime}
                           endTime={endTime}
+                          classes={styles}
+                          cardClasses={cardStyles}
                         />
                       </Grid>
                     ))}
