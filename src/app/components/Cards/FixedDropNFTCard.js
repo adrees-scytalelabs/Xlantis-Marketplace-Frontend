@@ -6,6 +6,7 @@ import "../../assets/css/style.css";
 import { truncate } from "../../assets/js/utils";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import CornerRibbon from "react-corner-ribbon";
 
 const unCommon = {
   fontFamily: "orbitron",
@@ -39,7 +40,6 @@ const defaultStyles = {
   fontWeight: "bold",
 };
 
-
 function FixedDropNFTCard(props) {
   const rarity = props.type;
   let singleNFTid = props.data._id;
@@ -48,16 +48,16 @@ function FixedDropNFTCard(props) {
       rarity === "Common"
         ? defaultStyles
         : rarity === "Uncommon"
-          ? unCommon
-          : rarity === "Rare"
-            ? rare
-            : rarity === "Epic"
-              ? epic
-              : rarity === "Legendary"
-                ? legendary
-                : rarity === "Mastercraft"
-                  ? mastercraft
-                  : defaultStyles,
+        ? unCommon
+        : rarity === "Rare"
+        ? rare
+        : rarity === "Epic"
+        ? epic
+        : rarity === "Legendary"
+        ? legendary
+        : rarity === "Mastercraft"
+        ? mastercraft
+        : defaultStyles,
   };
 
   return (
@@ -68,20 +68,36 @@ function FixedDropNFTCard(props) {
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
-
       }}
     >
-      <Card style={{ height: "100%" }} id="nftCardProps">
-        <div className="row no-gutters mb-3">
-          <CardMedia
-            sx={{
-              width: "100%",
-              paddingTop: "100%",
-            }}
-            image={props.data.nftURI}
-            title="NFT Image"
-          />
+      <Card
+        variant="outlined"
+        sx={props.classes.cardHeight}
+        style={{
+          backgroundColor:'black',
+          borderRadius: 0,
+          border: "1px solid #fff",
+        }}
+      >
+          <div style={{ position: "relative" }}>
+            <CardMedia
+              sx={props.classes.media}
+              image={props.data.nftURI}
+              title="NFT Image"
+            />
+            {props.data.currentOrderListingId.isSold === true ? (
+              <CornerRibbon
+                position="top-right"
+                fontColor="#f0f0f0"
+                backgroundColor="#f44336"
+                style={{ fontWeight: "bold" }}
+              >
+                SOLD
+              </CornerRibbon>
+            ) : null}
+          </div>
           <CardContent
+          className="mb-3"
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
             <div
@@ -140,7 +156,7 @@ function FixedDropNFTCard(props) {
               {props.data.tokenSupply}
             </Typography>
           </CardContent>
-        </div>
+  
       </Card>
     </Link>
   );
