@@ -22,6 +22,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
+import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 const styles = {
   root: {
     flexGrow: 1,
@@ -76,8 +77,6 @@ const DropSingleNFT = (props) => {
   const [keys, setKeys] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
-
-  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [show, setShow] = useState(false);
@@ -175,76 +174,6 @@ const DropSingleNFT = (props) => {
     return hex;
   };
 
-  let handleBuy = async () => {
-    console.log("Nft detail: ", nftDetail);
-    let dropIdHex = getHash(nftDetail.dropId);
-    console.log(dropIdHex);
-    setOpenDialog(false);
-    setIsSaving(true);
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShowNetworkModal();
-    } else {
-      handleShowBackdrop();
-      const addressDropFactory = Addresses.FactoryDrop;
-      const abiDropFactory = DropFactory;
-
-      var myContractInstance = await new web3.eth.Contract(
-        abiDropFactory,
-        addressDropFactory
-      );
-      console.log("myContractInstance", myContractInstance);
-
-      await myContractInstance.methods
-        .executeOrder(
-          dropIdHex,
-          nftDetail.collectionId.nftContractAddress,
-          nftDetail.nftId,
-          nftDetail.tokenSupply,
-          nftDetail.currentOrderListingId.price
-        )
-        .send({ from: accounts[0] }, (err, response) => {
-          console.log("get transaction", err, response);
-          let data = {
-            dropId: nftDetail.dropId,
-            nftId: nftDetail._id,
-            txHash: response,
-          };
-
-          console.log("data", data);
-          marketplaceBuyVersioned(versionB, data)
-            .then((response) => {
-              console.log(
-                "Transaction Hash sending on backend response: ",
-                response
-              );
-            })
-            .catch((error) => {
-              console.log(
-                "Transaction hash on backend error: ",
-                error.response
-              );
-            });
-
-          if (err !== null) {
-            console.log("err", err);
-            let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
-            handleCloseBackdrop();
-            setIsSaving(false);
-          }
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-        });
-    }
-  };
-
   let getBidList = (nftId) => {
     let version = Cookies.get("Version");
     getNFTBidListPaginated(nftId, 0, 1000)
@@ -295,7 +224,6 @@ const DropSingleNFT = (props) => {
     const network = await web3.eth.net.getNetworkType();
     if (network !== "private") {
       setNetwork(network);
-      setIsSaving(false);
       handleShowNetworkModal();
     } else {
       let abiAuctionFactory;
@@ -486,6 +414,11 @@ const DropSingleNFT = (props) => {
         handlePay={openTransak}
         dropData={data}
         isOpen={modalOpen}
+      />
+        <NetworkErrorModal
+        show={showNetworkModal}
+        handleClose={handleCloseNetworkModal}
+        network={network}
       />
     </div>
   );

@@ -72,54 +72,15 @@ const customTheme = createTheme({
   },
 });
 
-const responsive = {
-  desktop: {
-    breakpoint: { max: 3000, min: 1024 },
-    items: 1,
-    paritialVisibilityGutter: 60,
-  },
-  tablet: {
-    breakpoint: { max: 1024, min: 464 },
-    items: 2,
-    paritialVisibilityGutter: 50,
-  },
-  mobile: {
-    breakpoint: { max: 464, min: 0 },
-    items: 1,
-    paritialVisibilityGutter: 30,
-  },
-};
 
 const TrendingAndTop = (props) => {
   const theme = useTheme();
   const [value, setValue] = useState(0);
-  const [isActive, setIsActive] = useState(false);
   const [scrWidth, setScrWidth] = useState({});
-  const [cntWidth, setCntWidth] = useState();
   const ref = useRef(null);
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
-  };
-
-  const getWindowWidth = () => {
-    const { innerWidth: width, innerHeight: height } = window;
-    setScrWidth({
-      width,
-      height,
-    });
-  };
-
-  const getContainerWidth = () => {
-    let container = setCntWidth(container);
-  };
-
-  const handleClick = () => {
-    setIsActive(!isActive);
-  };
-
-  const handleChangeIndex = (index) => {
-    setValue(index);
   };
 
   var activeFixedDrop = [];
@@ -158,21 +119,6 @@ const TrendingAndTop = (props) => {
     console.log("A ", activeAuctionDrop);
   }
 
-  useEffect(() => {
-    console.log("now i am here");
-    const controller = new AbortController();
-    getWindowWidth();
-
-    const container = ref.current;
-    //console.log("container: ", container);
-    setCntWidth(container);
-
-    return () => {
-      controller.abort();
-    };
-  }, []);
-
-  if (cntWidth) console.log("width: ", cntWidth);
 
   return (
     <div className="w-100">

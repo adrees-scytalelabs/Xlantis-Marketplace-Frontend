@@ -30,7 +30,6 @@ export const store = configureStore({
     newNftProperties: getNewNftPropertiesReducer,
     marketPlaceSaleType: getMarketPlaceSaleTypeReducer,
     getMyDrops: getMyDropsReducer,
-    userProfile: UserProfileReducer,
     myNft: myNftReducer,
     getAdminProfileData: getAdminProfileDataReducer,
     getHeaderNotification: getHeaderNotificationReducer,

@@ -340,8 +340,7 @@ function NewCollection(props) {
               console.log("ERC721 COLLECTION CREATION");
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
-              var cloneContractAddress;
-              var myContractInstance = await new web3.eth.Contract(
+              myContractInstance = await new web3.eth.Contract(
                 abi,
                 address
               );
