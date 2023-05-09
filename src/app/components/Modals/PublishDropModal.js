@@ -12,7 +12,6 @@ import {
   ThemeProvider,
   Typography,
 } from "@mui/material";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 
 const styles = {
@@ -23,8 +22,6 @@ const styles = {
   },
   paper: {
     border: "1px solid #fff",
-    // boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 3),
     backgroundColor: "#000",
     marginTop: "70px",
     marginLeft:'2%',
@@ -160,12 +157,7 @@ const makeTheme = createTheme({
 });
 
 const PublishDropModal = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
   const [expanded, setExpanded] = useState("");
-  const [disabled, setDisabled] = useState(false);
-  const [costInfo, setCostInfo] = useState({});
-  const [amount, setAmount] = useState(5);
-  const [topUpModal, setTopUpModal] = useState(false);
 
   const handleChange = (panel) => (event, newExpanded) => {
     setExpanded(newExpanded ? panel : false);
@@ -174,12 +166,7 @@ const PublishDropModal = (props) => {
     e.preventDefault();
     if (props.cost.isTopupRequired === true) {
       props.setMOdalOpen(false);
-      props.setTopUpModal(true);
-      // let variant = "error";
-      // enqueueSnackbar(
-      //   "Your account has insufficient funds for this transaction. Kindly top up your account.",
-      //   { variant }
-      // );
+      props.setTopUpModal(true); 
     } else {
       props.handlePublish();
     }
