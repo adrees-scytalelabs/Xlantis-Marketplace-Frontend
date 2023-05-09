@@ -99,6 +99,8 @@ const FixedDropSingleNFTHome = () => {
   const location = useLocation();
   let dropID = location.state?.dropId;
   const saleType = location.state?.saleType;
+  const imageURL = location.state?.imageURL;
+  const bannerURL = location.state?.bannerURL;
   const description = location.state?.description;
   const [modalOpen, setMOdalOpen] = useState(false);
   const [modalOpenBid, setMOdalOpenBid] = useState(false);
@@ -121,7 +123,8 @@ const FixedDropSingleNFTHome = () => {
   const { singleNFTid } = useParams();
   const handleGoBack = () => {
     navigate(`/fixdropnft/${dropID}`, {
-      state: { saleType: saleType, description: description },
+      state: { saleType: saleType, description: description,imageURL:imageURL, bannerURL:bannerURL},
+
     });
   };
 

@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { Table } from "react-bootstrap";
+import MessageCard from "../MessageCards/MessageCard";
 function PropertiesAccordian({ keys, properties }) {
   useEffect(() => {
     console.log("props in properties accordion", { keys, properties });
@@ -15,7 +16,7 @@ function PropertiesAccordian({ keys, properties }) {
   return (
     <div>
       <Accordion sx={{ backgroundColor: "black" }}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon style={{color:'white'}}/>}>
           <Typography
             variant="body1"
             sx={{ color: "#F64D04", fontFamily: "orbitron" }}
@@ -24,6 +25,7 @@ function PropertiesAccordian({ keys, properties }) {
             <strong> Properties</strong>
           </Typography>
         </AccordionSummary>
+        {keys.length !== 0 && keys[0]!=='' ? (
         <AccordionDetails>
           <Table striped bordered hover>
             <thead>
@@ -42,6 +44,9 @@ function PropertiesAccordian({ keys, properties }) {
             </tbody>
           </Table>
         </AccordionDetails>
+        ):(
+          <MessageCard msg="No Properties" />
+        )}
       </Accordion>
     </div>
   );

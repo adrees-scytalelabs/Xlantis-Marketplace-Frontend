@@ -68,6 +68,8 @@ function FixedDropNFTCard(props) {
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
+        imageURL:props.titleImage,
+        bannerURL:props.dropbanner
       }}
     >
       <Card

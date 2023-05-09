@@ -457,28 +457,28 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian keys={keys} properties={properties} />
-                </Col >
-              </Row >
-              {
-                location.state.saleType === "auction" ? (
-                  <Row style={{ marginTop: "5px" }}>
-                    <Col>
-                      <AcceptBidAccordian
-                        versionB={versionB}
-                        bidDetail={bidDetail}
-                        isSold={location.state?.nftDetail.currentOrderListingId.isSold}
-                        handleAcceptBid={handleAcceptBid}
-                        handleOpenModal={handleOpenModal}
-                      />
-                    </Col>
-                  </Row>
-                ) : null
-              }
-            </div >
-          </div >
-        </div >
-      </ThemeProvider >
+                    <PropertiesAccordian keys={keys} properties={properties} />
+                </Col>
+              </Row>
+              {location.state.saleType === "auction" ? (
+                <Row style={{ marginTop: "5px" }}>
+                  <Col>
+                    <AcceptBidAccordian
+                      versionB={versionB}
+                      bidDetail={bidDetail}
+                      isSold={
+                        location.state?.nftDetail.currentOrderListingId.isSold
+                      }
+                      handleAcceptBid={handleAcceptBid}
+                      handleOpenModal={handleOpenModal}
+                    />
+                  </Col>
+                </Row>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </ThemeProvider>
       <AcceptBidTxModal
         handleClose={handleCloseModalTx}
         open={modalOpen}
