@@ -5,9 +5,9 @@ import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Col, Modal, Row, Spinner } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import r1 from '../../assets/img/patients/patient.jpg';
 import ipfs from '../../components/IPFS/ipfs';
 import { uploadToS3 } from "../API/AxiosInterceptor";
+import { defaultProfile } from '../ImageURLs/URLs';
 
 const NFTEditModal = (props) => {
   const { enqueueSnackbar } = useSnackbar();
@@ -17,7 +17,7 @@ const NFTEditModal = (props) => {
   const [imageType, setImageType] = useState("");
   const [ipfsHash, setIpfsHash] = useState("");
   const [nftURI, setNftURI] = useState("");
-  const [image, setImage] = useState(r1);
+  const [image, setImage] = useState(defaultProfile);
   const [rarities] = useState([
     "Mastercraft",
     "Legendary",

@@ -5,7 +5,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
   addNFTToBatch,
   createNewBatch,
@@ -37,6 +36,7 @@ import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
 import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 const styles = {
   root: {
     flexGrow: 1,
@@ -139,7 +139,7 @@ function NewNFT(props) {
   const [tokenSupply, setTokenSupply] = useState(1);
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   const [rarity, setRarity] = useState("");
-  const [image, setImage] = useState(r1);
+  const [image, setImage] = useState(defaultProfile);
   const [collectionId, setCollectionId] = useState("");
   const [nftURI, setNftURI] = useState("");
   const [metaDataURI, setMetaDataURI] = useState("");
@@ -161,7 +161,7 @@ function NewNFT(props) {
   const [NFTType, setNFTType] = useState("1155");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
 
-  const [previewImage, setPreviewImage] = useState(r1);
+  const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
   const { collectionData, loading } = useSelector(
     (store) => store.NewNftCollection
@@ -299,7 +299,7 @@ function NewNFT(props) {
       setTokenList([]);
       setImageType("");
       setIpfsHash("");
-      setImage(r1);
+      setImage(defaultProfile);
       setName("");
       setDescription("");
       setRarity("");
@@ -369,7 +369,7 @@ function NewNFT(props) {
                 setTokenList([]);
                 setImageType("");
                 setIpfsHash("");
-                setImage(r1);
+                setImage(defaultProfile);
                 setName("");
                 setDescription("");
                 setRarity("");
@@ -425,7 +425,7 @@ function NewNFT(props) {
 
   const handleAddClick = (e) => {
     e.preventDefault();
-    if (image === r1) {
+    if (image === defaultProfile) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
     } else if (name === "") {
@@ -603,7 +603,7 @@ function NewNFT(props) {
           setNftURI("");
           setPreviewImageURI("");
           setIpfsHash("");
-          setImage(r1);
+          setImage(defaultProfile);
           setName("");
           setDescription("");
           setRarity("");
@@ -635,7 +635,7 @@ function NewNFT(props) {
       typeImage = "glb";
       setImageType("glb");
       // setImage(e.target.files[0]);
-      setImage(r1);
+      setImage(defaultProfile);
     } else if (
       e.target.files[0].type.split("/")[1] === "mp3" ||
       e.target.files[0].name.includes(".mp3")
@@ -644,7 +644,7 @@ function NewNFT(props) {
       setIsMp3File(true);
       setImageType("mp3");
       // setImage(e.target.files[0]);
-      setImage(r1);
+      setImage(defaultProfile);
     } else {
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
@@ -652,7 +652,7 @@ function NewNFT(props) {
 
       if (previewImageURI !== "") {
         setPreviewImageURI("");
-        setPreviewImage(r1);
+        setPreviewImage(defaultProfile);
       }
     }
 
@@ -681,6 +681,7 @@ function NewNFT(props) {
     fileData.append("image", imageNFT);
     uploadImage(fileData)
       .then((response) => {
+        console.log("response.data.url",response.data.url);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
@@ -848,7 +849,7 @@ function NewNFT(props) {
 
   let handleFreeMint = async (e) => {
     e.preventDefault();
-    if (image === r1) {
+    if (image === defaultProfile) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
     } else if (name === "") {
@@ -861,9 +862,9 @@ function NewNFT(props) {
       let variant = "error";
       enqueueSnackbar("Please Enter Collection Name", { variant });
     } else if (
-      image !== r1 &&
+      image !== defaultProfile &&
       (imageType === "glb" || imageType === "mp3") &&
-      previewImage === r1
+      previewImage === defaultProfile
     ) {
       let variant = "error";
       enqueueSnackbar("Please Upload Preview Image", { variant });
@@ -942,7 +943,7 @@ function NewNFT(props) {
         setNftURI("");
         setPreviewImageURI("");
         setIpfsHash("");
-        setImage(r1);
+        setImage(defaultProfile);
         setName("");
         setDescription("");
         setRarity("");
