@@ -173,11 +173,13 @@ const PublishDropModal = (props) => {
   const handleConfirm = (e) => {
     e.preventDefault();
     if (props.cost.isTopupRequired === true) {
-      let variant = "error";
-      enqueueSnackbar(
-        "Your account has insufficient funds for this transaction. Kindly top up your account.",
-        { variant }
-      );
+      props.setMOdalOpen(false);
+      props.setTopUpModal(true);
+      // let variant = "error";
+      // enqueueSnackbar(
+      //   "Your account has insufficient funds for this transaction. Kindly top up your account.",
+      //   { variant }
+      // );
     } else {
       props.handlePublish();
     }
@@ -270,7 +272,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            ${props.cost.estimates.collection}
+                            ${props.cost.estimates.collection.toFixed(5)}
                           </p>
                         </div>
                       </div>
@@ -338,7 +340,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            ${props.cost.estimates.nftMint}
+                            ${props.cost.estimates.nftMint.toFixed(5)}
                           </p>
                         </div>
                       </div>
@@ -407,7 +409,7 @@ const PublishDropModal = (props) => {
                             sx={styles.cardTitle}
                             style={{ wordWrap: "break-word" }}
                           >
-                            ${props.cost.estimates.superAdminApproval}
+                            ${props.cost.estimates.superAdminApproval.toFixed(5)}
                           </p>
                         </div>
                       </div>
@@ -429,7 +431,7 @@ const PublishDropModal = (props) => {
                           sx={styles.cardTitle}
                           style={{ wordWrap: "break-word" }}
                         >
-                          ${props.cost.balance.dollar}
+                          ${props.cost.balance.dollar.toFixed(4)}
                         </p>
                       </div>
                     </div>
@@ -449,7 +451,7 @@ const PublishDropModal = (props) => {
                           sx={styles.cardTitle}
                           style={{ wordWrap: "break-word", }}
                         >
-                          ${props.cost.estimates.totalCostInDollars}
+                          ${props.cost.estimates.totalCostInDollars.toFixed(5)}
                         </p>
                       </div>
                     </div>
