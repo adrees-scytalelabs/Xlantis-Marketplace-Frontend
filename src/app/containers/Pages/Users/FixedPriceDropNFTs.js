@@ -197,6 +197,8 @@ const FixedPriceDropNFTs = () => {
                         key={index}
                       >
                         <FixedDropNFTCard
+                          titleImage={titleImage}
+                          dropbanner={bannerImage}
                           data={i}
                           type={"Epic"}
                           saleType={saleType}

@@ -126,8 +126,9 @@ function AddNFT(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const [costInfo, setCostInfo] = useState({});
-  const [amount, setAmount] = useState(5);
+  const [amount, setAmount] = useState(0.1);
   const [topUpModal, setTopUpModal] = useState(false);
+  const [requiredAmount, setRequiredAmount] = useState(0);
 
   const handleCloseTopUpModal = () => {
     setTopUpModal(false);
@@ -629,9 +630,9 @@ function AddNFT(props) {
           enqueueSnackbar("Transaction Summary received", {
             variant,
           });
-          if (response.data.isTopupRequired) {
-            setTopUpModal(true);
-          }
+          // if (response.data.isTopupRequired) {
+          //   setTopUpModal(true);
+          // }
           handleCloseBackdrop();
           setbuttonName("updatebttn");
         },
@@ -1057,6 +1058,7 @@ function AddNFT(props) {
           dropStatus={(e) => dropStatus(e)}
           dropId={dropId}
           cost={costInfo}
+          setMOdalOpen={setMOdalOpen}
           onHide={() => setMOdalOpen(false)}
           setTopUpModal={setTopUpModal}
         />
@@ -1065,15 +1067,17 @@ function AddNFT(props) {
         show={transactionModal}
         handleClose={handleRedirect}
       />
-
-      <TopUpModal
-        show={topUpModal}
-        handleClose={handleCloseTopUpModal}
-        amount={amount}
-        setAmount={setAmount}
-        topUp={handleTopUpAmount}
-        setOpen={setMOdalOpen}
-      />
+      {topUpModal === true && (
+        <TopUpModal
+          show={topUpModal}
+          handleClose={handleCloseTopUpModal}
+          amount={costInfo.balance.dollar}
+          required={costInfo.estimates.totalCostInDollars}
+          setAmount={setAmount}
+          topUp={handleTopUpAmount}
+          setOpen={setMOdalOpen}
+        />
+      )}
       <CircularBackdrop open={open} />
     </div>
   );

@@ -1,14 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Col, Modal, Row } from "react-bootstrap";
+import { Typography } from "@mui/material";
+
 function TopUpModal(props) {
   const handleClose = () => {
     props.setOpen(true);
     props.handleClose();
-  }
+  };
   const handleProceed = () => {
     props.topUp();
     props.handleClose();
-  }
+  };
+  useEffect(()=>{
+    props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
+  },[props])
   return (
     <Modal
       show={props.show}
@@ -18,13 +23,18 @@ function TopUpModal(props) {
     >
       <Modal.Header
         closeButton
+        className="text-center"
         style={{
           backgroundColor: "black",
         }}
       >
-        <Modal.Title style={{ background: "black", color: "white" }}>
+        <Typography
+          variant="h6"
+          className="text-center"
+          sx={{ marginLeft: "42%" }}
+        >
           Top Up
-        </Modal.Title>
+        </Typography>
       </Modal.Header>
       <Modal.Body
         style={{
@@ -37,7 +47,19 @@ function TopUpModal(props) {
       >
         <Row className="mt-3">
           <Col>
-            <label>Select your Top Up Amount</label>
+            <label className="nftPrice">Current Balance : </label>
+            <label className="ml-2"> ${props.amount.toFixed(4)}</label>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
+            <label className="nftPrice">Required Balance : </label>
+            <label className="ml-2"> ${props.required.toFixed(4)}</label>
+          </Col>
+        </Row>
+        <Row className="mt-3 mb-2">
+          <Col>
+            <h1 className="nftPrice">Select your Top Up Amount</h1>
           </Col>
         </Row>
         <Row>
@@ -45,10 +67,10 @@ function TopUpModal(props) {
             <input
               type="number"
               required
-              value={props.amount}
+              value={Math.abs(props.amount - props.required).toFixed(4)}
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
-              min={5}
+              min={0.1}
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
                 props.setAmount(e.target.value);
