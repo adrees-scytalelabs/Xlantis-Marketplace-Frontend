@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { Suspense, useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
@@ -9,17 +9,113 @@ import Logo from "../../../assets/img/logo.png";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
-import AccountApproval from "./Admin/AccountApproval";
-import Accounts from "./Admin/Accounts";
-import CreateTemplate from "./Admin/CreateTemplate";
-import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
-import ManageAccounts from "./Admin/ManageAccounts";
-import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
-import SavedTemplate from "./Admin/SavedTemplate";
-import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
-import TemplateProperties from "./Admin/TemplateProperties";
-import VerifiedAccounts from "./Admin/VerifiedAccounts";
+import Loading from "../Users/Loading";
+
+
+const LazyAccountApproval = React.lazy(() => import('./Admin/AccountApproval'));
+const LazyAccounts = React.lazy(() => import('./Admin/Accounts'));
+const LazyCreateTemplate = React.lazy(() => import('./Admin/CreateTemplate'));
+const LazyManageAccountsSSO = React.lazy(() => import('./Admin/ManageAcccountsSSO'));
+const LazyManageAccounts = React.lazy(() => import('./Admin/ManageAccounts'));
+const LazyManageAccountsWallet = React.lazy(() => import('./Admin/ManageAccountsWallet'));
+const LazySavedTemplate = React.lazy(() => import('./Admin/SavedTemplate'));
+const LazySuperAdminDashboardDefaultScreen = React.lazy(() => import('./Admin/SuperAdminDashboardDefaultScreen'));
+const LazyTemplateProperties = React.lazy(() => import('./Admin/TemplateProperties'));
+const LazyVerifiedAccounts = React.lazy(() => import('./Admin/VerifiedAccounts'));
+
+
+
+const AccountApproval = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyAccountApproval
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+
+const Accounts = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyAccounts
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const CreateTemplate = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyCreateTemplate
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const ManageAccountsSSO = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyManageAccountsSSO
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const ManageAccounts = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyManageAccounts
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const ManageAccountsWallet = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyManageAccountsWallet
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const SavedTemplate = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazySavedTemplate
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+
+const SuperAdminDashboardDefaultScreen = ({ match, tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazySuperAdminDashboardDefaultScreen
+      match={match}
+      tab={tab}
+      setTab={setTab}
+      setActiveTab={setActiveTab} />
+  </Suspense>
+);
+
+const TemplateProperties = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyTemplateProperties
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
+const VerifiedAccounts = ({ tab, setTab, setActiveTab }) => (
+  <Suspense fallback={<Loading />}>
+    <LazyVerifiedAccounts
+      setActiveTab={setActiveTab}
+      tab={tab}
+      setTab={setTab} />
+  </Suspense>
+);
 
 function SuperAdminDashboard(props) {
   const path = useResolvedPath("").pathname;

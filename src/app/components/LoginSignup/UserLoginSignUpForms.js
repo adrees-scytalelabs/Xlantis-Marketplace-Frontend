@@ -66,6 +66,7 @@ const AdminLoginSignupForms = () => {
                 {}
               );
             setAdminSignInData(response.data);
+            window.location.reload(false);
           }
         })
         .catch((error) => {
