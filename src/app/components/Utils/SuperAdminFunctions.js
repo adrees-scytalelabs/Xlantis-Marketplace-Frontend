@@ -1,6 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { getSuperAdminEnabledType1, getSuperAdminEnabledType2 } from "../../redux/getManageAccountsDataSlice";
 
 const handleClose = (setShow) => setShow(false);
 const handleShow = (setShow) => setShow(true);

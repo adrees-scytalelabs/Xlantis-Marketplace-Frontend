@@ -123,13 +123,6 @@ const makeTheme = createTheme({
 
 const SSOWalletModal = (props) => {
 
-  const [expanded, setExpanded] = useState("panel1");
-  const [disabled, setDisabled] = useState(true);
-  const handleChange = (panel) => (event, newExpanded) => {
-    setExpanded(newExpanded ? panel : false);
-  };
-
-
   return (
     <ThemeProvider theme={makeTheme}>
       <Modal
