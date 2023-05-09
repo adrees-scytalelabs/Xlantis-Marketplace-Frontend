@@ -48,7 +48,7 @@ function TopUpModal(props) {
         <Row className="mt-3">
           <Col>
             <label className="nftPrice">Current Balance : </label>
-            <label className="ml-2"> ${props.amount.toFixed(4)}</label>
+            <label className="ml-2"> ${props.amount.toFixed(3)}</label>
           </Col>
         </Row>
         <Row className="mt-3">

@@ -204,8 +204,6 @@ function AddNFT(props) {
         localStorage.setItem("sessionId", response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
         handleCloseBackdrop();
-        // let variant = "success";
-        // enqueueSnackbar("Balance Updated", { variant });
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
