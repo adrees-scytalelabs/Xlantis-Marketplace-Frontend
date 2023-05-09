@@ -4,10 +4,10 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import { createCollection, getMyCollectionsPaginated } from "../../../../components/API/AxiosInterceptor";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
+import { defaultProfile } from '../../../../components/ImageURLs/URLs';
 const styles = {
   root: {
     minWidth: 250,
@@ -78,7 +78,7 @@ function MyCollection(props) {
       collectionImage === "" ||
       collectionImage === null ||
       collectionImage === undefined ||
-      collectionImage === r1
+      collectionImage === defaultProfile
     ) {
       setIsCreating(false);
       let variant = "error";

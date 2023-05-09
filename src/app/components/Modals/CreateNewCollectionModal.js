@@ -3,15 +3,15 @@ import React, { useState } from "react";
 import { Button, Modal, Spinner } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import r1 from "../../assets/img/patients/patient.jpg";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { uploadToS3 } from "../API/AxiosInterceptor";
+import { defaultProfile } from "../ImageURLs/URLs";
 
 function CreateNewCollectionModal(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [collectionTitle, setCollectionTitle] = useState();
-  const [collectionImage, setCollectionImage] = useState(r1);
+  const [collectionImage, setCollectionImage] = useState(defaultProfile);
   const [isUploadingCollectionImage, setIsUploadingCollectionImage] =
     useState(false);
   let onChangeImageHandler = (e) => {

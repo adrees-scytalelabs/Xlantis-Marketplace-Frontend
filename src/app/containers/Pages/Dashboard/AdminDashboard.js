@@ -6,9 +6,9 @@ import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
-import patient from "../../../assets/img/patients/patient.jpg";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { defaultProfile } from "../../../components/ImageURLs/URLs";
 import AddNFT from "./Admin/AddNFT";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
@@ -113,7 +113,7 @@ function AdminDashboard(props) {
                 <span className="admin-img">
                   <img
                     className="avatar-sm rounded-circle"
-                    src={patient}
+                    src={defaultProfile}
                     width="50"
                     alt="Ryan Taylor"
                   />

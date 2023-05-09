@@ -3,8 +3,8 @@ import { Alert, Card, CardContent, CardMedia, Typography, useMediaQuery } from '
 import React from "react";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
-import kangaroo from "../../assets/img/NFTs/astranaut.jpg";
 import { truncate } from "../../assets/js/utils";
+import { Astranaut } from '../ImageURLs/URLs';
 
 const OnSaleCard = (props) => {
   const matchScrn = useMediaQuery("(max-width: 991px)");
@@ -51,7 +51,7 @@ const OnSaleCard = (props) => {
                         }}
                       >
                         <img
-                          src={kangaroo}
+                          src={Astranaut}
                           alt="a sample nft"
                           style={{
                             width: "75px",

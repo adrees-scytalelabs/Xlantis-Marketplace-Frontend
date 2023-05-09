@@ -3,7 +3,6 @@ import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from 'react-redux';
-import r1 from "../../../assets/img/patients/patient.jpg";
 import {
   updateAdminProfileSSO,
   updateUserProfileVersioned,
@@ -17,6 +16,7 @@ import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
 import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
 import { getUserProfile } from "../../../redux/getUserProfileSlice";
+import { defaultProfile } from "../../../components/ImageURLs/URLs";
 
 function SettingDashboardDefault(props) {
   const [isAdmin, setIsAdmin] = useState(false);
@@ -54,7 +54,7 @@ function SettingDashboardDefault(props) {
   const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  const [bannerImage, setBannerImage] = useState(r1);
+  const [bannerImage, setBannerImage] = useState(defaultProfile);
   const { enqueueSnackbar } = useSnackbar();
   const handleCloseBackdrop = () => {
     setOpen(false);

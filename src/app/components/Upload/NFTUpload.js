@@ -3,9 +3,9 @@ import { Spinner } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import UploadFile from "./UploadFile";
-import r1 from "../../assets/img/patients/patient.jpg";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
+import { defaultProfile } from "../ImageURLs/URLs";
 
 function Model(props) {
   const { scene } = useGLTF(props.nftURI);
@@ -71,7 +71,7 @@ const NFTUpload = (props) => {
           </div>
           <label>Select Preview Image</label>
           <UploadFile
-            fileURL={props.previewImageURI ? props.previewImageURI : r1}
+            fileURL={props.previewImageURI ? props.previewImageURI : defaultProfile}
             isUploading={props.isUploadingPreview}
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
@@ -126,7 +126,7 @@ const NFTUpload = (props) => {
           </div>
           <label>Select Preview Image</label>
           <UploadFile
-            fileURL={props.previewImageURI ? props.previewImageURI : r1}
+            fileURL={props.previewImageURI ? props.previewImageURI : defaultProfile}
             isUploading={props.isUploadingPreview}
             changeFile={props.onChangePreviewImage}
             class="co-12 col-md-auto profile-img mr-3"
@@ -137,7 +137,7 @@ const NFTUpload = (props) => {
       ) : (
         <div>
           <UploadFile
-            fileURL={props.nftURI ? props.nftURI : r1}
+            fileURL={props.nftURI ? props.nftURI : defaultProfile}
             isUploading={props.isUploadingIPFS}
             changeFile={props.onChangeFile}
             class="co-12 col-md-auto profile-img mr-3"

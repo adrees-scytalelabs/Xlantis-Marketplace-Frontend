@@ -3,7 +3,6 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
   approveCollection,
   createNewCollection,
@@ -24,6 +23,7 @@ import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 
 function NewCollection(props) {
   const navigate = useNavigate();
@@ -49,7 +49,7 @@ function NewCollection(props) {
   const [collectionSymbol, setCollectionSymbol] = useState("");
   const [isUploadingIPFS] = useState(false);
   const [imageFile, setImageFile] = useState();
-  const [fileURL, setFileURL] = useState(r1);
+  const [fileURL, setFileURL] = useState(defaultProfile);
   const [collectionId, setCollectionId] = useState("");
   const [nftContractAddress, setNftContractAddress] = useState("");
   const [isFixedPriceApproved, setIsFixedPriceApproved] = useState(false);
@@ -134,7 +134,7 @@ function NewCollection(props) {
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");
-            setFileURL(r1);
+            setFileURL(defaultProfile);
             setRoyaltyFee(0);
             setIsSaving(false);
             handleCloseBackdrop();
@@ -152,7 +152,7 @@ function NewCollection(props) {
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");
-            setFileURL(r1);
+            setFileURL(defaultProfile);
             setIsSaving(false);
           });
       } else if (nftType === "721") {
@@ -220,7 +220,7 @@ function NewCollection(props) {
                   setCollectionName("");
                   setCollectionSymbol("");
                   setCollectionDescription("");
-                  setFileURL(r1);
+                  setFileURL(defaultProfile);
                   handleCloseBackdrop();
                 });
             })
@@ -333,7 +333,7 @@ function NewCollection(props) {
                   setCollectionName("");
                   setCollectionSymbol("");
                   setCollectionDescription("");
-                  setFileURL(r1);
+                  setFileURL(defaultProfile);
                   handleCloseBackdrop();
                 });
             } else if (nftType === "721") {
@@ -392,7 +392,7 @@ function NewCollection(props) {
                   setCollectionName("");
                   setCollectionSymbol("");
                   setCollectionDescription("");
-                  setFileURL(r1);
+                  setFileURL(defaultProfile);
                   handleCloseBackdrop();
                 });
             }
