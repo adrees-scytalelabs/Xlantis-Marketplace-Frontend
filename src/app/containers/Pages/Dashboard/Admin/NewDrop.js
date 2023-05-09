@@ -5,8 +5,6 @@ import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
-import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
   createNewDrop,
   uploadImage,
@@ -19,6 +17,7 @@ import Select from "../../../../components/Select/Select";
 import SelectDescription from "../../../../components/Select/SelectDescription";
 import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
+import { DropBannerDefaultImage, defaultProfile } from '../../../../components/ImageURLs/URLs';
 
 const makeTheme = createTheme({
   overrides: {
@@ -42,8 +41,8 @@ function NewDrop(props) {
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(r1);
-  const [bannerImage, setBannerImage] = useState(DropBanner);
+  const [image, setImage] = useState(defaultProfile);
+  const [bannerImage, setBannerImage] = useState(DropBannerDefaultImage);
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
   const [, setDropId] = useState("");
 
@@ -115,14 +114,14 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (image === r1) {
+      } else if (image === defaultProfile) {
         let variant = "error";
         enqueueSnackbar("Please Select title image for Drop to continue.", {
           variant,
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (bannerImage === DropBanner) {
+      } else if (bannerImage === DropBannerDefaultImage) {
         let variant = "error";
         enqueueSnackbar("Please select banner image for drop to continue.", {
           variant,
@@ -195,7 +194,7 @@ function NewDrop(props) {
           });
           setIsSaving(false);
           handleCloseBackdrop();
-        } else if (image === r1) {
+        } else if (image === defaultProfile) {
           let variant = "error";
           enqueueSnackbar("Please Select title image for Drop to continue.", {
             variant,
@@ -272,7 +271,7 @@ function NewDrop(props) {
         });
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (image === r1) {
+      } else if (image === defaultProfile) {
         let variant = "error";
         enqueueSnackbar("Please Select title image for Drop to continue.", {
           variant,

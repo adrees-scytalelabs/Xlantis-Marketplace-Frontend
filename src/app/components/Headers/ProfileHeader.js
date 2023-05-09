@@ -6,9 +6,9 @@ import { Link, withRouter } from "react-router-dom";
 import "../../assets/css/adminStyle.css";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import patient from "../../assets/img/patients/patient.jpg";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import { defaultProfile } from "../ImageURLs/URLs";
 
 const mapStateToProps = (state) => {
   return {
@@ -84,7 +84,7 @@ function ProfileHeader(props) {
                   />
                   <img
                     className="avatar-sm rounded-circle"
-                    src={patient}
+                    src={defaultProfile}
                     width="50"
                     alt="Ryan Taylor"
                   />
@@ -97,7 +97,7 @@ function ProfileHeader(props) {
                     <div className="avatar avatar-sm">
                       <img
                         className="avatar-sm rounded-circle"
-                        src={patient}
+                        src={defaultProfile}
                         width="50"
                         alt="Ryan Taylor"
                       />
