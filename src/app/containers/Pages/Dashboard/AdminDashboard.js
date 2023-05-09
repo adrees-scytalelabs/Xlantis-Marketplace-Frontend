@@ -31,8 +31,6 @@ const LazyNewNFT = React.lazy(() => import('./Admin/NewNFT'));
 const LazyTopUp = React.lazy(() => import('./Admin/TopUp'));
 const SingleNftDetail = React.lazy(() => import('./Admin/singleNftDetail'));
 
-
-
 const AddNFT = ({setActiveTab}) => (
   <Suspense fallback={<Loading />}>
     <LazyAddNFT setActiveTab={setActiveTab} />
@@ -119,7 +117,6 @@ const TopUp = ({setActiveTab}) => (
     <LazyTopUp setActiveTab={setActiveTab}/>
   </Suspense>
 );
-
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -260,52 +257,42 @@ function AdminDashboard(props) {
                 setActiveTab={setActiveTab} />
             }
             />
-
             <Route path={`newNFT`}
               element={<NewNFT setActiveTab={setActiveTab} />}
             />
             <Route exact path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`dropApproval`}
               element={<DropApproval setActiveTab={setActiveTab} />}
             />
             <Route exact path={`topUp`}
               element={<TopUp setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`newDrop`}
               element={<NewDrop setActiveTab={setActiveTab} />}
             />
             <Route exact path={`newDrop/addNft`}
               element={<AddNFT setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`myDrops`}
               element={<MyDrops setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`myDrops/nfts`}
               element={<MyDropNFTs setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`myDrops/nfts/singleNft`}
               element={<DropSingleNFT setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`createNewCollection`}
               element={<NewCollection setActiveTab={setActiveTab} />}
             />
             <Route exact path={`myCollection`}
               element={<MyCollection setActiveTab={setActiveTab} />}
             />
-
             <Route exact path={`nftDetail/:nftId`}
               element={<SingleNftDetail setActiveTab={setActiveTab} />}
             />
-
-
             <Route exact path={`collection/nfts/:collectionId`}
               element={<CollectionNfts setActiveTab={setActiveTab} />}
             />
