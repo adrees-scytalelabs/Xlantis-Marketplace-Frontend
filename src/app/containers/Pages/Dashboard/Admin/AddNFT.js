@@ -71,10 +71,9 @@ function AddNFT(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
-  const [transactionModal, setTransactionModal] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
+  const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -109,7 +108,6 @@ function AddNFT(props) {
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
   const [isUploadingData, setIsUploadingData] = useState(false);
-  const [tokenList, setTokenList] = useState([]);
   const [price, setPrice] = useState(null);
   const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
@@ -125,6 +123,7 @@ function AddNFT(props) {
   const [dropInfo, setDropInfo] = useState([]);
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
+  const [transactionModal, setTransactionModal] = useState(false);
   const [costInfo, setCostInfo] = useState({});
   const [amount, setAmount] = useState(0.1);
   const [topUpModal, setTopUpModal] = useState(false);
@@ -667,7 +666,6 @@ function AddNFT(props) {
     await handleDropData(event, web3, accounts);
   };
   const handleAddClick = async (e) => {
-    handleShowBackdrop();
     e.preventDefault();
     if (nftType === "1155") {
       if (collection === "") {
@@ -733,6 +731,7 @@ function AddNFT(props) {
             setIsAdded(true);
             setTokenList([...tokenList, nftDetail]);
             let found = false;
+            // console.log("time", startTime, endTime);
             if (nftType === "1155") {
               setDropInfo((current) =>
                 current.map((obj) => {
