@@ -1,6 +1,5 @@
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -20,6 +19,7 @@ import {
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import RemoveNft from "../../../../components/Cards/RemoveNft";
 import ipfs from "../../../../components/IPFS/ipfs";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import NFTEditModal from "../../../../components/Modals/NFTEditModal";
@@ -29,6 +29,7 @@ import WorkInProgressModal from "../../../../components/Modals/WorkInProgressMod
 import NewNftSelectNft from "../../../../components/Radio/NewNftSelectNft";
 import NewNftSelectSupply from "../../../../components/Radio/NewNftSelectSupply";
 import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
@@ -36,7 +37,6 @@ import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
 import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
-import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 const styles = {
   root: {
     flexGrow: 1,
@@ -65,7 +65,18 @@ const styles = {
 };
 
 function NewNFT(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const navigate = useNavigate();
   const [network, setNetwork] = useState(false);
@@ -289,11 +300,15 @@ function NewNFT(props) {
 
     if (tokenList.length === 0) {
       let variant = "error";
-      enqueueSnackbar("Add Nfts to Queue before Creation.", { variant });
+      setSnackbarMessage("Add Nfts to Queue before Creation.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       setIsSaving(false);
     } else {
       let variant = "success";
-      enqueueSnackbar("Nfts Created Successfully.", { variant });
+      setSnackbarMessage("Nfts Created Successfully.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       Cookies.remove("Batch-ID");
       Cookies.remove("NFT-Detail");
       setTokenList([]);
@@ -318,7 +333,9 @@ function NewNFT(props) {
 
     if (tokenList.length === 0) {
       let variant = "error";
-      enqueueSnackbar("Add Nfts to Queue before Creation.", { variant });
+      setSnackbarMessage("Add Nfts to Queue before Creation.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       setIsSaving(false);
     } else {
       await loadWeb3();
@@ -347,7 +364,9 @@ function NewNFT(props) {
             if (err !== null) {
               console.log("err", err);
               let variant = "error";
-              enqueueSnackbar("User Canceled Transaction", { variant });
+              setSnackbarMessage("User Canceled Transaction.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               handleCloseBackdrop();
               setIsSaving(false);
             }
@@ -363,7 +382,9 @@ function NewNFT(props) {
             mintBatchNFTs(batchId, data)
               .then((response) => {
                 let variant = "success";
-                enqueueSnackbar("Nfts Created Successfully.", { variant });
+                setSnackbarMessage("Nfts Created Successfully.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
                 Cookies.remove("Batch-ID");
                 Cookies.remove("NFT-Detail");
                 setTokenList([]);
@@ -387,7 +408,9 @@ function NewNFT(props) {
                 }
 
                 let variant = "error";
-                enqueueSnackbar("Unable to Create Nfts.", { variant });
+                setSnackbarMessage("Unable to Create Nfts.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
 
                 handleCloseBackdrop();
                 setIsSaving(false);
@@ -427,29 +450,38 @@ function NewNFT(props) {
     e.preventDefault();
     if (image === defaultProfile) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Artwork Photo", { variant });
+      setSnackbarMessage("Please Upload Artwork Photo.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (name === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Name", { variant });
+      setSnackbarMessage("Please Enter Artwork Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (description === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Description", { variant });
+      setSnackbarMessage("Please Enter Artwork Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (
       tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
     ) {
       let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Empty", { variant });
+      setSnackbarMessage("Token Supply cannot be Empty.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (tokenSupply < 0) {
       let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Negative", { variant });
-    } else if (tokenSupply < 0) {
-      let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Negative", { variant });
+      setSnackbarMessage("Token Supply cannot be Negative.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (collection === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Collection Name", { variant });
+      setSnackbarMessage("Please Enter Collection Name");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       handleShowBackdrop();
       setIsUploadingData(true);
@@ -471,7 +503,9 @@ function NewNFT(props) {
           if (err) {
             console.log("Error: ", err);
             let variant = "error";
-            enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
+            setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             return;
           }
           ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
@@ -613,7 +647,9 @@ function NewNFT(props) {
           setIsGlbFile(false);
           setIsMp3File(false);
           let variant = "success";
-          enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
+          setSnackbarMessage("Meta Data Uploaded to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsUploadingData(false);
           handleCloseBackdrop();
         });
@@ -663,7 +699,9 @@ function NewNFT(props) {
           console.log("err", err);
           setIsUploadingIPFS(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+          setSnackbarMessage("Unable to Upload Image to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
 
@@ -671,7 +709,9 @@ function NewNFT(props) {
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS", { variant });
+        setSnackbarMessage("Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -681,11 +721,13 @@ function NewNFT(props) {
     fileData.append("image", imageNFT);
     uploadImage(fileData)
       .then((response) => {
-        console.log("response.data.url",response.data.url);
+        console.log("response.data.url", response.data.url);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -694,7 +736,9 @@ function NewNFT(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -743,7 +787,9 @@ function NewNFT(props) {
           console.log("Error: ", err);
           setIsUploadingData(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
+          setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
@@ -777,7 +823,9 @@ function NewNFT(props) {
         handleCloseBackdrop();
 
         let variant = "success";
-        enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
+        setSnackbarMessage("Meta Data Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
     };
   };
@@ -831,17 +879,17 @@ function NewNFT(props) {
           console.log("err", err);
           setIsUploadingPreview(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Preview Image to IPFS ", {
-            variant,
-          });
+          setSnackbarMessage("Unable to Upload Preview Image to IPFS .");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         console.log("HASH", result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS", {
-          variant,
-        });
+        setSnackbarMessage("Preview Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsUploadingPreview(false);
       });
     };
@@ -851,23 +899,33 @@ function NewNFT(props) {
     e.preventDefault();
     if (image === defaultProfile) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Artwork Photo", { variant });
+      setSnackbarMessage("Please Upload Artwork Photo.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (name === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Name", { variant });
+      setSnackbarMessage("Please Enter Artwork Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (description === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Description", { variant });
+      setSnackbarMessage("Please Enter Artwork Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (collection === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Collection Name", { variant });
+      setSnackbarMessage("Please Enter Collection Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (
       image !== defaultProfile &&
       (imageType === "glb" || imageType === "mp3") &&
       previewImage === defaultProfile
     ) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Preview Image", { variant });
+      setSnackbarMessage("Please Upload Preview Image.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       handleShowBackdrop();
       await loadWeb3();
@@ -956,7 +1014,9 @@ function NewNFT(props) {
         setCollectionId("");
         handleCloseBackdrop();
         let variant = "success";
-        enqueueSnackbar("NFT free minted successfully", { variant });
+        setSnackbarMessage("NFT free minted successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     }
   };
@@ -1004,7 +1064,9 @@ function NewNFT(props) {
       .catch((error) => {
         console.log("Error: ", error);
         let variant = "error";
-        enqueueSnackbar("Error signing", { variant });
+        setSnackbarMessage("Error signing.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
     console.log("Signature: ", signature);
 
@@ -1189,6 +1251,7 @@ function NewNFT(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

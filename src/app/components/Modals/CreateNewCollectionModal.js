@@ -1,4 +1,3 @@
-import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { Button, Modal, Spinner } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
@@ -7,13 +6,26 @@ import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { uploadToS3 } from "../API/AxiosInterceptor";
 import { defaultProfile } from "../ImageURLs/URLs";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function CreateNewCollectionModal(props) {
-  const { enqueueSnackbar } = useSnackbar();
+
   const [collectionTitle, setCollectionTitle] = useState();
   const [collectionImage, setCollectionImage] = useState(defaultProfile);
   const [isUploadingCollectionImage, setIsUploadingCollectionImage] =
     useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   let onChangeImageHandler = (e) => {
     setIsUploadingCollectionImage(true);
     let fileData = new FormData();
@@ -24,7 +36,9 @@ function CreateNewCollectionModal(props) {
         setCollectionImage(response.data.url);
         setIsUploadingCollectionImage(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -33,9 +47,12 @@ function CreateNewCollectionModal(props) {
         }
         setIsUploadingCollectionImage(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image .", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
+
   return (
     <Modal show={props.show} onHide={props.handleClose}>
       <Modal.Header closeButton>
@@ -134,6 +151,7 @@ function CreateNewCollectionModal(props) {
           </Button>
         )}
       </Modal.Footer>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </Modal>
   );
 }

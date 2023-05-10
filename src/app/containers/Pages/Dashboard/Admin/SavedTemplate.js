@@ -1,15 +1,26 @@
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
 import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
 
 function SavedTemplate(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [templateData, setTemplateData] = useState([]);
   const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
@@ -64,7 +75,9 @@ function SavedTemplate(props) {
       else if (loading === 2) {
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Create Template", { variant });
+        setSnackbarMessage("Unable to Create Template.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     } catch (e) {
       console.log("Error in axios request to create template", e);
@@ -140,6 +153,7 @@ function SavedTemplate(props) {
         handleClose={handleClose}
         handleDelete={handleDeleteTemplate}
       ></DeleteModal>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

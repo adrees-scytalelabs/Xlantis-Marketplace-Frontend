@@ -5,7 +5,6 @@ import {
 } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row, } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
@@ -33,6 +32,7 @@ import {
   sendBidDataVersioned,
 } from "../../../../components/API/AxiosInterceptor";
 import BidValue from "../../../../components/Select/BidValue";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const customTheme = createTheme({
   overrides: {
@@ -75,7 +75,18 @@ const styles = {
 }
 
 const AuctionNFT = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const { nftId, dropId } = useParams();
   const [bidDetail, setBidDetail] = useState([]);
   const location = useLocation();
@@ -142,14 +153,15 @@ const AuctionNFT = (props) => {
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
     ) {
       let variant = "error";
-      enqueueSnackbar(
-        "Bid Expiry Time cannot be more than Drop's Expiry Time.",
-        { variant }
-      );
+      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
     if (biddingValue === 0) {
       let variant = "error";
-      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+      setSnackbarMessage("Bidding Value cannot be zero.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       getBuyNFTTxCostSummarySSO(dropId, nftId).then(
         (response) => {
@@ -324,7 +336,9 @@ const AuctionNFT = (props) => {
           if (err !== null) {
             console.log("err", err);
             let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
+            setSnackbarMessage("User Canceled Transaction.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             handleCloseBackdrop();
           }
         })
@@ -346,14 +360,16 @@ const AuctionNFT = (props) => {
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
     ) {
       let variant = "error";
-      enqueueSnackbar(
-        "Bid Expiry Time cannot be more than Drop's Expiry Time.",
-        { variant }
-      );
+
+      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
     if (biddingValue === 0) {
       let variant = "error";
-      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+      setSnackbarMessage("Bidding Value cannot be zero.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       await loadWeb3();
       const web3 = window.web3;
@@ -444,11 +460,15 @@ const AuctionNFT = (props) => {
                   .then((response) => {
                     console.log("Response from finalize bid: ", response);
                     let variant = "success";
-                    enqueueSnackbar("Bid Placed Successfully", { variant });
+                    setSnackbarMessage("Bid Placed Successfully.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                   })
                   .catch((error) => {
                     let variant = "error";
-                    enqueueSnackbar("Unable To Bid", { variant });
+                    setSnackbarMessage("Unable To Bid.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                     console.log("Err from finalize bid: ", error);
                     console.log("Err response from finalize bid: ", error);
                   });
@@ -475,14 +495,15 @@ const AuctionNFT = (props) => {
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
     ) {
       let variant = "error";
-      enqueueSnackbar(
-        "Bid Expiry Time cannot be more than Drop's Expiry Time.",
-        { variant }
-      );
+      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
     if (biddingValue === 0) {
       let variant = "error";
-      enqueueSnackbar("Bidding Value cannot be zero.", { variant });
+      setSnackbarMessage("Bidding Value cannot be zero.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       handleShowBackdrop();
       let bidAmountInWei = Web3.utils.toWei(biddingValue);
@@ -499,10 +520,9 @@ const AuctionNFT = (props) => {
         .then((response) => {
           console.log("nft bid response", response.data);
           let variant = "success";
-          enqueueSnackbar(
-            "Bid Is Being Finalized. Transactions Are In Process",
-            { variant }
-          );
+          setSnackbarMessage("Bid Is Being Finalized. Transactions Are In Process.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           handleCloseModal();
         })
         .catch((error) => {
@@ -510,7 +530,9 @@ const AuctionNFT = (props) => {
             console.log(error);
             console.log(error.response);
             let variant = "error";
-            enqueueSnackbar("Unable To Bid On NFT.", { variant });
+            setSnackbarMessage("Unable To Bid On NFT.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             handleCloseModal();
           }
           if (error.response.data !== undefined) {
@@ -601,6 +623,7 @@ const AuctionNFT = (props) => {
         isOpen={modalOpen}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 };

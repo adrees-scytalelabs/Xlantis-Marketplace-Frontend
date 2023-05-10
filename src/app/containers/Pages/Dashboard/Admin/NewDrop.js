@@ -1,7 +1,6 @@
 
 import { FormControl, ThemeProvider, createTheme } from '@mui/material';
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
@@ -10,14 +9,15 @@ import {
   uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import { DropBannerDefaultImage, defaultProfile } from '../../../../components/ImageURLs/URLs';
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
 import Select from "../../../../components/Select/Select";
 import SelectDescription from "../../../../components/Select/SelectDescription";
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
-import { DropBannerDefaultImage, defaultProfile } from '../../../../components/ImageURLs/URLs';
 
 const makeTheme = createTheme({
   overrides: {
@@ -36,7 +36,18 @@ const makeTheme = createTheme({
 });
 
 function NewDrop(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const path = useResolvedPath("").pathname;
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
@@ -104,28 +115,30 @@ function NewDrop(props) {
       handleShowBackdrop();
       if (name === "") {
         let variant = "error";
-        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setSnackbarMessage("Name of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (description === "") {
         let variant = "error";
-        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-          variant,
-        });
+        setSnackbarMessage("Description of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (image === defaultProfile) {
         let variant = "error";
-        enqueueSnackbar("Please Select title image for Drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please Select title image for Drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (bannerImage === DropBannerDefaultImage) {
         let variant = "error";
-        enqueueSnackbar("Please select banner image for drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please select banner image for drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else {
@@ -165,7 +178,9 @@ function NewDrop(props) {
 
             setIsSaving(false);
             let variant = "error";
-            enqueueSnackbar("Unable to Create Drop.", { variant });
+            setSnackbarMessage("Unable to Create Drop.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
           });
       }
     } else if (nftType === "721") {
@@ -184,21 +199,23 @@ function NewDrop(props) {
         handleShowBackdrop();
         if (name === "") {
           let variant = "error";
-          enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+          setSnackbarMessage("Name of the Drop Cannot be Empty.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
         } else if (description === "") {
           let variant = "error";
-          enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-            variant,
-          });
+          setSnackbarMessage("Description of the Drop Cannot be Empty.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
         } else if (image === defaultProfile) {
           let variant = "error";
-          enqueueSnackbar("Please Select title image for Drop to continue.", {
-            variant,
-          });
+          setSnackbarMessage("Please Select title image for Drop to continue.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
         } else {
@@ -237,7 +254,9 @@ function NewDrop(props) {
 
               setIsSaving(false);
               let variant = "error";
-              enqueueSnackbar("Unable to Create Drop.", { variant });
+              setSnackbarMessage("Unable to Create Drop.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
             });
         }
       }
@@ -261,21 +280,23 @@ function NewDrop(props) {
 
       if (name === "") {
         let variant = "error";
-        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setSnackbarMessage("Name of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (description === "") {
         let variant = "error";
-        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-          variant,
-        });
+        setSnackbarMessage("Description of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (image === defaultProfile) {
         let variant = "error";
-        enqueueSnackbar("Please Select title image for Drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please Select title image for Drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else {
@@ -315,7 +336,9 @@ function NewDrop(props) {
 
             setIsSaving(false);
             let variant = "error";
-            enqueueSnackbar("Unable to Create Drop.", { variant });
+            setSnackbarMessage("Unable to Create Drop.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
           });
       }
     }
@@ -336,7 +359,9 @@ function NewDrop(props) {
           setBannerImage(response.data.url);
           setIsUploadingBanner(false);
           let variant = "success";
-          enqueueSnackbar("Image Uploaded Successfully", { variant });
+          setSnackbarMessage("Image Uploaded Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         })
         .catch((error) => {
           if (process.env.NODE_ENV === "development") {
@@ -345,8 +370,11 @@ function NewDrop(props) {
           }
           setIsUploadingBanner(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image", { variant });
+          setSnackbarMessage("Unable to Upload Image.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         });
+
     }
   };
 
@@ -363,7 +391,10 @@ function NewDrop(props) {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -372,7 +403,10 @@ function NewDrop(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+
       });
   };
   return (
@@ -491,6 +525,7 @@ function NewDrop(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

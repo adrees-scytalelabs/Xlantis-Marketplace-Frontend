@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import { SnackbarProvider } from "notistack";
 import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "../../components/context/AuthContext";
@@ -159,7 +158,6 @@ function App() {
 
   return (
     <AuthContextProvider>
-      <SnackbarProvider maxSnack={3}>
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<LoginRegisterRedirectCheck exact path="/" />} />
@@ -185,7 +183,6 @@ function App() {
             <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
         </BrowserRouter>
-      </SnackbarProvider>
     </AuthContextProvider>
   );
 }
