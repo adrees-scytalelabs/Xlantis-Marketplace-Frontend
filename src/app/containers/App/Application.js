@@ -1,139 +1,30 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import { SnackbarProvider } from "notistack";
-import React, { Suspense, useEffect } from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "../../components/context/AuthContext";
-import Loading from "../Pages/Users/Loading";
-const LazyAdminSSORedirect = React.lazy(() => import('../Pages/Dashboard/Admin/AdminSSORedirect'));
-const LazyAdminDashboard = React.lazy(() => import('../Pages/Dashboard/AdminDashboard'));
-const LazyAdminSettings = React.lazy(() => import('../Pages/Dashboard/AdminSettings'));
-const LazySuperAdminDashboard = React.lazy(() => import('../Pages/Dashboard/SuperAdminDashboard'));
-const LazyUserDashboard = React.lazy(() => import('../Pages/Dashboard/UserDashboard'));
-const LazyAdminLoginSignup = React.lazy(() => import('../Pages/Users/AdminLoginSignup'));
-const LazyAuctionDrops = React.lazy(() => import('../Pages/Users/AuctionDrops'));
-const LazyCheckoutScreen = React.lazy(() => import('../Pages/Users/CheckoutScreen'));
-const LazyEmailVerification = React.lazy(() => import('../Pages/Users/EmailVerification'));
-const LazyFixedPriceDropNFTs = React.lazy(() => import('../Pages/Users/FixedPriceDropNFTs'));
-const LazyHomeScreen = React.lazy(() => import('../Pages/Users/HomeScreen'));
-const LazyMarketPlace = React.lazy(() => import('../Pages/Users/MarketPlace'));
-const LazyPrivacyPolicy = React.lazy(() => import('../Pages/Users/PrivacyPolicy'));
-const LazyTermsAndConditions = React.lazy(() => import('../Pages/Users/TermsAndConditions'));
-const LazyFailed = React.lazy(() => import('../Pages/Users/UserProfile/Failed'));
-const LazyFixedDropSingleNFTHome = React.lazy(() => import('../Pages/Users/UserProfile/FixedDropSingleNFTHome'));
-const LazySuccess = React.lazy(() => import('../Pages/Users/UserProfile/Success'));
-const LazySuperAdminLogin = React.lazy(() => import('../Pages/Users/UserProfile/SuperAdminLogin'));
-const LazyUpdateRequestSent = React.lazy(() => import('../Pages/Users/UserProfile/UpdateRequestSent'));
-const LazyUserLoginSignup = React.lazy(() => import('../Pages/Users/UserProfile/UserLoginSignup'));
-const LazyUserSettings = React.lazy(() => import('../Pages/Users/UserSettings'));
-
-
-const AdminSSORedirect = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyAdminSSORedirect/>
-  </Suspense>
-);
-const AdminDashboard = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyAdminDashboard/>
-  </Suspense>
-);
-const AdminSettings = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyAdminSettings/>
-  </Suspense>
-);
-const SuperAdminDashboard = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazySuperAdminDashboard/>
-  </Suspense>
-);
-const UserDashboard = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyUserDashboard/>
-  </Suspense>
-);
-const AdminLoginSignup = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyAdminLoginSignup/>
-  </Suspense>
-);
-const AuctionDrops = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyAuctionDrops/>
-  </Suspense>
-);
-const CheckoutScreen = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyCheckoutScreen/>
-  </Suspense>
-);
-const EmailVerification = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyEmailVerification/>
-  </Suspense>
-);
-const FixedPriceDropNFTs = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyFixedPriceDropNFTs/>
-  </Suspense>
-);
-const HomeScreen = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyHomeScreen/>
-  </Suspense>
-);
-const MarketPlace = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyMarketPlace/>
-  </Suspense>
-);
-const PrivacyPolicy = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyPrivacyPolicy/>
-  </Suspense>
-);
-const TermsAndConditions = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyTermsAndConditions/>
-  </Suspense>
-);
-const Failed = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyFailed/>
-  </Suspense>
-);
-const FixedDropSingleNFTHome = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyFixedDropSingleNFTHome/>
-  </Suspense>
-);
-const Success = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazySuccess/>
-  </Suspense>
-);
-const SuperAdminLogin = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazySuperAdminLogin/>
-  </Suspense>
-);
-const UpdateRequestSent = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyUpdateRequestSent/>
-  </Suspense>
-);
-const UserLoginSignup = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyUserLoginSignup/>
-  </Suspense>
-);
-const UserSettings = () => (
-  <Suspense fallback={<Loading/>}>
-      <LazyUserSettings/>
-  </Suspense>
-);
-
+import AdminSSORedirect from "../Pages/Dashboard/Admin/AdminSSORedirect";
+import AdminDashboard from "../Pages/Dashboard/AdminDashboard";
+import AdminSettings from "../Pages/Dashboard/AdminSettings";
+import SuperAdminDashboard from "../Pages/Dashboard/SuperAdminDashboard";
+import UserDashboard from "../Pages/Dashboard/UserDashboard";
+import AdminLoginSignup from "../Pages/Users/AdminLoginSignup";
+import AuctionDrops from "../Pages/Users/AuctionDrops";
+import CheckoutScreen from "../Pages/Users/CheckoutScreen";
+import EmailVerification from "../Pages/Users/EmailVerification";
+import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
+import HomeScreen from "../Pages/Users/HomeScreen";
+import MarketPlace from "../Pages/Users/MarketPlace";
+import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
+import TermsAndConditions from "../Pages/Users/TermsAndConditions";
+import Failed from "../Pages/Users/UserProfile/Failed";
+import FixedDropSingleNFTHome from "../Pages/Users/UserProfile/FixedDropSingleNFTHome";
+import Success from "../Pages/Users/UserProfile/Success";
+import SuperAdminLogin from "../Pages/Users/UserProfile/SuperAdminLogin";
+import UpdateRequestSent from "../Pages/Users/UserProfile/UpdateRequestSent";
+import UserLoginSignup from "../Pages/Users/UserProfile/UserLoginSignup";
+import UserSettings from "../Pages/Users/UserSettings";
 
 function App() {
   let isLoggedIn;
@@ -255,9 +146,9 @@ function App() {
         <FixedPriceDropNFTs />
       ) : path === "/fixedDropNFTHome/:singleNFTid" ? (
         <FixedDropSingleNFTHome />
-      ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user" ? (
+      ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
-      ) : path === "/admin/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "admin" ? (
+      ) : path === "/admin/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "admin"  ? (
         <AdminSettings />
       ) : (
         <HomeScreen />

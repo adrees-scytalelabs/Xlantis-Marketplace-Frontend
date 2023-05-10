@@ -305,7 +305,7 @@ function NewNFT(props) {
       setRarity("");
       setTokenSupply(1);
       setSupplyType("Single");
-      //setCollectionId("");
+      setCollectionId("");
       handleCloseBackdrop();
       setIsSaving(false);
       navigate(`/dashboard/collection/nfts/${collectionId}`);
@@ -428,15 +428,6 @@ function NewNFT(props) {
     if (image === defaultProfile) {
       let variant = "error";
       enqueueSnackbar("Please Upload Artwork Photo", { variant });
-    } else if (
-      imageType === "glb" ||
-      imageType === "gltf" ||
-      imageType === "mp3"
-    ) {
-      if (previewImageURI === "") {
-        let variant = "error";
-        enqueueSnackbar("Please upload Preview Image", { variant });
-      }
     } else if (name === "") {
       let variant = "error";
       enqueueSnackbar("Please Enter Artwork Name", { variant });
@@ -830,8 +821,8 @@ function NewNFT(props) {
     setPreviewImage(e.target.files[0]);
     let typeImage;
 
-    // console.log("Image Type: ", typeImage);
-    // console.log("e.target.files[0]", e.target.files[0]);
+    console.log("Image Type: ", typeImage);
+    console.log("e.target.files[0]", e.target.files[0]);
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
       console.log("reader.result", reader.result);

@@ -657,10 +657,10 @@ function HeaderHome(props) {
             ) : null}
           </li>
           <li className="header-item-rht">
-            {/*<ShoppingCartIcon
+            <ShoppingCartIcon
               onClick={() => setWorkProgressModalShow(true)}
               style={{ cursor: "pointer" }}
-            /> */}
+            />
           </li>
           <li>
             {sessionStorage.getItem("Address") ||

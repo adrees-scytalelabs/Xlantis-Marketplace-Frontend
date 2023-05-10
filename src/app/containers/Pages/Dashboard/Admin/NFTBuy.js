@@ -71,6 +71,8 @@ const NFTBuy = (props) => {
   const [properties, setProperties] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const { enqueueSnackbar } = useSnackbar();
+
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   const [price, setPrice] = useState();
   const [showNetworkModal, setShowNetworkModal] = useState(false);
@@ -145,6 +147,8 @@ const NFTBuy = (props) => {
     console.log("Price", nftDetail);
     let dropIdHex = getHash(nftDetail.dropId);
     console.log(dropIdHex);
+    setOpenDialog(false);
+    setIsSaving(true);
     handleShowBackdrop();
     await loadWeb3();
     const web3 = window.web3;
@@ -152,6 +156,7 @@ const NFTBuy = (props) => {
     const network = await web3.eth.net.getNetworkType();
     if (network !== "private") {
       setNetwork(network);
+      setIsSaving(false);
       handleShowNetworkModal();
     } else {
       handleShowBackdrop();
@@ -181,6 +186,7 @@ const NFTBuy = (props) => {
         enqueueSnackbar("User have insufficient funds to buy this NFT", {
           variant,
         });
+        setIsSaving(false);
         handleCloseBackdrop();
       } else {
         erc20Instance.methods
@@ -232,6 +238,7 @@ const NFTBuy = (props) => {
                     let variant = "error";
                     enqueueSnackbar("User Canceled Transaction", { variant });
                     handleCloseBackdrop();
+                    setIsSaving(false);
                   }
                 })
                 .on("receipt", (receipt) => {
@@ -239,6 +246,7 @@ const NFTBuy = (props) => {
                   let variant = "success";
                   enqueueSnackbar("NFT Bought Successfully", { variant });
                   handleCloseBackdrop();
+                  setIsSaving(false);
                 });
             } else if (nftDetail.collectionId.contractType === "721") {
               console.log("LAZY MINTING");
@@ -284,6 +292,7 @@ const NFTBuy = (props) => {
                     let variant = "error";
                     enqueueSnackbar("User Canceled Transaction", { variant });
                     handleCloseBackdrop();
+                    setIsSaving(false);
                   }
                 })
                 .on("receipt", (receipt) => {
@@ -291,6 +300,7 @@ const NFTBuy = (props) => {
                   let variant = "success";
                   enqueueSnackbar("NFT Bought Successfully", { variant });
                   handleCloseBackdrop();
+                  setIsSaving(false);
                 });
             }
           });
@@ -348,6 +358,7 @@ const NFTBuy = (props) => {
     console.log("Price", nftDetail);
     console.log("Nft detail id: ", nftDetail.collectionId._id);
     setOpenDialog(false);
+    setIsSaving(true);
     handleShowBackdrop();
 
     let data = {

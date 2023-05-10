@@ -136,7 +136,7 @@ function NewCollection(props) {
             setCollectionDescription("");
             setFileURL(defaultProfile);
             setRoyaltyFee(0);
-            // setIsSaving(false);
+            setIsSaving(false);
             handleCloseBackdrop();
             setIsSaving(false);
           })
@@ -162,7 +162,7 @@ function NewCollection(props) {
         const network = await web3.eth.net.getNetworkType();
         if (network !== "private") {
           setNetwork(network);
-          // setIsSaving(false);
+          setIsSaving(false);
           handleShow();
         } else {
           createNewCollection(fileData)
@@ -171,7 +171,7 @@ function NewCollection(props) {
               setCollectionId(response.data.collection._id);
               collectionID = response.data.collection._id;
               let CloneId = getHash(collectionID);
-              // setIsSaving(false);
+              setIsSaving(false);
               console.log("ERC721 COLLECTION CREATION");
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
@@ -204,7 +204,7 @@ function NewCollection(props) {
                     let variant = "error";
                     enqueueSnackbar("User Canceled Transaction", { variant });
                     handleCloseBackdrop();
-                    // setIsSaving(false);
+                    setIsSaving(false);
                   }
                 })
                 .on("receipt", (receipt) => {
@@ -340,7 +340,8 @@ function NewCollection(props) {
               console.log("ERC721 COLLECTION CREATION");
               const abi = Factory721Contract;
               const address = Addresses.Factory721Address;
-              myContractInstance = await new web3.eth.Contract(
+              var cloneContractAddress;
+              var myContractInstance = await new web3.eth.Contract(
                 abi,
                 address
               );

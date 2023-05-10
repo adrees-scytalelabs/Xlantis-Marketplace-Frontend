@@ -59,7 +59,6 @@ function TopUp(props) {
   const handleTopUpAmount = (e) => {
     handleShowBackdrop();
     e.preventDefault();
-    handleShowBackdrop();
     let data = {
       amount: amount,
     };
