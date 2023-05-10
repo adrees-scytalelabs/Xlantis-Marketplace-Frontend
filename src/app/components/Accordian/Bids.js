@@ -42,11 +42,8 @@ function Bids({
                     {index + 1}
                   </td>
                   <td style={{ padding: "0.75rem" }}>
-                    <Tooltip
-                      classes={{ tooltip: styles.noMaxWidth }}
-                      leaveDelay={1500}
-                      title={bid.bidderAddress}
-                      arrow
+                  <Tooltip
+                      title={<Typography fontSize={16}>{bid.bidderAddress}</Typography>}
                     >
                       <span>
                         {bid.bidderAddress.slice(0, 8)}...

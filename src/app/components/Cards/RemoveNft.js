@@ -20,6 +20,11 @@ function RemoveNft({
       <form>
         <div className="form-group">
           <div>
+            {tokenList.length != 0 && (
+              <span className="text-center">
+                <h3>NFT's Queue</h3>
+              </span>
+            )}
             <Grid
               container
               spacing={2}

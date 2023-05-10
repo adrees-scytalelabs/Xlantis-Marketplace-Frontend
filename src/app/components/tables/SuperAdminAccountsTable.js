@@ -1,4 +1,4 @@
-import { Button, Tooltip } from "@mui/material";
+import { Button, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import Table from "react-bootstrap/Table";
 
@@ -91,10 +91,7 @@ function SuperAdminTable(props) {
                 <td sx={styles.collectionTitle}>
                   {i.walletAddress !== undefined ? (
                     <Tooltip
-                      classes={{ tooltip: styles.noMaxWidth }}
-                      leaveDelay={1500}
-                      title={i.walletAddress}
-                      arrow
+                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
                     >
                       <span className="ml-4">
                         {i.walletAddress.slice(0, 8)}...
@@ -185,12 +182,9 @@ function SuperAdminTable(props) {
                   </td>
                 )}
                 <td sx={styles.collectionTitle}>
-                  <Tooltip
-                    classes={{ tooltip: styles.noMaxWidth }}
-                    leaveDelay={1500}
-                    title={i.walletAddress}
-                    arrow
-                  >
+                <Tooltip
+                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
+                    >
                     <span className="ml-4">
                       {i.walletAddress.slice(0, 8)}...
                     </span>

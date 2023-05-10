@@ -95,7 +95,7 @@ const DropsPageCard = (props) => {
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
-                          if (props.days == 0) {
+                          if (props.days === 0) {
                             return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
@@ -128,7 +128,7 @@ const DropsPageCard = (props) => {
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
-                          if (props.days == 0) {
+                          if (props.days === 0) {
                             return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
@@ -178,7 +178,7 @@ const DropsPageCard = (props) => {
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
-                          if (props.days == 0) {
+                          if (props.days === 0) {
                             return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
@@ -212,7 +212,7 @@ const DropsPageCard = (props) => {
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
-                          if (props.days == 0) {
+                          if (props.days === 0) {
                             return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {

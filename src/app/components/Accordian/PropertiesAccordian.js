@@ -21,7 +21,7 @@ function PropertiesAccordian({ keys, properties }) {
             variant="body1"
             sx={{ color: "#F64D04", fontFamily: "orbitron" }}
           >
-            <BlurLinearIcon />
+            <BlurLinearIcon style={{color:'#F64D04'}}/>
             <strong> Properties</strong>
           </Typography>
         </AccordionSummary>

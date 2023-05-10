@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { Tooltip, Typography } from "@mui/material";
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
@@ -163,7 +163,14 @@ function TemplateDetails(props) {
                       className="ml-4 mt-2 mt-lg-0"
                     >
                       <h4>Action</h4>
-                      <Tooltip title="Remove a property" placement="bottom">
+                      <Tooltip
+                        placement="bottom"
+                        title={
+                          <Typography fontSize={16}>
+                            Remove a property
+                          </Typography>
+                        }
+                      >
                         <button
                           className="btn btn-submit btn-lg propsActionBtn"
                           onClick={(e) => handleRemoveProperty(e, index)}

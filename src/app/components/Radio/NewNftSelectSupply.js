@@ -6,6 +6,7 @@ import {
   ThemeProvider,
   Tooltip,
   createTheme,
+  Typography,
 } from "@mui/material";
 import React from "react";
 
@@ -39,10 +40,10 @@ function NewNftSelectSupply({
           <ThemeProvider theme={theme}>
             <FormControl component="fieldset">
               <Tooltip
-                title={SupplyTypeText}
                 classes={{ tooltip: classes.tooltip }}
-                placement="top-start"
+                title={<Typography fontSize={18}>{SupplyTypeText}</Typography>}
                 arrow={true}
+                placement="top-start"
               >
                 <label
                   component="legend"

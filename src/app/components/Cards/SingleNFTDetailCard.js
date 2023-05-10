@@ -13,7 +13,7 @@ const SingleNFTDetailCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              sx={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>NFT Title </strong>
             </Typography>
@@ -25,7 +25,7 @@ const SingleNFTDetailCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              sx={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>NFT Description </strong>
             </Typography>
@@ -37,7 +37,7 @@ const SingleNFTDetailCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              sx={{ color: "#fff", fontFamily: "orbitron" }}
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>Token Supply </strong>
             </Typography>
