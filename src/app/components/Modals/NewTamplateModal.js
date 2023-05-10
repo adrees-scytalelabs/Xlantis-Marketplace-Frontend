@@ -1,5 +1,4 @@
 import { Tooltip } from "@mui/material";
-import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import {
@@ -7,9 +6,9 @@ import {
   getIsAvailableTemplates,
 } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 const NewTamplateModal = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
 
   const [title, setTitle] = useState("");
   const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
@@ -23,7 +22,18 @@ const NewTamplateModal = (props) => {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   let handleAddProperty = (e) => {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
@@ -92,7 +102,9 @@ const NewTamplateModal = (props) => {
         setProperties([{ key: "", type: "boolean" }]);
         handleCloseBackdrop();
         let variant = "success";
-        enqueueSnackbar("New Template Created Successfully", { variant });
+        setSnackbarMessage("New Template Created Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         props.handleClose();
       })
       .catch((error) => {
@@ -102,7 +114,9 @@ const NewTamplateModal = (props) => {
         }
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Create Template", { variant });
+        setSnackbarMessage("Unable to Create Template.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -339,6 +353,7 @@ const NewTamplateModal = (props) => {
         </div>
         <CircularBackdrop open={open} />
       </Modal.Body>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </Modal>
   );
 };

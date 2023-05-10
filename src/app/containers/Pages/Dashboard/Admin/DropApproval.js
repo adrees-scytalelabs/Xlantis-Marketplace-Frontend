@@ -1,6 +1,6 @@
 
+import { TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Web3 from "web3";
@@ -10,15 +10,26 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
-import { TablePagination } from "@mui/material";
 
 function DropApproval(props) {
   const [network, setNetwork] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const [collections, setCollections] = useState([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -126,7 +137,9 @@ function DropApproval(props) {
           if (err !== null) {
             console.log("err", err);
             let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
+            setSnackbarMessage("User Canceled Transaction.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             setApprovingAuction(false);
             handleCloseBackdrop();
             setIsSaving(false);
@@ -197,7 +210,9 @@ function DropApproval(props) {
             if (err !== null) {
               console.log("err", err);
               let variant = "error";
-              enqueueSnackbar("User Canceled Transaction", { variant });
+              setSnackbarMessage("User Canceled Transaction.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               setApprovingFixedPrice(false);
               handleCloseBackdrop();
               setIsSaving(false);
@@ -215,16 +230,17 @@ function DropApproval(props) {
             approveCollection(approvalData)
               .then((response) => {
                 let variant = "success";
-                enqueueSnackbar(
-                  "Collection Approved For Fixed Price Successfully",
-                  { variant }
-                );
+                setSnackbarMessage("Collection Approved For Fixed Price Successfully.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
                 setIsFixedPriceApproved(true);
                 setApprovingFixedPrice(false);
               })
               .catch((error) => {
                 let variant = "error";
-                enqueueSnackbar("Unable to approve collection", { variant });
+                setSnackbarMessage("Unable to approve collection.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
                 console.log("Err from approval Fixed-price: ", error);
                 console.log(
                   "Err response from approval Fixed-price: ",
@@ -308,6 +324,7 @@ function DropApproval(props) {
         network={network}
       ></NetworkErrorModal>
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

@@ -4,16 +4,27 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 import {
   handleModalClose,
   handleModalOpen
 } from "../../../../components/Utils/SuperAdminFunctions";
-import { useSnackbar } from "notistack";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminDisabledType1 } from '../../../../redux/getManageAccountsDataSlice';
 
 function SSODisabled() {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [admins, setAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -36,7 +47,7 @@ function SSODisabled() {
 
   const getDisableSSOAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminDisabledType1({setAdmins,setAdminCount}))
+    dispatch(getSuperAdminDisabledType1({ setAdmins, setAdminCount }))
     if (disabledType1Loading === 1) {
       setOpen(false);
     }
@@ -59,14 +70,18 @@ function SSODisabled() {
         handleCloseBackdrop();
         getDisableSSOAdmins();
         let variant = "success"
-        enqueueSnackbar("Admin Enabled Successfully.", { variant });
+        setSnackbarMessage("Admin Enabled Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error during enable: ", error);
         console.log("Error response: ", error.response);
         handleCloseBackdrop();
         let variant = "error"
-        enqueueSnackbar("Unable to Disable Admin.", { variant });
+        setSnackbarMessage("Unable to Disable Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -113,6 +128,7 @@ function SSODisabled() {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

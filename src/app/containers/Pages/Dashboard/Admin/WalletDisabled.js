@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import { useSnackbar } from "notistack";
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 import {
   handleModalClose,
   handleModalOpen
@@ -14,7 +14,18 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import { getSuperAdminDisabledType2 } from "../../../../redux/getManageAccountsDataSlice";
 
 function WalletDisabled() {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [walletAdminCount, setWalletAdminCount] = useState(0);
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -37,7 +48,7 @@ function WalletDisabled() {
 
   const getDisableWalletAdmins = () => {
     setOpen(true);
-    dispatch(getSuperAdminDisabledType2({setWalletAdmins,setWalletAdminCount}));
+    dispatch(getSuperAdminDisabledType2({ setWalletAdmins, setWalletAdminCount }));
     if (disabledType2Loading === 1) {
       setOpen(false);
     }
@@ -60,14 +71,18 @@ function WalletDisabled() {
         handleCloseBackdrop();
         getDisableWalletAdmins();
         let variant = "success"
-        enqueueSnackbar("Admin Enabled Successfully.", { variant });
+        setSnackbarMessage("Admin Enabled Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error: ", error);
         console.log("Error response: ", error.response);
         handleCloseBackdrop();
         let variant = "error"
-        enqueueSnackbar("Unable to Disable Admin.", { variant });
+        setSnackbarMessage("Unable to Disable Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -115,6 +130,7 @@ function WalletDisabled() {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

@@ -4,16 +4,15 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import { useSnackbar } from "notistack";
 import { getSuperAdminUnverifiedType1 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalSSO(props) {
-  const { enqueueSnackbar } = useSnackbar();
   const [admins, setAdmins] = useState([]);
   const [modalData, setModalData] = useState();
   const [adminCount, setAdminCount] = useState(0);
@@ -57,14 +56,18 @@ function AccountApprovalSSO(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
         let variant = "success";
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -86,6 +89,18 @@ function AccountApprovalSSO(props) {
       saved: "",
     });
   }, []);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -123,6 +138,7 @@ function AccountApprovalSSO(props) {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

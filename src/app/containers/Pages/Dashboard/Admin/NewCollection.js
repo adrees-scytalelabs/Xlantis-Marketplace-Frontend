@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
@@ -9,6 +8,7 @@ import {
   updateCollectionTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import RequestApprovalModal from "../../../../components/Modals/RequestApprovalModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
@@ -16,6 +16,7 @@ import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleT
 import Select from "../../../../components/Select/Select";
 import SelectDescription from "../../../../components/Select/SelectDescription";
 import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import UploadFile from "../../../../components/Upload/UploadFile";
 import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
@@ -23,11 +24,21 @@ import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
-import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 
 function NewCollection(props) {
   const navigate = useNavigate();
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [network, setNetwork] = useState(false);
   const [show, setShow] = useState(false);
   const [approvalModalShow, setApprovalModalShow] = useState(false);
@@ -127,9 +138,9 @@ function NewCollection(props) {
             collectionID = response.data.collection._id;
 
             let variant = "success";
-            enqueueSnackbar("New Collection Created Successfully.", {
-              variant,
-            });
+            setSnackbarMessage("New Collection Created Successfully.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             navigate("/dashboard/myCollection");
             setCollectionName("");
             setCollectionSymbol("");
@@ -147,7 +158,9 @@ function NewCollection(props) {
             }
 
             let variant = "error";
-            enqueueSnackbar("Unable to Create New Collection.", { variant });
+            setSnackbarMessage("Unable to Create New Collection.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             handleCloseBackdrop();
             setCollectionName("");
             setCollectionSymbol("");
@@ -202,7 +215,9 @@ function NewCollection(props) {
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
-                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    setSnackbarMessage("User Canceled Transaction.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                     handleCloseBackdrop();
                     setIsSaving(false);
                   }
@@ -212,9 +227,9 @@ function NewCollection(props) {
                   cloneContractAddress =
                     receipt.events.CloneCreated.returnValues.cloneAddress;
                   let variant = "success";
-                  enqueueSnackbar("New Collection Created Successfully.", {
-                    variant,
-                  });
+                  setSnackbarMessage("New Collection Created Successfully.");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
                   setApprovalModalShow(true);
                   setNftContractAddress(cloneContractAddress);
                   setCollectionName("");
@@ -231,7 +246,9 @@ function NewCollection(props) {
               }
 
               let variant = "error";
-              enqueueSnackbar("Unable to Create New Collection.", { variant });
+              setSnackbarMessage("Unable to Create New Collection.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               handleCloseBackdrop();
               setIsSaving(false);
             });
@@ -239,7 +256,9 @@ function NewCollection(props) {
       }
     } else {
       let variant = "error";
-      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+      setSnackbarMessage("Invalid Value Of Royalty Fee.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
   };
 
@@ -293,12 +312,9 @@ function NewCollection(props) {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
                   let variant = "success";
-                  enqueueSnackbar(
-                    "Sending transaction on blockchain to deploy a collection (1155)",
-                    {
-                      variant,
-                    }
-                  );
+                  setSnackbarMessage("Sending transaction on blockchain to deploy a collection (1155).");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
                   updateCollectionTxHash(collectionID, {
                     txHash: response,
                   }).then(
@@ -315,7 +331,9 @@ function NewCollection(props) {
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
-                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    setSnackbarMessage("User Canceled Transaction.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                     handleCloseBackdrop();
                     setIsSaving(false);
                   }
@@ -325,9 +343,10 @@ function NewCollection(props) {
                   cloneContractAddress =
                     receipt.events.CloneCreated.returnValues.cloneAddress;
                   let variant = "success";
-                  enqueueSnackbar("New Collection Created Successfully.", {
-                    variant,
-                  });
+                  setSnackbarMessage("New Collection Created Successfully.");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
+
                   setApprovalModalShow(true);
                   setNftContractAddress(cloneContractAddress);
                   setCollectionName("");
@@ -352,12 +371,9 @@ function NewCollection(props) {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
                   let variant = "success";
-                  enqueueSnackbar(
-                    "Sending transaction on blockchain to deploy a collection (ERC721)",
-                    {
-                      variant,
-                    }
-                  );
+                  setSnackbarMessage("Sending transaction on blockchain to deploy a collection (ERC721).");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
                   updateCollectionTxHash(collectionID, {
                     txHash: response,
                   }).then(
@@ -374,7 +390,9 @@ function NewCollection(props) {
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
-                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    setSnackbarMessage("User Canceled Transaction.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                     handleCloseBackdrop();
                     setIsSaving(false);
                   }
@@ -384,9 +402,9 @@ function NewCollection(props) {
                   cloneContractAddress =
                     receipt.events.CloneCreated.returnValues.cloneAddress;
                   let variant = "success";
-                  enqueueSnackbar("New Collection Created Successfully.", {
-                    variant,
-                  });
+                  setSnackbarMessage("New Collection Created Successfully.");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
                   setApprovalModalShow(true);
                   setNftContractAddress(cloneContractAddress);
                   setCollectionName("");
@@ -404,14 +422,18 @@ function NewCollection(props) {
             }
 
             let variant = "error";
-            enqueueSnackbar("Unable to Create New Collection.", { variant });
+            setSnackbarMessage("Unable to Create New Collection.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             handleCloseBackdrop();
             setIsSaving(false);
           });
       }
     } else {
       let variant = "error";
-      enqueueSnackbar("Invalid Value Of Royalty Fee", { variant });
+      setSnackbarMessage("Invalid Value Of Royalty Fee.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
   };
 
@@ -437,16 +459,18 @@ function NewCollection(props) {
       .then((response) => {
         console.log("Response from approval of Fixed Price: ", response);
         let variant = "success";
-        enqueueSnackbar("Collection Approved For Fixed Price Successfully", {
-          variant,
-        });
+        setSnackbarMessage("Collection Approved For Fixed Price Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsFixedPriceApproved(true);
         setApprovingFixedPrice(false);
         setApprovalFlag(false);
       })
       .catch((error) => {
         let variant = "error";
-        enqueueSnackbar("Unable to approve collection", { variant });
+        setSnackbarMessage("Unable to approve collection.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         console.log("Err from approval Fixed-price: ", error);
         console.log("Err response from approval Fixed-price: ", error.response);
         setApprovingFixedPrice(false);
@@ -490,7 +514,9 @@ function NewCollection(props) {
           if (err !== null) {
             console.log("err", err);
             let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
+            setSnackbarMessage("User Canceled Transaction.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             setApprovingAuction(false);
             setApprovalFlag(false);
             handleCloseBackdrop();
@@ -508,16 +534,18 @@ function NewCollection(props) {
             .then((response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";
-              enqueueSnackbar("Collection Approved For Auction Successfully", {
-                variant,
-              });
+              setSnackbarMessage("Collection Approved For Auction Successfully.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               setIsAuctionApproved(true);
               setApprovingAuction(false);
               setApprovalFlag(false);
             })
             .catch((error) => {
               let variant = "error";
-              enqueueSnackbar("Unable to approve collection", { variant });
+              setSnackbarMessage("Unable to approve collection.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               console.log("Err from auction approval: ", error);
               console.log(
                 "Err response from auction approval: ",
@@ -532,7 +560,9 @@ function NewCollection(props) {
   let handleDoneButton = () => {
     if (isFixedPriceApproved === false) {
       let variant = "error";
-      enqueueSnackbar("Approve For Fixed Price First", { variant });
+      setSnackbarMessage("Approve For Fixed Price First.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     }
     if (isFixedPriceApproved === true) {
       setDoneLoader(true);
@@ -646,6 +676,7 @@ function NewCollection(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

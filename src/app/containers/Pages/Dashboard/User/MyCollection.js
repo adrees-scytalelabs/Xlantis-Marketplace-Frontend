@@ -1,13 +1,13 @@
 import { Card, CardActionArea, CardContent, CardMedia, Grid, TablePagination, Typography } from '@mui/material';
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { createCollection, getMyCollectionsPaginated } from "../../../../components/API/AxiosInterceptor";
+import { defaultProfile } from '../../../../components/ImageURLs/URLs';
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
-import { defaultProfile } from '../../../../components/ImageURLs/URLs';
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 const styles = {
   root: {
     minWidth: 250,
@@ -22,7 +22,18 @@ const styles = {
 }
 
 function MyCollection(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [collections, setCollections] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
@@ -73,7 +84,9 @@ function MyCollection(props) {
     ) {
       setIsCreating(false);
       let variant = "error";
-      enqueueSnackbar("Collection Title cannot be empty .", { variant });
+      setSnackbarMessage("Collection Title cannot be empty.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (
       collectionImage === "" ||
       collectionImage === null ||
@@ -82,7 +95,9 @@ function MyCollection(props) {
     ) {
       setIsCreating(false);
       let variant = "error";
-      enqueueSnackbar("Please Select Collection Image.", { variant });
+      setSnackbarMessage("Please Select Collection Image.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       let CollectionData = {
         collectiontitle: collectionTitle,
@@ -93,7 +108,9 @@ function MyCollection(props) {
           setIsCreating(false);
           console.log("response.data", response);
           let variant = "success";
-          enqueueSnackbar("Collection Created Successfully .", { variant });
+          setSnackbarMessage("Collection Created Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           getCollections(0, rowsPerPage);
           handleCloseCollectionModal();
         })
@@ -101,7 +118,9 @@ function MyCollection(props) {
           console.log(error.response);
           setIsCreating(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Create Collection .", { variant });
+          setSnackbarMessage("Unable to Create Collection.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         });
     }
   };
@@ -221,6 +240,7 @@ function MyCollection(props) {
         createCollections={createCollections}
         isCreating={isCreating}
       ></CreateNewCollectionModal>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

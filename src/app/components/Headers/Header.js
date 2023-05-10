@@ -6,7 +6,6 @@ import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,6 +33,7 @@ import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
 import { hoverClassStyleTest } from "../Utils/CustomStyling";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -62,6 +62,7 @@ function HeaderHome(props) {
     (store) => store.getHeaderNotification
   );
   const dispatch = useDispatch();
+
 
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
@@ -104,10 +105,9 @@ function HeaderHome(props) {
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-        enqueueSnackbar(
-          "Your request is under process. Waiting for approval by the Super Admin",
-          { variant }
-        );
+        setSnackbarMessage("Your request is under process. Waiting for approval by the Super Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     }
   }, [adminSignInData]);
@@ -122,7 +122,18 @@ function HeaderHome(props) {
   const handleOpenCart = () => {
     setCartOpen(!cartOpen);
   };
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const settings = {
     apiKey: "cf5868eb-a8bb-45c8-a2db-4309e5f8b412",
@@ -360,7 +371,7 @@ function HeaderHome(props) {
     Cookies.remove("Version");
     sessionStorage.clear();
     setUserId("");
-    navigate("/" );
+    navigate("/");
     window.location.reload(false);
   };
 
@@ -466,8 +477,8 @@ function HeaderHome(props) {
           >
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {(sessionStorage.getItem("Address") && props.role === "admin") ||
-              sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                sessionStorage.getItem("Address") ||
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <div
                   className="header-profile-image"
                   onClick={handleClick}
@@ -509,7 +520,7 @@ function HeaderHome(props) {
             </li>
 
             {location.pathname.match("/dashboard") ||
-            location.pathname.match("/user/settings") ? (
+              location.pathname.match("/user/settings") ? (
               <>
                 <li className="sidebar-items">
                   <Link to={`/dashboard/myNFTs`}>
@@ -549,6 +560,7 @@ function HeaderHome(props) {
                 </li>
               </>
             ) : null}
+            
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -564,9 +576,10 @@ function HeaderHome(props) {
                 View Cart
               </span>
             </li>
+           
             {(sessionStorage.getItem("Address") && props.role === "admin") ||
-            sessionStorage.getItem("Address") ||
-            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <li
                 className="login-link"
                 style={{ padding: "15px 20px" }}
@@ -582,7 +595,21 @@ function HeaderHome(props) {
                   Logout
                 </span>
               </li>
-            ) : null}
+            ) :  <li
+            className="login-link"
+            style={{ padding: "15px 20px" }}
+            onClick={()=>{
+              setMenuOpenedClass("");
+              handleOpenModal()}}
+          >
+            <span  style={{
+                padding: "10px 20px",
+                color: "white",
+                cursor: "pointer",
+              }}>
+              Login/SignUp
+            </span>
+          </li>  }
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "5px" }}>
@@ -601,7 +628,7 @@ function HeaderHome(props) {
               props.role === "admin" ? null : sessionStorage.getItem(
                 "Address"
               ) ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div
                 className="header-profile-image"
                 onClick={handleClick}
@@ -614,8 +641,8 @@ function HeaderHome(props) {
           </li>
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <>
                 <Link to="/dashboard" style={{ color: "#fff" }}>
                   Dashboard
@@ -649,8 +676,8 @@ function HeaderHome(props) {
 
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
                 Logout
               </span>
@@ -664,7 +691,7 @@ function HeaderHome(props) {
           </li>
           <li>
             {sessionStorage.getItem("Address") ||
-            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
                 <Badge
                   color="secondary"
@@ -724,6 +751,7 @@ function HeaderHome(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </header>
   );
 }
