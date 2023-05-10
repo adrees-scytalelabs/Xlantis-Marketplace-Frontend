@@ -28,6 +28,7 @@ import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
 import TopUp from "./Admin/TopUp";
 import SingleNftDetail from "./Admin/singleNftDetail";
+import AdminSettings from "./AdminSettings";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -130,7 +131,7 @@ function AdminDashboard(props) {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <Link to="/admin/settings" style={{ width: "100%" }}>
+                  <Link to={`${path}/admin/settings`} style={{ width: "100%" }}>
                     Profile Settings
                   </Link>
                 </Dropdown.Item>
@@ -230,6 +231,10 @@ function AdminDashboard(props) {
 
             <Route exact path={`marketPlace/:dropId/:nftId`}
               element={<AuctionNFT setActiveTab={setActiveTab} />}
+            />
+
+            <Route exact path={`admin/settings`}
+              element={<AdminSettings setActiveTab={setActiveTab} />}
             />
 
             <Route path={`/`}

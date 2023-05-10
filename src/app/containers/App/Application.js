@@ -119,7 +119,7 @@ function App() {
         <Navigate to="/superAdminDashboard" />
       ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ||
         version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ? (
-        <Navigate to="/dashboard" />
+          <Navigate to="/dashboard" />
       ) : path === "/checkout" ? (
         <CheckoutScreen />
       ) : path === "/user-account" ? (
@@ -148,8 +148,6 @@ function App() {
         <FixedDropSingleNFTHome />
       ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
-      ) : path === "/admin/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "admin"  ? (
-        <AdminSettings />
       ) : (
         <HomeScreen />
       )
