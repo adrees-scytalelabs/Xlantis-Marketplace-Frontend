@@ -21,6 +21,7 @@ import NotificationSnackbar from "../../../../components/Snackbar/NotificationSn
 import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import DropBannerUpload from "../../../../components/Upload/DropBannerUpload";
 
 const makeTheme = createTheme({
   overrides: {
@@ -429,35 +430,11 @@ function NewDrop(props) {
       <div className="card-body p-0">
         <div className="no-gutters">
           <label>Select Banner Image</label>
-          <div className="bannerWrapper">
-            <img className="bannerImg" src={bannerImage} />
-          </div>
-          <div className="co-12 col-md-auto">
-            <label htmlFor="uploadDropBanner" className="uploadLabel">
-              {isUploadingBanner ? <WhiteSpinner /> : "Choose File"}
-            </label>
-            <input
-              name="sampleFile"
-              type="file"
-              id="uploadDropBanner"
-              accept=".png,.jpg,.jpeg,.gif"
-              onChange={onChangeBannerFile}
-              hidden
-            />
-            <small className="form-text text-muted">
-              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-            </small>
-          </div>
-          <div className="form-group">
-            {/* <UploadFile
-              fileURL={bannerImage}
-              isUploading={isUploadingBanner}
-              changeFile={onChangeBannerFile}
-              class="co-12 col-md-auto drop-banner-img mr-0"
-              accept=".png,.jpg,.jpeg,.gif"
-              inputId="uploadDropBannerImg"
-            /> */}
-          </div>
+          <DropBannerUpload
+            isUploading={isUploadingBanner}
+            onChangeBanner={onChangeBannerFile}
+            bannerURL={bannerImage}
+          />
           <div className="col-md-12 col-lg-6 p-0">
             <form onSubmit={handleSubmitEvent}>
               <div className="form-group">
