@@ -1,8 +1,10 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import Cookies from "js-cookie";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
+import HistoryIcon from "@mui/icons-material/History";
+
 function AdminSidebar(props) {
   let navigate = useNavigate();
   let handleLogout = (e) => {
@@ -11,7 +13,7 @@ function AdminSidebar(props) {
     sessionStorage.removeItem("Authorization");
     Cookies.remove("Version");
 
-    navigate({ pathname: '/' });
+    navigate({ pathname: "/" });
     window.location.reload(false);
   };
 
@@ -35,6 +37,11 @@ function AdminSidebar(props) {
             <li className={props.activeTab.myNFTs}>
               <Link to={`/dashboard/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topupHistory}>
+              <Link to={`/dashboard/topup-history`}>
+                <HistoryIcon /> <span>Top-up History</span>
               </Link>
             </li>
             <li className="menu-title">

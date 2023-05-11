@@ -5,6 +5,8 @@ import StorageIcon from "@mui/icons-material/Storage";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import HistoryIcon from "@mui/icons-material/History";
+
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
@@ -89,7 +91,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.topupHistory}>
               <Link to={`${props.match}/topup-history`}>
-                <StorageIcon></StorageIcon> <span>Top-up Hsitory</span>
+                <HistoryIcon /> <span>Top-up Hsitory</span>
               </Link>
             </li>
             <li className="menu-title mt-5">
