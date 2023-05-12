@@ -68,6 +68,7 @@ const NFTBuy = (props) => {
   let location = useLocation();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
+  const [keys, setKeys] = useState({});
   const [properties, setProperties] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -358,6 +359,7 @@ const NFTBuy = (props) => {
     setVersionB(Cookies.get("Version"));
     setNftDetail(location.state.nftDetail);
     setPrice(location.state.nftDetail.currentOrderListingId.price);
+    setKeys(Object.keys(location.state.nftDetail.properties));
     setProperties(location.state.nftDetail.properties);
 
     props.setActiveTab({
@@ -467,8 +469,8 @@ const NFTBuy = (props) => {
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
                   <PropertiesAccordian
-                    properties={properties}
-                    key={Object.keys(properties)}
+                    keys={Object.keys(location.state.nftDetail.properties)}
+                    properties={location.state.nftDetail.properties}
                   />
                 </Col>
               </Row>

@@ -8,6 +8,7 @@ import {
   ThemeProvider,
   Tooltip,
   createTheme,
+  Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -171,7 +172,10 @@ function NewNftSelectNft({
               name="position"
               defaultValue="top"
             >
-              <Tooltip title={Text721} classes={{ tooltip: classes.tooltip }}>
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={<Typography fontSize={18}>{Text721}</Typography>}
+              >
                 <FormControlLabel
                   style={{ color: "white !important" }}
                   disabled
@@ -190,8 +194,10 @@ function NewNftSelectNft({
                   }
                 />
               </Tooltip>
-
-              <Tooltip title={Text1155} classes={{ tooltip: classes.tooltip }}>
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={<Typography fontSize={18}>{Text1155}</Typography>}
+              >
                 <FormControlLabel
                   style={{ color: "white" }}
                   disabled
@@ -232,7 +238,10 @@ function NewNftSelectNft({
               name="position"
               defaultValue="top"
             >
-              <Tooltip title={Text721} classes={{ tooltip: classes.tooltip }}>
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={<Typography fontSize={18}>{Text721}</Typography>}
+              >
                 <FormControlLabel
                   style={{ color: "black", marginLeft: ".8rem" }}
                   value="ERC721"
@@ -251,8 +260,10 @@ function NewNftSelectNft({
                   }
                 />
               </Tooltip>
-
-              <Tooltip title={Text1155} classes={{ tooltip: classes.tooltip }}>
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={<Typography fontSize={18}>{Text1155}</Typography>}
+              >
                 <FormControlLabel
                   style={{ color: "black", marginLeft: ".8rem" }}
                   value="ERC1155"

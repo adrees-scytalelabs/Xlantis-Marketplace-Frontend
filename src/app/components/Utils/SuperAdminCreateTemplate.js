@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import React from "react";
 
 function SuperAdminCreateTemplate(props) {
@@ -46,7 +46,10 @@ function SuperAdminCreateTemplate(props) {
       <div className="col-12 col-md-5 col-lg-1 ml-lg-5 ml-md-5 ml-sm-2 ml-xs-2 mt-4 mt-md-0 ml-2 ml-md-0">
         <label>Action</label>
         <div className="filter-widget">
-          <Tooltip title="Remove a property" placement="bottom">
+          <Tooltip
+            title={<Typography fontSize={16}>Remove a property</Typography>}
+            placement="bottom"
+          >
             <button
               className="btn btn-submit btn-lg propsActionBtn"
               onClick={(e) => props.handleRemoveProperty(e, props.index)}
@@ -57,7 +60,7 @@ function SuperAdminCreateTemplate(props) {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default SuperAdminCreateTemplate
+export default SuperAdminCreateTemplate;

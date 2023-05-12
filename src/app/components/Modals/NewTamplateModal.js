@@ -1,4 +1,4 @@
-import { Tooltip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import {
@@ -267,8 +267,12 @@ const NewTamplateModal = (props) => {
                             <label>Action</label>
                             <div className="filter-widget">
                               <Tooltip
-                                title="Remove a property"
                                 placement="bottom"
+                                title={
+                                  <Typography fontSize={16}>
+                                    Remove a property
+                                  </Typography>
+                                }
                               >
                                 <button
                                   className="btn btn-submit btn-lg propsActionBtn"
@@ -288,7 +292,12 @@ const NewTamplateModal = (props) => {
                 })}
                 <div className="row no-gutters align-items-center justify-content-end">
                   <div className="col-auto">
-                    <Tooltip title="Add a property" placement="right">
+                    <Tooltip
+                      placement="right"
+                      title={
+                        <Typography fontSize={16}>Add property</Typography>
+                      }
+                    >
                       <button
                         className="btn btn-submit btn-lg propsActionBtn mb-4"
                         onClick={(e) => handleAddProperty(e)}
@@ -318,7 +327,14 @@ const NewTamplateModal = (props) => {
           </div>
           <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
             {available ? (
-              <Tooltip title="Template title already taken" placement="bottom">
+              <Tooltip
+                placement="bottom"
+                title={
+                  <Typography fontSize={16}>
+                    Template title already taken
+                  </Typography>
+                }
+              >
                 <button
                   className="newTemplateBtn"
                   disabled
