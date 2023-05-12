@@ -1,11 +1,17 @@
-
-import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import SuperAdminDefaultScreen from "./SuperAdminDefaultScreen";
 import SuperAdminSSOScreen from "./SuperAdminSSOScreen";
 import SuperAdminWalletScreen from "./SuperAdminWalletScreen";
-import { useResolvedPath } from 'react-router-dom';
+import { Link, useResolvedPath } from "react-router-dom";
 const styles = {
   tabsProps: {
     textTransform: "capitalize",
@@ -13,7 +19,7 @@ const styles = {
     fontWeight: "bold",
     color: "#fff",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -90,8 +96,7 @@ function a11yProps(index) {
   };
 }
 
-
-function SuperAdminDashboardDefaultScreen(props) {
+function SuperAdminStats(props) {
   const [value, setValue] = useState(0);
   const path = useResolvedPath("").pathname;
   const handleChange = (event, newValue) => {
@@ -99,9 +104,9 @@ function SuperAdminDashboardDefaultScreen(props) {
   };
 
   useEffect(() => {
-    props.setTab(0)
+    props.setTab(0);
     props.setActiveTab({
-      dashboard: "active",
+      dashboard: "",
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
@@ -110,6 +115,7 @@ function SuperAdminDashboardDefaultScreen(props) {
       properties: "",
       template: "",
       saved: "",
+      adminStats: "active",
     });
   }, []);
 
@@ -119,14 +125,17 @@ function SuperAdminDashboardDefaultScreen(props) {
         <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
           <div className="row">
             <div className="col-sm-12">
-              <h3 className="page-title">Welcome SuperAdmin!</h3>
+              <h3 className="page-title">Admin Stats</h3>
               <ul className="breadcrumb">
-                <li
-                  className="breadcrumb-item active"
-                  style={{ color: "#999" }}
-                >
-                  Dashboard
-                </li>
+                <Link to={`/superAdminDashboard`}>
+                  <li
+                    className="breadcrumb-item slash"
+                    style={{ color: "#777" }}
+                  >
+                    Dashboard
+                  </li>
+                </Link>
+                <li className="breadcrumb-item active">Admin Stats</li>
               </ul>
             </div>
           </div>
@@ -142,25 +151,13 @@ function SuperAdminDashboardDefaultScreen(props) {
                   indicatorColor="primary"
                   textColor="primary"
                 >
-                  <Tab
-                    label="All"
-                    sx={styles.tabsProps}
-                    {...a11yProps(0)}
-                  />
-                  <Tab
-                    label="SSO"
-                    sx={styles.tabsProps}
-                    {...a11yProps(1)}
-                  />
-                  <Tab
-                    label="Wallet"
-                    sx={styles.tabsProps}
-                    {...a11yProps(2)}
-                  />
+                  <Tab label="All" sx={styles.tabsProps} {...a11yProps(0)} />
+                  <Tab label="SSO" sx={styles.tabsProps} {...a11yProps(1)} />
+                  <Tab label="Wallet" sx={styles.tabsProps} {...a11yProps(2)} />
                 </Tabs>
                 <TabPanel value={value} index={0}>
                   <SuperAdminDefaultScreen
-                    match={path}
+                    match={"/superAdminDashboard"}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -168,7 +165,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={1}>
                   <SuperAdminSSOScreen
-                    match={path}
+                    match={"/superAdminDashboard"}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -176,7 +173,7 @@ function SuperAdminDashboardDefaultScreen(props) {
                 </TabPanel>
                 <TabPanel value={value} index={2}>
                   <SuperAdminWalletScreen
-                    match={path}
+                    match={"/superAdminDashboard"}
                     setActiveTab={props.setActiveTab}
                     setTab={props.setTab}
                     tab={props.tab}
@@ -191,4 +188,4 @@ function SuperAdminDashboardDefaultScreen(props) {
   );
 }
 
-export default SuperAdminDashboardDefaultScreen;
+export default SuperAdminStats;

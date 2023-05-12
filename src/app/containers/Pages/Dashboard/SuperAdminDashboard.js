@@ -16,10 +16,11 @@ import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
 import ManageAccounts from "./Admin/ManageAccounts";
 import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
 import SavedTemplate from "./Admin/SavedTemplate";
-import SuperAdminDashboardDefaultScreen from "./Admin/SuperAdminDashboardDefaultScreen";
+import SuperAdminStats from "./Admin/SuperAdminStats";
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import TemplateProperties from "./Admin/TemplateProperties";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
+import SuperAdminDashboardScreen from "./Admin/SuperAdminDashboardScreen";
 
 function SuperAdminDashboard(props) {
   const path = useResolvedPath("").pathname;
@@ -46,20 +47,15 @@ function SuperAdminDashboard(props) {
     properties: "",
     template: "",
     saved: "",
+    adminStats: "",
   });
   const [tab, setTab] = useState(0);
-
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
       <div className={`admin-header ${menuOpenedClass}`}>
         <div className="header-left">
-          <a
-            href="/"
-            className="logo"
-
-            style={{ width: "210px" }}
-          >
+          <a href="/" className="logo" style={{ width: "210px" }}>
             <img
               src={Logo}
               alt="Logo"
@@ -72,12 +68,7 @@ function SuperAdminDashboard(props) {
               }}
             />
           </a>
-          <a
-            href="/"
-            className="logo logo-small"
-
-            style={{ width: "210px" }}
-          >
+          <a href="/" className="logo logo-small" style={{ width: "210px" }}>
             <img
               src={Logo}
               alt="Logo"
@@ -138,7 +129,6 @@ function SuperAdminDashboard(props) {
                       sessionStorage.removeItem("Authorization");
                       sessionStorage.removeItem("Address");
 
-
                       Cookies.remove("PNT");
                       window.location.reload(false);
                     }}
@@ -165,71 +155,141 @@ function SuperAdminDashboard(props) {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <Routes>
-            <Route exact path={`/`} element={
-              <SuperAdminDashboardDefaultScreen
-                match={path}
-                tab={tab}
-                setTab={setTab}
-                setActiveTab={setActiveTab}
-              />} />
-            <Route exact path={`verifiedAccounts`} element={
-              <VerifiedAccounts
-                match={path}
-                tab={tab}
-                setTab={setTab}
-                setActiveTab={setActiveTab}
-              />} />
-            <Route exact path={`accountApproval`} element={
-              <AccountApproval
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`manageAccounts`} element={
-              <ManageAccounts
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`manageAccounts/SSO`} element={
-              <ManageAccountsSSO
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`manageAccounts/Wallet`} element={
-              <ManageAccountsWallet
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`accounts`} element={
-              <Accounts setActiveTab={setActiveTab} tab={tab} setTab={setTab} />} />
-            <Route exact path={`properties`} element={
-              <TemplateProperties
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`properties/createTemplate`} element={
-              <CreateTemplate
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route exact path={`properties/savedTemplate`} element={
-              <SavedTemplate
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
-            <Route path={`/`} element={
-              <SuperAdminDashboardDefaultScreen
-                match={path}
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
+            <Route
+              exact
+              path={`/`}
+              element={
+                <SuperAdminDashboardScreen
+                  match={path}
+                  tab={tab}
+                  setTab={setTab}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`adminStats`}
+              element={
+                <SuperAdminStats
+                  match={path}
+                  tab={tab}
+                  setTab={setTab}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`verifiedAccounts`}
+              element={
+                <VerifiedAccounts
+                  match={path}
+                  tab={tab}
+                  setTab={setTab}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`accountApproval`}
+              element={
+                <AccountApproval
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`manageAccounts`}
+              element={
+                <ManageAccounts
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`manageAccounts/SSO`}
+              element={
+                <ManageAccountsSSO
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`manageAccounts/Wallet`}
+              element={
+                <ManageAccountsWallet
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`accounts`}
+              element={
+                <Accounts
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`properties`}
+              element={
+                <TemplateProperties
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`properties/createTemplate`}
+              element={
+                <CreateTemplate
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              exact
+              path={`properties/savedTemplate`}
+              element={
+                <SavedTemplate
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+            <Route
+              path={`/`}
+              element={
+                <SuperAdminDashboard
+                  match={path}
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
           </Routes>
         </div>
       </div>
