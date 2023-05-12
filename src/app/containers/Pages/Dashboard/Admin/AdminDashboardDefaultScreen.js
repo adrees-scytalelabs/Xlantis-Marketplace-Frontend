@@ -1,23 +1,26 @@
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { getAdminCountsVersioned } from "../../../../components/API/AxiosInterceptor";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
-import { getCount } from "../../../../redux/getCountSlice";
 
 function AdminDashboardDefaultScreen(props) {
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [totalCollections, setTotalCollections] = useState(0);
   const [hover, setHover] = useState(false);
   const [hoverCollections, setHoverCollections] = useState(false);
-  const { nftCount, collectionCount } = useSelector((store) => store.count);
-  const dispatch = useDispatch();
-
 
   useEffect(() => {
-    dispatch(getCount());
-    setTotalNFTs(nftCount);
-    setTotalCollections(collectionCount);
-  }, [nftCount]);
+    let version = Cookies.get("Version");
+    getAdminCountsVersioned(version)
+      .then((response) => {
+        setTotalNFTs(response.data.NFTscount);
+        setTotalCollections(response.data.Collectionscount);
+      })
+      .catch((error) => {
+        console.log("Error from getting admin counts: ", error);
+      });
+  }, []);
 
   useEffect(() => {
     props.setActiveTab({

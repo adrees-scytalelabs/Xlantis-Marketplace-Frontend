@@ -1,7 +1,6 @@
 import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
@@ -22,7 +21,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
-import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 const styles = {
   root: {
     flexGrow: 1,
@@ -76,7 +75,20 @@ const DropSingleNFT = (props) => {
   const [properties, setProperties] = useState([]);
   const [keys, setKeys] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
+  const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const [show, setShow] = useState(false);
@@ -174,6 +186,78 @@ const DropSingleNFT = (props) => {
     return hex;
   };
 
+  let handleBuy = async () => {
+    console.log("Nft detail: ", nftDetail);
+    let dropIdHex = getHash(nftDetail.dropId);
+    console.log(dropIdHex);
+    setOpenDialog(false);
+    setIsSaving(true);
+    await loadWeb3();
+    const web3 = window.web3;
+    const accounts = await web3.eth.getAccounts();
+    const network = await web3.eth.net.getNetworkType();
+    if (network !== "private") {
+      setNetwork(network);
+      setIsSaving(false);
+      handleShowNetworkModal();
+    } else {
+      handleShowBackdrop();
+      const addressDropFactory = Addresses.FactoryDrop;
+      const abiDropFactory = DropFactory;
+
+      var myContractInstance = await new web3.eth.Contract(
+        abiDropFactory,
+        addressDropFactory
+      );
+      console.log("myContractInstance", myContractInstance);
+
+      await myContractInstance.methods
+        .executeOrder(
+          dropIdHex,
+          nftDetail.collectionId.nftContractAddress,
+          nftDetail.nftId,
+          nftDetail.tokenSupply,
+          nftDetail.currentOrderListingId.price
+        )
+        .send({ from: accounts[0] }, (err, response) => {
+          console.log("get transaction", err, response);
+          let data = {
+            dropId: nftDetail.dropId,
+            nftId: nftDetail._id,
+            txHash: response,
+          };
+
+          console.log("data", data);
+          marketplaceBuyVersioned(versionB, data)
+            .then((response) => {
+              console.log(
+                "Transaction Hash sending on backend response: ",
+                response
+              );
+            })
+            .catch((error) => {
+              console.log(
+                "Transaction hash on backend error: ",
+                error.response
+              );
+            });
+
+          if (err !== null) {
+            console.log("err", err);
+            let variant = "error";
+            setSnackbarMessage("User Canceled Transaction.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+            handleCloseBackdrop();
+            setIsSaving(false);
+          }
+        })
+        .on("receipt", (receipt) => {
+          console.log("receipt", receipt);
+        });
+    }
+  };
+
   let getBidList = (nftId) => {
     let version = Cookies.get("Version");
     getNFTBidListPaginated(nftId, 0, 1000)
@@ -224,6 +308,7 @@ const DropSingleNFT = (props) => {
     const network = await web3.eth.net.getNetworkType();
     if (network !== "private") {
       setNetwork(network);
+      setIsSaving(false);
       handleShowNetworkModal();
     } else {
       let abiAuctionFactory;
@@ -314,7 +399,9 @@ const DropSingleNFT = (props) => {
       .then((response) => {
         console.log("nft bid response", response.data);
         let variant = "success";
-        enqueueSnackbar("Bid Accepted Successfully", { variant });
+        setSnackbarMessage("Bid Accepted Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -322,7 +409,9 @@ const DropSingleNFT = (props) => {
           console.log(error);
           console.log(error.response);
           let variant = "error";
-          enqueueSnackbar("Unable To Accept Bid On NFT.", { variant });
+          setSnackbarMessage("Unable To Accept Bid On NFT.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           handleCloseBackdrop();
         }
         if (error.response.data !== undefined) {
@@ -385,7 +474,7 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                    <PropertiesAccordian keys={keys} properties={properties} />
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col>
               </Row>
               {location.state.saleType === "auction" ? (
@@ -415,11 +504,7 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-        <NetworkErrorModal
-        show={showNetworkModal}
-        handleClose={handleCloseNetworkModal}
-        network={network}
-      />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 };

@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import { useSnackbar } from "notistack";
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 import {
   handleModalClose,
   handleModalOpen
@@ -13,7 +13,6 @@ import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTab
 import { getSuperAdminUnverifiedType1, getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalDefaultScreen(props) {
-  const { enqueueSnackbar } = useSnackbar();
   const [admins, setAdmins] = useState([]);
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
@@ -43,7 +42,7 @@ function AccountApprovalDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType1({setAdmins, setAdminCount,start, end }))
+    dispatch(getSuperAdminUnverifiedType1({ setAdmins, setAdminCount, start, end }))
     if (unverifiedType1Loading === 1) {
       setOpen(false);
     }
@@ -67,14 +66,18 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
         let variant = "success"
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
         let variant = "error"
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -88,7 +91,7 @@ function AccountApprovalDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({ setWalletAdmins,setAdminCount,start, end }))
+    dispatch(getSuperAdminUnverifiedType2({ setWalletAdmins, setAdminCount, start, end }))
     if (unverifiedType2Loading === 1) {
       // setWalletAdmins(unverifiedType2Data);
       // setAdminCount(unverifiedType2Data.length);
@@ -114,14 +117,18 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsWallet(0, rowsPerPage);
         let variant = "success"
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
         let variant = "error"
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -149,6 +156,18 @@ function AccountApprovalDefaultScreen(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
   return (
     <div className="backgroundDefault">
@@ -182,6 +201,7 @@ function AccountApprovalDefaultScreen(props) {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

@@ -46,7 +46,7 @@ const PrivacyPolicyCard = (props) => {
               our Service or parts of our Service.
             </li>
             <li>
-              <b>Company</b> refers to Imex Platform, Vietnam.
+              <b>Company</b> refers to Xlantis, Vietnam.
             </li>
             <li>
               <b>Cookies</b> are small files that are placed on Your computer,
@@ -87,8 +87,8 @@ const PrivacyPolicyCard = (props) => {
               infrastructure itself (for example, the duration of a page visit).
             </li>
             <li>
-              <b>Website </b> refers to Imex Platform, accessible from
-              https://imex-frontend.herokuapp.com/
+              <b>Website </b> refers to Xlantis, accessible from
+              https://xlantis-marketplace.herokuapp.com/
             </li>
             <li>
               <b>You </b> means the individual accessing or using the Service,
@@ -483,10 +483,10 @@ const PrivacyPolicyCard = (props) => {
           If you have any questions about this Privacy Policy, You can contact
           us:
           <ul>
-            <li>By email: support@ImexPlatform.com</li>
+            <li>By email: support@scytalelabs.com</li>
             <li>
               By visiting this page on our website:
-              imex-frontend.herokuapp.com/contact-us
+              xlantis-marketplace.herokuapp.com/contact-us
             </li>
           </ul>
         </Typography>

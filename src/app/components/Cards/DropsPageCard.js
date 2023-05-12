@@ -56,23 +56,23 @@ const DropsPageCard = (props) => {
 
           {props.dropDetails.status === "draft" ? (
             <Typography variant="h6" gutterBottom className="text-center">
-              (
-              <Typography
-                variant="body2"
-                style={{ marginTop: "1rem" }}
-                component="p"
-              >
-                <Alert
-                  severity="info"
-                  sx={props.cardClasses.textAlert}
-                  style={{ fontWeight: "bold" }}
+               (
+                <Typography
+                  variant="body2"
+                  style={{ marginTop: "1rem" }}
+                  component="p"
                 >
-                  Publish Drop
-                </Alert>
-              </Typography>
+                  <Alert
+                    severity="info"
+                    sx={props.cardClasses.textAlert}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Publish Drop
+                  </Alert>
+                </Typography>
               )
             </Typography>
-          ) : props.dropDetails.saleType === "auction" ? (
+          ) :props.dropDetails.saleType === "auction" ? (
             <Typography variant="h6" gutterBottom className="text-center">
               {new Date() < new Date(props.dropDetails.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
@@ -91,7 +91,7 @@ const DropsPageCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-
+                        
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
@@ -102,7 +102,7 @@ const DropsPageCard = (props) => {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -135,7 +135,7 @@ const DropsPageCard = (props) => {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -185,7 +185,7 @@ const DropsPageCard = (props) => {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                        }
+                      }
                       />
                     </span>
                   </Alert>
@@ -208,7 +208,7 @@ const DropsPageCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-
+                        
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
                         renderer={props => {
@@ -219,7 +219,7 @@ const DropsPageCard = (props) => {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                        }
+                      }
                       />
                     </span>
                   </Alert>

@@ -4,16 +4,16 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
-import { useSnackbar } from "notistack";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalWallet(props) {
-  const { enqueueSnackbar } = useSnackbar();
+
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -47,6 +47,18 @@ function AccountApprovalWallet(props) {
       setOpen(false);
     }
   };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleVerifyWallet = (e, verifyAdminId) => {
     e.preventDefault();
@@ -60,14 +72,18 @@ function AccountApprovalWallet(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsWallet(0, rowsPerPage);
         let variant = "success";
-        enqueueSnackbar("Admin Verified Successfully.", { variant });
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Verify Admin.", { variant });
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -126,6 +142,7 @@ function AccountApprovalWallet(props) {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

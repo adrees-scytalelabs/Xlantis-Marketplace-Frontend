@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { getMyDrop } from "../../../../redux/getMyDropsSlice";
+import { getMyDrop, reset } from "../../../../redux/getMyDropsSlice";
 const styles = {
   root: {},
   media: {

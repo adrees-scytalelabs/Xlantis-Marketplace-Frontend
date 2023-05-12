@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, { Suspense, useState } from "react";
+import React, { useState } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/adminStyle.css";
@@ -9,114 +9,27 @@ import Logo from "../../../assets/img/logo.png";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
-import Loading from "../Users/Loading";
+import AddNFT from "./Admin/AddNFT";
+import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
-
-const LazyAddNFT = React.lazy(() => import('./Admin/AddNFT'));
-const LazyNewCollection = React.lazy(() => import('./Admin/NewCollection'));
-const LazyAdminDashboardDefaultScreen = React.lazy(() => import('./Admin/AdminDashboardDefaultScreen'));
-const LazyAuctionNFT = React.lazy(() => import('./Admin/AuctionNFT'));
-const LazyCollectionNfts = React.lazy(() => import('./Admin/CollectionNfts'));
-const LazyDropApproval = React.lazy(() => import('./Admin/DropApproval'));
-const LazyDropNfts = React.lazy(() => import('./Admin/DropNfts'));
-const LazyDropSingleNFT = React.lazy(() => import('./Admin/DropSingleNFT'));
-const LazyMarketPlace = React.lazy(() => import('./Admin/MarketPlace'));
-const LazyMyCollection = React.lazy(() => import('./Admin/MyCollection'));
-const LazyMyDropNFTs = React.lazy(() => import('./Admin/MyDropNfts'));
-const LazyMyDrops = React.lazy(() => import('./Admin/MyDrops'));
-const LazyMyNFTs = React.lazy(() => import('./Admin/MyNFTs'));
-const LazyNFTBuy = React.lazy(() => import('./Admin/NFTBuy'));
-const LazyNewDrop = React.lazy(() => import('./Admin/NewDrop'));
-const LazyNewNFT = React.lazy(() => import('./Admin/NewNFT'));
-const LazyTopUp = React.lazy(() => import('./Admin/TopUp'));
-const SingleNftDetail = React.lazy(() => import('./Admin/singleNftDetail'));
-
-const AddNFT = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyAddNFT setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const NewCollection = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyNewCollection  setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const AdminDashboardDefaultScreen = ({match, setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyAdminDashboardDefaultScreen match={match}
-      setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const AuctionNFT = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyAuctionNFT setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const CollectionNfts = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyCollectionNfts setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const DropApproval = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyDropApproval setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const DropNfts = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyDropNfts setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const DropSingleNFT = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyDropSingleNFT setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const MarketPlace = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyMarketPlace setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const MyCollection = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyMyCollection setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const MyDropNFTs = ({setActiveTab}) => (
-  <Suspense fallback={<Loading/>}>
-      <LazyMyDropNFTs setActiveTab={setActiveTab}/>
-  </Suspense>
-);
-const MyDrops = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyMyDrops setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const MyNFTs = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyMyNFTs setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const NFTBuy = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyNFTBuy setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const NewDrop = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyNewDrop setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const NewNFT = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyNewNFT setActiveTab={setActiveTab} />
-  </Suspense>
-);
-const TopUp = ({setActiveTab}) => (
-  <Suspense fallback={<Loading />}>
-    <LazyTopUp setActiveTab={setActiveTab}/>
-  </Suspense>
-);
+import AuctionNFT from "./Admin/AuctionNFT";
+import CollectionNfts from "./Admin/CollectionNfts";
+import DropApproval from "./Admin/DropApproval";
+import DropNfts from "./Admin/DropNfts";
+import DropSingleNFT from "./Admin/DropSingleNFT";
+import MarketPlace from "./Admin/MarketPlace";
+import MyCollection from "./Admin/MyCollection";
+import MyDropNFTs from "./Admin/MyDropNfts";
+import MyDrops from "./Admin/MyDrops";
+import MyNFTs from "./Admin/MyNFTs";
+import NFTBuy from "./Admin/NFTBuy";
+import NewCollection from "./Admin/NewCollection";
+import NewDrop from "./Admin/NewDrop";
+import NewNFT from "./Admin/NewNFT";
+import TopUp from "./Admin/TopUp";
+import SingleNftDetail from "./Admin/singleNftDetail";
+import AdminSettings from "./AdminSettings";
+import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -147,6 +60,7 @@ function AdminDashboard(props) {
     newDrop: "",
     myDrops: "",
     topUp: "",
+    topupHistory: "",
   });
 
   return (
@@ -219,7 +133,7 @@ function AdminDashboard(props) {
                   </Link>
                 </Dropdown.Item>
                 <Dropdown.Item>
-                  <Link to="/admin/settings" style={{ width: "100%" }}>
+                  <Link to={`${path}/admin/settings`} style={{ width: "100%" }}>
                     Profile Settings
                   </Link>
                 </Dropdown.Item>
@@ -251,77 +165,136 @@ function AdminDashboard(props) {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <Routes>
-            <Route path={`/`} element={
-              <AdminDashboardDefaultScreen
-                match={path}
-                setActiveTab={setActiveTab} />
-            }
+            <Route
+              path={`/`}
+              element={
+                <AdminDashboardDefaultScreen
+                  match={path}
+                  setActiveTab={setActiveTab}
+                />
+              }
             />
-            <Route path={`newNFT`}
+
+            <Route
+              path={`newNFT`}
               element={<NewNFT setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`myNFTs`}
+            <Route
+              exact
+              path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`dropApproval`}
+
+            <Route
+              exact
+              path={`dropApproval`}
               element={<DropApproval setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`topUp`}
+            <Route
+              exact
+              path={`topUp`}
               element={<TopUp setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`newDrop`}
+
+            <Route
+              exact
+              path={`newDrop`}
               element={<NewDrop setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`newDrop/addNft`}
+            <Route
+              exact
+              path={`newDrop/addNft`}
               element={<AddNFT setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`myDrops`}
+
+            <Route
+              exact
+              path={`myDrops`}
               element={<MyDrops setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`myDrops/nfts`}
+
+            <Route
+              exact
+              path={`myDrops/nfts`}
               element={<MyDropNFTs setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`myDrops/nfts/singleNft`}
+
+            <Route
+              exact
+              path={`myDrops/nfts/singleNft`}
               element={<DropSingleNFT setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`createNewCollection`}
+
+            <Route
+              exact
+              path={`createNewCollection`}
               element={<NewCollection setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`myCollection`}
+            <Route
+              exact
+              path={`myCollection`}
               element={<MyCollection setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`nftDetail/:nftId`}
+
+            <Route
+              exact
+              path={`nftDetail/:nftId`}
               element={<SingleNftDetail setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`collection/nfts/:collectionId`}
+
+            <Route
+              exact
+              path={`collection/nfts/:collectionId`}
               element={<CollectionNfts setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`marketPlace`}
+            <Route
+              exact
+              path={`marketPlace`}
               element={<MarketPlace setActiveTab={setActiveTab} />}
             />
 
-            <Route exact path={`marketPlace/drops/nfts`}
+            <Route
+              exact
+              path={`marketPlace/drops/nfts`}
               element={<DropNfts setActiveTab={setActiveTab} />}
             />
-            <Route exact path={`marketPlace/drops/nfts/buy`}
+            <Route
+              exact
+              path={`marketPlace/drops/nfts/buy`}
               element={<NFTBuy setActiveTab={setActiveTab} />}
             />
 
-            <Route exact path={`marketPlace/:dropId/:nftId`}
+            <Route
+              exact
+              path={`marketPlace/:dropId/:nftId`}
               element={<AuctionNFT setActiveTab={setActiveTab} />}
             />
 
-            <Route path={`/`}
-              element={<AdminDashboardDefaultScreen
-                match={path}
-                setActiveTab={setActiveTab}
-              />}
+            <Route
+              exact
+              path={`admin/settings`}
+              element={<AdminSettings setActiveTab={setActiveTab} />}
             />
 
+            <Route
+              exact
+              path={`topup-history`}
+              element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              path={`/`}
+              element={
+                <AdminDashboardDefaultScreen
+                  match={path}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
           </Routes>
         </div>
       </div>
-    </div >
+    </div>
   );
 }
 

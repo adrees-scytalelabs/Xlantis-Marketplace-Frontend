@@ -1,12 +1,23 @@
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { topUpAmount } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import TopUpForm from "../../../../components/Forms/TopUpForm";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 function TopUp(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -25,7 +36,9 @@ function TopUp(props) {
         const active = searchParams.get("active");
         if (active == "true") {
           let variant = "success";
-          enqueueSnackbar("Top Up Successfully", { variant });
+          setSnackbarMessage("Top Up Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           localStorage.removeItem('sessionId');
           const searchParams = new URLSearchParams(window.location.search);
           searchParams.delete('session_id');
@@ -34,7 +47,9 @@ function TopUp(props) {
           window.history.replaceState(null, '', newUrl);
         } else {
           let variant = "error";
-          enqueueSnackbar("Top Up Unsccessfully", { variant });
+          setSnackbarMessage("Top Up Unsccessfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           localStorage.removeItem('sessionId');
           const searchParams = new URLSearchParams(window.location.search);
           searchParams.delete('session_id');
@@ -59,7 +74,6 @@ function TopUp(props) {
   const handleTopUpAmount = (e) => {
     handleShowBackdrop();
     e.preventDefault();
-    handleShowBackdrop();
     let data = {
       amount: amount,
     };
@@ -75,7 +89,9 @@ function TopUp(props) {
           console.log(error.response);
           handleCloseBackdrop();
           let variant = "error";
-          enqueueSnackbar("Something went wrong", { variant });
+          setSnackbarMessage("Something went wrong.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         }
       });
   };
@@ -103,6 +119,7 @@ function TopUp(props) {
         handleTopUpAmount={handleTopUpAmount}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

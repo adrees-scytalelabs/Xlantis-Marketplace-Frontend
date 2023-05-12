@@ -121,35 +121,39 @@ function MarketPlacePage(props) {
               justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  lg={4}
-                  xl={3}
-                  direction="row"
-                  key={index}
-                >
-                  <Link
-                    to={`${path}/drops/nfts`}
-                    state={{
-                      nftId: i.NFTIds,
-                      dropId: i._id,
-                      startTime: i.startTime,
-                      endTime: i.endTime,
-                      saleType: i.saleType,
-                      bannerURL: i.bannerURL,
-                      titleURL: i.image,
-                    }}
-                  >
-                    <DropsPageCard
-                      dropDetails={i}
-                      classes={styles}
-                      cardClasses={cardStyles}
-                    />
-                  </Link>
-                </Grid>
+                <>
+                  {i.status === "draft" ? null : (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6}
+                      lg={4}
+                      xl={3}
+                      direction="row"
+                      key={index}
+                    >
+                      <Link
+                        to={`${path}/drops/nfts`}
+                        state={{
+                          nftId: i.NFTIds,
+                          dropId: i._id,
+                          startTime: i.startTime,
+                          endTime: i.endTime,
+                          saleType: i.saleType,
+                          bannerURL: i.bannerURL,
+                          titleURL: i.image,
+                        }}
+                      >
+                        <DropsPageCard
+                          dropDetails={i}
+                          classes={styles}
+                          cardClasses={cardStyles}
+                        />
+                      </Link>
+                    </Grid>
+                  )}
+                </>
               ))}
             </Grid>
           )}

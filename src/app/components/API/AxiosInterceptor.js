@@ -375,6 +375,10 @@ export const getUserEmailVerification = (email, token) => {
   return Axios.get(`/users/emailverification/${email}/${token}`);
 };
 
+export const getAdminCountsVersioned = (version) => {
+  return Axios.get(`${version}/user/getcounts`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {
