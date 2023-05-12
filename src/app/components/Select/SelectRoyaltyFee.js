@@ -25,9 +25,6 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
       </div>
 
       <div className="input-group form-group newNftWrapper">
-        <div class="input-group-prepend">
-          <span class="input-group-text">%</span>
-        </div>
         <input
           type="number"
           required
@@ -40,6 +37,9 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
             }
           }}
         />
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-transparent text-white">%</span>
+        </div>
       </div>
     </div>
   );
