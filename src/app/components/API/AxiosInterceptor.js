@@ -379,6 +379,10 @@ export const getAdminCountsVersioned = (version) => {
   return Axios.get(`${version}/user/getcounts`);
 };
 
+export const getSuperAdminBalance = () => {
+  return Axios.get(`/super-admin/balance`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

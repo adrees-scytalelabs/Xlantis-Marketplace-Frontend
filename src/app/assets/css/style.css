@@ -1010,6 +1010,23 @@ li.slash::after {
   -webkit-text-fill-color: transparent; */
 }
 
+.superAdminBalanceHover {
+  font-size: 1.9rem;
+  font-family: var(--orbitron);
+  margin-bottom: 0;
+  text-align: center;
+  color: #fbfeff;
+}
+
+.superAdminBalance{
+  font-size: 1.9rem;
+  font-family: var(--orbitron);
+  /* letter-spacing: 0.625rem; */
+  margin-bottom: 0;
+  text-align: center;
+  color: var(--text);
+}
+
 h3.page-title {
   font-weight: bold;
   font-family: var(--inter);
