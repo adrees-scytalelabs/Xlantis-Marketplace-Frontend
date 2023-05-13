@@ -1,5 +1,5 @@
 import { Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 function NewNftTemplates({
   setProperties,
   properties,
@@ -14,6 +14,24 @@ function NewNftTemplates({
   templateData,
   defaultTemplates,
 }) {
+  useEffect(() => {
+    console.log("Props in new templates: ", {
+      properties,
+      standardTemplates,
+      extractedDataProps,
+      template,
+      templateData,
+      defaultTemplates,
+    });
+  }, [
+    properties,
+    standardTemplates,
+    extractedDataProps,
+    template,
+    templateData,
+    defaultTemplates,
+  ]);
+
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
     //console.log(e.target.value, " Template selected!");
@@ -41,7 +59,7 @@ function NewNftTemplates({
 
   const handleTemplateChange = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " template change");
+    console.log(e.target.value, " template change");
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
     if (e.target.value === "default") {

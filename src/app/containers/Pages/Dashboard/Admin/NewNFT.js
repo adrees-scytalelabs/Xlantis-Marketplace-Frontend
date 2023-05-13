@@ -9,6 +9,9 @@ import {
   createNewBatch,
   deleteBatch,
   deleteNFTFromBatch,
+  getAdminsDefaultTemplates,
+  getSavedTemplates,
+  getSuperAdminTemplates,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
@@ -72,7 +75,7 @@ function NewNFT(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -216,36 +219,68 @@ function NewNFT(props) {
     setProperties(prop);
   };
 
-  const getDefaultTemplate = () => {
-    dispatch(getNewNftDefaultTemplate());
+  const getDefaultTemplate = async () => {
+    // dispatch(getNewNftDefaultTemplate());
     // console.log("redxdefaltRResp",defaultTemplate);
-    setDefaultTemplates(defaultTemplate);
-    if (loadingDefault === 1) {
-      if (defaultTemplate !== null) {
-        handleSetProperties(defaultTemplate.properties);
-      }
-    }
+    await getAdminsDefaultTemplates()
+      .then((response) => {
+        console.log("Response from getting default templates: ", response);
+        if (response.data.defaultTemplate) {
+          handleSetProperties(response.data.defaultTemplate);
+        }
+      })
+      .catch((error) => {
+        console.log("Error from getting default templates: ", error);
+      });
+    // setDefaultTemplates(defaultTemplate);
+    // if (loadingDefault === 1) {
+    //   if (defaultTemplate !== null) {
+    //     handleSetProperties(defaultTemplate.properties);
+    //   }
+    // }
   };
+
+  const getSavedTemplate = async (role) => {
+    // dispatch(getNewNftProperties(role));
+    //  console.log("reduxdefaultResp",templates);
+    await getSavedTemplates(role)
+      .then((response) => {
+        console.log("response from getting saved Templates: ", response);
+        setTemplateData(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting saved Templates: ", error);
+      });
+    // if (role === "admin") {
+    //   console.log("Templates: ", templates);
+    //   setTemplateData(templates);
+    // } else {
+    //   setStandardTemplates(templates);
+    // }
+  };
+
+  const getStandardTemplates = async () => {
+    await getSuperAdminTemplates()
+      .then((response) => {
+        console.log("Response from getting standard templates: ", response);
+      })
+      .catch((error) => {
+        console.log("Error from getting standard templates: ", error);
+      });
+  };
+
   useEffect(() => {
     getDefaultTemplate();
+    getSavedTemplate("admin");
+    getStandardTemplates();
+    // getSavedTemplate();
   }, [loadingDefault]);
 
-  const getSavedTemplate = (role) => {
-    if (role === "admin") {
-    }
-    dispatch(getNewNftProperties(role));
-    //  console.log("reduxdefaultResp",templates);
-    if (role === "admin") {
-      setTemplateData(templates);
-    } else {
-      setStandardTemplates(templates);
-    }
-  };
-
-  useEffect(() => {
-    getSavedTemplate("admin");
-    getSavedTemplate("super-admin");
-  }, [propertiesLoading]);
+  // useEffect(() => {
+  //   console.log("In use effect of properties loading");
+  //   getSavedTemplate("admin");
+  //   // getSavedTemplate("super-admin");
+  // }, [propertiesLoading]);
 
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
@@ -1251,7 +1286,12 @@ function NewNFT(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }
