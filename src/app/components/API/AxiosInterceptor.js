@@ -387,8 +387,12 @@ export const getAdminsDefaultTemplates = () => {
   return Axios.get(`/nft-properties/admin/default`);
 };
 
-export const getSavedTemplates = (userType) => {
+export const getStandardTemplate = (userType) => {
   return Axios.get(`/nft-properties/${userType}`);
+};
+
+export const getSavedTemplates = () => {
+  return Axios.get(`/nft-properties/admin/`);
 };
 
 //DELETE REQUESTS

@@ -63,7 +63,10 @@ function NewNftTemplates({
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
     if (e.target.value === "default") {
-      handleSetProperties(defaultTemplates.properties);
+      handleSetProperties(defaultTemplates?.properties);
+    }
+    if (e.target.value === "none") {
+      setProperties([{ key: "", value: "" }]);
     }
   };
 
@@ -74,6 +77,7 @@ function NewNftTemplates({
   const handleTemplatePropertyChange = (index, e) => {
     let data = [...properties];
 
+    // console.log("E.target.value: ", typeof e.target.value);
     data[index].value = e.target.value;
     setProperties(data);
   };
@@ -162,6 +166,7 @@ function NewNftTemplates({
                           placeholder="0"
                           required
                           className="newNftProps"
+                          value={properties[index].value}
                           onChange={(e) =>
                             handleTemplatePropertyChange(index, e)
                           }
@@ -176,6 +181,7 @@ function NewNftTemplates({
                           required
                           value={true}
                           className="newNftProps"
+                          checked={properties[index].value === "true"}
                           style={{
                             width: "auto",
                             margin: "0.5rem",
@@ -185,7 +191,7 @@ function NewNftTemplates({
                           }
                         />
                         <label
-                          for="templateYes"
+                          htmlFor="templateYes"
                           style={{
                             width: "calc(100% - 55px)",
                             fontFamily: "inter",
@@ -201,6 +207,7 @@ function NewNftTemplates({
                           required
                           value={false}
                           className="newNftProps"
+                          checked={properties[index].value === "false"}
                           style={{
                             width: "auto",
                             margin: "0.5rem",
@@ -210,7 +217,7 @@ function NewNftTemplates({
                           }
                         />
                         <label
-                          for="templateNo"
+                          htmlFor="templateNo"
                           style={{
                             width: "calc(100% - 55px)",
                             fontFamily: "inter",
@@ -332,7 +339,7 @@ function NewNftTemplates({
                   <option value={data.name} id={data.id} key={index + 100}>
                     {data.name}
                   </option>
-                ))}
+              ))}
               </select>
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
@@ -386,7 +393,7 @@ function NewNftTemplates({
                               }
                             />
                             <label
-                              for="savedTemplateYes"
+                              htmlFor="savedTemplateYes"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -411,7 +418,7 @@ function NewNftTemplates({
                               }
                             />
                             <label
-                              for="savedTemplateNo"
+                              htmlFor="savedTemplateNo"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -520,7 +527,7 @@ function NewNftTemplates({
                               }
                             />
                             <label
-                              for="standardTemplateYes"
+                              htmlFor="standardTemplateYes"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -545,7 +552,7 @@ function NewNftTemplates({
                               }
                             />
                             <label
-                              for="standardTemplateNo"
+                              htmlFor="standardTemplateNo"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
