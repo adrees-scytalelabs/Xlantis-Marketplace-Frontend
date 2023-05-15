@@ -1,19 +1,21 @@
-import Cookies from "js-cookie";
-import React, { useState, useEffect } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
-import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
-import { Badge, Paper, Popper } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { useDispatch, useSelector } from "react-redux";
+import { Badge, Paper, Popper } from "@mui/material";
 import axios from "axios";
+import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import "../../../assets/css/adminStyle.css";
+import React, { useEffect, useState } from "react";
+import Dropdown from "react-bootstrap/Dropdown";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
+import { io } from "socket.io-client";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import NotificationList from "../../../components/Cards/NotificationList Card";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
+import { getHeaderNotification } from "../../../redux/getHeaderNotificationSlice";
 import AddNFT from "./Admin/AddNFT";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
 import AdminSidebar from "./Admin/AdminSidebar";
@@ -32,12 +34,9 @@ import NewCollection from "./Admin/NewCollection";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
 import TopUp from "./Admin/TopUp";
+import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
-import { getHeaderNotification } from "../../../redux/getHeaderNotificationSlice";
-import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
-import NotificationList from "../../../components/Cards/NotificationList Card";
-import { io } from "socket.io-client";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -56,10 +55,10 @@ function AdminDashboard(props) {
     (store) => store.getHeaderNotification
   );
   let jwtDecoded, jwt;
-    jwt = sessionStorage.getItem("Authorization");
-    if (jwt !== null) {
-      jwtDecoded = jwtDecode(jwt);
-    }
+  jwt = sessionStorage.getItem("Authorization");
+  if (jwt !== null) {
+    jwtDecoded = jwtDecode(jwt);
+  }
   const dispatch = useDispatch();
 
   useEffect(() => {

@@ -1,4 +1,4 @@
-import { Card, Typography } from '@mui/material';
+import { Card, Typography } from "@mui/material";
 import React from "react";
 
 const MessageCard = (props) => {
@@ -16,12 +16,15 @@ const MessageCard = (props) => {
         variant="body2"
         className="text-center"
         component="p"
-        style={{ color: "#fff", backgroundColor: "black" }}
+        style={{
+          color: "#fff",
+          backgroundColor: "black",
+          fontFamily: "Orbitron",
+        }}
       >
         <strong>{props.msg}</strong>
       </Typography>
     </Card>
-
   );
 };
 

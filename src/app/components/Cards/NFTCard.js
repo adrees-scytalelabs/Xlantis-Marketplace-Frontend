@@ -44,12 +44,12 @@ function NFTCard(props) {
           <CardContent
             style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
           >
-            <div className="row no-gutters justify-content-start align-items-center">
+            <div className="text-center">
               <TypographyText
                 variant="h6"
                 component="p"
                 class={styles.cardTitle}
-                value={props.data.title}
+                value={truncate(props.data.title, 15)}
                 isSpan={false}
               ></TypographyText>
             </div>
@@ -59,7 +59,7 @@ function NFTCard(props) {
                 component="p"
                 style={{ minHeight: "2.5rem" }}
                 class={styles.cardDescriptions}
-                value={truncate(props.data.description, 35)}
+                value={truncate(props.data.description, 50)}
                 isSpan={false}
               ></TypographyText>
             </div>

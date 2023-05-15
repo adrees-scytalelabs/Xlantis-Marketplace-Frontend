@@ -9,7 +9,6 @@ import CircularBackdrop from "../Backdrop/Backdrop";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 const NewTamplateModal = (props) => {
-
   const [title, setTitle] = useState("");
   const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const [defaultt, setDefault] = useState(false);
@@ -29,7 +28,7 @@ const NewTamplateModal = (props) => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -100,6 +99,9 @@ const NewTamplateModal = (props) => {
         setTitle("");
         setDefault(false);
         setProperties([{ key: "", type: "boolean" }]);
+        props.useEffectLoader
+          ? props.setUseEffectLoader(false)
+          : props.setUseEffectLoader(true);
         handleCloseBackdrop();
         let variant = "success";
         setSnackbarMessage("New Template Created Successfully.");
@@ -369,7 +371,12 @@ const NewTamplateModal = (props) => {
         </div>
         <CircularBackdrop open={open} />
       </Modal.Body>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </Modal>
   );
 };

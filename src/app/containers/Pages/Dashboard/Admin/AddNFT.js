@@ -207,7 +207,7 @@ function AddNFT(props) {
     let data = {
       amount: amount,
     };
-    console.log("Before calling top up endpoint");
+    console.log("Before calling top up endpoint",data);
     topUpAmount(data).then(
       (response) => {
         console.log("Response from top up endpoint: ", response);
@@ -653,6 +653,7 @@ function AddNFT(props) {
     }
   };
   const handleBuyDetail = async () => {
+    console.log("dropId",dropId);
     try {
       getValidateAdminBalance(dropId).then(
         (response) => {
@@ -1062,7 +1063,7 @@ function AddNFT(props) {
                           md={4}
                           lg={4}
                           xl={4}
-                          style={{ height: "25vh" }}
+                          style={{ height: "100%" }}
                         >
                           {console.log("nft details", nftDetail)}
                           <AddNFTDisplayCard nftDetail={i} classes={styles} />
@@ -1130,6 +1131,7 @@ function AddNFT(props) {
           handleClose={handleCloseTopUpModal}
           amount={costInfo.balance.dollar}
           required={costInfo.estimates.totalCostInDollars}
+          topUpAmount={amount}
           setAmount={setAmount}
           topUp={handleTopUpAmount}
           setOpen={setMOdalOpen}
