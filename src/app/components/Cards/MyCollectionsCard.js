@@ -37,27 +37,29 @@ const MyCollectionsCard = (props) => {
             title="Collection thumbnail"
           />
           <CardContent>
-            <Typography
-              gutterBottom
-              variant="h6"
-              sx={styles.cardTitle}
-              component="div"
-            >
-              {props.i.name}
-            </Typography>
-            <div className="row no-gutters justify-content-start align-items-center pb-2">
+            <div className="text-center">
               <Typography
-                variant="body2"
-                sx={styles.cardDescriptions}
-                component="p"
+                gutterBottom
+                variant="h6"
+                sx={styles.cardTitle}
+                component="div"
               >
-                {truncate(props.i.description, 35)}
+                {truncate(props.i.name, 15)}
               </Typography>
             </div>
-          </CardContent>
-        </CardActionArea>
-      </div>
-    </Card>
+          <div className="row no-gutters justify-content-start align-items-center pb-2">
+            <Typography
+              variant="body2"
+              sx={styles.cardDescriptions}
+              component="p"
+            >
+              {truncate(props.i.description, 50)}
+            </Typography>
+          </div>
+        </CardContent>
+      </CardActionArea>
+    </div>
+    </Card >
   );
 };
 

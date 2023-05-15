@@ -48,16 +48,16 @@ function FixedDropNFTCard(props) {
       rarity === "Common"
         ? defaultStyles
         : rarity === "Uncommon"
-        ? unCommon
-        : rarity === "Rare"
-        ? rare
-        : rarity === "Epic"
-        ? epic
-        : rarity === "Legendary"
-        ? legendary
-        : rarity === "Mastercraft"
-        ? mastercraft
-        : defaultStyles,
+          ? unCommon
+          : rarity === "Rare"
+            ? rare
+            : rarity === "Epic"
+              ? epic
+              : rarity === "Legendary"
+                ? legendary
+                : rarity === "Mastercraft"
+                  ? mastercraft
+                  : defaultStyles,
   };
 
   return (
@@ -68,97 +68,97 @@ function FixedDropNFTCard(props) {
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
-        imageURL:props.titleImage,
-        bannerURL:props.dropbanner
+        imageURL: props.titleImage,
+        bannerURL: props.dropbanner
       }}
     >
       <Card
         variant="outlined"
         sx={props.classes.cardHeight}
         style={{
-          backgroundColor:'black',
+          backgroundColor: 'black',
           borderRadius: 0,
           border: "1px solid #fff",
         }}
       >
-          <div style={{ position: "relative" }}>
-            <CardMedia
-              sx={props.classes.media}
-              image={props.data.nftURI}
-              title="NFT Image"
-            />
-            {props.data.currentOrderListingId.isSold === true ? (
-              <CornerRibbon
-                position="top-right"
-                fontColor="#f0f0f0"
-                backgroundColor="#f44336"
-                style={{ fontWeight: "bold" }}
-              >
-                SOLD
-              </CornerRibbon>
-            ) : null}
-          </div>
-          <CardContent
-          className="mb-3"
-            style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
-          >
-            <div
-              className="row no-gutters justify-content-between align-items-center"
+        <div style={{ position: "relative" }}>
+          <CardMedia
+            sx={props.classes.media}
+            image={props.data.nftURI}
+            title="NFT Image"
+          />
+          {props.data.currentOrderListingId.isSold === true ? (
+            <CornerRibbon
+              position="top-right"
+              fontColor="#f0f0f0"
+              backgroundColor="#f44336"
+              style={{ fontWeight: "bold" }}
             >
-              <div className="col-auto">
-                <Typography
-                  variant="h6"
-                  component="div"
-                  sx={{
-                    color: "#fff",
-                    fontFamily: "orbitron",
-                    fontWeight: "bold",
-                    textTransform: "capitalize",
-                    margin: "0.625rem 0rem 0.25rem 0rem",
-                    fontSize: "1rem",
-                    lineHeight: 1,
-                  }}
-                >
-                  {props.data.title}
-                </Typography>
-              </div>
-              <div className="col-auto">
-                <Typography
-                  variant="body2"
-                  component="p"
-                  style={selectedRarity.style}
-                >
-                  {rarity}
-                </Typography>
-              </div>
-            </div>
-            <div className="row no-gutters justify-content-start align-items-center pb-2">
+              SOLD
+            </CornerRibbon>
+          ) : null}
+        </div>
+        <CardContent
+          className="mb-3"
+          style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
+        >
+          <div
+            className="row no-gutters justify-content-between align-items-center"
+          >
+            <div className="col-auto">
               <Typography
-                variant="body2"
+                variant="h6"
+                component="div"
                 sx={{
-                  color: "#999",
-                  fontFamily: "inter",
-                  fontSize: "0.875rem",
+                  color: "#fff",
+                  fontFamily: "orbitron",
+                  fontWeight: "bold",
+                  textTransform: "capitalize",
+                  margin: "0.625rem 0rem 0.25rem 0rem",
+                  fontSize: "1rem",
+                  lineHeight: 1,
                 }}
-                component="p"
               >
-                {truncate(props.data.description, 30)}
+                {truncate(props.data.title, 15)}
               </Typography>
             </div>
+            <div className="col-auto">
+              <Typography
+                variant="body2"
+                component="p"
+                style={selectedRarity.style}
+              >
+                {rarity}
+              </Typography>
+            </div>
+          </div>
+          <div className="row no-gutters justify-content-start align-items-center pb-2">
             <Typography
               variant="body2"
-              component="p"
               sx={{
                 color: "#999",
                 fontFamily: "inter",
                 fontSize: "0.875rem",
               }}
+              component="p"
             >
-              <strong>Token Supply: </strong>
-              {props.data.tokenSupply}
+              {truncate(props.data.description, 50)}
             </Typography>
-          </CardContent>
-  
+          </div>
+          <Typography
+            variant="body2"
+            component="p"
+            sx={{
+              color: "#999",
+              fontFamily: "inter",
+              fontSize: "0.875rem",
+            }}
+          >
+            <strong>Token Supply: </strong>
+            {props.data.tokenSupply}
+          </Typography>
+        </CardContent>
+
       </Card>
     </Link>
   );

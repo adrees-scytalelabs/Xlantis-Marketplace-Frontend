@@ -87,25 +87,26 @@ const OnSaleCard = (props) => {
           </Link>
           <CardContent style={{ paddingBottom: 16, width: "100%" }}>
             <div
-              className="row no-gutters justify-content-between"
               style={{ minHeight: "60px" }}
             >
-              <div className="col-8 align-self-start">
-                <Typography
-                  variant="h6"
-                  component="p"
-                  sx={{
-                    color: "#fff",
-                    fontFamily: "orbitron",
-                    fontWeight: "bold",
-                    textTransform: "capitalize",
-                    marginTop: "0rem",
-                    fontSize: "12px",
-                    lineHeight: 1,
-                  }}
-                >
-                  {props.i.title}
-                </Typography>
+              <div className="align-self-start">
+                <div className='text-center'>
+                  <Typography
+                    variant="h6"
+                    component="p"
+                    sx={{
+                      color: "#fff",
+                      fontFamily: "orbitron",
+                      fontWeight: "bold",
+                      textTransform: "capitalize",
+                      marginTop: "0rem",
+                      fontSize: "12px",
+                      lineHeight: 1,
+                    }}
+                  >
+                    {truncate(props.i.title, 15)}
+                  </Typography>
+                </div>
                 <Typography
                   variant="body2"
                   component="p"
@@ -116,18 +117,18 @@ const OnSaleCard = (props) => {
                     fontSize: "12px",
                   }}
                 >
-                  {truncate(props.i.description, 20)}
+                  {truncate(props.i.description, 50)}
                 </Typography>
               </div>
-              <div className="col-4 align-self-start text-right p-0">
-                <p className="nftPrice mb-0 p-0">
-                  {props.i.NFTIds.length > 1
-                    ? `${props.i.NFTIds.length} NFTs`
-                    : `${props.i.NFTIds.length} NFT`}
-                </p>
-              </div>
-            </div>
 
+            </div>
+            <div className=" text-right">
+              <p className="nftPrice mb-0 p-0">
+                {props.i.NFTIds.length > 1
+                  ? `${props.i.NFTIds.length} NFTs`
+                  : `${props.i.NFTIds.length} NFT`}
+              </p>
+            </div>
             <Typography
               variant="h6"
               gutterBottom
@@ -155,18 +156,18 @@ const OnSaleCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-                        
+
                         date={new Date(props.i.startTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {  
-                          if (props.days==0){
-                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                        renderer={props => {
+                          if (props.days == 0) {
+                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                      }
+                        }
                       ></Countdown>
                     </span>
                   </Alert>
@@ -192,18 +193,18 @@ const OnSaleCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-                        
+
                         date={new Date(props.i.endTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {  
-                          if (props.days==0){
-                          return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                        renderer={props => {
+                          if (props.days == 0) {
+                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
                           }
                           else {
                             return <span>{props.days} days {props.hours} hr</span>
                           }
                         }
-                      }
+                        }
                       ></Countdown>
                     </span>
                   </Alert>
