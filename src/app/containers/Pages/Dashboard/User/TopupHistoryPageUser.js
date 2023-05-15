@@ -39,14 +39,11 @@ const TopupHistoryPageUser = (props) => {
   const getTopUpHistory = () => {
     getTopUpHistoryOfUser()
       .then((response) => {
-        console.log(
-          "Response from getting top up history of admin: ",
-          response
-        );
+        // console.log("Response from getting top up history of user: ", response);
         setTopupHistory(response.data.topupHistory);
       })
       .catch((error) => {
-        console.log("Error from getting top up history of admin: ", error);
+        console.log("Error from getting top up history of user: ", error);
       });
   };
 
