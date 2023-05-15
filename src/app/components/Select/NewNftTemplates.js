@@ -1,5 +1,5 @@
 import { Tooltip, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 function NewNftTemplates({
   setProperties,
   properties,

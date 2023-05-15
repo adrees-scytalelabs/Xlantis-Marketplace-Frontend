@@ -114,7 +114,7 @@ function MyDrops(props) {
               </span>
             </div>
           ) : tokenList.length === 0 ? (
-            <MessageCard msg="No items to displayt" />
+            <MessageCard msg="No items to display" />
           ) : (
             <Grid
               container
