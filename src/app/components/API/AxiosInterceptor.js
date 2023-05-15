@@ -383,6 +383,26 @@ export const getSuperAdminBalance = () => {
   return Axios.get(`/super-admin/balance`);
 };
 
+export const getAdminsDefaultTemplates = () => {
+  return Axios.get(`/nft-properties/admin/default`);
+};
+
+export const getStandardTemplate = (userType) => {
+  return Axios.get(`/nft-properties/${userType}`);
+};
+
+export const getSavedTemplates = () => {
+  return Axios.get(`/nft-properties/admin/`);
+};
+
+export const getTopUpHistoryOfAdmin = () => {
+  return Axios.get(`/top-up/admin/history`);
+};
+
+export const getTopUpHistoryOfUser = () => {
+  return Axios.get(`/top-up/user/history`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

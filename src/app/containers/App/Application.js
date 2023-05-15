@@ -31,7 +31,7 @@ function App() {
   let version;
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
-  console.log("jwt",jwt);
+  console.log("jwtjwtjwt: ", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     jwt !== null && console.log();

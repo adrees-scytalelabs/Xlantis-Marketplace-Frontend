@@ -9,12 +9,15 @@ import {
   createNewBatch,
   deleteBatch,
   deleteNFTFromBatch,
+  getAdminsDefaultTemplates,
+  getSavedTemplates,
+  getStandardTemplate,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
   updateCollectionIdInBatch,
   updateNFT,
-  uploadImage,
+  uploadImage
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import RemoveNft from "../../../../components/Cards/RemoveNft";
@@ -35,8 +38,6 @@ import CreateNFTContract from "../../../../components/blockchain/Abis/Collectibl
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
-import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
-import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
 const styles = {
   root: {
     flexGrow: 1,
@@ -72,7 +73,7 @@ function NewNFT(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -107,7 +108,7 @@ function NewNFT(props) {
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
     getDefaultTemplate();
-    getSavedTemplate("admin");
+    getSavedTemplate();
     setTemplate("default");
   };
 
@@ -171,6 +172,7 @@ function NewNFT(props) {
   const [contractType, setContractType] = useState("");
   const [NFTType, setNFTType] = useState("1155");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [useEffectLoader, setUseEffectLoader] = useState(false);
 
   const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
@@ -201,51 +203,74 @@ function NewNFT(props) {
   const handleSetProperties = (availableProperties) => {
     let prop = [];
 
-    availableProperties.map((property) => {
-      let val;
-      if (property.type === "boolean") {
-        val = true;
-      } else if (property.type === "number") {
-        val = 0;
-      } else {
-        val = "";
-      }
-      let newData = { key: property.key, value: val };
-      prop.push(newData);
-    });
-    setProperties(prop);
-  };
-
-  const getDefaultTemplate = () => {
-    dispatch(getNewNftDefaultTemplate());
-    // console.log("redxdefaltRResp",defaultTemplate);
-    setDefaultTemplates(defaultTemplate);
-    if (loadingDefault === 1) {
-      if (defaultTemplate !== null) {
-        handleSetProperties(defaultTemplate.properties);
-      }
+    if (availableProperties === undefined || availableProperties === null) {
+      setProperties([{ key: "", value: "" }]);
+    } else {
+      availableProperties &&
+        availableProperties.map((property) => {
+          let val;
+          if (property.type === "boolean") {
+            val = null;
+          } else if (property.type === "number") {
+            val = 0;
+          } else {
+            val = "";
+          }
+          let newData = { key: property.key, value: val };
+          prop.push(newData);
+        });
+      setProperties(prop);
     }
   };
+
+  const getDefaultTemplate = async () => {
+    await getAdminsDefaultTemplates()
+      .then((response) => {
+        console.log("Response from getting default templates: ", response);
+        setDefaultTemplates(response.data.defaultTemplate);
+        if (response.data.defaultTemplate?.properties) {
+          handleSetProperties(response.data.defaultTemplate.properties);
+        }
+      })
+      .catch((error) => {
+        console.log("Error from getting default templates: ", error);
+      });
+  };
+
+  const getStandardTemplates = async (role) => {
+    await getStandardTemplate(role)
+      .then((response) => {
+        // console.log("response from getting standard Templates: ", response);
+        setStandardTemplates(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting standard Templates: ", error);
+      });
+  };
+
+  const getSavedTemplate = async () => {
+    await getSavedTemplates()
+      .then((response) => {
+        // console.log("Response from getting saved templates: ", response);
+        setTemplateData(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting saved templates: ", error);
+      });
+  };
+
   useEffect(() => {
     getDefaultTemplate();
-  }, [loadingDefault]);
+    getStandardTemplates("super-admin");
+    getSavedTemplate();
+    // getSavedTemplate();
+  }, [useEffectLoader]);
 
-  const getSavedTemplate = (role) => {
-    if (role === "admin") {
-    }
-    dispatch(getNewNftProperties(role));
-    //  console.log("reduxdefaultResp",templates);
-    if (role === "admin") {
-      setTemplateData(templates);
-    } else {
-      setStandardTemplates(templates);
-    }
-  };
-
-  useEffect(() => {
-    getSavedTemplate("admin");
-    getSavedTemplate("super-admin");
-  }, [propertiesLoading]);
+  // useEffect(() => {
+  //   console.log("In use effect of properties loading");
+  //   getSavedTemplate("admin");
+  //   // getSavedTemplate("super-admin");
+  // }, [propertiesLoading]);
 
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
@@ -523,7 +548,7 @@ function NewNFT(props) {
             previewImageURI: previewImageURI,
             metadataURI: nftURI,
             nftFormat: imageType,
-            tokenSupply: tokenSupply,
+            totalSupply: tokenSupply,
             supplyType: supplyType,
             properties: propertiesObject,
           };
@@ -632,7 +657,10 @@ function NewNFT(props) {
               });
           }
 
-          setProperties([{ key: "", value: "" }]);
+          //SETTING STATES TO DEFAULT VALUES
+
+          // setProperties([{ key: "", value: "" }]);
+          handleSetProperties(defaultTemplates?.properties);
           setNftId("");
           setNftURI("");
           setPreviewImageURI("");
@@ -996,7 +1024,8 @@ function NewNFT(props) {
               error.response
             );
           });
-        setProperties([{ key: "", value: "" }]);
+        // setProperties([{ key: "", value: "" }]);
+        handleSetProperties(defaultTemplates.properties);
         setNftId("");
         setNftURI("");
         setPreviewImageURI("");
@@ -1238,6 +1267,8 @@ function NewNFT(props) {
       <NewTamplateModal
         handleClose={handleNewTemplateModalClose}
         show={newTemplateModalShow}
+        useEffectLoader={useEffectLoader}
+        setUseEffectLoader={setUseEffectLoader}
       />
       <ChangeCollectionConfirmationModal
         show={changeCollection}
@@ -1251,7 +1282,12 @@ function NewNFT(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }
