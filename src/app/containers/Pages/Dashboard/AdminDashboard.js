@@ -1,7 +1,12 @@
 import Cookies from "js-cookie";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
+import { Badge, Paper, Popper } from "@mui/material";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import jwtDecode from "jwt-decode";
 import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -29,15 +34,85 @@ import NewNFT from "./Admin/NewNFT";
 import TopUp from "./Admin/TopUp";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+import { getHeaderNotification } from "../../../redux/getHeaderNotificationSlice";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
+import NotificationList from "../../../components/Cards/NotificationList Card";
+import { io } from "socket.io-client";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
   // const path = useResolvedPath("").pathname;
   const path = useResolvedPath("").pathname;
   console.log("path", path);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [anchorElPopper, setAnchorElPopper] = React.useState(null);
+  const openPopper = Boolean(anchorElPopper);
+  const [notificationsList, setNotificationsList] = useState({});
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [slideNavClass, setSlideNavClass] = useState();
+  const [userId, setUserId] = useState("");
+  const [socket, setSocket] = useState(null);
+  const { notification, notificationLoading } = useSelector(
+    (store) => store.getHeaderNotification
+  );
+  let jwtDecoded, jwt;
+    jwt = sessionStorage.getItem("Authorization");
+    if (jwt !== null) {
+      jwtDecoded = jwtDecode(jwt);
+    }
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    setSocket(io("http://localhost:3000/"));
+  }, []);
+  useEffect(() => {
+    let userLogin = sessionStorage.getItem("Authorization");
+    //console.log("Admin Login Detail", userLogin);
+    let userIdentity = sessionStorage.getItem("userId");
+    //console.log("Admin ID", userIdentity);
+    if (userLogin != null) {
+      setUserId(userIdentity);
+      if (userId !== "" && socket !== null) {
+        socket.emit("user-logged-in", userIdentity);
+        socket.on("Notification", (notification) => {
+          setNotificationsList((previousData) => [
+            ...previousData,
+            notification,
+          ]);
+        });
+      } else if (userIdentity === "" && socket !== null) {
+        socket.emit("user-logged-out", userIdentity);
+      }
+    }
+  }, [socket, userId]);
+  useEffect(() => {
+    let userLogin = sessionStorage.getItem("Authorization");
+    let userIdentity = sessionStorage.getItem("userId");
+    if (userLogin != null) {
+      setUserId(userIdentity);
+      getNotifications(0, 10);
+    }
+  }, [notificationLoading]);
+  function getNotifications(start, end) {
+    dispatch(getHeaderNotification({ start, end, setNotificationsList }));
+    // setNotificationsList(notification);
+    // setNotificationCount(notification.length);
+  }
+  function readNotification(notificationId) {
+    let data = {
+      notificationId,
+    };
+
+    axios.patch("/notifications/hide", data).then(
+      (response) => {
+        getNotifications(0, 10);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+      }
+    );
+  }
 
   let handleSlideNav = (e) => {
     e.preventDefault();
@@ -104,6 +179,46 @@ function AdminDashboard(props) {
           <i className="fa fa-bars"></i>
         </a>
         <ul className="nav user-menu">
+          <li>
+            {jwtDecoded !== undefined ? (
+              <div className="mt-4">
+                <Badge
+                  color="secondary"
+                  badgeContent={notificationsList.length}
+                >
+                  <NotificationsIcon
+                    type="button"
+                    onClick={(event) => {
+                      setAnchorElPopper(
+                        anchorElPopper ? null : event.currentTarget
+                      );
+                    }}
+                  />
+                </Badge>
+                <Popper
+                  key={notificationsList}
+                  id={openPopper ? "simple-popper" : undefined}
+                  open={openPopper}
+                  anchorEl={anchorElPopper}
+                  placement="bottom-end"
+                  style={{
+                    zIndex: 2500,
+                    paddingTop: 15,
+                  }}
+                >
+                  <div>
+                    <Paper elevation={10} variant="outlined" square>
+                      <NotificationList
+                        itemCount={notificationsList.length}
+                        notifications={notificationsList}
+                        close={readNotification}
+                      />
+                    </Paper>
+                  </div>
+                </Popper>
+              </div>
+            ) : null}
+          </li>
           <li className="nav-item dropdown has-arrow">
             <Dropdown>
               <Dropdown.Toggle
