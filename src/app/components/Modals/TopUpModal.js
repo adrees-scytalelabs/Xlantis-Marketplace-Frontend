@@ -11,9 +11,9 @@ function TopUpModal(props) {
     props.topUp();
     props.handleClose();
   };
-  useEffect(()=>{
-    props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
-  },[props])
+  // useEffect(()=>{
+  //   // props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
+  // },[props])
   return (
     <Modal
       show={props.show}
@@ -67,7 +67,8 @@ function TopUpModal(props) {
             <input
               type="number"
               required
-              value={Math.abs(props.amount - props.required).toFixed(4)}
+              // defaultValue={Math.abs(props.amount - props.required).toFixed(4)}
+              value={props.topUpAmount}
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={0.1}

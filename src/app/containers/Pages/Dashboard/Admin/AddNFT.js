@@ -207,7 +207,7 @@ function AddNFT(props) {
     let data = {
       amount: amount,
     };
-    console.log("Before calling top up endpoint");
+    console.log("Before calling top up endpoint",data);
     topUpAmount(data).then(
       (response) => {
         console.log("Response from top up endpoint: ", response);
@@ -1131,6 +1131,7 @@ function AddNFT(props) {
           handleClose={handleCloseTopUpModal}
           amount={costInfo.balance.dollar}
           required={costInfo.estimates.totalCostInDollars}
+          topUpAmount={amount}
           setAmount={setAmount}
           topUp={handleTopUpAmount}
           setOpen={setMOdalOpen}
