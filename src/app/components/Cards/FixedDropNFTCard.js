@@ -48,16 +48,16 @@ function FixedDropNFTCard(props) {
       rarity === "Common"
         ? defaultStyles
         : rarity === "Uncommon"
-          ? unCommon
-          : rarity === "Rare"
-            ? rare
-            : rarity === "Epic"
-              ? epic
-              : rarity === "Legendary"
-                ? legendary
-                : rarity === "Mastercraft"
-                  ? mastercraft
-                  : defaultStyles,
+        ? unCommon
+        : rarity === "Rare"
+        ? rare
+        : rarity === "Epic"
+        ? epic
+        : rarity === "Legendary"
+        ? legendary
+        : rarity === "Mastercraft"
+        ? mastercraft
+        : defaultStyles,
   };
 
   return (
@@ -69,14 +69,14 @@ function FixedDropNFTCard(props) {
         saleType: props.saleType,
         description: props.description,
         imageURL: props.titleImage,
-        bannerURL: props.dropbanner
+        bannerURL: props.dropbanner,
       }}
     >
       <Card
         variant="outlined"
         sx={props.classes.cardHeight}
         style={{
-          backgroundColor: 'black',
+          backgroundColor: "black",
           borderRadius: 0,
           border: "1px solid #fff",
         }}
@@ -102,9 +102,7 @@ function FixedDropNFTCard(props) {
           className="mb-3"
           style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
         >
-          <div
-            className="row no-gutters justify-content-between align-items-center"
-          >
+          <div className="row no-gutters justify-content-between align-items-center">
             <div className="col-auto">
               <Typography
                 variant="h6"
@@ -158,7 +156,6 @@ function FixedDropNFTCard(props) {
             {props.data.tokenSupply}
           </Typography>
         </CardContent>
-
       </Card>
     </Link>
   );
