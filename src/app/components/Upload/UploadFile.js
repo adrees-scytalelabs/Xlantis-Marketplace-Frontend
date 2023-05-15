@@ -7,7 +7,23 @@ const UploadFile = (props) => {
       <div className="form-group">
         <div className="row no-gutters align-items-end justify-content-start">
           <div className={props.class}>
-            <img src={props.fileURL} alt="Selfie" />
+            {props.isUploading ? (
+              <div
+                className="text-center"
+                style={{
+                  border: "1px solid white",
+                  height: "250px",
+                  width: "220px",
+                }}
+              >
+                {" "}
+                <div style={{marginTop:"50%"}}>
+                <WhiteSpinner />{" "}
+                </div>
+              </div>
+            ) : (
+              <img src={props.fileURL} alt="Selfie" />
+            )}
           </div>
           <div className="co-12 col-md-auto">
             <label htmlFor={props.inputId} className="uploadLabel">
