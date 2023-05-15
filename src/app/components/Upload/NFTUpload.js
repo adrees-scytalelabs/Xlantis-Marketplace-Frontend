@@ -140,7 +140,7 @@ const NFTUpload = (props) => {
             fileURL={props.nftURI ? props.nftURI : defaultProfile}
             isUploading={props.isUploadingIPFS}
             changeFile={props.onChangeFile}
-            class="co-12 col-md-auto profile-img mr-3"
+            class="col-12 col-md-auto profile-img mr-3"
             accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
             inputId="upload"
           />
