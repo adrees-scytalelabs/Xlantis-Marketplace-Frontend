@@ -5,6 +5,7 @@ import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
+import jwtDecode from "jwt-decode";
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -75,6 +76,8 @@ const AdminLoginSignupForms = () => {
 
   useEffect(() => {
     if (adminSignInData !== null) {
+      let decode = jwtDecode(adminSignInData.raindropToken);
+      sessionStorage.setItem("userId", decode.userId);
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
