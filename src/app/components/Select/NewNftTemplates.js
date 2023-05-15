@@ -14,24 +14,6 @@ function NewNftTemplates({
   templateData,
   defaultTemplates,
 }) {
-  useEffect(() => {
-    console.log("Props in new templates: ", {
-      properties,
-      standardTemplates,
-      extractedDataProps,
-      template,
-      templateData,
-      defaultTemplates,
-    });
-  }, [
-    properties,
-    standardTemplates,
-    extractedDataProps,
-    template,
-    templateData,
-    defaultTemplates,
-  ]);
-
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
     //console.log(e.target.value, " Template selected!");
@@ -339,7 +321,7 @@ function NewNftTemplates({
                   <option value={data.name} id={data.id} key={index + 100}>
                     {data.name}
                   </option>
-              ))}
+                ))}
               </select>
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
