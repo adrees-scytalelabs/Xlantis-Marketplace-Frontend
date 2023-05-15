@@ -1,7 +1,8 @@
-import { Button, Tooltip } from "@mui/material";
-import React, { useEffect } from "react";
-import { Table } from "react-bootstrap";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getTopUpHistoryOfAdmin } from "../../../../components/API/AxiosInterceptor";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
+import TopupHistoryTable from "../../../../components/tables/TopupHistoryTabke";
 
 const styles = {
   noMaxWidth: {
@@ -33,7 +34,24 @@ const styles = {
 };
 
 const TopupHistoryPageAdmin = (props) => {
+  const [topupHistory, setTopupHistory] = useState([]);
+
+  const getTopUpHistory = () => {
+    getTopUpHistoryOfAdmin()
+      .then((response) => {
+        console.log(
+          "Response from getting top up history of admin: ",
+          response
+        );
+        setTopupHistory(response.data.topupHistory);
+      })
+      .catch((error) => {
+        console.log("Error from getting top up history of admin: ", error);
+      });
+  };
+
   useEffect(() => {
+    getTopUpHistory();
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -64,27 +82,14 @@ const TopupHistoryPageAdmin = (props) => {
           </div>
         </div>
       </div>
-      <div>
-        <Table responsive>
-          <thead style={{ color: "black" }}>
-            <tr>
-              <th style={styles.tableHeader}>Tx No.</th>
-              <th style={styles.tableHeader}>Amount (USD)</th>
-              <th style={styles.tableHeader}>Amount (MATIC)</th>
-              <th style={styles.tableHeader}>Date</th>
-            </tr>
-          </thead>
-
-          {/* TABLE BODY */}
-          <tbody style={{ color: "white" }}>
-            <tr>
-              <td style={styles.collectionTitle}>1234567</td>
-              <td style={styles.collectionTitle}>1000</td>
-              <td style={styles.collectionTitle}>1000</td>
-              <td style={styles.collectionTitle}>10-12-2023</td>
-            </tr>
-          </tbody>
-        </Table>
+      <div className="card-body px-0">
+        {/* LOADING TABLE */}
+        {topupHistory.length > 0 ? (
+          <TopupHistoryTable topupHistory={topupHistory} styles={styles} />
+        ) : (
+          // IF THERE IS NOT ROW FOR TABLE
+          <MessageCard msg="No history yet" />
+        )}
       </div>
     </div>
   );
