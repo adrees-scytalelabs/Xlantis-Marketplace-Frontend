@@ -5,7 +5,21 @@ const DropBannerUpload = ({ isUploading, onChangeBanner, bannerURL }) => {
   return (
     <>
       <div className="bannerWrapper">
-        <img className="bannerImg" src={bannerURL} />
+        {isUploading ? (
+          <div
+            style={{
+              border: "1px solid white",
+              width: "100%",
+              height: "350px",
+            }}
+          >
+            <div style={{marginTop:'10%'}}>
+              <WhiteSpinner />
+            </div>
+          </div>
+        ) : (
+          <img className="bannerImg" src={bannerURL} />
+        )}
       </div>
       <div className="co-12 col-md-auto">
         <label htmlFor="uploadDropBanner" className="uploadLabel">
