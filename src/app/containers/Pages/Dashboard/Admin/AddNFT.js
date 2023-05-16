@@ -998,7 +998,7 @@ function AddNFT(props) {
                       setNftId(value._id);
                       setNftURI(value.nftURI);
                       setTokenId(value.nftId);
-                      setNftTokenSupply(value.tokenSupply);
+                      setNftTokenSupply(value.totalSupply);
                       handleOpenNFTDetailModal(value);
                     }
                   }}
