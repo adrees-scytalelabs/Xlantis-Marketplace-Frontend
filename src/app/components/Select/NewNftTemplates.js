@@ -466,11 +466,10 @@ function NewNftTemplates({
                         {p.type === "string" ? (
                           <div className="filter-widget">
                             <input
+                              required
                               name={p.key}
                               type="text"
                               placeholder="value"
-                              required
-                              value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
                                 handleTemplatePropertyChange(index, e)
@@ -484,7 +483,6 @@ function NewNftTemplates({
                               type="number"
                               placeholder="0"
                               required
-                              value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
                                 handleTemplatePropertyChange(index, e)
