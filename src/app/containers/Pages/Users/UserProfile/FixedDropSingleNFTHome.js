@@ -84,12 +84,43 @@ const customTheme = createTheme({
     },
   },
 });
+const styles = {
+  display: 'inline-block',
+  border: '1px solid #F64D04',
+  width: "100",
+  borderRadius: "5px",
+  marginBottom: "30px",
+  marginLeft: "5px"
+}
+const buttonStyle = {
+  backgroundColor: '#F64D04',
+  border: 'none',
+  color: 'white',
+  
+  cursor: 'pointer',
+  
+  fontSize: '24px',
+  padding: '5px 15px' 
+}
+
+const inputStyle = {
+  
+  
+  fontSize: '18px',
+  
+  border: 'none',
+  backgroundColor: 'black',
+  color: 'white',
+  textAlign: 'center'
+ 
+}
 
 const FixedDropSingleNFTHome = () => {
   const [nftData, setNftData] = useState();
   const [theDrop, setTheDrop] = useState();
   const [biddingValue, setBiddingValue] = useState(0);
   const [bidExpiryTime, setBidExpiryTime] = useState(new Date());
+  const [orderListing,setOrderListing] =useState();
   const [bidExpiryTimeStamp, setBidExpiryTimeStamp] = useState(
     Math.round(bidExpiryTime.getTime() / 1000)
   );
@@ -132,6 +163,43 @@ const FixedDropSingleNFTHome = () => {
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
   const { singleNFTid } = useParams();
+  let [num, setNum]= useState(1);
+  let [tokSupply, setTokSupply]= useState(0);
+  let incNum =(max)=>{
+    if(num<max)
+    {
+    setNum(Number(num)+1);
+    }
+    else{
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Value can't be greater than token supply");
+      setSnackbarOpen(true);
+    }
+  };
+  let decNum = () => {
+     if(num>1)
+     {
+      setNum(num - 1);
+     }
+     else{
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Value can't be negative");
+      setSnackbarOpen(true);
+    }
+  }
+ let handleChange = (e)=>{
+ 
+    if (e.target.value <= orderListing?.supply){
+      setNum(e.target.value);
+    }
+    else{
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Value can't be greater than token supply");
+      setSnackbarOpen(true);
+    }
+    
+  }
+
   const handleGoBack = () => {
     navigate(`/fixdropnft/${dropID}`, {
       state: { saleType: saleType, description: description, imageURL: imageURL, bannerURL: bannerURL },
@@ -500,6 +568,7 @@ const FixedDropSingleNFTHome = () => {
     let data = {
       dropId: nftData?.dropId,
       nftId: nftData?._id,
+      supply: num
     };
     console.log("Data", data);
     console.log("Purchase Function Called");
@@ -579,7 +648,7 @@ const FixedDropSingleNFTHome = () => {
                   dropIdHex,
                   nftData?.collectionId.nftContractAddress,
                   nftData?.nftId,
-                  nftData?.tokenSupply,
+                  orderListing?.supply,
                   nftData?.currentOrderListingId.price
                 )
                 .send({ from: accounts[0] }, (err, response) => {
@@ -773,6 +842,8 @@ const FixedDropSingleNFTHome = () => {
     setVersionB(Cookies.get("Version"));
     console.log("location.state", location.state);
     setNftData(location.state?.nftDetails);
+    setOrderListing(location.state?.orderListing)
+    // setNum(location.state?.orderListing?.supply);
     setNftBlockChainId(location.state?.nftDetails?.nftId);
     setNftProperties(Object.entries(location.state?.nftDetails?.properties));
     getTheDrop();
@@ -793,7 +864,7 @@ const FixedDropSingleNFTHome = () => {
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           {nftData ? (
-            <>
+            <>           
               <div
                 className="row no-gutters justify-content-end"
                 style={{ padding: "1.5rem 1.5rem 0" }}
@@ -833,7 +904,7 @@ const FixedDropSingleNFTHome = () => {
                   </Paper>
                 </div>
                 <div className="col-md-12 col-lg-8 pl-md-3">
-                  <FixedDropSingleNFTCard nftData={nftData} price={price} />
+                  <FixedDropSingleNFTCard nftData={nftData} price={price*num} />
                   <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                     <Col>
                       <Accordion style={{ background: "black" }}>
@@ -877,6 +948,15 @@ const FixedDropSingleNFTHome = () => {
                     </Col>
                   </Row>
                   <br></br>
+                  
+                  {nftData?.supplyType=="Variable" &&
+                    <div style={styles}>
+                    
+                      <button style={buttonStyle} onClick={decNum}>-</button>
+                      <input style={inputStyle} type="text" value={num} placeholder="1" onChange={handleChange} />
+                      <button style={buttonStyle} onClick={()=>incNum(orderListing?.supply)}>+</button>
+                    </div>
+                  }
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
@@ -894,6 +974,8 @@ const FixedDropSingleNFTHome = () => {
                             }}
                           >
                             Buy
+                            {(nftData?.supplyType=="Variable")&& <span> {num}</span>}
+                            {(nftData?.supplyType=="Variable")&& <span> Now</span>}
                           </button>
                         </div>
                       ) : (
