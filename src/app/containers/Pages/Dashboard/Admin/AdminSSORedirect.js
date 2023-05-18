@@ -57,7 +57,7 @@ const AdminSSORedirect = () => {
     // CHECK FOR WRONG DOMAIN WHILE PROCEEDING FURTHER
     if (isDomainAvailable) {
       let variant = "error";
-      setSnackbarMessage("This domain has been already taken");
+      setSnackbarMessage("This Marketplace name has been already taken");
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     }
