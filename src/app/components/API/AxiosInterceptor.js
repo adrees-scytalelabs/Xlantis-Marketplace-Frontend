@@ -246,6 +246,9 @@ export const getMyNFTsPaginated = (start, end) => {
 export const getSingleNFTDetail = (nftId) => {
   return Axios.get(`/nft/getSingleNFT/${nftId}`);
 };
+export const getTradeHistory = (nftId) => {
+  return Axios.get(`/history/trade/${nftId}`);
+};
 
 export const getValidateAdminBalance = (dropId) => {
   return Axios.get(`/drop/validate-admin-balance/${dropId}`);

@@ -3,10 +3,11 @@ import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useParams } from "react-router-dom";
-import { getSingleNFTDetail } from "../../../../components/API/AxiosInterceptor";
+import { getSingleNFTDetail,getTradeHistory } from "../../../../components/API/AxiosInterceptor";
 import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
+import TradeHistoryAccordian from "../../../../components/Accordian/TradeHistoryAccordian";
 
 const styles = {
   root: {
@@ -60,7 +61,19 @@ const SingleNftDetail = (props) => {
   const { nftId } = useParams();
   const [nftDetail, setNftDetail] = useState({});
   const [keys, setKeys] = useState([]);
+  const [tradeHistory, setTradeHistory] = useState([]);
   const [properties, setProperties] = useState({});
+
+  let getTradeHistoryDetail = () => {
+    getTradeHistory(nftId).then((response) => {
+      console.log("Trade History",response.data.history);
+      setTradeHistory(response.data.history);
+    })
+    .catch((error) => {
+      console.log("Error: ", error);
+      console.log("Error in trade history: ", error.response);
+    });
+  }
 
   let getNftDetail = () => {
     getSingleNFTDetail(nftId)
@@ -78,6 +91,7 @@ const SingleNftDetail = (props) => {
 
   useEffect(() => {
     getNftDetail();
+    getTradeHistoryDetail();
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -125,6 +139,11 @@ const SingleNftDetail = (props) => {
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
                   <PropertiesAccordian keys={keys} properties={properties} />
+                </Col>
+              </Row>
+              <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
+                <Col>
+                  <TradeHistoryAccordian tradeHistory={tradeHistory} />
                 </Col>
               </Row>
             </div>
