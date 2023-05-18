@@ -105,7 +105,7 @@ function AdminSSORedirectForm({
                     onChange={handleChangeValues}
                   />
                 </div>
-                <label htmlFor="domain">Domain</label>
+                <label htmlFor="domain">Marketplace Name</label>
                 <div className="form-group newNftWrapper position-relative">
                   <input
                     id="domain"
@@ -113,7 +113,7 @@ function AdminSSORedirectForm({
                     type="text"
                     required
                     value={inputs?.domain || ""}
-                    placeholder="Domain"
+                    placeholder="Marketplace Name"
                     className="form-control-login -login newNftInput"
                     onChange={(e) => {
                       if (updated) {
