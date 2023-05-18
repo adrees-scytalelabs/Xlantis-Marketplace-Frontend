@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
@@ -59,12 +59,16 @@ function FixedDropNFTCard(props) {
         ? mastercraft
         : defaultStyles,
   };
+  useEffect(()=>{
+      console.log("props data in single nft",props.orderListing)
+  },[props])
 
   return (
     <Link
       to={`/fixedDropNFTHome/${singleNFTid}`}
       state={{
         nftDetails: props.data,
+        orderListing:props.orderListing,
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
@@ -153,7 +157,7 @@ function FixedDropNFTCard(props) {
             }}
           >
             <strong>Token Supply: </strong>
-            {props.data.tokenSupply}
+            {props.orderListing.supply}
           </Typography>
         </CardContent>
       </Card>
