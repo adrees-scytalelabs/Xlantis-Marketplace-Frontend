@@ -10,6 +10,8 @@ function AdminSSORedirectForm({
   handleAvailability,
   getIcon,
   setAvailability,
+  setUpdate,
+  updated,
 }) {
   const indsutries = [
     { industry: "IT" },
@@ -113,7 +115,12 @@ function AdminSSORedirectForm({
                     value={inputs?.domain || ""}
                     placeholder="Domain"
                     className="form-control-login -login newNftInput"
-                    onChange={handleChangeValues}
+                    onChange={(e) => {
+                      if (updated) {
+                        setUpdate(false);
+                      }
+                      handleChangeValues(e);
+                    }}
                     onBlur={(e) => {
                       setAvailability();
                       handleAvailability(e);

@@ -404,7 +404,7 @@ export const getTopUpHistoryOfUser = () => {
 };
 
 export const checkDomain = (params) => {
-  return Axios.get(`/user/check-domain`, { params: params });
+  return Axios.get(`/v1-sso/user/check-domain`, { params: params });
 };
 
 //DELETE REQUESTS

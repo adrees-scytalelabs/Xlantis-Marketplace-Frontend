@@ -11,13 +11,30 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
 import HeaderHome from "../../../../components/Headers/Header";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
   const [success, setSucess] = useState();
   const [isDomainAvailable, setIsDomainAvailable] = useState(false);
   const [checking, setIsChecking] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  // THIS STATE WILL CHECK IF DOMAIN IS VERIFIED OR NOT BEFORE SAVING TO AVOID INCONVENIENCE
+  const [updated, setUpdated] = useState(false);
   let version = Cookies.get("Version");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleChangeValues = (event) => {
     const name = event.target.name;
@@ -29,8 +46,21 @@ const AdminSSORedirect = () => {
     console.log("inputs are not undefined");
   }
 
-  const handleSubmitDetails = (event) => {
+  const handleSubmitDetails = async (event) => {
     event.preventDefault();
+
+    // IF USER HAS CHANGED DOMAIN AND IT HAS NOT BEEN UPDATED
+    if (!updated) {
+      await handleAvailability();
+    }
+
+    // CHECK FOR WRONG DOMAIN WHILE PROCEEDING FURTHER
+    if (isDomainAvailable) {
+      let variant = "error";
+      setSnackbarMessage("This domain has been already taken");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    }
     addDetails();
     Cookies.remove("Verified");
     sessionStorage.removeItem("Address");
@@ -39,19 +69,23 @@ const AdminSSORedirect = () => {
 
   const handleAvailability = async (e) => {
     e.preventDefault();
-    setIsChecking(true);
-    const domain = { domain: e.target.value };
-    await checkDomain(domain)
-      .then((response) => {
-        console.log("Response from checking domain: ", response);
-        setIsChecking(false);
-      })
-      .catch((error) => {
-        console.log("In error function");
-        console.log("Error from checking domain: ", error);
-        setIsDomainAvailable(false);
-        setIsChecking(false);
-      });
+    if (inputs?.domain) {
+      setIsChecking(true);
+      const domain = { domain: e.target.value };
+      await checkDomain(domain)
+        .then((response) => {
+          console.log("Response from checking domain: ", response);
+          setIsDomainAvailable(response.data.exists);
+          setUpdated(true);
+          setIsChecking(false);
+        })
+        .catch((error) => {
+          console.log("In error function");
+          console.log("Error from checking domain: ", error);
+          setIsDomainAvailable(false);
+          setIsChecking(false);
+        });
+    }
   };
 
   const getIcon = () => {
@@ -69,7 +103,7 @@ const AdminSSORedirect = () => {
         </div>
       );
     } else if (inputs?.domain && !checking) {
-      if (isDomainAvailable) {
+      if (!isDomainAvailable) {
         return (
           <div
             style={{
@@ -141,12 +175,20 @@ const AdminSSORedirect = () => {
                   handleAvailability={handleAvailability}
                   getIcon={getIcon}
                   setAvailability={setIsDomainAvailable}
+                  setUpdate={setUpdated}
+                  updated={updated}
                 />
               </div>
             </div>
           </div>
         </div>
       </div>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </>
   );
 };
