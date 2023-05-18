@@ -403,6 +403,10 @@ export const getTopUpHistoryOfUser = () => {
   return Axios.get(`/top-up/user/history`);
 };
 
+export const checkDomain = (params) => {
+  return Axios.get(`/user/check-domain`, { params: params });
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

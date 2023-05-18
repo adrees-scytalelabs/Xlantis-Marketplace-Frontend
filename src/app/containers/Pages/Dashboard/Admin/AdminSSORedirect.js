@@ -5,13 +5,18 @@ import "../../../../assets/css/bootstrap.min.css";
 import "../../../../assets/css/style.css";
 import "../../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import { adminLoginAddInfoUsingRoute } from "../../../../components/API/AxiosInterceptor";
+import {
+  adminLoginAddInfoUsingRoute,
+  checkDomain,
+} from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
 import HeaderHome from "../../../../components/Headers/Header";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
   const [success, setSucess] = useState();
+  const [isDomainAvailable, setIsDomainAvailable] = useState(false);
+  const [checking, setIsChecking] = useState(false);
   let version = Cookies.get("Version");
 
   const handleChangeValues = (event) => {
@@ -30,6 +35,71 @@ const AdminSSORedirect = () => {
     Cookies.remove("Verified");
     sessionStorage.removeItem("Address");
     console.log(inputs, "the form inputs");
+  };
+
+  const handleAvailability = async (e) => {
+    e.preventDefault();
+    setIsChecking(true);
+    const domain = { domain: e.target.value };
+    await checkDomain(domain)
+      .then((response) => {
+        console.log("Response from checking domain: ", response);
+        setIsChecking(false);
+      })
+      .catch((error) => {
+        console.log("In error function");
+        console.log("Error from checking domain: ", error);
+        setIsDomainAvailable(false);
+        setIsChecking(false);
+      });
+  };
+
+  const getIcon = () => {
+    if (checking) {
+      return (
+        <div
+          style={{
+            position: "absolute",
+            top: "50%",
+            right: "5px",
+            transform: "translateY(-50%)",
+          }}
+        >
+          <i className="fa fa-spinner"></i>
+        </div>
+      );
+    } else if (inputs?.domain && !checking) {
+      if (isDomainAvailable) {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "5px",
+              transform: "translateY(-50%)",
+              color: "green",
+              fontWeight: "bold",
+            }}
+          >
+            ✓
+          </div>
+        );
+      } else {
+        return (
+          <div
+            style={{
+              position: "absolute",
+              top: "50%",
+              right: "5px",
+              transform: "translateY(-50%)",
+              color: "red",
+            }}
+          >
+            X
+          </div>
+        );
+      }
+    }
   };
 
   const config = {
@@ -68,6 +138,9 @@ const AdminSSORedirect = () => {
                   inputs={inputs}
                   handleChangeValues={handleChangeValues}
                   success={success}
+                  handleAvailability={handleAvailability}
+                  getIcon={getIcon}
+                  setAvailability={setIsDomainAvailable}
                 />
               </div>
             </div>
