@@ -406,6 +406,10 @@ export const getTopUpHistoryOfUser = () => {
   return Axios.get(`/top-up/user/history`);
 };
 
+export const checkDomain = (params) => {
+  return Axios.get(`/v1-sso/user/check-domain`, { params: params });
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {
