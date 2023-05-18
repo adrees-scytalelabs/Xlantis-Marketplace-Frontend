@@ -118,7 +118,7 @@ const FixedDropSingleNFTHome = () => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -134,8 +134,12 @@ const FixedDropSingleNFTHome = () => {
   const { singleNFTid } = useParams();
   const handleGoBack = () => {
     navigate(`/fixdropnft/${dropID}`, {
-      state: { saleType: saleType, description: description, imageURL: imageURL, bannerURL: bannerURL },
-
+      state: {
+        saleType: saleType,
+        description: description,
+        imageURL: imageURL,
+        bannerURL: bannerURL,
+      },
     });
   };
 
@@ -254,7 +258,9 @@ const FixedDropSingleNFTHome = () => {
       bidExpiryTime > endTime ||
       new Date(bidExpiryTime) > new Date(endTime)
     ) {
-      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarMessage(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time."
+      );
       setSnackbarSeverity("error");
       handleSnackbarOpen();
     }
@@ -383,7 +389,9 @@ const FixedDropSingleNFTHome = () => {
       bidExpiryTime > endTime ||
       new Date(bidExpiryTime) > new Date(endTime)
     ) {
-      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarMessage(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time."
+      );
       setSnackbarSeverity("error");
       handleSnackbarOpen();
     }
@@ -407,7 +415,9 @@ const FixedDropSingleNFTHome = () => {
       sendBidDataVersioned(versionB, bidData)
         .then((response) => {
           console.log("nft bid response", response.data);
-          setSnackbarMessage("Bid Is Being Finalized. Transactions Are In Process.");
+          setSnackbarMessage(
+            "Bid Is Being Finalized. Transactions Are In Process."
+          );
           setSnackbarSeverity("success");
           handleSnackbarOpen();
           handleCloseModal();
@@ -500,6 +510,7 @@ const FixedDropSingleNFTHome = () => {
     let data = {
       dropId: nftData?.dropId,
       nftId: nftData?._id,
+      supply: 1,
     };
     console.log("Data", data);
     console.log("Purchase Function Called");
@@ -776,8 +787,7 @@ const FixedDropSingleNFTHome = () => {
     setNftBlockChainId(location.state?.nftDetails?.nftId);
     setNftProperties(Object.entries(location.state?.nftDetails?.properties));
     getTheDrop();
-    let priceCal = location.state?.nftDetails?.currentOrderListingId
-      .price;
+    let priceCal = location.state?.nftDetails?.currentOrderListingId.price;
     setPrice(priceCal);
 
     return () => {
@@ -852,7 +862,7 @@ const FixedDropSingleNFTHome = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           {nftProperties[0][0] !== "" &&
-                            nftProperties.length != 0 ? (
+                          nftProperties.length != 0 ? (
                             <Table striped bordered hover>
                               <thead style={{ background: "black" }}>
                                 <tr>
@@ -880,9 +890,9 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
-                        nftData?.currentOrderListingId.isSold === false &&
-                        new Date() >= startTime &&
-                        new Date() < endTime ? (
+                      nftData?.currentOrderListingId.isSold === false &&
+                      new Date() >= startTime &&
+                      new Date() < endTime ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
@@ -1113,7 +1123,12 @@ const FixedDropSingleNFTHome = () => {
         isOpen={modalOpen}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </>
   );
 };
