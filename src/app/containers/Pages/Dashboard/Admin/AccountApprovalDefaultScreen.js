@@ -140,11 +140,11 @@ function AccountApprovalDefaultScreen(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
-      accountApproval: "active",
+      manageAccounts: "active",
+      accountApproval: "",
       accounts: "",
-      sso: "",
-      wallet: "",
+      sso: "active",
+      wallet: "active",
       properties: "",
       template: "",
       saved: "",

@@ -328,6 +328,14 @@ export const getUnverifiedAdminsV1Paginated = (start, end) => {
   );
 };
 
+export const getAllAdminsPaginated = (start, end, adminType) => {
+  return Axios.get(`/super-admin/admins/${start}/${end}`, {
+    params: {
+      userType: adminType,
+    },
+  });
+};
+
 export const getUnverifiedAdminsV2Paginated = (start, end) => {
   return Axios.get(
     `/super-admin/admins/unverified/${start}/${end}?userType=v2`
