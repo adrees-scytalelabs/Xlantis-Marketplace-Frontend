@@ -1,5 +1,5 @@
 import React from "react";
-import HeaderHome from "../../../../components/Headers/Header";
+import HeaderHome from "../../../../components/Headers/NewHeader";
 import UserLoginSignUpForms from "../../../../components/LoginSignup/UserLoginSignUpForms";
 
 const UserLoginSignup = () => {

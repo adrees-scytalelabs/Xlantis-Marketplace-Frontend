@@ -7,7 +7,7 @@ import "../../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { adminLoginAddInfoUsingRoute } from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
-import HeaderHome from "../../../../components/Headers/Header";
+import HeaderHome from "../../../../components/Headers/NewHeader";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();

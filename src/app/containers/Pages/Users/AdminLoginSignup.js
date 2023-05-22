@@ -1,5 +1,5 @@
 import React from "react";
-import HeaderHome from "../../../components/Headers/Header";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import AdminLoginSignupForms from "./AdminLoginSignupForms";
 
 const AdminLoginSignup = () => {

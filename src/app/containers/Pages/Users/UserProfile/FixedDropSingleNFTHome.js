@@ -34,8 +34,8 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import FixedDropSingleNFTCard from "../../../../components/Cards/FixedDropSingleNFTCard";
-import Footer from "../../../../components/Footers/Footer";
-import HeaderHome from "../../../../components/Headers/Header";
+import Footer from "../../../../components/Footers/NewFooter";
+import HeaderHome from "../../../../components/Headers/NewHeader";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
