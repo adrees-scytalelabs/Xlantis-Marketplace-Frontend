@@ -48,7 +48,9 @@
     "ua-parser-js": "^1.0.32",
     "walletlink": "^2.5.0",
     "web3": "^1.3.4",
-    "web3modal": "^1.9.10"
+    "web3modal": "^1.9.10",
+    "react-corner-ribbon": "^0.0.5",
+    "react-intl-tel-input": "^8.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
