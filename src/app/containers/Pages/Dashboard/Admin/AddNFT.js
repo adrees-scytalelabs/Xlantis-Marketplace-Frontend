@@ -15,7 +15,7 @@ import {
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash
+  updateDropTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -74,7 +74,7 @@ function AddNFT(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -290,7 +290,7 @@ function AddNFT(props) {
     handleCloseModal();
     const transak = new transakSDK(settings);
     transak.init();
-    transak.on(transak.ALL_EVENTS, (data) => { });
+    transak.on(transak.ALL_EVENTS, (data) => {});
     transak.on(transak.EVENTS.TRANSAK_WIDGET_CLOSE, (eventData) => {
       transak.close();
       handleOpenModal();
@@ -653,7 +653,7 @@ function AddNFT(props) {
     }
   };
   const handleBuyDetail = async () => {
-    console.log("dropId",dropId);
+    console.log("dropId", dropId);
     try {
       getValidateAdminBalance(dropId).then(
         (response) => {
@@ -678,7 +678,9 @@ function AddNFT(props) {
             handleCloseBackdrop();
           }
           let variant = "error";
-          setSnackbarMessage("Something went wrong with blockchain trancsaction try again.");
+          setSnackbarMessage(
+            "Something went wrong with blockchain trancsaction try again."
+          );
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           handleCloseBackdrop();
@@ -1138,7 +1140,12 @@ function AddNFT(props) {
         />
       )}
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import React from "react";
+import React,{useEffect} from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
@@ -48,35 +48,39 @@ function FixedDropNFTCard(props) {
       rarity === "Common"
         ? defaultStyles
         : rarity === "Uncommon"
-          ? unCommon
-          : rarity === "Rare"
-            ? rare
-            : rarity === "Epic"
-              ? epic
-              : rarity === "Legendary"
-                ? legendary
-                : rarity === "Mastercraft"
-                  ? mastercraft
-                  : defaultStyles,
+        ? unCommon
+        : rarity === "Rare"
+        ? rare
+        : rarity === "Epic"
+        ? epic
+        : rarity === "Legendary"
+        ? legendary
+        : rarity === "Mastercraft"
+        ? mastercraft
+        : defaultStyles,
   };
+  useEffect(()=>{
+      console.log("props data in single nft",props.orderListing)
+  },[props])
 
   return (
     <Link
       to={`/fixedDropNFTHome/${singleNFTid}`}
       state={{
         nftDetails: props.data,
+        orderListing:props.orderListing,
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
         imageURL: props.titleImage,
-        bannerURL: props.dropbanner
+        bannerURL: props.dropbanner,
       }}
     >
       <Card
         variant="outlined"
         sx={props.classes.cardHeight}
         style={{
-          backgroundColor: 'black',
+          backgroundColor: "black",
           borderRadius: 0,
           border: "1px solid #fff",
         }}
@@ -102,9 +106,7 @@ function FixedDropNFTCard(props) {
           className="mb-3"
           style={{ paddingBottom: 0, paddingTop: 0, width: "100%" }}
         >
-          <div
-            className="row no-gutters justify-content-between align-items-center"
-          >
+          <div className="row no-gutters justify-content-between align-items-center">
             <div className="col-auto">
               <Typography
                 variant="h6"
@@ -155,10 +157,9 @@ function FixedDropNFTCard(props) {
             }}
           >
             <strong>Token Supply: </strong>
-            {props.data.tokenSupply}
+            {props.orderListing.supply}
           </Typography>
         </CardContent>
-
       </Card>
     </Link>
   );

@@ -63,6 +63,7 @@ const FixedPriceDropNFTs = () => {
   const [userAuctionData, setUserAuctiondata] = useState([]);
   const [cubeAuctionData, setCubeAuctionData] = useState([]);
   const [dropData, setDropData] = useState([]);
+  const [orderListing, setOrderListing] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
   const [titleImage, setTitleImage] = useState(
@@ -99,7 +100,9 @@ const FixedPriceDropNFTs = () => {
 
     getNFTsFromDropPaginatedWOBody(dropId, start, end)
       .then((response) => {
+        console.log("data from backend",response);
         setDropData(response.data.data);
+        setOrderListing(response.data.orderListingData)
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -186,6 +189,7 @@ const FixedPriceDropNFTs = () => {
                   {dropData &&
                     dropData.length &&
                     dropData?.map((i, index) => (
+                      orderListing?.map((j) => (
                       <Grid
                         item
                         xs={12}
@@ -200,6 +204,7 @@ const FixedPriceDropNFTs = () => {
                           titleImage={titleImage}
                           dropbanner={bannerImage}
                           data={i}
+                          orderListing={j}
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
@@ -209,7 +214,7 @@ const FixedPriceDropNFTs = () => {
                           cardClasses={cardStyles}
                         />
                       </Grid>
-                    ))}
+                    ))))}
                 </Grid>
               </div>
             </div>

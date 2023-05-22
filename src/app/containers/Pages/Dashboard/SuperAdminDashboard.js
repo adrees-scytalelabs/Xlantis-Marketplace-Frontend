@@ -205,7 +205,7 @@ function SuperAdminDashboard(props) {
               exact
               path={`manageAccounts`}
               element={
-                <ManageAccounts
+                <AccountApproval
                   setActiveTab={setActiveTab}
                   tab={tab}
                   setTab={setTab}
@@ -214,9 +214,9 @@ function SuperAdminDashboard(props) {
             />
             <Route
               exact
-              path={`manageAccounts/SSO`}
+              path={`manageAccounts/accountApproval`}
               element={
-                <ManageAccountsSSO
+                <AccountApproval
                   setActiveTab={setActiveTab}
                   tab={tab}
                   setTab={setTab}
@@ -225,16 +225,16 @@ function SuperAdminDashboard(props) {
             />
             <Route
               exact
-              path={`manageAccounts/Wallet`}
+              path={`manageAccounts/Accounts`}
               element={
-                <ManageAccountsWallet
+                <Accounts
                   setActiveTab={setActiveTab}
                   tab={tab}
                   setTab={setTab}
                 />
               }
             />
-            <Route
+            {/* <Route
               exact
               path={`accounts`}
               element={
@@ -244,7 +244,7 @@ function SuperAdminDashboard(props) {
                   setTab={setTab}
                 />
               }
-            />
+            /> */}
             <Route
               exact
               path={`properties`}

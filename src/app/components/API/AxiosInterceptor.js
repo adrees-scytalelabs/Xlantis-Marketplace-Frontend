@@ -246,6 +246,9 @@ export const getMyNFTsPaginated = (start, end) => {
 export const getSingleNFTDetail = (nftId) => {
   return Axios.get(`/nft/getSingleNFT/${nftId}`);
 };
+export const getTradeHistory = (nftId) => {
+  return Axios.get(`/history/trade/${nftId}`);
+};
 
 export const getValidateAdminBalance = (dropId) => {
   return Axios.get(`/drop/validate-admin-balance/${dropId}`);
@@ -325,6 +328,14 @@ export const getUnverifiedAdminsV1Paginated = (start, end) => {
   );
 };
 
+export const getAllAdminsPaginated = (start, end, adminType) => {
+  return Axios.get(`/super-admin/admins/${start}/${end}`, {
+    params: {
+      userType: adminType,
+    },
+  });
+};
+
 export const getUnverifiedAdminsV2Paginated = (start, end) => {
   return Axios.get(
     `/super-admin/admins/unverified/${start}/${end}?userType=v2`
@@ -401,6 +412,10 @@ export const getTopUpHistoryOfAdmin = () => {
 
 export const getTopUpHistoryOfUser = () => {
   return Axios.get(`/top-up/user/history`);
+};
+
+export const checkDomain = (params) => {
+  return Axios.get(`/v1-sso/user/check-domain`, { params: params });
 };
 
 //DELETE REQUESTS

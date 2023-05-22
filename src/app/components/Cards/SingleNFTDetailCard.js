@@ -42,7 +42,7 @@ const SingleNFTDetailCard = (props) => {
               <strong>Token Supply </strong>
             </Typography>
           </Col>
-          <Col>{props.nftDetail.tokenSupply}</Col>
+          <Col>{props.nftDetail.totalSupply}</Col>
         </Row>
       </CardContent>
     </Card>
