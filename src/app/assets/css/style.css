@@ -10806,3 +10806,49 @@ object:hover {
 .updatebttn{
   display: none;
 }
+.responsive-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border:'1px solid #F64D04';
+  border-radius: 5px;
+  padding: 5px 5px;
+}
+
+.responsive-field-button{
+  background-color: black;
+  color: white;
+  border: none;
+  font-size: 21px;
+  cursor: pointer;
+  padding: 5px 10px;
+}
+
+.responsive-field input {
+  flex-grow: 1;
+  text-align: center;
+  border: none;
+  background-color: #000;
+  color: white;
+  font-size: 19px; 
+  width: 50px;
+}
+@media (max-width: 576px) {
+  .responsive-field input {
+    width: 15px;
+    padding: 3px;
+    font-size: 1px; 
+    margin: 0px;
+    border:none;
+
+  }
+  .responsive-field button {
+    width: 10px;
+    font-size: 20px;
+    padding: 5px 20px;
+  }
+  .responsive-field {
+    font-size: 1px;
+  }
+}
