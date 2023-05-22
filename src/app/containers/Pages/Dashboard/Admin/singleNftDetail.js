@@ -131,10 +131,10 @@ const SingleNftDetail = (props) => {
       <ThemeProvider theme={makeTheme}>
         <div className="card-body p-0">
           <div className="row">
-            <div className="col-md-12 col-lg-4">
+            <div className="col-md-12 col-lg-3">
               <NFTMediaCard nftDetail={nftDetail} classes={styles} />
             </div>
-            <div className="col-md-12 col-lg-8">
+            <div className="col-md-12 col-lg-8 mt-3">
               <SingleNFTDetailCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
