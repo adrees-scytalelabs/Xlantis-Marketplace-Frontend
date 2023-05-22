@@ -1,9 +1,9 @@
 import { Divider, Grid, ThemeProvider, Typography, createTheme } from '@mui/material';
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import Footer from "../../../components/Footers/Footer";
+import Footer from "../../../components/Footers/NewFooter";
 import CheckoutScreenForm from "../../../components/Forms/CheckoutScreenForm";
-import HeaderHome from "../../../components/Headers/Header";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import CheckoutScreenTable from "../../../components/tables/CheckoutScreenTable";
 
 const styles ={
@@ -51,7 +51,7 @@ const styles ={
   CheckoutBtn: {
     padding: "5px 16px",
     width: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     color: "#fff",
     border: "1px solid #f64d04",
     borderRadius: "0px 15px",

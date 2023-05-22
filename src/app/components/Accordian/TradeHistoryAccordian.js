@@ -39,7 +39,7 @@ function TradeHistoryAccordian({ tradeHistory }) {
   };
   return (
     <div>
-      <Accordion sx={{ backgroundColor: "black" }}>
+      <Accordion sx={{ backgroundColor: "rgba(32,32,32,255)" }}>
         <AccordionSummary
           expandIcon={<ExpandMoreIcon style={{ color: "white" }} />}
         >

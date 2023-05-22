@@ -80,7 +80,7 @@ function FixedDropNFTCard(props) {
         variant="outlined"
         sx={props.classes.cardHeight}
         style={{
-          backgroundColor: "black",
+          backgroundColor: "rgba(32,32,32,255)",
           borderRadius: 0,
           border: "1px solid #fff",
         }}

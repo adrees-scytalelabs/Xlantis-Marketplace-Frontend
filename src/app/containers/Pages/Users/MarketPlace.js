@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
+import Footer from "../../../components/Footers/NewFooter";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
 import { getMarketAuction, getMarketFixedPrice } from "../../../redux/getMarketPlaceDataSlice";
 import { Grid } from "@mui/material";

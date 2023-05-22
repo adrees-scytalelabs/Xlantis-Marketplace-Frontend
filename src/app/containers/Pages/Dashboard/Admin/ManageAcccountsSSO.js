@@ -12,7 +12,7 @@ const useStyles = {
     color: "#fff",
   },
   tabPanelProps: {
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
   },
 }
 

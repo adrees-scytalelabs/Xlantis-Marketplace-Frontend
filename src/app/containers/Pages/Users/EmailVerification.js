@@ -8,7 +8,7 @@ import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { getUserEmailVerification } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
-import Header from "../../../components/Headers/Header";
+import Header from "../../../components/Headers/NewHeader";
 
 function EmailVerification(props) {
   const { email, token } = useParams();

@@ -26,7 +26,7 @@ function PublishSuccessfully(props) {
               style={{
                 margin: "10px",
                 marginRight: 0,
-                backgroundColor: "black",
+                backgroundColor: "rgba(32,32,32,255)",
                 border: "1px solid #fff",
                 borderRadius: 0,
                 padding: 10,

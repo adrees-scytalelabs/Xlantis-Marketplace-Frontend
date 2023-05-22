@@ -22,7 +22,7 @@ const styles = {
   },
   paper: {
     border: "1px solid #fff",
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     marginTop: "70px",
     marginLeft:'2%',
     marginRight:'2%'
@@ -70,7 +70,7 @@ const styles = {
   buttons: {
     padding: "6px",
     width: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
     color: "#fff",
@@ -114,7 +114,7 @@ const makeTheme = createTheme({
       styleOverrides: {
         root: {
           minWidth: "350px",
-          backgroundColor: "#000",
+          backgroundColor: "rgba(32,32,32,255)",
           color:'white'
         },
       },

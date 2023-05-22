@@ -30,7 +30,7 @@ function TopUpForm({
           className="form-control newNftInput"
           min={0.1}
           step={0.1}
-          style={{ backgroundColor: "black", color: "white" }}
+          style={{ backgroundColor: "rgba(32,32,32,255)", color: "white" }}
           onChange={(e) => {
             setAmount(e.target.value);
           }}
@@ -42,7 +42,7 @@ function TopUpForm({
         <button
           className="newTemplateBtn mb-3"
           onClick={(e) => handleTopUpAmount(e)}
-          style={{ backgroundColor: "black", float: "right" }}
+          style={{ backgroundColor: "rgba(32,32,32,255)", float: "right" }}
         >
           Proceed
         </button>
