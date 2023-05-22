@@ -110,7 +110,7 @@ const customTheme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          backgroundColor: "#000",
+          backgroundColor: "rgba(32,32,32,255)",
           color: "#fff",
           border: "1px solid #fff",
         },

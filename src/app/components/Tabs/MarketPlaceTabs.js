@@ -77,7 +77,7 @@ const styles = {
     color: "#fff",
   },
   tabPanelProps: {
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
   },
 };
 
@@ -184,7 +184,7 @@ const MarketPlaceTabs = (props) => {
           <div
             className="row no-gutters align-items-center justify-content-center"
             style={{
-              backgroundColor: "#000",
+              backgroundColor: "rgba(32,32,32,255)",
             }}
           >
             <div className="col-auto">

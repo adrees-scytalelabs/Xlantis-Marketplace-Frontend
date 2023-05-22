@@ -10,7 +10,7 @@ const MessageCardDropNfts = (props) => {
         paddingTop: "80px",
         marginTop: "20px",
         marginBottom: "20px",
-        backgroundColor: "#000",
+        backgroundColor: "rgba(32,32,32,255)",
         marginLeft: "20%",
       }}
     >

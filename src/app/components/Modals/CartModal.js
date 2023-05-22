@@ -15,7 +15,7 @@ const styles = {
     borderRadius: 5,
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 5),
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     marginTop: "70px",
   },
   root: {
@@ -51,7 +51,7 @@ const styles = {
   buttons: {
     padding: "6px",
     width: "100%",
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
     color: "#fff",
@@ -75,7 +75,7 @@ const styles = {
   },
   CheckoutBtn: {
     padding: "5px 16px",
-    backgroundColor: "#000",
+    backgroundColor: "rgba(32,32,32,255)",
     color: "#fff",
     border: "1px solid #f64d04",
     borderRadius: "0px 15px",

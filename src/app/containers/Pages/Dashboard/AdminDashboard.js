@@ -239,7 +239,7 @@ function AdminDashboard(props) {
 
               <Dropdown.Menu
                 alignRight="true"
-                style={{ backgroundColor: "black" }}
+                style={{ backgroundColor: "rgba(32,32,32,255)" }}
               >
                 <Dropdown.Item>
                   <Link to="/dashboard" style={{ width: "100%" }}>
