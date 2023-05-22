@@ -2,8 +2,8 @@
   "name": "robotdrop",
   "version": "0.1.0",
   "private": true,
-  "browser": {
-    "assert": false
+  "engines": {
+    "node": "16.x.x"
   },
   "dependencies": {
     "@emotion/react": "^11.11.0",
