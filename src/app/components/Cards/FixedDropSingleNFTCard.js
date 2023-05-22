@@ -30,9 +30,6 @@ const FixedDropSingleNFTCard = (props) => {
       props.setSnackbarOpen(true);
     }
   };
-  useEffect(() => {
-    console.group("props of single nft", props);
-  });
   return (
     <Card style={{ backgroundColor: "black" }}>
       <CardContent>
