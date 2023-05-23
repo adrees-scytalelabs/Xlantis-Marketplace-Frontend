@@ -186,10 +186,10 @@ const FixedPriceDropNFTs = () => {
                   justifyContent="flex-start"
                   style={{ marginBottom: "24px" }}
                 >
-                  {dropData &&
-                    dropData.length &&
+                  {
+                   dropData.length!==0 &&
                     dropData?.map((i, index) => (
-                      orderListing?.map((j) => (
+                    
                       <Grid
                         item
                         xs={12}
@@ -204,7 +204,7 @@ const FixedPriceDropNFTs = () => {
                           titleImage={titleImage}
                           dropbanner={bannerImage}
                           data={i}
-                          orderListing={j}
+                          orderListing={orderListing[index]}
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
@@ -214,7 +214,7 @@ const FixedPriceDropNFTs = () => {
                           cardClasses={cardStyles}
                         />
                       </Grid>
-                    ))))}
+                    ))}
                 </Grid>
               </div>
             </div>

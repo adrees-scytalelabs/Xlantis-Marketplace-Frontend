@@ -951,7 +951,7 @@ const FixedDropSingleNFTHome = () => {
                                 ))}
                               </tbody>
                             </Table>
-                          ) : (
+                        ) : (
                             <MessageCard msg="No Properties"></MessageCard>
                           )}
                         </AccordionDetails>
