@@ -20,15 +20,54 @@ const FixedDropSingleNFTCard = (props) => {
       props.setSnackbarOpen(true);
     }
   };
-  let handleChange = (e) => {
-    if (e.target.value <= props.orderListing?.supply) {
-      props.setNum(e.target.value);
-    } else {
+  const handleKeyPress = (event) => {
+    const keyCode = event.which || event.keyCode;
+    const char = String.fromCharCode(keyCode);
+  
+    // Check if the character is a number
+    if (!/^\d+$/.test(char)) {
+      // If not, prevent the input
+      props.setSnackbarSeverity("error");
+      props.setSnackbarMessage("Value must be greater than zero");
+      props.setSnackbarOpen(true);
+      event.preventDefault();
+    }
+  };
+  
+  const handleChange = (event) => {
+    const value = event.target.value;
+     if (value === "") {
+      // Value is empty
+      props.setNum(value);
+    } else if (value < 1) {
+      // Value is less than 1
+      props.setSnackbarSeverity("error");
+      props.setSnackbarMessage("Value must be greater than or equal to 1");
+      props.setSnackbarOpen(true);
+    } else if (value > props.orderListing?.supply) {
+      // Value is greater than token supply
       props.setSnackbarSeverity("error");
       props.setSnackbarMessage("Value can't be greater than token supply");
       props.setSnackbarOpen(true);
+    } else {
+      props.setNum(value);
     }
   };
+  // const handleChange = (event) => {
+  //   const value = event.target.value;
+  //   if (value > 0 && value <= props.orderListing?.supply) {
+  //     props.setNum(value);
+  //   } else if (value > props.orderListing?.supply) {
+  //     props.setSnackbarSeverity("error");
+  //     props.setSnackbarMessage("Value can't be greater than token supply");
+  //     props.setSnackbarOpen(true);
+  //   }
+  //   else{
+  //     props.setSnackbarSeverity("error");
+  //     props.setSnackbarMessage("Value can't be egative");
+  //     props.setSnackbarOpen(true);
+  //   }
+  // };
   return (
     <Card style={{ backgroundColor: "rgba(32,32,32,255)" }}>
       <CardContent>
@@ -189,6 +228,7 @@ const FixedDropSingleNFTCard = (props) => {
                   type="number"
                   value={props.num ?? ""}
                   placeholder="1"
+                  onKeyPress={handleKeyPress}
                   onChange={handleChange}
                 />
                 <button
