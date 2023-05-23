@@ -17,7 +17,7 @@ import MyNFTs from "./User/MyNFTs";
 import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
 import TopupHistoryPageUser from "./User/TopupHistoryPageUser";
-
+import TopUp from "../../../components/Topup/TopUp";
 function UserDashboard(props) {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
@@ -41,6 +41,7 @@ function UserDashboard(props) {
     newCollection: "",
     myCubes: "",
     newRandomDrop: "",
+    topUp: "",
     topupHistory: "",
   });
 
@@ -107,6 +108,11 @@ function UserDashboard(props) {
               exact
               path={`marketPlace/drops/nfts/buy`}
               element={<NFTBuy setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`topUp`}
+              element={<TopUp setActiveTab={setActiveTab} />}
             />
             <Route
               exact

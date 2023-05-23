@@ -40,6 +40,11 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.topupHistory}>
+              <Link to={`/dashboard/topUp`}>
+                <HistoryIcon /> <span>Top Up</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topupHistory}>
               <Link to={`/dashboard/topup-history`}>
                 <HistoryIcon /> <span>Top-up History</span>
               </Link>
