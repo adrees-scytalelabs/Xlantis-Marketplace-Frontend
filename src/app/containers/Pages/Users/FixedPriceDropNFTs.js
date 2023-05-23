@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getNFTsFromDropPaginatedWOBody } from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
-import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
+import Footer from "../../../components/Footers/NewFooter";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 const styles = {
   root: {

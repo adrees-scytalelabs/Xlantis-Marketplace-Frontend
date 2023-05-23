@@ -10,7 +10,7 @@ import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
 const useStyles = {
   root: {
     minWidth: 250,
-    backgroundColor: "black",
+    backgroundColor: "rgba(32,32,32,255)",
   },
   title: {
     fontSize: 14,

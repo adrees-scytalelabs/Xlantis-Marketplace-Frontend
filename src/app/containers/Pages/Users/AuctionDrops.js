@@ -8,8 +8,8 @@ import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { getDropsPaginated } from "../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
-import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
+import Footer from "../../../components/Footers/NewFooter";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import MessageCard from "../../../components/MessageCards/MessageCard";
 
 const styles = {

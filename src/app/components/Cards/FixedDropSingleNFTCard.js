@@ -30,7 +30,7 @@ const FixedDropSingleNFTCard = (props) => {
     }
   };
   return (
-    <Card style={{ backgroundColor: "black" }}>
+    <Card style={{ backgroundColor: "rgba(32,32,32,255)" }}>
       <CardContent>
         <Row style={{ paddingBottom: "5px" }}>
           <Col xs={6}>
@@ -187,7 +187,7 @@ const FixedDropSingleNFTCard = (props) => {
                 <input
                   className="responsive-field-input"
                   type="number"
-                  value={props.num}
+                  value={props.num ?? ""}
                   placeholder="1"
                   onChange={handleChange}
                 />

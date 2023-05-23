@@ -50,7 +50,7 @@ export const createNewSuperAdminTemplates = (body) => {
 };
 
 export const topUpAmount = (body) => {
-  return Axios.post(`/usd-payments/admin/topup`, body);
+  return Axios.post(`/top-up/`, body);
 };
 
 export const createNewDrop = (body) => {
@@ -416,6 +416,14 @@ export const getTopUpHistoryOfUser = () => {
 
 export const checkDomain = (params) => {
   return Axios.get(`/v1-sso/user/check-domain`, { params: params });
+};
+
+export const getMaticBalance = () => {
+  return Axios.get(`/wallet-analytics/funds/`);
+};
+
+export const getDropCategories = () => {
+  return Axios.get(`/drop/categories`);
 };
 
 //DELETE REQUESTS

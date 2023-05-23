@@ -34,8 +34,8 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import FixedDropSingleNFTCard from "../../../../components/Cards/FixedDropSingleNFTCard";
-import Footer from "../../../../components/Footers/Footer";
-import HeaderHome from "../../../../components/Headers/Header";
+import Footer from "../../../../components/Footers/NewFooter";
+import HeaderHome from "../../../../components/Headers/NewHeader";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
@@ -57,7 +57,7 @@ const customTheme = createTheme({
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
-        backgroundColor: "black",
+        backgroundColor: "rgba(32,32,32,255)",
       },
       expandIcon: {
         color: "white",
@@ -66,7 +66,7 @@ const customTheme = createTheme({
     MuiAccordionDetails: {
       root: {
         padding: "8px 0px 16px",
-        backgroundColor: "black",
+        backgroundColor: "rgba(32,32,32,255)",
       },
     },
     MuiOutlinedInput: {
@@ -99,7 +99,7 @@ const inputStyle = {
   fontSize: "18px",
 
   border: "none",
-  backgroundColor: "black",
+  backgroundColor: "rgba(32,32,32,255)",
   color: "white",
   textAlign: "center",
 };
@@ -555,24 +555,31 @@ const FixedDropSingleNFTHome = () => {
     return hex;
   };
   let handlePurchase = async () => {
-    console.log("Authorization", sessionStorage.getItem("Authorization"));
-    console.log("Nft detail: ", nftData);
-    let data = {
-      dropId: nftData?.dropId,
-      nftId: nftData?._id,
-      supply: num,
-    };
-    console.log("Data", data);
-    console.log("Purchase Function Called");
-    console.log("NFT ID");
-    marketplaceBuy(data)
-      .then((response) => {
-        localStorage.setItem("sessionId", response.data.checkoutSessionId);
-        window.location.replace(response.data.stripeSession);
-      })
-      .catch((error) => {
-        console.log("Transaction hash on backend error: ", error.response);
-      });
+    if (num < 0 || num === 0) {
+      let variant = "error";
+      setSnackbarMessage("Supply must be greater than 0");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else {
+      console.log("Authorization", sessionStorage.getItem("Authorization"));
+      console.log("Nft detail: ", nftData);
+      let data = {
+        dropId: nftData?.dropId,
+        nftId: nftData?._id,
+        supply: num,
+      };
+      console.log("Data", data);
+      console.log("Purchase Function Called");
+      console.log("NFT ID");
+      marketplaceBuy(data)
+        .then((response) => {
+          localStorage.setItem("sessionId", response.data.checkoutSessionId);
+          window.location.replace(response.data.stripeSession);
+        })
+        .catch((error) => {
+          console.log("Transaction hash on backend error: ", error.response);
+        });
+    }
   };
 
   let handleBuy = async () => {
@@ -878,7 +885,7 @@ const FixedDropSingleNFTHome = () => {
                       sx={{
                         flexGrow: 1,
                         width: "100%",
-                        backgroundColor: "black",
+                        backgroundColor: "rgba(32,32,32,255)",
                       }}
                     >
                       <div style={{ marginTop: "20px" }}>
@@ -944,7 +951,7 @@ const FixedDropSingleNFTHome = () => {
                                 ))}
                               </tbody>
                             </Table>
-                          ) : (
+                        ) : (
                             <MessageCard msg="No Properties"></MessageCard>
                           )}
                         </AccordionDetails>
@@ -1058,7 +1065,7 @@ const FixedDropSingleNFTHome = () => {
                                 value={bidExpiryTime}
                                 style={{
                                   color: "white",
-                                  backgroundColor: "black",
+                                  backgroundColor: "rgba(32,32,32,255)",
                                 }}
                               />
                             </div>

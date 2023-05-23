@@ -28,7 +28,7 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
         <input
           type="number"
           required
-          value={values}
+          value={values ?? ""}
           placeholder="0"
           className="form-control newNftInput"
           onChange={(e) => {

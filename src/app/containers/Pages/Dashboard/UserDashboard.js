@@ -4,7 +4,7 @@ import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import HeaderHome from "../../../components/Headers/Header";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import AuctionNFT from "./Admin/AuctionNFT";
 import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";

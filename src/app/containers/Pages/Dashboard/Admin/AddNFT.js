@@ -207,7 +207,6 @@ function AddNFT(props) {
     let data = {
       amount: amount,
     };
-    console.log("Before calling top up endpoint",data);
     topUpAmount(data).then(
       (response) => {
         console.log("Response from top up endpoint: ", response);
@@ -944,6 +943,22 @@ function AddNFT(props) {
     setOpenEditModal(false);
   };
 
+  const removeSelectedNFTItems = () => {
+    setNftName("");
+    setNftId("");
+    setNftURI("");
+    setTokenId("");
+    setNftTokenSupply(0);
+  };
+
+  const removeSelectedCollectionItems = () => {
+    setCollection("");
+    setCollectionId("");
+    setNftContractAddress("");
+    setNftList([]);
+    removeSelectedNFTItems();
+  };
+
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -972,8 +987,9 @@ function AddNFT(props) {
                   isDisabled={isDisabled}
                   placeholder="Select Collection"
                   onChange={(e, value) => {
-                    if (value == null) setCollection("");
-                    else {
+                    if (value == null) {
+                      removeSelectedCollectionItems();
+                    } else {
                       console.log("hereee");
                       setCollection(value.name);
                       setCollectionId(value._id);
@@ -992,8 +1008,9 @@ function AddNFT(props) {
                   isDisabled={isDisabled}
                   placeholder="Select NFT"
                   onChange={(e, value) => {
-                    if (value == null) setNftName("");
-                    else {
+                    if (value == null) {
+                      removeSelectedNFTItems();
+                    } else {
                       console.log("hereee");
                       console.log("Selected NFT values: ", value);
                       setNftName(value.title);

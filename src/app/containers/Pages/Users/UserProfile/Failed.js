@@ -1,7 +1,7 @@
 import { Typography } from '@mui/material';
 import React from "react";
 import { Link } from "react-router-dom";
-import HeaderHome from "../../../../components/Headers/Header";
+import HeaderHome from "../../../../components/Headers/NewHeader";
 import CancelIcon from '@mui/icons-material/Cancel';
 
 function Failed() {
