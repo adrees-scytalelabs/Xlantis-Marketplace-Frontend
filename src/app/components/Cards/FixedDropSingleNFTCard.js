@@ -1,5 +1,5 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Row } from "react-bootstrap";
 const FixedDropSingleNFTCard = (props) => {
   let incNum = (max) => {
@@ -37,15 +37,12 @@ const FixedDropSingleNFTCard = (props) => {
   const handleChange = (event) => {
     const value = event.target.value;
      if (value === "") {
-      // Value is empty
       props.setNum(value);
     } else if (value < 1) {
-      // Value is less than 1
       props.setSnackbarSeverity("error");
       props.setSnackbarMessage("Value must be greater than or equal to 1");
       props.setSnackbarOpen(true);
     } else if (value > props.orderListing?.supply) {
-      // Value is greater than token supply
       props.setSnackbarSeverity("error");
       props.setSnackbarMessage("Value can't be greater than token supply");
       props.setSnackbarOpen(true);
@@ -53,21 +50,6 @@ const FixedDropSingleNFTCard = (props) => {
       props.setNum(value);
     }
   };
-  // const handleChange = (event) => {
-  //   const value = event.target.value;
-  //   if (value > 0 && value <= props.orderListing?.supply) {
-  //     props.setNum(value);
-  //   } else if (value > props.orderListing?.supply) {
-  //     props.setSnackbarSeverity("error");
-  //     props.setSnackbarMessage("Value can't be greater than token supply");
-  //     props.setSnackbarOpen(true);
-  //   }
-  //   else{
-  //     props.setSnackbarSeverity("error");
-  //     props.setSnackbarMessage("Value can't be egative");
-  //     props.setSnackbarOpen(true);
-  //   }
-  // };
   return (
     <Card style={{ backgroundColor: "rgba(32,32,32,255)" }}>
       <CardContent>
