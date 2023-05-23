@@ -13,6 +13,7 @@ import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCar
 import TradeHistoryAccordian from "../../../../components/Accordian/TradeHistoryAccordian";
 import NFTSale from "../../../../components/Modals/NFTSale";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import SummaryModal from "../../../../components/Modals/SummaryModal";
 
 const styles = {
   root: {
@@ -71,6 +72,7 @@ const SingleNftDetail = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [nftType, setNftType] = useState("1155");
   const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
+  const [summaryModal,setSummaryModal]= useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [startTimeStamp, setStartTimeStamp] = useState(
@@ -82,7 +84,15 @@ const SingleNftDetail = (props) => {
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const handleModalClose = () => setShowModal(false);
   const handleModalOpen = () => setShowModal(true);
+  const handleSummaryModalClose = () => {
+    setSummaryModal(false)
+    setShowModal(true)
+  };
+  const handleSummaryModalOpen = () => {
+    setSummaryModal(true)
+    setShowModal(false)
 
+  }
   let getTradeHistoryDetail = () => {
     getTradeHistory(nftId)
       .then((response) => {
@@ -198,6 +208,7 @@ const SingleNftDetail = (props) => {
           <NFTSale
             show={showModal}
             handleClose={handleModalClose}
+            openSummaryModal={handleSummaryModalOpen}
             setWorkProgressModalShow={setWorkProgressModalShow}
             nftType={nftType}
             setNftType={setNftType}
@@ -211,6 +222,7 @@ const SingleNftDetail = (props) => {
             setEndTime={setEndTime}
             endTime={endTime}
           />
+          <SummaryModal show={summaryModal} handleClose={handleSummaryModalClose}></SummaryModal>
           <WorkInProgressModal
             show={workProgressModalShow}
             handleClose={() => setWorkProgressModalShow(false)}

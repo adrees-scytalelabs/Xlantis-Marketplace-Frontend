@@ -10852,3 +10852,6 @@ object:hover {
     font-size: 1px;
   }
 }
+.custom-header .close {
+  color: #fff;
+}

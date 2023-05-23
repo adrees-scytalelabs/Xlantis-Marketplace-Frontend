@@ -19,6 +19,7 @@ const NFTSale = ({
   setEndTimeStamp,
   setEndTime,
   endTime,
+  openSummaryModal,
 }) => {
   return (
     <Modal show={show} onHide={handleClose} centered>
@@ -28,6 +29,7 @@ const NFTSale = ({
           border: "1px solid white",
           backgroundColor: "black",
         }}
+        className="custom-header"
       >
         <Modal.Title style={{ color: "white" }}>List for Sale</Modal.Title>
       </Modal.Header>
@@ -97,13 +99,8 @@ const NFTSale = ({
               <DateTimePicker
                 className="form-control"
                 onChange={(e) => {
-                //   console.log(e);
-                //   console.log("START", Math.round(e.getTime() / 1000));
-                //   console.log("NOW", Math.round(Date.now() / 1000));
-
                   setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
                   setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
-
                   setStartTime(e);
                 }}
                 value={startTime}
@@ -116,8 +113,6 @@ const NFTSale = ({
               <DateTimePicker
                 className="form-control"
                 onChange={(e) => {
-                //   console.log(e);
-                //   console.log("e.getTime()", Math.round(e.getTime() / 1000));
                   setEndTimeStamp(Math.round(e.getTime() / 1000));
                   setEndTime(e);
                 }}
@@ -142,7 +137,7 @@ const NFTSale = ({
         </Button>
         <Button
           style={{ backgroundColor: "transparent" }}
-          onClick={handleClose}
+          onClick={openSummaryModal}
         >
           Confirm
         </Button>
