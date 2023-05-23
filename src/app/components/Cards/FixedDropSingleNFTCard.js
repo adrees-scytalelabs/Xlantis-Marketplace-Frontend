@@ -23,8 +23,7 @@ const FixedDropSingleNFTCard = (props) => {
   let handleChange = (e) => {
     if (e.target.value <= props.orderListing?.supply) {
       props.setNum(e.target.value);
-    } 
-    else {
+    } else {
       props.setSnackbarSeverity("error");
       props.setSnackbarMessage("Value can't be greater than token supply");
       props.setSnackbarOpen(true);
@@ -33,8 +32,8 @@ const FixedDropSingleNFTCard = (props) => {
   return (
     <Card style={{ backgroundColor: "black" }}>
       <CardContent>
-        <Row style={{paddingBottom:'5px'}}>
-          <Col>
+        <Row style={{ paddingBottom: "5px" }}>
+          <Col xs={6}>
             <Typography
               variant="body1"
               component="p"
@@ -43,7 +42,7 @@ const FixedDropSingleNFTCard = (props) => {
               <strong>NFT Title </strong>
             </Typography>
           </Col>
-          <Col xs={10}>
+          <Col xs={6} md={3} lg={2}>
             <Typography
               className="text-center"
               variant="body1"
@@ -57,7 +56,7 @@ const FixedDropSingleNFTCard = (props) => {
             </Typography>
           </Col>
         </Row>
-        <Row style={{paddingBottom:'5px'}}>
+        <Row style={{ paddingBottom: "5px" }}>
           <Col xs={6}>
             <Typography
               variant="body1"
@@ -68,7 +67,9 @@ const FixedDropSingleNFTCard = (props) => {
             </Typography>
           </Col>
           <Col
-            xs={2}
+            xs={6}
+            md={3}
+            lg={2}
             className="text-center"
             style={{
               color: "white",
@@ -79,8 +80,8 @@ const FixedDropSingleNFTCard = (props) => {
             {props.nftData.description}
           </Col>
         </Row>
-        <Row style={{paddingBottom:'5px'}}>
-          <Col>
+        <Row style={{ paddingBottom: "5px" }}>
+          <Col xs={6}>
             <Typography
               variant="body1"
               component="p"
@@ -90,7 +91,9 @@ const FixedDropSingleNFTCard = (props) => {
             </Typography>
           </Col>
           <Col
-            xs={10}
+            xs={6}
+            md={3}
+            lg={2}
             className="text-center"
             style={{
               color: "white",
@@ -102,8 +105,8 @@ const FixedDropSingleNFTCard = (props) => {
           </Col>
         </Row>
         {props.nftData.supplyType ? (
-          <Row style={{paddingBottom:'5px'}}>
-            <Col>
+          <Row style={{ paddingBottom: "5px" }}>
+            <Col xs={6}>
               <Typography
                 variant="body1"
                 component="p"
@@ -116,7 +119,9 @@ const FixedDropSingleNFTCard = (props) => {
               </Typography>
             </Col>
             <Col
-              xs={10}
+              xs={6}
+              md={3}
+              lg={2}
               className="text-center"
               style={{
                 color: "white",
@@ -129,7 +134,7 @@ const FixedDropSingleNFTCard = (props) => {
           </Row>
         ) : null}
         {props.orderListing.supply ? (
-          <Row style={{paddingBottom:'5px'}}>
+          <Row style={{ paddingBottom: "5px" }}>
             <Col xs={6}>
               <Typography
                 variant="body1"
@@ -143,7 +148,9 @@ const FixedDropSingleNFTCard = (props) => {
               </Typography>
             </Col>
             <Col
-              xs={2}
+              xs={6}
+              md={3}
+              lg={2}
               className="text-center"
               style={{
                 color: "white",
@@ -169,7 +176,7 @@ const FixedDropSingleNFTCard = (props) => {
                 <strong>Select Supply </strong>
               </Typography>
             </Col>
-            <Col xs={6} md={1} lg={2}>
+            <Col xs={6} md={3} lg={2}>
               <div
                 className="responsive-field"
                 style={{ border: "1px solid red", width: "100%" }}
