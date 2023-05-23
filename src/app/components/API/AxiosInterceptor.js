@@ -50,7 +50,7 @@ export const createNewSuperAdminTemplates = (body) => {
 };
 
 export const topUpAmount = (body) => {
-  return Axios.post(`/topup/`, body);
+  return Axios.post(`/top-up/`, body);
 };
 
 export const createNewDrop = (body) => {
