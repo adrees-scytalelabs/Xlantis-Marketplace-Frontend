@@ -37,6 +37,7 @@ import TopUp from "./Admin/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -54,6 +55,20 @@ function AdminDashboard(props) {
   const { notification, notificationLoading } = useSelector(
     (store) => store.getHeaderNotification
   );
+
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   let jwtDecoded, jwt;
   jwt = sessionStorage.getItem("Authorization");
   if (jwt !== null) {
@@ -342,7 +357,14 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`createNewCollection`}
-              element={<NewCollection setActiveTab={setActiveTab} />}
+              element={
+                <NewCollection
+                  setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
+                />
+              }
             />
             <Route
               exact
@@ -408,6 +430,12 @@ function AdminDashboard(props) {
           </Routes>
         </div>
       </div>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

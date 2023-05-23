@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
@@ -7,6 +7,7 @@ import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
 import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function SavedTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -16,7 +17,7 @@ function SavedTemplate(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -28,7 +29,9 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
-  const { templatesData, loading } = useSelector((store) => store.getSavedTemplateData);
+  const { templatesData, loading } = useSelector(
+    (store) => store.getSavedTemplateData
+  );
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -71,8 +74,7 @@ function SavedTemplate(props) {
       if (loading === 1) {
         setTemplateData(templatesData);
         handleCloseBackdrop();
-      }
-      else if (loading === 2) {
+      } else if (loading === 2) {
         handleCloseBackdrop();
         let variant = "error";
         setSnackbarMessage("Unable to Create Template.");
@@ -91,7 +93,7 @@ function SavedTemplate(props) {
   };
   useEffect(() => {
     handleSavedTemplate();
-  }, [loading])
+  }, [loading]);
   useEffect(() => {
     setDeleteState("");
 
@@ -129,14 +131,18 @@ function SavedTemplate(props) {
           </div>
         </div>
       </div>
-      <div className="row no-gutters">
-        <SuperAdminPropertiesTable
-          templateData={templateData}
-          handleOpen={handleOpen}
-          handleDeleteModal={handleDeleteModal}
-          handleUpdatedData={handleUpdatedData}
-        ></SuperAdminPropertiesTable>
-      </div>
+      {templateData.length ? (
+        <div className="row no-gutters">
+          <SuperAdminPropertiesTable
+            templateData={templateData}
+            handleOpen={handleOpen}
+            handleDeleteModal={handleDeleteModal}
+            handleUpdatedData={handleUpdatedData}
+          />
+        </div>
+      ) : (
+        <MessageCard msg="No templates created" />
+      )}
       <CircularBackdrop open={open} />
       {modalState === true && (
         <TemplateDetails
@@ -146,14 +152,19 @@ function SavedTemplate(props) {
           setTemplateData={setModalData}
           updateEnabled={updateModal}
           handleUpdateData={handleUpdatedData}
-        ></TemplateDetails>
+        />
       )}
       <DeleteModal
         show={deleteState}
         handleClose={handleClose}
         handleDelete={handleDeleteTemplate}
-      ></DeleteModal>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }
