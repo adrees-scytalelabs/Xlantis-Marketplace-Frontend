@@ -6,6 +6,7 @@ import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
+import CategoryIcon from "@mui/icons-material/Category";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
@@ -96,7 +97,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
-                <HistoryIcon /> <span>Categories</span>
+                <CategoryIcon /> <span>Categories</span>
               </Link>
             </li>
             <li className="menu-title mt-5">
