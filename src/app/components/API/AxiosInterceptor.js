@@ -426,6 +426,12 @@ export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
 
+export const getDropsByCategories = (category, start, end) => {
+  return Axios.get(`/drop/category-drops/${category}`, {
+    params: { start: start, end: end },
+  });
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

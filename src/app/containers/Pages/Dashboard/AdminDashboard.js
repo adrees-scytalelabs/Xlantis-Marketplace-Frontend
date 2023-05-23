@@ -15,6 +15,7 @@ import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NotificationList from "../../../components/Cards/NotificationList Card";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
+import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import { getHeaderNotification } from "../../../redux/getHeaderNotificationSlice";
 import AddNFT from "./Admin/AddNFT";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
@@ -24,6 +25,7 @@ import CollectionNfts from "./Admin/CollectionNfts";
 import DropApproval from "./Admin/DropApproval";
 import DropNfts from "./Admin/DropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
+import DropsCategories from "./Admin/DropsCategories";
 import MarketPlace from "./Admin/MarketPlace";
 import MyCollection from "./Admin/MyCollection";
 import MyDropNFTs from "./Admin/MyDropNfts";
@@ -37,7 +39,7 @@ import TopUp from "./Admin/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
-import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
+import DropsInCategories from "./Admin/DropsInCategories";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -150,6 +152,7 @@ function AdminDashboard(props) {
     myDrops: "",
     topUp: "",
     topupHistory: "",
+    categories: "",
   });
 
   return (
@@ -416,6 +419,18 @@ function AdminDashboard(props) {
               exact
               path={`topup-history`}
               element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              exact
+              path={`dropsCategories`}
+              element={<DropsCategories setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              exact
+              path={`dropsCategories/drops/:category`}
+              element={<DropsInCategories setActiveTab={setActiveTab} />}
             />
 
             <Route

@@ -94,6 +94,11 @@ function AdminSidebar(props) {
                 <HistoryIcon /> <span>Top-up Hsitory</span>
               </Link>
             </li>
+            <li className={props.activeTab.categories}>
+              <Link to={`${props.match}/dropsCategories`}>
+                <HistoryIcon /> <span>Caegories</span>
+              </Link>
+            </li>
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>
