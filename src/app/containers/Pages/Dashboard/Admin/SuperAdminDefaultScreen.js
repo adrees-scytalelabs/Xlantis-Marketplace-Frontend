@@ -70,7 +70,7 @@ function SuperAdminDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match}/accounts`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -88,7 +88,7 @@ function SuperAdminDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match}/manageAccounts`}
+            linkTo={``}
             state={{ current: "enabled" }}
             hoverH4={
               hover
@@ -107,7 +107,7 @@ function SuperAdminDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match}/manageAccounts`}
+            linkTo={``}
             state={{ current: "disabled" }}
             hoverH4={
               hover
@@ -126,7 +126,7 @@ function SuperAdminDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match}/verifiedAccounts`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -144,7 +144,7 @@ function SuperAdminDefaultScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${props.match}/accountApproval`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"

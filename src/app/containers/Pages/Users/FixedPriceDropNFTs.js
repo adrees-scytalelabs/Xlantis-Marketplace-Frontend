@@ -5,8 +5,8 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getNFTsFromDropPaginatedWOBody } from "../../../components/API/AxiosInterceptor";
 import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
-import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
+import Footer from "../../../components/Footers/NewFooter";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 const styles = {
   root: {
@@ -186,10 +186,10 @@ const FixedPriceDropNFTs = () => {
                   justifyContent="flex-start"
                   style={{ marginBottom: "24px" }}
                 >
-                  {dropData &&
-                    dropData.length &&
+                  {
+                   dropData.length!==0 &&
                     dropData?.map((i, index) => (
-                      orderListing?.map((j) => (
+                    
                       <Grid
                         item
                         xs={12}
@@ -204,7 +204,7 @@ const FixedPriceDropNFTs = () => {
                           titleImage={titleImage}
                           dropbanner={bannerImage}
                           data={i}
-                          orderListing={j}
+                          orderListing={orderListing[index]}
                           type={"Epic"}
                           saleType={saleType}
                           description={description}
@@ -214,7 +214,7 @@ const FixedPriceDropNFTs = () => {
                           cardClasses={cardStyles}
                         />
                       </Grid>
-                    ))))}
+                    ))}
                 </Grid>
               </div>
             </div>

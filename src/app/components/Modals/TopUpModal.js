@@ -25,7 +25,7 @@ function TopUpModal(props) {
         closeButton
         className="text-center"
         style={{
-          backgroundColor: "black",
+          backgroundColor: "rgba(32,32,32,255)",
         }}
       >
         <Typography
@@ -41,7 +41,7 @@ function TopUpModal(props) {
           border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
-          backgroundColor: "black",
+          backgroundColor: "rgba(32,32,32,255)",
           justifyContent: "center",
         }}
       >
@@ -72,7 +72,7 @@ function TopUpModal(props) {
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={0.1}
-              style={{ backgroundColor: "black", color: "white" }}
+              style={{ backgroundColor: "rgba(32,32,32,255)", color: "white" }}
               onChange={(e) => {
                 props.setAmount(e.target.value);
               }}
@@ -82,7 +82,7 @@ function TopUpModal(props) {
       </Modal.Body>
       <Modal.Footer
         style={{
-          backgroundColor: "black",
+          backgroundColor: "rgba(32,32,32,255)",
           border: "1px solid white",
           borderTop: "none",
         }}
@@ -90,14 +90,14 @@ function TopUpModal(props) {
         <button
           className="newTemplateBtn mb-3"
           onClick={handleClose}
-          style={{ backgroundColor: "black" }}
+          style={{ backgroundColor: "rgba(32,32,32,255)" }}
         >
           Close
         </button>
         <button
           className="newTemplateBtn mb-3"
           onClick={(e) => handleProceed()}
-          style={{ backgroundColor: "black" }}
+          style={{ backgroundColor: "rgba(32,32,32,255)" }}
         >
           Proceed
         </button>

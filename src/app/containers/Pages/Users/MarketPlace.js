@@ -1,16 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import Footer from "../../../components/Footers/Footer";
-import HeaderHome from "../../../components/Headers/Header";
+import { useDispatch, useSelector } from "react-redux";
+import Footer from "../../../components/Footers/NewFooter";
+import HeaderHome from "../../../components/Headers/NewHeader";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
-import { getMarketAuction, getMarketFixedPrice } from "../../../redux/getMarketPlaceDataSlice";
+import {
+  getMarketAuction,
+  getMarketFixedPrice,
+} from "../../../redux/getMarketPlaceDataSlice";
 import { Grid } from "@mui/material";
 
 function MarketPlace(props) {
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
-  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } = useSelector((store) => store.getMarketPlaceData);
+  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } =
+    useSelector((store) => store.getMarketPlaceData);
   const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
@@ -22,17 +26,21 @@ function MarketPlace(props) {
 
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketFixedPrice({ start, end }))
+    dispatch(getMarketFixedPrice({ start, end }));
     if (fixedPriceLoading) {
       for (let i = 0; i < fixedPriceData.length; i++) {
-        if (fixedPriceData[i].status === "active" || fixedPriceData[i].status === "pending") {
-          setFixedPriceDrop([...fixedPriceDrop, fixedPriceData[i]]);
+        if (
+          fixedPriceData[i].status === "active" ||
+          fixedPriceData[i].status === "pending"
+        ) {
+          setFixedPriceDrop((prevValue) => {
+            return [...prevValue, fixedPriceData[i]];
+          });
         }
       }
-     // setFixedPriceDrop(fixedPriceData);
+      // setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
-    }
-    else if (fixedPriceLoading === 2) {
+    } else if (fixedPriceLoading === 2) {
       handleCloseBackdrop();
     }
   };
@@ -43,8 +51,7 @@ function MarketPlace(props) {
     if (auctionLoading === 1) {
       setBidableDrop(auctionData);
       handleCloseBackdrop();
-    }
-    else if (auctionLoading === 2) {
+    } else if (auctionLoading === 2) {
       handleCloseBackdrop();
     }
   };

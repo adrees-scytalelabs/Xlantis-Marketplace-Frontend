@@ -5,6 +5,7 @@ import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import {
   createNewDrop,
+  getDropCategories,
   uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -22,6 +23,7 @@ import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import DropBannerUpload from "../../../../components/Upload/DropBannerUpload";
+import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 
 const makeTheme = createTheme({
   overrides: {
@@ -71,6 +73,8 @@ function NewDrop(props) {
   const [, setImageType] = useState("");
   const [nftType, setNftType] = useState("1155");
   const [versionB, setVersionB] = useState("");
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState("");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
@@ -86,8 +90,20 @@ function NewDrop(props) {
 
   const navigate = useNavigate();
 
+  const getCategories = () => {
+    getDropCategories()
+      .then((response) => {
+        console.log("Getting drop categories: ", response);
+        setCategoriesList(response.data.categories);
+      })
+      .catch((error) => {
+        console.log("Error from getting drop categories: ", error);
+      });
+  };
+
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
+    getCategories();
 
     props.setActiveTab({
       dashboard: "",
@@ -148,6 +164,17 @@ function NewDrop(props) {
         handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
+      } else if (
+        category === "" ||
+        category === null ||
+        category === undefined
+      ) {
+        let variant = "error";
+        setSnackbarMessage("Please Select category to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+        setIsSaving(false);
+        handleCloseBackdrop();
       } else {
         let dropID;
         let DropData = {
@@ -157,6 +184,7 @@ function NewDrop(props) {
           description: description,
           saleType: saleType,
           dropType: nftType,
+          category: category,
         };
         console.log("Drop Data", DropData);
         createNewDrop(DropData)
@@ -466,6 +494,20 @@ function NewDrop(props) {
                       setDescription={setDescription}
                     />
                   </div>
+                  <AutocompleteAddNft
+                    label="Select Category"
+                    options={categoriesList}
+                    placeholder={"Select Category"}
+                    onChange={(e, newValue) => {
+                      if (newValue == "") {
+                        setCategory();
+                      } else {
+                        console.log("New value is: ", newValue);
+                        setCategory(newValue);
+                      }
+                    }}
+                    type="category"
+                  />
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <SelectNFTAndSaleType

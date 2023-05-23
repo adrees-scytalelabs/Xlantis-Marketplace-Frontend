@@ -39,7 +39,7 @@ const customTheme = createTheme({
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
-        backgroundColor: "black",
+        backgroundColor: "rgba(32,32,32,255)",
       },
       expandIcon: {
         color: "white",
@@ -48,7 +48,7 @@ const customTheme = createTheme({
     MuiAccordionDetails: {
       root: {
         padding: "8px 0px 16px",
-        backgroundColor: "black",
+        backgroundColor: "rgba(32,32,32,255)",
       },
     },
     MuiOutlinedInput: {

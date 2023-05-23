@@ -14,7 +14,7 @@ export const getUserCount = createAsyncThunk(
     try {
 
       const resp = await axios(`/v1-sso/user/getCounts`);
-
+      console.log("data ofcount",resp.data);
       return resp.data;
     } catch (error) {
       console.log(error);

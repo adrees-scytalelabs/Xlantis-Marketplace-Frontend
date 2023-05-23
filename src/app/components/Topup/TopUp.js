@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-// import { topUpAmount } from "../API/AxiosInterceptor";
-import { topUpAmount } from "../API/AxiosInterceptor";
-import CircularBackdrop from "../Backdrop/Backdrop";
-import TopUpForm from "../Forms/TopUpForm";
-import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import {
+  getMaticBalance,
+  topUpAmount,
+} from "../../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import TopUpForm from "../../../../components/Forms/TopUpForm";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 function TopUp(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -14,7 +16,7 @@ function TopUp(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -28,10 +30,12 @@ function TopUp(props) {
   };
   let location = useLocation();
   const [amount, setAmount] = useState(0.1);
+  const [balance, setBalance] = useState(0);
+
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
-    const sessionId = localStorage.getItem('sessionId')
+    const sessionId = localStorage.getItem("sessionId");
     if (id != null) {
       if (sessionId == id) {
         const active = searchParams.get("active");
@@ -40,23 +44,23 @@ function TopUp(props) {
           setSnackbarMessage("Top Up Successfully.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
-          localStorage.removeItem('sessionId');
+          localStorage.removeItem("sessionId");
           const searchParams = new URLSearchParams(window.location.search);
-          searchParams.delete('session_id');
-          searchParams.delete('active');
+          searchParams.delete("session_id");
+          searchParams.delete("active");
           const newUrl = `${window.location.pathname}`;
-          window.history.replaceState(null, '', newUrl);
+          window.history.replaceState(null, "", newUrl);
         } else {
           let variant = "error";
           setSnackbarMessage("Top Up Unsccessfully.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
-          localStorage.removeItem('sessionId');
+          localStorage.removeItem("sessionId");
           const searchParams = new URLSearchParams(window.location.search);
-          searchParams.delete('session_id');
-          searchParams.delete('active');
+          searchParams.delete("session_id");
+          searchParams.delete("active");
           const newUrl = `${window.location.pathname}`;
-          window.history.replaceState(null, '', newUrl);
+          window.history.replaceState(null, "", newUrl);
         }
       }
     }
@@ -72,6 +76,21 @@ function TopUp(props) {
       topUp: "active",
     });
   }, []);
+
+  const getBalance = () => {
+    getMaticBalance()
+      .then((response) => {
+        setBalance(response.data?.maticBalance);
+      })
+      .catch((error) => {
+        console.log("Error from getting balance: ", error);
+      });
+  };
+
+  useEffect(() => {
+    getBalance();
+  }, []);
+
   const handleTopUpAmount = (e) => {
     handleShowBackdrop();
     e.preventDefault();
@@ -80,7 +99,7 @@ function TopUp(props) {
     };
     topUpAmount(data)
       .then((response) => {
-        localStorage.setItem('sessionId', response.data.checkoutSessionId);
+        localStorage.setItem("sessionId", response.data.checkoutSessionId);
         window.location.replace(response.data.sessionUrl);
         handleCloseBackdrop();
       })
@@ -118,9 +137,15 @@ function TopUp(props) {
         amount={amount}
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
+        balance={balance}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

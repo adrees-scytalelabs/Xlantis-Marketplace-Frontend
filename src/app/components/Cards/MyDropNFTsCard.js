@@ -8,7 +8,7 @@ const MyDropNFTsCard = (props) => {
     <Card
       style={{
         height: "100%",
-        backgroundColor: "black",
+        backgroundColor: "rgba(32,32,32,255)",
         border: "1px solid white",
         color: "white",
       }}

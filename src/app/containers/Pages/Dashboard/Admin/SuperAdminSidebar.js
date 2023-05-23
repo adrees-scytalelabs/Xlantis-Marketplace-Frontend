@@ -95,16 +95,13 @@ function SuperAdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li
-              className={props.activeTab.adminStats}
-              onClick={closedDropdown}
-            >
+            <li className={props.activeTab.adminStats} onClick={closedDropdown}>
               <Link to={`${path}/adminStats`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Admin Stats</span>
               </Link>
             </li>
-            <li
+            {/* <li
               className={props.activeTab.verifiedAccounts}
               onClick={closedDropdown}
             >
@@ -112,8 +109,8 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Verified Accounts</span>
               </Link>
-            </li>
-            <li
+            </li> */}
+            {/* <li
               className={props.activeTab.accountApproval}
               onClick={closedDropdown}
             >
@@ -121,7 +118,7 @@ function SuperAdminSidebar(props) {
                 <i className="fas fa-layer-group"></i>
                 <span>Approve Accounts</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={props.activeTab.manageAccounts}
               onClick={changeStyle}
@@ -132,7 +129,7 @@ function SuperAdminSidebar(props) {
                 <i className="fa fa-caret-down"></i>
               </Link>
               <div className={`${style} container`}>
-                <div
+                {/* <div
                   className={`${ssoStyle} row ssoRow d-flex justify-content-center`}
                   onClick={subMenuSSOClick}
                 >
@@ -152,14 +149,32 @@ function SuperAdminSidebar(props) {
                       Wallet
                     </Link>
                   </li>
+                </div> */}
+                <div
+                  className={`${ssoStyle} row ssoRow d-flex justify-content-center cursor-pointer`}
+                  onClick={subMenuSSOClick}
+                >
+                  <li className={`${props.activeTab.sso} ssoSidebar`}>
+                    <Link to={`${path}/accountApproval`}>
+                      Approval Requests
+                    </Link>
+                  </li>
+                </div>
+                <div
+                  className={`${walletStyle} row walletRow d-flex justify-content-center`}
+                  onClick={subMenuWalletClick}
+                >
+                  <li className={`${props.activeTab.wallet}`}>
+                    <Link to={`${path}/manageAccounts/Accounts`}>Accounts</Link>
+                  </li>
                 </div>
               </div>
             </li>
-            <li className={props.activeTab.accounts} onClick={closedDropdown}>
+            {/* <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${path}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>
-            </li>
+            </li> */}
             <li className={props.activeTab.properties} onClick={changeStyle1}>
               <Link to={`${path}/properties`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>

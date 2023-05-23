@@ -50,8 +50,7 @@ export const createNewSuperAdminTemplates = (body) => {
 };
 
 export const topUpAmount = (body) => {
-  return Axios.post(`/top-up`, body);
-  // return Axios.post(`/usd-payments/admin/topup`, body);
+  return Axios.post(`/top-up/`, body);
 };
 
 export const createNewDrop = (body) => {
@@ -329,6 +328,14 @@ export const getUnverifiedAdminsV1Paginated = (start, end) => {
   );
 };
 
+export const getAllAdminsPaginated = (start, end, adminType) => {
+  return Axios.get(`/super-admin/admins/${start}/${end}`, {
+    params: {
+      userType: adminType,
+    },
+  });
+};
+
 export const getUnverifiedAdminsV2Paginated = (start, end) => {
   return Axios.get(
     `/super-admin/admins/unverified/${start}/${end}?userType=v2`
@@ -409,6 +416,14 @@ export const getTopUpHistoryOfUser = () => {
 
 export const checkDomain = (params) => {
   return Axios.get(`/v1-sso/user/check-domain`, { params: params });
+};
+
+export const getMaticBalance = () => {
+  return Axios.get(`/wallet-analytics/funds/`);
+};
+
+export const getDropCategories = () => {
+  return Axios.get(`/drop/categories`);
 };
 
 //DELETE REQUESTS
