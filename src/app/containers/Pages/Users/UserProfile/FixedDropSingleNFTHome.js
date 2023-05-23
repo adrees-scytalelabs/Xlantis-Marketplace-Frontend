@@ -555,24 +555,31 @@ const FixedDropSingleNFTHome = () => {
     return hex;
   };
   let handlePurchase = async () => {
-    console.log("Authorization", sessionStorage.getItem("Authorization"));
-    console.log("Nft detail: ", nftData);
-    let data = {
-      dropId: nftData?.dropId,
-      nftId: nftData?._id,
-      supply: num,
-    };
-    console.log("Data", data);
-    console.log("Purchase Function Called");
-    console.log("NFT ID");
-    marketplaceBuy(data)
-      .then((response) => {
-        localStorage.setItem("sessionId", response.data.checkoutSessionId);
-        window.location.replace(response.data.stripeSession);
-      })
-      .catch((error) => {
-        console.log("Transaction hash on backend error: ", error.response);
-      });
+    if (num < 0 || num === 0) {
+      let variant = "error";
+      setSnackbarMessage("Supply must be greater than 0");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else {
+      console.log("Authorization", sessionStorage.getItem("Authorization"));
+      console.log("Nft detail: ", nftData);
+      let data = {
+        dropId: nftData?.dropId,
+        nftId: nftData?._id,
+        supply: num,
+      };
+      console.log("Data", data);
+      console.log("Purchase Function Called");
+      console.log("NFT ID");
+      marketplaceBuy(data)
+        .then((response) => {
+          localStorage.setItem("sessionId", response.data.checkoutSessionId);
+          window.location.replace(response.data.stripeSession);
+        })
+        .catch((error) => {
+          console.log("Transaction hash on backend error: ", error.response);
+        });
+    }
   };
 
   let handleBuy = async () => {

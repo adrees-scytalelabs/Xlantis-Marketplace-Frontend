@@ -34,7 +34,7 @@ function NewCollection(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -138,10 +138,9 @@ function NewCollection(props) {
             collectionID = response.data.collection._id;
 
             let variant = "success";
-            setSnackbarMessage("New Collection Created Successfully.");
-            setSnackbarSeverity(variant);
-            handleSnackbarOpen();
-            navigate("/dashboard/myCollection");
+            props.setSnackbarMessage("New Collection Created Successfully.");
+            props.setSnackbarSeverity(variant);
+            props.handleSnackbarOpen();
             setCollectionName("");
             setCollectionSymbol("");
             setCollectionDescription("");
@@ -150,6 +149,7 @@ function NewCollection(props) {
             setIsSaving(false);
             handleCloseBackdrop();
             setIsSaving(false);
+            navigate("/dashboard/myCollection");
           })
           .catch((error) => {
             if (process.env.NODE_ENV === "development") {
@@ -312,7 +312,9 @@ function NewCollection(props) {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
                   let variant = "success";
-                  setSnackbarMessage("Sending transaction on blockchain to deploy a collection (1155).");
+                  setSnackbarMessage(
+                    "Sending transaction on blockchain to deploy a collection (1155)."
+                  );
                   setSnackbarSeverity(variant);
                   handleSnackbarOpen();
                   updateCollectionTxHash(collectionID, {
@@ -371,7 +373,9 @@ function NewCollection(props) {
                   console.log("Get transaction ", err, response);
                   console.log(typeof response);
                   let variant = "success";
-                  setSnackbarMessage("Sending transaction on blockchain to deploy a collection (ERC721).");
+                  setSnackbarMessage(
+                    "Sending transaction on blockchain to deploy a collection (ERC721)."
+                  );
                   setSnackbarSeverity(variant);
                   handleSnackbarOpen();
                   updateCollectionTxHash(collectionID, {
@@ -534,7 +538,9 @@ function NewCollection(props) {
             .then((response) => {
               console.log("Response from Auction approval: ", response);
               let variant = "success";
-              setSnackbarMessage("Collection Approved For Auction Successfully.");
+              setSnackbarMessage(
+                "Collection Approved For Auction Successfully."
+              );
               setSnackbarSeverity(variant);
               handleSnackbarOpen();
               setIsAuctionApproved(true);
@@ -646,7 +652,7 @@ function NewCollection(props) {
           </div>
         </div>
         <SubmitButton
-          label="Add Collection"
+          label="Create Collection"
           isSaving={isSaving}
           version={version}
           handleSubmitEvent={handleSubmitEvent}
@@ -676,7 +682,12 @@ function NewCollection(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

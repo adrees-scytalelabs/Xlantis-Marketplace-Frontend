@@ -2,9 +2,12 @@ import {
   Autocomplete,
   TextField,
   ThemeProvider,
+  Tooltip,
+  Typography,
   createTheme,
 } from "@mui/material";
 import React from "react";
+
 const makeTheme = createTheme({
   components: {
     MuiTextField: {
@@ -149,6 +152,12 @@ const makeTheme = createTheme({
   // },
 });
 
+const classes = {
+  tooltip: {
+    fontSize: "16px",
+  },
+};
+
 function AutocompleteAddNft({
   label,
   options,
@@ -157,10 +166,33 @@ function AutocompleteAddNft({
   onChange,
   type,
 }) {
+  const selectNFTText =
+    "Only NFTs that are not currently listed for sale will be listed/shown in the drop-down menu";
+
   return (
     <div className="form-group">
       <ThemeProvider theme={makeTheme}>
-        <label>{label}</label>
+        {label === "Select NFT" ? (
+          <Tooltip
+            classes={{ tooltip: classes.tooltip }}
+            title={<Typography fontSize={18}>{selectNFTText}</Typography>}
+            arrow={true}
+            placement="top-start"
+          >
+            <label
+              component="legend"
+              style={{
+                fontWeight: "bold",
+                fontFamily: "poppins",
+              }}
+            >
+              {label}{" "}
+              <i className="fa fa-info-circle ml-1" aria-hidden="true"></i>
+            </label>
+          </Tooltip>
+        ) : (
+          <label>{label}</label>
+        )}
         <div className="filter-widget newNftWrapper">
           <Autocomplete
             id="combo-dox-demo"
@@ -168,7 +200,11 @@ function AutocompleteAddNft({
             disabled={isDisabled}
             options={options}
             getOptionLabel={(option) =>
-              type === "collection" ? option.name : option.title
+              type === "collection"
+                ? option.name
+                : type === "nft"
+                ? option.title
+                : option
             }
             onChange={onChange}
             filterSelectedOptions
@@ -193,7 +229,7 @@ function AutocompleteAddNft({
                     },
                   }}
                   InputLabelProps={{
-                    style: { color: "white" }
+                    style: { color: "white" },
                   }}
                   {...params}
                   variant="outlined"

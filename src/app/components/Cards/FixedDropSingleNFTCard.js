@@ -21,19 +21,24 @@ const FixedDropSingleNFTCard = (props) => {
     }
   };
   let handleChange = (e) => {
-    if (e.target.value <= props.orderListing?.supply) {
-      props.setNum(e.target.value);
-    } 
-    else {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value can't be greater than token supply");
-      props.setSnackbarOpen(true);
+    if (e.target.value >= 0) {
+      if (e.target.value <= props.orderListing?.supply) {
+        props.setNum(e.target.value);
+      } else if (e.target.value < 0) {
+        props.setSnackbarSeverity("error");
+        props.setSnackbarMessage("Supply Must be greater than 0");
+        props.setSnackbarOpen(true);
+      } else {
+        props.setSnackbarSeverity("error");
+        props.setSnackbarMessage("Value can't be greater than token supply");
+        props.setSnackbarOpen(true);
+      }
     }
   };
   return (
     <Card style={{ backgroundColor: "rgba(32,32,32,255)" }}>
       <CardContent>
-        <Row style={{paddingBottom:'5px'}}>
+        <Row style={{ paddingBottom: "5px" }}>
           <Col>
             <Typography
               variant="body1"
@@ -57,7 +62,7 @@ const FixedDropSingleNFTCard = (props) => {
             </Typography>
           </Col>
         </Row>
-        <Row style={{paddingBottom:'5px'}}>
+        <Row style={{ paddingBottom: "5px" }}>
           <Col xs={6}>
             <Typography
               variant="body1"
@@ -79,7 +84,7 @@ const FixedDropSingleNFTCard = (props) => {
             {props.nftData.description}
           </Col>
         </Row>
-        <Row style={{paddingBottom:'5px'}}>
+        <Row style={{ paddingBottom: "5px" }}>
           <Col>
             <Typography
               variant="body1"
@@ -102,7 +107,7 @@ const FixedDropSingleNFTCard = (props) => {
           </Col>
         </Row>
         {props.nftData.supplyType ? (
-          <Row style={{paddingBottom:'5px'}}>
+          <Row style={{ paddingBottom: "5px" }}>
             <Col>
               <Typography
                 variant="body1"
@@ -129,7 +134,7 @@ const FixedDropSingleNFTCard = (props) => {
           </Row>
         ) : null}
         {props.orderListing.supply ? (
-          <Row style={{paddingBottom:'5px'}}>
+          <Row style={{ paddingBottom: "5px" }}>
             <Col xs={6}>
               <Typography
                 variant="body1"
@@ -180,7 +185,7 @@ const FixedDropSingleNFTCard = (props) => {
                 <input
                   className="responsive-field-input"
                   type="number"
-                  value={props.num}
+                  value={props.num ?? ""}
                   placeholder="1"
                   onChange={handleChange}
                 />
