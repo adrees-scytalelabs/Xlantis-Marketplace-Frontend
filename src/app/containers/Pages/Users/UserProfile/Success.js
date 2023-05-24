@@ -2,7 +2,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { Typography } from '@mui/material';
 import React from "react";
 import { Link } from "react-router-dom";
-import HeaderHome from "../../../../components/Headers/NewHeader";
+import HeaderHome from "../../../../components/Headers/Header";
 
 function Success() {
   return (

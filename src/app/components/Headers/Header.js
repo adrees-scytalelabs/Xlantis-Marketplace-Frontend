@@ -17,7 +17,9 @@ import Web3 from "web3";
 import Web3Modal from "web3modal";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import Logo from "../../assets/img/logo.png";
+import "../../assets/plugins/fontawesome/css/all.min.css";
+import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
+import Logo from "../../assets/img/WhiteLogo.png";
 import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 import { getUserProfile } from "../../redux/getUserProfileSlice";
 import {
@@ -632,6 +634,7 @@ function HeaderHome(props) {
                 onClick={handleClick}
                 style={{
                   backgroundImage: `url(${profileImg})`,
+                  marginRight:'20px',
                   cursor: "pointer",
                 }}
               ></div>
@@ -642,7 +645,7 @@ function HeaderHome(props) {
               props.role === "admin" ? null : sessionStorage.getItem("Address") ||
                 (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <>
-                <Link to="/dashboard" style={{ color: "#fff" }}>
+                <Link to="/dashboard" style={{ color: "#fff" ,marginRight:'20px'}}>
                   Dashboard
                 </Link>
               </>
@@ -676,7 +679,7 @@ function HeaderHome(props) {
             {sessionStorage.getItem("Address") &&
               props.role === "admin" ? null : sessionStorage.getItem("Address") ||
                 (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-              <span style={{ cursor: "pointer" }} onClick={() => Logout()}>
+              <span style={{ cursor: "pointer",marginRight:'20px' }} onClick={() => Logout()}>
                 Logout
               </span>
             ) : null}
@@ -684,7 +687,7 @@ function HeaderHome(props) {
           <li className="header-item-rht">
             <ShoppingCartIcon
               onClick={() => setWorkProgressModalShow(true)}
-              style={{ cursor: "pointer" }}
+              style={{ cursor: "pointer" ,marginRight:'20px'}}
             />
           </li>
           <li>

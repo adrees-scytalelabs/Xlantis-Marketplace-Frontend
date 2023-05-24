@@ -19,7 +19,7 @@ const styles = {
     color: "#fff",
   },
   tabPanelProps: {
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
   },
 };
 

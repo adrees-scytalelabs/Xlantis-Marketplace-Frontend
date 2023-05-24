@@ -35,7 +35,7 @@ import NFTBuy from "./Admin/NFTBuy";
 import NewCollection from "./Admin/NewCollection";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import TopUp from "./Admin/TopUp";
+import TopUp from "../../../components/Topup/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
@@ -257,7 +257,7 @@ function AdminDashboard(props) {
 
               <Dropdown.Menu
                 alignRight="true"
-                style={{ backgroundColor: "rgba(32,32,32,255)" }}
+                style={{ backgroundColor: "#000" }}
               >
                 <Dropdown.Item>
                   <Link to="/dashboard" style={{ width: "100%" }}>

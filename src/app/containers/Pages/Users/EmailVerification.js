@@ -5,7 +5,7 @@ import "../../../assets/css/style.css";
 
 import { getUserEmailVerification } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
-import Header from "../../../components/Headers/NewHeader";
+import Header from "../../../components/Headers/Header";
 import { failure, success } from "../../../components/ImageURLs/URLs";
 
 function EmailVerification(props) {

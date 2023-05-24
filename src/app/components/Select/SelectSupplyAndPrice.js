@@ -24,7 +24,7 @@ function SelectSupplyAndPrice({
             <div style={{ display: "flex" }}>
               <input
                 style={{
-                  backgroundColor: "rgba(32,32,32,255)",
+                  backgroundColor: "#000",
                   color: "white",
                   border:
                     nftTokenSupply === 0
@@ -61,7 +61,7 @@ function SelectSupplyAndPrice({
                   setAlertMessage(false);
                 }}
                 style={{
-                  backgroundColor: "rgba(32,32,32,255)",
+                  backgroundColor: "#000",
                   marginLeft: "5px",
                   border: "1px solid white",
                 }}
@@ -90,7 +90,7 @@ function SelectSupplyAndPrice({
             disabled={isDisabled}
             value={price ?? ""}
             style={{
-              backgroundColor: "rgba(32,32,32,255)",
+              backgroundColor: "#000",
               color: "#fff",
               border: "1px solid #fff",
               borderRadius: "5px",

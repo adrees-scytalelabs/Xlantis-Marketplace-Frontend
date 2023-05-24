@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 const DropSingleNFTCard = (props) => {
   return (
-    <Card sx={{ backgroundColor: "rgba(32,32,32,255)" }}>
+    <Card sx={{ backgroundColor: "#000" }}>
       <CardContent>
         <Row>
           <Col>

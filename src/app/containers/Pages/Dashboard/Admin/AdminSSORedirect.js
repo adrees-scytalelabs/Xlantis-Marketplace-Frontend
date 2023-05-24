@@ -8,7 +8,7 @@ import {
   checkDomain,
 } from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
-import HeaderHome from "../../../../components/Headers/NewHeader";
+import HeaderHome from "../../../../components/Headers/Header";
 // import HeaderHome from "../../../../components/Headers/Header";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 

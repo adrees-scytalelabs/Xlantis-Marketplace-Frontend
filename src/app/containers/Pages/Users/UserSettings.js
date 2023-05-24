@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import HeaderHome from "../../../components/Headers/NewHeader";
+import HeaderHome from "../../../components/Headers/Header";
 import UserSidebar from "../../Pages/Dashboard/User/UserSidebar";
 import SettingDashboardDefault from "./SettingsDashboardDefault";
 

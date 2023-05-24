@@ -14,7 +14,6 @@ import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 import EmailVerification from "../Pages/Users/EmailVerification";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import HomeScreen from "../Pages/Users/HomeScreen";
-import NewHomeScreen from "../Pages/Users/NewHomeScreen";
 
 import MarketPlace from "../Pages/Users/MarketPlace";
 import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
@@ -151,7 +150,7 @@ function App() {
       ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
       ) : (
-        <NewHomeScreen />
+        <HomeScreen />
       )
     );
   };

@@ -40,7 +40,7 @@ const customTheme = createTheme({
       styleOverrides: {
         root: {
           borderBottom: "1px solid white",
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
         },
         expandIcon: {
           color: "white",
@@ -51,7 +51,7 @@ const customTheme = createTheme({
       styleOverrides: {
         root: {
           padding: "8px 0px 16px",
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
         },
       },
     },

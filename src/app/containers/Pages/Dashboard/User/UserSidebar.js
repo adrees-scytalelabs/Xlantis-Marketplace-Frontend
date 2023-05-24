@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
-
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 function AdminSidebar(props) {
   let navigate = useNavigate();
   let handleLogout = (e) => {
@@ -37,6 +37,11 @@ function AdminSidebar(props) {
             <li className={props.activeTab.myNFTs}>
               <Link to={`/dashboard/myNFTs`}>
                 <ListAltIcon /> <span>My NFTs</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topUp}>
+              <Link to={`/dashboard/topUp`}>
+              <AttachMoneyIcon/> <span>Top Up</span>
               </Link>
             </li>
             <li className={props.activeTab.topupHistory}>
