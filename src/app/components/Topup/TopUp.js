@@ -1,10 +1,9 @@
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  getMaticBalance,
-  topUpAmount,
-} from "../API/AxiosInterceptor";
+import { getMaticBalance, topUpAmount } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
+import AdminBalanceCard from "../Cards/AdminBalanceCard";
 import TopUpForm from "../Forms/TopUpForm";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
@@ -12,6 +11,8 @@ function TopUp(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [hover, setHover] = useState(false);
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -30,7 +31,8 @@ function TopUp(props) {
   };
   let location = useLocation();
   const [amount, setAmount] = useState(0.1);
-  const [balance, setBalance] = useState(0);
+  const [balanceUSD, setBalanceUSD] = useState(0);
+  const [balanceMatic, setBalanceMatic] = useState(0);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -80,7 +82,11 @@ function TopUp(props) {
   const getBalance = () => {
     getMaticBalance()
       .then((response) => {
-        setBalance(response.data?.maticBalance);
+        console.log("response from getting matic balance: ", response);
+        response.data.balanceInUSD &&
+          setBalanceUSD(response.data?.balanceInUSD);
+        response.data.maticBalance &&
+          setBalanceMatic(response.data?.maticBalance);
       })
       .catch((error) => {
         console.log("Error from getting balance: ", error);
@@ -133,11 +139,27 @@ function TopUp(props) {
           </div>
         </div>
       </div>
+      <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
+        <AdminBalanceCard
+          onMouseEnter={() => setHover(true)}
+          onMouseLeave={() => setHover(false)}
+          linkTo={``}
+          hoverH4={
+            hover
+              ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+              : "totalNftsAdminDashHeading"
+          }
+          hoverH1={hover ? "superAdminBalanceHover" : "superAdminBalance"}
+          balanceUSD={balanceUSD}
+          balanceMatic={balanceMatic}
+          message="Balance"
+          icon={<CurrencyExchangeIcon />}
+        />
+      </div>
       <TopUpForm
         amount={amount}
         setAmount={setAmount}
         handleTopUpAmount={handleTopUpAmount}
-        balance={balance}
       />
       <CircularBackdrop open={open} />
       <NotificationSnackbar
