@@ -53,7 +53,7 @@ function CollectionNfts(props) {
   }, []);
 
   return (
-    <div className="card" style={{ backgroundColor: "rgba(32,32,32,255)", border: "None" }}>
+    <div className="card" style={{ backgroundColor: "#000", border: "None" }}>
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">

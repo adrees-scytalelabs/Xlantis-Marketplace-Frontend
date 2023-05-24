@@ -51,7 +51,7 @@ const FixedDropSingleNFTCard = (props) => {
     }
   };
   return (
-    <Card style={{ backgroundColor: "rgba(32,32,32,255)" }}>
+    <Card style={{ backgroundColor: "#000" }}>
       <CardContent>
         <Row style={{ paddingBottom: "5px" }}>
           <Col xs={6}>

@@ -1,6 +1,6 @@
 import React from "react";
 import SuperAdminLoginForm from "../../../../components/LoginSignup/SuperAdminLoginForm";
-import HeaderHome from "../../../../components/Headers/NewHeader";
+import HeaderHome from "../../../../components/Headers/Header";
 
 const SuperAdminLogin = () => {
   return (

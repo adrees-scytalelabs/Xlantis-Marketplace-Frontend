@@ -3,7 +3,7 @@ import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 
-import HeaderHome from "../../../components/Headers/NewHeader";
+import HeaderHome from "../../../components/Headers/Header";
 import AuctionNFT from "./Admin/AuctionNFT";
 import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";

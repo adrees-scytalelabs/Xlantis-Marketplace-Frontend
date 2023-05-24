@@ -4,7 +4,7 @@ import { Col, Row } from "react-bootstrap";
 const SingleNFTDetailCard = (props) => {
   return (
     <Card sx={{
-      backgroundColor: "rgba(32,32,32,255)",
+      backgroundColor: "#000",
       border: "1px solid #fff",
     }}>
       <CardContent sx={{ color: "#fff", }}>

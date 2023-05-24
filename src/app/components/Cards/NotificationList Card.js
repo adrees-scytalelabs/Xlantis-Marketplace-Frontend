@@ -51,7 +51,7 @@ export default function NotificationList(props) {
       itemCount={props.itemCount}
       itemSize={47}
       width={300}
-      style={{ backgroundColor: "rgba(32,32,32,255)", color: "white" }}
+      style={{ backgroundColor: "#000", color: "white" }}
     >
       {Row}
     </List>

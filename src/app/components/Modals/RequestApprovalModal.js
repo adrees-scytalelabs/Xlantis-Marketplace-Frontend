@@ -43,7 +43,7 @@ const RequestApprovalModal = (props) => {
                   style={{
                     margin: "10px",
                     marginRight: 0,
-                    backgroundColor: "rgba(32,32,32,255)",
+                    backgroundColor: "#000",
                     border: "1px solid #fff",
                     borderRadius: 0,
                     padding: 10,
@@ -67,7 +67,7 @@ const RequestApprovalModal = (props) => {
             style={{
               margin: "10px",
               marginRight: 0,
-              backgroundColor: "rgba(32,32,32,255)",
+              backgroundColor: "#000",
               border: "1px solid #fff",
               borderRadius: 0,
               padding: 10,

@@ -32,7 +32,7 @@ const makeTheme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
           border: "1px solid white",
           borderRadius: "0px",
         },
@@ -48,7 +48,7 @@ const makeTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
           border: "1px solid #fff",
         },
       },

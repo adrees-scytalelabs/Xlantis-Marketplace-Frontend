@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import Footer from "../../../components/Footers/NewFooter";
-import HeaderHome from "../../../components/Headers/NewHeader";
+import Footer from "../../../components/Footers/Footer";
+import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
 import {
   getMarketAuction,
