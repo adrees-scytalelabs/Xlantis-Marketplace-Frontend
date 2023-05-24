@@ -1,13 +1,8 @@
 import React from "react";
 
-function TopUpForm({ amount, setAmount, handleTopUpAmount, balance }) {
+function TopUpForm({ amount, setAmount, handleTopUpAmount }) {
   return (
     <div className="card-body p-0">
-      <div className="row mt-5">
-        <div className="col-lg-6 col-md-6 col-sm-12 ">
-          <label>Current Balance: {balance?.toFixed(5)} Matic</label>
-        </div>
-      </div>
       <div className="row mt-5">
         <div className="col-lg-6 col-md-6 col-sm-12 ">
           <label>Select your Top Up Amount</label>
