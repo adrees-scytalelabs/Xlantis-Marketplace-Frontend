@@ -22,7 +22,8 @@ const CollectionSaleModal = ({
   setStartTimeStamp,
   setStartTime,
   setEndTime,
-  setEndTimeStamp
+  setEndTimeStamp,
+  handleOpenWorkProgressModal,
 }) => {
   useEffect(() => {
     console.log("Props in collection sale modal", {
@@ -110,6 +111,12 @@ const CollectionSaleModal = ({
           onClick={handleClose}
         >
           Close
+        </Button>
+        <Button
+          style={{ backgroundColor: "transparent" }}
+          onClick={handleOpenWorkProgressModal}
+        >
+          Confirm
         </Button>
       </Modal.Footer>
     </Modal>

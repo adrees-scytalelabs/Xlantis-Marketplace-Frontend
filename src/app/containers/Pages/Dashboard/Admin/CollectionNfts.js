@@ -7,6 +7,7 @@ import { getNFTsFromSingleCollection } from "../../../../components/API/AxiosInt
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CollectionSaleModal from "../../../../components/Modals/CollectionSaleModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
@@ -23,6 +24,15 @@ function CollectionNfts(props) {
     Math.round(endTime.getTime() / 1000)
   );
   const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+
+  const handleOpenWorkProgressModal = () => {
+    setWorkProgressModalShow(true);
+  };
+
+  const handleCloseWorkProgressModal = () => {
+    setWorkProgressModalShow(false);
+  };
 
   const handleCollectionSaleModalOpen = () => {
     setShowCollectionSaleModal(true);
@@ -155,6 +165,11 @@ function CollectionNfts(props) {
         setStartTime={setStartTime}
         setEndTime={setEndTime}
         setEndTimeStamp={setEndTimeStamp}
+        handleOpenWorkProgressModal={handleOpenWorkProgressModal}
+      />
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={handleCloseWorkProgressModal}
       />
     </div>
   );
