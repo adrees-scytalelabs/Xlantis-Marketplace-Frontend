@@ -40,6 +40,7 @@ import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
 import DropsInCategories from "./Admin/DropsInCategories";
+import AdminEarnings from "./Admin/AdminEarnings";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -143,6 +144,7 @@ function AdminDashboard(props) {
 
   const [activeTab, setActiveTab] = useState({
     dashboard: "active",
+    earnings: "",
     newCollection: "",
     myCollections: "",
     newNFT: "",
@@ -307,6 +309,10 @@ function AdminDashboard(props) {
               }
             />
 
+            <Route
+              path={`earnings`}
+              element={<AdminEarnings setActiveTab={setActiveTab} />}
+            />
             <Route
               path={`newNFT`}
               element={<NewNFT setActiveTab={setActiveTab} />}

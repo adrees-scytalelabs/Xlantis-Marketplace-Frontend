@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
@@ -34,6 +35,15 @@ function AdminSidebar(props) {
             <li className={props.activeTab.dashboard}>
               <Link to={`${props.match}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.earnings}>
+              <Link
+                to={`${props.match}/earnings`}
+                className="sidebarLink"
+              >
+                <CurrencyExchangeIcon />
+                <span>Earning</span>
               </Link>
             </li>
             <li className={props.activeTab.newCollection}>
