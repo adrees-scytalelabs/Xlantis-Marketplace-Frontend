@@ -202,7 +202,7 @@ const FixedDropSingleNFTCard = (props) => {
                 className="responsive-field"
                 style={{ border: "1px solid red", width: "100%" }}
               >
-                <button className="responsive-field-button" onClick={decNum}>
+                <button className="responsive-field-button" onClick={decNum} style={{backgroundColor:'transparent'}}>
                   -
                 </button>
                 <input
@@ -212,9 +212,11 @@ const FixedDropSingleNFTCard = (props) => {
                   placeholder="1"
                   onKeyPress={handleKeyPress}
                   onChange={handleChange}
+                  style={{backgroundColor:'transparent'}}
                 />
                 <button
                   className="responsive-field-button"
+                  style={{backgroundColor:'transparent'}}
                   onClick={() => incNum(props.orderListing?.supply)}
                 >
                   +

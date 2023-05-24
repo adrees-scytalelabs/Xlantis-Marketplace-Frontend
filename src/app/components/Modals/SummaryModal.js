@@ -7,7 +7,7 @@ import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
 function SummaryModal({ show, handleClose }) {
   return (
     <Modal show={show} onHide={handleClose} size="md" centered>
-      <Modal.Header closeButton className="custom-header">
+      <Modal.Header closeButton className="custom-header" style={{backgroundColor:'black'}}>
         <Modal.Title>Summary</Modal.Title>
       </Modal.Header>
       <Modal.Body
