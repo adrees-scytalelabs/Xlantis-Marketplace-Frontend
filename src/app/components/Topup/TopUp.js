@@ -3,10 +3,10 @@ import { Link, useLocation } from "react-router-dom";
 import {
   getMaticBalance,
   topUpAmount,
-} from "../../../../components/API/AxiosInterceptor";
-import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import TopUpForm from "../../../../components/Forms/TopUpForm";
-import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+} from "../API/AxiosInterceptor";
+import CircularBackdrop from "../Backdrop/Backdrop";
+import TopUpForm from "../Forms/TopUpForm";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function TopUp(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);

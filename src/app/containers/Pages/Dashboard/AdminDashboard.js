@@ -35,7 +35,7 @@ import NFTBuy from "./Admin/NFTBuy";
 import NewCollection from "./Admin/NewCollection";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import TopUp from "./Admin/TopUp";
+import TopUp from "../../../components/Topup/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
