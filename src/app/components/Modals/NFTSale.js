@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Modal, Form, Button, Row, Col } from "react-bootstrap";
 import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
 import DateTimePicker from "react-datetime-picker";
@@ -21,6 +21,7 @@ const NFTSale = ({
   endTime,
   openSummaryModal,
 }) => {
+  const [num,setNum] = useState(0);
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header
@@ -46,11 +47,9 @@ const NFTSale = ({
               <SelectNFTAndSaleType
                 label="Select NFT Type"
                 onChangeWorkInProgress={() => {
-                  console.log("721workinf");
                   setWorkProgressModalShow(true);
                 }}
                 onChange={() => {
-                  console.log("1155working");
                   setNftType("1155");
                 }}
                 type={nftType}
@@ -75,7 +74,7 @@ const NFTSale = ({
                 borderRadius: "5px",
                 backgroundColor: "transparent",
               }}
-              onClick={() => {}}
+              onClick={(e) => {setNum(1)}}
             >
               Floor <br />
               <label style={{ fontSize: "6px" }}>1 USD</label>
@@ -83,6 +82,7 @@ const NFTSale = ({
             <Form.Control
               type="number"
               placeholder="Enter price"
+              value={num}
               style={{
                 borderColor: "white",
                 color: "white",
