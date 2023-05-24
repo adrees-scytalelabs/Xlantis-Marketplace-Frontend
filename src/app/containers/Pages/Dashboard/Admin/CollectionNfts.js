@@ -1,17 +1,46 @@
-
 import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
+import { Button, Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getNFTsFromSingleCollection } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import CollectionSaleModal from "../../../../components/Modals/CollectionSaleModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [versionB, setVersionB] = useState("");
+  const [collectionDetail, setCollectionDetail] = useState({});
+  const [showCollectioSaleModal, setShowCollectionSaleModal] = useState(false);
+  const [startTime, setStartTime] = useState(new Date());
+  const [endTime, setEndTime] = useState(new Date());
+  const [startTimeStamp, setStartTimeStamp] = useState(
+    Math.round(startTime.getTime() / 1000)
+  );
+  const [endTimeStamp, setEndTimeStamp] = useState(
+    Math.round(endTime.getTime() / 1000)
+  );
+  const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
+  const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+
+  const handleOpenWorkProgressModal = () => {
+    setWorkProgressModalShow(true);
+  };
+
+  const handleCloseWorkProgressModal = () => {
+    setWorkProgressModalShow(false);
+  };
+
+  const handleCollectionSaleModalOpen = () => {
+    setShowCollectionSaleModal(true);
+  };
+  const handleCollectionSaleModalClose = () => {
+    setShowCollectionSaleModal(false);
+  };
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -22,7 +51,9 @@ function CollectionNfts(props) {
     handleShowBackdrop();
     getNFTsFromSingleCollection(collectionId)
       .then((response) => {
+        console.log("Token list: ", response.data.collectionData);
         setTokenList(response.data.nftsdata);
+        setCollectionDetail(response.data.collectionData);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -75,6 +106,19 @@ function CollectionNfts(props) {
         </div>
       </div>
       <div className="card-body">
+        <div>
+          <Button
+            onClick={handleCollectionSaleModalOpen}
+            style={{
+              float: "right",
+              padding: "12px 10px",
+              borderRadius: "5px",
+              backgroundColor: "transparent",
+            }}
+          >
+            List for Sale
+          </Button>
+        </div>
         <form>
           <div className="form-group">
             {open ? (
@@ -107,6 +151,23 @@ function CollectionNfts(props) {
           </div>
         </form>
       </div>
+      <CollectionSaleModal
+        show={showCollectioSaleModal}
+        handleClose={handleCollectionSaleModalClose}
+        collectionDetail={collectionDetail}
+        startTime={startTime}
+        endTime={endTime}
+        setCurrentTimeStamp={setCurrentTimeStamp}
+        setStartTimeStamp={setStartTimeStamp}
+        setStartTime={setStartTime}
+        setEndTime={setEndTime}
+        setEndTimeStamp={setEndTimeStamp}
+        handleOpenWorkProgressModal={handleOpenWorkProgressModal}
+      />
+      <WorkInProgressModal
+        show={workProgressModalShow}
+        handleClose={handleCloseWorkProgressModal}
+      />
     </div>
   );
 }
