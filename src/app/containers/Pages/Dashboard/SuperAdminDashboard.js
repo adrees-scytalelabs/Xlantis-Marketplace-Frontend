@@ -19,6 +19,7 @@ import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import TemplateProperties from "./Admin/TemplateProperties";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
 import SuperAdminDashboardScreen from "./Admin/SuperAdminDashboardScreen";
+import PlatformFee from "./Admin/PlatformFee";
 
 function SuperAdminDashboard(props) {
   const path = useResolvedPath("").pathname;
@@ -46,6 +47,7 @@ function SuperAdminDashboard(props) {
     template: "",
     saved: "",
     adminStats: "",
+    PlatformFee : "",
   });
   const [tab, setTab] = useState(0);
 
@@ -288,6 +290,12 @@ function SuperAdminDashboard(props) {
                 />
               }
             />
+              <Route exact path={`platformFee`} element={
+              <PlatformFee
+                setActiveTab={setActiveTab}
+                tab={tab}
+                setTab={setTab}
+              />} />
           </Routes>
         </div>
       </div>
