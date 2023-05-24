@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
+import AllTransactions from "./AllTransactions";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
@@ -66,6 +67,11 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
+            {/* <li className={props.activeTab.allTransactions}>
+              <Link to={`${props.match}/allTransactions`} className="sidebarLink">
+                <ListAltIcon /> <span>All Transactions</span>
+              </Link>
+            </li> */}
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match}/dropApproval`}>
