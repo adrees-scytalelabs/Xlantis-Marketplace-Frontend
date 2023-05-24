@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../../../assets/css/mediaQueries.css";
-import videoBg from "../../../../assets/img/Seoul - 21116.mp4";
 
 function HomeBanner() {
+  const src =
+  "https://mingablockchain.s3.amazonaws.com/Seoul+-+21116.mp4";
+
   return (
     <Link to={"/dashboard"}>
       <section className="section sectionHomeBanner">
@@ -13,7 +15,7 @@ function HomeBanner() {
               <div className="featuredContainer">
                 <div className="featuredBackdrop"></div>
                 <video
-                  src={videoBg}
+                  src={src}
                   autoPlay
                   loop
                   mute
