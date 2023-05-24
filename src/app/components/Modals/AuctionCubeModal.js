@@ -3,8 +3,6 @@ import { Button, Modal, Spinner } from "react-bootstrap";
 import DateTimePicker from 'react-datetime-picker';
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import "../../assets/plugins/fontawesome/css/all.min.css";
-import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 
 function AuctionCubeModal(props) {
     const [time, setTime] = useState(new Date());

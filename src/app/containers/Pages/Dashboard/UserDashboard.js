@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+
 import HeaderHome from "../../../components/Headers/NewHeader";
 import AuctionNFT from "./Admin/AuctionNFT";
 import DropNfts from "./Admin/DropNfts";

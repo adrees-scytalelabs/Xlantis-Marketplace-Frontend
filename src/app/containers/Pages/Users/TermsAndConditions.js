@@ -2,8 +2,6 @@
 import React from "react";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import TermsAndConditionsCard from "../../../components/Cards/TermsAndConditionsCard";
 import Footer from "../../../components/Footers/NewFooter";
 import Header from "../../../components/Headers/NewHeader";

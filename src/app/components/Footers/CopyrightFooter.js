@@ -1,17 +1,8 @@
+import { InputBase, Typography } from "@mui/material";
+import { styled } from '@mui/material/styles';
 import React from "react";
 import "../../assets/css/bootstrap.min.css";
-import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/css/style.css";
-import { Link } from "react-router-dom";
-import { Divider, Grid, IconButton, InputBase, Typography } from "@mui/material";
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import Logo from "../../assets/img/WhiteLogo.png";
-import { Center } from "@react-three/drei";
-import { alpha, styled } from '@mui/material/styles';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import LinkedInIcon from '@mui/icons-material/LinkedIn';
-import InstagramIcon from '@mui/icons-material/Instagram';
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',

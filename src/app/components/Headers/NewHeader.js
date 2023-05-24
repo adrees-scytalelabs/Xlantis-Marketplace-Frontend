@@ -26,8 +26,6 @@ import Web3Modal from "web3modal";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import Logo from "../../assets/img/BlockLogo.png";
-import "../../assets/plugins/fontawesome/css/all.min.css";
-import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 import { getUserProfile } from "../../redux/getUserProfileSlice";
 import CartModal from "../Modals/CartModal";

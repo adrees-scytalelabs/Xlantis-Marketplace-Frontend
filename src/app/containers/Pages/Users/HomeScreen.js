@@ -3,8 +3,6 @@ import { useLocation } from "react-router-dom";
 import UAParser from "ua-parser-js";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Footer from "../../../components/Footers/NewFooter";
 import HeaderHome from "../../../components/Headers/NewHeader";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
