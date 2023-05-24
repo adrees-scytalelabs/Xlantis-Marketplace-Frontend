@@ -147,11 +147,7 @@ select.templatesSelect {
 
 .SSOModalbg {
   background-color: var(--bg);
-  /* background-image: url(../img/hexagons-transparent.png);
-  background-repeat: no-repeat;
-  background-size: cover; */
   padding: 40px;
-  /* padding-top: 0; */
 }
 
 .ssoModalCard {
@@ -303,7 +299,7 @@ form.checkoutForm label {
 }
 
 .sso-redirect-wrapper {
-  background-image: url(../img/hexagons-transparent.png);
+  background-image: url("https://mingablockchain.s3.amazonaws.com/hexagons-transparent.png");
   background-color: var(--bg);
   background-size: cover;
   background-repeat: no-repeat;
@@ -1205,7 +1201,7 @@ li.menu-title {
 }
 
 .sectionHomeBanner {
-  background-image: url("../img/seoulss.jpg");
+  background-image: url("https://mingablockchain.s3.amazonaws.com/seoulss.jpg");
   background-repeat: no-repeat;
   background-position: left;
   background-size: cover;

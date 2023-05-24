@@ -4,11 +4,8 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import { Grid } from "@mui/material";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
-import MetaRacers from "../../../../assets/img/MetaRacers.png";
-import DigitalMembership from "../../../../assets/img/DigitalMemberShip.png";
-import MysteryBox from "../../../../assets/img/XMANNA - Mystery Box.png";
-import LandPlot from "../../../../assets/img/Capture.JPG";
 import CategoriesCards from "../../../../components/Cards/CategoriesCards";
+import { DigitalMemberShip, LandPlots, MetaRacers, XmannaMysteryBox } from "../../../../components/ImageURLs/URLs";
 
 const useStyles = {
   root: {
@@ -36,10 +33,10 @@ const DropsCategories = (props) => {
     {
       name: "DIGITAL MEMBERSHIPS",
       value: "digital-memberships",
-      image: DigitalMembership,
+      image: DigitalMemberShip,
     },
-    { name: "MYSTERY BOXES", value: "mystery-boxes", image: MysteryBox },
-    { name: "LAND PLOTS", value: "land-plots", image: LandPlot },
+    { name: "MYSTERY BOXES", value: "mystery-boxes", image: XmannaMysteryBox },
+    { name: "LAND PLOTS", value: "land-plots", image: LandPlots },
   ]);
 
   useEffect(() => {

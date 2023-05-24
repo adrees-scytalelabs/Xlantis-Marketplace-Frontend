@@ -1,12 +1,6 @@
-import { Grid, InputBase } from "@mui/material";
 import React, { useState } from "react";
 import "../../../../assets/css/mediaQueries.css";
-import BuyNowImage from '../../../../assets/img/BuyNow.png';
-import XLogo from '../../../../assets/img/XLogo.jpg';
-
-import { Paper, Typography } from "@mui/material";
-import { styled } from '@mui/material/styles';
-import { useMedia } from 'react-use';
+import { BuyNowImage } from "../../../../components/ImageURLs/URLs";
 
 function BuyNow() {
   const [bannerImage, setBannerImage] = useState(BuyNowImage);

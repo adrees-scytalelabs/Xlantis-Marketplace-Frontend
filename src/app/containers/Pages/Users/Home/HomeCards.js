@@ -1,13 +1,9 @@
 import React, { useState } from "react";
 import "../../../../assets/css/mediaQueries.css";
-import BuyNowImage from '../../../../assets/img/BuyNow.png';
 
 import { Box, Grid, Paper } from "@mui/material";
 import { useMedia } from 'react-use';
-import MysteryBoxes from '../../../../assets/img/XMANNA - Mystery Box.png'
-import Goblin from '../../../../assets/img/Goblin.jpg'
-import Avatar from '../../../../assets/img/avatar.png'
-import SkyBoxes from '../../../../assets/img/XMANNA - SKYBOX.png'
+import { Avatar, BuyNowImage, Goblin, XmannaMysteryBox, XmannaSkyBox } from "../../../../components/ImageURLs/URLs";
 
 function HomeCards() {
   const [bannerImage, setBannerImage] = useState(BuyNowImage);
@@ -30,7 +26,7 @@ function HomeCards() {
                   borderRadius: '25px', border: "4px solid #ff0000",
                 }}
                 alt="Mystery Boxes"
-                src={MysteryBoxes}
+                src={XmannaMysteryBox}
               />
             </Grid>
             <Grid item xs={6}>
@@ -66,10 +62,9 @@ function HomeCards() {
                   borderRadius: '25px', border: "4px solid #ff0000",
                 }}
                 alt="Sky Boxes"
-                src={SkyBoxes}
+                src={XmannaSkyBox}
               />
             </Grid>
-
           </Grid>
         </div>
       </div>

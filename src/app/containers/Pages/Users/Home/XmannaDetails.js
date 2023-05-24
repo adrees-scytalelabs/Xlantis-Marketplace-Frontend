@@ -1,13 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React from "react";
 import "../../../../assets/css/mediaQueries.css";
-import videoBg from "../../../../assets/img/Seoul - 21116.mp4";
-import INXWebsiteBanner from '../../../../assets/img/INXWebsiteBanner.png'
-import XLogo from '../../../../assets/img/XLogo.jpg'
-import { InputBase } from "@mui/material";
-
-import { Box, Paper, Typography } from "@mui/material";
-import { alpha, styled } from '@mui/material/styles';
+import { Paper, Typography } from "@mui/material";
 import { useMedia } from 'react-use';
 
 

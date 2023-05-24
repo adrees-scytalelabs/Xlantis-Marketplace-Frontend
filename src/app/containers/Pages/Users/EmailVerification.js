@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import failure from "../../../assets/img/failure.png";
-import success from "../../../assets/img/success.png";
 import "../../../assets/plugins/fontawesome/css/all.min.css";
 import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import { getUserEmailVerification } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 import Header from "../../../components/Headers/NewHeader";
+import { failure, success } from "../../../components/ImageURLs/URLs";
 
 function EmailVerification(props) {
   const { email, token } = useParams();

@@ -1,22 +1,13 @@
-import React, { Component, useState } from "react";
-import { Link } from "react-router-dom";
+import { Card, CardActionArea, CardMedia, Grid } from "@mui/material";
+import React from "react";
 import "../../../../assets/css/mediaQueries.css";
-import videoBg from "../../../../assets/img/Seoul - 21116.mp4";
-import INXWebsiteBanner from '../../../../assets/img/INXWebsiteBanner.png'
-import XLogo from '../../../../assets/img/XLogo.jpg'
-import { Card, CardActionArea, CardContent, CardMedia, Grid, InputBase } from "@mui/material";
-
-import { Box, Paper, Typography } from "@mui/material";
-import { alpha, styled } from '@mui/material/styles';
-import { useMedia } from 'react-use';
-import Slider from "react-slick";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import MystryBox from '../../../../assets/img/XMANNA - Mystery Box.png'
-import MetaRacers from '../../../../assets/img/MetaRacers.png'
-import LandPlots from '../../../../assets/img/Capture.JPG'
-import AppDownloads from '../../../../assets/img/AppDownloads.png'
-import DigitalMemberShip from '../../../../assets/img/DigitalMemberShip.png'
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import { Paper, Typography } from "@mui/material";
+import Slider from "react-slick";
+import { useMedia } from 'react-use';
+import { AppDownloads, DigitalMemberShip, LandPlots, MetaRacers, XmannaMysteryBox } from "../../../../components/ImageURLs/URLs";
+
 // import "slick-carousel/slick/slick.css";
 // import "slick-carousel/slick/slick-theme.css";
 
@@ -245,7 +236,7 @@ export default function XmannaDetails() {
                           <CardMedia
                             component="img"
                             sx={{ width: "280px", height: "350px", objectFit: 'fill' }}
-                            image={MystryBox}
+                            image={XmannaMysteryBox}
                             alt="Mystery Box"
                           />
 

@@ -1,12 +1,10 @@
 import { Grid, InputBase } from "@mui/material";
 import React, { useState } from "react";
 import "../../../../assets/css/mediaQueries.css";
-import INXWebsiteBanner from '../../../../assets/img/INXWebsiteBanner.png';
-import XLogo from '../../../../assets/img/XLogo.jpg';
-
 import { Paper, Typography } from "@mui/material";
 import { styled } from '@mui/material/styles';
 import { useMedia } from 'react-use';
+import { INXWebsiteBanner, XLogo } from "../../../../components/ImageURLs/URLs";
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: 'inherit',
