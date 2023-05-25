@@ -40,6 +40,7 @@ import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
 import DropsInCategories from "./Admin/DropsInCategories";
+import AllTransactions from "./Admin/AllTransactions";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -153,6 +154,7 @@ function AdminDashboard(props) {
     topUp: "",
     topupHistory: "",
     categories: "",
+    allTransactions : ""
   });
 
   return (
@@ -316,7 +318,7 @@ function AdminDashboard(props) {
               path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-
+{/* <Route exact path={`allTransactions`} element={ <AllTransactions setActiveTab={setActiveTab} />}/> */}
             <Route
               exact
               path={`dropApproval`}
