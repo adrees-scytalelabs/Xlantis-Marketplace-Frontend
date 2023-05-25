@@ -224,7 +224,12 @@ function AdminDashboard(props) {
                   }}
                 >
                   <div>
-                    <Paper elevation={10} variant="outlined" square>
+                    <Paper
+                      elevation={10}
+                      variant="outlined"
+                      square
+                      className="rounded"
+                    >
                       <NotificationList
                         itemCount={notificationsList.length}
                         notifications={notificationsList}
