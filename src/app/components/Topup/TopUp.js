@@ -83,8 +83,8 @@ function TopUp(props) {
     getMaticBalance()
       .then((response) => {
         console.log("response from getting matic balance: ", response);
-        response.data.balanceInUSD &&
-          setBalanceUSD(response.data?.balanceInUSD);
+        response.data.balanceInUsd &&
+          setBalanceUSD(response.data?.balanceInUsd);
         response.data.maticBalance &&
           setBalanceMatic(response.data?.maticBalance);
       })

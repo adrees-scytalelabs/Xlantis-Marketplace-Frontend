@@ -20,7 +20,9 @@ const TopupHistoryTable = ({ topupHistory, styles }) => {
             <td style={styles.collectionTitle}>{index + 1}</td>
             <td style={styles.collectionTitle}>{row.amountInUSD}</td>
             <td style={styles.collectionTitle}>{row.amountInMatic}</td>
-            <td style={styles.collectionTitle}>{row.date}</td>
+            <td style={styles.collectionTitle}>
+              {new Date(row.date).toDateString()}
+            </td>
           </tr>
         ))}
       </tbody>
