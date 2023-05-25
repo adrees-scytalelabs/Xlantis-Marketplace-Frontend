@@ -1,3 +1,4 @@
+import FilterListIcon from "@mui/icons-material/FilterList";
 import {
   Button,
   TablePagination,
@@ -12,17 +13,16 @@ import { Link, useResolvedPath } from "react-router-dom";
 import {
   disbaleAdminV1,
   enableAdminV1,
-  getAllAdminsPaginated,
-  getVerifiedAdminsV1Paginated,
+  getVerifiedAdminsV1Paginated
 } from "../../../../components/API/AxiosInterceptor";
-import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import AdminFilterModal from "../../../../components/Modals/AdminFilterModal";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import AdminFilterModal from "../../../../components/Modals/AdminFilterModal";
 
 const theme = createTheme({
   components: {
@@ -102,15 +102,9 @@ function Accounts(props) {
   const [showModal, setShowModal] = useState(false);
   const [modalData, setModalData] = useState({});
   const [openFilterModal, setOpenFilterModal] = useState(false);
-  const [isAll, setIsAll] = useState(false);
-  const [isSSO, setIsSSO] = useState(false);
-  const [isWallet, setIsWallet] = useState(false);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const [isEnable, setIsEnabled] = useState(false);
-  const [typeFilters, setTypeFilter] = useState([]);
-  const [enabledFilters, setEnableFilter] = useState([]);
   const [filteredAdmins, setFilteredAdmins] = useState([]);
   const [page, setPage] = useState(0);
+  const [open, setOpen] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const handleChangePage = (event, newPage) => {
@@ -145,9 +139,9 @@ function Accounts(props) {
     setValue(newValue);
   };
 
-  const handleAdminEnable = (e, id) => {
+  const handleAdminEnable = async (e, id) => {
     const body = { adminId: id };
-    enableAdminV1(body)
+    await enableAdminV1(body)
       .then((response) => {
         console.log("Response from enabling admin: ", response);
         let variant = "success";
@@ -161,8 +155,6 @@ function Accounts(props) {
   };
 
   const handleApplyFilter = (enableList, typeList) => {
-    setTypeFilter(typeList);
-    setEnableFilter(enableList);
     const filtered = admins.filter((user) => {
       if (typeList.length > 0 && enableList.length > 0) {
         if (
@@ -192,11 +184,11 @@ function Accounts(props) {
     handleCloseFilterModal();
   };
 
-  const handleAdminDisable = (e, id) => {
+  const handleAdminDisable = async (e, id) => {
     const body = { adminId: id };
-    disbaleAdminV1(body)
+    await disbaleAdminV1(body)
       .then((response) => {
-        console.log("Response from enabling admin: ", response);
+        console.log("Response from disabling admin: ", response);
       })
       .catch((error) => {
         console.log("Error from enabling admin: ", error);
@@ -204,14 +196,17 @@ function Accounts(props) {
   };
 
   const getAllAdmins = async () => {
+    setOpen(true);
     await getVerifiedAdminsV1Paginated(0, 1000)
       .then((response) => {
         console.log("Response from getting admins: ", response);
         setAdmins(response.data.verifiedAdmins);
         setFilteredAdmins(response.data.verifiedAdmins);
+        setOpen(false);
       })
       .catch((error) => {
         console.log("Error from getting admins: ", error);
+        setOpen(false);
       });
   };
 
@@ -331,9 +326,9 @@ function Accounts(props) {
                   <td className="text-center" style={styles.collectionTitle}>
                     {i.isEnabled ? (
                       <Button
-                        onClick={(e) => {
-                          handleAdminDisable(e, i._id);
-                          setAdmins([]);
+                        onClick={async (e) => {
+                          // setFilteredAdmins([]);
+                          await handleAdminDisable(e, i._id);
                           getAllAdmins();
                         }}
                         sx={styles.approveBtn}
@@ -342,9 +337,9 @@ function Accounts(props) {
                       </Button>
                     ) : (
                       <Button
-                        onClick={(e) => {
-                          handleAdminEnable(e, i._id);
-                          setAdmins([]);
+                        onClick={async (e) => {
+                          // setFilteredAdmins([]);
+                          await handleAdminEnable(e, i._id);
                           getAllAdmins();
                         }}
                         sx={styles.approveBtn}
@@ -430,6 +425,7 @@ function Accounts(props) {
           </div>
         </ThemeProvider> */}
       </div>
+      <CircularBackdrop open={open} />
       <AdminInformationModal
         show={showModal}
         handleClose={handleModalClose}
