@@ -433,6 +433,9 @@ export const getMaticBalance = () => {
 export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
+export const getMarketPlace = (start,end) => {
+  return Axios.get(`/marketplace?start=0&end=100`);
+};
 
 export const getDropsByCategories = (category, start, end) => {
   return Axios.get(`/drop/category-drops/${category}`, {

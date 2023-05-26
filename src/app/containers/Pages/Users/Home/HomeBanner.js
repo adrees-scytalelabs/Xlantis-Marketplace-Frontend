@@ -1,11 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import "../../../../assets/css/mediaQueries.css";
 
 function HomeBanner() {
   const src =
   "https://mingablockchain.s3.amazonaws.com/Seoul+-+21116.mp4";
-
   return (
     <Link to={"/dashboard"}>
       <section className="section sectionHomeBanner">
