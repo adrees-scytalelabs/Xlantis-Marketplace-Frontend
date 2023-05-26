@@ -1,14 +1,19 @@
-import React from "react";
+import React,{useEffect} from "react";
 import { Col, Modal, Row } from "react-bootstrap";
+import { Typography } from "@mui/material";
+
 function TopUpModal(props) {
   const handleClose = () => {
     props.setOpen(true);
     props.handleClose();
-  }
+  };
   const handleProceed = () => {
     props.topUp();
     props.handleClose();
-  }
+  };
+  // useEffect(()=>{
+  //   // props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
+  // },[props])
   return (
     <Modal
       show={props.show}
@@ -18,26 +23,43 @@ function TopUpModal(props) {
     >
       <Modal.Header
         closeButton
+        className="text-center"
         style={{
-          backgroundColor: "black",
+          backgroundColor: "#000",
         }}
       >
-        <Modal.Title style={{ background: "black", color: "white" }}>
+        <Typography
+          variant="h6"
+          className="text-center"
+          sx={{ marginLeft: "42%" }}
+        >
           Top Up
-        </Modal.Title>
+        </Typography>
       </Modal.Header>
       <Modal.Body
         style={{
           border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
-          backgroundColor: "black",
+          backgroundColor: "#000",
           justifyContent: "center",
         }}
       >
         <Row className="mt-3">
           <Col>
-            <label>Select your Top Up Amount</label>
+            <label className="nftPrice">Current Balance : </label>
+            <label className="ml-2"> ${props.amount.toFixed(3)}</label>
+          </Col>
+        </Row>
+        <Row className="mt-3">
+          <Col>
+            <label className="nftPrice">Required Balance : </label>
+            <label className="ml-2"> ${props.required.toFixed(4)}</label>
+          </Col>
+        </Row>
+        <Row className="mt-3 mb-2">
+          <Col>
+            <h1 className="nftPrice">Select your Top Up Amount</h1>
           </Col>
         </Row>
         <Row>
@@ -45,11 +67,12 @@ function TopUpModal(props) {
             <input
               type="number"
               required
-              value={props.amount}
+              // defaultValue={Math.abs(props.amount - props.required).toFixed(4)}
+              value={props.topUpAmount}
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
-              min={5}
-              style={{ backgroundColor: "black", color: "white" }}
+              min={0.1}
+              style={{ backgroundColor: "#000", color: "white" }}
               onChange={(e) => {
                 props.setAmount(e.target.value);
               }}
@@ -59,7 +82,7 @@ function TopUpModal(props) {
       </Modal.Body>
       <Modal.Footer
         style={{
-          backgroundColor: "black",
+          backgroundColor: "#000",
           border: "1px solid white",
           borderTop: "none",
         }}
@@ -67,14 +90,14 @@ function TopUpModal(props) {
         <button
           className="newTemplateBtn mb-3"
           onClick={handleClose}
-          style={{ backgroundColor: "black" }}
+          style={{ backgroundColor: "#000" }}
         >
           Close
         </button>
         <button
           className="newTemplateBtn mb-3"
           onClick={(e) => handleProceed()}
-          style={{ backgroundColor: "black" }}
+          style={{ backgroundColor: "#000" }}
         >
           Proceed
         </button>

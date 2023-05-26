@@ -1,18 +1,17 @@
-import { Tooltip } from "@mui/material";
+import { Tooltip, Typography } from "@mui/material";
 import React from "react";
 
 const styles = {
   tooltip: {
     fontSize: "16px",
   },
-}
+};
 function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
-
   return (
     <div>
       <div>
         <Tooltip
-          title={RoyaltyFeeText}
+          title={<Typography fontSize={18}>{RoyaltyFeeText}</Typography>}
           classes={{ tooltip: styles.tooltip }}
           placement="top-start"
           arrow={true}
@@ -25,7 +24,7 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
         <small style={{ marginLeft: "5px" }}></small>
       </div>
 
-      <div className="form-group newNftWrapper">
+      <div className="input-group form-group newNftWrapper">
         <input
           type="number"
           required
@@ -38,6 +37,9 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
             }
           }}
         />
+        <div class="input-group-prepend">
+          <span class="input-group-text bg-transparent text-white">%</span>
+        </div>
       </div>
     </div>
   );

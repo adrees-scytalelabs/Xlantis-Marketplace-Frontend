@@ -1,26 +1,28 @@
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
   addNFTToBatch,
   createNewBatch,
   deleteBatch,
   deleteNFTFromBatch,
+  getAdminsDefaultTemplates,
+  getSavedTemplates,
+  getStandardTemplate,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
   updateCollectionIdInBatch,
   updateNFT,
-  uploadImage,
+  uploadImage
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import RemoveNft from "../../../../components/Cards/RemoveNft";
 import ipfs from "../../../../components/IPFS/ipfs";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 import ChangeCollectionConfirmationModal from "../../../../components/Modals/ChangeCollectionConfirmationModal";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
 import NFTEditModal from "../../../../components/Modals/NFTEditModal";
@@ -30,13 +32,12 @@ import WorkInProgressModal from "../../../../components/Modals/WorkInProgressMod
 import NewNftSelectNft from "../../../../components/Radio/NewNftSelectNft";
 import NewNftSelectSupply from "../../../../components/Radio/NewNftSelectSupply";
 import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
-import { getNewNftDefaultTemplate } from "../../../../redux/getNewNftDefaultTemplateSlice";
-import { getNewNftProperties } from "../../../../redux/getNewNftPropertiesSlice";
 const styles = {
   root: {
     flexGrow: 1,
@@ -65,7 +66,18 @@ const styles = {
 };
 
 function NewNFT(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const navigate = useNavigate();
   const [network, setNetwork] = useState(false);
@@ -96,7 +108,7 @@ function NewNFT(props) {
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
     getDefaultTemplate();
-    getSavedTemplate("admin");
+    getSavedTemplate();
     setTemplate("default");
   };
 
@@ -139,7 +151,7 @@ function NewNFT(props) {
   const [tokenSupply, setTokenSupply] = useState(1);
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   const [rarity, setRarity] = useState("");
-  const [image, setImage] = useState(r1);
+  const [image, setImage] = useState(defaultProfile);
   const [collectionId, setCollectionId] = useState("");
   const [nftURI, setNftURI] = useState("");
   const [metaDataURI, setMetaDataURI] = useState("");
@@ -160,8 +172,9 @@ function NewNFT(props) {
   const [contractType, setContractType] = useState("");
   const [NFTType, setNFTType] = useState("1155");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [useEffectLoader, setUseEffectLoader] = useState(false);
 
-  const [previewImage, setPreviewImage] = useState(r1);
+  const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
   const { collectionData, loading } = useSelector(
     (store) => store.NewNftCollection
@@ -175,7 +188,7 @@ function NewNFT(props) {
   const dispatch = useDispatch();
 
   let getCollections = (collectionType) => {
-    setCollection("");
+    // setCollection("");
     dispatch(getNewNftCollection(collectionType));
     // console.log("collectionResp",collectionData);
     if (collectionType === "1155") {
@@ -190,54 +203,78 @@ function NewNFT(props) {
   const handleSetProperties = (availableProperties) => {
     let prop = [];
 
-    availableProperties.map((property) => {
-      let val;
-      if (property.type === "boolean") {
-        val = true;
-      } else if (property.type === "number") {
-        val = 0;
-      } else {
-        val = "";
-      }
-      let newData = { key: property.key, value: val };
-      prop.push(newData);
-    });
-    setProperties(prop);
-  };
-
-  const getDefaultTemplate = () => {
-    dispatch(getNewNftDefaultTemplate());
-    // console.log("redxdefaltRResp",defaultTemplate);
-    setDefaultTemplates(defaultTemplate);
-    if (loadingDefault === 1) {
-      if (defaultTemplate !== null) {
-        handleSetProperties(defaultTemplate.properties);
-      }
+    if (availableProperties === undefined || availableProperties === null) {
+      setProperties([{ key: "", value: "" }]);
+    } else {
+      availableProperties &&
+        availableProperties.map((property) => {
+          let val;
+          if (property.type === "boolean") {
+            val = null;
+          } else if (property.type === "number") {
+            val = 0;
+          } else {
+            val = "";
+          }
+          let newData = { key: property.key, value: val };
+          prop.push(newData);
+        });
+      setProperties(prop);
     }
   };
+
+  const getDefaultTemplate = async () => {
+    await getAdminsDefaultTemplates()
+      .then((response) => {
+        console.log("Response from getting default templates: ", response);
+        setDefaultTemplates(response.data.defaultTemplate);
+        if (response.data.defaultTemplate?.properties) {
+          handleSetProperties(response.data.defaultTemplate.properties);
+        }
+      })
+      .catch((error) => {
+        console.log("Error from getting default templates: ", error);
+      });
+  };
+
+  const getStandardTemplates = async (role) => {
+    await getStandardTemplate(role)
+      .then((response) => {
+        // console.log("response from getting standard Templates: ", response);
+        setStandardTemplates(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting standard Templates: ", error);
+      });
+  };
+
+  const getSavedTemplate = async () => {
+    await getSavedTemplates()
+      .then((response) => {
+        // console.log("Response from getting saved templates: ", response);
+        setTemplateData(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting saved templates: ", error);
+      });
+  };
+
   useEffect(() => {
     getDefaultTemplate();
-  }, [loadingDefault]);
+    getStandardTemplates("super-admin");
+    getSavedTemplate();
+    // getSavedTemplate();
+  }, [useEffectLoader]);
 
-  const getSavedTemplate = (role) => {
-    if (role === "admin") {
-    }
-    dispatch(getNewNftProperties(role));
-    //  console.log("reduxdefaultResp",templates);
-    if (role === "admin") {
-      setTemplateData(templates);
-    } else {
-      setStandardTemplates(templates);
-    }
-  };
-
-  useEffect(() => {
-    getSavedTemplate("admin");
-    getSavedTemplate("super-admin");
-  }, [propertiesLoading]);
+  // useEffect(() => {
+  //   console.log("In use effect of properties loading");
+  //   getSavedTemplate("admin");
+  //   // getSavedTemplate("super-admin");
+  // }, [propertiesLoading]);
 
   let getDataFromCookies = () => {
     let data = Cookies.get("NFT-Detail");
+    console.log("NFT-Detail: ", data);
     let batchMintId = Cookies.get("Batch-ID");
     if (
       (data && batchMintId) !== null &&
@@ -247,6 +284,7 @@ function NewNFT(props) {
       setTokenList(JSON.parse(data));
       setBatchId(batchMintId);
       setCollection(JSON.parse(data)[0].collectiontitle);
+      console.log("Collection title:", JSON.parse(data)[0].collectiontitle);
       setCollectionId(JSON.parse(data)[0].collectionId);
       setNFTType("1155");
     }
@@ -287,17 +325,21 @@ function NewNFT(props) {
 
     if (tokenList.length === 0) {
       let variant = "error";
-      enqueueSnackbar("Add Nfts to Queue before Creation.", { variant });
+      setSnackbarMessage("Add Nfts to Queue before Creation.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       setIsSaving(false);
     } else {
       let variant = "success";
-      enqueueSnackbar("Nfts Created Successfully.", { variant });
+      setSnackbarMessage("Nfts Created Successfully.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       Cookies.remove("Batch-ID");
       Cookies.remove("NFT-Detail");
       setTokenList([]);
       setImageType("");
       setIpfsHash("");
-      setImage(r1);
+      setImage(defaultProfile);
       setName("");
       setDescription("");
       setRarity("");
@@ -316,7 +358,9 @@ function NewNFT(props) {
 
     if (tokenList.length === 0) {
       let variant = "error";
-      enqueueSnackbar("Add Nfts to Queue before Creation.", { variant });
+      setSnackbarMessage("Add Nfts to Queue before Creation.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
       setIsSaving(false);
     } else {
       await loadWeb3();
@@ -345,7 +389,9 @@ function NewNFT(props) {
             if (err !== null) {
               console.log("err", err);
               let variant = "error";
-              enqueueSnackbar("User Canceled Transaction", { variant });
+              setSnackbarMessage("User Canceled Transaction.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               handleCloseBackdrop();
               setIsSaving(false);
             }
@@ -361,13 +407,15 @@ function NewNFT(props) {
             mintBatchNFTs(batchId, data)
               .then((response) => {
                 let variant = "success";
-                enqueueSnackbar("Nfts Created Successfully.", { variant });
+                setSnackbarMessage("Nfts Created Successfully.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
                 Cookies.remove("Batch-ID");
                 Cookies.remove("NFT-Detail");
                 setTokenList([]);
                 setImageType("");
                 setIpfsHash("");
-                setImage(r1);
+                setImage(defaultProfile);
                 setName("");
                 setDescription("");
                 setRarity("");
@@ -385,7 +433,9 @@ function NewNFT(props) {
                 }
 
                 let variant = "error";
-                enqueueSnackbar("Unable to Create Nfts.", { variant });
+                setSnackbarMessage("Unable to Create Nfts.");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
 
                 handleCloseBackdrop();
                 setIsSaving(false);
@@ -423,31 +473,40 @@ function NewNFT(props) {
 
   const handleAddClick = (e) => {
     e.preventDefault();
-    if (image === r1) {
+    if (image === defaultProfile) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Artwork Photo", { variant });
+      setSnackbarMessage("Please Upload Artwork Photo.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (name === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Name", { variant });
+      setSnackbarMessage("Please Enter Artwork Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (description === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Description", { variant });
+      setSnackbarMessage("Please Enter Artwork Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (
       tokenSupply === 0 ||
       tokenSupply === undefined ||
       tokenSupply === null
     ) {
       let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Empty", { variant });
+      setSnackbarMessage("Token Supply cannot be Empty.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (tokenSupply < 0) {
       let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Negative", { variant });
-    } else if (tokenSupply < 0) {
-      let variant = "error";
-      enqueueSnackbar("Token Supply cannot be Negative", { variant });
+      setSnackbarMessage("Token Supply cannot be Negative.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (collection === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Collection Name", { variant });
+      setSnackbarMessage("Please Enter Collection Name");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       handleShowBackdrop();
       setIsUploadingData(true);
@@ -469,7 +528,9 @@ function NewNFT(props) {
           if (err) {
             console.log("Error: ", err);
             let variant = "error";
-            enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
+            setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             return;
           }
           ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
@@ -487,7 +548,7 @@ function NewNFT(props) {
             previewImageURI: previewImageURI,
             metadataURI: nftURI,
             nftFormat: imageType,
-            tokenSupply: tokenSupply,
+            totalSupply: tokenSupply,
             supplyType: supplyType,
             properties: propertiesObject,
           };
@@ -512,7 +573,7 @@ function NewNFT(props) {
                     nftFormat: imageType,
                     properties: properties,
                     ipfsHash: ipfsHash,
-                    tokensupply: tokenSupply,
+                    totalSupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
 
@@ -528,7 +589,7 @@ function NewNFT(props) {
                     nftURI: nftURI,
                     title: name,
                     description: description,
-                    tokensupply: tokenSupply,
+                    totalSupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
@@ -559,7 +620,7 @@ function NewNFT(props) {
                     nftURI: nftURI,
                     title: name,
                     description: description,
-                    tokensupply: tokenSupply,
+                    totalSupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
@@ -577,7 +638,7 @@ function NewNFT(props) {
                     nftURI: nftURI,
                     title: name,
                     description: description,
-                    tokensupply: tokenSupply,
+                    totalSupply: tokenSupply,
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
@@ -596,12 +657,15 @@ function NewNFT(props) {
               });
           }
 
-          setProperties([{ key: "", value: "" }]);
+          //SETTING STATES TO DEFAULT VALUES
+
+          // setProperties([{ key: "", value: "" }]);
+          handleSetProperties(defaultTemplates?.properties);
           setNftId("");
           setNftURI("");
           setPreviewImageURI("");
           setIpfsHash("");
-          setImage(r1);
+          setImage(defaultProfile);
           setName("");
           setDescription("");
           setRarity("");
@@ -611,7 +675,9 @@ function NewNFT(props) {
           setIsGlbFile(false);
           setIsMp3File(false);
           let variant = "success";
-          enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
+          setSnackbarMessage("Meta Data Uploaded to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsUploadingData(false);
           handleCloseBackdrop();
         });
@@ -633,7 +699,7 @@ function NewNFT(props) {
       typeImage = "glb";
       setImageType("glb");
       // setImage(e.target.files[0]);
-      setImage(r1);
+      setImage(defaultProfile);
     } else if (
       e.target.files[0].type.split("/")[1] === "mp3" ||
       e.target.files[0].name.includes(".mp3")
@@ -642,7 +708,7 @@ function NewNFT(props) {
       setIsMp3File(true);
       setImageType("mp3");
       // setImage(e.target.files[0]);
-      setImage(r1);
+      setImage(defaultProfile);
     } else {
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
@@ -650,7 +716,7 @@ function NewNFT(props) {
 
       if (previewImageURI !== "") {
         setPreviewImageURI("");
-        setPreviewImage(r1);
+        setPreviewImage(defaultProfile);
       }
     }
 
@@ -661,7 +727,9 @@ function NewNFT(props) {
           console.log("err", err);
           setIsUploadingIPFS(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+          setSnackbarMessage("Unable to Upload Image to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
 
@@ -669,7 +737,9 @@ function NewNFT(props) {
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS", { variant });
+        setSnackbarMessage("Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -679,10 +749,13 @@ function NewNFT(props) {
     fileData.append("image", imageNFT);
     uploadImage(fileData)
       .then((response) => {
+        console.log("response.data.url", response.data.url);
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -691,7 +764,9 @@ function NewNFT(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -740,7 +815,9 @@ function NewNFT(props) {
           console.log("Error: ", err);
           setIsUploadingData(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Meta Data to IPFS ", { variant });
+          setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         setMetaDataURI(`https://ipfs.io/ipfs/${result[0].hash}`);
@@ -774,7 +851,9 @@ function NewNFT(props) {
         handleCloseBackdrop();
 
         let variant = "success";
-        enqueueSnackbar("Meta Data Uploaded to IPFS ", { variant });
+        setSnackbarMessage("Meta Data Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
     };
   };
@@ -828,17 +907,17 @@ function NewNFT(props) {
           console.log("err", err);
           setIsUploadingPreview(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Preview Image to IPFS ", {
-            variant,
-          });
+          setSnackbarMessage("Unable to Upload Preview Image to IPFS .");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         console.log("HASH", result[0].hash);
         setPreviewImageURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS", {
-          variant,
-        });
+        setSnackbarMessage("Preview Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsUploadingPreview(false);
       });
     };
@@ -846,25 +925,35 @@ function NewNFT(props) {
 
   let handleFreeMint = async (e) => {
     e.preventDefault();
-    if (image === r1) {
+    if (image === defaultProfile) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Artwork Photo", { variant });
+      setSnackbarMessage("Please Upload Artwork Photo.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (name === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Name", { variant });
+      setSnackbarMessage("Please Enter Artwork Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (description === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Artwork Description", { variant });
+      setSnackbarMessage("Please Enter Artwork Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (collection === "") {
       let variant = "error";
-      enqueueSnackbar("Please Enter Collection Name", { variant });
+      setSnackbarMessage("Please Enter Collection Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (
-      image !== r1 &&
+      image !== defaultProfile &&
       (imageType === "glb" || imageType === "mp3") &&
-      previewImage === r1
+      previewImage === defaultProfile
     ) {
       let variant = "error";
-      enqueueSnackbar("Please Upload Preview Image", { variant });
+      setSnackbarMessage("Please Upload Preview Image.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else {
       handleShowBackdrop();
       await loadWeb3();
@@ -935,12 +1024,13 @@ function NewNFT(props) {
               error.response
             );
           });
-        setProperties([{ key: "", value: "" }]);
+        // setProperties([{ key: "", value: "" }]);
+        handleSetProperties(defaultTemplates.properties);
         setNftId("");
         setNftURI("");
         setPreviewImageURI("");
         setIpfsHash("");
-        setImage(r1);
+        setImage(defaultProfile);
         setName("");
         setDescription("");
         setRarity("");
@@ -953,7 +1043,9 @@ function NewNFT(props) {
         setCollectionId("");
         handleCloseBackdrop();
         let variant = "success";
-        enqueueSnackbar("NFT free minted successfully", { variant });
+        setSnackbarMessage("NFT free minted successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     }
   };
@@ -1001,7 +1093,9 @@ function NewNFT(props) {
       .catch((error) => {
         console.log("Error: ", error);
         let variant = "error";
-        enqueueSnackbar("Error signing", { variant });
+        setSnackbarMessage("Error signing.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
     console.log("Signature: ", signature);
 
@@ -1138,6 +1232,7 @@ function NewNFT(props) {
             setEditObjectIndex={setEditObjectIndex}
             classes={styles}
             handleRemoveClick={handleRemoveClick}
+            setWorkProgressModalShow={setWorkProgressModalShow}
           />
         </div>
         <BatchCreateNft
@@ -1172,6 +1267,8 @@ function NewNFT(props) {
       <NewTamplateModal
         handleClose={handleNewTemplateModalClose}
         show={newTemplateModalShow}
+        useEffectLoader={useEffectLoader}
+        setUseEffectLoader={setUseEffectLoader}
       />
       <ChangeCollectionConfirmationModal
         show={changeCollection}
@@ -1185,6 +1282,12 @@ function NewNFT(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

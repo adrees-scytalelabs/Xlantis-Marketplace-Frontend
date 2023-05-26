@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
-import { SnackbarProvider } from "notistack";
 import React, { useEffect } from "react";
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthContextProvider } from "../../components/context/AuthContext";
@@ -15,6 +14,7 @@ import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 import EmailVerification from "../Pages/Users/EmailVerification";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import HomeScreen from "../Pages/Users/HomeScreen";
+
 import MarketPlace from "../Pages/Users/MarketPlace";
 import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
 import TermsAndConditions from "../Pages/Users/TermsAndConditions";
@@ -32,6 +32,7 @@ function App() {
   let version;
   var jwtDecoded;
   let jwt = sessionStorage.getItem("Authorization");
+  console.log("jwtjwtjwt: ", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
   let checkLoginStatus = () => {
     jwt !== null && console.log();
@@ -67,6 +68,7 @@ function App() {
   const PrivateRoute = ({ path, ...rest }) => {
     console.log("...rest", rest);
     console.log("jwtDecoded", jwtDecoded);
+    checkLoginStatus();
     if (jwtDecoded && isLoggedIn) {
       if (jwtDecoded.role === "admin") {
         return (
@@ -118,7 +120,7 @@ function App() {
         <Navigate to="/superAdminDashboard" />
       ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ||
         version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ? (
-        <Navigate to="/dashboard" />
+          <Navigate to="/dashboard" />
       ) : path === "/checkout" ? (
         <CheckoutScreen />
       ) : path === "/user-account" ? (
@@ -147,8 +149,6 @@ function App() {
         <FixedDropSingleNFTHome />
       ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
-      ) : path === "/admin/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "admin"  ? (
-        <AdminSettings />
       ) : (
         <HomeScreen />
       )
@@ -158,7 +158,6 @@ function App() {
 
   return (
     <AuthContextProvider>
-      <SnackbarProvider maxSnack={3}>
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<LoginRegisterRedirectCheck exact path="/" />} />
@@ -184,7 +183,6 @@ function App() {
             <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
         </BrowserRouter>
-      </SnackbarProvider>
     </AuthContextProvider>
   );
 }

@@ -4,8 +4,7 @@ import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+
 import { getDropsPaginated } from "../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
 import Footer from "../../../components/Footers/Footer";

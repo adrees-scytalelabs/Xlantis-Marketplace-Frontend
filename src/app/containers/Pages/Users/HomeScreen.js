@@ -1,21 +1,29 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { useSnackbar } from "notistack";
 import UAParser from "ua-parser-js";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
+import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import HomeBanner from "./Home/HomeBanner";
 import Market from "./Home/Market";
 
-
 function HomeScreen({ deviceType }) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   let location = useLocation();
-  useEffect(()=>{
+  useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
     const sessionId = localStorage.getItem('sessionId')
@@ -24,7 +32,9 @@ function HomeScreen({ deviceType }) {
         const active = searchParams.get("active");
         if (active == "true") {
           let variant = "success";
-          enqueueSnackbar("Payment Successful!!Thank you for your purchase.", { variant });
+          setSnackbarMessage("Payment Successful!! Thank you for your purchase.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           localStorage.removeItem('sessionId');
           const searchParams = new URLSearchParams(window.location.search);
           searchParams.delete('session_id');
@@ -33,7 +43,9 @@ function HomeScreen({ deviceType }) {
           window.history.replaceState(null, '', newUrl);
         } else {
           let variant = "error";
-          enqueueSnackbar("Payment Unsuccessful!", { variant });
+          setSnackbarMessage("Payment Unsuccessful!");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           localStorage.removeItem('sessionId');
           const searchParams = new URLSearchParams(window.location.search);
           searchParams.delete('session_id');
@@ -43,7 +55,7 @@ function HomeScreen({ deviceType }) {
         }
       }
     }
-  },[])
+  }, [])
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -56,6 +68,7 @@ function HomeScreen({ deviceType }) {
         </div>
       </div>
       <Footer position={"relative"} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

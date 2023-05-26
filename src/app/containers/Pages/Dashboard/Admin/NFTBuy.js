@@ -2,7 +2,6 @@
 import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
@@ -15,19 +14,20 @@ import PropertiesAccordian from "../../../../components/Accordian/PropertiesAcco
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
+import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import BuyButton from "../../../../components/buttons/Buy";
-import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 
 const styles = {
   root: {
     flexGrow: 1,
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: "#000",
   },
   media: {
     height: 0,
@@ -41,7 +41,7 @@ const customTheme = createTheme({
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
-        backgroundColor: "black",
+        backgroundColor: "#000",
       },
       expandIcon: {
         color: "white",
@@ -50,7 +50,7 @@ const customTheme = createTheme({
     MuiAccordionDetails: {
       root: {
         padding: "8px 0px 16px",
-        backgroundColor: "black",
+        backgroundColor: "#000",
       },
     },
     MuiOutlinedInput: {
@@ -68,9 +68,21 @@ const NFTBuy = (props) => {
   let location = useLocation();
   const [open, setOpen] = useState(false);
   const [nftDetail, setNftDetail] = useState({});
+  const [keys, setKeys] = useState({});
   const [properties, setProperties] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
@@ -181,16 +193,16 @@ const NFTBuy = (props) => {
         .balanceOf(accounts[0])
         .call();
       console.log(userBalance);
-      if (userBalance < nftDetail.currentMarketplaceId.price) {
+      if (userBalance < nftDetail.currentOrderListingId.price) {
         let variant = "error";
-        enqueueSnackbar("User have insufficient funds to buy this NFT", {
-          variant,
-        });
+        setSnackbarMessage("User have insufficient funds to buy this NFT.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else {
         erc20Instance.methods
-          .approve(addressApprove, nftDetail.currentMarketplaceId.price)
+          .approve(addressApprove, nftDetail.currentOrderListingId.price)
           .send({ from: accounts[0] }, (err, response) => {
             console.log("get transaction", err, response);
           })
@@ -208,7 +220,7 @@ const NFTBuy = (props) => {
                   nftDetail.collectionId.nftContractAddress,
                   nftDetail.nftId,
                   nftDetail.tokenSupply,
-                  nftDetail.currentMarketplaceId.price
+                  nftDetail.currentOrderListingId.price
                 )
                 .send({ from: accounts[0] }, (err, response) => {
                   console.log("get transaction", err, response);
@@ -236,7 +248,10 @@ const NFTBuy = (props) => {
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
-                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    setSnackbarMessage("User Canceled Transaction.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
+
                     handleCloseBackdrop();
                     setIsSaving(false);
                   }
@@ -244,7 +259,10 @@ const NFTBuy = (props) => {
                 .on("receipt", (receipt) => {
                   console.log("receipt", receipt);
                   let variant = "success";
-                  enqueueSnackbar("NFT Bought Successfully", { variant });
+                  setSnackbarMessage("NFT Bought Successfully.");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
+
                   handleCloseBackdrop();
                   setIsSaving(false);
                 });
@@ -261,7 +279,7 @@ const NFTBuy = (props) => {
                   nftDetail.collectionId.nftContractAddress,
                   nftDetail.nftId,
                   nftDetail.nftURI,
-                  nftDetail.currentMarketplaceId.price,
+                  nftDetail.currentOrderListingId.price,
                   nftDetail.voucherSignature
                 )
                 .send({ from: accounts[0] }, (err, response) => {
@@ -290,7 +308,9 @@ const NFTBuy = (props) => {
                   if (err !== null) {
                     console.log("err", err);
                     let variant = "error";
-                    enqueueSnackbar("User Canceled Transaction", { variant });
+                    setSnackbarMessage("User Canceled Transaction.");
+                    setSnackbarSeverity(variant);
+                    handleSnackbarOpen();
                     handleCloseBackdrop();
                     setIsSaving(false);
                   }
@@ -298,7 +318,9 @@ const NFTBuy = (props) => {
                 .on("receipt", (receipt) => {
                   console.log("receipt lazy mint", receipt);
                   let variant = "success";
-                  enqueueSnackbar("NFT Bought Successfully", { variant });
+                  setSnackbarMessage("NFT Bought Successfully.");
+                  setSnackbarSeverity(variant);
+                  handleSnackbarOpen();
                   handleCloseBackdrop();
                   setIsSaving(false);
                 });
@@ -336,7 +358,8 @@ const NFTBuy = (props) => {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
     setNftDetail(location.state.nftDetail);
-    setPrice(location.state.nftDetail.currentMarketplaceId.price);
+    setPrice(location.state.nftDetail.currentOrderListingId.price);
+    setKeys(Object.keys(location.state.nftDetail.properties));
     setProperties(location.state.nftDetail.properties);
 
     props.setActiveTab({
@@ -370,7 +393,9 @@ const NFTBuy = (props) => {
       .then((response) => {
         console.log("nft buy response", response.data);
         let variant = "success";
-        enqueueSnackbar("NFT BOUGHT SUCCESSFULLY", { variant });
+        setSnackbarMessage("NFT Bought Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -378,7 +403,10 @@ const NFTBuy = (props) => {
           console.log(error);
           console.log(error.response);
           let variant = "error";
-          enqueueSnackbar("Unable To Buy NFT.", { variant });
+
+          setSnackbarMessage("Unable To Buy NFT.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           handleCloseBackdrop();
         }
         if (error.response.data !== undefined) {
@@ -441,14 +469,14 @@ const NFTBuy = (props) => {
               <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                 <Col>
                   <PropertiesAccordian
-                    properties={properties}
-                    key={Object.keys(properties)}
+                    keys={Object.keys(location.state.nftDetail.properties)}
+                    properties={location.state.nftDetail.properties}
                   />
                 </Col>
               </Row>
               <br></br>
               <BuyButton
-                isSold={location.state.nftDetail.currentMarketplaceId.isSold}
+                isSold={location.state.nftDetail.currentOrderListingId.isSold}
                 startTime={location.state.startTime}
                 endTime={location.state.endTime}
                 versionB={versionB}
@@ -473,6 +501,7 @@ const NFTBuy = (props) => {
         isOpen={modalOpen}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 };

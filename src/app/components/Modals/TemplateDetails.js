@@ -1,13 +1,12 @@
-import { Tooltip } from '@mui/material';
-import { useSnackbar } from "notistack";
+import { Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { superAdminTemplateUpdate } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
+import NotificationSnackbar from '../Snackbar/NotificationSnackbar';
 
 function TemplateDetails(props) {
   const [title, setTitle] = useState("");
-  const { enqueueSnackbar } = useSnackbar();
   const [open, setOpen] = useState(false);
   const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const handleCloseBackdrop = () => {
@@ -60,7 +59,9 @@ function TemplateDetails(props) {
         .then((response) => {
           console.log(response);
           let variant = "success";
-          enqueueSnackbar("Template Updated Successfully", { variant });
+          setSnackbarMessage("Template Updated Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           handleCloseBackdrop();
           props.handleClose();
         })
@@ -69,7 +70,9 @@ function TemplateDetails(props) {
           console.log("Error on status pending nft: ", error.response);
           handleCloseBackdrop();
           let variant = "error";
-          enqueueSnackbar("Unable to update the template.", { variant });
+          setSnackbarMessage("Unable to Update the template.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         });
     } catch (e) {
       console.log("Something wrong with updation", e);
@@ -82,6 +85,18 @@ function TemplateDetails(props) {
       setProperties(props.templateData.properties);
     }
   }, [props]);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   return (
     props.show === true && (
       <>
@@ -163,7 +178,14 @@ function TemplateDetails(props) {
                       className="ml-4 mt-2 mt-lg-0"
                     >
                       <h4>Action</h4>
-                      <Tooltip title="Remove a property" placement="bottom">
+                      <Tooltip
+                        placement="bottom"
+                        title={
+                          <Typography fontSize={16}>
+                            Remove a property
+                          </Typography>
+                        }
+                      >
                         <button
                           className="btn btn-submit btn-lg propsActionBtn"
                           onClick={(e) => handleRemoveProperty(e, index)}
@@ -190,7 +212,7 @@ function TemplateDetails(props) {
           </Modal.Body>
           <Modal.Footer
             style={{
-              backgroundColor: "black",
+              backgroundColor: "#000",
               border: "1px solid white",
               borderTop: "none",
             }}
@@ -209,6 +231,7 @@ function TemplateDetails(props) {
           </Modal.Footer>
         </Modal>
         <CircularBackdrop open={open} />
+        <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
       </>
     )
   );

@@ -1,23 +1,23 @@
 import { Autocomplete, Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 import { Col, Modal, Row, Spinner } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import r1 from '../../assets/img/patients/patient.jpg';
 import ipfs from '../../components/IPFS/ipfs';
 import { uploadToS3 } from "../API/AxiosInterceptor";
+import { defaultProfile } from '../ImageURLs/URLs';
+import NotificationSnackbar from '../Snackbar/NotificationSnackbar';
 
 const NFTEditModal = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
+
 
   const [nftDetail, setNftDetail] = useState({});
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   const [imageType, setImageType] = useState("");
   const [ipfsHash, setIpfsHash] = useState("");
   const [nftURI, setNftURI] = useState("");
-  const [image, setImage] = useState(r1);
+  const [image, setImage] = useState(defaultProfile);
   const [rarities] = useState([
     "Mastercraft",
     "Legendary",
@@ -31,7 +31,18 @@ const NFTEditModal = (props) => {
 
   const [previewImageURI, setPreviewImageURI] = useState("");
   const [isUploadingPreview, setIsUploadingPreview] = useState(false);
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   useEffect(() => {
     setIsGlbFile(false);
     if (props.show === true) {
@@ -85,7 +96,9 @@ const NFTEditModal = (props) => {
           console.log("err", err);
           setIsUploadingIPFS(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image to IPFS ", { variant });
+          setSnackbarMessage("Unable to Upload Image to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         console.log("HASH", result[0].hash);
@@ -94,7 +107,9 @@ const NFTEditModal = (props) => {
         setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
         data.nftURI = `https://ipfs.io/ipfs/${result[0].hash}`;
         let variant = "success";
-        enqueueSnackbar("Image Uploaded to IPFS", { variant });
+        setSnackbarMessage("Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         if (typeImage === "glb") {
           setIsGlbFile(true);
         }
@@ -111,7 +126,9 @@ const NFTEditModal = (props) => {
         setNftDetail(data);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -120,7 +137,9 @@ const NFTEditModal = (props) => {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image.", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -167,9 +186,9 @@ const NFTEditModal = (props) => {
           console.log("err", err);
           setIsUploadingPreview(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Preview Image to IPFS ", {
-            variant,
-          });
+          setSnackbarMessage("Unable to Upload Preview Image to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           return;
         }
         console.log("HASH", result[0].hash);
@@ -179,7 +198,9 @@ const NFTEditModal = (props) => {
         setNftDetail(data);
 
         let variant = "success";
-        enqueueSnackbar("Preview Image Uploaded to IPFS ", { variant });
+        setSnackbarMessage("Preview Image Uploaded to IPFS.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsUploadingPreview(false);
       });
     };
@@ -687,6 +708,7 @@ const NFTEditModal = (props) => {
           </button>
         )}
       </Modal.Footer>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </Modal>
   );
 };

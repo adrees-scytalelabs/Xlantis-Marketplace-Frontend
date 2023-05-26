@@ -1,7 +1,6 @@
 import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
@@ -22,6 +21,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 const styles = {
   root: {
     flexGrow: 1,
@@ -32,31 +32,37 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 const customTheme = createTheme({
-  overrides: {
+  components: {
     MuiAccordionSummary: {
-      root: {
-        borderBottom: "1px solid white",
-        backgroundColor: "black",
-      },
-      expandIcon: {
-        color: "white",
+      styleOverrides: {
+        root: {
+          borderBottom: "1px solid white",
+          backgroundColor: "#000",
+        },
+        expandIcon: {
+          color: "white",
+        },
       },
     },
     MuiAccordionDetails: {
-      root: {
-        padding: "8px 0px 16px",
-        backgroundColor: "black",
+      styleOverrides: {
+        root: {
+          padding: "8px 0px 16px",
+          backgroundColor: "#000",
+        },
       },
     },
     MuiOutlinedInput: {
-      input: {
-        border: "1px solid white",
-        color: "white",
-        borderRadius: "5px",
-        padding: "16px 14px",
+      styleOverrides: {
+        input: {
+          border: "1px solid white",
+          color: "white",
+          borderRadius: "5px",
+          padding: "16px 14px",
+        },
       },
     },
   },
@@ -69,7 +75,18 @@ const DropSingleNFT = (props) => {
   const [properties, setProperties] = useState([]);
   const [keys, setKeys] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const [isSaving, setIsSaving] = useState(false);
   const [network, setNetwork] = useState("");
@@ -200,7 +217,7 @@ const DropSingleNFT = (props) => {
           nftDetail.collectionId.nftContractAddress,
           nftDetail.nftId,
           nftDetail.tokenSupply,
-          nftDetail.currentMarketplaceId.price
+          nftDetail.currentOrderListingId.price
         )
         .send({ from: accounts[0] }, (err, response) => {
           console.log("get transaction", err, response);
@@ -228,7 +245,9 @@ const DropSingleNFT = (props) => {
           if (err !== null) {
             console.log("err", err);
             let variant = "error";
-            enqueueSnackbar("User Canceled Transaction", { variant });
+            setSnackbarMessage("User Canceled Transaction.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
             handleCloseBackdrop();
             setIsSaving(false);
           }
@@ -380,7 +399,9 @@ const DropSingleNFT = (props) => {
       .then((response) => {
         console.log("nft bid response", response.data);
         let variant = "success";
-        enqueueSnackbar("Bid Accepted Successfully", { variant });
+        setSnackbarMessage("Bid Accepted Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -388,7 +409,9 @@ const DropSingleNFT = (props) => {
           console.log(error);
           console.log(error.response);
           let variant = "error";
-          enqueueSnackbar("Unable To Accept Bid On NFT.", { variant });
+          setSnackbarMessage("Unable To Accept Bid On NFT.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           handleCloseBackdrop();
         }
         if (error.response.data !== undefined) {
@@ -451,28 +474,28 @@ const DropSingleNFT = (props) => {
               <DropSingleNFTCard nftDetail={nftDetail} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian key={keys} properties={properties} />
-                </Col >
-              </Row >
-              {
-                location.state.saleType === "auction" ? (
-                  <Row style={{ marginTop: "5px" }}>
-                    <Col>
-                      <AcceptBidAccordian
-                        versionB={versionB}
-                        bidDetail={bidDetail}
-                        isSold={location.state?.nftDetail.currentMarketplaceId.isSold}
-                        handleAcceptBid={handleAcceptBid}
-                        handleOpenModal={handleOpenModal}
-                      />
-                    </Col>
-                  </Row>
-                ) : null
-              }
-            </div >
-          </div >
-        </div >
-      </ThemeProvider >
+                  <PropertiesAccordian keys={keys} properties={properties} />
+                </Col>
+              </Row>
+              {location.state.saleType === "auction" ? (
+                <Row style={{ marginTop: "5px" }}>
+                  <Col>
+                    <AcceptBidAccordian
+                      versionB={versionB}
+                      bidDetail={bidDetail}
+                      isSold={
+                        location.state?.nftDetail.currentOrderListingId.isSold
+                      }
+                      handleAcceptBid={handleAcceptBid}
+                      handleOpenModal={handleOpenModal}
+                    />
+                  </Col>
+                </Row>
+              ) : null}
+            </div>
+          </div>
+        </div>
+      </ThemeProvider>
       <AcceptBidTxModal
         handleClose={handleCloseModalTx}
         open={modalOpen}
@@ -481,7 +504,8 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-    </div >
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+    </div>
   );
 };
 

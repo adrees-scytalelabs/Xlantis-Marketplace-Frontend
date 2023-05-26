@@ -1,6 +1,11 @@
-import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
+import {
+  Grid,
+  TablePagination,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import Cookies from "js-cookie";
-import React,{  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import DropNFTCard from "../../../../components/Cards/DropNFTCard";
@@ -27,7 +32,7 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 const cardStyles = {
   cardTheme: {
@@ -54,7 +59,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -66,41 +71,49 @@ const customTheme = createTheme({
     fontFamily: "orbitron",
     color: "#fff",
   },
-  overrides: {
+  components: {
     MuiTablePagination: {
-      caption: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      input: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      selectIcon: {
-        color: "#fff",
-      },
-      actions: {
-        color: "#fff",
+      styleOverrides: {
+        caption: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        input: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        selectIcon: {
+          color: "#fff",
+        },
+        actions: {
+          color: "#fff",
+        },
       },
     },
     MuiIconButton: {
-      root: {
-        color: "#fff",
-      },
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        root: {
+          color: "#fff",
+        },
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     Mui: {
-      "&$disabled": {
-        color: "#fff",
+      styleOverrides: {
+        "&$disabled": {
+          color: "#fff",
+        },
       },
     },
     MuiPaper: {
-      root: {
-        backgroundColor: "#000",
-        color: "#fff",
-        border: "1px solid #fff",
+      styleOverrides: {
+        root: {
+          backgroundColor: "#000",
+          color: "#fff",
+          border: "1px solid #fff",
+        },
       },
     },
   },
@@ -118,6 +131,12 @@ function MyNFTs(props) {
   const [nftIds, setNftIds] = useState([]);
   const [audio, setAudio] = useState();
   const [versionB, setVersionB] = useState("");
+  const [dropTitleImage, setDropTitleImage] = useState(
+    "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
+  );
+  const [dropBannerImage, setDropBannerImage] = useState(
+    "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
+  );
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
@@ -181,6 +200,7 @@ function MyNFTs(props) {
     if (nftIdLen != 0) {
       getNFTsFromDropPaginated(location.state.dropId, start, end, data).then(
         (response) => {
+          console.log("Response from getting NFTs: ", response);
           let nfts = response.data.data;
           let newState = nfts.map((obj) => {
             return { ...obj, isPlaying: false };
@@ -216,8 +236,9 @@ function MyNFTs(props) {
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
-
     setNftIds(location.state.nftId);
+    setDropBannerImage(location.state.bannerURL);
+    setDropTitleImage(location.state.titleURL);
     getNFTs(0, rowsPerPage);
     setWindowSize(window.innerWidth);
 
@@ -271,7 +292,7 @@ function MyNFTs(props) {
       </div>
 
       <div className="card-body page-height px-0">
-        <DropBanner />
+        <DropBanner bannerURL={dropBannerImage} titleURL={dropTitleImage} />
 
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
@@ -286,7 +307,6 @@ function MyNFTs(props) {
             <div className="row no-gutters justify-content-center">
               {open ? (
                 <WhiteSpinner />
-
               ) : tokenList.length === 0 ? (
                 <MessageCardDropNfts msg="No items to display" />
               ) : (
@@ -298,16 +318,7 @@ function MyNFTs(props) {
                   style={{ marginBottom: "24px" }}
                 >
                   {tokenList.map((i, index) => (
-                    <Grid
-                      item
-                      xs={12}
-                      sm={6}
-                      md={6}
-                      lg={3}
-                      spacing={1}
-                      direction="row"
-                      key={index}
-                    >
+                    <Grid item xs={12} sm={6} md={6} lg={3} key={index}>
                       {location.state?.saleType === "fixed-price" ? (
                         <Link
                           onClick={(e) => handleStop(e)}
@@ -337,7 +348,7 @@ function MyNFTs(props) {
                               i.collectionId.nftContractAddress,
                             endTime: location.state.endTime,
                             contractType: i.collectionId.contractType,
-                            price: i.currentMarketplaceId.price,
+                            price: i.currentOrderListingId.price,
                           }}
                         >
                           <DropNFTCard
@@ -365,8 +376,8 @@ function MyNFTs(props) {
             </div>
           </ThemeProvider>
         </div>
-      </div >
-    </div >
+      </div>
+    </div>
   );
 }
 

@@ -1,112 +1,105 @@
-import { TablePagination } from '@mui/material';
-import axios from 'axios';
+import { TablePagination } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
-  handleModalOpen
+  handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import { getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalWallet(props) {
+
   const [walletAdmins, setWalletAdmins] = useState([]);
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const {
-    unverifiedType2Data,
-    unverifiedType2Loading
-  } = useSelector((store) => store.getUnverifiedAccountsData);
+  const { unverifiedType2Data, unverifiedType2Loading } = useSelector(
+    (store) => store.getUnverifiedAccountsData
+  );
   const dispatch = useDispatch();
-
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
-
-  const getUnverifiedAdminsWallet = (
-    start,
-    end,
-  ) => {
+  const getUnverifiedAdminsWallet = (start, end) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({ start, end }))
+    dispatch(
+      getSuperAdminUnverifiedType2({
+        setWalletAdmins,
+        setAdminCount,
+        start,
+        end,
+      })
+    );
     if (unverifiedType2Loading === 1) {
-      setWalletAdmins(unverifiedType2Data);
-      setAdminCount(unverifiedType2Data.length);
       setOpen(false);
-    }
-    else if (unverifiedType2Loading === 2) {
+    } else if (unverifiedType2Loading === 2) {
       setOpen(false);
     }
   };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
-  const handleVerifyWallet = (
-    e,
-    verifyAdminId,
-    setOpen,
-    setWalletAdmins,
-    setAdminCount,
-    rowsPerPage,
-    setVariant,
-    setLoad,
-    setNotificationData
-  ) => {
+  const handleVerifyWallet = (e, verifyAdminId) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getUnverifiedAdminsWallet(
-          0,
-          rowsPerPage,
-          setOpen,
-          setWalletAdmins,
-          setAdminCount
-        );
-        setVariant("success");
-        setNotificationData("Admin Verified Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getUnverifiedAdminsWallet(0, rowsPerPage);
+        let variant = "success";
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Verify Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error";
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
 
   useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
-  }, [unverifiedType2Loading])
-
+  }, [unverifiedType2Loading]);
 
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
-      accountApproval: "active",
+      manageAccounts: "active",
+      accountApproval: "",
       accounts: "",
-      sso: "",
-      wallet: "",
+      sso: "active",
+      wallet: "active",
       properties: "",
       template: "",
       saved: "",
@@ -129,13 +122,6 @@ function AccountApprovalWallet(props) {
           walletEnabled={true}
           approval={true}
           handleVerifyWallet={handleVerifyWallet}
-          setWalletAdmins={setWalletAdmins}
-          rowsPerPage={rowsPerPage}
-          setVariant={setVariant}
-          setLoad={setLoad}
-          setNotificationData={setNotificationData}
-          setAdminCount={setAdminCount}
-          setOpen={setOpen}
           setShow={setShow}
           setModalData={setModalData}
         />
@@ -149,12 +135,6 @@ function AccountApprovalWallet(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
-      />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
@@ -162,6 +142,7 @@ function AccountApprovalWallet(props) {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

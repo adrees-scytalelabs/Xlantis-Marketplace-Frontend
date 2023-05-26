@@ -21,9 +21,9 @@ function SuperAdminSidebar(props) {
     }
   };
   let changeStyle1 = (e) => {
-      setStyle("dropdown-container1");
-      setSSOStyle("");
-      setWalletStyle("");
+    setStyle("dropdown-container1");
+    setSSOStyle("");
+    setWalletStyle("");
     if (propertiesStyle === "dropdown-container3") {
       setPropertiesStyle("dropdown-container4");
     } else {
@@ -47,12 +47,11 @@ function SuperAdminSidebar(props) {
     setSavedStyle("walletRowClick");
   };
   let closedDropdown = (e) => {
-    if(style==="dropdown-container2"){
+    if (style === "dropdown-container2") {
       setStyle("dropdown-container1");
       setSSOStyle("");
       setWalletStyle("");
-    }
-    else if(style==="dropdown-container4"){
+    } else if (style === "dropdown-container4") {
       setStyle("dropdown-container3");
       setTemplateStyle("");
       setSavedStyle("");
@@ -63,25 +62,27 @@ function SuperAdminSidebar(props) {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
     Cookies.remove("Version");
-    
+
     window.location.reload(false);
   };
   useEffect(() => {
-
     if (props.activeTab.sso === "active") {
       setStyle("dropdown-container2");
     } else if (props.activeTab.wallet === "active") {
       setStyle("dropdown-container2");
     } else if (props.activeTab.sso === "" && props.activeTab.wallet === "") {
       setStyle("dropdown-container1");
-    }if (props.activeTab.template === "active") {
+    }
+    if (props.activeTab.template === "active") {
       setPropertiesStyle("dropdown-container4");
-    } if (props.activeTab.saved === "active") {
+    }
+    if (props.activeTab.saved === "active") {
       setPropertiesStyle("dropdown-container4");
-    } if (props.activeTab.template === "" && props.activeTab.saved === "") {
+    }
+    if (props.activeTab.template === "" && props.activeTab.saved === "") {
       setPropertiesStyle("dropdown-container3");
     }
-  },[props.activeTab]);
+  }, [props.activeTab]);
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -96,51 +97,46 @@ function SuperAdminSidebar(props) {
                 <i className="fa fa-home"></i> <span>Dashboard</span>
               </Link>
             </li>
-            <li
+            <li className={props.activeTab.adminStats} onClick={closedDropdown}>
+              <Link to={`${path}/adminStats`} className="sidebarLink">
+                <i className="fas fa-layer-group"></i>
+                <span>Admin Stats</span>
+              </Link>
+            </li>
+            {/* <li
               className={props.activeTab.verifiedAccounts}
               onClick={closedDropdown}
             >
-              <Link
-                to={`${path}/verifiedAccounts`}
-                className="sidebarLink"
-              >
+              <Link to={`${path}/verifiedAccounts`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Verified Accounts</span>
               </Link>
-            </li>
-            <li
+            </li> */}
+            {/* <li
               className={props.activeTab.accountApproval}
               onClick={closedDropdown}
             >
-              <Link
-                to={`${path}/accountApproval`}
-                className="sidebarLink"
-              >
+              <Link to={`${path}/accountApproval`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Approve Accounts</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={props.activeTab.manageAccounts}
               onClick={changeStyle}
             >
-              <Link
-                to={`${path}/manageAccounts`}
-                className="sidebarLink"
-              >
+              <Link to={`${path}/manageAccounts`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Manage Accounts</span>
                 <i className="fa fa-caret-down"></i>
               </Link>
               <div className={`${style} container`}>
-                <div
+                {/* <div
                   className={`${ssoStyle} row ssoRow d-flex justify-content-center`}
                   onClick={subMenuSSOClick}
                 >
                   <li className={`${props.activeTab.sso} ssoSidebar`}>
-                    <Link to={`${path}/manageAccounts/SSO`}>
-                      SSO
-                    </Link>
+                    <Link to={`${path}/manageAccounts/SSO`}>SSO</Link>
                   </li>
                 </div>
                 <div
@@ -155,22 +151,34 @@ function SuperAdminSidebar(props) {
                       Wallet
                     </Link>
                   </li>
+                </div> */}
+                <div
+                  className={`${ssoStyle} row ssoRow d-flex justify-content-center cursor-pointer`}
+                  onClick={subMenuSSOClick}
+                >
+                  <li className={`${props.activeTab.sso} ssoSidebar`}>
+                    <Link to={`${path}/accountApproval`}>
+                      Approval Requests
+                    </Link>
+                  </li>
+                </div>
+                <div
+                  className={`${walletStyle} row walletRow d-flex justify-content-center`}
+                  onClick={subMenuWalletClick}
+                >
+                  <li className={`${props.activeTab.wallet}`}>
+                    <Link to={`${path}/manageAccounts/Accounts`}>Accounts</Link>
+                  </li>
                 </div>
               </div>
             </li>
-            <li className={props.activeTab.accounts} onClick={closedDropdown}>
+            {/* <li className={props.activeTab.accounts} onClick={closedDropdown}>
               <Link to={`${path}/Accounts`} className="sidebarLink">
                 <i className="fa fa-file-medical"></i> <span>Accounts</span>
               </Link>
-            </li>
-            <li
-              className={props.activeTab.properties}
-              onClick={changeStyle1}
-            >
-              <Link
-                to={`${path}/properties`}
-                className="sidebarLink"
-              >
+            </li> */}
+            <li className={props.activeTab.properties} onClick={changeStyle1}>
+              <Link to={`${path}/properties`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Properties</span>
                 <i className="fa fa-caret-down"></i>

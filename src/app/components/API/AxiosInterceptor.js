@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
   baseURL: `https://raindrop-backend.herokuapp.com/`,
-  //baseURL: `http://localhost:3000`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -50,7 +50,7 @@ export const createNewSuperAdminTemplates = (body) => {
 };
 
 export const topUpAmount = (body) => {
-  return Axios.post(`/usd-payments/admin/topup`, body);
+  return Axios.post(`/top-up/`, body);
 };
 
 export const createNewDrop = (body) => {
@@ -70,11 +70,11 @@ export const sendBidDataVersioned = (version, body) => {
 };
 
 export const marketplaceBuyVersioned = (version, body) => {
-  return Axios.post(`/${version}/marketplace/buy`, body);
+  return Axios.post(`/${version}/order-listing/buy`, body);
 };
 
 export const marketplaceBuy = (body) => {
-  return Axios.post(`/marketplace/buy`, body);
+  return Axios.post(`/order-listing/buy`, body);
 };
 
 export const acceptAuctionBid = (body) => {
@@ -246,6 +246,9 @@ export const getMyNFTsPaginated = (start, end) => {
 export const getSingleNFTDetail = (nftId) => {
   return Axios.get(`/nft/getSingleNFT/${nftId}`);
 };
+export const getTradeHistory = (nftId) => {
+  return Axios.get(`/history/trade/${nftId}`);
+};
 
 export const getValidateAdminBalance = (dropId) => {
   return Axios.get(`/drop/validate-admin-balance/${dropId}`);
@@ -325,6 +328,14 @@ export const getUnverifiedAdminsV1Paginated = (start, end) => {
   );
 };
 
+export const getAllAdminsPaginated = (start, end, adminType) => {
+  return Axios.get(`/super-admin/admins/${start}/${end}`, {
+    params: {
+      userType: adminType,
+    },
+  });
+};
+
 export const getUnverifiedAdminsV2Paginated = (start, end) => {
   return Axios.get(
     `/super-admin/admins/unverified/${start}/${end}?userType=v2`
@@ -377,6 +388,52 @@ export const getUserEmailVerification = (email, token) => {
 
 export const getSuperAdminPlatformFee = () => {
   return Axios.get(`/super-admin/platform-fee`);
+};
+
+export const getAdminCountsVersioned = (version) => {
+  return Axios.get(`${version}/user/getcounts`);
+};
+
+export const getSuperAdminBalance = () => {
+  return Axios.get(`/super-admin/balance`);
+};
+
+export const getAdminsDefaultTemplates = () => {
+  return Axios.get(`/nft-properties/admin/default`);
+};
+
+export const getStandardTemplate = (userType) => {
+  return Axios.get(`/nft-properties/${userType}`);
+};
+
+export const getSavedTemplates = () => {
+  return Axios.get(`/nft-properties/admin/`);
+};
+
+export const getTopUpHistoryOfAdmin = () => {
+  return Axios.get(`/top-up/admin/history`);
+};
+
+export const getTopUpHistoryOfUser = () => {
+  return Axios.get(`/top-up/user/history`);
+};
+
+export const checkDomain = (params) => {
+  return Axios.get(`/v1-sso/user/check-domain`, { params: params });
+};
+
+export const getMaticBalance = () => {
+  return Axios.get(`/wallet-analytics/funds/`);
+};
+
+export const getDropCategories = () => {
+  return Axios.get(`/drop/categories`);
+};
+
+export const getDropsByCategories = (category, start, end) => {
+  return Axios.get(`/drop/category-drops/${category}`, {
+    params: { start: start, end: end },
+  });
 };
 
 //DELETE REQUESTS

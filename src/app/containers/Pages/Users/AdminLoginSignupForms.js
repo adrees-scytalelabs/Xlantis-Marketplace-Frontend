@@ -1,10 +1,11 @@
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import { adminLoginThroughSSO } from "../../../components/API/AxiosInterceptor";
+import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
+import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
+import jwtDecode from "jwt-decode";
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -13,7 +14,18 @@ const AdminLoginSignupForms = () => {
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleSuccess = (credentialResponse) =>
     setAccount(credentialResponse.credential);
@@ -64,15 +76,16 @@ const AdminLoginSignupForms = () => {
 
   useEffect(() => {
     if (adminSignInData !== null) {
+      let decode = jwtDecode(adminSignInData.raindropToken);
+      sessionStorage.setItem("userId", decode.userId);
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-        enqueueSnackbar(
-          "Your request is under process. Waiting for approval by the Super Admin",
-          { variant }
-        );
+        setSnackbarMessage("Your request is under process. Waiting for approval by the Super Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     }
   }, [adminSignInData]);
@@ -123,6 +136,7 @@ const AdminLoginSignupForms = () => {
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </>
   );
 };

@@ -1,5 +1,26 @@
-import { FormControl, FormControlLabel, Radio, RadioGroup, Tooltip } from '@mui/material';
-import React from 'react';
+import {
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  ThemeProvider,
+  Tooltip,
+  createTheme,
+  Typography,
+} from "@mui/material";
+import React from "react";
+
+const theme = createTheme({
+  components: {
+    MuiRadio: {
+      styleOverrides: {
+        root: {
+          color: "white !important",
+        },
+      },
+    },
+  },
+});
 
 function NewNftSelectSupply({
   NFTType,
@@ -16,72 +37,74 @@ function NewNftSelectSupply({
     <div>
       {NFTType === "1155" ? (
         <div>
-          <FormControl component="fieldset">
-            <Tooltip
-              title={SupplyTypeText}
-              classes={{ tooltip: classes.tooltip }}
-              placement="top-start"
-              arrow={true}
-            >
-              <label
-                component="legend"
-                style={{
-                  fontWeight: "bold",
-                  fontFamily: "poppins",
-                }}
+          <ThemeProvider theme={theme}>
+            <FormControl component="fieldset">
+              <Tooltip
+                classes={{ tooltip: classes.tooltip }}
+                title={<Typography fontSize={18}>{SupplyTypeText}</Typography>}
+                arrow={true}
+                placement="top-start"
               >
-                Select Supply Type{" "}
-                <i className="fa fa-info-circle" aria-hidden="true"></i>
-              </label>
-            </Tooltip>
-            <RadioGroup
-              row
-              aria-label="position"
-              name="position"
-              defaultValue="top"
-            >
-              <FormControlLabel
-                style={{ color: "black" }}
-                value="Single"
-                onChange={() => {
-                  setSupplyType("Single");
-                  setTokenSupply(1);
-                }}
-                checked={supplyType === "Single"}
-                control={<Radio color="secondary" />}
-                label={
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontFamily: "poppins",
-                    }}
-                  >
-                    Single
-                  </span>
-                }
-              />
-              <FormControlLabel
-                style={{ color: "black" }}
-                value="Variable Supply"
-                onChange={() => {
-                  setSupplyType("Variable");
-                  setTokenSupply("");
-                }}
-                checked={supplyType === "Variable"}
-                control={<Radio color="secondary" />}
-                label={
-                  <span
-                    style={{
-                      fontWeight: "bold",
-                      fontFamily: "poppins",
-                    }}
-                  >
-                    Variable Supply
-                  </span>
-                }
-              />
-            </RadioGroup>
-          </FormControl>
+                <label
+                  component="legend"
+                  style={{
+                    fontWeight: "bold",
+                    fontFamily: "poppins",
+                  }}
+                >
+                  Select Supply Type{" "}
+                  <i className="fa fa-info-circle" aria-hidden="true"></i>
+                </label>
+              </Tooltip>
+              <RadioGroup
+                row
+                aria-label="position"
+                name="position"
+                defaultValue="top"
+              >
+                <FormControlLabel
+                  // style={{ color: "black" }}
+                  value="Single"
+                  onChange={() => {
+                    setSupplyType("Single");
+                    setTokenSupply(1);
+                  }}
+                  checked={supplyType === "Single"}
+                  control={<Radio />}
+                  label={
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontFamily: "poppins",
+                      }}
+                    >
+                      Single
+                    </span>
+                  }
+                />
+                <FormControlLabel
+                  // style={{ color: "black" }}
+                  value="Variable Supply"
+                  onChange={() => {
+                    setSupplyType("Variable");
+                    setTokenSupply("");
+                  }}
+                  checked={supplyType === "Variable"}
+                  control={<Radio />}
+                  label={
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        fontFamily: "poppins",
+                      }}
+                    >
+                      Variable Supply
+                    </span>
+                  }
+                />
+              </RadioGroup>
+            </FormControl>
+          </ThemeProvider>
 
           {supplyType === "Single" ? (
             <div className="form-group">

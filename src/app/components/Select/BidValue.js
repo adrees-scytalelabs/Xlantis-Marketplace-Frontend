@@ -34,7 +34,7 @@ function BidValue({
               );
             }}
             value={bidExpiryTime}
-            style={{ color: "white", backgroundColor: "black" }}
+            style={{ color: "white", backgroundColor: "#000" }}
           />
         </div>
         <label>Bidding value</label>

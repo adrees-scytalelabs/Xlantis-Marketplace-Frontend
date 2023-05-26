@@ -1,7 +1,7 @@
-import ListAltIcon from '@mui/icons-material/ListAlt';
+import ListAltIcon from "@mui/icons-material/ListAlt";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
-import { useResolvedPath } from 'react-router-dom';
+import { useDispatch, useSelector } from "react-redux";
+import { useResolvedPath } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import { getSuperAdminCountsType1 } from "../../../../redux/getSuperAdminsCountsSlice";
@@ -15,7 +15,9 @@ function SuperAdminSSOScreen(props) {
   const [totalDisabled, setTotalDisabled] = useState(0);
   const [hover, setHover] = useState(false);
   const path = useResolvedPath("").pathname;
-  const { countsType1, loadingType1 } = useSelector((store) => store.getSuperAdminsCounts);
+  const { countsType1, loadingType1 } = useSelector(
+    (store) => store.getSuperAdminsCounts
+  );
   const dispatch = useDispatch();
 
   let getCounts = () => {
@@ -33,7 +35,7 @@ function SuperAdminSSOScreen(props) {
   useEffect(() => {
     props.setTab(1);
     props.setActiveTab({
-      dashboard: "active",
+      dashboard: "",
       manageAccounts: "",
       accountApproval: "",
       accounts: "",
@@ -42,6 +44,7 @@ function SuperAdminSSOScreen(props) {
       properties: "",
       template: "",
       saved: "",
+      adminStats: "active",
     });
   }, []);
 
@@ -56,7 +59,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${path}/accounts`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -74,7 +77,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${path}/manageAccounts/SSO`}
+            linkTo={``}
             state={{ current: "enabled" }}
             hoverH4={
               hover
@@ -93,7 +96,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${path}/manageAccounts/SSO`}
+            linkTo={``}
             state={{ current: "disabled" }}
             hoverH4={
               hover
@@ -112,7 +115,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${path}/verifiedAccounts`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
@@ -130,7 +133,7 @@ function SuperAdminSSOScreen(props) {
           <DisplayNumbersAndContentCard
             onMouseEnter={() => setHover(true)}
             onMouseLeave={() => setHover(false)}
-            linkTo={`${path}/accountApproval`}
+            linkTo={``}
             hoverH4={
               hover
                 ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"

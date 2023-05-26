@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import countReducer from './app/redux/getCountSlice';
 import userCountReducer from './app/redux/getUserCount';
 import myNftReducer from './app/redux/myNftSlice';
 
@@ -21,7 +20,6 @@ import UserProfileReducer from './app/redux/getUserProfileSlice';
 import getVerifiedAccountsDataReducer from './app/redux/getVerifiedAccountsDataSlice';
 export const store = configureStore({
   reducer: {
-    count: countReducer,
     userCount: userCountReducer,
     userProfile: UserProfileReducer,
     MyCollection: getMyCollectionReducer,
@@ -30,7 +28,6 @@ export const store = configureStore({
     newNftProperties: getNewNftPropertiesReducer,
     marketPlaceSaleType: getMarketPlaceSaleTypeReducer,
     getMyDrops: getMyDropsReducer,
-    userProfile: UserProfileReducer,
     myNft: myNftReducer,
     getAdminProfileData: getAdminProfileDataReducer,
     getHeaderNotification: getHeaderNotificationReducer,

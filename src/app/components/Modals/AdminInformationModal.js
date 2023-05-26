@@ -100,7 +100,7 @@ function AdminInformationModal(props) {
         </Modal.Body>
         <Modal.Footer
           style={{
-            backgroundColor: "black",
+            backgroundColor: "#000",
             border: "1px solid white",
             borderTop: "none",
           }}

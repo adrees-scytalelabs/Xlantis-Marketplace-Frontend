@@ -1,5 +1,4 @@
-import { Tooltip } from "@mui/material";
-import { useSnackbar } from "notistack";
+import { Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import {
@@ -7,10 +6,9 @@ import {
   getIsAvailableTemplates,
 } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 const NewTamplateModal = (props) => {
-  const { enqueueSnackbar } = useSnackbar();
-
   const [title, setTitle] = useState("");
   const [properties, setProperties] = useState([{ key: "", type: "boolean" }]);
   const [defaultt, setDefault] = useState(false);
@@ -23,7 +21,18 @@ const NewTamplateModal = (props) => {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   let handleAddProperty = (e) => {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
@@ -90,9 +99,14 @@ const NewTamplateModal = (props) => {
         setTitle("");
         setDefault(false);
         setProperties([{ key: "", type: "boolean" }]);
+        props.useEffectLoader
+          ? props.setUseEffectLoader(false)
+          : props.setUseEffectLoader(true);
         handleCloseBackdrop();
         let variant = "success";
-        enqueueSnackbar("New Template Created Successfully", { variant });
+        setSnackbarMessage("New Template Created Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         props.handleClose();
       })
       .catch((error) => {
@@ -102,7 +116,9 @@ const NewTamplateModal = (props) => {
         }
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Create Template", { variant });
+        setSnackbarMessage("Unable to Create Template.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -253,8 +269,12 @@ const NewTamplateModal = (props) => {
                             <label>Action</label>
                             <div className="filter-widget">
                               <Tooltip
-                                title="Remove a property"
                                 placement="bottom"
+                                title={
+                                  <Typography fontSize={16}>
+                                    Remove a property
+                                  </Typography>
+                                }
                               >
                                 <button
                                   className="btn btn-submit btn-lg propsActionBtn"
@@ -274,7 +294,12 @@ const NewTamplateModal = (props) => {
                 })}
                 <div className="row no-gutters align-items-center justify-content-end">
                   <div className="col-auto">
-                    <Tooltip title="Add a property" placement="right">
+                    <Tooltip
+                      placement="right"
+                      title={
+                        <Typography fontSize={16}>Add property</Typography>
+                      }
+                    >
                       <button
                         className="btn btn-submit btn-lg propsActionBtn mb-4"
                         onClick={(e) => handleAddProperty(e)}
@@ -304,7 +329,14 @@ const NewTamplateModal = (props) => {
           </div>
           <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
             {available ? (
-              <Tooltip title="Template title already taken" placement="bottom">
+              <Tooltip
+                placement="bottom"
+                title={
+                  <Typography fontSize={16}>
+                    Template title already taken
+                  </Typography>
+                }
+              >
                 <button
                   className="newTemplateBtn"
                   disabled
@@ -339,6 +371,12 @@ const NewTamplateModal = (props) => {
         </div>
         <CircularBackdrop open={open} />
       </Modal.Body>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </Modal>
   );
 };

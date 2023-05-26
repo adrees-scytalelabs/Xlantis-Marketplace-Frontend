@@ -145,7 +145,7 @@ function AdminLoginSignInForm({ setWorkProgressModalShow, handleSuccess, adminSi
                 variant="body2"
                 sx={styles.errorVerification}
               >
-                <InfoIcon /> ID Token Verification Failed!
+                <InfoIcon /> Authentication failed. Please verify your login details and try again.
               </Typography>
             </div>
           )}

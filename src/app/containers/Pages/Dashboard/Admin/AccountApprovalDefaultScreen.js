@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import Notification from "../../../../components/Utils/Notification";
+import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
 import {
   handleModalClose,
   handleModalOpen
@@ -15,9 +15,6 @@ import { getSuperAdminUnverifiedType1, getSuperAdminUnverifiedType2 } from "../.
 function AccountApprovalDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
   const [walletAdmins, setWalletAdmins] = useState([]);
-  const [load, setLoad] = useState(false);
-  const [variant, setVariant] = useState("");
-  const [notificationData, setNotificationData] = useState("");
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
   const [page, setPage] = useState(0);
@@ -32,10 +29,10 @@ function AccountApprovalDefaultScreen(props) {
   } = useSelector((store) => store.getUnverifiedAccountsData);
   const dispatch = useDispatch();
 
-  const handleCloseBackdrop = (setOpen) => {
+  const handleCloseBackdrop = () => {
     setOpen(false);
   };
-  const handleShowBackdrop = (setOpen) => {
+  const handleShowBackdrop = () => {
     setOpen(true);
   };
 
@@ -45,15 +42,11 @@ function AccountApprovalDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType1({ start, end }))
+    dispatch(getSuperAdminUnverifiedType1({ setAdmins, setAdminCount, start, end }))
     if (unverifiedType1Loading === 1) {
-      setAdmins(unverifiedType1Data);
-      setAdminCount(unverifiedType1Data.length);
       setOpen(false);
     }
     else if (unverifiedType1Loading === 2) {
-
-
       setOpen(false);
     }
   };
@@ -61,36 +54,30 @@ function AccountApprovalDefaultScreen(props) {
   const handleVerify = (
     e,
     verifyAdminId,
-    setOpen,
-    setAdmins,
-    setAdminCount,
-    rowsPerPage,
-    setVariant,
-    setLoad,
-    setNotificationData
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch(`/super-admin/admin/verify?userType=v1`, data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getUnverifiedAdminsSSO(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
-        setVariant("success");
-        setNotificationData("Admin Verified Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getUnverifiedAdminsSSO(0, rowsPerPage);
+        let variant = "success"
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Verify Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -104,10 +91,10 @@ function AccountApprovalDefaultScreen(props) {
     end,
   ) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({ start, end }))
+    dispatch(getSuperAdminUnverifiedType2({ setWalletAdmins, setAdminCount, start, end }))
     if (unverifiedType2Loading === 1) {
-      setWalletAdmins(unverifiedType2Data);
-      setAdminCount(unverifiedType2Data.length);
+      // setWalletAdmins(unverifiedType2Data);
+      // setAdminCount(unverifiedType2Data.length);
       setOpen(false);
     }
     else if (unverifiedType2Loading === 2) {
@@ -117,42 +104,31 @@ function AccountApprovalDefaultScreen(props) {
 
   const handleVerifyWallet = (
     e,
-    verifyAdminId,
-    setOpen,
-    setWalletAdmins,
-    setAdminCount,
-    rowsPerPage,
-    setVariant,
-    setLoad,
-    setNotificationData
+    verifyAdminId
   ) => {
     e.preventDefault();
-    handleShowBackdrop(setOpen);
+    handleShowBackdrop();
     let data = {
       adminId: verifyAdminId,
     };
 
     axios.patch(`/super-admin/admin/verify?userType=v2`, data).then(
       (response) => {
-        handleCloseBackdrop(setOpen);
-        getUnverifiedAdminsWallet(
-          0,
-          rowsPerPage,
-          setOpen,
-          setWalletAdmins,
-          setAdminCount
-        );
-        setVariant("success");
-        setNotificationData("Admin Verified Successfully.");
-        setLoad(true);
+        handleCloseBackdrop();
+        getUnverifiedAdminsWallet(0, rowsPerPage);
+        let variant = "success"
+        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       },
       (error) => {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
-        handleCloseBackdrop(setOpen);
-        setVariant("error");
-        setNotificationData("Unable to Verify Admin.");
-        setLoad(true);
+        handleCloseBackdrop();
+        let variant = "error"
+        setSnackbarMessage("Unable to Verify Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       }
     );
   };
@@ -164,11 +140,11 @@ function AccountApprovalDefaultScreen(props) {
   useEffect(() => {
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
-      accountApproval: "active",
+      manageAccounts: "active",
+      accountApproval: "",
       accounts: "",
-      sso: "",
-      wallet: "",
+      sso: "active",
+      wallet: "active",
       properties: "",
       template: "",
       saved: "",
@@ -180,6 +156,18 @@ function AccountApprovalDefaultScreen(props) {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
   };
   return (
     <div className="backgroundDefault">
@@ -195,14 +183,6 @@ function AccountApprovalDefaultScreen(props) {
           approval={true}
           handleVerifyWallet={handleVerifyWallet}
           handleVerify={handleVerify}
-          setOpen={setOpen}
-          setAdmins={setAdmins}
-          setWalletAdmins={setWalletAdmins}
-          rowsPerPage={rowsPerPage}
-          setVariant={setVariant}
-          setLoad={setLoad}
-          setNotificationData={setNotificationData}
-          setAdminCount={setAdminCount}
         />
       </div>
       <TablePagination
@@ -214,12 +194,6 @@ function AccountApprovalDefaultScreen(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-      <Notification
-        variant={variant}
-        notificationData={notificationData}
-        setLoad={setLoad}
-        load={load}
-      />
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
@@ -227,6 +201,7 @@ function AccountApprovalDefaultScreen(props) {
         adminData={modalData}
         setShow={setShow}
       />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

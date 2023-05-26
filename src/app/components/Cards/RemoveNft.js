@@ -1,4 +1,11 @@
-import { Button, Card, CardActionArea, CardActions, CardMedia, Grid } from '@mui/material';
+import {
+  Button,
+  Card,
+  CardActionArea,
+  CardActions,
+  CardMedia,
+  Grid,
+} from "@mui/material";
 import React from "react";
 function RemoveNft({
   tokenList,
@@ -6,12 +13,18 @@ function RemoveNft({
   setEditObjectIndex,
   classes,
   handleRemoveClick,
+  setWorkProgressModalShow,
 }) {
   return (
     <div className="col-sm-12 col-md-6 col-lg-5" style={{ marginLeft: "10px" }}>
       <form>
         <div className="form-group">
           <div>
+            {tokenList.length != 0 && (
+              <span className="text-center">
+                <h3>NFT's Queue</h3>
+              </span>
+            )}
             <Grid
               container
               spacing={2}
@@ -19,18 +32,19 @@ function RemoveNft({
               justify-content="flex-start"
             >
               {tokenList.map((i, index) => (
-                <Grid item xs={12} sm={6} md={6} lg={5} key={index}>
+                <Grid item xs={12} sm={6} md={6} lg={5} xl={4} key={index}>
                   <CardActionArea
                     onClick={() => {
-                      handleOpenNFTDetailModal(i);
-                      setEditObjectIndex(index);
+                      // handleOpenNFTDetailModal(i);
+                      // setEditObjectIndex(index);
+                      setWorkProgressModalShow(true);
                     }}
                   >
-                    <Card
-                      style={{ height: "200px", width: "200px" }}
-                      id="nftCardProps"
-                    >
-                      <CardMedia className={classes.media} image={i.nftURI} />
+                    <Card>
+                      <CardMedia
+                        sx={classes.media}
+                        image={i.previewImageURI ? i.previewImageURI : i.nftURI}
+                      />
                     </Card>
                   </CardActionArea>
                   <CardActions>
@@ -46,6 +60,7 @@ function RemoveNft({
                   </CardActions>
                 </Grid>
               ))}
+              {/* </Container> */}
             </Grid>
           </div>
         </div>

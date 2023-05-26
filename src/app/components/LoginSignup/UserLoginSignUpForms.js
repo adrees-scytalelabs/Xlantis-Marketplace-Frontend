@@ -53,7 +53,7 @@ const AdminLoginSignupForms = () => {
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      userLoginThroughSSO({ idToken: account })
+      userLoginThroughSSO({ idToken: account})
         .then((response) => {
           console.log("checker response", response);
           console.log("JWT submitted: ", response.data);
@@ -195,7 +195,7 @@ const AdminLoginSignupForms = () => {
                           variant="body2"
                           sx={styles.errorVerification}
                         >
-                          <InfoIcon /> ID Token Verification Failed!
+                          <InfoIcon /> Authentication failed. Please verify your login details and try again.
                         </Typography>
                       </div>
                     )}

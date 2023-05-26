@@ -3,7 +3,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 const AuctionNFTDetailCard = (props) => {
   return (
-    <Card style={{ backgroundColor: "black" }}>
+    <Card style={{ backgroundColor: "#000" }}>
       <CardContent>
         <Row>
           <Col>

@@ -1,4 +1,11 @@
-import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link, useResolvedPath } from "react-router-dom";
@@ -15,7 +22,7 @@ const styles = {
   tabPanelProps: {
     backgroundColor: "#000",
   },
-}
+};
 
 const customTheme = createTheme({
   palette: {
@@ -95,7 +102,7 @@ function a11yProps(index) {
 function AccountApproval(props) {
   const [value, setValue] = useState(0);
   const path = useResolvedPath("").pathname;
-  const handleChange = (newValue) => {
+  const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
@@ -110,11 +117,11 @@ function AccountApproval(props) {
     }
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
-      accountApproval: "active",
+      manageAccounts: "active",
+      accountApproval: "",
       accounts: "",
-      sso: "",
-      wallet: "",
+      sso: "active",
+      wallet: "active",
       properties: "",
       template: "",
       saved: "",
@@ -150,21 +157,9 @@ function AccountApproval(props) {
                 indicatorColor="primary"
                 textColor="primary"
               >
-                <Tab
-                  label="All"
-                  sx={styles.tabsProps}
-                  {...a11yProps(0)}
-                />
-                <Tab
-                  label="SSO"
-                  sx={styles.tabsProps}
-                  {...a11yProps(1)}
-                />
-                <Tab
-                  label="Wallet"
-                  sx={styles.tabsProps}
-                  {...a11yProps(2)}
-                />
+                <Tab label="All" sx={styles.tabsProps} {...a11yProps(0)} />
+                <Tab label="SSO" sx={styles.tabsProps} {...a11yProps(1)} />
+                <Tab label="Wallet" sx={styles.tabsProps} {...a11yProps(2)} />
               </Tabs>
               <TabPanel value={value} index={0} className="">
                 <AccountApprovalDefaultScreen

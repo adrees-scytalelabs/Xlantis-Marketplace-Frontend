@@ -1,20 +1,19 @@
-import { Tooltip } from '@mui/material';
-import React from 'react';
+import { Tooltip, Typography } from "@mui/material";
+import React from "react";
 function NewNftTemplates({
   setProperties,
   properties,
   standardTemplates,
   handleStandardSelectTemplate,
-  handleSetProperties
-  , setExtractedDataProps
-  , extractedDataProps,
+  handleSetProperties,
+  setExtractedDataProps,
+  extractedDataProps,
   setNewTemplateModalShow,
   setTemplate,
   template,
   templateData,
-  defaultTemplates
+  defaultTemplates,
 }) {
-
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
     //console.log(e.target.value, " Template selected!");
@@ -42,11 +41,14 @@ function NewNftTemplates({
 
   const handleTemplateChange = (e) => {
     setExtractedDataProps(null);
-    //console.log(e.target.value, " template change");
+    console.log(e.target.value, " template change");
     if (e.target.value === "new") handleNewTemplateModalOpen();
     setTemplate(e.target.value);
     if (e.target.value === "default") {
-      handleSetProperties(defaultTemplates.properties);
+      handleSetProperties(defaultTemplates?.properties);
+    }
+    if (e.target.value === "none") {
+      setProperties([{ key: "", value: "" }]);
     }
   };
 
@@ -57,6 +59,7 @@ function NewNftTemplates({
   const handleTemplatePropertyChange = (index, e) => {
     let data = [...properties];
 
+    // console.log("E.target.value: ", typeof e.target.value);
     data[index].value = e.target.value;
     setProperties(data);
   };
@@ -145,6 +148,7 @@ function NewNftTemplates({
                           placeholder="0"
                           required
                           className="newNftProps"
+                          value={properties[index].value}
                           onChange={(e) =>
                             handleTemplatePropertyChange(index, e)
                           }
@@ -159,6 +163,7 @@ function NewNftTemplates({
                           required
                           value={true}
                           className="newNftProps"
+                          checked={properties[index].value === "true"}
                           style={{
                             width: "auto",
                             margin: "0.5rem",
@@ -168,7 +173,7 @@ function NewNftTemplates({
                           }
                         />
                         <label
-                          for="templateYes"
+                          htmlFor="templateYes"
                           style={{
                             width: "calc(100% - 55px)",
                             fontFamily: "inter",
@@ -184,6 +189,7 @@ function NewNftTemplates({
                           required
                           value={false}
                           className="newNftProps"
+                          checked={properties[index].value === "false"}
                           style={{
                             width: "auto",
                             margin: "0.5rem",
@@ -193,7 +199,7 @@ function NewNftTemplates({
                           }
                         />
                         <label
-                          for="templateNo"
+                          htmlFor="templateNo"
                           style={{
                             width: "calc(100% - 55px)",
                             fontFamily: "inter",
@@ -236,9 +242,7 @@ function NewNftTemplates({
                             required
                             value={property.key}
                             className="newNftProps"
-                            onChange={(e) =>
-                              handlePropertyChange(index, e)
-                            }
+                            onChange={(e) => handlePropertyChange(index, e)}
                           />
                         </div>
                       </div>
@@ -254,9 +258,7 @@ function NewNftTemplates({
                             required
                             value={property.value}
                             className="newNftProps"
-                            onChange={(e) =>
-                              handlePropertyChange(index, e)
-                            }
+                            onChange={(e) => handlePropertyChange(index, e)}
                           />
                         </div>
                       </div>
@@ -266,14 +268,16 @@ function NewNftTemplates({
                         <label>Action</label>
                         <div className="filter-widget">
                           <Tooltip
-                            title="Remove a property"
+                            title={
+                              <Typography fontSize={16}>
+                                Remove a property
+                              </Typography>
+                            }
                             placement="bottom"
                           >
                             <button
                               className="btn btn-submit btn-lg propsActionBtn"
-                              onClick={(e) =>
-                                handleRemoveProperty(e, index)
-                              }
+                              onClick={(e) => handleRemoveProperty(e, index)}
                             >
                               -
                             </button>
@@ -287,7 +291,10 @@ function NewNftTemplates({
             })}
             <div className="row no-gutters align-items-center justify-content-end">
               <div className="col-auto">
-                <Tooltip title="Add a property" placement="right">
+                <Tooltip
+                  title={<Typography fontSize={16}>Add a property </Typography>}
+                  placement="right"
+                >
                   <button
                     className="btn btn-submit btn-lg propsActionBtn mb-4"
                     onClick={(e) => handleAddProperty(e)}
@@ -311,11 +318,7 @@ function NewNftTemplates({
                   None
                 </option>
                 {templateData.map((data, index) => (
-                  <option
-                    value={data.name}
-                    id={data.id}
-                    key={index + 100}
-                  >
+                  <option value={data.name} id={data.id} key={index + 100}>
                     {data.name}
                   </option>
                 ))}
@@ -323,10 +326,7 @@ function NewNftTemplates({
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
                   extractedDataProps.map((p, index) => (
-                    <div
-                      className="col-12 col-md-5"
-                      key={index + 200}
-                    >
+                    <div className="col-12 col-md-5" key={index + 200}>
                       <div className="w-100">
                         <label>{p.key}</label>
                         {p.type === "string" ? (
@@ -339,10 +339,7 @@ function NewNftTemplates({
                               value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                           </div>
@@ -356,10 +353,7 @@ function NewNftTemplates({
                               value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                           </div>
@@ -377,14 +371,11 @@ function NewNftTemplates({
                               }}
                               className="newNftProps"
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                             <label
-                              for="savedTemplateYes"
+                              htmlFor="savedTemplateYes"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -405,14 +396,11 @@ function NewNftTemplates({
                                 margin: "0.5rem",
                               }}
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                             <label
-                              for="savedTemplateNo"
+                              htmlFor="savedTemplateNo"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -464,11 +452,7 @@ function NewNftTemplates({
                   None
                 </option>
                 {standardTemplates.map((data, index) => (
-                  <option
-                    value={data.name}
-                    id={data.id}
-                    key={index + 300}
-                  >
+                  <option value={data.name} id={data.id} key={index + 300}>
                     {data.name}
                   </option>
                 ))}
@@ -476,26 +460,19 @@ function NewNftTemplates({
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
                   extractedDataProps.map((p, index) => (
-                    <div
-                      className="col-12 col-md-5"
-                      key={index + 400}
-                    >
+                    <div className="col-12 col-md-5" key={index + 400}>
                       <div className="w-100">
                         <label>{p.key}</label>
                         {p.type === "string" ? (
                           <div className="filter-widget">
                             <input
+                              required
                               name={p.key}
                               type="text"
                               placeholder="value"
-                              required
-                              value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                           </div>
@@ -506,13 +483,9 @@ function NewNftTemplates({
                               type="number"
                               placeholder="0"
                               required
-                              value={properties[index].value}
                               className="newNftProps"
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                           </div>
@@ -530,14 +503,11 @@ function NewNftTemplates({
                                 margin: "0.5rem",
                               }}
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                             <label
-                              for="standardTemplateYes"
+                              htmlFor="standardTemplateYes"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -558,14 +528,11 @@ function NewNftTemplates({
                                 margin: "0.5rem",
                               }}
                               onChange={(e) =>
-                                handleTemplatePropertyChange(
-                                  index,
-                                  e
-                                )
+                                handleTemplatePropertyChange(index, e)
                               }
                             />
                             <label
-                              for="standardTemplateNo"
+                              htmlFor="standardTemplateNo"
                               style={{
                                 width: "calc(100% - 55px)",
                                 fontFamily: "inter",
@@ -606,7 +573,7 @@ function NewNftTemplates({
         )}
       </div>
     </div>
-  )
+  );
 }
 
-export default NewNftTemplates
+export default NewNftTemplates;

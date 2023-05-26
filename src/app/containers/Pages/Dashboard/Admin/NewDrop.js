@@ -1,24 +1,29 @@
-
-import { FormControl, ThemeProvider, createTheme } from '@mui/material';
+import { FormControl, ThemeProvider, createTheme } from "@mui/material";
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
-import DropBanner from "../../../../assets/img/patients/DropBannerDefaultImage.jpg";
-import r1 from "../../../../assets/img/patients/patient.jpg";
 import {
   createNewDrop,
+  getDropCategories,
   uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import {
+  DropBannerDefaultImage,
+  defaultProfile,
+} from "../../../../components/ImageURLs/URLs";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import SelectNFTAndSaleType from "../../../../components/Radio/SelectNFTAndSaleType";
 import Select from "../../../../components/Select/Select";
 import SelectDescription from "../../../../components/Select/SelectDescription";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import UploadFile from "../../../../components/Upload/UploadFile";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import DropBannerUpload from "../../../../components/Upload/DropBannerUpload";
+import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 
 const makeTheme = createTheme({
   overrides: {
@@ -37,13 +42,27 @@ const makeTheme = createTheme({
 });
 
 function NewDrop(props) {
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const path = useResolvedPath("").pathname;
   const [saleType, setSaleType] = useState("fixed-price");
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [image, setImage] = useState(r1);
-  const [bannerImage, setBannerImage] = useState(DropBanner);
+  const [image, setImage] = useState(defaultProfile);
+  const [bannerImage, setBannerImage] = useState(
+    // "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
+    DropBannerDefaultImage
+  );
   const [isUploadingBanner, setIsUploadingBanner] = useState(false);
   const [, setDropId] = useState("");
 
@@ -54,6 +73,8 @@ function NewDrop(props) {
   const [, setImageType] = useState("");
   const [nftType, setNftType] = useState("1155");
   const [versionB, setVersionB] = useState("");
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState("");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
@@ -69,8 +90,20 @@ function NewDrop(props) {
 
   const navigate = useNavigate();
 
+  const getCategories = () => {
+    getDropCategories()
+      .then((response) => {
+        console.log("Getting drop categories: ", response);
+        setCategoriesList(response.data.categories);
+      })
+      .catch((error) => {
+        console.log("Error from getting drop categories: ", error);
+      });
+  };
+
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
+    getCategories();
 
     props.setActiveTab({
       dashboard: "",
@@ -105,28 +138,41 @@ function NewDrop(props) {
       handleShowBackdrop();
       if (name === "") {
         let variant = "error";
-        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setSnackbarMessage("Name of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (description === "") {
         let variant = "error";
-        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-          variant,
-        });
+        setSnackbarMessage("Description of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (image === r1) {
+      } else if (image === defaultProfile) {
         let variant = "error";
-        enqueueSnackbar("Please Select title image for Drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please Select title image for Drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (bannerImage === DropBanner) {
+      } else if (bannerImage === DropBannerDefaultImage) {
         let variant = "error";
-        enqueueSnackbar("Please select banner image for drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please select banner image for drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+        setIsSaving(false);
+        handleCloseBackdrop();
+      } else if (
+        category === "" ||
+        category === null ||
+        category === undefined
+      ) {
+        let variant = "error";
+        setSnackbarMessage("Please Select category to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else {
@@ -138,6 +184,7 @@ function NewDrop(props) {
           description: description,
           saleType: saleType,
           dropType: nftType,
+          category: category,
         };
         console.log("Drop Data", DropData);
         createNewDrop(DropData)
@@ -147,15 +194,13 @@ function NewDrop(props) {
             dropID = response.data.dropId;
             setIsSaving(false);
             handleCloseBackdrop();
-            navigate(`${path}/addNft`,
-              {
-                state: {
-                  dropId: dropID,
-                  saleType: saleType,
-                  nftType: nftType,
-                }
+            navigate(`${path}/addNft`, {
+              state: {
+                dropId: dropID,
+                saleType: saleType,
+                nftType: nftType,
               },
-            );
+            });
           })
           .catch((error) => {
             if (process.env.NODE_ENV === "development") {
@@ -166,7 +211,9 @@ function NewDrop(props) {
 
             setIsSaving(false);
             let variant = "error";
-            enqueueSnackbar("Unable to Create Drop.", { variant });
+            setSnackbarMessage("Unable to Create Drop.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
           });
       }
     } else if (nftType === "721") {
@@ -185,21 +232,23 @@ function NewDrop(props) {
         handleShowBackdrop();
         if (name === "") {
           let variant = "error";
-          enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+          setSnackbarMessage("Name of the Drop Cannot be Empty.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
         } else if (description === "") {
           let variant = "error";
-          enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-            variant,
-          });
+          setSnackbarMessage("Description of the Drop Cannot be Empty.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
-        } else if (image === r1) {
+        } else if (image === defaultProfile) {
           let variant = "error";
-          enqueueSnackbar("Please Select title image for Drop to continue.", {
-            variant,
-          });
+          setSnackbarMessage("Please Select title image for Drop to continue.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
           setIsSaving(false);
           handleCloseBackdrop();
         } else {
@@ -220,14 +269,13 @@ function NewDrop(props) {
               dropID = response.data.dropId;
               setIsSaving(false);
               handleCloseBackdrop();
-              navigate(`${path}/addNft`,
-                {
-                  state: {
-                    dropId: dropID,
-                    saleType: saleType,
-                    nftType: nftType,
-                  }
-                });
+              navigate(`${path}/addNft`, {
+                state: {
+                  dropId: dropID,
+                  saleType: saleType,
+                  nftType: nftType,
+                },
+              });
             })
             .catch((error) => {
               if (process.env.NODE_ENV === "development") {
@@ -238,7 +286,9 @@ function NewDrop(props) {
 
               setIsSaving(false);
               let variant = "error";
-              enqueueSnackbar("Unable to Create Drop.", { variant });
+              setSnackbarMessage("Unable to Create Drop.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
             });
         }
       }
@@ -262,21 +312,23 @@ function NewDrop(props) {
 
       if (name === "") {
         let variant = "error";
-        enqueueSnackbar("Name of the Drop Cannot be Empty.", { variant });
+        setSnackbarMessage("Name of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else if (description === "") {
         let variant = "error";
-        enqueueSnackbar("Description of the Drop Cannot be Empty.", {
-          variant,
-        });
+        setSnackbarMessage("Description of the Drop Cannot be Empty.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
-      } else if (image === r1) {
+      } else if (image === defaultProfile) {
         let variant = "error";
-        enqueueSnackbar("Please Select title image for Drop to continue.", {
-          variant,
-        });
+        setSnackbarMessage("Please Select title image for Drop to continue.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         setIsSaving(false);
         handleCloseBackdrop();
       } else {
@@ -298,14 +350,13 @@ function NewDrop(props) {
             setIsSaving(false);
 
             handleCloseBackdrop();
-            navigate(`${path}/addNft`,
-              {
-                state: {
-                  dropId: dropID,
-                  saleType: saleType,
-                  nftType: nftType,
-                }
-              });
+            navigate(`${path}/addNft`, {
+              state: {
+                dropId: dropID,
+                saleType: saleType,
+                nftType: nftType,
+              },
+            });
           })
           .catch((error) => {
             if (process.env.NODE_ENV === "development") {
@@ -316,7 +367,9 @@ function NewDrop(props) {
 
             setIsSaving(false);
             let variant = "error";
-            enqueueSnackbar("Unable to Create Drop.", { variant });
+            setSnackbarMessage("Unable to Create Drop.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
           });
       }
     }
@@ -337,7 +390,9 @@ function NewDrop(props) {
           setBannerImage(response.data.url);
           setIsUploadingBanner(false);
           let variant = "success";
-          enqueueSnackbar("Image Uploaded Successfully", { variant });
+          setSnackbarMessage("Image Uploaded Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         })
         .catch((error) => {
           if (process.env.NODE_ENV === "development") {
@@ -346,7 +401,9 @@ function NewDrop(props) {
           }
           setIsUploadingBanner(false);
           let variant = "error";
-          enqueueSnackbar("Unable to Upload Image", { variant });
+          setSnackbarMessage("Unable to Upload Image.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
         });
     }
   };
@@ -364,7 +421,10 @@ function NewDrop(props) {
         setImage(response.data.url);
         setIsUploadingIPFS(false);
         let variant = "success";
-        enqueueSnackbar("Image Uploaded Successfully", { variant });
+
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -373,7 +433,9 @@ function NewDrop(props) {
         }
         setIsUploadingIPFS(false);
         let variant = "error";
-        enqueueSnackbar("Unable to Upload Image", { variant });
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
   return (
@@ -394,22 +456,17 @@ function NewDrop(props) {
         </div>
       </div>
       <div className="card-body p-0">
-        <div className="row no-gutters">
-          <div className="col-md-12 col-lg-6">
+        <div className="no-gutters">
+          <label>Select Banner Image</label>
+          <DropBannerUpload
+            isUploading={isUploadingBanner}
+            onChangeBanner={onChangeBannerFile}
+            bannerURL={bannerImage}
+          />
+          <div className="col-md-12 col-lg-6 p-0">
             <form onSubmit={handleSubmitEvent}>
               <div className="form-group">
                 <div className="form-group">
-                  <div className="form-group">
-                    <label>Select Banner Image</label>
-                    <UploadFile
-                      fileURL={bannerImage}
-                      isUploading={isUploadingBanner}
-                      changeFile={onChangeBannerFile}
-                      class="co-12 col-md-auto drop-banner-img mr-3"
-                      accept=".png,.jpg,.jpeg,.gif"
-                      inputId="uploadDropBannerImg"
-                    />
-                  </div>
                   <div className="form-group">
                     <label>Select Title Image</label>
                     <UploadFile
@@ -436,8 +493,21 @@ function NewDrop(props) {
                       placeholder="Enter Description of Drop"
                       setDescription={setDescription}
                     />
-
                   </div>
+                  <AutocompleteAddNft
+                    label="Select Category"
+                    options={categoriesList}
+                    placeholder={"Select Category"}
+                    onChange={(e, newValue) => {
+                      if (newValue == "") {
+                        setCategory();
+                      } else {
+                        console.log("New value is: ", newValue);
+                        setCategory(newValue);
+                      }
+                    }}
+                    type="category"
+                  />
                   <ThemeProvider theme={makeTheme}>
                     <FormControl component="fieldset">
                       <SelectNFTAndSaleType
@@ -492,6 +562,12 @@ function NewDrop(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

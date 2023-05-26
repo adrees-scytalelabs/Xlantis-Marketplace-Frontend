@@ -1,4 +1,4 @@
-import { Button, Tooltip } from "@mui/material";
+import { Button, Tooltip, Typography} from "@mui/material";
 import React from "react";
 import Table from "react-bootstrap/Table";
 
@@ -29,11 +29,11 @@ const styles = {
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}
+};
 function SuperAdminTable(props) {
   return (
     <Table responsive>
-      <thead style={{color:'black'}}>
+      <thead style={{ color: "black" }}>
         <tr>
           <th sx={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
@@ -84,17 +84,14 @@ function SuperAdminTable(props) {
       {props.ssoEnabled === true &&
         props.admins.map((i, index) => {
           return (
-            <tbody style={{color:'white'}}>
+            <tbody style={{ color: "white" }}>
               <tr>
                 <td sx={styles.collectionTitle}>{i.username}</td>
                 <td sx={styles.collectionTitle}>{i.email}</td>
                 <td sx={styles.collectionTitle}>
                   {i.walletAddress !== undefined ? (
                     <Tooltip
-                      classes={{ tooltip: styles.noMaxWidth }}
-                      leaveDelay={1500}
-                      title={i.walletAddress}
-                      arrow
+                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
                     >
                       <span className="ml-4">
                         {i.walletAddress.slice(0, 8)}...
@@ -132,17 +129,7 @@ function SuperAdminTable(props) {
                       <Button
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleVerify(
-                            e,
-                            i._id,
-                            props.setOpen,
-                            props.setAdmins,
-                            props.setAdminCount,
-                            props.rowsPerPage,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
-                          );
+                          props.handleVerify(e, i._id);
                         }}
                       >
                         Approve
@@ -156,10 +143,7 @@ function SuperAdminTable(props) {
                       <Button
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleDisable(
-                            e,
-                            i._id,
-                          );
+                          props.handleDisable(e, i._id);
                         }}
                       >
                         Disable
@@ -171,13 +155,10 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className='ml-4'
+                        className="ml-4"
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleEnableSSO(
-                            e,
-                            i._id
-                          );
+                          props.handleEnableSSO(e, i._id);
                         }}
                       >
                         Enable
@@ -192,7 +173,7 @@ function SuperAdminTable(props) {
       {props.walletEnabled === true &&
         props.walletAdmins.map((i, index) => {
           return (
-            <tbody style={{color:'white'}}>
+            <tbody style={{ color: "white" }}>
               <tr>
                 <td sx={styles.collectionTitle}>{i.username}</td>
                 {props.ssoEnabled === true && props.walletEnabled === true && (
@@ -201,12 +182,9 @@ function SuperAdminTable(props) {
                   </td>
                 )}
                 <td sx={styles.collectionTitle}>
-                  <Tooltip
-                    classes={{ tooltip: styles.noMaxWidth }}
-                    leaveDelay={1500}
-                    title={i.walletAddress}
-                    arrow
-                  >
+                <Tooltip
+                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
+                    >
                     <span className="ml-4">
                       {i.walletAddress.slice(0, 8)}...
                     </span>
@@ -238,17 +216,7 @@ function SuperAdminTable(props) {
                       <Button
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleVerifyWallet(
-                            e,
-                            i._id,
-                            props.setOpen,
-                            props.setWalletAdmins,
-                            props.setAdminCount,
-                            props.rowsPerPage,
-                            props.setVariant,
-                            props.setLoad,
-                            props.setNotificationData
-                          );
+                          props.handleVerifyWallet(e, i._id);
                         }}
                       >
                         Approve
@@ -262,10 +230,7 @@ function SuperAdminTable(props) {
                       <Button
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleWalletDisable(
-                            e,
-                            i._id,
-                          );
+                          props.handleWalletDisable(e, i._id);
                         }}
                       >
                         Disable
@@ -277,13 +242,10 @@ function SuperAdminTable(props) {
                   <td>
                     <div className="row no-gutters justify-content-center align-items-center">
                       <Button
-                        className='ml-4'
+                        className="ml-4"
                         sx={styles.approveBtn}
                         onClick={(e) => {
-                          props.handleEnableWallet(
-                            e,
-                            i._id
-                          );
+                          props.handleEnableWallet(e, i._id);
                         }}
                       >
                         Enable

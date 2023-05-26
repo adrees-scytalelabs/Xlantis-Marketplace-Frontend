@@ -1,10 +1,14 @@
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import BusinessIcon from '@mui/icons-material/Business';
-import ListAltIcon from '@mui/icons-material/ListAlt';
-import StorageIcon from '@mui/icons-material/Storage';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import BusinessIcon from "@mui/icons-material/Business";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import StorageIcon from "@mui/icons-material/Storage";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import HistoryIcon from "@mui/icons-material/History";
+import CategoryIcon from "@mui/icons-material/Category";
+import AllTransactions from "./AllTransactions";
+
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
@@ -43,10 +47,7 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.myCollections}>
-              <Link
-                to={`${props.match}/myCollection`}
-                className="sidebarLink"
-              >
+              <Link to={`${props.match}/myCollection`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
                 <span>Collections</span>
               </Link>
@@ -62,13 +63,15 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.marketplace}>
-              <Link
-                to={`${props.match}/marketPlace`}
-                className="sidebarLink"
-              >
+              <Link to={`${props.match}/marketPlace`} className="sidebarLink">
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
+            {/* <li className={props.activeTab.allTransactions}>
+              <Link to={`${props.match}/allTransactions`} className="sidebarLink">
+                <ListAltIcon /> <span>All Transactions</span>
+              </Link>
+            </li> */}
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match}/dropApproval`}>
@@ -83,14 +86,24 @@ function AdminSidebar(props) {
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
+            <li className={props.activeTab.myDrops}>
+              <Link to={`${props.match}/myDrops`}>
+                <StorageIcon></StorageIcon> <span>My Drops</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.categories}>
+              <Link to={`${props.match}/dropsCategories`}>
+                <CategoryIcon /> <span>Categories</span>
+              </Link>
+            </li>
             <li className={props.activeTab.topUp}>
               <Link to={`${props.match}/topUp`}>
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
               </Link>
             </li>
-            <li className={props.activeTab.myDrops}>
-              <Link to={`${props.match}/myDrops`}>
-                <StorageIcon></StorageIcon> <span>My Drops</span>
+            <li className={props.activeTab.topupHistory}>
+              <Link to={`${props.match}/topup-history`}>
+                <HistoryIcon /> <span>Top-up Hsitory</span>
               </Link>
             </li>
             <li className="menu-title mt-5">

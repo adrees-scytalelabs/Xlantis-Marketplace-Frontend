@@ -20,12 +20,12 @@ const TermsAndConditionsCard = (props) => {
               Introduction:
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              Welcome to <strong>IMEX Platform</strong>
+              Welcome to <strong>Xlantis</strong>
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               These Terms of Service govern your use of our website located at{" "}
-              <strong>imex-frontend.herokuapp.com </strong> operated by{" "}
-              <strong>IMEX Platform</strong>.
+              <strong>xlantis-marketplace.herokuapp.com </strong> operated by{" "}
+              <strong>Xlantis</strong>.
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               Our Privacy Policy also governs your use of our Service and
@@ -40,7 +40,7 @@ const TermsAndConditionsCard = (props) => {
             <Typography variant="body2" color="textSecondary" component="p">
               If you do not agree with Agreements, then you may not use the
               Service, but please let us know by emailing at{" "}
-              <strong>support@ImexPlatform.com</strong> so we can try to find a
+              <strong>support@scytalelabs.com</strong> so we can try to find a
               solution. These Terms apply to all visitors, users and others who
               wish to access or use Service.
             </Typography>
@@ -54,7 +54,7 @@ const TermsAndConditionsCard = (props) => {
               marketing or promotional materials and other information we may
               send. However, you may opt out of receiving any, or all, of these
               communications from us by following the unsubscribe link or by
-              emailing at support@ImexPlatform.com.
+              emailing at support@scytalelabs.com.
             </Typography>
           </li>
           <li>
@@ -155,12 +155,12 @@ const TermsAndConditionsCard = (props) => {
               also use your Content subject to these Terms.
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              IMEX Platform has the right but not the obligation to monitor and
+              Xlantis has the right but not the obligation to monitor and
               edit all Content provided by users.
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               In addition, Content found on or through this Service are the
-              property of IMEX Platform or used with permission. You may not
+              property of Xlantis or used with permission. You may not
               distribute, modify, transmit, reuse, download, repost, copy, or
               use said Content, whether in whole or in part, for commercial
               purposes or for personal gain, without express advance written
@@ -318,11 +318,10 @@ const TermsAndConditionsCard = (props) => {
             <Typography variant="body2" color="textSecondary" component="p">
               Service and its original content (excluding Content provided by
               users), features and functionality are and will remain the
-              exclusive property of IMEX Platform and its licensors. Service is
+              exclusive property of Xlantis and its licensors. Service is
               protected by copyright, trademark, and other laws of and foreign
               countries. Our trademarks may not be used in connection with any
-              product or service without the prior written consent of IMEX
-              Platform.
+              product or service without the prior written consent of Xlantis.
             </Typography>
           </li>
           <li>
@@ -339,7 +338,7 @@ const TermsAndConditionsCard = (props) => {
               If you are a copyright owner, or authorized on behalf of one, and
               you believe that the copyrighted work has been copied in a way
               that constitutes copyright infringement, please submit your claim
-              via email to support@ImexPlatform.com, with the subject line:
+              via email to support@scytalelabs.com, with the subject line:
               “Copyright Infringement” and include in your claim a detailed
               description of the alleged Infringement as detailed below, under
               “DMCA Notice and Procedure for Copyright Infringement Claims”
@@ -390,7 +389,7 @@ const TermsAndConditionsCard = (props) => {
                 </li>
               </ul>
               You can contact our Copyright Agent via email at
-              support@ImexPlatform.com.
+              support@scytalelabs.com.
             </Typography>
           </li>
           <li>
@@ -398,7 +397,7 @@ const TermsAndConditionsCard = (props) => {
               Error Reporting and Feedback
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              You may provide us either directly at support@ImexPlatform.com or
+              You may provide us either directly at support@scytalelabs.com or
               via third party sites and tools with information and feedback
               concerning errors, suggestions for improvements, ideas, problems,
               complaints, and other matters related to our Service (“Feedback”).
@@ -423,10 +422,10 @@ const TermsAndConditionsCard = (props) => {
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               Our Service may contain links to third party web sites or services
-              that are not owned or controlled by IMEX Platform.
+              that are not owned or controlled by Xlantis.
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
-              IMEX Platform has no control over, and assumes no responsibility
+              Xlantis has no control over, and assumes no responsibility
               for the content, privacy policies, or practices of any third party
               web sites or services. We do not warrant the offerings of any of
               these entities/individuals or their websites.
@@ -636,7 +635,7 @@ const TermsAndConditionsCard = (props) => {
             </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               Please send your feedback, comments, requests for technical
-              support by email: <b>support@ImexPlatform.com</b>.
+              support by email: <b>support@scytalelabs.com</b>.
             </Typography>
           </li>
         </ol>

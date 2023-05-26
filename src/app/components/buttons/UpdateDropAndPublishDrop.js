@@ -23,19 +23,21 @@ function UpdateDropAndPublishDrop({
     
 
   return (
-    <div>
+    <div className="mb-3">
         <div className="submit-section col-md-12 col-lg-6 col-sm-12">
-          <button
-            type="button"
-            disabled={isDisabled}
-            onClick={(e) => {
-              handleSubmitEvent(e);
-            }}
-            style={{ float: "right", marginBottom: "5%" }}
-            className={buttonName}
-          >
-            Update Drop
-          </button>
+          {!enableTime && (
+            <button
+              type="button"
+              disabled={isDisabled}
+              onClick={(e) => {
+                handleSubmitEvent(e);
+              }}
+              style={{ float: "right", marginBottom: "5%" }}
+              className="bttn"
+            >
+              Update Drop
+            </button>
+          )}
         </div>
         {enableTime && (
           <div

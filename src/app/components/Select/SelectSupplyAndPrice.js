@@ -24,7 +24,7 @@ function SelectSupplyAndPrice({
             <div style={{ display: "flex" }}>
               <input
                 style={{
-                  backgroundColor: "black",
+                  backgroundColor: "#000",
                   color: "white",
                   border:
                     nftTokenSupply === 0
@@ -61,7 +61,7 @@ function SelectSupplyAndPrice({
                   setAlertMessage(false);
                 }}
                 style={{
-                  backgroundColor: "black",
+                  backgroundColor: "#000",
                   marginLeft: "5px",
                   border: "1px solid white",
                 }}
@@ -100,6 +100,7 @@ function SelectSupplyAndPrice({
             placeholder={0}
             className="form-control"
             onChange={(e) => {
+              console.log("On change function: ", e.target.value);
               if (e.target.value >= 0) {
                 setPrice(e.target.value);
               }

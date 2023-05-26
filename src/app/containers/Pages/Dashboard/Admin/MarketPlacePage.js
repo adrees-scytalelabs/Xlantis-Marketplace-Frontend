@@ -1,6 +1,6 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useResolvedPath } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -33,7 +33,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 const styles = {
   root: {
@@ -49,10 +49,9 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 function MarketPlacePage(props) {
-
   const path = useResolvedPath("").pathname;
   const [tokenList, setTokenList] = useState([]);
 
@@ -60,7 +59,9 @@ function MarketPlacePage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const { saleTypeData, loading } = useSelector((store) => store.marketPlaceSaleType);
+  const { saleTypeData, loading } = useSelector(
+    (store) => store.marketPlaceSaleType
+  );
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -71,13 +72,14 @@ function MarketPlacePage(props) {
 
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
-    dispatch(getSaleType({ saleType, start, end }))
+    dispatch(
+      getSaleType({ saleType, start, end, setTokenList, setTotalDrops })
+    );
     if (loading === 1) {
-      setTokenList(saleTypeData);
-      setTotalDrops(saleTypeData.length);
+      // setTokenList(saleTypeData);
+      // setTotalDrops(saleTypeData.length);
       handleCloseBackdrop();
-    }
-    else if (loading === 2) {
+    } else if (loading === 2) {
       handleCloseBackdrop();
     }
   };
@@ -119,33 +121,39 @@ function MarketPlacePage(props) {
               justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={6}
-                  lg={4}
-                  xl={3}
-                  direction="row"
-                  key={index}
-                >
-                  <Link
-                    to={`${path}/drops/nfts`}
-                    state={{
-                      nftId: i.NFTIds,
-                      dropId: i._id,
-                      startTime: i.startTime,
-                      endTime: i.endTime,
-                      saleType: i.saleType,
-                    }}
-                  >
-                    <DropsPageCard
-                      dropDetails={i}
-                      classes={styles}
-                      cardClasses={cardStyles}
-                    />
-                  </Link>
-                </Grid>
+                <>
+                  {i.status === "draft" ? null : (
+                    <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={6}
+                      lg={4}
+                      xl={3}
+                      direction="row"
+                      key={index}
+                    >
+                      <Link
+                        to={`${path}/drops/nfts`}
+                        state={{
+                          nftId: i.NFTIds,
+                          dropId: i._id,
+                          startTime: i.startTime,
+                          endTime: i.endTime,
+                          saleType: i.saleType,
+                          bannerURL: i.bannerURL,
+                          titleURL: i.image,
+                        }}
+                      >
+                        <DropsPageCard
+                          dropDetails={i}
+                          classes={styles}
+                          cardClasses={cardStyles}
+                        />
+                      </Link>
+                    </Grid>
+                  )}
+                </>
               ))}
             </Grid>
           )}
@@ -162,7 +170,7 @@ function MarketPlacePage(props) {
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
       </div>
-    </div >
+    </div>
   );
 }
 

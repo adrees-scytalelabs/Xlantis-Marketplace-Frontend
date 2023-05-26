@@ -1,16 +1,16 @@
 import { Card, CardContent, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 const DropSingleNFTCard = (props) => {
   return (
-    <Card style={{ backgroundColor: "black" }}>
+    <Card sx={{ backgroundColor: "#000" }}>
       <CardContent>
         <Row>
           <Col>
             <Typography
               variant="body1"
               component="p"
-              style={{ color: "#F64D04", fontFamily: "orbitron" }}
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>NFT Title </strong>
             </Typography>
@@ -24,7 +24,7 @@ const DropSingleNFTCard = (props) => {
             <Typography
               variant="body1"
               component="p"
-              style={{ color: "#F64D04", fontFamily: "orbitron" }}
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>NFT Description </strong>
             </Typography>

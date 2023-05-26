@@ -1,9 +1,11 @@
+import CloseIcon from "@mui/icons-material/Close";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import { ListItem, ListItemText } from "@mui/material";
+import { grey } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
-import CloseIcon from '@mui/icons-material/Close';
 import { FixedSizeList as List } from "react-window";
 import "../../assets/css/notificationStyle.css";
-import { ListItem, ListItemText } from '@mui/material';
-import { grey } from '@mui/material/colors';
+
 export default function NotificationList(props) {
   function handleNotificationClick(event) {
     console.log("clicked");
@@ -44,6 +46,7 @@ export default function NotificationList(props) {
     setData(props.notifications);
     console.log("array", props.notifications);
   }, [props]);
+
   return props.notifications.length != 0 ? (
     <List
       className={props.notifications}
@@ -51,11 +54,29 @@ export default function NotificationList(props) {
       itemCount={props.itemCount}
       itemSize={47}
       width={300}
-      style={{ backgroundColor: "black", color: "white" }}
+      style={{ backgroundColor: "#000", color: "white" }}
     >
       {Row}
     </List>
   ) : (
-   <div style={{backgroundColor:'black',color:'white'}}>No Notification</div>
+    <div
+      style={{
+        width: "300px",
+        backgroundColor: "white",
+        color: "black",
+      }}
+      className="p-2 h-auto"
+    >
+      Notifications
+      <hr className="hr" />
+      <div className="d-flex flex-column justify-content-center">
+        <div className="d-flex justify-content-center">
+          <NotificationsIcon fontSize="large" />
+        </div>
+        <div className="d-flex justify-content-center">
+          No Notifications yet
+        </div>
+      </div>
+    </div>
   );
 }

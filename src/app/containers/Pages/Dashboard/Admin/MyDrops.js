@@ -74,7 +74,6 @@ const MyDrops = (props) => {
 
   useEffect(() => {
     if (location.state != null) {
-      console.log("i am here");
       console.log("this is location of drop", location)
       setValue(location.state.value);
     }

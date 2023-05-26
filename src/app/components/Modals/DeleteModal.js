@@ -24,7 +24,7 @@ function DeleteModal(props) {
           border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
-          backgroundColor: "black",
+          backgroundColor: "#000",
           justifyContent: "center",
         }}
       >
@@ -47,7 +47,7 @@ function DeleteModal(props) {
       </Modal.Body>
       <Modal.Footer
         style={{
-          backgroundColor: "black",
+          backgroundColor: "#000",
           border: "1px solid white",
           borderTop: "none",
         }}

@@ -1,11 +1,11 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { getMyDrop } from "../../../../redux/getMyDropsSlice";
+import { getMyDrop, reset } from "../../../../redux/getMyDropsSlice";
 const styles = {
   root: {},
   media: {
@@ -18,7 +18,7 @@ const styles = {
   pos: {
     marginBottom: 12,
   },
-}
+};
 
 const cardStyles = {
   cardTheme: {
@@ -45,7 +45,7 @@ const cardStyles = {
     border: "none",
     fontWeight: "bold",
   },
-}
+};
 
 function DropsPage(props) {
   const [tokenList, setTokenList] = useState([]);
@@ -63,12 +63,10 @@ function DropsPage(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  let getMyDrops = (status, start, end) => {
+  let getMyDrops = async (status, start, end) => {
     handleShowBackdrop();
-    dispatch(getMyDrop({ status, start, end }));
+    dispatch(getMyDrop({ status, start, end, setTokenList, setTotalDrops }));
     if (loading === 1) {
-      setTokenList(myDropsData);
-      setTotalDrops(myDropsData.length);
       handleCloseBackdrop();
     }
     if (loading === 2) {
@@ -76,9 +74,14 @@ function DropsPage(props) {
     }
   };
 
+
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
   }, [loading]);
+
+  // useEffect(() => {
+  //   dispatch(reset())
+  // }, [props.status])
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -107,21 +110,12 @@ function DropsPage(props) {
           ) : (
             <Grid
               container
-              spacing={3}
               direction="row"
+              spacing={3}
               justifyContent="flex-start"
             >
               {tokenList.map((i, index) => (
-                <Grid
-                  item
-                  xs={12}
-                  sm={6}
-                  md={4}
-                  lg={3}
-                  spacing={1}
-                  direction="row"
-                  key={index}
-                >
+                <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
                   {props.status === "draft" ? (
                     <Link
                       to={`/dashboard/newDrop/addNft`}

@@ -3,8 +3,6 @@ import React from "react";
 import { Button, Col, Modal, Row } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import "../../assets/plugins/fontawesome/css/all.min.css";
-import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
 function ConfirmBidModal(props) {
     return (
         <Modal show={props.show} onHide={props.handleClose}>

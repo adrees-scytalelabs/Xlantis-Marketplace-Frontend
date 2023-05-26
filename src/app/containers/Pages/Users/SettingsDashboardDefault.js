@@ -1,18 +1,18 @@
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from 'react-redux';
-import r1 from "../../../assets/img/patients/patient.jpg";
 import {
   updateAdminProfileSSO,
   updateUserProfileVersioned,
   uploadImage
 } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
+import { defaultProfile } from "../../../components/ImageURLs/URLs";
 import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
+import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
 import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
@@ -54,8 +54,19 @@ function SettingDashboardDefault(props) {
   const [profileImage, setProfileImage] = useState(
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
-  const [bannerImage, setBannerImage] = useState(r1);
-  const { enqueueSnackbar } = useSnackbar();
+  const [bannerImage, setBannerImage] = useState(defaultProfile);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -79,8 +90,9 @@ function SettingDashboardDefault(props) {
 
     updateUserProfileVersioned(Cookies.get("Version"), data)
       .then((response) => {
-        let variant = "success";
-        enqueueSnackbar("Profile Updated Succesfully", { variant });
+        setSnackbarMessage("Profile Updated Succesfully");
+        setSnackbarSeverity("success");
+        handleSnackbarOpen();
         setIsUploadingData(false);
         handleCloseBackdrop();
         props.setUpdateProfile(profileImage);
@@ -91,7 +103,9 @@ function SettingDashboardDefault(props) {
         setIsUploadingData(false);
         handleCloseBackdrop();
         let variant = "error";
-        enqueueSnackbar("Unable to Update Profile", { variant });
+        setSnackbarMessage("Unable to Update Profile.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
     setIsSaving(false);
   };
@@ -164,10 +178,15 @@ function SettingDashboardDefault(props) {
       bannerImage === adminOldData.bannerURL
     ) {
       let variant = "info";
-      enqueueSnackbar("No updation in data", { variant });
+      setSnackbarMessage("No updation in data");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
     } else if (adminName === "" || adminCompanyName === "") {
       let variant = "error";
-      enqueueSnackbar("Please fill all editable fields", { variant });
+      setSnackbarMessage("Please fill all editable fields");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+
     } else {
       setShowConfirmationModal(true);
     }
@@ -183,8 +202,10 @@ function SettingDashboardDefault(props) {
     await updateAdminProfileSSO(data)
       .then((response) => {
         setShowConfirmationModal(false);
-        let variant = "success";
-        enqueueSnackbar("Data updated successfully", { variant });
+        setSnackbarMessage("Data Updated Succesfully");
+        setSnackbarSeverity("success");
+        handleSnackbarOpen();
+
       })
       .catch((error) => {
         console.log("Error from updating admin data: ", error);
@@ -221,8 +242,9 @@ function SettingDashboardDefault(props) {
           setIsUploadingCroppedImage(false);
           setShowCropModal(false);
           setImageCounter(imageCounter + 1);
-          let variant = "success";
-          enqueueSnackbar("Image uploaded successfully", { variant });
+          setSnackbarMessage("Image Uploaded Succesfully");
+          setSnackbarSeverity("success");
+          handleSnackbarOpen();
         })
         .catch((error) => {
           console.log("Error from uploading image", error);
@@ -436,6 +458,7 @@ function SettingDashboardDefault(props) {
         updateData={updateData}
       />
       <CircularBackdrop open={open} />
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 }

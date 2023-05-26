@@ -1,51 +1,41 @@
 import { Card, CardMedia } from "@mui/material";
-import React from "react";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import React, { Suspense } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
+
+function Model(props) {
+  const { scene } = useGLTF(props.nftURI);
+  return <primitive object={scene} />;
+}
+
 const NFTMediaCard = (props) => {
   return (
-    <Card sx={props.classes.root}>
+    <div style={props.classes.root}>
       <div>
         {props.nftDetail.nftFormat === "glb" ||
-          props.nftDetail.nftFormat === "gltf" ? (
+        props.nftDetail.nftFormat === "gltf" ? (
           <div>
             <div
               style={{
-                display: "flex",
-                margin: "10px",
-                justifyContent: "center",
-                alignItems: "center",
+                border: "1px solid red",
+                background: "white",
               }}
             >
-              <GLTFModel src={props.nftDetail.nftURI} width={250} height={250}>
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <AmbientLight color={0xffffff} />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 100, y: 200, z: 100 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 50, y: 200, z: 100 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 0, y: 0, z: 0 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: 0, y: 100, z: 200 }}
-                />
-                <DirectionLight
-                  color={0xffffff}
-                  position={{ x: -100, y: 200, z: -100 }}
-                />
-              </GLTFModel>
+              <Canvas
+                // pixelRatio={[1, 2]}
+                camera={{ position: [-10, 15, 15], fov: 60 }}
+              >
+                <ambientLight intensity={3} />
+                <Suspense fallback={null}>
+                  <Model nftURI={props.nftDetail.nftURI} />
+                </Suspense>
+                <OrbitControls />
+              </Canvas>
             </div>
-            <div style={{ marginTop: "20px" }}>
+            <div></div>
+            <div className="mt-100">
               <CardMedia
                 sx={props.classes.media}
                 title="NFT Artwork"
@@ -85,7 +75,7 @@ const NFTMediaCard = (props) => {
           />
         )}
       </div>
-    </Card>
+    </div>
   );
 };
 

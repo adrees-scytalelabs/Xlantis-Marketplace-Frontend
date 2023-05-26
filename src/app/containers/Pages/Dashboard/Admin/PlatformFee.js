@@ -1,12 +1,9 @@
 import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import { useResolvedPath } from "react-router-dom";
-import { ThemeProvider, createTheme } from "@mui/material";
 import axios from "axios";
-
-import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
 import { getSuperAdminPlatformFee } from "../../../../components/API/AxiosInterceptor";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const styles = {
   root: {
@@ -35,27 +32,14 @@ const styles = {
   },
 };
 
-const makeTheme = createTheme({
-  overrides: {
-    MuiFormControlLabel: {
-      label: {
-        color: "white",
-        fontFamily: "inter",
-      },
-    },
-    MuiRadio: {
-      root: {
-        color: "white",
-      },
-    },
-  },
-});
 
 function PlatformFee(props) {
-  const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
 
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
 
@@ -96,6 +80,12 @@ function PlatformFee(props) {
       platformFee: "active",
     });
   }, []);
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -107,19 +97,22 @@ function PlatformFee(props) {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
-      platformFee: PlatformFee,
+      platformFee: amount,
     };
 
-    axios.post("/platform-fee/admin", data).then(
+    axios.post("/platform-fee/super-admin", data).then(
       (response) => {
         handleCloseBackdrop();
-        let variant = "success";
-        enqueueSnackbar("Platform Fee Set Successfully", { variant });
+        setSnackbarSeverity("success");
+        setSnackbarMessage("Platform Fee Set Successfully");
+        setSnackbarOpen(true);
       },
       (error) => {
+        console.log("Error in setting platform fees",error.response)
         handleCloseBackdrop();
-        let variant = "error";
-        enqueueSnackbar("Unable to set Platform fee", { variant });
+        setSnackbarSeverity("error");
+        setSnackbarMessage("Unable to set Platform fee");
+        setSnackbarOpen(true);
       }
     );
   };
@@ -202,6 +195,12 @@ function PlatformFee(props) {
         ) : null}
       </div>
       <CircularBackdrop open={open} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

@@ -1,11 +1,12 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
+import { truncate } from "../../assets/js/utils";
 const AddNFTDisplayCard = (props) => {
   return (
-    <Card style={{ height: "100%" }} id="nftCardProps">
+    <Card id="nftCardProps">
       <CardMedia
         variant="outlined"
-        className={props.classes.media}
+        sx={props.classes.media}
         image={
           props.nftDetail.previewImageURI
             ? props.nftDetail.previewImageURI
@@ -20,13 +21,13 @@ const AddNFTDisplayCard = (props) => {
           width: "100%",
         }}
       >
-        <div className="row no-gutters justify-content-start align-items-center">
+        <div className="text-center">
           <Typography
             variant="h6"
             component="p"
-            className={props.classes.cardTitle}
+            sx={props.classes.cardTitle}
           >
-            {props.nftDetail.title}
+            {truncate(props.nftDetail.title, 15)}
           </Typography>
         </div>
       </CardContent>

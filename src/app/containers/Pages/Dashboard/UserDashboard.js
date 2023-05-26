@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { Route, Routes, useResolvedPath } from "react-router-dom";
-import "../../../assets/css/adminStyle.css";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
-import "../../../assets/plugins/fontawesome/css/all.min.css";
-import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
+
 import HeaderHome from "../../../components/Headers/Header";
 import AuctionNFT from "./Admin/AuctionNFT";
 import DropNfts from "./Admin/DropNfts";
@@ -17,7 +15,8 @@ import MyDrops from "./User/MyDrops";
 import MyNFTs from "./User/MyNFTs";
 import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
-
+import TopupHistoryPageUser from "./User/TopupHistoryPageUser";
+import TopUp from "../../../components/Topup/TopUp";
 function UserDashboard(props) {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
@@ -41,6 +40,8 @@ function UserDashboard(props) {
     newCollection: "",
     myCubes: "",
     newRandomDrop: "",
+    topUp: "",
+    topupHistory: "",
   });
 
   return (
@@ -55,45 +56,82 @@ function UserDashboard(props) {
       <div className="page-wrapper">
         <div className="content container-fluid">
           <Routes>
-            <Route exact path={`dashboard`} element={
-              <UserDashboardDefaultScreen
-                match={path}
-                setActiveTab={setActiveTab}
-              />
-            } />
+            <Route
+              exact
+              path={`dashboard`}
+              element={
+                <UserDashboardDefaultScreen
+                  match={path}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
 
-            <Route exact path={`myNFTs`} element={
-              <MyNFTs setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`nftDetail/:nftId`} element={
-              <SingleNftDetail setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`myDrops`} element={
-              <MyDrops setActiveTab={setActiveTab} />
-            } />
+            <Route
+              exact
+              path={`myNFTs`}
+              element={<MyNFTs setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={"topup-history"}
+              element={<TopupHistoryPageUser setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`nftDetail/:nftId`}
+              element={<SingleNftDetail setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`myDrops`}
+              element={<MyDrops setActiveTab={setActiveTab} />}
+            />
 
-            <Route exact path={`myCollection`} element={
-              <MyCollection setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`marketPlace`} element={
-              <MarketPlace setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`marketPlace/drops/nfts`} element={
-              <DropNfts setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`marketPlace/drops/nfts/buy`} element={
-              <NFTBuy setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`marketPlace/:dropId/:nftId`} element={
-              <AuctionNFT setActiveTab={setActiveTab} />
-            } />
-            <Route exact path={`collection/nfts/:collectionId`} element={
-              <CollectionNfts setActiveTab={setActiveTab} />} />
-            <Route path={`/`} element={
-              <UserDashboardDefaultScreen
-                match={path}
-                setActiveTab={setActiveTab}
-              />} />
+            <Route
+              exact
+              path={`myCollection`}
+              element={<MyCollection setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`marketPlace`}
+              element={<MarketPlace setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`marketPlace/drops/nfts`}
+              element={<DropNfts setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`marketPlace/drops/nfts/buy`}
+              element={<NFTBuy setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`topUp`}
+              element={<TopUp setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`marketPlace/:dropId/:nftId`}
+              element={<AuctionNFT setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`collection/nfts/:collectionId`}
+              element={<CollectionNfts setActiveTab={setActiveTab} />}
+            />
+            <Route
+              path={`/`}
+              element={
+                <UserDashboardDefaultScreen
+                  match={path}
+                  setActiveTab={setActiveTab}
+                />
+              }
+            />
           </Routes>
         </div>
       </div>

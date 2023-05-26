@@ -1,16 +1,28 @@
 import Cookies from "js-cookie";
-import { useSnackbar } from "notistack";
 import React, { useState } from "react";
 import { superAdminLoginThroughSSO } from "../API/AxiosInterceptor";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 
 const SuperAdminLoginForms = () => {
 
-  const { enqueueSnackbar } = useSnackbar();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isActive, setIsActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+
 
   const handleSignIn = (e) => {
     e.preventDefault();
@@ -27,8 +39,9 @@ const SuperAdminLoginForms = () => {
         Cookies.set("Version", "v1-sso", {});
         sessionStorage.setItem("Authorization", response.data.token, {});
         setIsLoading(false);
-        let variant = "success";
-        enqueueSnackbar("Logged In Successfully", { variant });
+        setSnackbarMessage("Logged In Successfully");
+        setSnackbarSeverity("success");
+        handleSnackbarOpen();
         window.location.reload();
       })
       .catch((error) => {
@@ -36,8 +49,9 @@ const SuperAdminLoginForms = () => {
           console.log(error);
           console.log(error.response);
         }
-        let variant = "error";
-        enqueueSnackbar("Unable To Login", { variant });
+        setSnackbarMessage("Unable To Login");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
         setIsLoading(false);
       });
   };
@@ -91,6 +105,7 @@ const SuperAdminLoginForms = () => {
           <div className="signUp-link"></div>
         </form>
       </div>
+      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
     </div>
   );
 };
