@@ -32,7 +32,6 @@ const styles = {
   },
 };
 
-
 function PlatformFee(props) {
   const [value, setValue] = useState(0);
   const [isDisabled, setIsDisabled] = useState(true);
@@ -95,26 +94,45 @@ function PlatformFee(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleShowBackdrop();
-    let data = {
-      platformFee: amount,
-    };
+    if (
+      amount === null ||
+      amount === undefined ||
+      undefined === "" ||
+      amount === "undefined"
+    ) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Please Enter Paltform Fee");
+      setSnackbarOpen(true);
+    } else if (amount <= 0) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Platform Fee should be greater than 0");
+      setSnackbarOpen(true);
+    } else if (amount > 100) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Platform Fee should be less than 100");
+      setSnackbarOpen(true);
+    } else {
+      handleShowBackdrop();
+      let data = {
+        platformFee: amount,
+      };
 
-    axios.post("/platform-fee/super-admin", data).then(
-      (response) => {
-        handleCloseBackdrop();
-        setSnackbarSeverity("success");
-        setSnackbarMessage("Platform Fee Set Successfully");
-        setSnackbarOpen(true);
-      },
-      (error) => {
-        console.log("Error in setting platform fees",error.response)
-        handleCloseBackdrop();
-        setSnackbarSeverity("error");
-        setSnackbarMessage("Unable to set Platform fee");
-        setSnackbarOpen(true);
-      }
-    );
+      axios.post("/platform-fee/super-admin", data).then(
+        (response) => {
+          handleCloseBackdrop();
+          setSnackbarSeverity("success");
+          setSnackbarMessage("Platform Fee Set Successfully");
+          setSnackbarOpen(true);
+        },
+        (error) => {
+          console.log("Error in setting platform fees", error.response);
+          handleCloseBackdrop();
+          setSnackbarSeverity("error");
+          setSnackbarMessage("Unable to set Platform fee");
+          setSnackbarOpen(true);
+        }
+      );
+    }
   };
 
   return (
@@ -153,7 +171,7 @@ function PlatformFee(props) {
               min={1}
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
-                if (e.target.value > 0 && e.target.value <= 100) {
+                if (e.target.value >= 0 && e.target.value <= 100) {
                   setAmount(e.target.value);
                 }
               }}
