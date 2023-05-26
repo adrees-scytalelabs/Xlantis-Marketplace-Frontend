@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Grid } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
-import { uploadImage } from "../../components/API/AxiosInterceptor";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
 
@@ -16,6 +15,8 @@ function AdminSSORedirectForm({
   setAvailability,
   setUpdate,
   updated,
+  setImage,
+  setInputs
 }) {
   const indsutries = [
     { industry: "IT" },
@@ -27,9 +28,8 @@ function AdminSSORedirectForm({
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
-  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  const [image, setImage] = useState(defaultProfile);
-  const [imageType, setImageType] = useState("");
+  const [isUploading, setIsUploading] = useState(false);
+  const [fileURL,setFileURL] = useState(defaultProfile);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -40,35 +40,14 @@ function AdminSSORedirectForm({
     setSnackbarOpen(false);
   };
   let onChangeFile = (e) => {
-    setIsUploadingIPFS(true);
-    setImage(e.target.files[0])
-    let domainImage = e.target.files[0];
-    let typeImage;
-    setImageType(e.target.files[0].type.split("/")[1]);
-    typeImage = e.target.files   [0].type.split("/")[1];
-    let fileData = new FormData();
-    fileData.append("image", domainImage);
-    uploadImage(fileData)
-      .then((response) => {
-        console.log("response.data.url", response.data.url);
-        setImage(response.data.url);
-       setIsUploadingIPFS(false);
-        let variant = "success";
-        setSnackbarMessage("Image Uploaded Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-       setIsUploadingIPFS(false);
-        let variant = "error";
-        setSnackbarMessage("Unable to Upload Image.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      });
+    if (e.target.files && e.target.files[0]) {
+      setIsUploading(true);
+      setImage(e.target.files[0]);
+      setFileURL(URL.createObjectURL(e.target.files[0]));
+      //setInputs((values) => ({ ...values, marketplaceImage: e.target.files[0]}));
+      setIsUploading(false);
+    }
+
   };
 
   return (
@@ -77,8 +56,8 @@ function AdminSSORedirectForm({
         <h2>Finish Account Setup</h2>
         <label>Select Market Image</label>
         <UploadFile
-          fileURL={image}
-          isUploading={isUploadingIPFS}
+          fileURL={fileURL}
+          isUploading={isUploading}
           changeFile={onChangeFile}
           class="col-12 col-md-auto profile-img mr-3"
           accept=".png,.jpg,.jpeg,.gif"
