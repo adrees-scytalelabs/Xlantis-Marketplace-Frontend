@@ -12,8 +12,8 @@ import { store } from './store';
 
 if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
   axios.defaults.baseURL = `${process.env.REACT_APP_BACKEND_SERVER_ADDRESS}`;
- else axios.defaults.baseURL = `http://localhost:3000`;
-//else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
+ //else axios.defaults.baseURL = `http://localhost:3000`;
+else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
