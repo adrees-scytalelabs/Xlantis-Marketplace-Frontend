@@ -14,6 +14,7 @@ import CheckoutScreen from "../Pages/Users/CheckoutScreen";
 import EmailVerification from "../Pages/Users/EmailVerification";
 import FixedPriceDropNFTs from "../Pages/Users/FixedPriceDropNFTs";
 import HomeScreen from "../Pages/Users/HomeScreen";
+import MarketLists from "../Pages/Users/MarketLists";
 
 import MarketPlace from "../Pages/Users/MarketPlace";
 import PrivacyPolicy from "../Pages/Users/PrivacyPolicy";
@@ -149,8 +150,10 @@ function App() {
         <FixedDropSingleNFTHome />
       ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
-      ) : (
+      ) : path === "/:marketPlace" ? (
         <HomeScreen />
+      ):(
+        <MarketLists />
       )
     );
   };
@@ -171,6 +174,7 @@ function App() {
             <Route path="/usd_payment/success" element={<LoginRegisterRedirectCheck exact path="/usd_payment/success" />} />
             <Route path="/usd_payment/failed" element={<LoginRegisterRedirectCheck exact path="/usd_payment/failed" />} />
             <Route path="/auctionDrops" element={<LoginRegisterRedirectCheck exact path="/auctionDrops" />} />
+            <Route path="/:marketPlace" element={<LoginRegisterRedirectCheck exact path="/:marketPlace" />} />
             <Route path="/fixedDropNFTHome/:singleNFTid" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />} />
             <Route path="/fixedDropNFTHome" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />} />
             <Route path="/fixdropnft/:dropId" element={<LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" />} />

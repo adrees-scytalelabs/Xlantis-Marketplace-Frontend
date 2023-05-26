@@ -8,6 +8,7 @@ import HeaderHome from "../../../components/Headers/Header";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import HomeBanner from "./Home/HomeBanner";
 import Market from "./Home/Market";
+import MarketLists from "./MarketLists";
 
 function HomeScreen({ deviceType }) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -63,7 +64,9 @@ function HomeScreen({ deviceType }) {
         <div id="hBanner">
           <HomeBanner />
         </div>
+        
         <div className="row no-gutters mt-5">
+          {/* <MarketLists></MarketLists> */}
           <Market deviceType={deviceType} />
         </div>
       </div>

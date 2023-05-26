@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
 import { Grid } from "@mui/material";
+import { defaultProfile } from "../../components/ImageURLs/URLs";
+import { uploadImage } from "../../components/API/AxiosInterceptor";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import UploadFile from "../Upload/UploadFile";
 
 function AdminSSORedirectForm({
   handleSubmitDetails,
@@ -20,128 +24,194 @@ function AdminSSORedirectForm({
     { industry: "Telecommunications" },
     { industry: "Software Development" },
   ];
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
+  const [image, setImage] = useState(defaultProfile);
+  const [imageType, setImageType] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+  let onChangeFile = (e) => {
+    setIsUploadingIPFS(true);
+    setImage(e.target.files[0])
+    let domainImage = e.target.files[0];
+    let typeImage;
+    setImageType(e.target.files[0].type.split("/")[1]);
+    typeImage = e.target.files   [0].type.split("/")[1];
+    let fileData = new FormData();
+    fileData.append("image", domainImage);
+    uploadImage(fileData)
+      .then((response) => {
+        console.log("response.data.url", response.data.url);
+        setImage(response.data.url);
+       setIsUploadingIPFS(false);
+        let variant = "success";
+        setSnackbarMessage("Image Uploaded Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          console.log(error);
+          console.log(error.response);
+        }
+       setIsUploadingIPFS(false);
+        let variant = "error";
+        setSnackbarMessage("Unable to Upload Image.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      });
+  };
 
   return (
-    <form onSubmit={handleSubmitDetails} autoComplete="off">
-      <div className="ssoDetailsInput-group">
+    <>
+      <form onSubmit={handleSubmitDetails} autoComplete="off">
         <h2>Finish Account Setup</h2>
-        <div className="row no-gutters justify-content-center align-items-center w-100">
-          <Grid container spacing={3}>
-            <Grid item xs={12} sm={6}>
-              <div className="form-group">
-                <label htmlFor="fullName">Full Name</label>
+        <label>Select Market Image</label>
+        <UploadFile
+          fileURL={image}
+          isUploading={isUploadingIPFS}
+          changeFile={onChangeFile}
+          class="col-12 col-md-auto profile-img mr-3"
+          accept=".png,.jpg,.jpeg,.gif"
+          inputId="uploadPreviewImg"
+        />
+        <div className="ssoDetailsInput-group">
+          <div className="row no-gutters justify-content-center align-items-center w-100">
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+                <div className="form-group1"></div>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <div className="form-group">
+                  <label htmlFor="fullName">Full Name</label>
+                  <div className="form-group newNftWrapper">
+                    <input
+                      id="fullName"
+                      type="text"
+                      value={inputs?.fullName || ""}
+                      name="fullName"
+                      required
+                      placeholder="Full Name"
+                      className="form-control-login -login newNftInput"
+                      onChange={handleChangeValues}
+                    />
+                  </div>
+                  <label htmlFor="industry">Industry</label>
+                  <div className="form-group newNftWrapper">
+                    <select
+                      id="industry"
+                      name="industryType"
+                      value={inputs?.industryType || ""}
+                      required
+                      className="form-control-login  newNftInput"
+                      onChange={handleChangeValues}
+                    >
+                      <option value="Select Industry">Select Industry</option>
+                      {indsutries.map((i, index) => (
+                        <option value={i.industry} key={index}>
+                          {i.industry}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                  <label htmlFor="story">Why do you want to join Xmanna?</label>
+                  <div className="form-group newNftWrapper">
+                    <textarea
+                      id="reasonForInterest"
+                      name="reasonForInterest"
+                      required
+                      value={inputs?.reasonForInterest || ""}
+                      className="form-control-login -login newNftInput"
+                      onChange={handleChangeValues}
+                      rows="6"
+                      cols="33"
+                      minLength={10}
+                      maxLength={500}
+                    ></textarea>
+                  </div>
+                </div>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <label htmlFor="companyName">Company Name</label>
                 <div className="form-group newNftWrapper">
                   <input
-                    id="fullName"
+                    id="companyName"
+                    name="companyName"
                     type="text"
-                    value={inputs?.fullName || ""}
-                    name="fullName"
                     required
-                    placeholder="Full Name"
+                    value={inputs?.companyName || ""}
+                    placeholder="Company Name"
                     className="form-control-login -login newNftInput"
                     onChange={handleChangeValues}
                   />
                 </div>
-                <label htmlFor="industry">Industry</label>
-                <div className="form-group newNftWrapper">
-                  <select
-                    id="industry"
-                    name="industryType"
-                    value={inputs?.industryType || ""}
-                    required
-                    className="form-control-login  newNftInput"
-                    onChange={handleChangeValues}
-                  >
-                    <option value="Select Industry">Select Industry</option>
-                    {indsutries.map((i, index) => (
-                      <option value={i.industry} key={index}>
-                        {i.industry}
-                      </option>
-                    ))}
-                  </select>
+                <div className="form-group">
+                  <label htmlFor="designation">Designation</label>
+                  <div className="form-group newNftWrapper">
+                    <input
+                      id="designation"
+                      name="designation"
+                      type="text"
+                      required
+                      value={inputs?.designation || ""}
+                      placeholder="Designation"
+                      className="form-control-login -login newNftInput"
+                      onChange={handleChangeValues}
+                    />
+                  </div>
+                  <label htmlFor="domain">Marketplace Name</label>
+                  <div className="form-group newNftWrapper position-relative">
+                    <input
+                      id="domain"
+                      name="domain"
+                      type="text"
+                      required
+                      value={inputs?.domain || ""}
+                      placeholder="Marketplace Name"
+                      className="form-control-login -login newNftInput"
+                      onChange={(e) => {
+                        if (updated) {
+                          setUpdate(false);
+                        }
+                        handleChangeValues(e);
+                      }}
+                      onBlur={(e) => {
+                        setAvailability();
+                        handleAvailability(e);
+                      }}
+                    />
+                    {getIcon()}
+                  </div>
                 </div>
-                <label htmlFor="story">Why do you want to join Xmanna?</label>
-                <div className="form-group newNftWrapper">
-                  <textarea
-                    id="reasonForInterest"
-                    name="reasonForInterest"
-                    required
-                    value={inputs?.reasonForInterest || ""}
-                    className="form-control-login -login newNftInput"
-                    onChange={handleChangeValues}
-                    rows="6"
-                    cols="33"
-                    minLength={10}
-                    maxLength={500}
-                  ></textarea>
+                <div className="row no-gutters justify-content-center justify-content-md-end align-items-end w-100 mt-4 pt-md-3">
+                  <div className="col-12 col-md-8 col-lg-6">
+                    <button className="signUpBtn-link" type="submit">
+                      Save
+                    </button>
+                    {success && <Navigate to="/updatRequestSent" />}
+                  </div>
                 </div>
-              </div>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm={6}>
-              <label htmlFor="companyName">Company Name</label>
-              <div className="form-group newNftWrapper">
-                <input
-                  id="companyName"
-                  name="companyName"
-                  type="text"
-                  required
-                  value={inputs?.companyName || ""}
-                  placeholder="Company Name"
-                  className="form-control-login -login newNftInput"
-                  onChange={handleChangeValues}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="designation">Designation</label>
-                <div className="form-group newNftWrapper">
-                  <input
-                    id="designation"
-                    name="designation"
-                    type="text"
-                    required
-                    value={inputs?.designation || ""}
-                    placeholder="Designation"
-                    className="form-control-login -login newNftInput"
-                    onChange={handleChangeValues}
-                  />
-                </div>
-                <label htmlFor="domain">Marketplace Name</label>
-                <div className="form-group newNftWrapper position-relative">
-                  <input
-                    id="domain"
-                    name="domain"
-                    type="text"
-                    required
-                    value={inputs?.domain || ""}
-                    placeholder="Marketplace Name"
-                    className="form-control-login -login newNftInput"
-                    onChange={(e) => {
-                      if (updated) {
-                        setUpdate(false);
-                      }
-                      handleChangeValues(e);
-                    }}
-                    onBlur={(e) => {
-                      setAvailability();
-                      handleAvailability(e);
-                    }}
-                  />
-                  {getIcon()}
-                </div>
-              </div>
-              <div className="row no-gutters justify-content-center justify-content-md-end align-items-end w-100 mt-4 pt-md-3">
-                <div className="col-12 col-md-8 col-lg-6">
-                  <button className="signUpBtn-link" type="submit">
-                    Save
-                  </button>
-                  {success && <Navigate to="/updatRequestSent" />}
-                </div>
-              </div>
-            </Grid>
-          </Grid>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
+    </>
   );
 }
 
