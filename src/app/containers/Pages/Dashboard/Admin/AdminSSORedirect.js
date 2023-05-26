@@ -69,7 +69,7 @@ const AdminSSORedirect = () => {
   };
 
   const handleAvailability = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (inputs?.domain) {
       setIsChecking(true);
       const domain = { domain: e.target.value };
