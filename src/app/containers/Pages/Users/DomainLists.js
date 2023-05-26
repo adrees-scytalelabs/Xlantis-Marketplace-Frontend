@@ -7,9 +7,10 @@ import {
   CardMedia,
 } from "@mui/material";
 import nike from "../../../assets/img/nike.jpg";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const DomainList = () => {
+  
   const domains = [
     {
       name: "Nike",
@@ -51,7 +52,7 @@ const DomainList = () => {
   return (
     <div style={{ paddingLeft: "30px", paddingRight: "30px" }}>
       <Typography className="mb-3" variant="h4" gutterBottom>
-        Markets
+        Market Places
       </Typography>
       <div>
         <Grid container spacing={2}>

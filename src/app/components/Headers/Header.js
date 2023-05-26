@@ -9,8 +9,14 @@ import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import axios from 'axios'
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import axios from "axios";
+import {
+  Link,
+  Navigate,
+  useLocation,
+  useNavigate,
+  useParams,
+} from "react-router-dom";
 import { io } from "socket.io-client";
 import WalletLink from "walletlink";
 import Web3 from "web3";
@@ -37,6 +43,7 @@ import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
+  const { marketPlace } = useParams();
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -62,7 +69,6 @@ function HeaderHome(props) {
     (store) => store.getHeaderNotification
   );
   const dispatch = useDispatch();
-
 
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
@@ -105,7 +111,9 @@ function HeaderHome(props) {
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-        setSnackbarMessage("Your request is under process. Waiting for approval by the Super Admin.");
+        setSnackbarMessage(
+          "Your request is under process. Waiting for approval by the Super Admin."
+        );
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       }
@@ -129,7 +137,7 @@ function HeaderHome(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -477,8 +485,8 @@ function HeaderHome(props) {
           >
             <li className="login-link" style={{ padding: "10px 35px" }}>
               {(sessionStorage.getItem("Address") && props.role === "admin") ||
-                sessionStorage.getItem("Address") ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
                 <div
                   className="header-profile-image"
                   onClick={handleClick}
@@ -496,16 +504,19 @@ function HeaderHome(props) {
                 </span>
               </a>
             </li>
-            <li>
-              <Link to="/marketPlace" style={{ color: "#fff" }}>
-                <span
-                  className={hoverClassStyleTest(props.selectedNav).Market}
-                  style={selectedNavStyle.Market}
-                >
-                  Market
-                </span>
-              </Link>
-            </li>
+            {marketPlace !== undefined && (
+              <li>
+                <Link to="/marketPlace" style={{ color: "#fff" }}>
+                  <span
+                    className={hoverClassStyleTest(props.selectedNav).Market}
+                    style={selectedNavStyle.Market}
+                  >
+                    Market
+                  </span>
+                </Link>
+              </li>
+            )}
+
             <li className="login-link">
               <Link to={`/dashboard`}>
                 <span
@@ -520,7 +531,7 @@ function HeaderHome(props) {
             </li>
 
             {location.pathname.match("/dashboard") ||
-              location.pathname.match("/user/settings") ? (
+            location.pathname.match("/user/settings") ? (
               <>
                 <li className="sidebar-items">
                   <Link to={`/dashboard/myNFTs`}>
@@ -560,7 +571,7 @@ function HeaderHome(props) {
                 </li>
               </>
             ) : null}
-            
+
             <li
               className="login-link"
               style={{ padding: "15px 20px" }}
@@ -576,10 +587,10 @@ function HeaderHome(props) {
                 View Cart
               </span>
             </li>
-           
+
             {(sessionStorage.getItem("Address") && props.role === "admin") ||
-              sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            sessionStorage.getItem("Address") ||
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <li
                 className="login-link"
                 style={{ padding: "15px 20px" }}
@@ -595,21 +606,26 @@ function HeaderHome(props) {
                   Logout
                 </span>
               </li>
-            ) :  <li
-            className="login-link"
-            style={{ padding: "15px 20px" }}
-            onClick={()=>{
-              setMenuOpenedClass("");
-              handleOpenModal()}}
-          >
-            <span  style={{
-                padding: "10px 20px",
-                color: "white",
-                cursor: "pointer",
-              }}>
-              Login/SignUp
-            </span>
-          </li>  }
+            ) : (
+              <li
+                className="login-link"
+                style={{ padding: "15px 20px" }}
+                onClick={() => {
+                  setMenuOpenedClass("");
+                  handleOpenModal();
+                }}
+              >
+                <span
+                  style={{
+                    padding: "10px 20px",
+                    color: "white",
+                    cursor: "pointer",
+                  }}
+                >
+                  Login/SignUp
+                </span>
+              </li>
+            )}
           </ul>
         </div>
         <ul className="nav header-navbar-rht" style={{ paddingRight: "5px" }}>
@@ -628,13 +644,13 @@ function HeaderHome(props) {
               props.role === "admin" ? null : sessionStorage.getItem(
                 "Address"
               ) ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div
                 className="header-profile-image"
                 onClick={handleClick}
                 style={{
                   backgroundImage: `url(${profileImg})`,
-                  marginRight:'20px',
+                  marginRight: "20px",
                   cursor: "pointer",
                 }}
               ></div>
@@ -642,10 +658,13 @@ function HeaderHome(props) {
           </li>
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <>
-                <Link to="/dashboard" style={{ color: "#fff" ,marginRight:'20px'}}>
+                <Link
+                  to="/dashboard"
+                  style={{ color: "#fff", marginRight: "20px" }}
+                >
                   Dashboard
                 </Link>
               </>
@@ -663,13 +682,15 @@ function HeaderHome(props) {
               </>
             ) : (
               <>
-                <span
-                  className={hoverClassStyleTest(props.selectedNav).Community}
-                  style={selectedNavStyle.Community}
-                  onClick={handleOpenModal}
-                >
-                  Login/SignUp
-                </span>
+                {marketPlace !== undefined && (
+                  <span
+                    className={hoverClassStyleTest(props.selectedNav).Community}
+                    style={selectedNavStyle.Community}
+                    onClick={handleOpenModal}
+                  >
+                    Login/SignUp
+                  </span>
+                )}
                 {userSignOut && <Navigate to="/" />}
               </>
             )}
@@ -677,22 +698,27 @@ function HeaderHome(props) {
 
           <li className="header-item-rht">
             {sessionStorage.getItem("Address") &&
-              props.role === "admin" ? null : sessionStorage.getItem("Address") ||
-                (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-              <span style={{ cursor: "pointer",marginRight:'20px' }} onClick={() => Logout()}>
+            props.role === "admin" ? null : sessionStorage.getItem("Address") ||
+              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+              <span
+                style={{ cursor: "pointer", marginRight: "20px" }}
+                onClick={() => Logout()}
+              >
                 Logout
               </span>
             ) : null}
           </li>
-          <li className="header-item-rht">
-            <ShoppingCartIcon
-              onClick={() => setWorkProgressModalShow(true)}
-              style={{ cursor: "pointer" ,marginRight:'20px'}}
-            />
-          </li>
+          {marketPlace !== undefined && (
+            <li className="header-item-rht">
+              <ShoppingCartIcon
+                onClick={() => setWorkProgressModalShow(true)}
+                style={{ cursor: "pointer", marginRight: "20px" }}
+              />
+            </li>
+          )}
           <li>
             {sessionStorage.getItem("Address") ||
-              (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
+            (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
               <div>
                 <Badge
                   color="secondary"
@@ -752,7 +778,12 @@ function HeaderHome(props) {
         handleClose={() => setWorkProgressModalShow(false)}
       />
       <CartModal handleClose={handleOpenCart} open={cartOpen} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </header>
   );
 }
