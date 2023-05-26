@@ -17,7 +17,7 @@ const styles = {
   paper: {
     border: "1px solid #fff",
     borderRadius: 5,
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
     "&:focus-visible": {
       outline: "none",
     },
@@ -57,7 +57,7 @@ const styles = {
   buttons: {
     padding: "6px",
     width: "100%",
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
     color: "#fff",
@@ -87,7 +87,7 @@ const makeTheme = createTheme({
     MuiAccordion: {
       root: {
         minWidth: "350px",
-        backgroundColor: "rgba(32,32,32,255)",
+        backgroundColor: "#000",
       },
     },
     MuiAccordionSummary: {

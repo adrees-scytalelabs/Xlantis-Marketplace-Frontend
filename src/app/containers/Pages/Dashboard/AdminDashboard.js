@@ -35,12 +35,13 @@ import NFTBuy from "./Admin/NFTBuy";
 import NewCollection from "./Admin/NewCollection";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import TopUp from "./Admin/TopUp";
+import TopUp from "../../../components/Topup/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
 import DropsInCategories from "./Admin/DropsInCategories";
 import AdminEarnings from "./Admin/AdminEarnings";
+import AllTransactions from "./Admin/AllTransactions";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -155,6 +156,7 @@ function AdminDashboard(props) {
     topUp: "",
     topupHistory: "",
     categories: "",
+    allTransactions : ""
   });
 
   return (
@@ -226,7 +228,12 @@ function AdminDashboard(props) {
                   }}
                 >
                   <div>
-                    <Paper elevation={10} variant="outlined" square>
+                    <Paper
+                      elevation={10}
+                      variant="outlined"
+                      square
+                      className="rounded"
+                    >
                       <NotificationList
                         itemCount={notificationsList.length}
                         notifications={notificationsList}
@@ -259,7 +266,7 @@ function AdminDashboard(props) {
 
               <Dropdown.Menu
                 alignRight="true"
-                style={{ backgroundColor: "rgba(32,32,32,255)" }}
+                style={{ backgroundColor: "#000" }}
               >
                 <Dropdown.Item>
                   <Link to="/dashboard" style={{ width: "100%" }}>
@@ -322,7 +329,7 @@ function AdminDashboard(props) {
               path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-
+{/* <Route exact path={`allTransactions`} element={ <AllTransactions setActiveTab={setActiveTab} />}/> */}
             <Route
               exact
               path={`dropApproval`}

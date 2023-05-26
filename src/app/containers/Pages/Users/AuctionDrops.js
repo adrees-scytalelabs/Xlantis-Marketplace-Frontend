@@ -7,8 +7,8 @@ import "../../../assets/css/style.css";
 
 import { getDropsPaginated } from "../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
-import Footer from "../../../components/Footers/NewFooter";
-import HeaderHome from "../../../components/Headers/NewHeader";
+import Footer from "../../../components/Footers/Footer";
+import HeaderHome from "../../../components/Headers/Header";
 import MessageCard from "../../../components/MessageCards/MessageCard";
 
 const styles = {

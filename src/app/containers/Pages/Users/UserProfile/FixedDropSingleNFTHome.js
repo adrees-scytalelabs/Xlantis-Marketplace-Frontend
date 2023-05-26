@@ -34,8 +34,8 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import FixedDropSingleNFTCard from "../../../../components/Cards/FixedDropSingleNFTCard";
-import Footer from "../../../../components/Footers/NewFooter";
-import HeaderHome from "../../../../components/Headers/NewHeader";
+import Footer from "../../../../components/Footers/Footer";
+import HeaderHome from "../../../../components/Headers/Header";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
@@ -57,7 +57,7 @@ const customTheme = createTheme({
     MuiAccordionSummary: {
       root: {
         borderBottom: "1px solid white",
-        backgroundColor: "rgba(32,32,32,255)",
+        backgroundColor: "#000",
       },
       expandIcon: {
         color: "white",
@@ -66,7 +66,7 @@ const customTheme = createTheme({
     MuiAccordionDetails: {
       root: {
         padding: "8px 0px 16px",
-        backgroundColor: "rgba(32,32,32,255)",
+        backgroundColor: "#000",
       },
     },
     MuiOutlinedInput: {
@@ -99,7 +99,7 @@ const inputStyle = {
   fontSize: "18px",
 
   border: "none",
-  backgroundColor: "rgba(32,32,32,255)",
+  backgroundColor: "#000",
   color: "white",
   textAlign: "center",
 };
@@ -885,7 +885,7 @@ const FixedDropSingleNFTHome = () => {
                       sx={{
                         flexGrow: 1,
                         width: "100%",
-                        backgroundColor: "rgba(32,32,32,255)",
+                        backgroundColor: "#000",
                       }}
                     >
                       <div style={{ marginTop: "20px" }}>
@@ -1065,7 +1065,7 @@ const FixedDropSingleNFTHome = () => {
                                 value={bidExpiryTime}
                                 style={{
                                   color: "white",
-                                  backgroundColor: "rgba(32,32,32,255)",
+                                  backgroundColor: "#000",
                                 }}
                               />
                             </div>

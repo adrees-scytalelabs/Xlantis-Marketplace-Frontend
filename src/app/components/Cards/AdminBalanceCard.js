@@ -1,0 +1,39 @@
+import { Card } from "@mui/material";
+import React from "react";
+import { Link } from "react-router-dom";
+
+const AdminBalanceCard = (props) => {
+  return (
+    <Card
+      style={{
+        padding: "1rem",
+        borderRadius: 0,
+      }}
+      id="totalNftsAdminDash"
+      onMouseEnter={props.onMouseEnter}
+      onMouseLeave={props.onMouseLeave}
+    >
+      <Link to={props.linkTo} state={props?.state}>
+        <div className="row no-gutters justify-content-between">
+          <div className="col align-self-end">
+            <section>
+              <h4 className={props.hoverH4}>
+                <span>{props.icon}</span> {props.message}
+              </h4>
+            </section>
+          </div>
+          <div className="col justify-content-between">
+            <h4 className={props.hoverH4}>
+              USD($): {props.balanceUSD?.toFixed(2)}
+            </h4>
+            <h4 className={props.hoverH4}>
+              MATIC: {props.balanceMatic?.toFixed(4)}
+            </h4>
+          </div>
+        </div>
+      </Link>
+    </Card>
+  );
+};
+
+export default AdminBalanceCard;

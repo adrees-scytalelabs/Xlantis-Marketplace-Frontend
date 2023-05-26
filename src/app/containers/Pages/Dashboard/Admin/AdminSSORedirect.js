@@ -8,9 +8,10 @@ import {
   checkDomain,
 } from "../../../../components/API/AxiosInterceptor";
 import AdminSSORedirectForm from "../../../../components/Forms/AdminSSORedirectForm";
-import HeaderHome from "../../../../components/Headers/NewHeader";
+import HeaderHome from "../../../../components/Headers/Header";
 // import HeaderHome from "../../../../components/Headers/Header";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
@@ -20,6 +21,7 @@ const AdminSSORedirect = () => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [image, setImage] = useState(defaultProfile);
 
   // THIS STATE WILL CHECK IF DOMAIN IS VERIFIED OR NOT BEFORE SAVING TO AVOID INCONVENIENCE
   const [updated, setUpdated] = useState(false);
@@ -67,7 +69,7 @@ const AdminSSORedirect = () => {
   };
 
   const handleAvailability = async (e) => {
-    e.preventDefault();
+    // e.preventDefault();
     if (inputs?.domain) {
       setIsChecking(true);
       const domain = { domain: e.target.value };
@@ -147,7 +149,14 @@ const AdminSSORedirect = () => {
   } else route = "/v1-sso/user/admin/add-info";
 
   const addDetails = async () => {
-    await adminLoginAddInfoUsingRoute(route, inputs, config)
+    sessionStorage.removeItem("Authorization");
+    sessionStorage.removeItem("userId");
+    const formData = new FormData();
+    formData.append("marketplaceImage", image);
+    Object.entries(inputs).forEach(([key, value]) => {
+      formData.append(key, value);
+    });
+    await adminLoginAddInfoUsingRoute(route, formData, config)
       .then((response) => {
         setSucess(response.data.success);
       })
@@ -169,6 +178,7 @@ const AdminSSORedirect = () => {
                 <AdminSSORedirectForm
                   handleSubmitDetails={handleSubmitDetails}
                   inputs={inputs}
+                  setImage={setImage}
                   handleChangeValues={handleChangeValues}
                   success={success}
                   handleAvailability={handleAvailability}
@@ -176,6 +186,7 @@ const AdminSSORedirect = () => {
                   setAvailability={setIsDomainAvailable}
                   setUpdate={setUpdated}
                   updated={updated}
+                  setInputs={setInputs}
                 />
               </div>
             </div>

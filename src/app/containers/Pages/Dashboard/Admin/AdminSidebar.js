@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import AllTransactions from "./AllTransactions";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
@@ -76,6 +77,11 @@ function AdminSidebar(props) {
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>
+            {/* <li className={props.activeTab.allTransactions}>
+              <Link to={`${props.match}/allTransactions`} className="sidebarLink">
+                <ListAltIcon /> <span>All Transactions</span>
+              </Link>
+            </li> */}
             {versionB !== "v1-sso" ? (
               <li className={props.activeTab.dropApproval}>
                 <Link to={`${props.match}/dropApproval`}>
@@ -90,24 +96,24 @@ function AdminSidebar(props) {
                 <i className="fas fa-plus"></i> <span>New Drop</span>
               </Link>
             </li>
-            <li className={props.activeTab.topUp}>
-              <Link to={`${props.match}/topUp`}>
-                <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
-              </Link>
-            </li>
             <li className={props.activeTab.myDrops}>
               <Link to={`${props.match}/myDrops`}>
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-            <li className={props.activeTab.topupHistory}>
-              <Link to={`${props.match}/topup-history`}>
-                <HistoryIcon /> <span>Top-up Hsitory</span>
-              </Link>
-            </li>
             <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
                 <CategoryIcon /> <span>Categories</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topUp}>
+              <Link to={`${props.match}/topUp`}>
+                <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.topupHistory}>
+              <Link to={`${props.match}/topup-history`}>
+                <HistoryIcon /> <span>Top-up Hsitory</span>
               </Link>
             </li>
             <li className="menu-title mt-5">

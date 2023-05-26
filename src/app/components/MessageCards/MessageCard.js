@@ -9,7 +9,7 @@ const MessageCard = (props) => {
         padding: "40px",
         marginTop: "20px",
         marginBottom: "20px",
-        backgroundColor: "rgba(32,32,32,255)",
+        backgroundColor: "#000",
       }}
     >
       <Typography
@@ -18,7 +18,7 @@ const MessageCard = (props) => {
         component="p"
         style={{
           color: "#fff",
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
           fontFamily: "Orbitron",
         }}
       >

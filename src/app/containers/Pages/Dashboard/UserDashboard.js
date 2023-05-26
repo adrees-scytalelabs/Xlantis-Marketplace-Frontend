@@ -3,7 +3,7 @@ import { Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 
-import HeaderHome from "../../../components/Headers/NewHeader";
+import HeaderHome from "../../../components/Headers/Header";
 import AuctionNFT from "./Admin/AuctionNFT";
 import DropNfts from "./Admin/DropNfts";
 import MarketPlace from "./Admin/MarketPlace";
@@ -16,7 +16,7 @@ import MyNFTs from "./User/MyNFTs";
 import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
 import TopupHistoryPageUser from "./User/TopupHistoryPageUser";
-
+import TopUp from "../../../components/Topup/TopUp";
 function UserDashboard(props) {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
@@ -40,6 +40,7 @@ function UserDashboard(props) {
     newCollection: "",
     myCubes: "",
     newRandomDrop: "",
+    topUp: "",
     topupHistory: "",
   });
 
@@ -106,6 +107,11 @@ function UserDashboard(props) {
               exact
               path={`marketPlace/drops/nfts/buy`}
               element={<NFTBuy setActiveTab={setActiveTab} />}
+            />
+            <Route
+              exact
+              path={`topUp`}
+              element={<TopUp setActiveTab={setActiveTab} />}
             />
             <Route
               exact

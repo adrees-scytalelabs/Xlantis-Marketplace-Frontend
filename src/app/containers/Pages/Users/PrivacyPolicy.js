@@ -2,8 +2,8 @@ import React from "react";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import PrivacyPolicyCard from "../../../components/Cards/PrivacyPolicyCard";
-import Footer from "../../../components/Footers/NewFooter";
-import Header from "../../../components/Headers/NewHeader";
+import Footer from "../../../components/Footers/Footer";
+import Header from "../../../components/Headers/Header";
 
 function PrivacyPolicy(props) {
 

@@ -39,7 +39,7 @@ const TopupHistoryPageUser = (props) => {
   const getTopUpHistory = () => {
     getTopUpHistoryOfUser()
       .then((response) => {
-        // console.log("Response from getting top up history of user: ", response);
+        console.log("Response from getting top up history of user: ", response);
         setTopupHistory(response.data.topupHistory);
       })
       .catch((error) => {
@@ -48,6 +48,7 @@ const TopupHistoryPageUser = (props) => {
   };
 
   useEffect(() => {
+    getTopUpHistory();
     props.setActiveTab({
       dashboard: "",
       myNFTs: "",

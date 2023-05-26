@@ -12,7 +12,7 @@ const styles = {
     border: "1px solid #fff",
     // boxShadow: theme.shadows[5],
     // padding: theme.spacing(2, 4, 3),
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
     marginTop: "70px",
   },
   root: {
@@ -47,7 +47,7 @@ const styles = {
   buttons: {
     padding: "6px",
     width: "100%",
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
     color: "#fff",
@@ -87,7 +87,7 @@ const makeTheme = createTheme({
     MuiAccordion: {
       root: {
         minWidth: "350px",
-        backgroundColor: "rgba(32,32,32,255)",
+        backgroundColor: "#000",
       },
     },
     MuiAccordionSummary: {

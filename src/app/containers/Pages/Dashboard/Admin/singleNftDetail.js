@@ -14,6 +14,7 @@ import TradeHistoryAccordian from "../../../../components/Accordian/TradeHistory
 import NFTSale from "../../../../components/Modals/NFTSale";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import SummaryModal from "../../../../components/Modals/SummaryModal";
+import jwtDecode from "jwt-decode";
 
 const styles = {
   root: {
@@ -32,7 +33,7 @@ const makeTheme = createTheme({
     MuiAccordion: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
           border: "1px solid white",
           borderRadius: "0px",
         },
@@ -48,7 +49,7 @@ const makeTheme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          backgroundColor: "rgba(32,32,32,255)",
+          backgroundColor: "#000",
           border: "1px solid #fff",
         },
       },
@@ -72,7 +73,7 @@ const SingleNftDetail = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [nftType, setNftType] = useState("1155");
   const [currentTimeStamp, setCurrentTimeStamp] = useState(0);
-  const [summaryModal,setSummaryModal]= useState(false);
+  const [summaryModal, setSummaryModal] = useState(false);
   const [startTime, setStartTime] = useState(new Date());
   const [endTime, setEndTime] = useState(new Date());
   const [startTimeStamp, setStartTimeStamp] = useState(
@@ -82,17 +83,18 @@ const SingleNftDetail = (props) => {
     Math.round(endTime.getTime() / 1000)
   );
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [role, setRole] = useState("");
+
   const handleModalClose = () => setShowModal(false);
   const handleModalOpen = () => setShowModal(true);
   const handleSummaryModalClose = () => {
-    setSummaryModal(false)
-    setShowModal(true)
+    setSummaryModal(false);
+    setShowModal(true);
   };
   const handleSummaryModalOpen = () => {
-    setSummaryModal(true)
-    setShowModal(false)
-
-  }
+    setSummaryModal(true);
+    setShowModal(false);
+  };
   let getTradeHistoryDetail = () => {
     getTradeHistory(nftId)
       .then((response) => {
@@ -119,9 +121,19 @@ const SingleNftDetail = (props) => {
       });
   };
 
+  const getDecodedJWT = () => {
+    let jwtDecoded;
+    const jwt = sessionStorage.getItem("Authorization");
+    if (jwt) {
+      jwtDecoded = jwtDecode(jwt);
+    }
+    setRole(jwtDecoded.role);
+  };
+
   useEffect(() => {
     getNftDetail();
     getTradeHistoryDetail();
+    getDecodedJWT();
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -167,25 +179,27 @@ const SingleNftDetail = (props) => {
 
         <ThemeProvider theme={makeTheme}>
           <div className="card-body p-0">
-            <div
-              className="row"
-              style={{ position: "sticky", top: "0", zIndex: "1000" }}
-            >
-              <div className="col-11">
-                <Button
-                  style={{
-                    float: "right",
-                    padding: "12px 10px",
-                    borderRadius: "5px",
-                    backgroundColor: "transparent",
-                  }}
-                  onClick={handleModalOpen}
-                >
-                  {" "}
-                  List for Sale
-                </Button>
+            {role === "user" ? (
+              <div
+                className="row"
+                style={{ position: "sticky", top: "0", zIndex: "1000" }}
+              >
+                <div className="col-11">
+                  <Button
+                    style={{
+                      float: "right",
+                      padding: "12px 10px",
+                      borderRadius: "5px",
+                      backgroundColor: "transparent",
+                    }}
+                    onClick={handleModalOpen}
+                  >
+                    {" "}
+                    List for Sale
+                  </Button>
+                </div>
               </div>
-            </div>
+            ) : null}
             <div className="row">
               <div className="col-md-12 col-lg-3">
                 <NFTMediaCard nftDetail={nftDetail} classes={styles} />
@@ -222,7 +236,10 @@ const SingleNftDetail = (props) => {
             setEndTime={setEndTime}
             endTime={endTime}
           />
-          <SummaryModal show={summaryModal} handleClose={handleSummaryModalClose}></SummaryModal>
+          <SummaryModal
+            show={summaryModal}
+            handleClose={handleSummaryModalClose}
+          ></SummaryModal>
           <WorkInProgressModal
             show={workProgressModalShow}
             handleClose={() => setWorkProgressModalShow(false)}

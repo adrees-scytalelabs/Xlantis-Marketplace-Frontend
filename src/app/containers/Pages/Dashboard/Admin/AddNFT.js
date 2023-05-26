@@ -371,6 +371,7 @@ function AddNFT(props) {
   const getTxCost = async (e) => {
     Axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
+        console.log("Summary",response)
         setData(response.data.data);
         setMOdalOpen(true);
       },
@@ -656,6 +657,7 @@ function AddNFT(props) {
     try {
       getValidateAdminBalance(dropId).then(
         (response) => {
+
           console.log("Get validate admin balance: ", response.data);
           setCostInfo(response.data);
           setIsDisabled(true);

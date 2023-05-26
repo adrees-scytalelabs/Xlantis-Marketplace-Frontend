@@ -10,7 +10,7 @@ import { DigitalMemberShip, LandPlots, MetaRacers, XmannaMysteryBox } from "../.
 const useStyles = {
   root: {
     minWidth: 250,
-    backgroundColor: "rgba(32,32,32,255)",
+    backgroundColor: "#000",
   },
   title: {
     fontSize: 14,
