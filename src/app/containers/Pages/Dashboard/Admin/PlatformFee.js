@@ -2,7 +2,10 @@ import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getSuperAdminPlatformFee } from "../../../../components/API/AxiosInterceptor";
+import {
+  getSuperAdminPlatformFee,
+  setSuperAdminPlatformFee,
+} from "../../../../components/API/AxiosInterceptor";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const styles = {
@@ -117,7 +120,7 @@ function PlatformFee(props) {
         platformFee: amount,
       };
 
-      axios.post("/platform-fee/super-admin", data).then(
+      setSuperAdminPlatformFee(data).then(
         (response) => {
           handleCloseBackdrop();
           setSnackbarSeverity("success");

@@ -113,6 +113,10 @@ export const userSignUp = (body) => {
   return Axios.post(`/v1-sso/user/auth/signup`, body);
 };
 
+export const setSuperAdminPlatformFee = (body) => {
+  return Axios.post(`/platform-fee/super-admin`, body);
+};
+
 //PUT REQUESTS
 
 export const superAdminTemplateUpdate = (body) => {
