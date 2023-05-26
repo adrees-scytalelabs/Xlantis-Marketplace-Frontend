@@ -113,6 +113,10 @@ export const userSignUp = (body) => {
   return Axios.post(`/v1-sso/user/auth/signup`, body);
 };
 
+export const setSuperAdminPlatformFee = (body) => {
+  return Axios.post(`/platform-fee/super-admin`, body);
+};
+
 //PUT REQUESTS
 
 export const superAdminTemplateUpdate = (body) => {
@@ -384,6 +388,10 @@ export const getAdminCountsV2 = () => {
 
 export const getUserEmailVerification = (email, token) => {
   return Axios.get(`/users/emailverification/${email}/${token}`);
+};
+
+export const getSuperAdminPlatformFee = () => {
+  return Axios.get(`/super-admin/platform-fee`);
 };
 
 export const getAdminCountsVersioned = (version) => {
