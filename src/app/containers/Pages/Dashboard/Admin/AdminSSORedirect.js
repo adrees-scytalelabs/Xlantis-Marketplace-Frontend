@@ -152,7 +152,7 @@ const AdminSSORedirect = () => {
     sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("userId");
     const formData = new FormData();
-    formData.append("marketplaceImage", image); // Assuming you have an input element of type "file" with the id "fileInputElement"
+    formData.append("marketplaceImage", image);
     Object.entries(inputs).forEach(([key, value]) => {
       formData.append(key, value);
     });
