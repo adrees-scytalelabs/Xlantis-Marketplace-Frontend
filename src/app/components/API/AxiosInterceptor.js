@@ -375,6 +375,10 @@ export const getUserEmailVerification = (email, token) => {
   return Axios.get(`/users/emailverification/${email}/${token}`);
 };
 
+export const getSuperAdminPlatformFee = () => {
+  return Axios.get(`/super-admin/platform-fee`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

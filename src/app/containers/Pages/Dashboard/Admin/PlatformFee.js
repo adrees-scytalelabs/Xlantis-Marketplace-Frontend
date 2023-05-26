@@ -1,4 +1,4 @@
-import { Link, } from "react-router-dom";
+import { Link } from "react-router-dom";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import { useResolvedPath } from "react-router-dom";
 import { ThemeProvider, createTheme } from "@mui/material";
@@ -6,7 +6,7 @@ import axios from "axios";
 
 import { useSnackbar } from "notistack";
 import React, { useEffect, useState } from "react";
-
+import { getSuperAdminPlatformFee } from "../../../../components/API/AxiosInterceptor";
 
 const styles = {
   root: {
@@ -15,7 +15,7 @@ const styles = {
   media: {
     height: 300,
   },
- 
+
   card: {
     minWidth: 250,
   },
@@ -33,7 +33,7 @@ const styles = {
   tooltip: {
     fontSize: "16px",
   },
-}
+};
 
 const makeTheme = createTheme({
   overrides: {
@@ -54,11 +54,27 @@ const makeTheme = createTheme({
 function PlatformFee(props) {
   const { enqueueSnackbar } = useSnackbar();
   const [value, setValue] = useState(0);
+  const [isDisabled, setIsDisabled] = useState(true);
 
   const [open, setOpen] = useState(false);
   const [amount, setAmount] = useState(0);
 
+  const getPlatformFee = () => {
+    getSuperAdminPlatformFee()
+      .then((response) => {
+        console.log(
+          "Response from getting super admin platform fee: ",
+          response
+        );
+        setAmount(response.data.platformFee);
+      })
+      .catch((error) => {
+        console.log("Error from getting super admin platform fee: ", error);
+      });
+  };
+
   useEffect(() => {
+    getPlatformFee();
     if (props.tab === 1) {
       setValue(1);
       props.setTab(0);
@@ -74,11 +90,11 @@ function PlatformFee(props) {
       accounts: "",
       sso: "",
       wallet: "",
-      properties:"",
-      template:"",
-      saved:"",
-      platformFee:"active",
-    }); 
+      properties: "",
+      template: "",
+      saved: "",
+      platformFee: "active",
+    });
   }, []);
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -86,7 +102,6 @@ function PlatformFee(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -102,18 +117,15 @@ function PlatformFee(props) {
         enqueueSnackbar("Platform Fee Set Successfully", { variant });
       },
       (error) => {
-
         handleCloseBackdrop();
         let variant = "error";
         enqueueSnackbar("Unable to set Platform fee", { variant });
       }
     );
   };
-  
 
   return (
     <div className="backgroundDefault">
-      
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -137,36 +149,59 @@ function PlatformFee(props) {
         </div>
 
         <div className="row mt-3">
-          <div className="col-lg-6 col-md-6 col-sm-12">
+          <div className="col-lg-6 col-md-6 col-sm-12 d-flex flex-row">
             <input
               type="number"
               required
               value={amount}
+              disabled={isDisabled}
               placeholder="Enter Top Up Amount"
               className="form-control newNftInput"
               min={1}
-
               style={{ backgroundColor: "black", color: "white" }}
               onChange={(e) => {
-                setAmount(e.target.value);
+                if (e.target.value > 0 && e.target.value <= 100) {
+                  setAmount(e.target.value);
+                }
               }}
             />
+            <div class="input-group-prepend">
+              <span class="input-group-text bg-transparent text-white">%</span>
+            </div>
+            {isDisabled ? (
+              <button
+                className="newTemplateBtn"
+                onClick={() => {
+                  setIsDisabled(false);
+                }}
+              >
+                Edit
+              </button>
+            ) : null}
           </div>
         </div>
-        <div className="row mt-5">
-          <div className="col-lg-6 col-md-6 col-sm-12">
-            <button 
-              className="newTemplateBtn mb-3"
-              style={{ backgroundColor: "black", float: "right" }}
-              onClick={(e) => handleSubmit(e)}
-            >
-              Proceed
-            </button>
+        {!isDisabled ? (
+          <div className="row mt-5">
+            <div className="col-lg-6 col-md-6 col-sm-12">
+              <button
+                className="newTemplateBtn mb-3"
+                style={{ backgroundColor: "black", float: "right" }}
+                onClick={(e) => handleSubmit(e)}
+              >
+                Proceed
+              </button>
+              <button
+                className="newTemplateBtn mb-3"
+                style={{ backgroundColor: "black", float: "right" }}
+                onClick={(e) => setIsDisabled(true)}
+              >
+                Cancel
+              </button>
+            </div>
           </div>
-        </div>
+        ) : null}
       </div>
       <CircularBackdrop open={open} />
-
     </div>
   );
 }
