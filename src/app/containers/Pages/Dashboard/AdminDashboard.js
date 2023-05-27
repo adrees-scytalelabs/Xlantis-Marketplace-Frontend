@@ -16,9 +16,11 @@ import "../../../assets/plugins/fontawesome/css/fontawesome.min.css";
 import NotificationList from "../../../components/Cards/NotificationList Card";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
+import TopUp from "../../../components/Topup/TopUp";
 import { getHeaderNotification } from "../../../redux/getHeaderNotificationSlice";
 import AddNFT from "./Admin/AddNFT";
 import AdminDashboardDefaultScreen from "./Admin/AdminDashboardDefaultScreen";
+import AdminEarnings from "./Admin/AdminEarnings";
 import AdminSidebar from "./Admin/AdminSidebar";
 import AuctionNFT from "./Admin/AuctionNFT";
 import CollectionNfts from "./Admin/CollectionNfts";
@@ -26,6 +28,7 @@ import DropApproval from "./Admin/DropApproval";
 import DropNfts from "./Admin/DropNfts";
 import DropSingleNFT from "./Admin/DropSingleNFT";
 import DropsCategories from "./Admin/DropsCategories";
+import DropsInCategories from "./Admin/DropsInCategories";
 import MarketPlace from "./Admin/MarketPlace";
 import MyCollection from "./Admin/MyCollection";
 import MyDropNFTs from "./Admin/MyDropNfts";
@@ -35,13 +38,9 @@ import NFTBuy from "./Admin/NFTBuy";
 import NewCollection from "./Admin/NewCollection";
 import NewDrop from "./Admin/NewDrop";
 import NewNFT from "./Admin/NewNFT";
-import TopUp from "../../../components/Topup/TopUp";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
-import DropsInCategories from "./Admin/DropsInCategories";
-import AdminEarnings from "./Admin/AdminEarnings";
-import AllTransactions from "./Admin/AllTransactions";
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -156,7 +155,7 @@ function AdminDashboard(props) {
     topUp: "",
     topupHistory: "",
     categories: "",
-    allTransactions : ""
+    allTransactions: "",
   });
 
   return (
@@ -329,7 +328,7 @@ function AdminDashboard(props) {
               path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-{/* <Route exact path={`allTransactions`} element={ <AllTransactions setActiveTab={setActiveTab} />}/> */}
+            {/* <Route exact path={`allTransactions`} element={ <AllTransactions setActiveTab={setActiveTab} />}/> */}
             <Route
               exact
               path={`dropApproval`}
