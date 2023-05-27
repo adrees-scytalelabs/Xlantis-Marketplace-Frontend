@@ -1,6 +1,5 @@
-import React, { useState, useRef, useEffect } from "react";
-import { Grid, Card, CardContent, Typography, CardMedia } from "@mui/material";
-import nike from "../../../assets/img/nike.jpg";
+import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
+import React from "react";
 import { Link } from "react-router-dom";
 
 const DomainList = ({ domains }) => {

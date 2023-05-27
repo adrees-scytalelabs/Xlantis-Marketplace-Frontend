@@ -15,6 +15,19 @@ function MarketLists() {
   const [marketPlaces, setMarketPlaces] = useState();
   const [showDomain, setShowDomain] = useState(false);
   const [openBackdrop, setBackdropOpen] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const getMarketPlaces = () => {
     setBackdropOpen(true);
@@ -26,7 +39,12 @@ function MarketLists() {
         setShowDomain(true);
       })
       .catch((error) => {
-        console.log("Error from getting market places", error.response);
+        console.log("Error from getting market places", error.message);
+        let variant = "error";
+        setSnackbarMessage("An error occured");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+        setBackdropOpen(false);
       });
   };
   useEffect(() => {
@@ -49,6 +67,12 @@ function MarketLists() {
         <Footer position={"relative"} />
       </div>
       <CircularBackdrop open={openBackdrop} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </>
   );
 }
