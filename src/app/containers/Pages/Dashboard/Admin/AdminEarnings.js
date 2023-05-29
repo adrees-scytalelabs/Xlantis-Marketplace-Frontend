@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EarningsImage from "../../../../assets/img/EarningsImage.png";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip, Typography } from "@mui/material";
 import LineChartComponent from "../../../../components/Charts/LineChartComponent";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import { getMaticBalance } from "../../../../components/API/AxiosInterceptor";
@@ -25,7 +25,7 @@ const AdminEarnings = (props) => {
   const getBalance = () => {
     getMaticBalance()
       .then((response) => {
-        setBalance(response.data?.maticBalance);
+        setBalance(response.data?.balanceInUsd);
       })
       .catch((error) => {
         console.log("Error from getting matic balance: ", error);
@@ -83,7 +83,7 @@ const AdminEarnings = (props) => {
                     <div>
                       <h1 className="col">
                         <span style={{ fontFamily: "Orbitron" }}>
-                          ${balance.toFixed(4)}
+                          ${balance.toFixed(2)}
                         </span>
                       </h1>
                     </div>
@@ -224,13 +224,23 @@ const AdminEarnings = (props) => {
           </Grid>
           <Grid container spacing={1} className="mt-2">
             <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
-              <div className="border border-white p-2">
-                <LineChartComponent
-                  {...props}
-                  data={initialData}
-                  className="p-2"
-                />
-              </div>
+              <Tooltip
+                placement="top"
+                title={
+                  <Typography fontSize={20} className="text-center">
+                    Graph contains dummy data for temporay time
+                  </Typography>
+                }
+                arrow
+              >
+                <div className="border border-white p-2">
+                  <LineChartComponent
+                    {...props}
+                    data={initialData}
+                    className="p-2"
+                  />
+                </div>
+              </Tooltip>
             </Grid>
           </Grid>
         </div>
