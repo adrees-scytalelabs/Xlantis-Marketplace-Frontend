@@ -10,6 +10,7 @@ const TopupHistoryTable = ({ topupHistory, styles }) => {
           <th style={styles.tableHeader}>Amount (USD)</th>
           <th style={styles.tableHeader}>Amount (MATIC)</th>
           <th style={styles.tableHeader}>Date</th>
+          <th style={styles.tableHeader}>Time</th>
         </tr>
       </thead>
 
@@ -22,6 +23,9 @@ const TopupHistoryTable = ({ topupHistory, styles }) => {
             <td style={styles.collectionTitle}>{row.amountInMatic}</td>
             <td style={styles.collectionTitle}>
               {new Date(row.date).toDateString()}
+            </td>
+            <td style={styles.collectionTitle}>
+              {new Date(row.date).toLocaleTimeString()}
             </td>
           </tr>
         ))}
