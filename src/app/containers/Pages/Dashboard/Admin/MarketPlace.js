@@ -162,10 +162,10 @@ const MarketPlace = (props) => {
                 />
               </Tabs>
               <TabPanel value={value} index={0}>
-                <MarketPlacePage saleType="auction" />
+                <MarketPlacePage saleType="auction" marketplaceId={props.marketplaceId}/>
               </TabPanel>
               <TabPanel value={value} index={1}>
-                <MarketPlacePage saleType="fixed-price" />
+                <MarketPlacePage saleType="fixed-price" marketplaceId={props.marketplaceId}/>
               </TabPanel>
             </div>
           </div>

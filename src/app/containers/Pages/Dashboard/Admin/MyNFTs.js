@@ -76,7 +76,8 @@ function MyNFTs(props) {
     setOpen(true);
   };
   let getMyNFTs = (start, end) => {
-    dispatch(myNft({ start, end }));
+    let marketplaceId = props.marketplaceId
+    dispatch(myNft({ start, end,marketplaceId }));
     handleShowBackdrop();
     let nfts = nftData;
     console.log("data from redx", nftData, nftCount);

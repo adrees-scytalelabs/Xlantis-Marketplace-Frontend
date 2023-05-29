@@ -16,7 +16,7 @@ export const getMarketFixedPrice = createAsyncThunk(
       let version = Cookies.get("Version");
       let endpoint;
       if (version === undefined) {
-        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}`;
+        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`;
       } else {
         endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}`;
       }

@@ -17,7 +17,7 @@ export const myNft = createAsyncThunk(
   async (name,thunkAPI) => {
     try {
 
-      const resp = await axios(`/nft/myNFTs/${name.start}/${name.end}`);
+      const resp = await axios(`/nft/myNFTs/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`);
       return resp.data;
     } catch (error) {
       if (process.env.NODE_ENV === "development") {

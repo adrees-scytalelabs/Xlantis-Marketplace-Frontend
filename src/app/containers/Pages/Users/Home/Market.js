@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from "react-router-dom";
+import { Link,useLocation } from "react-router-dom";
 import "../../../../assets/css/style.css";
 import { getMarketAuction, getMarketFixedPrice } from "../../../../redux/getMarketPlaceDataSlice";
 import TrendingAndTop from "./TrendingAndTop";
 
 
 function MarketPlace(props) {
+  let location = useLocation();
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [open, setOpen] = useState(false);
@@ -20,7 +21,8 @@ function MarketPlace(props) {
   };
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketFixedPrice({ start, end }))
+    let marketplaceId=location.state.marketplaceId;
+    dispatch(getMarketFixedPrice({ start, end ,marketplaceId}))
     if (fixedPriceLoading) {
       setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
@@ -32,7 +34,8 @@ function MarketPlace(props) {
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketAuction({ start, end }));
+    let marketplaceId=location.state.marketplaceId;
+    dispatch(getMarketAuction({ start, end ,marketplaceId}));
     if (auctionLoading === 1) {
       setBidableDrop(auctionData);
       handleCloseBackdrop();
@@ -47,6 +50,9 @@ function MarketPlace(props) {
   }, [auctionLoading]);
 
   useEffect(() => {
+    console.log(
+      "Markekt place id",location.state.marketplaceId
+      )
     getCubes(0, 4);
   }, [fixedPriceLoading]);
 

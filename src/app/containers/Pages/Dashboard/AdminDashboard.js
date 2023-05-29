@@ -321,12 +321,22 @@ function AdminDashboard(props) {
             />
             <Route
               path={`newNFT`}
-              element={<NewNFT setActiveTab={setActiveTab} />}
+              element={
+                <NewNFT
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
             <Route
               exact
               path={`myNFTs`}
-              element={<MyNFTs setActiveTab={setActiveTab} />}
+              element={
+                <MyNFTs
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
             {/* <Route exact path={`allTransactions`} element={ <AllTransactions setActiveTab={setActiveTab} />}/> */}
             <Route
@@ -343,24 +353,44 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`newDrop`}
-              element={<NewDrop setActiveTab={setActiveTab} />}
+              element={
+                <NewDrop
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
             <Route
               exact
               path={`newDrop/addNft`}
-              element={<AddNFT setActiveTab={setActiveTab} />}
+              element={
+                <AddNFT
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
 
             <Route
               exact
               path={`myDrops`}
-              element={<MyDrops setActiveTab={setActiveTab} />}
+              element={
+                <MyDrops
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
 
             <Route
               exact
               path={`myDrops/nfts`}
-              element={<MyDropNFTs setActiveTab={setActiveTab} />}
+              element={
+                <MyDropNFTs
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
 
             <Route
@@ -378,13 +408,19 @@ function AdminDashboard(props) {
                   handleSnackbarOpen={handleSnackbarOpen}
                   setSnackbarMessage={setSnackbarMessage}
                   setSnackbarSeverity={setSnackbarSeverity}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }
             />
             <Route
               exact
               path={`myCollection`}
-              element={<MyCollection setActiveTab={setActiveTab} />}
+              element={
+                <MyCollection
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
 
             <Route
@@ -401,7 +437,12 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`marketPlace`}
-              element={<MarketPlace setActiveTab={setActiveTab} />}
+              element={
+                <MarketPlace
+                  setActiveTab={setActiveTab}
+                  marketplaceId={props.jwtDecoded.marketplaceId}
+                />
+              }
             />
 
             <Route

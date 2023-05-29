@@ -160,7 +160,7 @@ function AddNFT(props) {
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
-    getCollections(location.state.nftType).then(
+    getCollections(location.state.nftType,location.state.marketplaceId).then(
       (response) => {
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
@@ -231,7 +231,7 @@ function AddNFT(props) {
     );
   };
   let getNfts = (id) => {
-    getNFTsThroughId(id).then(
+    getNFTsThroughId(id,location.state.marketplaceId).then(
       (response) => {
         const nft = response.data.data;
         setNftList(response.data.data);
@@ -303,7 +303,7 @@ function AddNFT(props) {
 
   const getNFTsInDrop = (dropId) => {
     handleShowBackdrop();
-    getNFTsFromDropPaginatedWOBody(dropId, 0, 1000)
+    getNFTsFromDropPaginatedWOBody(dropId, 0, 1000,location.state.marketplaceId)
       .then((response) => {
         console.log("Response from getting drop NFTs: ", response);
         if (response.data.data.length > 0) {

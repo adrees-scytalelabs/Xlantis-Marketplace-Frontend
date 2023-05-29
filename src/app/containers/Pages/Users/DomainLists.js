@@ -20,10 +20,10 @@ const DomainList = ({ domains }) => {
               xs={12}
               sm={6}
               md={6}
-              lg={domains.length === 1 ? 6 : 3}
-              xl={domains.length === 1 ? 6 : 3}
+              lg={3}
+              xl={3}
             >
-              <Link to={`/${i.domain}`}>
+              <Link to={`/${i.domain}`}  state={{marketplaceId:i._id}}>
                 <Card sx={{ border: "1px solid white" }}>
                   <CardMedia
                     component="img"

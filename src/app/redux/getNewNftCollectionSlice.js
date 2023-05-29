@@ -13,7 +13,7 @@ export const getNewNftCollection = createAsyncThunk(
     try {
 
         // console.log("nameThunk",name);
-      const resp = await axios(`/collection/collections/${name}`);
+      const resp = await axios(`/collection/collections/${name.collectionType}?marketplaceId=${name.marketplaceId}`);
     //   console.log("reduxResp",resp);
 
       return resp.data;

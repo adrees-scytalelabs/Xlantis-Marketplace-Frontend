@@ -12,7 +12,7 @@ export const getMyCollection = createAsyncThunk(
   async (name,thunkAPI) => {
     try {
 
-      const resp = await axios(`/collection/myCollections/${name.start}/${name.end}`);
+      const resp = await axios(`/collection/myCollections/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`);
       console.log("reduxResp",resp);
 
       return resp.data;

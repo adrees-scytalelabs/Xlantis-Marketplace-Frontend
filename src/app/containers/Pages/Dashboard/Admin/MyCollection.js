@@ -40,7 +40,8 @@ function MyCollection(props) {
 
   let getCollections = (start, end) => {
     setOpen(true);
-    dispatch(getMyCollection({ start, end }));
+    let marketplaceId= props.marketplaceId
+    dispatch(getMyCollection({ start, end,marketplaceId}));
     console.log("collectionResp", collectionData, collectionCont);
     setCollections(collectionData);
     setCollectionCount(collectionCont);
