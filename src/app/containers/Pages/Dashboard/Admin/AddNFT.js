@@ -7,6 +7,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import {
   addNFTToDrop,
+  deleteNFTFromDrop,
   finalizeDrop,
   getCollections,
   getNFTsFromDropPaginatedWOBody,
@@ -320,6 +321,29 @@ function AddNFT(props) {
       });
   };
 
+  const handleRemoveNFT = (e, nftId, index) => {
+    e.preventDefault();
+    handleShowBackdrop();
+    deleteNFTFromDrop(nftId)
+      .then((response) => {
+        // console.log("Response from deleting nft from drop: ", response);
+        let list = [...tokenList];
+        list.splice(index, 1);
+        setTokenList(list);
+        setSnackbarMessage("NFT Removed Successfully");
+        setSnackbarSeverity("success");
+        handleSnackbarOpen();
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from deleting nft from drop: ", error);
+        setSnackbarMessage("Error in removing NFT");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        handleCloseBackdrop();
+      });
+  };
+
   useEffect(() => {
     setIsDisabled(false);
     setGrid(false);
@@ -344,6 +368,7 @@ function AddNFT(props) {
       topUp: "",
     });
   }, []);
+
   let loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -356,6 +381,7 @@ function AddNFT(props) {
       );
     }
   };
+
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
     if (isAdded) {
@@ -368,10 +394,11 @@ function AddNFT(props) {
       handleSnackbarOpen();
     }
   };
+
   const getTxCost = async (e) => {
     Axios.get(`/drop/${dropId}/tx-cost-summary`).then(
       (response) => {
-        console.log("Summary",response)
+        console.log("Summary", response);
         setData(response.data.data);
         setMOdalOpen(true);
       },
@@ -392,6 +419,7 @@ function AddNFT(props) {
       }
     );
   };
+
   const handleTimeEvent = async (event) => {
     event.preventDefault();
     if (
@@ -449,6 +477,7 @@ function AddNFT(props) {
       );
     }
   };
+
   const dropStatus = async (event, web3, accounts) => {
     event.preventDefault();
     let data = {
@@ -471,6 +500,7 @@ function AddNFT(props) {
       }
     );
   };
+
   const handleFixedPrice = async (
     event,
     web3,
@@ -657,7 +687,6 @@ function AddNFT(props) {
     try {
       getValidateAdminBalance(dropId).then(
         (response) => {
-
           console.log("Get validate admin balance: ", response.data);
           setCostInfo(response.data);
           setIsDisabled(true);
@@ -1031,7 +1060,12 @@ function AddNFT(props) {
                     style={{ height: "270px", width: "230px" }}
                   >
                     {console.log("nft detailssss", nftDetail)}
-                    <AddNFTDisplayCard nftDetail={nftDetail} classes={styles} />
+                    <AddNFTDisplayCard
+                      nftDetail={nftDetail}
+                      classes={styles}
+                      place="between"
+                      handleRemoveNFT={handleRemoveNFT}
+                    />
                   </div>
                 )}
 
@@ -1087,7 +1121,13 @@ function AddNFT(props) {
                           style={{ height: "100%" }}
                         >
                           {console.log("nft details", nftDetail)}
-                          <AddNFTDisplayCard nftDetail={i} classes={styles} />
+                          <AddNFTDisplayCard
+                            nftDetail={i}
+                            classes={styles}
+                            place="list"
+                            handleRemoveNFT={handleRemoveNFT}
+                            index={index}
+                          />
                         </Grid>
                       ))}
                     </Grid>

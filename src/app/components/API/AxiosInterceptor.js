@@ -433,7 +433,7 @@ export const getMaticBalance = () => {
 export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
-export const getMarketPlace = (start,end) => {
+export const getMarketPlace = (start, end) => {
   return Axios.get(`/marketplace?start=0&end=100`);
 };
 
@@ -451,4 +451,8 @@ export const deleteBatch = (batchId) => {
 
 export const deleteNFTFromBatch = (nftId) => {
   return Axios.delete(`/batch-mint/nft/${nftId}`);
+};
+
+export const deleteNFTFromDrop = (nftId) => {
+  return Axios.delete(`/drop/nft/${nftId}`);
 };
