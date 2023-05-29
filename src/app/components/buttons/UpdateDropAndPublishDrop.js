@@ -22,27 +22,12 @@ function UpdateDropAndPublishDrop({
   handlePublishEvent,
   buttonName,
 }) {
-  const handleStartTimeBlur = (e) => {
-    if (e && e instanceof Date) {
-      const oldTime = startTime.getTime();
-      const newTime = e.getTime();
-      if (oldTime !== newTime) {
-        setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
-        setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
-        setStartTime(e);
-      }
-    }
-  };
   const handleStartTimeChange = (e) => {
-     console.log("handleStartTimeChange called with:", e);
-     if (e && e instanceof Date) {
-        setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
-        setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
-        setStartTime(e);
-     }
-    
+    setCurrentTimeStamp(Number(Math.round(Date.now()) / 1000));
+    setStartTimeStamp(Number(Math.round(e.getTime()) / 1000));
+    setStartTime(e);
   };
- 
+
   const handleEndTimeChange = (e) => {
     console.log(e);
     console.log("END", Math.round(e.getTime() / 1000));
