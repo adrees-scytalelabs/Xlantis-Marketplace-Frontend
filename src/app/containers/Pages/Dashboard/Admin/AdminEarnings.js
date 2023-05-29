@@ -90,7 +90,7 @@ const AdminEarnings = (props) => {
                     <div>
                       <h1 className="col">
                         <span
-                          style={{ fontFamily: "Inter" }}
+                          style={{ fontFamily: "Inter", color: "#f64d04" }}
                           className="font-weight-light"
                         >
                           Current Balance
@@ -126,8 +126,12 @@ const AdminEarnings = (props) => {
                       <div>
                         <h1 className="col">
                           <span
-                            style={{ fontFamily: "Inter" }}
-                            className="font-weight-light text-xl"
+                            style={{
+                              fontFamily: "Inter",
+                              color: "#f64d04",
+                              fontSize: "30px",
+                            }}
+                            className="font-weight-light"
                           >
                             Royalties Earned
                           </span>
@@ -162,8 +166,12 @@ const AdminEarnings = (props) => {
                       <div>
                         <h1 className="col">
                           <span
-                            style={{ fontFamily: "Inter" }}
-                            className="font-weight-light text-xl"
+                            style={{
+                              fontFamily: "Inter",
+                              color: "#f64d04",
+                              fontSize: "30px",
+                            }}
+                            className="font-weight-light"
                           >
                             NFT Earnings
                           </span>
@@ -197,8 +205,12 @@ const AdminEarnings = (props) => {
                       <div>
                         <h1 className="col">
                           <span
-                            style={{ fontFamily: "Inter" }}
-                            className="font-weight-light text-xl"
+                            style={{
+                              fontFamily: "Inter",
+                              color: "#f64d04",
+                              fontSize: "30px",
+                            }}
+                            className="font-weight-light"
                           >
                             Total Earnings
                           </span>
