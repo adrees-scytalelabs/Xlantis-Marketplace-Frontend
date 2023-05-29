@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
+  //baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -235,11 +235,13 @@ export const getIsAvailableTemplates = (name) => {
   return Axios.get(`/nft-properties/template/is-available/${name}`);
 };
 
-export const getCollections = (nftType,marketplaceId) => {
-  return Axios.get(`/collection/collections/${nftType}?marketplaceId=${marketplaceId}`);
+export const getCollections = (nftType, marketplaceId) => {
+  return Axios.get(
+    `/collection/collections/${nftType}?marketplaceId=${marketplaceId}`
+  );
 };
 
-export const getNFTsThroughId = (id,marketplaceId) => {
+export const getNFTsThroughId = (id, marketplaceId) => {
   return Axios.get(`/nft/${id}?marketplaceId=${marketplaceId}`);
 };
 
@@ -294,8 +296,15 @@ export const getNFTsFromDropPaginated = (dropId, start, end, body) => {
   return Axios.get(`/drop/nfts/${dropId}/${start}/${end}`, body);
 };
 
-export const getNFTsFromDropPaginatedWOBody = (dropId, start, end,marketplaceId) => {
-  return Axios.get(`/drop/nfts/${dropId}/${start}/${end}?marketplaceId=${marketplaceId}`);
+export const getNFTsFromDropPaginatedWOBody = (
+  dropId,
+  start,
+  end,
+  marketplaceId
+) => {
+  return Axios.get(
+    `/drop/nfts/${dropId}/${start}/${end}?marketplaceId=${marketplaceId}`
+  );
 };
 
 export const getNFTDetailInDrop = (nftId) => {
@@ -433,7 +442,7 @@ export const getMaticBalance = () => {
 export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
-export const getMarketPlace = (start,end) => {
+export const getMarketPlace = (start, end) => {
   return Axios.get(`/marketplace?start=0&end=100`);
 };
 
