@@ -31,7 +31,7 @@
     "react-corner-ribbon": "0.0.5",
     "react-countdown": "2.3.1",
     "react-country-region-selector": "3.6.1",
-    "react-datetime-picker": "3.2.0",
+    "react-datetime-picker": "^5.2.0",
     "react-dom": "18.2.0",
     "react-easy-crop": "4.7.4",
     "react-h5-audio-player": "3.8.6",

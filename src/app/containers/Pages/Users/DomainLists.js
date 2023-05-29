@@ -1,30 +1,29 @@
 import { Card, CardContent, CardMedia, Grid, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import MessageCard from "../../../components/MessageCards/MessageCard";
 
 const DomainList = ({ domains }) => {
   const imageWidth = 180;
   const imageHeight = 240;
   return (
-    <div style={{ paddingLeft: "30px", paddingRight: "30px" }}>
+    <div style={{ paddingLeft: "30px", paddingRight: "30px",width:'100%'}}>
       <Typography className="mb-3" variant="h4" gutterBottom>
         Market Places
       </Typography>
-      <div>
-        <Grid container spacing={2}>
-          {domains.map((i, index) => (
+      {domains.length !== 0 ? (
+        domains.map((i, index) => (
+          <Grid xs={12} container spacing={2}>
             <Grid
               item
               key={index}
               xs={12}
               sm={6}
               md={6}
-              lg={domains.length === 1 ? 6 : 3}
-              xl={domains.length === 1 ? 6 : 3}
+              lg={3}
+              xl={3}
             >
-              <Link
-                to={`/${i.domain}`}
-              >
+              <Link to={`/${i.domain}`}  state={{marketplaceId:i._id}}>
                 <Card sx={{ border: "1px solid white" }}>
                   <CardMedia
                     component="img"
@@ -48,9 +47,11 @@ const DomainList = ({ domains }) => {
                 </Card>
               </Link>
             </Grid>
-          ))}
-        </Grid>
-      </div>
+          </Grid>
+        ))
+      ) : (
+        <MessageCard msg="No marketplace exists" />
+      )}
     </div>
   );
 };

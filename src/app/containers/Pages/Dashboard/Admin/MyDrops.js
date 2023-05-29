@@ -138,16 +138,16 @@ const MyDrops = (props) => {
             />
           </Tabs>
           <TabPanel value={value} index={0}>
-            <DropsPage status="draft" />
+            <DropsPage status="draft" marketplaceId={props.marketplaceId}/>
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DropsPage status="pending" />
+            <DropsPage status="pending" marketplaceId={props.marketplaceId}/>
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <DropsPage status="active" />
+            <DropsPage status="active" marketplaceId={props.marketplaceId}/>
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DropsPage status="closed" />
+            <DropsPage status="closed" marketplaceId={props.marketplaceId}/>
           </TabPanel>
         </div>
       </ThemeProvider>

@@ -25,6 +25,7 @@ function HomeScreen({ deviceType }) {
   };
   let location = useLocation();
   useEffect(() => {
+    console.log("Market id",location.state.marketplaceId)
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
     const sessionId = localStorage.getItem('sessionId')
@@ -67,7 +68,7 @@ function HomeScreen({ deviceType }) {
         
         <div className="row no-gutters mt-5">
           {/* <MarketLists></MarketLists> */}
-          <Market deviceType={deviceType} />
+          <Market deviceType={deviceType} marketplaceId={location.state.marketplaceId}/>
         </div>
       </div>
       <Footer position={"relative"} />

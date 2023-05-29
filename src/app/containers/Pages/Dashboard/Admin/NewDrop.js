@@ -185,6 +185,7 @@ function NewDrop(props) {
           saleType: saleType,
           dropType: nftType,
           category: category,
+          marketplaceId: props.marketplaceId,
         };
         console.log("Drop Data", DropData);
         createNewDrop(DropData)
@@ -199,6 +200,7 @@ function NewDrop(props) {
                 dropId: dropID,
                 saleType: saleType,
                 nftType: nftType,
+                marketplaceId: props.marketplaceId,
               },
             });
           })
@@ -260,6 +262,7 @@ function NewDrop(props) {
             description: description,
             saleType: saleType,
             dropType: nftType,
+            marketplaceId: props.marketplaceId,
           };
           console.log("Drop Data", DropData);
           createNewDrop(DropData)
@@ -274,6 +277,7 @@ function NewDrop(props) {
                   dropId: dropID,
                   saleType: saleType,
                   nftType: nftType,
+                  marketplaceId: props.marketplaceId
                 },
               });
             })
@@ -340,6 +344,7 @@ function NewDrop(props) {
           description: description,
           saleType: saleType,
           dropType: nftType,
+          marketplaceId: props.marketplaceId
         };
         console.log("Drop Data", DropData);
         createNewDrop(DropData)
@@ -355,6 +360,7 @@ function NewDrop(props) {
                 dropId: dropID,
                 saleType: saleType,
                 nftType: nftType,
+                marketplaceId: props.marketplaceId
               },
             });
           })

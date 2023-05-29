@@ -72,8 +72,9 @@ function MarketPlacePage(props) {
 
   let getMyDrops = (saleType, start, end) => {
     handleShowBackdrop();
+    let marketplaceId = props.marketplaceId;
     dispatch(
-      getSaleType({ saleType, start, end, setTokenList, setTotalDrops })
+      getSaleType({ saleType, start, end, setTokenList, setTotalDrops,marketplaceId })
     );
     if (loading === 1) {
       // setTokenList(saleTypeData);
@@ -85,6 +86,7 @@ function MarketPlacePage(props) {
   };
 
   useEffect(() => {
+    console.log("Sdad",props.marketplaceId)
     getMyDrops(props.saleType, 0, rowsPerPage);
   }, [loading]);
 

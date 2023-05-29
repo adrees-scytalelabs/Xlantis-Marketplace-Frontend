@@ -189,7 +189,8 @@ function NewNFT(props) {
 
   let getCollections = (collectionType) => {
     // setCollection("");
-    dispatch(getNewNftCollection(collectionType));
+    let marketplaceId = props.marketplaceId
+    dispatch(getNewNftCollection({collectionType,marketplaceId}));
     // console.log("collectionResp",collectionData);
     if (collectionType === "1155") {
       setChangeCollectionList(collectionData);
@@ -551,6 +552,7 @@ function NewNFT(props) {
             totalSupply: tokenSupply,
             supplyType: supplyType,
             properties: propertiesObject,
+            marketplaceId:props.marketplaceId
           };
 
           if (previewImageURI !== "") {
@@ -593,7 +595,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-
+                    marketplaceId:props.marketplaceId,
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -625,7 +627,7 @@ function NewNFT(props) {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-
+                    marketplaceId:props.marketplaceId,
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -633,7 +635,7 @@ function NewNFT(props) {
                 let cookieData = [
                   ...tokenList,
                   {
-                    properties: properties,
+                    properties:properties,
                     ipfsHash: ipfsHash,
                     nftURI: nftURI,
                     title: name,
@@ -642,7 +644,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-
+                    marketplaceId:props.marketplaceId,
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },

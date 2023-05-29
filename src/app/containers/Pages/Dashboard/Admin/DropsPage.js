@@ -65,7 +65,8 @@ function DropsPage(props) {
   };
   let getMyDrops = async (status, start, end) => {
     handleShowBackdrop();
-    dispatch(getMyDrop({ status, start, end, setTokenList, setTotalDrops }));
+    let marketplaceId= props.marketplaceId;
+    dispatch(getMyDrop({ status, start, end, setTokenList, setTotalDrops ,marketplaceId}));
     if (loading === 1) {
       handleCloseBackdrop();
     }
@@ -125,6 +126,7 @@ function DropsPage(props) {
                         startTime: i.startTime,
                         endTime: i.endTime,
                         nftType: i.dropType,
+                        marketplaceId:i.marketplaceId
                       }}
                     >
                       <DropsPageCard
@@ -141,6 +143,8 @@ function DropsPage(props) {
                         dropId: i._id,
                         saleType: i.saleType,
                         status: i.status,
+                        marketplaceId:i.marketplaceId
+
                       }}
                     >
                       <DropsPageCard

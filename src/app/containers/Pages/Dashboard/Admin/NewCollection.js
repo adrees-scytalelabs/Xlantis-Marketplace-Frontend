@@ -79,7 +79,7 @@ function NewCollection(props) {
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
-
+    console.log("Market Place id",props.marketplaceId)
     props.setActiveTab({
       dashboard: "",
       newCollection: "active",
@@ -127,6 +127,8 @@ function NewCollection(props) {
       fileData.append("description", collectionDescription);
       fileData.append("royaltyFee", royaltyFee);
       fileData.append("contractType", nftType);
+      fileData.append("marketplaceId", props.marketplaceId);
+
 
       let royaltyBlockchain = royaltyFee * 10000;
 
@@ -285,6 +287,7 @@ function NewCollection(props) {
         fileData.append("symbol", collectionSymbol);
         fileData.append("description", collectionDescription);
         fileData.append("royaltyFee", royaltyFee);
+        fileData.append("marketplaceId", props.marketplaceId);
 
         let royaltyBlockchain = royaltyFee * 10000;
 

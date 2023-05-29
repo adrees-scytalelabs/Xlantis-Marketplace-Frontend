@@ -5,14 +5,14 @@ import * as serviceWorker from "./serviceWorker";
 import App from "./app/containers/App/Application";
 import axios from "axios";
 import { CookiesProvider } from "react-cookie";
-import { Provider } from 'react-redux';
-import { store } from './store';
+import { Provider } from "react-redux";
+import { store } from "./store";
 
 // axios.defaults.withCredentials = true;
 
 if (process.env.REACT_APP_BACKEND_SERVER_ADDRESS)
   axios.defaults.baseURL = `${process.env.REACT_APP_BACKEND_SERVER_ADDRESS}`;
-//  else axios.defaults.baseURL = `http://localhost:3000`;
+//else axios.defaults.baseURL = `http://localhost:3000`;
 else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
