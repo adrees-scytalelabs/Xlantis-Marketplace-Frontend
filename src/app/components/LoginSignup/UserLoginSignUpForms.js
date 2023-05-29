@@ -3,13 +3,15 @@ import InfoIcon from "@mui/icons-material/Info";
 import { Typography } from "@mui/material";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
 import jwtDecode from "jwt-decode";
+import React, { useEffect, useState } from "react";
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { useNavigate } from "react-router-dom";
 import { userLoginThroughSSO } from "../API/AxiosInterceptor";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+
 const styles = {
   signInOptionLabel: {
     margin: "16px auto",
@@ -34,6 +36,19 @@ const AdminLoginSignupForms = () => {
   const [adminSignInData, setAdminSignInData] = useState(null);
   const [tokenVerification, setTokenVerification] = useState(true);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const { REACT_APP_CLIENT_ID } = process.env;
   const clientID = `${REACT_APP_CLIENT_ID}`;
@@ -53,7 +68,7 @@ const AdminLoginSignupForms = () => {
   useEffect(() => {
     const controller = new AbortController();
     if (account !== null) {
-      userLoginThroughSSO({ idToken: account})
+      userLoginThroughSSO({ idToken: account })
         .then((response) => {
           console.log("checker response", response);
           console.log("JWT submitted: ", response.data);
@@ -84,6 +99,9 @@ const AdminLoginSignupForms = () => {
     if (adminSignInData !== null) {
       let decode = jwtDecode(adminSignInData.raindropToken);
       sessionStorage.setItem("userId", decode.userId);
+      setSnackbarMessage("Logged in successfully");
+      setSnackbarSeverity("success");
+      handleSnackbarOpen();
       navigate(0);
     }
 
@@ -195,7 +213,8 @@ const AdminLoginSignupForms = () => {
                           variant="body2"
                           sx={styles.errorVerification}
                         >
-                          <InfoIcon /> Authentication failed. Please verify your login details and try again.
+                          <InfoIcon /> Authentication failed. Please verify your
+                          login details and try again.
                         </Typography>
                       </div>
                     )}
@@ -308,6 +327,12 @@ const AdminLoginSignupForms = () => {
       <WorkInProgressModal
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
+      />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
       />
     </>
   );

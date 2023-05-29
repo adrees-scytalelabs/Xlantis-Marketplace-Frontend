@@ -1,25 +1,45 @@
 import Cookies from "js-cookie";
 import React, { useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Logo from "../../../assets/img/logo.png";
 
+import {
+  Box,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
 import AccountApproval from "./Admin/AccountApproval";
 import Accounts from "./Admin/Accounts";
 import CreateTemplate from "./Admin/CreateTemplate";
-import ManageAccountsSSO from "./Admin/ManageAcccountsSSO";
-import ManageAccounts from "./Admin/ManageAccounts";
-import ManageAccountsWallet from "./Admin/ManageAccountsWallet";
+import PlatformFee from "./Admin/PlatformFee";
 import SavedTemplate from "./Admin/SavedTemplate";
-import SuperAdminStats from "./Admin/SuperAdminStats";
+import SuperAdminDashboardScreen from "./Admin/SuperAdminDashboardScreen";
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
+import SuperAdminStats from "./Admin/SuperAdminStats";
 import TemplateProperties from "./Admin/TemplateProperties";
 import VerifiedAccounts from "./Admin/VerifiedAccounts";
-import SuperAdminDashboardScreen from "./Admin/SuperAdminDashboardScreen";
-import PlatformFee from "./Admin/PlatformFee";
+
+const theme = createTheme({
+  components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: "black",
+          },
+        },
+      },
+    },
+  },
+});
 
 function SuperAdminDashboard(props) {
   const path = useResolvedPath("").pathname;
@@ -47,9 +67,18 @@ function SuperAdminDashboard(props) {
     template: "",
     saved: "",
     adminStats: "",
-    PlatformFee : "",
+    PlatformFee: "",
   });
   const [tab, setTab] = useState(0);
+
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(menuAnchorEl);
+  const handleClick = (event) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setMenuAnchorEl(null);
+  };
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
@@ -92,13 +121,24 @@ function SuperAdminDashboard(props) {
         </a>
         <ul className="nav user-menu">
           <li className="nav-item dropdown has-arrow">
-            <Dropdown>
-              <Dropdown.Toggle
-                style={{
-                  backgroundColor: "transparent",
-                  border: "0",
-                  paddingTop: "15px",
-                }}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+                justifyContent: "start",
+                backgroundColor: "transparent",
+                border: "0",
+                paddingTop: "15px",
+              }}
+            >
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                sx={{ ml: 2, mr: 3 }}
+                aria-controls={menuOpen ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={menuOpen ? "true" : undefined}
               >
                 <span className="admin-img">
                   <img
@@ -108,27 +148,70 @@ function SuperAdminDashboard(props) {
                     alt="Ryan Taylor"
                   />
                 </span>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu
-                alignRight="true"
-                style={{ backgroundColor: "#000" }}
+              </IconButton>
+            </Box>
+            <ThemeProvider theme={theme}>
+              <Menu
+                anchorEl={menuAnchorEl}
+                id="account-menu"
+                open={menuOpen}
+                sx={{
+                  zIndex: "9999",
+                  color: "black",
+                }}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 3,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "& .MuiList-root": {
+                      background: "black",
+                      "&:hover": {
+                        textColor: "black !important",
+                      },
+                    },
+                    "& .MuiMenuItem-root": {
+                      "&:hover": {
+                        backgroundColor: "#f64d04",
+                        textColor: "black",
+                      },
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <Dropdown.Item>
-                  <Link
-                    to="/dashboard"
-                    style={{ width: "100%" }}
-                    className="headerAccountMenu"
-                  >
-                    Dashboard
+                <MenuItem>
+                  <Link to="/dashboard" style={{ width: "100%" }}>
+                    <Typography>Dashboard</Typography>
                   </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
+                </MenuItem>
+                <Divider color="white" />
+                <MenuItem onClick={handleClose}>
                   <Link
                     onClick={() => {
                       sessionStorage.removeItem("Authorization");
                       sessionStorage.removeItem("Address");
-
                       Cookies.remove("PNT");
                       window.location.reload(false);
                     }}
@@ -136,11 +219,11 @@ function SuperAdminDashboard(props) {
                     style={{ width: "100%" }}
                     className="headerAccountMenu"
                   >
-                    Logout
+                    <Typography>Logout</Typography>
                   </Link>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                </MenuItem>
+              </Menu>
+            </ThemeProvider>
           </li>
         </ul>
       </div>
@@ -290,12 +373,17 @@ function SuperAdminDashboard(props) {
                 />
               }
             />
-              <Route exact path={`platformFee`} element={
-              <PlatformFee
-                setActiveTab={setActiveTab}
-                tab={tab}
-                setTab={setTab}
-              />} />
+            <Route
+              exact
+              path={`platformFee`}
+              element={
+                <PlatformFee
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
           </Routes>
         </div>
       </div>

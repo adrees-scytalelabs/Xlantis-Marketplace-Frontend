@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
 import { adminLoginThroughSSO } from "../../../components/API/AxiosInterceptor";
 import AdminLoginSignInForm from "../../../components/Forms/AdminLoginSignInForm";
 import AdminSignUpForm from "../../../components/Forms/AdminSignUpForm";
 import WorkInProgressModal from "../../../components/Modals/WorkInProgressModal";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
-import jwtDecode from "jwt-decode";
 
 const AdminLoginSignupForms = () => {
   const [account, setAccount] = useState(null);
@@ -21,7 +21,7 @@ const AdminLoginSignupForms = () => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -60,6 +60,10 @@ const AdminLoginSignupForms = () => {
               response.data.isInfoAdded === true &&
               response.data.isVerified === true
             ) {
+              let variant = "success";
+              setSnackbarMessage("Logged in successfully");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
               window.location.reload(false);
             }
           }
@@ -83,7 +87,9 @@ const AdminLoginSignupForms = () => {
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-        setSnackbarMessage("Your request is under process. Waiting for approval by the Super Admin.");
+        setSnackbarMessage(
+          "Your request is under process. Waiting for approval by the Super Admin."
+        );
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       }
@@ -136,7 +142,12 @@ const AdminLoginSignupForms = () => {
         show={workProgressModalShow}
         handleClose={() => setWorkProgressModalShow(false)}
       />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </>
   );
 };

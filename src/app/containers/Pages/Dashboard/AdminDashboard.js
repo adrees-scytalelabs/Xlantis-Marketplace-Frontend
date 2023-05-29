@@ -1,10 +1,21 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { Badge, Paper, Popper } from "@mui/material";
+import {
+  Badge,
+  Box,
+  Divider,
+  IconButton,
+  Menu,
+  MenuItem,
+  Paper,
+  Popper,
+  ThemeProvider,
+  Typography,
+  createTheme
+} from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import Dropdown from "react-bootstrap/Dropdown";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Routes, useResolvedPath } from "react-router-dom";
 import { io } from "socket.io-client";
@@ -41,6 +52,20 @@ import NewNFT from "./Admin/NewNFT";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+
+const theme = createTheme({
+  components: {
+    MuiTypography: {
+      styleOverrides: {
+        root: {
+          "&:hover": {
+            color: "black",
+          },
+        },
+      },
+    },
+  },
+});
 
 function AdminDashboard(props) {
   console.log("propsprops", props);
@@ -158,6 +183,15 @@ function AdminDashboard(props) {
     allTransactions: "",
   });
 
+  const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
+  const menuOpen = Boolean(menuAnchorEl);
+  const handleClick = (event) => {
+    setMenuAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setMenuAnchorEl(null);
+  };
+
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
       <div className={`admin-header ${menuOpenedClass}`}>
@@ -245,13 +279,24 @@ function AdminDashboard(props) {
             ) : null}
           </li>
           <li className="nav-item dropdown has-arrow">
-            <Dropdown>
-              <Dropdown.Toggle
-                style={{
-                  backgroundColor: "transparent",
-                  border: "0",
-                  paddingTop: "15px",
-                }}
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                textAlign: "center",
+                justifyContent: "start",
+                backgroundColor: "transparent",
+                border: "0",
+                paddingTop: "15px",
+              }}
+            >
+              <IconButton
+                onClick={handleClick}
+                size="small"
+                sx={{ ml: 2, mr: 3 }}
+                aria-controls={menuOpen ? "account-menu" : undefined}
+                aria-haspopup="true"
+                aria-expanded={menuOpen ? "true" : undefined}
               >
                 <span className="admin-img">
                   <img
@@ -261,23 +306,71 @@ function AdminDashboard(props) {
                     alt="Ryan Taylor"
                   />
                 </span>
-              </Dropdown.Toggle>
-
-              <Dropdown.Menu
-                alignRight="true"
-                style={{ backgroundColor: "#000" }}
+              </IconButton>
+            </Box>
+            <ThemeProvider theme={theme}>
+              <Menu
+                anchorEl={menuAnchorEl}
+                id="account-menu"
+                open={menuOpen}
+                sx={{
+                  zIndex: "9999",
+                  color: "black",
+                }}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 3,
+                  sx: {
+                    overflow: "visible",
+                    filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                    mt: 1.5,
+                    "& .MuiAvatar-root": {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    "& .MuiList-root": {
+                      background: "black",
+                      "&:hover": {
+                        textColor: "black !important",
+                      },
+                    },
+                    "& .MuiMenuItem-root": {
+                      "&:hover": {
+                        backgroundColor: "#f64d04",
+                        textColor: "black",
+                      },
+                    },
+                    "&:before": {
+                      content: '""',
+                      display: "block",
+                      position: "absolute",
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      transform: "translateY(-50%) rotate(45deg)",
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: "right", vertical: "top" }}
+                anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
               >
-                <Dropdown.Item>
+                <MenuItem>
                   <Link to="/dashboard" style={{ width: "100%" }}>
-                    Dashboard
+                    <Typography>Dashboard</Typography>
                   </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
+                </MenuItem>
+                <MenuItem>
                   <Link to={`${path}/admin/settings`} style={{ width: "100%" }}>
-                    Profile Settings
+                    <Typography>Profile Settings</Typography>
                   </Link>
-                </Dropdown.Item>
-                <Dropdown.Item>
+                </MenuItem>
+                <Divider color="white" />
+                <MenuItem onClick={handleClose}>
                   <Link
                     onClick={() => {
                       sessionStorage.clear();
@@ -288,11 +381,11 @@ function AdminDashboard(props) {
                     to="/"
                     style={{ width: "100%" }}
                   >
-                    Logout
+                    <Typography>Logout</Typography>
                   </Link>
-                </Dropdown.Item>
-              </Dropdown.Menu>
-            </Dropdown>
+                </MenuItem>
+              </Menu>
+            </ThemeProvider>
           </li>
         </ul>
       </div>
