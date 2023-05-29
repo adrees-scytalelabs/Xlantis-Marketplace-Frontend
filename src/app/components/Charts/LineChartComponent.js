@@ -6,10 +6,10 @@ const LineChartComponent = (props) => {
     data,
     colors: {
       backgroundColor = "black",
-      lineColor = "#2962FF",
+      lineColor = "#f64d04",
       textColor = "white",
-      areaTopColor = "#2962FF",
-      areaBottomColor = "rgba(41, 98, 255, 0.28)",
+      areaTopColor = "#f64d04",
+      areaBottomColor = "rgb(255, 99, 71, 0.28)",
     } = {},
   } = props;
 
