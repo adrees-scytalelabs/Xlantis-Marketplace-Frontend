@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../../../assets/css/style.css";
@@ -54,17 +54,6 @@ function MarketPlace(props) {
       getBidableDrops(0, 4);
     }
   }, [auctionLoading]);
-  const linkMemo = useMemo(
-    () => (
-      <Link
-        to="/marketPlace"
-        state={{ marketplaceId: location.state.marketplaceId }}
-      >
-        <h4 className="marketLinkLeads">View All</h4>
-      </Link>
-    ),
-    []
-  );
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
@@ -80,7 +69,14 @@ function MarketPlace(props) {
           <div className="col-12 col-md-6">
             <h1 className="marketCatHeadings">Fixed Price Drops</h1>
           </div>
-          <div className="col-12 col-md-6 text-md-right">{linkMemo}</div>
+          <div className="col-12 col-md-6 text-md-right">
+            <Link
+              to="/marketPlace"
+              state={{marketplaceId: location.state.marketplaceId}}
+            >
+              <h4 className="marketLinkLeads">View All</h4>
+            </Link>
+          </div>
         </div>
         <hr className="m-0"></hr>
         <div className="row no-gutters w-100">
