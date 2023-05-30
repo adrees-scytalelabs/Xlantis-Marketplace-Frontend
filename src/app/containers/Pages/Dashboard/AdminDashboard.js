@@ -10,7 +10,7 @@ import {
   Popper,
   ThemeProvider,
   Typography,
-  createTheme
+  createTheme,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -52,6 +52,7 @@ import NewNFT from "./Admin/NewNFT";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
 
 const theme = createTheme({
   components: {
@@ -181,6 +182,7 @@ function AdminDashboard(props) {
     topupHistory: "",
     categories: "",
     allTransactions: "",
+    balanceSpentHistory: "",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
@@ -565,6 +567,14 @@ function AdminDashboard(props) {
               exact
               path={`topup-history`}
               element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              exact
+              path={`balance-spent-history`}
+              element={
+                <BalanceSpentHistoryPageAdmin setActiveTab={setActiveTab} />
+              }
             />
 
             <Route
