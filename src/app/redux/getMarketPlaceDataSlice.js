@@ -18,7 +18,7 @@ export const getMarketFixedPrice = createAsyncThunk(
       if (version === undefined) {
         endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`;
       } else {
-        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}`;
+        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`;
       }
 
       const resp = await axios(endpoint);

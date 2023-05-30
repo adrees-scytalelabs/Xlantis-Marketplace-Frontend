@@ -42,7 +42,6 @@ const DomainList = ({ domains }) => {
                     <Typography className="text-center" variant="h6">
                       {i.domain}
                     </Typography>
-                    {/* <Typography variant="body2">{domain.description}</Typography> */}
                   </CardContent>
                 </Card>
               </Link>

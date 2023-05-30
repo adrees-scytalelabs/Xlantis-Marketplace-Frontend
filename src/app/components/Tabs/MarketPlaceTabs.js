@@ -176,7 +176,6 @@ const MarketPlaceTabs = (props) => {
     setRowsPerAuctionPage(parseInt(event.target.value, 10));
     setAuctionPage(0);
   };
-
   return (
     <div className="w-100">
       <ThemeProvider theme={customTheme}>
@@ -242,7 +241,7 @@ const MarketPlaceTabs = (props) => {
                         className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
                       >
-                        <OnSaleCard i={i} />
+                        <OnSaleCard i={i} marketplaceId={props.marketplaceId}/>
                       </div>
                     ))}
                   </div>

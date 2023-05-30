@@ -1,6 +1,6 @@
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Alert, Card, CardContent, CardMedia, Typography, useMediaQuery } from '@mui/material';
-import React from "react";
+import React, { useEffect } from "react";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
 import { truncate } from "../../assets/js/utils";
@@ -8,7 +8,9 @@ import { Astranaut } from '../ImageURLs/URLs';
 
 const OnSaleCard = (props) => {
   const matchScrn = useMediaQuery("(max-width: 991px)");
-  console.log("propsprops", props);
+  useEffect(()=>{
+    console.log("Data of props",props)
+  },[props])
   return (
     <div className="col-12 p-2">
       <Card id="marketCardProps">
@@ -20,7 +22,8 @@ const OnSaleCard = (props) => {
               description: props.i.description,
               bannerURL: props.i.bannerURL,
               imageURL: props.i.image,
-              dropTitle: props.i.title
+              dropTitle: props.i.title,
+              marketplaceId:props.marketplaceId
             }}
             style={{ width: "100%" }}
           >
