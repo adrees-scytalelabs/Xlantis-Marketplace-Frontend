@@ -64,7 +64,6 @@ function UpdateDropAndPublishDrop({
             <DateTimePicker
               className="form-control"
               onChange={handleStartTimeChange}
-              onBlur={handleStartTimeBlur}
               value={startTime}
             />
           </div>
