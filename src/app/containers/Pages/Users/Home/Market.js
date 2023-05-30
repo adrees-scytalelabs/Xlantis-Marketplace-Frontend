@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
-import { Link,useLocation } from "react-router-dom";
+import { Link,useLocation,useNavigate } from "react-router-dom";
 import "../../../../assets/css/style.css";
 import { getMarketAuction, getMarketFixedPrice } from "../../../../redux/getMarketPlaceDataSlice";
 import TrendingAndTop from "./TrendingAndTop";
 
 
 function MarketPlace(props) {
+  let navigate = useNavigate();
   let location = useLocation();
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
@@ -46,14 +47,27 @@ function MarketPlace(props) {
   };
 
   useEffect(() => {
+    console.log("idsdafadfsaf");
+    if(location.state===null || location.state===undefined){
+      navigate('/')
+    }
+    else{
     getBidableDrops(0, 4);
+    }
   }, [auctionLoading]);
 
   useEffect(() => {
+    console.log("idsdafadfsaf");
+    if(location.state===null || location.state===undefined){
+      navigate('/')
+    }
+    else{
     console.log(
       "Markekt place id",location.state.marketplaceId
       )
-    getCubes(0, 4);
+      getCubes(0, 4);
+    }
+   
   }, [fixedPriceLoading]);
 
   return (
