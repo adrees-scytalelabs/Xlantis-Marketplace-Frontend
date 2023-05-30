@@ -1,5 +1,12 @@
-
-import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme, useTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+  useTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
 import OnAuctionCard from "../../../../components/Cards/OnAuctionCard";
@@ -143,7 +150,7 @@ const TrendingAndTop = (props) => {
   var closedAuctionDrop = [];
   if (props.bidableDrop) {
     for (let i = 0; i < props.bidableDrop.length; i++) {
-      console.log([i])
+      console.log([i]);
       if (props.bidableDrop[i].status === "active") {
         activeAuctionDrop = [...activeAuctionDrop, props.bidableDrop[i]];
       } else if (props.bidableDrop[i].status === "pending") {
@@ -159,7 +166,7 @@ const TrendingAndTop = (props) => {
   }
 
   useEffect(() => {
-    console.log("now i am here");
+    console.log("now i am here and market place id", props.marketplaceId);
     const controller = new AbortController();
     getWindowWidth();
 
@@ -170,7 +177,7 @@ const TrendingAndTop = (props) => {
     return () => {
       controller.abort();
     };
-  }, []);
+  }, [props]);
 
   if (cntWidth) console.log("width: ", cntWidth);
 
@@ -218,11 +225,7 @@ const TrendingAndTop = (props) => {
             </div>
           </div>
 
-          <TabPanel
-            value={value}
-            index={0}
-            dir={theme.direction}
-          >
+          <TabPanel value={value} index={0} dir={theme.direction}>
             <div className="row no-gutters">
               <div className="col-12">
                 {props.type === "fixedPriceDrops" ? (
@@ -246,7 +249,10 @@ const TrendingAndTop = (props) => {
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnSaleCard i={i} />
+                            <OnSaleCard
+                              i={i}
+                              marketplaceId={props.marketplaceId}
+                            />
                           </div>
                         ))}
                       </div>
@@ -276,7 +282,6 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-
                   <MessageCard msg="No items to display"></MessageCard>
                 )}
               </div>
@@ -302,7 +307,10 @@ const TrendingAndTop = (props) => {
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 px-0 d-inline-block my-3"
                             key={index}
                           >
-                            <OnSaleCard i={i} />
+                            <OnSaleCard
+                              i={i}
+                              marketplaceId={props.marketplaceId}
+                            />
                           </div>
                         ))}
                       </div>
@@ -357,7 +365,10 @@ const TrendingAndTop = (props) => {
                             className="col-12 col-sm-6 col-md-5 col-lg-4 col-xl-3 my-3 px-0 d-inline-block"
                             key={index}
                           >
-                            <OnSaleCard i={i} />
+                            <OnSaleCard
+                              i={i}
+                              marketplaceId={props.marketplaceId}
+                            />
                           </div>
                         ))}
                       </div>

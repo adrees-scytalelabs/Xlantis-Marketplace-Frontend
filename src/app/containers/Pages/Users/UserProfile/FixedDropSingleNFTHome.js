@@ -189,6 +189,7 @@ const FixedDropSingleNFTHome = () => {
         description: description,
         imageURL: imageURL,
         bannerURL: bannerURL,
+        marketplaceId:location.state.marketplaceId
       },
     });
   };
@@ -839,7 +840,7 @@ const FixedDropSingleNFTHome = () => {
   useEffect(() => {
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
-    console.log("location.state", location.state);
+    console.log("location.state in", location.state);
     setNftData(location.state?.nftDetails);
     setOrderListing(location.state?.orderListing);
     // setNum(location.state?.orderListing?.supply);

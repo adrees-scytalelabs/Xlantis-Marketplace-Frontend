@@ -58,7 +58,7 @@ function FixedDropNFTCard(props) {
         : defaultStyles,
   };
   useEffect(()=>{
-      console.log("props data in single nft",props.orderListing)
+      console.log("props data in single nft",props)
   },[props])
 
   return (
@@ -72,6 +72,7 @@ function FixedDropNFTCard(props) {
         description: props.description,
         imageURL: props.titleImage,
         bannerURL: props.dropbanner,
+        marketplaceId:props.marketplaceId
       }}
     >
       <Card

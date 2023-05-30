@@ -90,7 +90,12 @@ const FixedPriceDropNFTs = () => {
   };
 
   const handleGoBack = () => {
-    navigate(`/marketPlace`);
+    console.log("Market Place Id before back", location.state.marketplaceId);
+    navigate(`/marketPlace`, {
+      state: {
+        marketplaceId: location.state.marketplaceId,
+      },
+    });
   };
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
@@ -100,9 +105,9 @@ const FixedPriceDropNFTs = () => {
 
     getNFTsFromDropPaginatedWOBody(dropId, start, end)
       .then((response) => {
-        console.log("data from backend",response);
+        console.log("data from backend", response);
         setDropData(response.data.data);
-        setOrderListing(response.data.orderListingData)
+        setOrderListing(response.data.orderListingData);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -115,6 +120,7 @@ const FixedPriceDropNFTs = () => {
   };
 
   useEffect(() => {
+    console.log("Market Place id in", location.state.marketplaceId);
     getNFTs(dropID.dropId, 0, 4);
     setTitleImage(location.state.imageURL);
     setBannerImage(location.state.bannerURL);
@@ -186,10 +192,8 @@ const FixedPriceDropNFTs = () => {
                   justifyContent="flex-start"
                   style={{ marginBottom: "24px" }}
                 >
-                  {
-                   dropData.length!==0 &&
+                  {dropData.length !== 0 &&
                     dropData?.map((i, index) => (
-                    
                       <Grid
                         item
                         xs={12}
@@ -212,6 +216,7 @@ const FixedPriceDropNFTs = () => {
                           endTime={endTime}
                           classes={styles}
                           cardClasses={cardStyles}
+                          marketplaceId={location.state.marketplaceId}
                         />
                       </Grid>
                     ))}
