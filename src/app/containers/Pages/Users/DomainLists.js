@@ -9,7 +9,7 @@ const DomainList = ({ domains }) => {
   return (
     <div style={{ paddingLeft: "30px", paddingRight: "30px", width: "100%" }}>
       <Typography className="mb-3" variant="h4" gutterBottom>
-        Market Places
+        Marketplaces
       </Typography>
       {domains.length !== 0 ? (
         <Grid xs={12} container spacing={2}>
