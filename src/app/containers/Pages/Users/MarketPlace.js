@@ -8,8 +8,10 @@ import {
   getMarketFixedPrice,
 } from "../../../redux/getMarketPlaceDataSlice";
 import { Grid } from "@mui/material";
+import { useLocation } from "react-router-dom";
 
 function MarketPlace(props) {
+  let location = useLocation();   
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
@@ -25,14 +27,17 @@ function MarketPlace(props) {
   };
 
   let getCubes = (start, end) => {
+    console.log("did i call multiple times?")
     handleShowBackdrop();
-    dispatch(getMarketFixedPrice({ start, end }));
+    let marketplaceId = location.state.marketplaceId
+    dispatch(getMarketFixedPrice({ start, end,marketplaceId }));
     if (fixedPriceLoading) {
       for (let i = 0; i < fixedPriceData.length; i++) {
         if (
           fixedPriceData[i].status === "active" ||
           fixedPriceData[i].status === "pending"
         ) {
+          console.log("data of fixed price i received",fixedPriceData)
           setFixedPriceDrop((prevValue) => {
             return [...prevValue, fixedPriceData[i]];
           });
@@ -90,6 +95,7 @@ function MarketPlace(props) {
                       fixedPriceDropLength={fixedPriceDrop.length}
                       bidableDrop={bidableDrop}
                       bidableDropLength={bidableDrop.length}
+                      marketplaceId={location.state.marketplaceId}
                       open={open}
                     />
                   </Grid>
