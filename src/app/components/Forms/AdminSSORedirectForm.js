@@ -54,7 +54,7 @@ function AdminSSORedirectForm({
     <>
       <form onSubmit={handleSubmitDetails} autoComplete="off">
         <h2>Finish Account Setup</h2>
-        <label>Select Market Image</label>
+        <label>Select Marketplace Image</label>
         <UploadFile
           fileURL={fileURL}
           isUploading={isUploading}

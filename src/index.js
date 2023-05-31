@@ -5,8 +5,8 @@ import * as serviceWorker from "./serviceWorker";
 import App from "./app/containers/App/Application";
 import axios from "axios";
 import { CookiesProvider } from "react-cookie";
-import { Provider } from "react-redux";
-import { store } from "./store";
+import { Provider } from 'react-redux';
+import { store } from './store';
 
 // axios.defaults.withCredentials = true;
 

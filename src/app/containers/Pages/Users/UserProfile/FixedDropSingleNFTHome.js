@@ -151,7 +151,7 @@ const FixedDropSingleNFTHome = () => {
   const [endTime, setEndTime] = useState();
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
-  const { singleNFTid } = useParams();
+  const { singleNFTid,marketPlace } = useParams();
   let [num, setNum] = useState(1);
   let [tokSupply, setTokSupply] = useState(0);
   let incNum = (max) => {
@@ -183,7 +183,7 @@ const FixedDropSingleNFTHome = () => {
   };
 
   const handleGoBack = () => {
-    navigate(`/fixdropnft/${dropID}`, {
+    navigate(`/${marketPlace}/fixdropnft/${dropID}`, {
       state: {
         saleType: saleType,
         description: description,

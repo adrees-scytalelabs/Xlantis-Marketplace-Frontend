@@ -442,6 +442,9 @@ export const getMaticBalance = () => {
 export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
+export const getUserNFTS = (start,end) => {
+  return Axios.get(`/nft/myNFTs/${start}/${end}`);
+};
 export const getMarketPlace = (start, end) => {
   return Axios.get(`/marketplace?start=0&end=100`);
 };

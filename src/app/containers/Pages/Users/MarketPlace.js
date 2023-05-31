@@ -27,7 +27,6 @@ function MarketPlace(props) {
   };
 
   let getCubes = (start, end) => {
-    console.log("did i call multiple times?")
     handleShowBackdrop();
     let marketplaceId = location.state.marketplaceId
     dispatch(getMarketFixedPrice({ start, end,marketplaceId }));

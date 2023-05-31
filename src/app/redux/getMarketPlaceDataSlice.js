@@ -22,6 +22,7 @@ export const getMarketFixedPrice = createAsyncThunk(
       }
 
       const resp = await axios(endpoint);
+      name.setFixedPriceDrop(resp.data.data)
       return resp.data;
     } catch (error) {
       if (process.env.NODE_ENV === "development") {

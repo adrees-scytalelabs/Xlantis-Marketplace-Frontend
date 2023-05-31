@@ -43,7 +43,6 @@ import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  const { marketPlace } = useParams();
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -56,6 +55,7 @@ function HeaderHome(props) {
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
   let location = useLocation();
+  const {marketPlace} = useParams();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
@@ -506,7 +506,7 @@ function HeaderHome(props) {
             </li>
             {marketPlace !== undefined && (
               <li>
-                <Link to="/marketPlace" style={{ color: "#fff" }}>
+                <Link to={`/${marketPlace}/marketPlace`} state={{marketplaceId:props.marketplaceId}} style={{ color: "#fff" }}>
                   <span
                     className={hoverClassStyleTest(props.selectedNav).Market}
                     style={selectedNavStyle.Market}
@@ -682,15 +682,14 @@ function HeaderHome(props) {
               </>
             ) : (
               <>
-                {marketPlace !== undefined && (
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                  </span>
-                )}
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                </span>
+
                 {userSignOut && <Navigate to="/" />}
               </>
             )}

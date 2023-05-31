@@ -58,6 +58,7 @@ const cardStyles = {
 };
 
 const FixedPriceDropNFTs = () => {
+  const { marketPlace } = useParams();
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
@@ -91,7 +92,7 @@ const FixedPriceDropNFTs = () => {
 
   const handleGoBack = () => {
     console.log("Market Place Id before back", location.state.marketplaceId);
-    navigate(`/marketPlace`, {
+    navigate(`/${marketPlace}`, {
       state: {
         marketplaceId: location.state.marketplaceId,
       },
