@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import UAParser from "ua-parser-js";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -11,6 +11,7 @@ import Market from "./Home/Market";
 import MarketLists from "./MarketLists";
 
 function HomeScreen({ deviceType }) {
+  const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -25,7 +26,6 @@ function HomeScreen({ deviceType }) {
   };
   let location = useLocation();
   useEffect(() => {
-    console.log("Market id",location.state.marketplaceId)
     const searchParams = new URLSearchParams(location.search);
     const id = searchParams.get("session_id");
     const sessionId = localStorage.getItem('sessionId')
@@ -57,7 +57,7 @@ function HomeScreen({ deviceType }) {
         }
       }
     }
-  }, [])
+  })
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
@@ -68,7 +68,7 @@ function HomeScreen({ deviceType }) {
         
         <div className="row no-gutters mt-5">
           {/* <MarketLists></MarketLists> */}
-          <Market deviceType={deviceType} marketplaceId={location.state.marketplaceId}/>
+          <Market deviceType={deviceType}/>
         </div>
       </div>
       <Footer position={"relative"} />
