@@ -452,6 +452,10 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
+
+export const getAdminProfileDetails = () => {
+  return Axios.get(`/v1-sso/user/admin/profile`);
+}
 export const getSuperAdminEarnings = () => {
   return Axios.get(`/earnings/super-admin`);
 }

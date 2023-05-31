@@ -184,7 +184,6 @@ function App() {
             <Route path="/dashboard/*" element={<PrivateRoute path="/dashboard/*" />} />
             <Route path="/superAdminDashboard/*" element={<PrivateRoute path="/superAdminDashboard/*" />} />
             <Route path="/user/settings" element={<LoginRegisterRedirectCheck exact path="/user/settings" />} />
-            <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
         </BrowserRouter>
     </AuthContextProvider>
