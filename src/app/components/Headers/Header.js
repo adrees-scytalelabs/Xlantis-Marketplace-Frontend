@@ -682,15 +682,14 @@ function HeaderHome(props) {
               </>
             ) : (
               <>
-                {marketPlace !== undefined && (
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                  </span>
-                )}
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                </span>
+
                 {userSignOut && <Navigate to="/" />}
               </>
             )}
