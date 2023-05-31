@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
   baseURL: `https://raindrop-backend.herokuapp.com/`,
-  //baseURL: `http://localhost:3000`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -22,7 +22,7 @@ export const adminLoginThroughWallet = (body) => {
 };
 
 export const adminLoginThroughSSO = (body) => {
-  return Axios.post(`v1-sso/user/auth/admin-login`, body);
+  return Axios.post(`/v1-sso/user/auth/admin-login`, body);
 };
 
 export const superAdminLoginThroughSSO = (body) => {
