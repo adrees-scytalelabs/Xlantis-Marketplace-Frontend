@@ -22,10 +22,10 @@ import CreateTemplate from "./Admin/CreateTemplate";
 import PlatformFee from "./Admin/PlatformFee";
 import SavedTemplate from "./Admin/SavedTemplate";
 import SuperAdminDashboardScreen from "./Admin/SuperAdminDashboardScreen";
+import SuperAdminEarningsPage from "./Admin/SuperAdminEarningsPage";
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import SuperAdminStats from "./Admin/SuperAdminStats";
 import TemplateProperties from "./Admin/TemplateProperties";
-import VerifiedAccounts from "./Admin/VerifiedAccounts";
 
 const theme = createTheme({
   components: {
@@ -68,6 +68,7 @@ function SuperAdminDashboard(props) {
     saved: "",
     adminStats: "",
     PlatformFee: "",
+    earnings: "",
   });
   const [tab, setTab] = useState(0);
 
@@ -264,12 +265,10 @@ function SuperAdminDashboard(props) {
             />
             <Route
               exact
-              path={`verifiedAccounts`}
+              path={`earnings`}
               element={
-                <VerifiedAccounts
+                <SuperAdminEarningsPage
                   match={path}
-                  tab={tab}
-                  setTab={setTab}
                   setActiveTab={setActiveTab}
                 />
               }
@@ -298,17 +297,6 @@ function SuperAdminDashboard(props) {
             />
             <Route
               exact
-              path={`manageAccounts/accountApproval`}
-              element={
-                <AccountApproval
-                  setActiveTab={setActiveTab}
-                  tab={tab}
-                  setTab={setTab}
-                />
-              }
-            />
-            <Route
-              exact
               path={`manageAccounts/Accounts`}
               element={
                 <Accounts
@@ -318,17 +306,6 @@ function SuperAdminDashboard(props) {
                 />
               }
             />
-            {/* <Route
-              exact
-              path={`accounts`}
-              element={
-                <Accounts
-                  setActiveTab={setActiveTab}
-                  tab={tab}
-                  setTab={setTab}
-                />
-              }
-            /> */}
             <Route
               exact
               path={`properties`}

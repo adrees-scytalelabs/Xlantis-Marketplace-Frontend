@@ -377,53 +377,6 @@ function Accounts(props) {
             />
           </ThemeProvider>
         </div>
-        {/* <ThemeProvider theme={customTheme}>
-          <div className="row no-gutters">
-            <div className="col-md-12">
-              <Tabs
-                value={value}
-                onChange={handleChange}
-                centered
-                indicatorColor="primary"
-                textColor="primary"
-              >
-                <Tab
-                  label="All"
-                  sx={useStyles.tabsProps}
-                  {...a11yProps(0)}
-                />
-                <Tab
-                  label="SSO"
-                  sx={useStyles.tabsProps}
-                  {...a11yProps(1)}
-                />
-                <Tab
-                  label="Wallet"
-                  sx={useStyles.tabsProps}
-                  {...a11yProps(2)}
-                />
-              </Tabs>
-              <TabPanel value={value} index={0} className="">
-                <AccountsDefaultScreen
-                  match={path}
-                  setActiveTab={props.setActiveTab}
-                />
-              </TabPanel>
-              <TabPanel className="" value={value} index={1}>
-                <AccountsSSO
-                  match={path}
-                  setActiveTab={props.setActiveTab}
-                />
-              </TabPanel>
-              <TabPanel value={value} index={2} className="">
-                <AccountsWallet
-                  match={path}
-                  setActiveTab={props.setActiveTab}
-                />
-              </TabPanel>
-            </div>
-          </div>
-        </ThemeProvider> */}
       </div>
       <CircularBackdrop open={open} />
       <AdminInformationModal

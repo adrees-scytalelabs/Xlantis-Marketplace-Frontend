@@ -1,9 +1,11 @@
 import Cookies from "js-cookie";
 import React, { useState, useEffect } from "react";
 import { Link, useResolvedPath } from "react-router-dom";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 import "../../../../assets/css/superAdmin.css";
-
+import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import AnalyticsIcon from "@mui/icons-material/Analytics";
+import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
 
 function SuperAdminSidebar(props) {
   const [style, setStyle] = useState("dropdown-container1");
@@ -99,59 +101,26 @@ function SuperAdminSidebar(props) {
             </li>
             <li className={props.activeTab.adminStats} onClick={closedDropdown}>
               <Link to={`${path}/adminStats`} className="sidebarLink">
-                <i className="fas fa-layer-group"></i>
+                <AnalyticsIcon />
                 <span>Admin Stats</span>
               </Link>
             </li>
-            {/* <li
-              className={props.activeTab.verifiedAccounts}
-              onClick={closedDropdown}
-            >
-              <Link to={`${path}/verifiedAccounts`} className="sidebarLink">
-                <i className="fas fa-layer-group"></i>
-                <span>Verified Accounts</span>
+            <li className={props.activeTab.earnings} onClick={closedDropdown}>
+              <Link to={`${path}/earnings`} className="sidebarLink">
+                <CurrencyExchangeIcon />
+                <span>Earnings</span>
               </Link>
-            </li> */}
-            {/* <li
-              className={props.activeTab.accountApproval}
-              onClick={closedDropdown}
-            >
-              <Link to={`${path}/accountApproval`} className="sidebarLink">
-                <i className="fas fa-layer-group"></i>
-                <span>Approve Accounts</span>
-              </Link>
-            </li> */}
+            </li>
             <li
               className={props.activeTab.manageAccounts}
               onClick={changeStyle}
             >
               <Link to={`${path}/manageAccounts`} className="sidebarLink">
-                <i className="fas fa-layer-group"></i>
+                <ManageAccountsIcon />
                 <span>Manage Accounts</span>
                 <i className="fa fa-caret-down"></i>
               </Link>
               <div className={`${style} container`}>
-                {/* <div
-                  className={`${ssoStyle} row ssoRow d-flex justify-content-center`}
-                  onClick={subMenuSSOClick}
-                >
-                  <li className={`${props.activeTab.sso} ssoSidebar`}>
-                    <Link to={`${path}/manageAccounts/SSO`}>SSO</Link>
-                  </li>
-                </div>
-                <div
-                  className={`${walletStyle} row walletRow d-flex justify-content-center`}
-                  onClick={subMenuWalletClick}
-                >
-                  <li className={`${props.activeTab.wallet}`}>
-                    <Link
-                      to={`${path}/manageAccounts/Wallet`}
-                      className="wallet-sidebar"
-                    >
-                      Wallet
-                    </Link>
-                  </li>
-                </div> */}
                 <div
                   className={`${ssoStyle} row ssoRow d-flex justify-content-center cursor-pointer`}
                   onClick={subMenuSSOClick}
@@ -172,11 +141,6 @@ function SuperAdminSidebar(props) {
                 </div>
               </div>
             </li>
-            {/* <li className={props.activeTab.accounts} onClick={closedDropdown}>
-              <Link to={`${path}/Accounts`} className="sidebarLink">
-                <i className="fa fa-file-medical"></i> <span>Accounts</span>
-              </Link>
-            </li> */}
             <li className={props.activeTab.properties} onClick={changeStyle1}>
               <Link to={`${path}/properties`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
@@ -210,14 +174,11 @@ function SuperAdminSidebar(props) {
               </div>
             </li>
             <li className={props.activeTab.platformFee}>
-              <Link to={`${path}/platformFee`}
-                className="sidebarLink"
-              >
+              <Link to={`${path}/platformFee`} className="sidebarLink">
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Platform Fee</span>
               </Link>
             </li>
 
-            
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>
