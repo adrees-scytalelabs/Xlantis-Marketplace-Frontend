@@ -424,7 +424,7 @@ export const getSavedTemplates = () => {
 };
 
 export const getTopUpHistoryOfAdmin = () => {
-  return Axios.get(`/top-up/admin/history`);
+  return Axios.get(`/top-up/user/history`);
 };
 
 export const getTopUpHistoryOfUser = () => {
