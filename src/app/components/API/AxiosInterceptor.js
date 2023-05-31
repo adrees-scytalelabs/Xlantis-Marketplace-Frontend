@@ -2,7 +2,7 @@ import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
   baseURL: `https://raindrop-backend.herokuapp.com/`,
-  //baseURL: `http://localhost:3000`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -450,6 +450,10 @@ export const getDropsByCategories = (category, start, end) => {
   return Axios.get(`/drop/category-drops/${category}`, {
     params: { start: start, end: end },
   });
+};
+
+export const getAdminEarnings = () => {
+  return Axios.get(`/earnings/admin`);
 };
 
 //DELETE REQUESTS

@@ -4,10 +4,33 @@ import EarningsImage from "../../../../assets/img/EarningsImage.png";
 import { Grid, Tooltip, Typography } from "@mui/material";
 import LineChartComponent from "../../../../components/Charts/LineChartComponent";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
-import { getMaticBalance } from "../../../../components/API/AxiosInterceptor";
+import {
+  getAdminEarnings,
+  getMaticBalance,
+} from "../../../../components/API/AxiosInterceptor";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const AdminEarnings = (props) => {
   const [balance, setBalance] = useState(0);
+  const [earnings, setEarnings] = useState({});
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+  const [isLoadingEarnings, setIsLoadingEarnings] = useState(false);
+
+  //for snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const initialData = [
     { time: "2018-12-22", value: 32.51 },
@@ -23,17 +46,41 @@ const AdminEarnings = (props) => {
   ];
 
   const getBalance = () => {
+    setIsLoadingBalance(true);
     getMaticBalance()
       .then((response) => {
         setBalance(response.data?.balanceInUsd);
+        setIsLoadingBalance(false);
       })
       .catch((error) => {
         console.log("Error from getting matic balance: ", error);
+        setSnackbarMessage("Error fetching balance");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingBalance(false);
+      });
+  };
+
+  const getEarnings = () => {
+    setIsLoadingEarnings(true);
+    getAdminEarnings()
+      .then((response) => {
+        // console.log("Response from getting admin earnings: ", response);
+        setEarnings(response?.data);
+        setIsLoadingEarnings(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting admin earnings: ", error);
+        setSnackbarMessage("Error fetching earnings");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingEarnings(false);
       });
   };
 
   useEffect(() => {
     getBalance();
+    getEarnings();
     props.setActiveTab({
       dashboard: "",
       earnings: "active",
@@ -81,11 +128,17 @@ const AdminEarnings = (props) => {
                   </div>
                   <div className="col-8 d-flex flex-column justify-content-end align-items-end">
                     <div>
-                      <h1 className="col">
-                        <span style={{ fontFamily: "Orbitron" }}>
-                          ${balance.toFixed(2)}
-                        </span>
-                      </h1>
+                      {isLoadingBalance ? (
+                        <div className="col">
+                          <WhiteSpinner />
+                        </div>
+                      ) : (
+                        <h1 className="col">
+                          <span style={{ fontFamily: "Orbitron" }}>
+                            ${balance.toFixed(2)}
+                          </span>
+                        </h1>
+                      )}
                     </div>
                     <div>
                       <h1 className="col">
@@ -114,14 +167,20 @@ const AdminEarnings = (props) => {
                   <div className="col-8">
                     <div className="col-12 d-flex flex-column justify-content-end align-items-end">
                       <div>
-                        <h1 className="col">
-                          <span
-                            style={{ fontFamily: "Orbitron" }}
-                            className="text-xl text-white font-weight-bold"
-                          >
-                            $1500
-                          </span>
-                        </h1>
+                        {isLoadingEarnings ? (
+                          <div className="col mt-2">
+                            <WhiteSpinner />
+                          </div>
+                        ) : (
+                          <h1 className="col">
+                            <span
+                              style={{ fontFamily: "Orbitron" }}
+                              className="text-xl text-white font-weight-bold"
+                            >
+                              ${earnings?.royaltyEarnings}
+                            </span>
+                          </h1>
+                        )}
                       </div>
                       <div>
                         <h1 className="col">
@@ -133,7 +192,7 @@ const AdminEarnings = (props) => {
                             }}
                             className="font-weight-light"
                           >
-                            Royalties Earned
+                            Royalty Earnings
                           </span>
                         </h1>
                       </div>
@@ -154,14 +213,20 @@ const AdminEarnings = (props) => {
                   <div className="col-8">
                     <div className="col-12 d-flex flex-column justify-content-end align-items-end">
                       <div>
-                        <h1 className="col">
-                          <span
-                            style={{ fontFamily: "Orbitron" }}
-                            className="text-xl text-white font-weight-bold"
-                          >
-                            $1500
-                          </span>
-                        </h1>
+                        {isLoadingEarnings ? (
+                          <div className="col mt-2">
+                            <WhiteSpinner />
+                          </div>
+                        ) : (
+                          <h1 className="col">
+                            <span
+                              style={{ fontFamily: "Orbitron" }}
+                              className="text-xl text-white font-weight-bold"
+                            >
+                              ${earnings?.nftEarnings}
+                            </span>
+                          </h1>
+                        )}
                       </div>
                       <div>
                         <h1 className="col">
@@ -193,14 +258,20 @@ const AdminEarnings = (props) => {
                   <div className="col-10 d-flex flex-column justify-content-end align-items-end">
                     <div className="col-12 d-flex flex-column justify-content-end align-items-end">
                       <div>
-                        <h1 className="col">
-                          <span
-                            style={{ fontFamily: "Orbitron" }}
-                            className="text-xl text-white font-weight-bold"
-                          >
-                            $1500
-                          </span>
-                        </h1>
+                        {isLoadingEarnings ? (
+                          <div className="col">
+                            <WhiteSpinner />
+                          </div>
+                        ) : (
+                          <h1 className="col">
+                            <span
+                              style={{ fontFamily: "Orbitron" }}
+                              className="text-xl text-white font-weight-bold"
+                            >
+                              ${earnings?.totalEarnings}
+                            </span>
+                          </h1>
+                        )}
                       </div>
                       <div>
                         <h1 className="col">
@@ -245,6 +316,12 @@ const AdminEarnings = (props) => {
           </Grid>
         </div>
       </div>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 };
