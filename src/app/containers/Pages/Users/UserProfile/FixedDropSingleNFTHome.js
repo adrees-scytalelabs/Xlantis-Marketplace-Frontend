@@ -996,8 +996,9 @@ const FixedDropSingleNFTHome = () => {
                             type="button"
                             data-tip
                             data-for="registerTip"
-                            disabled
-                            onClick={(e) => console.log(e)}
+                            onClick={(e) => {
+                              console.log(e) 
+                              navigate("/user-account")}}
                           >
                             Buy
                           </button>
