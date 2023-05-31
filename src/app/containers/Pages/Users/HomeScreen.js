@@ -11,7 +11,6 @@ import Market from "./Home/Market";
 import MarketLists from "./MarketLists";
 
 function HomeScreen({ deviceType }) {
-  const navigate = useNavigate();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");

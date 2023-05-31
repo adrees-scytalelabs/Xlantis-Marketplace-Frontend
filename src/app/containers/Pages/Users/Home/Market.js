@@ -26,9 +26,9 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let marketplaceId = location.state.marketplaceId;
-    dispatch(getMarketFixedPrice({ start, end, marketplaceId }));
+    dispatch(getMarketFixedPrice({ start, end, marketplaceId,setFixedPriceDrop }));
     if (fixedPriceLoading) {
-      setFixedPriceDrop(fixedPriceData);
+      //setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
     } else if (fixedPriceLoading === 2) {
       handleCloseBackdrop();
