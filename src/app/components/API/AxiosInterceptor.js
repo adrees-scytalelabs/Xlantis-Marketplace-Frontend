@@ -452,6 +452,10 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
+export const getSuperAdminEarnings = () => {
+  return Axios.get(`/earnings/super-admin`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

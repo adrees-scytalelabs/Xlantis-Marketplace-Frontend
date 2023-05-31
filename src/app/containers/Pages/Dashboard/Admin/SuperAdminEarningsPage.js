@@ -1,11 +1,37 @@
 import { Grid, Tooltip, Typography } from "@mui/material";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EarningsImage from "../../../../assets/img/EarningsImage.png";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
 import LineChartComponent from "../../../../components/Charts/LineChartComponent";
+import {
+  getSuperAdminBalance,
+  getSuperAdminEarnings,
+} from "../../../../components/API/AxiosInterceptor";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const SuperAdminEarningsPage = (props) => {
+  const [earnings, setEarnings] = useState(0);
+  const [balanceUSD, setBalanceUSD] = useState(0);
+  const [isLoadingEarnings, setIsLoadingEarnings] = useState(false);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+
+  //for snackbar
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const initialData = [
     { time: "2018-12-22", value: 32.51 },
     { time: "2018-12-23", value: 31.11 },
@@ -19,7 +45,43 @@ const SuperAdminEarningsPage = (props) => {
     { time: "2018-12-31", value: 22.67 },
   ];
 
+  const getEarnings = () => {
+    setIsLoadingEarnings(true);
+    getSuperAdminEarnings()
+      .then((response) => {
+        // console.log("Response from getting super admin earnings: ", response);
+        setEarnings(response?.data?.earnings);
+        setIsLoadingEarnings(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting super admin earnings: ", error);
+        setSnackbarMessage("Error Fetching Earnings");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingEarnings(false);
+      });
+  };
+
+  const getBalance = () => {
+    setIsLoadingBalance(true);
+    getSuperAdminBalance()
+      .then((response) => {
+        // console.log("Response from getting super admin balance: ", response);
+        setBalanceUSD(response.data?.superAdmin?.usd);
+        setIsLoadingBalance(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting super admin balance: ", error);
+        setSnackbarMessage("Error fetching balance");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingBalance(false);
+      });
+  };
+
   useEffect(() => {
+    getBalance();
+    getEarnings();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -65,9 +127,17 @@ const SuperAdminEarningsPage = (props) => {
                   </div>
                   <div className="col-8 d-flex flex-column justify-content-end align-items-end">
                     <div>
-                      <h1 className="col">
-                        <span style={{ fontFamily: "Orbitron" }}>$1000</span>
-                      </h1>
+                      {isLoadingBalance ? (
+                        <div className="col">
+                          <WhiteSpinner />
+                        </div>
+                      ) : (
+                        <h1 className="col">
+                          <span style={{ fontFamily: "Orbitron" }}>
+                            ${balanceUSD.toFixed(2)}
+                          </span>
+                        </h1>
+                      )}
                     </div>
                     <div>
                       <h1 className="col">
@@ -96,14 +166,20 @@ const SuperAdminEarningsPage = (props) => {
                   <div className="col-10 d-flex flex-column justify-content-end align-items-end">
                     <div className="col-12 d-flex flex-column justify-content-end align-items-end">
                       <div>
-                        <h1 className="col">
-                          <span
-                            style={{ fontFamily: "Orbitron" }}
-                            className="text-xl text-white font-weight-bold"
-                          >
-                            $1500
-                          </span>
-                        </h1>
+                        {isLoadingEarnings ? (
+                          <div className="col">
+                            <WhiteSpinner />
+                          </div>
+                        ) : (
+                          <h1 className="col">
+                            <span
+                              style={{ fontFamily: "Orbitron" }}
+                              className="text-xl text-white font-weight-bold"
+                            >
+                              ${earnings}
+                            </span>
+                          </h1>
+                        )}
                       </div>
                       <div>
                         <h1 className="col">
@@ -148,6 +224,12 @@ const SuperAdminEarningsPage = (props) => {
           </Grid>
         </div>
       </div>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 };
