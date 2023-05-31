@@ -26,7 +26,9 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let marketplaceId = location.state.marketplaceId;
-    dispatch(getMarketFixedPrice({ start, end, marketplaceId,setFixedPriceDrop }));
+    dispatch(
+      getMarketFixedPrice({ start, end, marketplaceId, setFixedPriceDrop })
+    );
     if (fixedPriceLoading) {
       //setFixedPriceDrop(fixedPriceData);
       handleCloseBackdrop();
@@ -47,13 +49,14 @@ function MarketPlace(props) {
     }
   };
 
+
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
     } else {
       getBidableDrops(0, 4);
     }
-  }, [auctionLoading]);
+  },[auctionLoading]);
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
@@ -71,8 +74,8 @@ function MarketPlace(props) {
           </div>
           <div className="col-12 col-md-6 text-md-right">
             <Link
-              to="/marketPlace"
-              state={{marketplaceId: location.state.marketplaceId}}
+              to={`marketPlace`}
+              state={{ marketplaceId: location.state.marketplaceId }}
             >
               <h4 className="marketLinkLeads">View All</h4>
             </Link>
@@ -95,7 +98,7 @@ function MarketPlace(props) {
             <h1 className="marketCatHeadings">Bidable Drops</h1>
           </div>
           <div className="col-12 col-md-6 text-md-right">
-            <Link to="/marketPlace">
+            <Link to={`marketPlace`}>
               <h4 className="marketLinkLeads">View All</h4>
             </Link>
           </div>
