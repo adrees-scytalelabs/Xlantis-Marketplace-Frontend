@@ -292,8 +292,15 @@ export const getAuctionAcceptBidTxSummary = () => {
   return Axios.get(`/auction/bid/accept/tx-cost-summary`);
 };
 
-export const getMyDropsPaginatedUsingStatus = (status, start, end) => {
-  return Axios.get(`/drop/myDrops/${status}/${start}/${end}`);
+export const getMyDropsPaginatedUsingStatus = (
+  status,
+  start,
+  end,
+  marketplaceId
+) => {
+  return Axios.get(
+    `/drop/myDrops/${status}/${start}/${end}?marketplaceId=${marketplaceId}`
+  );
 };
 
 export const getMyDropsPaginated = (start, end) => {
