@@ -4,10 +4,15 @@ import { Link } from "react-router-dom";
 const DisplayNumbersAndContentCard = (props) => {
   return (
     <Card
-      style={{
-        padding: "1rem",
-        borderRadius: 0,
-      }}
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      padding: "1rem",
+      borderRadius: 0,
+      height: "100%",
+    }}
+
       id="totalNftsAdminDash"
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}

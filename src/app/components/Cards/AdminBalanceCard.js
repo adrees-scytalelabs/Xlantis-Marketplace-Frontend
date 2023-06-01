@@ -6,17 +6,22 @@ import WhiteSpinner from "../Spinners/WhiteSpinner";
 const AdminBalanceCard = (props) => {
   return (
     <Card
-      style={{
-        padding: "1rem",
-        borderRadius: 0,
-      }}
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      padding: "1rem",
+      borderRadius: 0,
+      height: "100%",
+    }}
+
       id="totalNftsAdminDash"
       onMouseEnter={props.onMouseEnter}
       onMouseLeave={props.onMouseLeave}
     >
       <Link to={props.linkTo} state={props?.state}>
         <div className="row no-gutters justify-content-between">
-          <div className="col align-self-end">
+          <div className="col-4 align-self-end">
             <section>
               <h4 className={props.hoverH4}>
                 <span>{props.icon}</span> {props.message}
