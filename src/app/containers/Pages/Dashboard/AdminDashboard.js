@@ -10,7 +10,7 @@ import {
   Popper,
   ThemeProvider,
   Typography,
-  createTheme
+  createTheme,
 } from "@mui/material";
 import axios from "axios";
 import Cookies from "js-cookie";
@@ -417,6 +417,9 @@ function AdminDashboard(props) {
               element={
                 <NewNFT
                   setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }

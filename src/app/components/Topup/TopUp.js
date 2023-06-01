@@ -33,6 +33,7 @@ function TopUp(props) {
   const [amount, setAmount] = useState(0.1);
   const [balanceUSD, setBalanceUSD] = useState(0);
   const [balanceMatic, setBalanceMatic] = useState(0);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -81,6 +82,7 @@ function TopUp(props) {
 
   const getBalance = () => {
     setOpen(true);
+    setIsLoadingBalance(true);
     getMaticBalance()
       .then((response) => {
         console.log("response from getting matic balance: ", response);
@@ -89,9 +91,15 @@ function TopUp(props) {
         response.data.maticBalance &&
           setBalanceMatic(response.data?.maticBalance);
         setOpen(false);
+        setIsLoadingBalance(false);
       })
       .catch((error) => {
         console.log("Error from getting balance: ", error);
+        setSnackbarMessage("Error Fetching Balance");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+        setIsLoadingBalance(false);
       });
   };
 
@@ -156,6 +164,7 @@ function TopUp(props) {
           balanceMatic={balanceMatic}
           message="Balance"
           icon={<CurrencyExchangeIcon />}
+          isLoadingBalance={isLoadingBalance}
         />
       </div>
       <TopUpForm

@@ -1,16 +1,18 @@
-import { TablePagination } from '@mui/material';
-import axios from 'axios';
+import { TablePagination } from "@mui/material";
+import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import {
+  getUnverifiedAdminsV1Paginated,
+  getUnverifiedAdminsV2Paginated,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
-import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
-  handleModalOpen
+  handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import { getSuperAdminUnverifiedType1, getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
@@ -21,13 +23,6 @@ function AccountApprovalDefaultScreen(props) {
   const [modalData, setModalData] = useState();
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
-  const {
-    unverifiedType1Data,
-    unverifiedType1Loading,
-    unverifiedType2Data,
-    unverifiedType2Loading
-  } = useSelector((store) => store.getUnverifiedAccountsData);
-  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -36,25 +31,25 @@ function AccountApprovalDefaultScreen(props) {
     setOpen(true);
   };
 
-
-  const getUnverifiedAdminsSSO = (
-    start,
-    end,
-  ) => {
+  const getUnverifiedAdminsSSO = (start, end) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType1({ setAdmins, setAdminCount, start, end }))
-    if (unverifiedType1Loading === 1) {
-      setOpen(false);
-    }
-    else if (unverifiedType1Loading === 2) {
-      setOpen(false);
-    }
+    getUnverifiedAdminsV1Paginated(start, end)
+      .then((response) => {
+        console.log("Response from getting unverified admins: ", response);
+        setAdmins(response?.data?.unverifiedAdmins);
+        setAdminCount(response?.data?.unverifiedAdmins.length + adminCount);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting unverified admins: ", error);
+        setSnackbarMessage("Error Fetching SSO Admins");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+      });
   };
 
-  const handleVerify = (
-    e,
-    verifyAdminId,
-  ) => {
+  const handleVerify = (e, verifyAdminId) => {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
@@ -65,7 +60,7 @@ function AccountApprovalDefaultScreen(props) {
       (response) => {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
-        let variant = "success"
+        let variant = "success";
         setSnackbarMessage("Admin Verified Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
@@ -74,7 +69,7 @@ function AccountApprovalDefaultScreen(props) {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
-        let variant = "error"
+        let variant = "error";
         setSnackbarMessage("Unable to Verify Admin.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
@@ -84,28 +79,31 @@ function AccountApprovalDefaultScreen(props) {
 
   useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
-  }, [unverifiedType1Loading])
+    getUnverifiedAdminsWallet(0, rowsPerPage);
+  }, [rowsPerPage]);
 
-  const getUnverifiedAdminsWallet = (
-    start,
-    end,
-  ) => {
+  const getUnverifiedAdminsWallet = (start, end) => {
     setOpen(true);
-    dispatch(getSuperAdminUnverifiedType2({ setWalletAdmins, setAdminCount, start, end }))
-    if (unverifiedType2Loading === 1) {
-      // setWalletAdmins(unverifiedType2Data);
-      // setAdminCount(unverifiedType2Data.length);
-      setOpen(false);
-    }
-    else if (unverifiedType2Loading === 2) {
-      setOpen(false);
-    }
+    getUnverifiedAdminsV2Paginated(start, end)
+      .then((response) => {
+        console.log(
+          "Response from getting unverified wallet admins: ",
+          response
+        );
+        setWalletAdmins(response?.data?.unverifiedAdmins);
+        setAdminCount(response?.data?.unverifiedAdmins.length + adminCount);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting unverified wallet admins: ", error);
+        setSnackbarMessage("Error Fetching Wallet Admins");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+      });
   };
 
-  const handleVerifyWallet = (
-    e,
-    verifyAdminId
-  ) => {
+  const handleVerifyWallet = (e, verifyAdminId) => {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
@@ -116,7 +114,7 @@ function AccountApprovalDefaultScreen(props) {
       (response) => {
         handleCloseBackdrop();
         getUnverifiedAdminsWallet(0, rowsPerPage);
-        let variant = "success"
+        let variant = "success";
         setSnackbarMessage("Admin Verified Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
@@ -125,17 +123,13 @@ function AccountApprovalDefaultScreen(props) {
         console.log("Error on verify: ", error);
         console.log("Error on verify: ", error.response);
         handleCloseBackdrop();
-        let variant = "error"
+        let variant = "error";
         setSnackbarMessage("Unable to Verify Admin.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       }
     );
   };
-
-  useEffect(() => {
-    getUnverifiedAdminsWallet(0, rowsPerPage);
-  }, [unverifiedType2Loading])
 
   useEffect(() => {
     props.setActiveTab({
@@ -150,25 +144,30 @@ function AccountApprovalDefaultScreen(props) {
       saved: "",
     });
   }, []);
+
   const handleChangePage = (newPage) => {
     setPage(newPage);
   };
+
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
   };
+
   return (
     <div className="backgroundDefault">
       <div className="row no-gutters">
@@ -201,7 +200,12 @@ function AccountApprovalDefaultScreen(props) {
         adminData={modalData}
         setShow={setShow}
       />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

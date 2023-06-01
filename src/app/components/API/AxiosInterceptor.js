@@ -22,7 +22,7 @@ export const adminLoginThroughWallet = (body) => {
 };
 
 export const adminLoginThroughSSO = (body) => {
-  return Axios.post(`v1-sso/user/auth/admin-login`, body);
+  return Axios.post(`/v1-sso/user/auth/admin-login`, body);
 };
 
 export const superAdminLoginThroughSSO = (body) => {
@@ -245,8 +245,10 @@ export const getNFTsThroughId = (id, marketplaceId) => {
   return Axios.get(`/nft/${id}?marketplaceId=${marketplaceId}`);
 };
 
-export const getMyNFTsPaginated = (start, end) => {
-  return Axios.get(`/nft/myNFTs/${start}/${end}`);
+export const getMyNFTsPaginated = (start, end, marketPlaceId) => {
+  return Axios.get(
+    `/nft/myNFTs/${start}/${end}?marketplaceId=${marketPlaceId}`
+  );
 };
 
 export const getSingleNFTDetail = (nftId) => {
@@ -276,12 +278,29 @@ export const getMyCollectionsPaginated = (start, end) => {
   return Axios.get(`/collection/myCollections/${start}/${end}`);
 };
 
+export const getMyCollectionsPaginatedMarketPlace = (
+  start,
+  end,
+  marketplaceId
+) => {
+  return Axios.get(
+    `/collection/myCollections/${start}/${end}?marketplaceId=${marketplaceId}`
+  );
+};
+
 export const getAuctionAcceptBidTxSummary = () => {
   return Axios.get(`/auction/bid/accept/tx-cost-summary`);
 };
 
-export const getMyDropsPaginatedUsingStatus = (status, start, end) => {
-  return Axios.get(`/drop/myDrops/${status}/${start}/${end}`);
+export const getMyDropsPaginatedUsingStatus = (
+  status,
+  start,
+  end,
+  marketplaceId
+) => {
+  return Axios.get(
+    `/drop/myDrops/${status}/${start}/${end}?marketplaceId=${marketplaceId}`
+  );
 };
 
 export const getMyDropsPaginated = (start, end) => {
@@ -442,9 +461,11 @@ export const getMaticBalance = () => {
 export const getDropCategories = () => {
   return Axios.get(`/drop/categories`);
 };
-export const getUserNFTS = (start,end) => {
+
+export const getUserNFTS = (start, end) => {
   return Axios.get(`/nft/myNFTs/${start}/${end}`);
 };
+
 export const getMarketPlace = (start, end) => {
   return Axios.get(`/marketplace?start=0&end=100`);
 };
@@ -455,13 +476,14 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
-
 export const getAdminProfileDetails = () => {
   return Axios.get(`/v1-sso/user/admin/profile`);
-}
+};
+
 export const getSuperAdminEarnings = () => {
   return Axios.get(`/earnings/super-admin`);
-}
+};
+
 export const getAdminEarnings = () => {
   return Axios.get(`/earnings/admin`);
 };

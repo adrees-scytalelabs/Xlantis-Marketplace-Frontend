@@ -106,19 +106,21 @@ function CollectionNfts(props) {
         </div>
       </div>
       <div className="card-body">
-        <div>
-          <Button
-            onClick={handleCollectionSaleModalOpen}
-            style={{
-              float: "right",
-              padding: "12px 10px",
-              borderRadius: "5px",
-              backgroundColor: "transparent",
-            }}
-          >
-            List for Sale
-          </Button>
-        </div>
+        {tokenList.length !== 0 ? (
+          <div>
+            <Button
+              onClick={handleCollectionSaleModalOpen}
+              style={{
+                float: "right",
+                padding: "12px 10px",
+                borderRadius: "5px",
+                backgroundColor: "transparent",
+              }}
+            >
+              List for Sale
+            </Button>
+          </div>
+        ) : null}
         <form>
           <div className="form-group">
             {open ? (

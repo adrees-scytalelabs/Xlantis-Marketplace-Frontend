@@ -1,11 +1,12 @@
 import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getMyDropsPaginatedUsingStatus } from "../../../../components/API/AxiosInterceptor";
 import DropsPageCard from "../../../../components/Cards/DropsPageCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { getMyDrop, reset } from "../../../../redux/getMyDropsSlice";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+
 const styles = {
   root: {},
   media: {
@@ -54,8 +55,19 @@ function DropsPage(props) {
   const [totalDrops, setTotalDrops] = useState(0);
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
-  const { myDropsData, loading } = useSelector((store) => store.getMyDrops);
-  const dispatch = useDispatch();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -65,24 +77,27 @@ function DropsPage(props) {
   };
   let getMyDrops = async (status, start, end) => {
     handleShowBackdrop();
-    let marketplaceId= props.marketplaceId;
-    dispatch(getMyDrop({ status, start, end, setTokenList, setTotalDrops ,marketplaceId}));
-    if (loading === 1) {
-      handleCloseBackdrop();
-    }
-    if (loading === 2) {
-      handleCloseBackdrop();
-    }
+    let marketplaceId = props.marketplaceId;
+    getMyDropsPaginatedUsingStatus(status, start, end, marketplaceId)
+      .then((response) => {
+        // console.log("Response from getting my drop: ", response);
+        setTokenList(response?.data?.data);
+        setTotalDrops(response?.data?.dropCount);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from getting my drop: ", error);
+        setSnackbarMessage("Error Fetching Drops");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        handleCloseBackdrop();
+      });
   };
-
 
   useEffect(() => {
     getMyDrops(props.status, 0, rowsPerPage);
-  }, [loading]);
+  }, [rowsPerPage]);
 
-  // useEffect(() => {
-  //   dispatch(reset())
-  // }, [props.status])
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
     setPage(newPage);
@@ -126,7 +141,7 @@ function DropsPage(props) {
                         startTime: i.startTime,
                         endTime: i.endTime,
                         nftType: i.dropType,
-                        marketplaceId:i.marketplaceId
+                        marketplaceId: i.marketplaceId,
                       }}
                     >
                       <DropsPageCard
@@ -143,8 +158,7 @@ function DropsPage(props) {
                         dropId: i._id,
                         saleType: i.saleType,
                         status: i.status,
-                        marketplaceId:i.marketplaceId
-
+                        marketplaceId: i.marketplaceId,
                       }}
                     >
                       <DropsPageCard
@@ -168,6 +182,12 @@ function DropsPage(props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
       />
     </div>
   );

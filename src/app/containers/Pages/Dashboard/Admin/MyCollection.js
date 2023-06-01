@@ -1,12 +1,14 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { getMyCollectionsPaginatedMarketPlace } from "../../../../components/API/AxiosInterceptor";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { getMyCollection } from "../../../../redux/getMyCollectionSlice";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+
 const useStyles = {
   root: {
     minWidth: 250,
@@ -25,7 +27,7 @@ const useStyles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 function MyCollection(props) {
   const [collections, setCollections] = useState([]);
@@ -35,22 +37,41 @@ function MyCollection(props) {
 
   const [collectionCount, setCollectionCount] = useState(0);
   const [, setVersionB] = useState("");
-  const { collectionData, collectionCont } = useSelector((store) => store.MyCollection);
-  const dispatch = useDispatch();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   let getCollections = (start, end) => {
     setOpen(true);
-    let marketplaceId= props.marketplaceId
-    dispatch(getMyCollection({ start, end,marketplaceId}));
-    console.log("collectionResp", collectionData, collectionCont);
-    setCollections(collectionData);
-    setCollectionCount(collectionCont);
-    setOpen(false);
+    let marketplaceId = props.marketplaceId;
+    getMyCollectionsPaginatedMarketPlace(start, end, marketplaceId)
+      .then((response) => {
+        console.log("Response from getting collections: ", response);
+        setCollections(response?.data?.collectionData);
+        setCollectionCount(response?.data?.collectionCount);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting collection: ", error);
+        setSnackbarMessage("Error Fetching Collections");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+      });
   };
   useEffect(() => {
     getCollections(0, rowsPerPage);
-  }, [collectionCont]);
-
+  }, [rowsPerPage]);
 
   const handleChangePage = (event, newPage) => {
     console.log("newPage", newPage);
@@ -138,6 +159,12 @@ function MyCollection(props) {
         page={page}
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
+      />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
       />
     </div>
   );

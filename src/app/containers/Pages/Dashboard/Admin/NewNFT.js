@@ -347,9 +347,9 @@ function NewNFT(props) {
       setIsSaving(false);
     } else {
       let variant = "success";
-      setSnackbarMessage("Nfts Created Successfully.");
-      setSnackbarSeverity(variant);
-      handleSnackbarOpen();
+      props.setSnackbarMessage("Batch Created Successfully.");
+      props.setSnackbarSeverity(variant);
+      props.handleSnackbarOpen();
       Cookies.remove("Batch-ID");
       Cookies.remove("NFT-Detail");
       setTokenList([]);
