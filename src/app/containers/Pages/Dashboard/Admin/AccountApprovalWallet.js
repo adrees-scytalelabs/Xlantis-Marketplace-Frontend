@@ -1,7 +1,7 @@
 import { TablePagination } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { getUnverifiedAdminsV2Paginated } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
@@ -10,10 +10,8 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import { getSuperAdminUnverifiedType2 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalWallet(props) {
-
   const [walletAdmins, setWalletAdmins] = useState([]);
   const [adminCount, setAdminCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -21,10 +19,7 @@ function AccountApprovalWallet(props) {
   const [show, setShow] = useState(false);
   const [modalData, setModalData] = useState();
   const [open, setOpen] = useState(false);
-  const { unverifiedType2Data, unverifiedType2Loading } = useSelector(
-    (store) => store.getUnverifiedAccountsData
-  );
-  const dispatch = useDispatch();
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -33,20 +28,25 @@ function AccountApprovalWallet(props) {
   };
   const getUnverifiedAdminsWallet = (start, end) => {
     setOpen(true);
-    dispatch(
-      getSuperAdminUnverifiedType2({
-        setWalletAdmins,
-        setAdminCount,
-        start,
-        end,
+    getUnverifiedAdminsV2Paginated(start, end)
+      .then((response) => {
+        console.log(
+          "Response from getting unverified wallet admins: ",
+          response
+        );
+        setWalletAdmins(response?.data?.unverifiedAdmins);
+        setAdminCount(response?.data?.unverifiedAdmins.length + adminCount);
+        setOpen(false);
       })
-    );
-    if (unverifiedType2Loading === 1) {
-      setOpen(false);
-    } else if (unverifiedType2Loading === 2) {
-      setOpen(false);
-    }
+      .catch((error) => {
+        console.log("Error from getting unverified wallet admins: ", error);
+        setSnackbarMessage("Error Fetching Wallet Admins");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+      });
   };
+
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -54,7 +54,7 @@ function AccountApprovalWallet(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -90,7 +90,7 @@ function AccountApprovalWallet(props) {
 
   useEffect(() => {
     getUnverifiedAdminsWallet(0, rowsPerPage);
-  }, [unverifiedType2Loading]);
+  }, [rowsPerPage]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -142,7 +142,12 @@ function AccountApprovalWallet(props) {
         adminData={modalData}
         setShow={setShow}
       />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

@@ -13,7 +13,6 @@ import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
 import getSavedTemplateDataReducer from './app/redux/getSavedTemplateDataSlice';
 import getSuperAdminAccountsReducer from './app/redux/getSuperAdminAccountsSlice';
 import getSuperAdminsCountsReducer from './app/redux/getSuperAdminsCountsSlice';
-import getUnverifiedAccountsDataReducer from './app/redux/getUnverifiedAccountsDataSLice';
 import UserProfileReducer from './app/redux/getUserProfileSlice';
 import getVerifiedAccountsDataReducer from './app/redux/getVerifiedAccountsDataSlice';
 export const store = configureStore({
@@ -33,6 +32,5 @@ export const store = configureStore({
     getManageAccountsData: getManageAccountsDataReducer,
     getSuperAdminAccounts: getSuperAdminAccountsReducer,
     getSavedTemplateData: getSavedTemplateDataReducer,
-    getUnverifiedAccountsData: getUnverifiedAccountsDataReducer
   },
 });
