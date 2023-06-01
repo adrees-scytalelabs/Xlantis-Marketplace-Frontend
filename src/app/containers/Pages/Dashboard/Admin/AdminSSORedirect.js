@@ -12,6 +12,7 @@ import HeaderHome from "../../../../components/Headers/Header";
 // import HeaderHome from "../../../../components/Headers/Header";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import { defaultProfile } from "../../../../components/ImageURLs/URLs";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 const AdminSSORedirect = () => {
   const [inputs, setInputs] = useState();
@@ -22,6 +23,14 @@ const AdminSSORedirect = () => {
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [image, setImage] = useState(defaultProfile);
+  const [open, setOpen] = useState(false);
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
 
   // THIS STATE WILL CHECK IF DOMAIN IS VERIFIED OR NOT BEFORE SAVING TO AVOID INCONVENIENCE
   const [updated, setUpdated] = useState(false);
@@ -49,30 +58,43 @@ const AdminSSORedirect = () => {
 
   const handleSubmitDetails = async (event) => {
     event.preventDefault();
-
-    // IF USER HAS CHANGED DOMAIN AND IT HAS NOT BEEN UPDATED
-    if (!updated) {
-      await handleAvailability();
-    }
-
-    // CHECK FOR WRONG DOMAIN WHILE PROCEEDING FURTHER
-    if (isDomainAvailable) {
-      let variant = "error";
-      setSnackbarMessage("This Marketplace name has been already taken");
-      setSnackbarSeverity(variant);
+    console.log("Inputs are: ", inputs);
+    if (image === defaultProfile) {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Please Upload Marketplace Image");
       handleSnackbarOpen();
+    } else if (inputs?.industryType === "Select Industry") {
+      setSnackbarSeverity("error");
+      setSnackbarMessage("Please Select Industry Type");
+      handleSnackbarOpen();
+    } else {
+      handleShowBackdrop();
+
+      // IF USER HAS CHANGED DOMAIN AND IT HAS NOT BEEN UPDATED
+      if (!updated) {
+        await handleAvailability();
+      }
+
+      // CHECK FOR WRONG DOMAIN WHILE PROCEEDING FURTHER
+      if (isDomainAvailable) {
+        let variant = "error";
+        setSnackbarMessage("This Marketplace name has been already taken");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      }
+      await addDetails();
+      Cookies.remove("Verified");
+      sessionStorage.removeItem("Address");
+      console.log(inputs, "the form inputs");
+      handleCloseBackdrop();
     }
-    addDetails();
-    Cookies.remove("Verified");
-    sessionStorage.removeItem("Address");
-    console.log(inputs, "the form inputs");
   };
 
   const handleAvailability = async (e) => {
     // e.preventDefault();
     if (inputs?.domain) {
       setIsChecking(true);
-      const domain = { domain: e.target.value };
+      const domain = { domain: inputs.domain };
       await checkDomain(domain)
         .then((response) => {
           console.log("Response from checking domain: ", response);
@@ -158,10 +180,14 @@ const AdminSSORedirect = () => {
     });
     await adminLoginAddInfoUsingRoute(route, formData, config)
       .then((response) => {
+        console.log(
+          "Response from admin login add info using route: ",
+          response
+        );
         setSucess(response.data.success);
       })
       .catch((error) => {
-        console.log("an error has occured,", error.response);
+        console.log("Error from admin login add info using route,", error);
       });
   };
 
@@ -199,6 +225,7 @@ const AdminSSORedirect = () => {
         severity={snackbarSeverity}
         message={snackbarMessage}
       />
+      <CircularBackdrop open={open} />
     </>
   );
 };

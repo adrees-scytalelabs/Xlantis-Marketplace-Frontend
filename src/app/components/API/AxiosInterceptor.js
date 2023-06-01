@@ -22,7 +22,7 @@ export const adminLoginThroughWallet = (body) => {
 };
 
 export const adminLoginThroughSSO = (body) => {
-  return Axios.post(`v1-sso/user/auth/admin-login`, body);
+  return Axios.post(`/v1-sso/user/auth/admin-login`, body);
 };
 
 export const superAdminLoginThroughSSO = (body) => {
