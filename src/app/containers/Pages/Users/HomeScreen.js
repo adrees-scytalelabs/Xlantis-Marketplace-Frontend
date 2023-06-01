@@ -8,7 +8,6 @@ import HeaderHome from "../../../components/Headers/Header";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import HomeBanner from "./Home/HomeBanner";
 import Market from "./Home/Market";
-import MarketLists from "./MarketLists";
 
 function HomeScreen({ deviceType }) {
   let navigate = useNavigate();

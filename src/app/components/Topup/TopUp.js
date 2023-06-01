@@ -80,6 +80,7 @@ function TopUp(props) {
   }, []);
 
   const getBalance = () => {
+    setOpen(true);
     getMaticBalance()
       .then((response) => {
         console.log("response from getting matic balance: ", response);
@@ -87,6 +88,7 @@ function TopUp(props) {
           setBalanceUSD(response.data?.balanceInUsd);
         response.data.maticBalance &&
           setBalanceMatic(response.data?.maticBalance);
+        setOpen(false);
       })
       .catch((error) => {
         console.log("Error from getting balance: ", error);

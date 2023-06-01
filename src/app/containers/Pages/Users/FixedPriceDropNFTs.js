@@ -103,8 +103,8 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-
-    getNFTsFromDropPaginatedWOBody(dropId, start, end)
+    let marketplaceId = location.state.marketplaceId
+    getNFTsFromDropPaginatedWOBody(dropId, start, end,marketplaceId)
       .then((response) => {
         console.log("data from backend", response);
         setDropData(response.data.data);
