@@ -28,7 +28,7 @@ const styles = {
 
 function NFTCard(props) {
   return (
-    <Link to={"/dashboard/nftDetail/" + props.data._id}>
+    <Link to={"/dashboard/nftDetail/" + props.data._id} state={{supply:props.data.supply}}>
       <Card style={{ height: "100%" }} id="nftCardProps">
         <div className="row no-gutters">
           <CardMedia
