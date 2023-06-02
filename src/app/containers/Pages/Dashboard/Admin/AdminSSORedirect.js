@@ -63,7 +63,12 @@ const AdminSSORedirect = () => {
       setSnackbarSeverity("error");
       setSnackbarMessage("Please Upload Marketplace Image");
       handleSnackbarOpen();
-    } else if (inputs?.industryType === "Select Industry") {
+    } else if (
+      inputs?.industryType === "Select Industry" ||
+      inputs?.industryType === null ||
+      inputs?.industryType === undefined ||
+      inputs?.industryType === "undefined"
+    ) {
       setSnackbarSeverity("error");
       setSnackbarMessage("Please Select Industry Type");
       handleSnackbarOpen();
