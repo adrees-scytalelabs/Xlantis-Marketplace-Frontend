@@ -60,11 +60,13 @@ function SuperAdminSidebar(props) {
     }
   };
   let handleLogout = (e) => {
-    sessionStorage.clear();
-    sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
+    sessionStorage.removeItem("Authorization");
+    Cookies.remove("InfoAdded");
+    Cookies.remove("Verified");
     Cookies.remove("Version");
-
+    Cookies.remove("PNT");
+    sessionStorage.clear();
     window.location.reload(false);
   };
   useEffect(() => {
