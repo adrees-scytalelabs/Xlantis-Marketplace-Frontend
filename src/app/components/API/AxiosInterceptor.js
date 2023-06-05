@@ -211,6 +211,9 @@ export const sendVoucherForLazyMint = (body) => {
 
 //GET REQUESTS
 
+export const getMarketFixedPrice = (start, end,marketplaceId) => {
+    return Axios.get(`/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`)
+}
 export const getDropTxCostSummary = (dropId) => {
   return Axios.get(`/drop/${dropId}/tx-cost-summary`);
 };

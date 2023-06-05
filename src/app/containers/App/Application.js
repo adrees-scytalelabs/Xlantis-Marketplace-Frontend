@@ -32,6 +32,8 @@ function App() {
   let isVerified;
   let version;
   var jwtDecoded;
+  let isInfoAdded = Cookies.get("InfoAdded");
+  // console.log("Is info added: ", isInfoAdded);
   let jwt = sessionStorage.getItem("Authorization");
   console.log("jwtjwtjwt: ", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
@@ -119,8 +121,8 @@ function App() {
     return (
       jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin" ? (
         <Navigate to="/superAdminDashboard" />
-      ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ||
-        version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ? (
+      ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && isInfoAdded && jwtDecoded.role === "admin" ||
+        version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && isInfoAdded && jwtDecoded.role === "admin" ? (
           <Navigate to="/dashboard" />
       ) : path === "/checkout" ? (
         <CheckoutScreen />

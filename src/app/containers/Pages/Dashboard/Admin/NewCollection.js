@@ -79,7 +79,7 @@ function NewCollection(props) {
 
   useEffect(() => {
     setVersion(Cookies.get("Version"));
-    console.log("Market Place id",props.marketplaceId)
+    console.log("Market Place id", props.marketplaceId);
     props.setActiveTab({
       dashboard: "",
       newCollection: "active",
@@ -114,7 +114,7 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    if (royaltyFee > 0) {
+    if (royaltyFee >= 0 || royaltyFee <= 100) {
       // setIsSaving(true);
 
       handleShowBackdrop();
@@ -128,7 +128,6 @@ function NewCollection(props) {
       fileData.append("royaltyFee", royaltyFee);
       fileData.append("contractType", nftType);
       fileData.append("marketplaceId", props.marketplaceId);
-
 
       let royaltyBlockchain = royaltyFee * 10000;
 
@@ -258,7 +257,7 @@ function NewCollection(props) {
       }
     } else {
       let variant = "error";
-      setSnackbarMessage("Invalid Value Of Royalty Fee.");
+      setSnackbarMessage("Royalty Fee range is from 0 to 100.");
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     }

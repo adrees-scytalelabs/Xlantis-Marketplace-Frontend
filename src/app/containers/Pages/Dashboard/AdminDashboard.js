@@ -373,9 +373,13 @@ function AdminDashboard(props) {
                 <MenuItem onClick={handleClose}>
                   <Link
                     onClick={() => {
-                      sessionStorage.clear();
                       sessionStorage.removeItem("Address");
+                      sessionStorage.removeItem("Authorization");
+                      Cookies.remove("InfoAdded");
+                      Cookies.remove("Verified");
+                      Cookies.remove("Version");
                       Cookies.remove("PNT");
+                      sessionStorage.clear();
                       window.location.reload(false);
                     }}
                     to="/"
@@ -452,6 +456,9 @@ function AdminDashboard(props) {
               element={
                 <NewDrop
                   setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }

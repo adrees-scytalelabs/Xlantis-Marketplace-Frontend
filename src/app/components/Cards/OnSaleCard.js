@@ -15,6 +15,11 @@ import { Astranaut } from "../ImageURLs/URLs";
 
 const OnSaleCard = (props) => {
   const { marketPlace } = useParams();
+  const alertStyle = {
+    height: "60px",
+    display: "flex",
+    alignItems: "center",
+  };
   const matchScrn = useMediaQuery("(max-width: 991px)");
   useEffect(() => {
     console.log("Data of props", props);
@@ -189,7 +194,13 @@ const OnSaleCard = (props) => {
                   </div>
                 ) : new Date() > new Date(props.i.startTime) &&
                   new Date() < new Date(props.i.endTime) ? (
-                  <div style={{ marginTop: "1rem" }}>
+                  <Typography
+                    variant="body2"
+                    style={{
+                      marginTop: "1rem",
+                    }}
+                    component="p"
+                  >
                     <Alert
                       severity="warning"
                       sx={
@@ -203,6 +214,7 @@ const OnSaleCard = (props) => {
                               fontSize: "1rem",
                             }
                       }
+                      style={alertStyle}
                     >
                       <span
                         style={{ fontFamily: "orbitron", fontWeight: "bold" }}
@@ -232,7 +244,7 @@ const OnSaleCard = (props) => {
                         ></Countdown>
                       </span>
                     </Alert>
-                  </div>
+                  </Typography>
                 ) : (
                   <Typography
                     variant="body2"
@@ -254,7 +266,7 @@ const OnSaleCard = (props) => {
                               fontSize: "1rem",
                             }
                       }
-                      style={{ fontWeight: "bold" }}
+                      style={{ ...alertStyle, fontWeight: "bold" }}
                     >
                       Sale Ended
                     </Alert>

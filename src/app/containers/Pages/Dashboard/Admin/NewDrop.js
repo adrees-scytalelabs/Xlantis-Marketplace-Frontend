@@ -193,6 +193,9 @@ function NewDrop(props) {
             console.log("drop creation response", response);
             setDropId(response.data.dropId);
             dropID = response.data.dropId;
+            props.setSnackbarMessage("Drop Created Successfully");
+            props.setSnackbarSeverity("success");
+            props.handleSnackbarOpen();
             setIsSaving(false);
             handleCloseBackdrop();
             navigate(`${path}/addNft`, {
@@ -270,6 +273,9 @@ function NewDrop(props) {
               console.log("drop creation response", response);
               setDropId(response.data.dropId);
               dropID = response.data.dropId;
+              props.setSnackbarMessage("Drop Created Successfully");
+              props.setSnackbarSeverity("success");
+              props.handleSnackbarOpen();
               setIsSaving(false);
               handleCloseBackdrop();
               navigate(`${path}/addNft`, {
@@ -277,7 +283,7 @@ function NewDrop(props) {
                   dropId: dropID,
                   saleType: saleType,
                   nftType: nftType,
-                  marketplaceId: props.marketplaceId
+                  marketplaceId: props.marketplaceId,
                 },
               });
             })
@@ -344,7 +350,7 @@ function NewDrop(props) {
           description: description,
           saleType: saleType,
           dropType: nftType,
-          marketplaceId: props.marketplaceId
+          marketplaceId: props.marketplaceId,
         };
         console.log("Drop Data", DropData);
         createNewDrop(DropData)
@@ -360,7 +366,7 @@ function NewDrop(props) {
                 dropId: dropID,
                 saleType: saleType,
                 nftType: nftType,
-                marketplaceId: props.marketplaceId
+                marketplaceId: props.marketplaceId,
               },
             });
           })
