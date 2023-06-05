@@ -2,7 +2,7 @@ import { ThemeProvider, createTheme } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Button, Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import {
   getSingleNFTDetail,
   getTradeHistory,
@@ -65,6 +65,7 @@ const makeTheme = createTheme({
 });
 
 const SingleNftDetail = (props) => {
+  let location = useLocation();
   const { nftId } = useParams();
   const [nftDetail, setNftDetail] = useState({});
   const [keys, setKeys] = useState([]);
@@ -205,7 +206,7 @@ const SingleNftDetail = (props) => {
                 <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </div>
               <div className="col-md-12 col-lg-8 mt-3">
-                <SingleNFTDetailCard nftDetail={nftDetail} />
+                <SingleNFTDetailCard nftDetail={nftDetail} supply={location.state.supply}/>
                 <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                   <Col>
                     <PropertiesAccordian keys={keys} properties={properties} />
