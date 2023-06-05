@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `https://raindrop-backend.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  //baseURL: `https://raindrop-backend.herokuapp.com/`,
+  baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -211,6 +211,9 @@ export const sendVoucherForLazyMint = (body) => {
 
 //GET REQUESTS
 
+export const getMarketFixedPrice = (start, end,marketplaceId) => {
+    return Axios.get(`/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`)
+}
 export const getDropTxCostSummary = (dropId) => {
   return Axios.get(`/drop/${dropId}/tx-cost-summary`);
 };
