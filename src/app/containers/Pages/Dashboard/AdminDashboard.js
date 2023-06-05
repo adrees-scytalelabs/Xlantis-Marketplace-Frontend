@@ -456,6 +456,9 @@ function AdminDashboard(props) {
               element={
                 <NewDrop
                   setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }
