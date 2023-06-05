@@ -109,7 +109,8 @@ function CollectionNfts(props) {
         {tokenList.length !== 0 ? (
           <div>
             <Button
-              onClick={handleCollectionSaleModalOpen}
+              // onClick={handleCollectionSaleModalOpen} //temporarily commenting while backend is working on it
+              onClick={handleOpenWorkProgressModal}
               style={{
                 float: "right",
                 padding: "12px 10px",
