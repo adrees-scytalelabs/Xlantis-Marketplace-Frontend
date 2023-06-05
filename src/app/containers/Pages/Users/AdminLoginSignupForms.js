@@ -80,16 +80,16 @@ const AdminLoginSignupForms = () => {
 
   useEffect(() => {
     if (adminSignInData !== null) {
-      let decode = jwtDecode(adminSignInData.raindropToken);
-      sessionStorage.setItem("userId", decode.userId);
+      if (adminSignInData.isVerified) {
+        sessionStorage.setItem("userId", decode.userId);
+        let decode = jwtDecode(adminSignInData.raindropToken);
+      }
       if (
         adminSignInData.isInfoAdded === true &&
         adminSignInData.isVerified === false
       ) {
         let variant = "info";
-        setSnackbarMessage(
-          "Your request is under process. Waiting for approval by the Super Admin."
-        );
+        setSnackbarMessage(adminSignInData.message);
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       }
