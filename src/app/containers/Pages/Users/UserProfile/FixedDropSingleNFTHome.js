@@ -11,7 +11,7 @@ import {
   TextField,
   ThemeProvider,
   Typography,
-  createTheme,
+  createTheme
 } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
@@ -27,6 +27,7 @@ import {
   getBuyNFTTxCostSummarySSO,
   getDropDetails,
   getNFTDetailInDrop,
+  getTradeHistory,
   marketplaceBuy,
   marketplaceBuyVersioned,
   sendBidData,
@@ -51,6 +52,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 
 import BlurLinearIcon from "@mui/icons-material/BlurLinear";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import TradeHistoryTable from "../../../../components/tables/TradeHistoryTable";
 
 const customTheme = createTheme({
   overrides: {
@@ -124,6 +126,7 @@ const FixedDropSingleNFTHome = () => {
   const description = location.state?.description;
   const [modalOpen, setMOdalOpen] = useState(false);
   const [modalOpenBid, setMOdalOpenBid] = useState(false);
+  const [tradeHistory, setTradeHistory] = useState([]);
 
   const [data, setData] = useState();
   const [dataBid, setDataBid] = useState();
@@ -151,7 +154,7 @@ const FixedDropSingleNFTHome = () => {
   const [endTime, setEndTime] = useState();
   const [nftBlockChainId, setNftBlockChainId] = useState("");
   let account = sessionStorage.getItem("Authorization");
-  const { singleNFTid,marketPlace } = useParams();
+  const { singleNFTid, marketPlace } = useParams();
   let [num, setNum] = useState(1);
   let [tokSupply, setTokSupply] = useState(0);
   let incNum = (max) => {
@@ -189,7 +192,7 @@ const FixedDropSingleNFTHome = () => {
         description: description,
         imageURL: imageURL,
         bannerURL: bannerURL,
-        marketplaceId:location.state.marketplaceId
+        marketplaceId: location.state.marketplaceId,
       },
     });
   };
@@ -837,6 +840,17 @@ const FixedDropSingleNFTHome = () => {
       });
   };
 
+  const getTradeHistoryDetail = (nftId) => {
+    getTradeHistory(nftId)
+      .then((response) => {
+        // console.log("Response from getting trade history: ", response);
+        setTradeHistory(response?.data?.history);
+      })
+      .catch((error) => {
+        console.log("Error from getting trade history: ", error);
+      });
+  };
+
   useEffect(() => {
     const controller = new AbortController();
     setVersionB(Cookies.get("Version"));
@@ -846,6 +860,7 @@ const FixedDropSingleNFTHome = () => {
     // setNum(location.state?.orderListing?.supply);
     setNftBlockChainId(location.state?.nftDetails?.nftId);
     setNftProperties(Object.entries(location.state?.nftDetails?.properties));
+    getTradeHistoryDetail(location.state?.nftDetails?._id);
     getTheDrop();
     let priceCal = location.state?.nftDetails?.currentOrderListingId.price;
     setPrice(priceCal);
@@ -952,8 +967,36 @@ const FixedDropSingleNFTHome = () => {
                                 ))}
                               </tbody>
                             </Table>
-                        ) : (
-                            <MessageCard msg="No Properties"></MessageCard>
+                          ) : (
+                            <MessageCard msg="No Properties" />
+                          )}
+                        </AccordionDetails>
+                      </Accordion>
+                    </Col>
+                  </Row>
+
+                  {/* DISPLAYING TRADE HISTORY */}
+                  <Row>
+                    <Col>
+                      <Accordion style={{ background: "black" }}>
+                        <AccordionSummary
+                          expandIcon={
+                            <ExpandMoreIcon style={{ color: "white" }} />
+                          }
+                        >
+                          <Typography
+                            variant="body1"
+                            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+                          >
+                            <BlurLinearIcon />
+                            <strong> Trade History</strong>
+                          </Typography>
+                        </AccordionSummary>
+                        <AccordionDetails>
+                          {tradeHistory !== "" && tradeHistory.length != 0 ? (
+                            <TradeHistoryTable tradeHistory={tradeHistory} />
+                          ) : (
+                            <MessageCard msg="No Trade History" />
                           )}
                         </AccordionDetails>
                       </Accordion>
@@ -997,8 +1040,9 @@ const FixedDropSingleNFTHome = () => {
                             data-tip
                             data-for="registerTip"
                             onClick={(e) => {
-                              console.log(e) 
-                              navigate("/user-account")}}
+                              console.log(e);
+                              navigate("/user-account");
+                            }}
                           >
                             Buy
                           </button>
