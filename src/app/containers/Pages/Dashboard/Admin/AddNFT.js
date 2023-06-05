@@ -161,7 +161,7 @@ function AddNFT(props) {
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
-    getCollections(location.state.nftType,location.state.marketplaceId).then(
+    getCollections(location.state.nftType, location.state.marketplaceId).then(
       (response) => {
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(...collectionTypes, response.data.collectionData);
@@ -232,7 +232,7 @@ function AddNFT(props) {
     );
   };
   let getNfts = (id) => {
-    getNFTsThroughId(id,location.state.marketplaceId).then(
+    getNFTsThroughId(id, location.state.marketplaceId).then(
       (response) => {
         const nft = response.data.data;
         setNftList(response.data.data);
@@ -304,7 +304,12 @@ function AddNFT(props) {
 
   const getNFTsInDrop = (dropId) => {
     handleShowBackdrop();
-    getNFTsFromDropPaginatedWOBody(dropId, 0, 1000,location.state.marketplaceId)
+    getNFTsFromDropPaginatedWOBody(
+      dropId,
+      0,
+      1000,
+      location.state.marketplaceId
+    )
       .then((response) => {
         console.log("Response from getting drop NFTs: ", response);
         if (response.data.data.length > 0) {
@@ -333,6 +338,8 @@ function AddNFT(props) {
         setSnackbarMessage("NFT Removed Successfully");
         setSnackbarSeverity("success");
         handleSnackbarOpen();
+        setGrid(false);
+        setIsAdded(false);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -995,7 +1002,7 @@ function AddNFT(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">New NFT</h3>
+            <h3 className="page-title">Add NFT</h3>
             <ul className="breadcrumb">
               <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
@@ -1056,7 +1063,7 @@ function AddNFT(props) {
                 />
                 {nftName != "" && (
                   <div
-                    className="mb-3"
+                    className="mb-4"
                     style={{ height: "270px", width: "230px" }}
                   >
                     {console.log("nft detailssss", nftDetail)}
