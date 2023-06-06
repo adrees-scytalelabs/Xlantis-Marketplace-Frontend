@@ -338,6 +338,8 @@ function AddNFT(props) {
         setSnackbarMessage("NFT Removed Successfully");
         setSnackbarSeverity("success");
         handleSnackbarOpen();
+        setGrid(false);
+        setIsAdded(false);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -1000,7 +1002,7 @@ function AddNFT(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">New NFT</h3>
+            <h3 className="page-title">Add NFT</h3>
             <ul className="breadcrumb">
               <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
@@ -1061,7 +1063,7 @@ function AddNFT(props) {
                 />
                 {nftName != "" && (
                   <div
-                    className="mb-3"
+                    className="mb-4"
                     style={{ height: "270px", width: "230px" }}
                   >
                     {console.log("nft detailssss", nftDetail)}
