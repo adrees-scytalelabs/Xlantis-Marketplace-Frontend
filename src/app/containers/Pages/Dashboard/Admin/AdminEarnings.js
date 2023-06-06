@@ -13,7 +13,11 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const AdminEarnings = (props) => {
   const [balance, setBalance] = useState(0);
-  const [earnings, setEarnings] = useState({});
+  const [earnings, setEarnings] = useState({
+    royaltyEarnings: 0,
+    nftEarnings: 0,
+    totalEarnings: 0,
+  });
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [isLoadingEarnings, setIsLoadingEarnings] = useState(false);
 
@@ -66,7 +70,14 @@ const AdminEarnings = (props) => {
     getAdminEarnings()
       .then((response) => {
         // console.log("Response from getting admin earnings: ", response);
-        setEarnings(response?.data);
+        if (
+          response?.data?.message &&
+          response?.data?.message === "admin has no earnings"
+        ) {
+          setEarnings({ royaltyEarnings: 0, nftEarnings: 0, totalEarnings: 0 });
+        } else {
+          setEarnings(response?.data);
+        }
         setIsLoadingEarnings(false);
       })
       .catch((error) => {
