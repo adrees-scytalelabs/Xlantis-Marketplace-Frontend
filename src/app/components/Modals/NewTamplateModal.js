@@ -78,48 +78,74 @@ const NewTamplateModal = (props) => {
       });
   };
 
+  function hasEmptyValue(obj) {
+    return Object.values(obj).some((value) => value === null || value === "");
+  }
+
   let handleSaveTemplate = (e) => {
     e.preventDefault();
-    handleShowBackdrop();
+    if (
+      title === "" ||
+      title === undefined ||
+      title === null ||
+      title === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Enter Title");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (properties.length === 0) {
+      let variant = "error";
+      setSnackbarMessage("There is no Template added");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (properties.some((obj) => hasEmptyValue(obj))) {
+      let variant = "error";
+      setSnackbarMessage("Please Fill All Empty Value");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else {
+      handleShowBackdrop();
 
-    console.log("Propertuies : ", properties);
-    console.log("Title", title);
-    console.log("default", defaultt);
+      console.log("Propertuies : ", properties);
+      console.log("Title", title);
+      console.log("default", defaultt);
 
-    let templateData = {
-      name: title,
-      isDefault: defaultt,
-      data: properties,
-    };
+      let templateData = {
+        name: title,
+        isDefault: defaultt,
+        data: properties,
+      };
 
-    createNewAdminTemplates(templateData)
-      .then((response) => {
-        console.log("response", response);
+      createNewAdminTemplates(templateData)
+        .then((response) => {
+          console.log("response", response);
 
-        setTitle("");
-        setDefault(false);
-        setProperties([{ key: "", type: "boolean" }]);
-        props.useEffectLoader
-          ? props.setUseEffectLoader(false)
-          : props.setUseEffectLoader(true);
-        handleCloseBackdrop();
-        let variant = "success";
-        setSnackbarMessage("New Template Created Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-        props.handleClose();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        handleCloseBackdrop();
-        let variant = "error";
-        setSnackbarMessage("Unable to Create Template.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      });
+          setTitle("");
+          setDefault(false);
+          setProperties([{ key: "", type: "boolean" }]);
+          props.useEffectLoader
+            ? props.setUseEffectLoader(false)
+            : props.setUseEffectLoader(true);
+          handleCloseBackdrop();
+          let variant = "success";
+          setSnackbarMessage("New Template Created Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          props.handleClose();
+        })
+        .catch((error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          handleCloseBackdrop();
+          let variant = "error";
+          setSnackbarMessage("Unable to Create Template."); 
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+        });
+    }
   };
 
   const getIcon = () => {
