@@ -17,10 +17,6 @@ import SummaryModal from "../../../../components/Modals/SummaryModal";
 import jwtDecode from "jwt-decode";
 
 const styles = {
-  root: {
-    // flexGrow: 1,
-    // backgroundColor: theme.palette.background.paper,
-  },
   media: {
     marginTop: "15px",
     width: "100%",
@@ -107,7 +103,6 @@ const SingleNftDetail = (props) => {
         console.log("Error in trade history: ", error.response);
       });
   };
-
   let getNftDetail = () => {
     getSingleNFTDetail(nftId)
       .then((response) => {
@@ -121,7 +116,6 @@ const SingleNftDetail = (props) => {
         console.log("Error response: ", error.response);
       });
   };
-
   const getDecodedJWT = () => {
     let jwtDecoded;
     const jwt = sessionStorage.getItem("Authorization");
@@ -130,7 +124,6 @@ const SingleNftDetail = (props) => {
     }
     setRole(jwtDecoded.role);
   };
-
   useEffect(() => {
     getNftDetail();
     getTradeHistoryDetail();
@@ -177,7 +170,6 @@ const SingleNftDetail = (props) => {
             </div>
           </div>
         </div>
-
         <ThemeProvider theme={makeTheme}>
           <div className="card-body p-0">
             {role === "user" ? (
@@ -193,7 +185,8 @@ const SingleNftDetail = (props) => {
                       borderRadius: "5px",
                       backgroundColor: "transparent",
                     }}
-                    onClick={handleModalOpen}
+                    // onClick={handleModalOpen}
+                    onClick={() => setWorkProgressModalShow(true)}
                   >
                     {" "}
                     List for Sale
@@ -206,7 +199,10 @@ const SingleNftDetail = (props) => {
                 <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </div>
               <div className="col-md-12 col-lg-8 mt-3">
-                <SingleNFTDetailCard nftDetail={nftDetail} supply={location.state.supply}/>
+                <SingleNFTDetailCard
+                  nftDetail={nftDetail}
+                  supply={location.state.supply}
+                />
                 <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                   <Col>
                     <PropertiesAccordian keys={keys} properties={properties} />
