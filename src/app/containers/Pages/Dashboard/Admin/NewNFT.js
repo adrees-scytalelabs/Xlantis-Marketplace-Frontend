@@ -695,6 +695,7 @@ function NewNFT(props) {
           setRarity("");
           setTokenSupply(1);
           setSupplyType("Single");
+          setTemplate("default");
           setIpfsHash("");
           setIsGlbFile(false);
           setIsMp3File(false);
