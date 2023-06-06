@@ -2,10 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../../../assets/css/style.css";
-import {
-  getMarketAuction,
-  getMarketFixedPrice,
-} from "../../../../redux/getMarketPlaceDataSlice";
+import { getMarketFixedPrice } from "../../../../components/API/AxiosInterceptor";
+import { getMarketAuction } from "../../../../redux/getMarketPlaceDataSlice";
 import TrendingAndTop from "./TrendingAndTop";
 
 function MarketPlace(props) {
@@ -14,8 +12,9 @@ function MarketPlace(props) {
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [open, setOpen] = useState(false);
-  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } =
-    useSelector((store) => store.getMarketPlaceData);
+  const { auctionLoading, auctionData } = useSelector(
+    (store) => store.getMarketPlaceData
+  );
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -26,15 +25,16 @@ function MarketPlace(props) {
   let getCubes = (start, end) => {
     handleShowBackdrop();
     let marketplaceId = location.state.marketplaceId;
-    dispatch(
-      getMarketFixedPrice({ start, end, marketplaceId, setFixedPriceDrop })
-    );
-    if (fixedPriceLoading) {
-      //setFixedPriceDrop(fixedPriceData);
-      handleCloseBackdrop();
-    } else if (fixedPriceLoading === 2) {
-      handleCloseBackdrop();
-    }
+    getMarketFixedPrice(start, end, marketplaceId)
+      .then((response) => {
+        console.log("fixed price data in marketplaceId", response);
+        setFixedPriceDrop(response.data.data);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Fixed Drop data endpoint error", error.response);
+        handleCloseBackdrop();
+      });
   };
 
   let getBidableDrops = (start, end) => {
@@ -49,21 +49,20 @@ function MarketPlace(props) {
     }
   };
 
-
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
     } else {
       getBidableDrops(0, 4);
     }
-  },[auctionLoading]);
+  }, [auctionLoading]);
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
     } else {
       getCubes(0, 4);
     }
-  }, [fixedPriceLoading]);
+  }, []);
 
   return (
     <div className="container-fluid">
