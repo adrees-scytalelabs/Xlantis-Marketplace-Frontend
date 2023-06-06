@@ -112,7 +112,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.topupHistory}>
               <Link to={`${props.match}/topup-history`}>
-                <HistoryIcon /> <span>Top-up Hsitory</span>
+                <HistoryIcon /> <span>Top-up History</span>
               </Link>
             </li>
             <li className="menu-title mt-5">

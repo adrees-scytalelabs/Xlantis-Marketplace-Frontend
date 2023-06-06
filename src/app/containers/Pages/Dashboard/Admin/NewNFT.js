@@ -702,6 +702,9 @@ function NewNFT(props) {
           setSnackbarMessage("Meta Data Uploaded to IPFS.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
+          setSnackbarMessage("NFT Has Been Added to Batch");
+          setSnackbarSeverity("success");
+          handleSnackbarOpen();
           setIsUploadingData(false);
           handleCloseBackdrop();
         });
