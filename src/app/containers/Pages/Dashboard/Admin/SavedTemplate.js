@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { getSuperAdminTemplates } from "../../../../components/API/AxiosInterceptor";
+import {
+  deleteSuperAdminTemplate,
+  getSuperAdminTemplates,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
@@ -29,7 +31,7 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
-  
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -55,9 +57,27 @@ function SavedTemplate(props) {
   };
   const deleteResponse = async (data) => {
     try {
-      handleClose();
+      // console.log("Data for delete is: ", data);
+      deleteSuperAdminTemplate(data._id)
+        .then((response) => {
+          console.log("Response from deleting template: ", response);
+          let variant = "success";
+          setSnackbarMessage("Template deleted successfully");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          handleClose();
+        })
+        .catch((error) => {
+          console.log("Error from deleting template: ", error);
+          handleClose();
+        });
     } catch (e) {
       console.log("Error during deletion", e);
+      let variant = "error";
+      setSnackbarMessage("Error in deleting Template");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+      handleClose();
     }
   };
   const handleDeleteTemplate = async (e) => {
