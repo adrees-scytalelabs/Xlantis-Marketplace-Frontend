@@ -61,7 +61,7 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
         let variant = "success";
-        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarMessage("Admin Approved Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       },
@@ -115,7 +115,7 @@ function AccountApprovalDefaultScreen(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsWallet(0, rowsPerPage);
         let variant = "success";
-        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarMessage("Admin Approved Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       },

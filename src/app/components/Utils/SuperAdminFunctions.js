@@ -95,7 +95,7 @@ export let handleVerify = (
       handleCloseBackdrop(setOpen);
       getUnverifiedAdminsSSO(0, rowsPerPage, setOpen, setAdmins, setAdminCount);
       setVariant("success");
-      setNotificationData("Admin Verified Successfully.");
+      setNotificationData("Admin Approved Successfully.");
       setLoad(true);
     },
     (error) => {
@@ -138,7 +138,7 @@ export let handleVerifyWallet = (
         setAdminCount
       );
       setVariant("success");
-      setNotificationData("Admin Verified Successfully.");
+      setNotificationData("Admin Approved Successfully.");
       setLoad(true);
     },
     (error) => {
