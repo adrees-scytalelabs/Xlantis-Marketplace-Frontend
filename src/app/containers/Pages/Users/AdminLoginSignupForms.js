@@ -58,7 +58,8 @@ const AdminLoginSignupForms = () => {
               );
             if (
               response.data.isInfoAdded === true &&
-              response.data.isVerified === true
+              response.data.isVerified === true &&
+              response.data.isEnabled === true
             ) {
               let variant = "success";
               setSnackbarMessage("Logged in successfully");
@@ -80,7 +81,7 @@ const AdminLoginSignupForms = () => {
 
   useEffect(() => {
     if (adminSignInData !== null) {
-      if (adminSignInData.isVerified) {
+      if (adminSignInData.isVerified && adminSignInData.isEnabled) {
         sessionStorage.setItem("userId", decode.userId);
         let decode = jwtDecode(adminSignInData.raindropToken);
       }
@@ -90,6 +91,15 @@ const AdminLoginSignupForms = () => {
       ) {
         let variant = "info";
         setSnackbarMessage(adminSignInData.message);
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      } else if (
+        adminSignInData.isEnabled === false &&
+        adminSignInData.isInfoAdded == true &&
+        adminSignInData.isVerified === true
+      ) {
+        let variant = "error";
+        setSnackbarMessage("This Admin is Currently Disable");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       }
