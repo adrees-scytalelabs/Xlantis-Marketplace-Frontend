@@ -11,7 +11,7 @@ import React, { useEffect } from "react";
 import Countdown from "react-countdown";
 import { Link, useParams } from "react-router-dom";
 import { truncate } from "../../assets/js/utils";
-import { Astranaut } from "../ImageURLs/URLs";
+import { defaultProfile } from "../ImageURLs/URLs";
 
 const OnSaleCard = (props) => {
   const { marketPlace } = useParams();
@@ -67,7 +67,7 @@ const OnSaleCard = (props) => {
                         }}
                       >
                         <img
-                          src={Astranaut}
+                          src={defaultProfile}
                           alt="a sample nft"
                           style={{
                             width: "75px",
@@ -219,7 +219,7 @@ const OnSaleCard = (props) => {
                       <span
                         style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                       >
-                        Sale Ends At
+                        Sale Ends In
                       </span>
                       <br></br>
                       <span>

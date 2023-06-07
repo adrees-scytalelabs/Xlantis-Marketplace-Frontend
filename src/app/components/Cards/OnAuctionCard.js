@@ -4,7 +4,7 @@ import React from "react";
 import Countdown from "react-countdown";
 import { Link } from "react-router-dom";
 import { truncate } from "../../assets/js/utils";
-import { Astranaut } from '../ImageURLs/URLs';
+import { defaultProfile } from '../ImageURLs/URLs';
 const styles = {
   cardTheme: {
     boxShadow: "none",
@@ -87,7 +87,7 @@ const OnAuctionCard = (props) => {
                         }}
                       >
                         <img
-                          src={Astranaut}
+                          src={defaultProfile}
                           alt="a sample nft"
                           style={{
                             width: "75px",
@@ -203,7 +203,7 @@ const OnAuctionCard = (props) => {
                     <span
                       style={{ fontFamily: "orbitron", fontWeight: "bold" }}
                     >
-                      Auction Ends At:{" "}
+                      Auction Ends In:{" "}
                     </span>
                     <span>
                       <Countdown
