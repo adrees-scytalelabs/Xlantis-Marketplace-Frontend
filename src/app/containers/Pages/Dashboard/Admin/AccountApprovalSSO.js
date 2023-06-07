@@ -57,7 +57,7 @@ function AccountApprovalSSO(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
         let variant = "success";
-        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarMessage("Admin Approved Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       },

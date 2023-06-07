@@ -211,9 +211,11 @@ export const sendVoucherForLazyMint = (body) => {
 
 //GET REQUESTS
 
-export const getMarketFixedPrice = (start,end,marketplaceId) => {
-    return Axios.get(`/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`)
-}
+export const getMarketFixedPrice = (start, end, marketplaceId) => {
+  return Axios.get(
+    `/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`
+  );
+};
 export const getDropTxCostSummary = (dropId) => {
   return Axios.get(`/drop/${dropId}/tx-cost-summary`);
 };
@@ -503,4 +505,8 @@ export const deleteNFTFromBatch = (nftId) => {
 
 export const deleteNFTFromDrop = (nftId) => {
   return Axios.delete(`/drop/nft/${nftId}`);
+};
+
+export const deleteSuperAdminTemplate = (templateId) => {
+  return Axios.delete(`/super-admin/template/${templateId}`);
 };

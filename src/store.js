@@ -9,7 +9,6 @@ import getMarketPlaceSaleTypeReducer from './app/redux/getMarketPlaceSaleTypeSli
 import getNewNftCollectionReducer from './app/redux/getNewNftCollectionSlice';
 import getNewNftDefaultTemplateReducer from './app/redux/getNewNftDefaultTemplateSlice';
 import getNewNftPropertiesReducer from './app/redux/getNewNftPropertiesSlice';
-import getSavedTemplateDataReducer from './app/redux/getSavedTemplateDataSlice';
 import getSuperAdminAccountsReducer from './app/redux/getSuperAdminAccountsSlice';
 import getSuperAdminsCountsReducer from './app/redux/getSuperAdminsCountsSlice';
 import UserProfileReducer from './app/redux/getUserProfileSlice';
@@ -29,6 +28,5 @@ export const store = configureStore({
     getVerifiedAccountsData: getVerifiedAccountsDataReducer,
     getManageAccountsData: getManageAccountsDataReducer,
     getSuperAdminAccounts: getSuperAdminAccountsReducer,
-    getSavedTemplateData: getSavedTemplateDataReducer,
   },
 });

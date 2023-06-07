@@ -699,7 +699,7 @@ function AddNFT(props) {
           setIsDisabled(true);
           setEnableTime(true);
           let variant = "success";
-          setSnackbarMessage("Transaction Summary received.");
+          setSnackbarMessage("Drop Updated Successfully.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           // if (response.data.isTopupRequired) {

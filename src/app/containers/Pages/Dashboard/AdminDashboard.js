@@ -127,6 +127,7 @@ function AdminDashboard(props) {
       }
     }
   }, [socket, userId]);
+
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
     let userIdentity = sessionStorage.getItem("userId");
@@ -135,6 +136,7 @@ function AdminDashboard(props) {
       getNotifications(0, 10);
     }
   }, [notificationLoading]);
+  
   function getNotifications(start, end) {
     dispatch(getHeaderNotification({ start, end, setNotificationsList }));
     // setNotificationsList(notification);
