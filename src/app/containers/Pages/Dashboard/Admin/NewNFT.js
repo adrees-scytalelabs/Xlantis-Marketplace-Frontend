@@ -462,19 +462,24 @@ function NewNFT(props) {
   };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
+      handleShowBackdrop();
       deleteBatch(batchId)
         .then((response) => {
+          handleCloseBackdrop();
           Cookies.remove("NFT-Detail");
           Cookies.remove("Batch-ID");
           setTokenList([]);
           setBatchId("");
         })
         .catch((error) => {
+          handleCloseBackdrop();
           console.log("Error on deleting response: ", error);
         });
     } else {
+      handleShowBackdrop();
       deleteNFTFromBatch(tokenList[index].nftId)
         .then((response) => {
+          handleCloseBackdrop();
           const list = [...tokenList];
           list.splice(index, 1);
           Cookies.remove("NFT-Detail");
@@ -482,6 +487,7 @@ function NewNFT(props) {
           setTokenList(list);
         })
         .catch((error) => {
+          handleCloseBackdrop();
           console.log("Error for delete nft from batch: ", error);
         });
     }
