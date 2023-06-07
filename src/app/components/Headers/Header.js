@@ -269,7 +269,7 @@ function HeaderHome(props) {
       let signer = provider.getSigner();
       console.log("account", account);
       const address = await signer.getAddress();
-      const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
+      const message = `Welcome to Xlantis! \n\nClick to sign in and accept the Xlantis Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
       console.log("Address: ", await signer.getAddress());
       let signatureHash = await web3.eth.personal.sign(message, address);
       console.log("Signature hash ", signatureHash);
