@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 
 function AdminInformationModal(props) {
@@ -14,9 +14,7 @@ function AdminInformationModal(props) {
           className="NewTemplateHeader"
           style={{ background: "black" }}
         >
-          <Modal.Title style={{ color: "white" }}>
-            Admin Details
-          </Modal.Title>
+          <Modal.Title style={{ color: "white" }}>Admin Details</Modal.Title>
         </Modal.Header>
 
         <Modal.Body
@@ -24,6 +22,23 @@ function AdminInformationModal(props) {
           style={{ borderBottom: "none" }}
         >
           <div style={{ margin: "10px" }}>
+          <Row className="no-gutters mb-2">
+            <label>Marketplace Image</label>
+          </Row>
+            <Row className="no-gutters profile-img mb-3">
+              <Col xs={6} sm={12} md={6} lg={6}>
+                <img
+
+                  src={props.adminData.marketplaceImage}
+                  alt="Admin Image"
+                  style={{
+                    width: "100%",
+                    height: "280px",
+                    
+                  }}
+                />
+              </Col>
+            </Row>
             <Row className="justify-content-center align-items-center no-gutters">
               <Col>
                 Username
@@ -105,7 +120,10 @@ function AdminInformationModal(props) {
             borderTop: "none",
           }}
         >
-          <button className="newTemplateBtn mb-3" onClick={(e) => props.handleClose(e, props.setShow)}>
+          <button
+            className="newTemplateBtn mb-3"
+            onClick={(e) => props.handleClose(e, props.setShow)}
+          >
             Close
           </button>
         </Modal.Footer>
