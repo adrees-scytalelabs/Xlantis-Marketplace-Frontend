@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { Grid } from "@mui/material";
+import { Grid, Tooltip, Typography } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
@@ -16,7 +16,7 @@ function AdminSSORedirectForm({
   setUpdate,
   updated,
   setImage,
-  setInputs
+  setInputs,
 }) {
   const indsutries = [
     { industry: "IT" },
@@ -29,7 +29,7 @@ function AdminSSORedirectForm({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [fileURL,setFileURL] = useState(defaultProfile);
+  const [fileURL, setFileURL] = useState(defaultProfile);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -47,7 +47,6 @@ function AdminSSORedirectForm({
       //setInputs((values) => ({ ...values, marketplaceImage: e.target.files[0]}));
       setIsUploading(false);
     }
-
   };
 
   return (
@@ -147,7 +146,19 @@ function AdminSSORedirectForm({
                       onChange={handleChangeValues}
                     />
                   </div>
-                  <label htmlFor="domain">Username</label>
+                  <label className="mr-2" htmlFor="domain">Username</label>
+                  <Tooltip
+                    title={
+                      <Typography fontSize={18}>
+                        This username will be shown against your marketplace
+                        image on the home page
+                      </Typography>
+                    }
+                  >
+                    <span style={{ fontSize: "0.9rem" }}>
+                      <i className="fa fa-info-circle" aria-hidden="true"></i>
+                    </span>
+                  </Tooltip>
                   <div className="form-group newNftWrapper position-relative">
                     <input
                       id="domain"
@@ -155,7 +166,7 @@ function AdminSSORedirectForm({
                       type="text"
                       required
                       value={inputs?.domain || ""}
-                      placeholder="Marketplace Name"
+                      placeholder="Username"
                       className="form-control-login -login newNftInput"
                       onChange={(e) => {
                         if (updated) {
