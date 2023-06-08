@@ -1,6 +1,7 @@
 import { Tooltip, Typography } from "@mui/material";
 import React from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
+import InfoIcon from '@mui/icons-material/Info';
 
 const UploadFile = (props) => {
   return (
@@ -40,7 +41,7 @@ const UploadFile = (props) => {
                 }
               >
                 <span style={{ fontSize: "0.9rem" }}>
-                  <i className="fa fa-info-circle" aria-hidden="true"></i>
+                 <InfoIcon/>
                 </span>
               </Tooltip>
             )}
