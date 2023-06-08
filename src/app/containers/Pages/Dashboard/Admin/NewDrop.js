@@ -487,7 +487,7 @@ function NewDrop(props) {
                       changeFile={onChangeFile}
                       class="co-12 col-md-auto profile-img mr-3"
                       accept=".png,.jpg,.jpeg,.gif"
-                      inputId="uploadPreviewImg"
+                      inputId="dropImage"
                     />
                   </div>
 
