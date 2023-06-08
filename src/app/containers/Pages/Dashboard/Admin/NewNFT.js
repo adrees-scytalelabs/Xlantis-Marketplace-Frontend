@@ -1,6 +1,6 @@
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
@@ -39,6 +39,8 @@ import CreateNFTContract from "../../../../components/blockchain/Abis/Collectibl
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
+import getCroppedImg from "../../../../components/Utils/Crop";
+import ImageCropModal from "../../../../components/Modals/ImageCropModal";
 
 const styles = {
   root: {
@@ -179,6 +181,16 @@ function NewNFT(props) {
 
   const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("round");
+
   const { collectionData, loading } = useSelector(
     (store) => store.NewNftCollection
   );
@@ -718,7 +730,78 @@ function NewNFT(props) {
       };
     }
   };
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setIsUploadingIPFS(false);
+    setImageSrc("");
+  };
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
 
+  const showCroppedImage = useCallback(async () => {
+    try {
+      setIsUploadingCroppedImage(true);
+      const imageNFT = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      const reader = new window.FileReader();
+      reader.readAsArrayBuffer(imageNFT);
+      reader.onloadend = () => {
+        ipfs.add(Buffer(reader.result), async (err, result) => {
+          if (err) {
+            console.log("err", err);
+            setIsUploadingIPFS(false);
+            let variant = "error";
+            setSnackbarMessage("Unable to Upload Image to IPFS.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+            return;
+          }
+  
+          setIpfsHash(result[0].hash);
+          setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+          console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
+          let variant = "success";
+          setSnackbarMessage("Image Uploaded to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+        });
+      };
+      let fileData = new FormData();
+      fileData.append("image", imageNFT);
+      uploadImage(fileData)
+        .then((response) => {
+          console.log("response.data.url", response.data.url);
+          setImage(response.data.url);
+          setIsUploadingIPFS(false);
+          setImageSrc("");
+          setAspect(1 / 1);
+          setIsUploadingCroppedImage(false);
+          setShowCropModal(false);
+          setImageCounter(imageCounter + 1);
+          setSnackbarMessage("Image Uploaded Succesfully");
+          setSnackbarSeverity("success");
+          handleSnackbarOpen();
+        })
+        .catch((error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          setIsUploadingIPFS(false);
+          let variant = "error";
+          setSnackbarMessage("Unable to Upload Image.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+        });
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  });
   let onChangeFile = (e) => {
     setIsUploadingIPFS(true);
     setIsGlbFile(false);
@@ -728,6 +811,8 @@ function NewNFT(props) {
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
     let typeImage;
+    const acceptedImageFormats = ['png', 'jpg', 'jpeg']
+    const fileExtension = (imageNFT.name).split('.').pop();
 
     if (e.target.files[0].name.includes(".glb")) {
       typeImage = "glb";
@@ -743,7 +828,9 @@ function NewNFT(props) {
       setImageType("mp3");
       // setImage(e.target.files[0]);
       setImage(defaultProfile);
-    } else {
+    } else if(acceptedImageFormats.includes(fileExtension)) {
+
+      console.log("File Extension : ", fileExtension);
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
       // setImage(e.target.files[0]);
@@ -752,8 +839,23 @@ function NewNFT(props) {
         setPreviewImageURI("");
         setPreviewImage(defaultProfile);
       }
-    }
 
+        setCropShape("square");
+        setIsUploadingIPFS(true);
+        setAspect(1 / 1);
+        setImageSrc(URL.createObjectURL(e.target.files[0]));
+        setShowCropModal(true);
+        return
+
+    }
+    else{
+      setSnackbarMessage("Unsupported file format");
+      setSnackbarSeverity("error");
+      handleSnackbarOpen();
+      setIsUploadingIPFS(false);
+      return
+    }
+    
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
       ipfs.add(Buffer(reader.result), async (err, result) => {
@@ -1164,6 +1266,20 @@ function NewNFT(props) {
             <form>
               <div className="form-group">
                 <label className="mb-0 p-1">Select Artwork</label>
+                <ImageCropModal
+                  show={showCropModal}
+                  handleClose={handleCloseImageCropModal}
+                  crop={crop}
+                  setCrop={setCrop}
+                  onCropComplete={onCropComplete}
+                  imageSrc={imageSrc}
+                  uploadImage={showCroppedImage}
+                  isUploadingCroppedImage={isUploadingCroppedImage}
+                  zoom={zoom}
+                  setZoom={setZoom}
+                  aspect={aspect}
+                  cropShape={cropShape}
+                />
                 <NFTUpload
                   image={image}
                   name={name}

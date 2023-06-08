@@ -1,6 +1,6 @@
 import { FormControl, ThemeProvider, createTheme } from "@mui/material";
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import {
@@ -24,6 +24,8 @@ import SubmitButton from "../../../../components/buttons/SubmitButton";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import DropBannerUpload from "../../../../components/Upload/DropBannerUpload";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
+import getCroppedImg from "../../../../components/Utils/Crop";
+import ImageCropModal from "../../../../components/Modals/ImageCropModal";
 
 const makeTheme = createTheme({
   overrides: {
@@ -70,13 +72,22 @@ function NewDrop(props) {
   const [network, setNetwork] = useState("");
 
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
-  const [, setImageType] = useState("");
   const [nftType, setNftType] = useState("1155");
   const [versionB, setVersionB] = useState("");
   const [categoriesList, setCategoriesList] = useState([]);
   const [category, setCategory] = useState("");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [showNetworkModal, setShowNetworkModal] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("round");
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
 
@@ -390,65 +401,75 @@ function NewDrop(props) {
   let onChangeBannerFile = async (e) => {
     const file = e.target.files[0];
     if (file) {
+      setAspect(16 / 9);
+      setCropShape("rect");
       setIsUploadingBanner(true);
-      const reader = new window.FileReader();
-      let imageNFT = e.target.files[0];
-      setImageType(e.target.files[0].type.split("/")[1]);
-      reader.readAsArrayBuffer(e.target.files[0]);
-      let fileData = new FormData();
-      fileData.append("image", imageNFT);
-      uploadImage(fileData)
+      setSelectedImage("banner");
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
+    }
+  };
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setIsUploadingIPFS(false);
+    setIsUploadingBanner(false);
+    setImageSrc("");
+  };
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      setIsUploadingCroppedImage(true);
+      const croppedImage = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      let formData = new FormData();
+      formData.append("image", croppedImage);
+      await uploadImage(formData)
         .then((response) => {
-          setBannerImage(response.data.url);
+          if (selectedImage === "banner") {
+            setBannerImage(response.data.url);
+          } else if (selectedImage === "profile") {
+            setImage(response.data.url);
+          }
+          setIsUploadingIPFS(false);
           setIsUploadingBanner(false);
-          let variant = "success";
-          setSnackbarMessage("Image Uploaded Successfully.");
-          setSnackbarSeverity(variant);
+          setImageSrc("");
+          setSelectedImage("");
+          setAspect(1 / 1);
+          setIsUploadingCroppedImage(false);
+          setShowCropModal(false);
+          setImageCounter(imageCounter + 1);
+          setSnackbarMessage("Image Uploaded Succesfully");
+          setSnackbarSeverity("success");
           handleSnackbarOpen();
         })
         .catch((error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingBanner(false);
-          let variant = "error";
-          setSnackbarMessage("Unable to Upload Image.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
+          console.log("Error from uploading image", error);
         });
+    } catch (e) {
+      console.log("Error: ", e);
     }
-  };
+    
+  });
+
 
   let onChangeFile = (e) => {
-    setIsUploadingIPFS(true);
-    const reader = new window.FileReader();
-    let imageNFT = e.target.files[0];
-    setImageType(e.target.files[0].type.split("/")[1]);
-    reader.readAsArrayBuffer(e.target.files[0]);
-    let fileData = new FormData();
-    fileData.append("image", imageNFT);
-    uploadImage(fileData)
-      .then((response) => {
-        setImage(response.data.url);
-        setIsUploadingIPFS(false);
-        let variant = "success";
-
-        setSnackbarMessage("Image Uploaded Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        setIsUploadingIPFS(false);
-        let variant = "error";
-        setSnackbarMessage("Unable to Upload Image.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      });
+    const file = e.target.files[0];
+    if (file) {
+      setCropShape("square");
+      setSelectedImage("profile");
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setIsUploadingIPFS(true);
+      setShowCropModal(true);
+    }
   };
   return (
     <div className="backgroundDefault">
@@ -481,6 +502,20 @@ function NewDrop(props) {
                 <div className="form-group">
                   <div className="form-group">
                     <label>Select Title Image</label>
+                    <ImageCropModal
+                      show={showCropModal}
+                      handleClose={handleCloseImageCropModal}
+                      crop={crop}
+                      setCrop={setCrop}
+                      onCropComplete={onCropComplete}
+                      imageSrc={imageSrc}
+                      uploadImage={showCroppedImage}
+                      isUploadingCroppedImage={isUploadingCroppedImage}
+                      zoom={zoom}
+                      setZoom={setZoom}
+                      aspect={aspect}
+                      cropShape={cropShape}
+                    />
                     <UploadFile
                       fileURL={image}
                       isUploading={isUploadingIPFS}
