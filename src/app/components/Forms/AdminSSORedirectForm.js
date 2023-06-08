@@ -4,7 +4,7 @@ import { Grid, Tooltip, Typography } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 
 function AdminSSORedirectForm({
   handleSubmitDetails,
@@ -147,7 +147,9 @@ function AdminSSORedirectForm({
                       onChange={handleChangeValues}
                     />
                   </div>
-                  <label className="mr-2" htmlFor="domain">Username</label>
+                  <label className="mr-2" htmlFor="domain">
+                    Username
+                  </label>
                   <Tooltip
                     title={
                       <Typography fontSize={18}>
@@ -157,7 +159,7 @@ function AdminSSORedirectForm({
                     }
                   >
                     <span style={{ fontSize: "0.9rem" }}>
-                      <InfoIcon/>
+                      <InfoIcon />
                     </span>
                   </Tooltip>
                   <div className="form-group newNftWrapper position-relative">
@@ -169,6 +171,8 @@ function AdminSSORedirectForm({
                       value={inputs?.domain || ""}
                       placeholder="Username"
                       className="form-control-login -login newNftInput"
+                      pattern="^\S*$"
+                      title="Please do not use spaces in the Username"
                       onChange={(e) => {
                         if (updated) {
                           setUpdate(false);
