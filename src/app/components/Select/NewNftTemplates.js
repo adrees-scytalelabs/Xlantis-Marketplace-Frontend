@@ -123,93 +123,114 @@ function NewNftTemplates({
                 />
               </div>
               {defaultTemplates.properties.map((p, index) => (
-                <div className="col-12 col-md-5" key={index}>
-                  <div className="w-100">
-                    <label>{p.key}</label>
-                    {p.type === "string" ? (
+                <div
+                  className="row no-gutters justify-content-md-between align-items-center"
+                  key={index}
+                >
+                  <div className="col-12 col-md-5" key={index}>
+                    <div className="form-group w-100">
+                      {index === 0 ? <label>Key</label> : null}
                       <div className="filter-widget">
                         <input
-                          name={p.key}
+                          name="key"
                           type="text"
-                          placeholder="value"
-                          required
-                          value={properties[index].value}
+                          disabled
+                          value={p.key}
                           className="newNftProps"
-                          onChange={(e) =>
-                            handleTemplatePropertyChange(index, e)
-                          }
                         />
                       </div>
-                    ) : p.type === "number" ? (
-                      <div className="filter-widget">
-                        <input
-                          name={p.key}
-                          type="number"
-                          placeholder="0"
-                          required
-                          className="newNftProps"
-                          value={properties[index].value}
-                          onChange={(e) =>
-                            handleTemplatePropertyChange(index, e)
-                          }
-                        />
-                      </div>
-                    ) : (
-                      <div className="filter-widget">
-                        <input
-                          name={p.key}
-                          type="radio"
-                          id="templateYes"
-                          required
-                          value={true}
-                          className="newNftProps"
-                          checked={properties[index].value === "true"}
-                          style={{
-                            width: "auto",
-                            margin: "0.5rem",
-                          }}
-                          onChange={(e) =>
-                            handleTemplatePropertyChange(index, e)
-                          }
-                        />
-                        <label
-                          htmlFor="templateYes"
-                          style={{
-                            width: "calc(100% - 55px)",
-                            fontFamily: "inter",
-                            fontWeight: "normal",
-                          }}
-                        >
-                          Yes
-                        </label>
-                        <input
-                          name={p.key}
-                          type="radio"
-                          id="templateNo"
-                          required
-                          value={false}
-                          className="newNftProps"
-                          checked={properties[index].value === "false"}
-                          style={{
-                            width: "auto",
-                            margin: "0.5rem",
-                          }}
-                          onChange={(e) =>
-                            handleTemplatePropertyChange(index, e)
-                          }
-                        />
-                        <label
-                          htmlFor="templateNo"
-                          style={{
-                            width: "calc(100% - 55px)",
-                            fontFamily: "inter",
-                            fontWeight: "normal",
-                          }}
-                        >
-                          No
-                        </label>
-                      </div>
-                    )}
+                    </div>
+                  </div>
+                  <div className="col-12 col-md-5">
+                    <div className="w-100">
+                      {index === 0 ? <label>Value</label> : null}
+                      {p.type === "string" ? (
+                        <div className="filter-widget">
+                          <input
+                            name={p.key}
+                            type="text"
+                            placeholder="value"
+                            required
+                            value={properties[index].value}
+                            className="newNftProps"
+                            onChange={(e) =>
+                              handleTemplatePropertyChange(index, e)
+                            }
+                          />
+                        </div>
+                      ) : p.type === "number" ? (
+                        <div className="filter-widget">
+                          <input
+                            name={p.key}
+                            type="number"
+                            placeholder="0"
+                            required
+                            className="newNftProps"
+                            value={properties[index].value}
+                            onChange={(e) =>
+                              handleTemplatePropertyChange(index, e)
+                            }
+                          />
+                        </div>
+                      ) : (
+                        <div className="filter-widget">
+                          <div className="d-flex">
+                            <input
+                              name={p.key}
+                              type="radio"
+                              id="templateYes"
+                              required
+                              value={true}
+                              className="newNftProps"
+                              checked={properties[index].value === "true"}
+                              style={{
+                                // width: "auto",
+                                margin: "0.5rem",
+                              }}
+                              onChange={(e) =>
+                                handleTemplatePropertyChange(index, e)
+                              }
+                            />
+                            <label
+                              htmlFor="templateYes"
+                              style={{
+                                // width: "calc(100% - 55px)",
+                                fontFamily: "inter",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              Yes
+                            </label>
+                            <input
+                              name={p.key}
+                              type="radio"
+                              id="templateNo"
+                              required
+                              value={false}
+                              className="newNftProps"
+                              checked={properties[index].value === "false"}
+                              style={{
+                                // width: "auto",
+                                margin: "0.5rem",
+                              }}
+                              onChange={(e) =>
+                                handleTemplatePropertyChange(index, e)
+                              }
+                            />
+                            <label
+                              htmlFor="templateNo"
+                              style={{
+                                // width: "calc(100% - 55px)",
+                                fontFamily: "inter",
+                                fontWeight: "normal",
+                              }}
+                            >
+                              No
+                            </label>
+                          </div>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               ))}
