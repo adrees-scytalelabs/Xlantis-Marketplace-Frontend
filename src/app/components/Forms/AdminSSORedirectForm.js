@@ -147,7 +147,7 @@ function AdminSSORedirectForm({
                       onChange={handleChangeValues}
                     />
                   </div>
-                  <label htmlFor="domain">Marketplace Name</label>
+                  <label htmlFor="domain">Username</label>
                   <div className="form-group newNftWrapper position-relative">
                     <input
                       id="domain"
