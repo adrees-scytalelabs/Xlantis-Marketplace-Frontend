@@ -4,6 +4,7 @@ import { Grid, Tooltip, Typography } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
+import InfoIcon from '@mui/icons-material/Info';
 
 function AdminSSORedirectForm({
   handleSubmitDetails,
@@ -156,7 +157,7 @@ function AdminSSORedirectForm({
                     }
                   >
                     <span style={{ fontSize: "0.9rem" }}>
-                      <i className="fa fa-info-circle" aria-hidden="true"></i>
+                      <InfoIcon/>
                     </span>
                   </Tooltip>
                   <div className="form-group newNftWrapper position-relative">
