@@ -510,3 +510,6 @@ export const deleteNFTFromDrop = (nftId) => {
 export const deleteSuperAdminTemplate = (templateId) => {
   return Axios.delete(`/super-admin/template/${templateId}`);
 };
+export const deleteAdminTemplate = (templateId) => {
+  return Axios.delete(`/nft-properties/admin/template/${templateId}`);
+};
