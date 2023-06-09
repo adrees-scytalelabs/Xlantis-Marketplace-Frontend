@@ -119,6 +119,7 @@ function AddNFT(props) {
   const [nftId, setNftId] = useState("");
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
+  const [disabledUpdateButton, setDisabledUpdateButton] = useState(true);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [price, setPrice] = useState(null);
@@ -697,6 +698,7 @@ function AddNFT(props) {
           console.log("Get validate admin balance: ", response.data);
           setCostInfo(response.data);
           setIsDisabled(true);
+          setDisabledUpdateButton(true);
           setEnableTime(true);
           let variant = "success";
           setSnackbarMessage("Drop Updated Successfully.");
@@ -816,6 +818,7 @@ function AddNFT(props) {
           async (response) => {
             setGrid(true);
             setIsAdded(true);
+            setDisabledUpdateButton(false);
             setTokenList([...tokenList, nftDetail]);
             let found = false;
             if (nftType === "1155") {
@@ -916,6 +919,7 @@ function AddNFT(props) {
         console.log("new obj", newObject);
         addNFTToDrop(data).then(
           (response) => {
+            setDisabledUpdateButton(false);
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
             setIsAdded(true);
@@ -1145,7 +1149,7 @@ function AddNFT(props) {
           </div>
         </div>
         <UpdateDropAndPublishDrop
-          isDisabled={isDisabled}
+          isDisabled={disabledUpdateButton}
           versionB={versionB}
           handleSubmitEvent={handleSubmitEvent}
           enableTime={enableTime}
