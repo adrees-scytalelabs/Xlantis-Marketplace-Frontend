@@ -34,6 +34,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 
 const styles = {
   root: {
@@ -140,6 +141,7 @@ function AddNFT(props) {
   const [amount, setAmount] = useState(0.1);
   const [topUpModal, setTopUpModal] = useState(false);
   const [requiredAmount, setRequiredAmount] = useState(0);
+  const [isCollectionDisable, setIsCollectionDisable] = useState(false);
 
   const handleCloseTopUpModal = () => {
     setTopUpModal(false);
@@ -163,8 +165,9 @@ function AddNFT(props) {
     const version = Cookies.get("Version");
     getCollections(location.state.nftType, location.state.marketplaceId).then(
       (response) => {
+        // console.log("Response from getting collections: ", response);
         setChangeCollectionList(response.data.collectionData);
-        setCollectionTypes(...collectionTypes, response.data.collectionData);
+        setCollectionTypes(response.data.collectionData);
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -329,17 +332,28 @@ function AddNFT(props) {
   const handleRemoveNFT = (e, nftId, index) => {
     e.preventDefault();
     handleShowBackdrop();
+    console.log("Removing NFTs: ", nftId, index);
     deleteNFTFromDrop(nftId)
       .then((response) => {
         // console.log("Response from deleting nft from drop: ", response);
         let list = [...tokenList];
         list.splice(index, 1);
         setTokenList(list);
+        if (list.length === 0) {
+          setIsCollectionDisable(false);
+          setCollection("");
+          setCollectionId("");
+          setNftContractAddress("");
+          setCollectionTypes([]);
+          getCollection();
+          setGrid(false);
+          setIsAdded(false);
+        } else {
+          getNfts(collectionId);
+        }
         setSnackbarMessage("NFT Removed Successfully");
         setSnackbarSeverity("success");
         handleSnackbarOpen();
-        setGrid(false);
-        setIsAdded(false);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -841,6 +855,7 @@ function AddNFT(props) {
                 setDropInfo(dropp);
               }
 
+              setIsCollectionDisable(true);
               let variant = "success";
               setSnackbarMessage("NFT Added Successfully.");
               setSnackbarSeverity(variant);
@@ -850,10 +865,8 @@ function AddNFT(props) {
               setNftURI("");
               setTokenId("");
               setNftTokenSupply(0);
-              setCollection("");
-              setCollectionId("");
-              setNftContractAddress("");
               setNftList([]);
+              getNfts(collectionId);
               setNftDetail({});
               setPrice(0);
               setSupply(1);
@@ -1019,10 +1032,10 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group" key={key}>
-                <AutocompleteAddNft
+                <CollectionAutocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
-                  isDisabled={isDisabled}
+                  isDisabled={isCollectionDisable}
                   placeholder="Select Collection"
                   onChange={(e, value) => {
                     if (value == null) {
@@ -1038,6 +1051,7 @@ function AddNFT(props) {
                     }
                   }}
                   type="collection"
+                  collectionName={collection}
                 />
 
                 <AutocompleteAddNft
