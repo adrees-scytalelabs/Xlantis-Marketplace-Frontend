@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Navigate } from "react-router-dom";
-import { Grid, Tooltip, Typography } from "@mui/material";
+import { Grid, Tooltip, Typography, Alert } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
@@ -26,6 +26,8 @@ function AdminSSORedirectForm({
     { industry: "Telecommunications" },
     { industry: "Software Development" },
   ];
+  const [inputError, setInputError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -47,6 +49,17 @@ function AdminSSORedirectForm({
       setFileURL(URL.createObjectURL(e.target.files[0]));
       //setInputs((values) => ({ ...values, marketplaceImage: e.target.files[0]}));
       setIsUploading(false);
+    }
+  };
+  const handlePatternValidation = (event) => {
+    const value = event.target.value;
+    const pattern = /^\S*$/;
+    if (!pattern.test(value)) {
+      setInputError(true);
+      setErrorMessage("Please do not use spaces in the Username");
+    } else {
+      setInputError(false);
+      setErrorMessage("");
     }
   };
 
@@ -170,14 +183,14 @@ function AdminSSORedirectForm({
                       required
                       value={inputs?.domain || ""}
                       placeholder="Username"
-                      className="form-control-login -login newNftInput"
+                      className={`form-control-login -login newNftInput ${
+                        inputError ? "input-error" : ""
+                      }`}
                       pattern="^\S*$"
                       title="Please do not use spaces in the Username"
                       onChange={(e) => {
-                        if (updated) {
-                          setUpdate(false);
-                        }
                         handleChangeValues(e);
+                        handlePatternValidation(e);
                       }}
                       onBlur={(e) => {
                         setAvailability();
@@ -185,6 +198,12 @@ function AdminSSORedirectForm({
                       }}
                     />
                     {getIcon()}
+
+                    {inputError && (
+                      <Alert severity="error" style={{ marginTop: "5px" }}>
+                        {errorMessage}
+                      </Alert>
+                    )}
                   </div>
                 </div>
                 <div className="row no-gutters justify-content-center justify-content-md-end align-items-end w-100 mt-4 pt-md-3">
