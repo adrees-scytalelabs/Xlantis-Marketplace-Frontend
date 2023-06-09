@@ -1,5 +1,6 @@
-import { Tooltip, Typography } from "@mui/material";
+import { Box, Grid, Tooltip, Typography } from "@mui/material";
 import React from "react";
+
 function NewNftTemplates({
   setProperties,
   properties,
@@ -122,118 +123,120 @@ function NewNftTemplates({
                   }}
                 />
               </div>
-              {defaultTemplates.properties.map((p, index) => (
-                <div
-                  className="row no-gutters justify-content-md-between align-items-center"
-                  key={index}
-                >
-                  <div className="col-12 col-md-5" key={index}>
-                    <div className="form-group w-100">
-                      {index === 0 ? <label>Key</label> : null}
-                      <div className="filter-widget">
-                        <input
-                          name="key"
-                          type="text"
-                          disabled
-                          value={p.key}
-                          className="newNftProps"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div className="col-12 col-md-5">
-                    <div className="w-100">
-                      {index === 0 ? <label>Value</label> : null}
-                      {p.type === "string" ? (
-                        <div className="filter-widget">
-                          <input
-                            name={p.key}
-                            type="text"
-                            placeholder="value"
-                            required
-                            value={properties[index].value}
-                            className="newNftProps"
-                            onChange={(e) =>
-                              handleTemplatePropertyChange(index, e)
-                            }
-                          />
-                        </div>
-                      ) : p.type === "number" ? (
-                        <div className="filter-widget">
-                          <input
-                            name={p.key}
-                            type="number"
-                            placeholder="0"
-                            required
-                            className="newNftProps"
-                            value={properties[index].value}
-                            onChange={(e) =>
-                              handleTemplatePropertyChange(index, e)
-                            }
-                          />
-                        </div>
-                      ) : (
-                        <div className="filter-widget">
-                          <div className="d-flex">
+              <Box>
+                {defaultTemplates.properties.map((p, index) => (
+                  <div key={index}>
+                    <Grid
+                      container
+                      spacing={3}
+                      justifyContent={"between"}
+                      alignItems={"center"}
+                    >
+                      <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                        <div className="form-group w-100">
+                          {index === 0 ? <label>Key</label> : null}
+                          <div className="filter-widget">
                             <input
-                              name={p.key}
-                              type="radio"
-                              id="templateYes"
-                              required
-                              value={true}
+                              name="key"
+                              type="text"
+                              disabled
+                              value={p.key}
                               className="newNftProps"
-                              checked={properties[index].value === "true"}
-                              style={{
-                                // width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
                             />
-                            <label
-                              htmlFor="templateYes"
-                              style={{
-                                // width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              Yes
-                            </label>
-                            <input
-                              name={p.key}
-                              type="radio"
-                              id="templateNo"
-                              required
-                              value={false}
-                              className="newNftProps"
-                              checked={properties[index].value === "false"}
-                              style={{
-                                // width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                            <label
-                              htmlFor="templateNo"
-                              style={{
-                                // width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              No
-                            </label>
                           </div>
                         </div>
-                      )}
-                    </div>
+                      </Grid>
+                      <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                        <div className="form-group w-100">
+                          {index === 0 ? <label>Value</label> : null}
+                          {p.type === "string" ? (
+                            <div>
+                              <input
+                                name={p.key}
+                                type="text"
+                                placeholder="value"
+                                required
+                                value={properties[index]?.value}
+                                className="newNftProps"
+                                onChange={(e) =>
+                                  handleTemplatePropertyChange(index, e)
+                                }
+                              />
+                            </div>
+                          ) : p.type === "number" ? (
+                            <div>
+                              <input
+                                name={p.key}
+                                type="number"
+                                placeholder="0"
+                                required
+                                className="newNftProps"
+                                value={properties[index]?.value}
+                                onChange={(e) =>
+                                  handleTemplatePropertyChange(index, e)
+                                }
+                              />
+                            </div>
+                          ) : (
+                            <div>
+                              <input
+                                name={p.key}
+                                type="radio"
+                                id="templateYes"
+                                required
+                                value={true}
+                                className="newNftProps"
+                                checked={properties[index]?.value === "true"}
+                                style={{
+                                  width: "auto",
+                                  margin: "0.5rem",
+                                }}
+                                onChange={(e) =>
+                                  handleTemplatePropertyChange(index, e)
+                                }
+                              />
+                              <label
+                                htmlFor="templateYes"
+                                style={{
+                                  fontFamily: "inter",
+                                  fontWeight: "normal",
+                                }}
+                              >
+                                Yes
+                              </label>
+                              <input
+                                name={p.key}
+                                type="radio"
+                                id="templateNo"
+                                required
+                                value={false}
+                                className="newNftProps"
+                                checked={properties[index]?.value === "false"}
+                                style={{
+                                  width: "auto",
+                                  margin: "0.5rem",
+                                }}
+                                onChange={(e) =>
+                                  handleTemplatePropertyChange(index, e)
+                                }
+                              />
+                              <label
+                                htmlFor="templateNo"
+                                style={{
+                                  fontFamily: "inter",
+                                  fontWeight: "normal",
+                                }}
+                              >
+                                No
+                              </label>
+                            </div>
+                          )}
+                        </div>
+                      </Grid>
+                    </Grid>
                   </div>
-                </div>
-              ))}
+                ))}
+              </Box>
             </div>
           ) : (
             <div className="mt-2 mb-4">
@@ -346,95 +349,122 @@ function NewNftTemplates({
               </select>
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
-                  extractedDataProps.map((p, index) => (
-                    <div className="col-12 col-md-5" key={index + 200}>
-                      <div className="w-100">
-                        <label>{p.key}</label>
-                        {p.type === "string" ? (
-                          <div className="filter-widget">
-                            <input
-                              name={p.key}
-                              type="text"
-                              placeholder="value"
-                              required
-                              value={properties[index].value}
-                              className="newNftProps"
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                          </div>
-                        ) : p.type === "number" ? (
-                          <div className="filter-widget">
-                            <input
-                              name={p.key}
-                              type="number"
-                              placeholder="0"
-                              required
-                              value={properties[index].value}
-                              className="newNftProps"
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <div className="filter-widget">
-                            <input
-                              name={p.key}
-                              type="radio"
-                              id="savedTemplateYes"
-                              required
-                              value={true}
-                              style={{
-                                width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              className="newNftProps"
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                            <label
-                              htmlFor="savedTemplateYes"
-                              style={{
-                                width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              Yes
-                            </label>
-                            <input
-                              name={p.key}
-                              type="radio"
-                              id="savedTemplateNo"
-                              required
-                              value={false}
-                              className="newNftProps"
-                              style={{
-                                width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                            <label
-                              htmlFor="savedTemplateNo"
-                              style={{
-                                width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              No
-                            </label>
-                          </div>
-                        )}
+                  <Box>
+                    {extractedDataProps.map((p, index) => (
+                      <div key={index + 200}>
+                        <Grid
+                          container
+                          spacing={3}
+                          justifyContent={"between"}
+                          alignItems={"center"}
+                        >
+                          <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                            <div className="form-group w-100">
+                              {index === 0 ? <label>Key</label> : null}
+                              <div className="filter-widget">
+                                <input
+                                  name="key"
+                                  type="text"
+                                  disabled
+                                  value={p.key}
+                                  className="newNftProps"
+                                />
+                              </div>
+                            </div>
+                          </Grid>
+                          <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                            <div className="form-group w-100">
+                              {index === 0 ? <label>Value</label> : null}
+                              {p.type === "string" ? (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="text"
+                                    placeholder="value"
+                                    required
+                                    value={properties[index].value}
+                                    className="newNftProps"
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              ) : p.type === "number" ? (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="number"
+                                    placeholder="0"
+                                    required
+                                    className="newNftProps"
+                                    value={properties[index].value}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="radio"
+                                    id="templateYes"
+                                    required
+                                    value={true}
+                                    className="newNftProps"
+                                    checked={properties[index].value === "true"}
+                                    style={{
+                                      width: "auto",
+                                      margin: "0.5rem",
+                                    }}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="templateYes"
+                                    style={{
+                                      fontFamily: "inter",
+                                      fontWeight: "normal",
+                                    }}
+                                  >
+                                    Yes
+                                  </label>
+                                  <input
+                                    name={p.key}
+                                    type="radio"
+                                    id="templateNo"
+                                    required
+                                    value={false}
+                                    className="newNftProps"
+                                    checked={
+                                      properties[index].value === "false"
+                                    }
+                                    style={{
+                                      width: "auto",
+                                      margin: "0.5rem",
+                                    }}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="templateNo"
+                                    style={{
+                                      fontFamily: "inter",
+                                      fontWeight: "normal",
+                                    }}
+                                  >
+                                    No
+                                  </label>
+                                </div>
+                              )}
+                            </div>
+                          </Grid>
+                        </Grid>
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </Box>
                 ) : (
                   <div className="mt-2 mb-4 w-100">
                     <div
@@ -480,93 +510,122 @@ function NewNftTemplates({
               </select>
               <div className="w-100 my-3 row no-gutters justify-content-md-between">
                 {extractedDataProps !== null ? (
-                  extractedDataProps.map((p, index) => (
-                    <div className="col-12 col-md-5" key={index + 400}>
-                      <div className="w-100">
-                        <label>{p.key}</label>
-                        {p.type === "string" ? (
-                          <div className="filter-widget">
-                            <input
-                              required
-                              name={p.key}
-                              type="text"
-                              placeholder="value"
-                              className="newNftProps"
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                          </div>
-                        ) : p.type === "number" ? (
-                          <div className="filter-widget">
-                            <input
-                              name={p.key}
-                              type="number"
-                              placeholder="0"
-                              required
-                              className="newNftProps"
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                          </div>
-                        ) : (
-                          <div className="filter-widget">
-                            <input
-                              name={p.key}
-                              type="radio"
-                              id="standardTemplateYes"
-                              required
-                              value={true}
-                              className="newNftProps"
-                              style={{
-                                width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                            <label
-                              htmlFor="standardTemplateYes"
-                              style={{
-                                width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              Yes
-                            </label>
-                            <input
-                              name={p.key}
-                              type="radio"
-                              id="standardTemplateNo"
-                              required
-                              value={false}
-                              className="newNftProps"
-                              style={{
-                                width: "auto",
-                                margin: "0.5rem",
-                              }}
-                              onChange={(e) =>
-                                handleTemplatePropertyChange(index, e)
-                              }
-                            />
-                            <label
-                              htmlFor="standardTemplateNo"
-                              style={{
-                                width: "calc(100% - 55px)",
-                                fontFamily: "inter",
-                                fontWeight: "normal",
-                              }}
-                            >
-                              No
-                            </label>
-                          </div>
-                        )}
+                  <Box>
+                    {extractedDataProps.map((p, index) => (
+                      <div key={index + 400}>
+                        <Grid
+                          container
+                          spacing={3}
+                          justifyContent={"between"}
+                          alignItems={"center"}
+                        >
+                          <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                            <div className="form-group w-100">
+                              {index === 0 ? <label>Key</label> : null}
+                              <div className="filter-widget">
+                                <input
+                                  name="key"
+                                  type="text"
+                                  disabled
+                                  value={p.key}
+                                  className="newNftProps"
+                                />
+                              </div>
+                            </div>
+                          </Grid>
+                          <Grid item xs={5} sm={5} md={5} lg={5} xl={5}>
+                            <div className="form-group w-100">
+                              {index === 0 ? <label>Value</label> : null}
+                              {p.type === "string" ? (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="text"
+                                    placeholder="value"
+                                    required
+                                    value={properties[index].value}
+                                    className="newNftProps"
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              ) : p.type === "number" ? (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="number"
+                                    placeholder="0"
+                                    required
+                                    className="newNftProps"
+                                    value={properties[index].value}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              ) : (
+                                <div>
+                                  <input
+                                    name={p.key}
+                                    type="radio"
+                                    id="templateYes"
+                                    required
+                                    value={true}
+                                    className="newNftProps"
+                                    checked={properties[index].value === "true"}
+                                    style={{
+                                      width: "auto",
+                                      margin: "0.5rem",
+                                    }}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="templateYes"
+                                    style={{
+                                      fontFamily: "inter",
+                                      fontWeight: "normal",
+                                    }}
+                                  >
+                                    Yes
+                                  </label>
+                                  <input
+                                    name={p.key}
+                                    type="radio"
+                                    id="templateNo"
+                                    required
+                                    value={false}
+                                    className="newNftProps"
+                                    checked={
+                                      properties[index].value === "false"
+                                    }
+                                    style={{
+                                      width: "auto",
+                                      margin: "0.5rem",
+                                    }}
+                                    onChange={(e) =>
+                                      handleTemplatePropertyChange(index, e)
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="templateNo"
+                                    style={{
+                                      fontFamily: "inter",
+                                      fontWeight: "normal",
+                                    }}
+                                  >
+                                    No
+                                  </label>
+                                </div>
+                              )}
+                            </div>
+                          </Grid>
+                        </Grid>
                       </div>
-                    </div>
-                  ))
+                    ))}
+                  </Box>
                 ) : (
                   <div className="mt-2 mb-4 w-100">
                     <div
