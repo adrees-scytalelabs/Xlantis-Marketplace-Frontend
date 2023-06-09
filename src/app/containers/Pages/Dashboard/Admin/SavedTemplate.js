@@ -9,7 +9,7 @@ import MessageCard from "../../../../components/MessageCards/MessageCard";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
-import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
+import PropertiesTable from "../../../../components/tables/PropertiesTable";
 
 function SavedTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -160,7 +160,7 @@ function SavedTemplate(props) {
       </div>
       {templateData.length ? (
         <div className="row no-gutters">
-          <SuperAdminPropertiesTable
+          <PropertiesTable
             templateData={templateData}
             handleOpen={handleOpen}
             handleDeleteModal={handleDeleteModal}

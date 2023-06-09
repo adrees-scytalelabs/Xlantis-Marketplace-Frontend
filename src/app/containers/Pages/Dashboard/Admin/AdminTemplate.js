@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
+import PropertiesTable from "../../../../components/tables/PropertiesTable";
 
 function AdminTemplate(props) {
   const [templateData, setTemplateData] = useState([]);
@@ -56,7 +56,7 @@ function AdminTemplate(props) {
       </div>
       {templateData.length ? (
         <div className="row no-gutters">
-          <SuperAdminPropertiesTable
+          <PropertiesTable
             templateData={templateData}
             handleOpen={handleOpen}
             handleDeleteModal={handleOpen}
