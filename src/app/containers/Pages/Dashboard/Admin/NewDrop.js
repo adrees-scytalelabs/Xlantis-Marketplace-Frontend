@@ -204,6 +204,7 @@ function NewDrop(props) {
                 saleType: saleType,
                 nftType: nftType,
                 marketplaceId: props.marketplaceId,
+                dropCategory: category,
               },
             });
           })

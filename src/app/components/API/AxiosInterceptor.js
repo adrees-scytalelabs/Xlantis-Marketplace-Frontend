@@ -493,6 +493,12 @@ export const getAdminEarnings = () => {
   return Axios.get(`/earnings/admin`);
 };
 
+export const getCollectionsByCategories = (categoryName, marketPlaceId) => {
+  return Axios.get(
+    `/collection/category/${categoryName}?marketplaceId=${marketPlaceId}`
+  );
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {
