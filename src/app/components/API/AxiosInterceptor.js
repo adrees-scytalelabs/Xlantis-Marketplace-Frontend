@@ -452,6 +452,10 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
+export const getBbalanceSpentHistory = () => {
+  return Axios.get(`/balance-history/my-history`);
+};
+
 //DELETE REQUESTS
 
 export const deleteBatch = (batchId) => {

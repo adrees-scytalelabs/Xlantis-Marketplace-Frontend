@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BalanceSpentModal from "../../../../components/Modals/BalanceSpentModal";
 import BalanceSpentHistoryTable from "../../../../components/tables/BalanceSpentHistoryTable";
+import { getBbalanceSpentHistory } from "../../../../components/API/AxiosInterceptor";
 
 const styles = {
   noMaxWidth: {
@@ -45,7 +46,25 @@ const BalanceSpentHistoryPageAdmin = (props) => {
     setShowBalanceSpentModal(true);
   };
 
+  const getBalanceHistory = () => {
+    getBbalanceSpentHistory()
+      .then((response) => {
+        console.log(
+          "Response from getting admin's balance spent history: ",
+          response
+        );
+        setBalanceHistory(response.data.history);
+      })
+      .catch((error) => {
+        console.log(
+          "Error from getting admin's balance spent history: ",
+          error
+        );
+      });
+  };
+
   useEffect(() => {
+    getBalanceHistory();
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -94,6 +113,7 @@ const BalanceSpentHistoryPageAdmin = (props) => {
       <BalanceSpentModal
         show={showBalanceSpentModal}
         handleClose={handleCloseBalanceSpentModal}
+        balanceHistory={balanceHistory}
       />
     </div>
   );
