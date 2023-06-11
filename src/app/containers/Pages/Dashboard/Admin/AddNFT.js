@@ -34,6 +34,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 
 const styles = {
   root: {
@@ -140,6 +141,7 @@ function AddNFT(props) {
   const [amount, setAmount] = useState(0.1);
   const [topUpModal, setTopUpModal] = useState(false);
   const [requiredAmount, setRequiredAmount] = useState(0);
+  const [isCollectionDisable, setIsCollectionDisable] = useState(false);
 
   const handleCloseTopUpModal = () => {
     setTopUpModal(false);
@@ -161,10 +163,11 @@ function AddNFT(props) {
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
-    getCollections(location.state.nftType,location.state.marketplaceId).then(
+    getCollections(location.state.nftType, location.state.marketplaceId).then(
       (response) => {
+        // console.log("Response from getting collections: ", response);
         setChangeCollectionList(response.data.collectionData);
-        setCollectionTypes(...collectionTypes, response.data.collectionData);
+        setCollectionTypes(response.data.collectionData);
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -232,7 +235,7 @@ function AddNFT(props) {
     );
   };
   let getNfts = (id) => {
-    getNFTsThroughId(id,location.state.marketplaceId).then(
+    getNFTsThroughId(id, location.state.marketplaceId).then(
       (response) => {
         const nft = response.data.data;
         setNftList(response.data.data);
@@ -304,7 +307,12 @@ function AddNFT(props) {
 
   const getNFTsInDrop = (dropId) => {
     handleShowBackdrop();
-    getNFTsFromDropPaginatedWOBody(dropId, 0, 1000,location.state.marketplaceId)
+    getNFTsFromDropPaginatedWOBody(
+      dropId,
+      0,
+      1000,
+      location.state.marketplaceId
+    )
       .then((response) => {
         console.log("Response from getting drop NFTs: ", response);
         if (response.data.data.length > 0) {
@@ -324,12 +332,25 @@ function AddNFT(props) {
   const handleRemoveNFT = (e, nftId, index) => {
     e.preventDefault();
     handleShowBackdrop();
+    console.log("Removing NFTs: ", nftId, index);
     deleteNFTFromDrop(nftId)
       .then((response) => {
         // console.log("Response from deleting nft from drop: ", response);
         let list = [...tokenList];
         list.splice(index, 1);
         setTokenList(list);
+        if (list.length === 0) {
+          setIsCollectionDisable(false);
+          setCollection("");
+          setCollectionId("");
+          setNftContractAddress("");
+          setCollectionTypes([]);
+          getCollection();
+          setGrid(false);
+          setIsAdded(false);
+        } else {
+          getNfts(collectionId);
+        }
         setSnackbarMessage("NFT Removed Successfully");
         setSnackbarSeverity("success");
         handleSnackbarOpen();
@@ -692,7 +713,7 @@ function AddNFT(props) {
           setIsDisabled(true);
           setEnableTime(true);
           let variant = "success";
-          setSnackbarMessage("Transaction Summary received.");
+          setSnackbarMessage("Drop Updated Successfully.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           // if (response.data.isTopupRequired) {
@@ -834,6 +855,7 @@ function AddNFT(props) {
                 setDropInfo(dropp);
               }
 
+              setIsCollectionDisable(true);
               let variant = "success";
               setSnackbarMessage("NFT Added Successfully.");
               setSnackbarSeverity(variant);
@@ -843,10 +865,8 @@ function AddNFT(props) {
               setNftURI("");
               setTokenId("");
               setNftTokenSupply(0);
-              setCollection("");
-              setCollectionId("");
-              setNftContractAddress("");
               setNftList([]);
+              getNfts(collectionId);
               setNftDetail({});
               setPrice(0);
               setSupply(1);
@@ -995,7 +1015,7 @@ function AddNFT(props) {
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">New NFT</h3>
+            <h3 className="page-title">Add NFT</h3>
             <ul className="breadcrumb">
               <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
@@ -1012,10 +1032,10 @@ function AddNFT(props) {
           <div className="col-md-12 col-lg-6">
             <form>
               <div className="form-group" key={key}>
-                <AutocompleteAddNft
+                <CollectionAutocomplete
                   label={"Select Collection"}
                   options={collectionTypes}
-                  isDisabled={isDisabled}
+                  isDisabled={isCollectionDisable}
                   placeholder="Select Collection"
                   onChange={(e, value) => {
                     if (value == null) {
@@ -1031,6 +1051,7 @@ function AddNFT(props) {
                     }
                   }}
                   type="collection"
+                  collectionName={collection}
                 />
 
                 <AutocompleteAddNft
@@ -1056,7 +1077,7 @@ function AddNFT(props) {
                 />
                 {nftName != "" && (
                   <div
-                    className="mb-3"
+                    className="mb-4"
                     style={{ height: "270px", width: "230px" }}
                   >
                     {console.log("nft detailssss", nftDetail)}

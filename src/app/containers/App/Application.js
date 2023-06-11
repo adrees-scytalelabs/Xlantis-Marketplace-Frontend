@@ -32,6 +32,8 @@ function App() {
   let isVerified;
   let version;
   var jwtDecoded;
+  let isInfoAdded = Cookies.get("InfoAdded");
+  // console.log("Is info added: ", isInfoAdded);
   let jwt = sessionStorage.getItem("Authorization");
   console.log("jwtjwtjwt: ", jwt);
   if (jwt && jwt !== null) jwtDecoded = jwtDecode(jwt);
@@ -119,8 +121,8 @@ function App() {
     return (
       jwtDecoded && isLoggedIn && jwtDecoded.role === "super-admin" ? (
         <Navigate to="/superAdminDashboard" />
-      ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ||
-        version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && jwtDecoded.role === "admin" ? (
+      ) : version === "v1-sso" && jwtDecoded && isLoggedIn && isVerified && isInfoAdded && jwtDecoded.role === "admin" ||
+        version === "v2-wallet-login" && jwtDecoded && isLoggedIn && isVerified && isInfoAdded && jwtDecoded.role === "admin" ? (
           <Navigate to="/dashboard" />
       ) : path === "/checkout" ? (
         <CheckoutScreen />
@@ -134,7 +136,7 @@ function App() {
         <AdminSSORedirect />
       ) : path === "/updatRequestSent" ? (
         <UpdateRequestSent />
-      ) : path === "/marketPlace" ? (
+      ) : path === "/:marketPlace/marketPlace" ? (
         <MarketPlace />
       ) : path === "/auctionDrops" ? (
         <AuctionDrops />
@@ -144,9 +146,9 @@ function App() {
         <Success />
       ) : path === "/usd_payment/failed" ? (
         <Failed />
-      ) : path === "/fixdropnft/:dropId" ? (
+      ) : path === "/:marketPlace/fixdropnft/:dropId" ? (
         <FixedPriceDropNFTs />
-      ) : path === "/fixedDropNFTHome/:singleNFTid" ? (
+      ) : path === "/:marketPlace/fixedDropNFTHome/:singleNFTid" ? (
         <FixedDropSingleNFTHome />
       ) : path === "/user/settings" && jwtDecoded && isLoggedIn && jwtDecoded.role === "user"  ? (
         <UserSettings />
@@ -164,7 +166,7 @@ function App() {
         <BrowserRouter>
           <Routes>
             <Route path="/*" element={<LoginRegisterRedirectCheck exact path="/" />} />
-            <Route path="/marketPlace" element={<LoginRegisterRedirectCheck exact path="/marketPlace" />} />
+            <Route path="/:marketPlace/marketPlace" element={<LoginRegisterRedirectCheck exact path="/:marketPlace/marketPlace" />} />
             <Route path="/user-account" element={<LoginRegisterRedirectCheck exact path="/user-account" />} />
             <Route path="/super-admin-account" element={<LoginRegisterRedirectCheck exact path="/super-admin-account" />} />
             <Route path="/admin-account" element={<LoginRegisterRedirectCheck exact path="/admin-account" />} />
@@ -175,16 +177,15 @@ function App() {
             <Route path="/usd_payment/failed" element={<LoginRegisterRedirectCheck exact path="/usd_payment/failed" />} />
             <Route path="/auctionDrops" element={<LoginRegisterRedirectCheck exact path="/auctionDrops" />} />
             <Route path="/:marketPlace" element={<LoginRegisterRedirectCheck exact path="/:marketPlace" />} />
-            <Route path="/fixedDropNFTHome/:singleNFTid" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome/:singleNFTid" />} />
+            <Route path="/:marketPlace/fixedDropNFTHome/:singleNFTid" element={<LoginRegisterRedirectCheck exact path="/:marketPlace/fixedDropNFTHome/:singleNFTid" />} />
             <Route path="/fixedDropNFTHome" element={<LoginRegisterRedirectCheck exact path="/fixedDropNFTHome" />} />
-            <Route path="/fixdropnft/:dropId" element={<LoginRegisterRedirectCheck exact path="/fixdropnft/:dropId" />} />
+            <Route path="/:marketPlace/fixdropnft/:dropId" element={<LoginRegisterRedirectCheck exact path="/:marketPlace/fixdropnft/:dropId" />} />
             <Route path="/users/emailverification/:email/:token" element={<EmailVerification />} />
             <Route path="/termsandconditions" element={<TermsAndConditions />} />
             <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="/dashboard/*" element={<PrivateRoute path="/dashboard/*" />} />
             <Route path="/superAdminDashboard/*" element={<PrivateRoute path="/superAdminDashboard/*" />} />
             <Route path="/user/settings" element={<LoginRegisterRedirectCheck exact path="/user/settings" />} />
-            <Route path="/admin/settings" element={<LoginRegisterRedirectCheck exact path="/admin/settings" />} />
           </Routes>
         </BrowserRouter>
     </AuthContextProvider>

@@ -9,6 +9,7 @@ import {
   createNewBatch,
   deleteBatch,
   deleteNFTFromBatch,
+  getAdminProfileDetails,
   getAdminsDefaultTemplates,
   getSavedTemplates,
   getStandardTemplate,
@@ -17,7 +18,7 @@ import {
   sendVoucherForLazyMint,
   updateCollectionIdInBatch,
   updateNFT,
-  uploadImage
+  uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import RemoveNft from "../../../../components/Cards/RemoveNft";
@@ -38,6 +39,7 @@ import CreateNFTContract from "../../../../components/blockchain/Abis/Collectibl
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
+
 const styles = {
   root: {
     flexGrow: 1,
@@ -173,6 +175,7 @@ function NewNFT(props) {
   const [NFTType, setNFTType] = useState("1155");
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
   const [useEffectLoader, setUseEffectLoader] = useState(false);
+  const [adminData, setAdminData] = useState({});
 
   const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
@@ -189,8 +192,8 @@ function NewNFT(props) {
 
   let getCollections = (collectionType) => {
     // setCollection("");
-    let marketplaceId = props.marketplaceId
-    dispatch(getNewNftCollection({collectionType,marketplaceId}));
+    let marketplaceId = props.marketplaceId;
+    dispatch(getNewNftCollection({ collectionType, marketplaceId }));
     // console.log("collectionResp",collectionData);
     if (collectionType === "1155") {
       setChangeCollectionList(collectionData);
@@ -199,7 +202,19 @@ function NewNFT(props) {
   };
   useEffect(() => {
     getCollections(NFTType);
+    getAdminProfile();
   }, [loading]);
+
+  const getAdminProfile = () => {
+    getAdminProfileDetails()
+      .then((response) => {
+        // console.log("Response from getting admin profile: ", response);
+        setAdminData(response.data.userData);
+      })
+      .catch((error) => {
+        console.log("Error from getting admin profile: ", error);
+      });
+  };
 
   const handleSetProperties = (availableProperties) => {
     let prop = [];
@@ -332,9 +347,9 @@ function NewNFT(props) {
       setIsSaving(false);
     } else {
       let variant = "success";
-      setSnackbarMessage("Nfts Created Successfully.");
-      setSnackbarSeverity(variant);
-      handleSnackbarOpen();
+      props.setSnackbarMessage("Batch Created Successfully.");
+      props.setSnackbarSeverity(variant);
+      props.handleSnackbarOpen();
       Cookies.remove("Batch-ID");
       Cookies.remove("NFT-Detail");
       setTokenList([]);
@@ -447,19 +462,24 @@ function NewNFT(props) {
   };
   const handleRemoveClick = (index) => {
     if (tokenList.length === 1) {
+      handleShowBackdrop();
       deleteBatch(batchId)
         .then((response) => {
+          handleCloseBackdrop();
           Cookies.remove("NFT-Detail");
           Cookies.remove("Batch-ID");
           setTokenList([]);
           setBatchId("");
         })
         .catch((error) => {
+          handleCloseBackdrop();
           console.log("Error on deleting response: ", error);
         });
     } else {
+      handleShowBackdrop();
       deleteNFTFromBatch(tokenList[index].nftId)
         .then((response) => {
+          handleCloseBackdrop();
           const list = [...tokenList];
           list.splice(index, 1);
           Cookies.remove("NFT-Detail");
@@ -467,6 +487,7 @@ function NewNFT(props) {
           setTokenList(list);
         })
         .catch((error) => {
+          handleCloseBackdrop();
           console.log("Error for delete nft from batch: ", error);
         });
     }
@@ -517,6 +538,13 @@ function NewNFT(props) {
         name: name,
         description: description,
         image: nftURI,
+        properties: properties,
+        collection: { name: collection },
+        creator: {
+          address: adminData?.walletAddress,
+          name: adminData?.username,
+          profileImage: adminData?.imageURL,
+        },
       };
       const reader = new window.FileReader();
       const blob = new Blob([JSON.stringify(metaData, null, 2)], {
@@ -552,7 +580,7 @@ function NewNFT(props) {
             totalSupply: tokenSupply,
             supplyType: supplyType,
             properties: propertiesObject,
-            marketplaceId:props.marketplaceId
+            marketplaceId: props.marketplaceId,
           };
 
           if (previewImageURI !== "") {
@@ -595,7 +623,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    marketplaceId:props.marketplaceId,
+                    marketplaceId: props.marketplaceId,
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                     nftFormat: imageType,
@@ -627,7 +655,7 @@ function NewNFT(props) {
                     supplytype: supplyType,
                     collectionId: collectionId,
                     nftId: response.data.nftId,
-                    marketplaceId:props.marketplaceId,
+                    marketplaceId: props.marketplaceId,
                     previewImageURI: previewImageURI,
                   },
                 ]);
@@ -635,7 +663,7 @@ function NewNFT(props) {
                 let cookieData = [
                   ...tokenList,
                   {
-                    properties:properties,
+                    properties: properties,
                     ipfsHash: ipfsHash,
                     nftURI: nftURI,
                     title: name,
@@ -644,7 +672,7 @@ function NewNFT(props) {
                     collectiontitle: collection,
                     supplytype: supplyType,
                     collectionId: collectionId,
-                    marketplaceId:props.marketplaceId,
+                    marketplaceId: props.marketplaceId,
                     nftId: response.data.nftId,
                     previewImageURI: previewImageURI,
                   },
@@ -673,12 +701,16 @@ function NewNFT(props) {
           setRarity("");
           setTokenSupply(1);
           setSupplyType("Single");
+          setTemplate("default");
           setIpfsHash("");
           setIsGlbFile(false);
           setIsMp3File(false);
           let variant = "success";
           setSnackbarMessage("Meta Data Uploaded to IPFS.");
           setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          setSnackbarMessage("NFT Has Been Added to Batch");
+          setSnackbarSeverity("success");
           handleSnackbarOpen();
           setIsUploadingData(false);
           handleCloseBackdrop();

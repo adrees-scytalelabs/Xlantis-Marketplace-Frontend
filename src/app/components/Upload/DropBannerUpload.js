@@ -1,5 +1,7 @@
+import { Tooltip, Typography } from "@mui/material";
 import React from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
+import InfoIcon from '@mui/icons-material/Info';
 
 const DropBannerUpload = ({ isUploading, onChangeBanner, bannerURL }) => {
   return (
@@ -13,7 +15,7 @@ const DropBannerUpload = ({ isUploading, onChangeBanner, bannerURL }) => {
               height: "350px",
             }}
           >
-            <div style={{marginTop:'10%'}}>
+            <div style={{ marginTop: "10%" }}>
               <WhiteSpinner />
             </div>
           </div>
@@ -24,6 +26,19 @@ const DropBannerUpload = ({ isUploading, onChangeBanner, bannerURL }) => {
       <div className="co-12 col-md-auto">
         <label htmlFor="uploadDropBanner" className="uploadLabel">
           {isUploading ? <WhiteSpinner /> : "Choose File"}
+        </label>
+        <label className="ml-2">
+          <Tooltip
+            title={
+              <Typography fontSize={18}>
+                This Image is shown as the cover of the drop
+              </Typography>
+            }
+          >
+            <span style={{ fontSize: "0.9rem" }}>
+              <InfoIcon/>
+            </span>
+          </Tooltip>
         </label>
         <input
           name="sampleFile"

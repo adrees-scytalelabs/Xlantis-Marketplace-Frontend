@@ -128,6 +128,7 @@ function AdminDashboard(props) {
       }
     }
   }, [socket, userId]);
+
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
     let userIdentity = sessionStorage.getItem("userId");
@@ -136,6 +137,7 @@ function AdminDashboard(props) {
       getNotifications(0, 10);
     }
   }, [notificationLoading]);
+  
   function getNotifications(start, end) {
     dispatch(getHeaderNotification({ start, end, setNotificationsList }));
     // setNotificationsList(notification);
@@ -375,9 +377,13 @@ function AdminDashboard(props) {
                 <MenuItem onClick={handleClose}>
                   <Link
                     onClick={() => {
-                      sessionStorage.clear();
                       sessionStorage.removeItem("Address");
+                      sessionStorage.removeItem("Authorization");
+                      Cookies.remove("InfoAdded");
+                      Cookies.remove("Verified");
+                      Cookies.remove("Version");
                       Cookies.remove("PNT");
+                      sessionStorage.clear();
                       window.location.reload(false);
                     }}
                     to="/"
@@ -419,6 +425,9 @@ function AdminDashboard(props) {
               element={
                 <NewNFT
                   setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }
@@ -451,6 +460,9 @@ function AdminDashboard(props) {
               element={
                 <NewDrop
                   setActiveTab={setActiveTab}
+                  handleSnackbarOpen={handleSnackbarOpen}
+                  setSnackbarMessage={setSnackbarMessage}
+                  setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
                 />
               }

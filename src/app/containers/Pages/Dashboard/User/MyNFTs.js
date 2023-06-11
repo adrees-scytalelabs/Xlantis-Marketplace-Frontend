@@ -2,10 +2,10 @@ import { Grid, TablePagination } from '@mui/material';
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import { getUserNFTS } from '../../../../components/API/AxiosInterceptor';
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { myNft } from "../../../../redux/myNftSlice";
 
 function MyNFTs(props) {
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -13,7 +13,7 @@ function MyNFTs(props) {
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
-  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
+  // const { nftData, nftCount, loading } = useSelector((store) => store.myNftUser);
   const dispatch = useDispatch();
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -24,21 +24,30 @@ function MyNFTs(props) {
 
   let getMyNFTs = (start, end) => {
     handleShowBackdrop();
-    dispatch(myNft({ start, end }));
-    if (loading === 1) {
-      setTokenList(nftData);
-      setTotalNfts(nftCount);
+    getUserNFTS(0,100).then((response) => {
+      console.log("Response of NFTs: ", response);
+      setTokenList(response.data.NFTdata);
+      handleCloseBackdrop();
+    })
+    .catch((error) => {
+      console.log("Error from getting admins: ", error);
+      handleCloseBackdrop();    
+    });
+    // dispatch(myNftUser({ start, end }));
+    // if (loading === 1) {
+    //   setTokenList(nftData);
+    //   setTotalNfts(nftCount);
 
-      handleCloseBackdrop();
-    }
-    else if (loading === 2) {
-      handleCloseBackdrop();
-    }
+    //   handleCloseBackdrop();
+    // }
+    // else if (loading === 2) {
+    //   handleCloseBackdrop();
+    // }
   };
 
   useEffect(() => {
     getMyNFTs(0, rowsPerPage);
-  }, [loading]);
+  }, []);
 
   useEffect(() => {
     props.setActiveTab({

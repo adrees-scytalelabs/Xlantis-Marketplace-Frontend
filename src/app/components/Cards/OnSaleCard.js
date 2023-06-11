@@ -1,26 +1,42 @@
-import OpenInNewIcon from '@mui/icons-material/OpenInNew';
-import { Alert, Card, CardContent, CardMedia, Typography, useMediaQuery } from '@mui/material';
-import React from "react";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import {
+  Alert,
+  Card,
+  CardContent,
+  CardMedia,
+  Typography,
+  useMediaQuery,
+} from "@mui/material";
+import React, { useEffect } from "react";
 import Countdown from "react-countdown";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { truncate } from "../../assets/js/utils";
-import { Astranaut } from '../ImageURLs/URLs';
+import { defaultProfile } from "../ImageURLs/URLs";
 
 const OnSaleCard = (props) => {
+  const { marketPlace } = useParams();
+  const alertStyle = {
+    height: "60px",
+    display: "flex",
+    alignItems: "center",
+  };
   const matchScrn = useMediaQuery("(max-width: 991px)");
-  console.log("propsprops", props);
+  useEffect(() => {
+    console.log("Data of props", props);
+  }, [props]);
   return (
     <div className="col-12 p-2">
       <Card id="marketCardProps">
         <div className="row no-gutters mdColHeight">
           <Link
-            to={`/fixdropnft/${props.i._id}`}
+            to={`/${marketPlace}/fixdropnft/${props.i._id}`}
             state={{
               saleType: props.i.saleType,
               description: props.i.description,
               bannerURL: props.i.bannerURL,
               imageURL: props.i.image,
-              dropTitle: props.i.title
+              dropTitle: props.i.title,
+              marketplaceId: props.marketplaceId,
             }}
             style={{ width: "100%" }}
           >
@@ -51,7 +67,7 @@ const OnSaleCard = (props) => {
                         }}
                       >
                         <img
-                          src={Astranaut}
+                          src={defaultProfile}
                           alt="a sample nft"
                           style={{
                             width: "75px",
@@ -63,13 +79,15 @@ const OnSaleCard = (props) => {
                     </Link>
                   </div>
                   <div className="col-8 w-100 text-right align-self-end">
-
                     <Link
-                      to={`/fixdropnft/${props.i._id}`}
+                      to={`/${marketPlace}/fixdropnft/${props.i._id}`}
                       state={{
                         saleType: props.i.saleType,
-                        startTime: props.i.startTime,
-                        endTime: props.i.endTime
+                        description: props.i.description,
+                        bannerURL: props.i.bannerURL,
+                        imageURL: props.i.image,
+                        dropTitle: props.i.title,
+                        marketplaceId: props.marketplaceId,
                       }}
                     >
                       <button className="exploreBtn">
@@ -79,164 +97,187 @@ const OnSaleCard = (props) => {
                         </span>
                       </button>
                     </Link>
-
                   </div>
                 </div>
               </div>
             </div>
-          </Link>
-          <CardContent style={{ paddingBottom: 16, width: "100%" }}>
-            <div
-              style={{ minHeight: "60px" }}
-            >
-              <div className="align-self-start">
-                <div className='text-center'>
+            <CardContent style={{ paddingBottom: 16, width: "100%" }}>
+              <div style={{ minHeight: "60px" }}>
+                <div className="align-self-start">
+                  <div className="text-center">
+                    <Typography
+                      variant="h6"
+                      component="p"
+                      sx={{
+                        color: "#fff",
+                        fontFamily: "orbitron",
+                        fontWeight: "bold",
+                        textTransform: "capitalize",
+                        marginTop: "0rem",
+                        fontSize: "12px",
+                        lineHeight: 1,
+                      }}
+                    >
+                      {truncate(props.i.title, 15)}
+                    </Typography>
+                  </div>
                   <Typography
-                    variant="h6"
+                    variant="body2"
                     component="p"
                     sx={{
-                      color: "#fff",
-                      fontFamily: "orbitron",
-                      fontWeight: "bold",
-                      textTransform: "capitalize",
-                      marginTop: "0rem",
+                      color: "#999",
+                      fontFamily: "inter",
                       fontSize: "12px",
-                      lineHeight: 1,
                     }}
                   >
-                    {truncate(props.i.title, 15)}
+                    {truncate(props.i.description, 50)}
                   </Typography>
                 </div>
-                <Typography
-                  variant="body2"
-                  component="p"
-
-                  sx={{
-                    color: "#999",
-                    fontFamily: "inter",
-                    fontSize: "12px",
-                  }}
-                >
-                  {truncate(props.i.description, 50)}
-                </Typography>
               </div>
-
-            </div>
-            <div className=" text-right">
-              <p className="nftPrice mb-0 p-0">
-                {props.i.NFTIds.length > 1
-                  ? `${props.i.NFTIds.length} NFTs`
-                  : `${props.i.NFTIds.length} NFT`}
-              </p>
-            </div>
-            <Typography
-              variant="h6"
-              gutterBottom
-              color="textSecondary"
-              className="text-center"
-            >
-
-              {new Date() < new Date(props.i.startTime) ? (
-                <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="info"
-                    sx={matchScrn ? {
-                      justifyContent: "center",
-                      fontSize: "12px",
-                    } : {
-                      justifyContent: "center",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    <span
-                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+              <div className=" text-right">
+                <p className="nftPrice mb-0 p-0">
+                  {props.i.NFTIds.length > 1
+                    ? `${props.i.NFTIds.length} NFTs`
+                    : `${props.i.NFTIds.length} NFT`}
+                </p>
+              </div>
+              <Typography
+                variant="h6"
+                gutterBottom
+                color="textSecondary"
+                className="text-center"
+              >
+                {new Date() < new Date(props.i.startTime) ? (
+                  <div style={{ marginTop: "1rem" }}>
+                    <Alert
+                      severity="info"
+                      sx={
+                        matchScrn
+                          ? {
+                              justifyContent: "center",
+                              fontSize: "12px",
+                            }
+                          : {
+                              justifyContent: "center",
+                              fontSize: "1rem",
+                            }
+                      }
                     >
-                      Sale Starts At
-                    </span>
-                    <br></br>
-                    <span>
-                      <Countdown
-
-                        date={new Date(props.i.startTime)}
-                        style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
-                          if (props.days == 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
-                          }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
-                      ></Countdown>
-                    </span>
-                  </Alert>
-                </div>
-              ) : new Date() > new Date(props.i.startTime) &&
-                new Date() < new Date(props.i.endTime) ? (
-                <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="warning"
-                    sx={matchScrn ? {
-                      justifyContent: "center",
-                      fontSize: "12px",
-                    } : {
-                      justifyContent: "center",
-                      fontSize: "1rem",
+                      <span
+                        style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                      >
+                        Sale Starts At
+                      </span>
+                      <br></br>
+                      <span>
+                        <Countdown
+                          date={new Date(props.i.startTime)}
+                          style={{ fontFamily: "orbitron" }}
+                          renderer={(props) => {
+                            if (props.days == 0) {
+                              return (
+                                <span>
+                                  {props.hours}:{props.minutes}:{props.seconds}
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span>
+                                  {props.days} days {props.hours} hr
+                                </span>
+                              );
+                            }
+                          }}
+                        ></Countdown>
+                      </span>
+                    </Alert>
+                  </div>
+                ) : new Date() > new Date(props.i.startTime) &&
+                  new Date() < new Date(props.i.endTime) ? (
+                  <Typography
+                    variant="body2"
+                    style={{
+                      marginTop: "1rem",
                     }}
+                    component="p"
                   >
-                    <span
-                      style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                    <Alert
+                      severity="warning"
+                      sx={
+                        matchScrn
+                          ? {
+                              justifyContent: "center",
+                              fontSize: "12px",
+                            }
+                          : {
+                              justifyContent: "center",
+                              fontSize: "1rem",
+                            }
+                      }
+                      style={alertStyle}
                     >
-                      Sale Ends At
-                    </span>
-                    <br></br>
-                    <span>
-                      <Countdown
-
-                        date={new Date(props.i.endTime)}
-                        style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
-                          if (props.days == 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
-                          }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
-                      ></Countdown>
-                    </span>
-                  </Alert>
-                </div>
-              ) : (
-                <Typography
-                  variant="body2"
-                  style={{
-                    marginTop: "1rem",
-                  }}
-                  component="p"
-                >
-                  <Alert
-                    severity="error"
-                    sx={matchScrn ? {
-                      justifyContent: "center",
-                      fontSize: "12px",
-                    } : {
-                      justifyContent: "center",
-                      fontSize: "1rem",
+                      <span
+                        style={{ fontFamily: "orbitron", fontWeight: "bold" }}
+                      >
+                        Sale Ends In
+                      </span>
+                      <br></br>
+                      <span>
+                        <Countdown
+                          date={new Date(props.i.endTime)}
+                          style={{ fontFamily: "orbitron" }}
+                          renderer={(props) => {
+                            if (props.days == 0) {
+                              return (
+                                <span>
+                                  {props.hours}:{props.minutes}:{props.seconds}
+                                </span>
+                              );
+                            } else {
+                              return (
+                                <span>
+                                  {props.days} days {props.hours} hr
+                                </span>
+                              );
+                            }
+                          }}
+                        ></Countdown>
+                      </span>
+                    </Alert>
+                  </Typography>
+                ) : (
+                  <Typography
+                    variant="body2"
+                    style={{
+                      marginTop: "1rem",
                     }}
-                    style={{ fontWeight: "bold" }}
+                    component="p"
                   >
-                    Sale Ended
-                  </Alert>
-                </Typography>
-              )}
-            </Typography>
-          </CardContent>
+                    <Alert
+                      severity="error"
+                      sx={
+                        matchScrn
+                          ? {
+                              justifyContent: "center",
+                              fontSize: "12px",
+                            }
+                          : {
+                              justifyContent: "center",
+                              fontSize: "1rem",
+                            }
+                      }
+                      style={{ ...alertStyle, fontWeight: "bold" }}
+                    >
+                      Sale Ended
+                    </Alert>
+                  </Typography>
+                )}
+              </Typography>
+            </CardContent>
+          </Link>
         </div>
-      </Card >
-    </div >
+      </Card>
+    </div>
   );
 };
 

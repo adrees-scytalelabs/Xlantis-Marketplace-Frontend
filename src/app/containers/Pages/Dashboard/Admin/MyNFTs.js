@@ -1,13 +1,17 @@
-
-import { Grid, TablePagination, ThemeProvider, createTheme } from '@mui/material';
+import {
+  Grid,
+  TablePagination,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from 'react-redux';
 import { Link } from "react-router-dom";
+import { getMyNFTsPaginated } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import { myNft } from "../../../../redux/myNftSlice";
 const useStyles = {
   root: {
     borderRadius: 12,
@@ -24,7 +28,7 @@ const useStyles = {
     fontWeight: "bold",
     fontFamily: "poppins",
   },
-}
+};
 
 const makeTheme = createTheme({
   overrides: {
@@ -67,8 +71,20 @@ function MyNFTs(props) {
   const [tokenList, setTokenList] = useState([]);
   const [open, setOpen] = useState(false);
   const [, setVersionB] = useState("");
-  const { nftData, nftCount, loading } = useSelector((store) => store.myNft);
-  const dispatch = useDispatch();
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -76,23 +92,31 @@ function MyNFTs(props) {
     setOpen(true);
   };
   let getMyNFTs = (start, end) => {
-    let marketplaceId = props.marketplaceId
-    dispatch(myNft({ start, end,marketplaceId }));
     handleShowBackdrop();
-    let nfts = nftData;
-    console.log("data from redx", nftData, nftCount);
-    let newState = nfts.map((obj) => {
-      return { ...obj, isPlaying: false };
-    });
-    setTokenList(newState);
-    setTotalNfts(nftCount);
+    let marketplaceId = props.marketplaceId;
 
-    handleCloseBackdrop();
+    getMyNFTsPaginated(start, end, marketplaceId)
+      .then((response) => {
+        console.log("Response from getting my nfts: ", response);
+        let newState = response.data.NFTdata.map((obj) => {
+          return { ...obj, isPlaying: false };
+        });
+        setTokenList(newState);
+        setTotalNfts(response?.data?.NFTdata.length);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from getting my nfts: ", error);
+        setSnackbarMessage("Error Fetching NFTs");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        handleCloseBackdrop();
+      });
   };
 
   useEffect(() => {
     getMyNFTs(0, rowsPerPage);
-  }, [loading]);
+  }, []);
 
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
@@ -181,6 +205,12 @@ function MyNFTs(props) {
           />
         </div>
       </ThemeProvider>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

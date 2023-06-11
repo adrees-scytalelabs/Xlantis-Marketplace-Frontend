@@ -1,6 +1,6 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Badge, Paper, Popper } from "@mui/material";
+import { Badge, Paper, Popper,ClickAwayListener } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from "ethers";
@@ -43,7 +43,6 @@ import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
-  const { marketPlace } = useParams();
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [userSignOut] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -56,6 +55,7 @@ function HeaderHome(props) {
     "https://e7.pngegg.com/pngimages/753/432/png-clipart-user-profile-2018-in-sight-user-conference-expo-business-default-business-angle-service.png"
   );
   let location = useLocation();
+  const { marketPlace } = useParams();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
@@ -269,7 +269,7 @@ function HeaderHome(props) {
       let signer = provider.getSigner();
       console.log("account", account);
       const address = await signer.getAddress();
-      const message = `Welcome to RobotDrop! \n\nClick to sign in and accept the RobotDrop Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
+      const message = `Welcome to Xlantis! \n\nClick to sign in and accept the Xlantis Terms of Service: https://RobotDrop.io/tos \n\nThis request will not trigger a blockchain transaction or cost any gas fees.\n\nYour authentication status will reset after 24 hours. \n\nWallet address: ${address}`;
       console.log("Address: ", await signer.getAddress());
       let signatureHash = await web3.eth.personal.sign(message, address);
       console.log("Signature hash ", signatureHash);
@@ -506,7 +506,11 @@ function HeaderHome(props) {
             </li>
             {marketPlace !== undefined && (
               <li>
-                <Link to="/marketPlace" style={{ color: "#fff" }}>
+                <Link
+                  to={`/${marketPlace}/marketPlace`}
+                  state={{ marketplaceId: props.marketplaceId }}
+                  style={{ color: "#fff" }}
+                >
                   <span
                     className={hoverClassStyleTest(props.selectedNav).Market}
                     style={selectedNavStyle.Market}
@@ -682,15 +686,14 @@ function HeaderHome(props) {
               </>
             ) : (
               <>
-                {marketPlace !== undefined && (
-                  <span
-                    className={hoverClassStyleTest(props.selectedNav).Community}
-                    style={selectedNavStyle.Community}
-                    onClick={handleOpenModal}
-                  >
-                    Login/SignUp
-                  </span>
-                )}
+                <span
+                  className={hoverClassStyleTest(props.selectedNav).Community}
+                  style={selectedNavStyle.Community}
+                  onClick={handleOpenModal}
+                >
+                  Login/SignUp
+                </span>
+
                 {userSignOut && <Navigate to="/" />}
               </>
             )}
@@ -719,42 +722,49 @@ function HeaderHome(props) {
           <li>
             {sessionStorage.getItem("Address") ||
             (jwtDecoded !== undefined && jwtDecoded.role === "user") ? (
-              <div>
-                <Badge
-                  color="secondary"
-                  badgeContent={notificationsList.length}
-                >
-                  <NotificationsIcon
-                    type="button"
-                    onClick={(event) => {
-                      setAnchorElPopper(
-                        anchorElPopper ? null : event.currentTarget
-                      );
+              <ClickAwayListener
+                onClickAway={() => {
+                  setAnchorElPopper(null);
+                }}
+              >
+                <div>
+                  <Badge
+                    color="secondary"
+                    badgeContent={notificationsList.length}
+                  >
+                    <NotificationsIcon
+                      type="button"
+                      onClick={(event) => {
+                        setAnchorElPopper(
+                          anchorElPopper ? null : event.currentTarget
+                        );
+                      }}
+                    />
+                  </Badge>
+
+                  <Popper
+                    key={notificationsList}
+                    id={openPopper ? "simple-popper" : undefined}
+                    open={openPopper}
+                    anchorEl={anchorElPopper}
+                    placement="bottom-end"
+                    style={{
+                      zIndex: 2500,
+                      paddingTop: 15,
                     }}
-                  />
-                </Badge>
-                <Popper
-                  key={notificationsList}
-                  id={openPopper ? "simple-popper" : undefined}
-                  open={openPopper}
-                  anchorEl={anchorElPopper}
-                  placement="bottom-end"
-                  style={{
-                    zIndex: 2500,
-                    paddingTop: 15,
-                  }}
-                >
-                  <div>
-                    <Paper elevation={10} variant="outlined" square>
-                      <NotificationList
-                        itemCount={notificationsList.length}
-                        notifications={notificationsList}
-                        close={readNotification}
-                      />
-                    </Paper>
-                  </div>
-                </Popper>
-              </div>
+                  >
+                    <div>
+                      <Paper elevation={10} variant="outlined" square>
+                        <NotificationList
+                          itemCount={notificationsList.length}
+                          notifications={notificationsList}
+                          close={readNotification}
+                        />
+                      </Paper>
+                    </div>
+                  </Popper>
+                </div>
+              </ClickAwayListener>
             ) : null}
           </li>
         </ul>

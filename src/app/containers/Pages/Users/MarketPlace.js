@@ -3,13 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
-import {
-  getMarketAuction,
-  getMarketFixedPrice,
-} from "../../../redux/getMarketPlaceDataSlice";
+import { getMarketAuction } from "../../../redux/getMarketPlaceDataSlice";
 import { Grid } from "@mui/material";
+import { useLocation } from "react-router-dom";
+import { getMarketFixedPrice } from "../../../components/API/AxiosInterceptor";
 
 function MarketPlace(props) {
+  let location = useLocation();
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
   const [open, setOpen] = useState(false);
@@ -26,23 +26,16 @@ function MarketPlace(props) {
 
   let getCubes = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketFixedPrice({ start, end }));
-    if (fixedPriceLoading) {
-      for (let i = 0; i < fixedPriceData.length; i++) {
-        if (
-          fixedPriceData[i].status === "active" ||
-          fixedPriceData[i].status === "pending"
-        ) {
-          setFixedPriceDrop((prevValue) => {
-            return [...prevValue, fixedPriceData[i]];
-          });
-        }
-      }
-      // setFixedPriceDrop(fixedPriceData);
-      handleCloseBackdrop();
-    } else if (fixedPriceLoading === 2) {
-      handleCloseBackdrop();
-    }
+    let marketplaceId = location.state.marketplaceId;
+    getMarketFixedPrice(start, end, marketplaceId)
+      .then((response) => {
+        setFixedPriceDrop(response.data.data);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error in fixed price drop data", error.data);
+        handleCloseBackdrop();
+      });
   };
 
   let getBidableDrops = (start, end) => {
@@ -90,6 +83,7 @@ function MarketPlace(props) {
                       fixedPriceDropLength={fixedPriceDrop.length}
                       bidableDrop={bidableDrop}
                       bidableDropLength={bidableDrop.length}
+                      marketplaceId={location.state.marketplaceId}
                       open={open}
                     />
                   </Grid>

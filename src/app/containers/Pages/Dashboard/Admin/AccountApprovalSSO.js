@@ -1,7 +1,7 @@
 import { TablePagination } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { getUnverifiedAdminsV1Paginated } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
@@ -10,7 +10,6 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
-import { getSuperAdminUnverifiedType1 } from "../../../../redux/getUnverifiedAccountsDataSLice";
 
 function AccountApprovalSSO(props) {
   const [admins, setAdmins] = useState([]);
@@ -20,10 +19,6 @@ function AccountApprovalSSO(props) {
   const [page, setPage] = useState(0);
   const [show, setShow] = useState(false);
   const [open, setOpen] = useState(false);
-  const { unverifiedType1Data, unverifiedType1Loading } = useSelector(
-    (store) => store.getUnverifiedAccountsData
-  );
-  const dispatch = useDispatch();
 
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -34,14 +29,20 @@ function AccountApprovalSSO(props) {
 
   const getUnverifiedAdminsSSO = (start, end) => {
     setOpen(true);
-    dispatch(
-      getSuperAdminUnverifiedType1({ setAdmins, setAdminCount, start, end })
-    );
-    if (unverifiedType1Loading === 1) {
-      setOpen(false);
-    } else if (unverifiedType1Loading === 2) {
-      setOpen(false);
-    }
+    getUnverifiedAdminsV1Paginated(start, end)
+      .then((response) => {
+        console.log("Response from getting unverified admins: ", response);
+        setAdmins(response?.data?.unverifiedAdmins);
+        setAdminCount(response?.data?.unverifiedAdmins.length + adminCount);
+        setOpen(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting unverified admins: ", error);
+        setSnackbarMessage("Error Fetching SSO Admins");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setOpen(false);
+      });
   };
 
   const handleVerify = (e, verifyAdminId) => {
@@ -56,7 +57,7 @@ function AccountApprovalSSO(props) {
         handleCloseBackdrop();
         getUnverifiedAdminsSSO(0, rowsPerPage);
         let variant = "success";
-        setSnackbarMessage("Admin Verified Successfully.");
+        setSnackbarMessage("Admin Approved Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
       },
@@ -74,7 +75,7 @@ function AccountApprovalSSO(props) {
 
   useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
-  }, [unverifiedType1Loading]);
+  }, [rowsPerPage]);
 
   useEffect(() => {
     props.setActiveTab({
@@ -96,7 +97,7 @@ function AccountApprovalSSO(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -138,7 +139,12 @@ function AccountApprovalSSO(props) {
         adminData={modalData}
         setShow={setShow}
       />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

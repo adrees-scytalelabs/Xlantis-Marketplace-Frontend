@@ -32,7 +32,7 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
           placeholder="0"
           className="form-control newNftInput"
           onChange={(e) => {
-            if (e.target.value >= 0) {
+            if (e.target.value >= 0 && e.target.value <= 100) {
               setRoyaltyFee(e.target.value);
             }
           }}

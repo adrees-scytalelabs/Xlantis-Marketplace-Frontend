@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import {
+  deleteSuperAdminTemplate,
+  getSuperAdminTemplates,
+} from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import SuperAdminPropertiesTable from "../../../../components/tables/SuperAdminPropertiesTable";
-import { getSavedTemplatesData } from "../../../../redux/getSavedTemplateDataSlice";
-import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function SavedTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -29,10 +31,7 @@ function SavedTemplate(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
-  const { templatesData, loading } = useSelector(
-    (store) => store.getSavedTemplateData
-  );
-  const dispatch = useDispatch();
+
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -58,9 +57,27 @@ function SavedTemplate(props) {
   };
   const deleteResponse = async (data) => {
     try {
-      handleClose();
+      // console.log("Data for delete is: ", data);
+      deleteSuperAdminTemplate(data._id)
+        .then((response) => {
+          console.log("Response from deleting template: ", response);
+          let variant = "success";
+          setSnackbarMessage("Template deleted successfully");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          handleClose();
+        })
+        .catch((error) => {
+          console.log("Error from deleting template: ", error);
+          handleClose();
+        });
     } catch (e) {
       console.log("Error during deletion", e);
+      let variant = "error";
+      setSnackbarMessage("Error in deleting Template");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+      handleClose();
     }
   };
   const handleDeleteTemplate = async (e) => {
@@ -70,30 +87,39 @@ function SavedTemplate(props) {
   let handleSavedTemplate = async () => {
     handleShowBackdrop();
     try {
-      dispatch(getSavedTemplatesData());
-      if (loading === 1) {
-        setTemplateData(templatesData);
-        handleCloseBackdrop();
-      } else if (loading === 2) {
-        handleCloseBackdrop();
-        let variant = "error";
-        setSnackbarMessage("Unable to Create Template.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      }
+      getSuperAdminTemplates()
+        .then((response) => {
+          console.log(
+            "Response from getting super admin templates: ",
+            response
+          );
+          setTemplateData(response.data.templates);
+          handleCloseBackdrop();
+        })
+        .catch((error) => {
+          console.log("Error from getting super admin templates: ", error);
+          let variant = "error";
+          setSnackbarMessage("Error fetching Templates.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          handleCloseBackdrop();
+        });
     } catch (e) {
       console.log("Error in axios request to create template", e);
     }
   };
+
   const handleUpdatedData = (e, data) => {
     e.preventDefault();
     setModalData(data);
     setUpdateModal(false);
     setModalState(true);
   };
+
   useEffect(() => {
     handleSavedTemplate();
-  }, [loading]);
+  }, []);
+
   useEffect(() => {
     setDeleteState("");
 
@@ -109,6 +135,7 @@ function SavedTemplate(props) {
       saved: "active",
     });
   }, [modalData]);
+
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">

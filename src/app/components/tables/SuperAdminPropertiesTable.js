@@ -1,5 +1,5 @@
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
 import Table from "react-bootstrap/Table";
 
@@ -42,12 +42,11 @@ const styles = {
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
   },
-}
+};
 function SuperAdminPropertiesTable(props) {
-
   return (
     <Table responsive>
-      <thead style={{color:'black'}}>
+      <thead style={{ color: "black" }}>
         <tr>
           <th style={styles.tableHeader}>
             <div className="row no-gutters justify-content-start align-items-center">
@@ -70,7 +69,7 @@ function SuperAdminPropertiesTable(props) {
         </tr>
       </thead>
       {props.templateData.map((i, index) => (
-        <tbody style={{color:'white'}}>
+        <tbody style={{ color: "white" }}>
           <tr>
             <td style={styles.collectionTitle}>{i.name}</td>
             <td style={styles.collectionTitle}>
@@ -94,7 +93,7 @@ function SuperAdminPropertiesTable(props) {
                     color="action"
                     style={{ color: "red" }}
                     onClick={(e) => props.handleDeleteModal(e, i)}
-                  ></DeleteIcon>
+                  />
                 </button>
               </span>
               <span className="ml-1">
@@ -102,7 +101,7 @@ function SuperAdminPropertiesTable(props) {
                   <EditIcon
                     style={{ color: `green` }}
                     onClick={(e) => props.handleUpdatedData(e, i)}
-                  ></EditIcon>
+                  />
                 </button>
               </span>
             </td>

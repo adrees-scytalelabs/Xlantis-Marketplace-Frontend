@@ -13,11 +13,13 @@ import AllTransactions from "./AllTransactions";
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
   let handleLogout = (e) => {
-    sessionStorage.clear();
-    sessionStorage.removeItem("Authorization");
     sessionStorage.removeItem("Address");
+    sessionStorage.removeItem("Authorization");
+    Cookies.remove("InfoAdded");
+    Cookies.remove("Verified");
     Cookies.remove("Version");
-
+    Cookies.remove("PNT");
+    sessionStorage.clear();
     window.location.reload(false);
   };
 
@@ -39,10 +41,7 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.earnings}>
-              <Link
-                to={`${props.match}/earnings`}
-                className="sidebarLink"
-              >
+              <Link to={`${props.match}/earnings`} className="sidebarLink">
                 <CurrencyExchangeIcon />
                 <span>Earning</span>
               </Link>
@@ -113,7 +112,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.topupHistory}>
               <Link to={`${props.match}/topup-history`}>
-                <HistoryIcon /> <span>Top-up Hsitory</span>
+                <HistoryIcon /> <span>Top-up History</span>
               </Link>
             </li>
             <li className={props.activeTab.balanceSpentHistory}>

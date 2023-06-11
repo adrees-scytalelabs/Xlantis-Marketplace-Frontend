@@ -1,11 +1,11 @@
 import Cookies from "js-cookie";
 import React, { useCallback, useEffect, useState } from "react";
 import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import {
   updateAdminProfileSSO,
   updateUserProfileVersioned,
-  uploadImage
+  uploadImage,
 } from "../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 import { defaultProfile } from "../../../components/ImageURLs/URLs";
@@ -48,7 +48,9 @@ function SettingDashboardDefault(props) {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
   const { userData, loading } = useSelector((store) => store.userProfile);
-  const { adminUserData, adminLoading } = useSelector((store) => store.getAdminProfileData);
+  const { adminUserData, adminLoading } = useSelector(
+    (store) => store.getAdminProfileData
+  );
   const dispatch = useDispatch();
 
   const [profileImage, setProfileImage] = useState(
@@ -62,7 +64,7 @@ function SettingDashboardDefault(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -145,12 +147,10 @@ function SettingDashboardDefault(props) {
     dispatch(getUserProfile());
     setName(userData.username);
     setBio(userData.bio);
-    userData.imageURL &&
-      setProfileImage(userData.imageURL);
-    userData.bannerURL &&
-      setBannerImage(userData.bannerURL);
+    userData.imageURL && setProfileImage(userData.imageURL);
+    userData.bannerURL && setBannerImage(userData.bannerURL);
     setEmail(userData.email);
-    setWalletAddress(userData.walletAddress)
+    setWalletAddress(userData.walletAddress);
   };
 
   const getAdminProfile = async () => {
@@ -158,8 +158,7 @@ function SettingDashboardDefault(props) {
     console.log("dispatchResp", adminUserData);
     setAdminOldData(adminUserData);
     setProfileImage(adminUserData.imageURL);
-    adminUserData.bannerURL &&
-      setBannerImage(adminUserData.bannerURL);
+    adminUserData.bannerURL && setBannerImage(adminUserData.bannerURL);
     setAdminCompanyName(adminUserData.companyName);
     setAdminDesignation(adminUserData.designation);
     setAdminDomain(adminUserData.domain);
@@ -186,7 +185,6 @@ function SettingDashboardDefault(props) {
       setSnackbarMessage("Please fill all editable fields");
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
-
     } else {
       setShowConfirmationModal(true);
     }
@@ -205,7 +203,6 @@ function SettingDashboardDefault(props) {
         setSnackbarMessage("Data Updated Succesfully");
         setSnackbarSeverity("success");
         handleSnackbarOpen();
-
       })
       .catch((error) => {
         console.log("Error from updating admin data: ", error);
@@ -458,7 +455,12 @@ function SettingDashboardDefault(props) {
         updateData={updateData}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

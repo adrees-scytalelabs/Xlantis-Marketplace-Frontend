@@ -1,25 +1,21 @@
+import { Grid, Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import EarningsImage from "../../../../assets/img/EarningsImage.png";
-import { Grid, Tooltip, Typography } from "@mui/material";
-import LineChartComponent from "../../../../components/Charts/LineChartComponent";
 import TrendingUpIcon from "@mui/icons-material/TrendingUp";
+import LineChartComponent from "../../../../components/Charts/LineChartComponent";
 import {
-  getAdminEarnings,
-  getMaticBalance,
+  getSuperAdminBalance,
+  getSuperAdminEarnings,
 } from "../../../../components/API/AxiosInterceptor";
-import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
-const AdminEarnings = (props) => {
-  const [balance, setBalance] = useState(0);
-  const [earnings, setEarnings] = useState({
-    royaltyEarnings: 0,
-    nftEarnings: 0,
-    totalEarnings: 0,
-  });
-  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
+const SuperAdminEarningsPage = (props) => {
+  const [earnings, setEarnings] = useState(0);
+  const [balanceUSD, setBalanceUSD] = useState(0);
   const [isLoadingEarnings, setIsLoadingEarnings] = useState(false);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
 
   //for snackbar
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -49,43 +45,37 @@ const AdminEarnings = (props) => {
     { time: "2018-12-31", value: 22.67 },
   ];
 
+  const getEarnings = () => {
+    setIsLoadingEarnings(true);
+    getSuperAdminEarnings()
+      .then((response) => {
+        // console.log("Response from getting super admin earnings: ", response);
+        setEarnings(response?.data?.earnings);
+        setIsLoadingEarnings(false);
+      })
+      .catch((error) => {
+        console.log("Error from getting super admin earnings: ", error);
+        setSnackbarMessage("Error Fetching Earnings");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingEarnings(false);
+      });
+  };
+
   const getBalance = () => {
     setIsLoadingBalance(true);
-    getMaticBalance()
+    getSuperAdminBalance()
       .then((response) => {
-        setBalance(response.data?.balanceInUsd);
+        // console.log("Response from getting super admin balance: ", response);
+        setBalanceUSD(response.data?.superAdmin?.usd);
         setIsLoadingBalance(false);
       })
       .catch((error) => {
-        console.log("Error from getting matic balance: ", error);
+        console.log("Error from getting super admin balance: ", error);
         setSnackbarMessage("Error fetching balance");
         setSnackbarSeverity("error");
         handleSnackbarOpen();
         setIsLoadingBalance(false);
-      });
-  };
-
-  const getEarnings = () => {
-    setIsLoadingEarnings(true);
-    getAdminEarnings()
-      .then((response) => {
-        // console.log("Response from getting admin earnings: ", response);
-        if (
-          response?.data?.message &&
-          response?.data?.message === "admin has no earnings"
-        ) {
-          setEarnings({ royaltyEarnings: 0, nftEarnings: 0, totalEarnings: 0 });
-        } else {
-          setEarnings(response?.data);
-        }
-        setIsLoadingEarnings(false);
-      })
-      .catch((error) => {
-        console.log("Error from getting admin earnings: ", error);
-        setSnackbarMessage("Error fetching earnings");
-        setSnackbarSeverity("error");
-        handleSnackbarOpen();
-        setIsLoadingEarnings(false);
       });
   };
 
@@ -94,20 +84,18 @@ const AdminEarnings = (props) => {
     getEarnings();
     props.setActiveTab({
       dashboard: "",
+      manageAccounts: "",
+      accountApproval: "",
+      accounts: "",
+      sso: "",
+      wallet: "",
+      properties: "",
+      template: "",
+      saved: "",
+      adminStats: "",
       earnings: "active",
-      newCollection: "",
-      myCollections: "",
-      newNFT: "",
-      myNFTs: "",
-      marketplace: "",
-      newDrop: "",
-      myDrops: "",
-      topUp: "",
-      topupHistory: "",
-      categories: "",
     });
   }, []);
-
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -146,7 +134,7 @@ const AdminEarnings = (props) => {
                       ) : (
                         <h1 className="col">
                           <span style={{ fontFamily: "Orbitron" }}>
-                            ${balance.toFixed(2)}
+                            ${balanceUSD.toFixed(2)}
                           </span>
                         </h1>
                       )}
@@ -167,98 +155,7 @@ const AdminEarnings = (props) => {
             </Grid>
           </Grid>
         </div>
-        <div className="row mt-4">
-          <Grid container spacing={1}>
-            <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-              <div className="border border-white">
-                <div className="row">
-                  <div className="col-4 d-flex justify-content-center align-items-center">
-                    <TrendingUpIcon fontSize="large" className="h-75 w-75" />
-                  </div>
-                  <div className="col-8">
-                    <div className="col-12 d-flex flex-column justify-content-end align-items-end">
-                      <div>
-                        {isLoadingEarnings ? (
-                          <div className="col mt-2">
-                            <WhiteSpinner />
-                          </div>
-                        ) : (
-                          <h1 className="col">
-                            <span
-                              style={{ fontFamily: "Orbitron" }}
-                              className="text-xl text-white font-weight-bold"
-                            >
-                              ${earnings?.royaltyEarnings}
-                            </span>
-                          </h1>
-                        )}
-                      </div>
-                      <div>
-                        <h1 className="col">
-                          <span
-                            style={{
-                              fontFamily: "Inter",
-                              color: "#f64d04",
-                              fontSize: "30px",
-                            }}
-                            className="font-weight-light"
-                          >
-                            Royalty Earnings
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Grid>
-            <Grid item xs={12} sm={12} md={5} lg={5} xl={5}>
-              <div className="border border-white">
-                <div className="row">
-                  <div className="col-4 d-flex justify-content-center align-items-center">
-                    <TrendingUpIcon
-                      // fontSize="large"
-                      className="h-75 w-75"
-                    />
-                  </div>
-                  <div className="col-8">
-                    <div className="col-12 d-flex flex-column justify-content-end align-items-end">
-                      <div>
-                        {isLoadingEarnings ? (
-                          <div className="col mt-2">
-                            <WhiteSpinner />
-                          </div>
-                        ) : (
-                          <h1 className="col">
-                            <span
-                              style={{ fontFamily: "Orbitron" }}
-                              className="text-xl text-white font-weight-bold"
-                            >
-                              ${earnings?.nftEarnings}
-                            </span>
-                          </h1>
-                        )}
-                      </div>
-                      <div>
-                        <h1 className="col">
-                          <span
-                            style={{
-                              fontFamily: "Inter",
-                              color: "#f64d04",
-                              fontSize: "30px",
-                            }}
-                            className="font-weight-light"
-                          >
-                            NFT Earnings
-                          </span>
-                        </h1>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Grid>
-          </Grid>
+        <div className="row">
           <Grid container spacing={1} className="mt-2">
             <Grid item xs={12} sm={12} md={10} lg={10} xl={10}>
               <div className="border border-white">
@@ -279,7 +176,7 @@ const AdminEarnings = (props) => {
                               style={{ fontFamily: "Orbitron" }}
                               className="text-xl text-white font-weight-bold"
                             >
-                              ${earnings?.totalEarnings}
+                              ${earnings}
                             </span>
                           </h1>
                         )}
@@ -337,4 +234,4 @@ const AdminEarnings = (props) => {
   );
 };
 
-export default AdminEarnings;
+export default SuperAdminEarningsPage;

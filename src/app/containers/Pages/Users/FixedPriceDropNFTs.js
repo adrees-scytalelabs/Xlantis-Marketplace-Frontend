@@ -8,6 +8,7 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
+import { DropBannerDefaultImage, defaultProfile } from "../../../components/ImageURLs/URLs";
 const styles = {
   root: {
     flexGrow: 1,
@@ -58,6 +59,7 @@ const cardStyles = {
 };
 
 const FixedPriceDropNFTs = () => {
+  const { marketPlace } = useParams();
   const [userSaleData, setUserSaledata] = useState([]);
   const [cubeData, setCubeData] = useState([]);
   const [userAuctionData, setUserAuctiondata] = useState([]);
@@ -67,10 +69,10 @@ const FixedPriceDropNFTs = () => {
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
   const [titleImage, setTitleImage] = useState(
-    "https://img.freepik.com/free-vector/hand-drawn-nft-style-ape-illustration_23-2149612179.jpg?w=740&t=st=1670524324~exp=1670524924~hmac=868b189caf4ef548da17b5063405f5159f880265c7d6b7cc4abf919861ae391a"
+    defaultProfile
   );
   const [bannerImage, setBannerImage] = useState(
-    "https://images.unsplash.com/photo-1590845947670-c009801ffa74?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1459&q=80"
+    DropBannerDefaultImage
   );
   let navigate = useNavigate();
   const dropID = useParams();
@@ -90,19 +92,24 @@ const FixedPriceDropNFTs = () => {
   };
 
   const handleGoBack = () => {
-    navigate(`/marketPlace`);
+    console.log("Market Place Id before back", location.state.marketplaceId);
+    navigate(`/${marketPlace}`, {
+      state: {
+        marketplaceId: location.state.marketplaceId,
+      },
+    });
   };
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-
-    getNFTsFromDropPaginatedWOBody(dropId, start, end)
+    let marketplaceId = location.state.marketplaceId
+    getNFTsFromDropPaginatedWOBody(dropId, start, end,marketplaceId)
       .then((response) => {
-        console.log("data from backend",response);
+        console.log("data from backend", response);
         setDropData(response.data.data);
-        setOrderListing(response.data.orderListingData)
+        setOrderListing(response.data.orderListingData);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -115,6 +122,7 @@ const FixedPriceDropNFTs = () => {
   };
 
   useEffect(() => {
+    console.log("Market Place id in", location.state.marketplaceId);
     getNFTs(dropID.dropId, 0, 4);
     setTitleImage(location.state.imageURL);
     setBannerImage(location.state.bannerURL);
@@ -186,10 +194,8 @@ const FixedPriceDropNFTs = () => {
                   justifyContent="flex-start"
                   style={{ marginBottom: "24px" }}
                 >
-                  {
-                   dropData.length!==0 &&
+                  {dropData.length !== 0 &&
                     dropData?.map((i, index) => (
-                    
                       <Grid
                         item
                         xs={12}
@@ -212,6 +218,7 @@ const FixedPriceDropNFTs = () => {
                           endTime={endTime}
                           classes={styles}
                           cardClasses={cardStyles}
+                          marketplaceId={location.state.marketplaceId}
                         />
                       </Grid>
                     ))}

@@ -8,10 +8,13 @@ import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
 function AdminSidebar(props) {
   let navigate = useNavigate();
   let handleLogout = (e) => {
-    sessionStorage.clear();
     sessionStorage.removeItem("Address");
     sessionStorage.removeItem("Authorization");
+    Cookies.remove("InfoAdded");
+    Cookies.remove("Verified");
     Cookies.remove("Version");
+    Cookies.remove("PNT");
+    sessionStorage.clear();
 
     navigate({ pathname: "/" });
     window.location.reload(false);
@@ -41,7 +44,7 @@ function AdminSidebar(props) {
             </li>
             <li className={props.activeTab.topUp}>
               <Link to={`/dashboard/topUp`}>
-              <AttachMoneyIcon/> <span>Top Up</span>
+                <AttachMoneyIcon /> <span>Top Up</span>
               </Link>
             </li>
             <li className={props.activeTab.topupHistory}>

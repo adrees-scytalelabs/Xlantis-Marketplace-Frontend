@@ -18,10 +18,11 @@ export const getMarketFixedPrice = createAsyncThunk(
       if (version === undefined) {
         endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`;
       } else {
-        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}`;
+        endpoint = `/drop/saleType/fixed-price/${name.start}/${name.end}?marketplaceId=${name.marketplaceId}`;
       }
 
       const resp = await axios(endpoint);
+      name.setFixedPriceDrop(resp.data.data)
       return resp.data;
     } catch (error) {
       if (process.env.NODE_ENV === "development") {

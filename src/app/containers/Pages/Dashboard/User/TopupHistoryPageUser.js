@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { getTopUpHistoryOfUser } from "../../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import TopupHistoryTable from "../../../../components/tables/TopupHistoryTabke";
 
@@ -35,12 +36,14 @@ const styles = {
 
 const TopupHistoryPageUser = (props) => {
   const [topupHistory, setTopupHistory] = useState([]);
-
+  const [open, setOpen] = useState(false);
   const getTopUpHistory = () => {
+    setOpen(true);
     getTopUpHistoryOfUser()
       .then((response) => {
         console.log("Response from getting top up history of user: ", response);
         setTopupHistory(response.data.topupHistory);
+        setOpen(false);
       })
       .catch((error) => {
         console.log("Error from getting top up history of user: ", error);
@@ -73,32 +76,35 @@ const TopupHistoryPageUser = (props) => {
   }, []);
 
   return (
-    <div className="backgroundDefault">
-      <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
-        <div className="row">
-          <div className="col-sm-12">
-            <h3 className="page-title">Top-up History</h3>
-            <ul className="breadcrumb">
-              <li className="breadcrumb-item slash">
-                <Link style={{ color: "#777" }} to="/dashboard">
-                  Dashboard
-                </Link>
-              </li>
-              <li className="breadcrumb-item active">Top-up History</li>
-            </ul>
+    <>
+      <div className="backgroundDefault">
+        <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
+          <div className="row">
+            <div className="col-sm-12">
+              <h3 className="page-title">Top-up History</h3>
+              <ul className="breadcrumb">
+                <li className="breadcrumb-item slash">
+                  <Link style={{ color: "#777" }} to="/dashboard">
+                    Dashboard
+                  </Link>
+                </li>
+                <li className="breadcrumb-item active">Top-up History</li>
+              </ul>
+            </div>
           </div>
         </div>
+        <div>
+          {/* LOADING TABLE */}
+          {topupHistory.length > 0 ? (
+            <TopupHistoryTable topupHistory={topupHistory} styles={styles} />
+          ) : (
+            // IF THERE IS NOT ROW FOR TABLE
+            <MessageCard msg="No history yet" />
+          )}
+        </div>
       </div>
-      <div>
-        {/* LOADING TABLE */}
-        {topupHistory.length > 0 ? (
-          <TopupHistoryTable topupHistory={topupHistory} styles={styles} />
-        ) : (
-          // IF THERE IS NOT ROW FOR TABLE
-          <MessageCard msg="No history yet" />
-        )}
-      </div>
-    </div>
+      <CircularBackdrop open={open} />
+    </>
   );
 };
 
