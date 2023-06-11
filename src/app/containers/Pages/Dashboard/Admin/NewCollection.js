@@ -130,7 +130,57 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    if (royaltyFee >= 0 || royaltyFee <= 100) {
+    if (fileURL === defaultProfile) {
+      let variant = "error";
+      setSnackbarMessage("Please Add Preview Image.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionName === "" ||
+      collectionName === undefined ||
+      collectionName === null ||
+      collectionName === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Enter Collection Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionSymbol === "" ||
+      collectionSymbol === undefined ||
+      collectionSymbol === null ||
+      collectionSymbol === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Enter Collection Symbol.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionDescription === "" ||
+      collectionDescription === undefined ||
+      collectionDescription === null ||
+      collectionDescription === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Add Collection Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      category === "" ||
+      category === undefined ||
+      category === null ||
+      category === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Select a Category.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (royaltyFee <= 0 || royaltyFee >= 100) {
+      let variant = "error";
+      setSnackbarMessage("Royalty Fee range is from 0 to 100.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else {
       // setIsSaving(true);
 
       handleShowBackdrop();
@@ -272,11 +322,6 @@ function NewCollection(props) {
             });
         }
       }
-    } else {
-      let variant = "error";
-      setSnackbarMessage("Royalty Fee range is from 0 to 100.");
-      setSnackbarSeverity(variant);
-      handleSnackbarOpen();
     }
   };
 
