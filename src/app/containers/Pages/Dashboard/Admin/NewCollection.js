@@ -5,6 +5,7 @@ import Web3 from "web3";
 import {
   approveCollection,
   createNewCollection,
+  getCategoriesList,
   updateCollectionTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -24,6 +25,7 @@ import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
+import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 
 function NewCollection(props) {
   const navigate = useNavigate();
@@ -73,13 +75,27 @@ function NewCollection(props) {
   const [royaltyFee, setRoyaltyFee] = useState(null);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState("");
 
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
+  const getCategories = () => {
+    getCategoriesList()
+      .then((response) => {
+        console.log("Response from getting categories list: ", response);
+        setCategoriesList(response.data.categories);
+      })
+      .catch((error) => {
+        console.log("Error from getting categories list: ", error);
+      });
+  };
+
   useEffect(() => {
     setVersion(Cookies.get("Version"));
     console.log("Market Place id", props.marketplaceId);
+    getCategories();
     props.setActiveTab({
       dashboard: "",
       newCollection: "active",
@@ -128,6 +144,7 @@ function NewCollection(props) {
       fileData.append("royaltyFee", royaltyFee);
       fileData.append("contractType", nftType);
       fileData.append("marketplaceId", props.marketplaceId);
+      fileData.append("category", category);
 
       let royaltyBlockchain = royaltyFee * 10000;
 
@@ -628,7 +645,20 @@ function NewCollection(props) {
                     placeholder="Enter Description of Collection"
                     setDescription={setCollectionDescription}
                   />
-
+                  <AutocompleteAddNft
+                    label="Select Category"
+                    options={categoriesList}
+                    placeholder={"Select Category"}
+                    onChange={(e, newValue) => {
+                      if (newValue == "") {
+                        setCategory();
+                      } else {
+                        console.log("New value is: ", newValue);
+                        setCategory(newValue);
+                      }
+                    }}
+                    type="category"
+                  />
                   <SelectRoyaltyFee
                     RoyaltyFeeText={RoyaltyFeeText}
                     values={royaltyFee}
@@ -665,7 +695,7 @@ function NewCollection(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      ></NetworkErrorModal>
+      />
       <RequestApprovalModal
         show={approvalModalShow}
         handleClose={handleApprovalModalClose}

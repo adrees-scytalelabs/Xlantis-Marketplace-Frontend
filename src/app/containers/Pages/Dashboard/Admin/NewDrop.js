@@ -5,7 +5,7 @@ import { Link, useNavigate, useResolvedPath } from "react-router-dom";
 import Web3 from "web3";
 import {
   createNewDrop,
-  getDropCategories,
+  getCategoriesList,
   uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -91,7 +91,7 @@ function NewDrop(props) {
   const navigate = useNavigate();
 
   const getCategories = () => {
-    getDropCategories()
+    getCategoriesList()
       .then((response) => {
         console.log("Getting drop categories: ", response);
         setCategoriesList(response.data.categories);

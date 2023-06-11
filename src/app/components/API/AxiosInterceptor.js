@@ -463,7 +463,7 @@ export const getMaticBalance = () => {
   return Axios.get(`/wallet-analytics/funds/`);
 };
 
-export const getDropCategories = () => {
+export const getCategoriesList = () => {
   return Axios.get(`/drop/categories`);
 };
 
