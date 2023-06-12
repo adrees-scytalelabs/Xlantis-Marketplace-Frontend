@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { getBalanceSpentHistory } from "../../../../components/API/AxiosInterceptor";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BalanceSpentModal from "../../../../components/Modals/BalanceSpentModal";
 import BalanceSpentHistoryTable from "../../../../components/tables/BalanceSpentHistoryTable";
-import { getBbalanceSpentHistory } from "../../../../components/API/AxiosInterceptor";
 
 const styles = {
   noMaxWidth: {
@@ -47,7 +47,7 @@ const BalanceSpentHistoryPageAdmin = (props) => {
   };
 
   const getBalanceHistory = () => {
-    getBbalanceSpentHistory()
+    getBalanceSpentHistory()
       .then((response) => {
         console.log(
           "Response from getting admin's balance spent history: ",

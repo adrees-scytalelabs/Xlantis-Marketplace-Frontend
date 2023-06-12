@@ -481,7 +481,7 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
-export const getBbalanceSpentHistory = () => {
+export const getBalanceSpentHistory = () => {
   return Axios.get(`/balance-history/my-history`);
 };
 
