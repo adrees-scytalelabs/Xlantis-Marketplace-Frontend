@@ -178,7 +178,8 @@ function CollectionAutocomplete({
                   {...props}
                 >
                   <img
-                    width="20"
+                    width="50px"
+                    height="40px"
                     src={option.thumbnail}
                     srcSet={option.thumbnail}
                     alt=""
