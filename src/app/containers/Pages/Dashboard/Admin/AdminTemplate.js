@@ -8,12 +8,14 @@ import {
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import DeleteModal from "../../../../components/Modals/DeleteModal";
+import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import PropertiesTable from "../../../../components/tables/PropertiesTable";
 
 function AdminTemplate(props) {
   const [templateData, setTemplateData] = useState([]);
+  const [newTemplateModalShow, setNewTemplateModalShow] = useState(false);
   const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -23,6 +25,14 @@ function AdminTemplate(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [useEffectLoader, setUseEffectLoader] = useState(false);
+  let handleNewTemplateModalClose = () => {
+    setNewTemplateModalShow(false);
+  }
+  let handleNewTemplateModalOpen = () => {
+    setNewTemplateModalShow(true);
+  };
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -114,7 +124,7 @@ function AdminTemplate(props) {
       topUp: "",
       templates: "active",
     });
-  }, []);
+  }, [useEffectLoader]);
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
@@ -133,7 +143,7 @@ function AdminTemplate(props) {
         </div>
       </div>
       <div>
-        <Button className="bttn mb-4 mt-3">Create Template</Button>
+        <Button className="bttn mb-4 mt-3" onClick={() => handleNewTemplateModalOpen()}>Create Template</Button>
       </div>
       {templateData.length ? (
         <div className="row no-gutters">
@@ -162,6 +172,12 @@ function AdminTemplate(props) {
         show={deleteState}
         handleClose={handleClose}
         handleDelete={handleDeleteTemplate}
+      />
+      <NewTamplateModal
+        handleClose={handleNewTemplateModalClose}
+        show={newTemplateModalShow}
+        useEffectLoader={useEffectLoader}
+        setUseEffectLoader={setUseEffectLoader}
       />
       <NotificationSnackbar
         open={snackbarOpen}
