@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -42,11 +42,11 @@ export const uploadImage = (body) => {
 };
 
 export const createNewAdminTemplates = (body) => {
-  return Axios.post(`/nft-properties/admin/template`, body);
+  return Axios.post(`/nft-properties/template`, body);
 };
 
-export const createNewSuperAdminTemplates = (body) => {
-  return Axios.post(`/super-admin/template`, body);
+export const createNewTemplates = (body) => {
+  return Axios.post(`/nft-properties/template`, body);
 };
 
 export const topUpAmount = (body) => {
