@@ -42,11 +42,11 @@ export const uploadImage = (body) => {
 };
 
 export const createNewAdminTemplates = (body) => {
-  return Axios.post(`/nft-properties/admin/template`, body);
+  return Axios.post(`/nft-properties/template`, body);
 };
 
-export const createNewSuperAdminTemplates = (body) => {
-  return Axios.post(`/super-admin/template`, body);
+export const createNewTemplates = (body) => {
+  return Axios.post(`/nft-properties/template`, body);
 };
 
 export const topUpAmount = (body) => {

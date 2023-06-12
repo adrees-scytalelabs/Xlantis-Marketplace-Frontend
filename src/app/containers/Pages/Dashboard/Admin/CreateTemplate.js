@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  createNewSuperAdminTemplates,
+  createNewTemplates,
   getIsAvailableTemplates,
 } from "../../../../components/API/AxiosInterceptor";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
@@ -14,7 +14,7 @@ function CreateTemplate(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -77,7 +77,7 @@ function CreateTemplate(props) {
       data: properties,
     };
     try {
-      createNewSuperAdminTemplates(templateData)
+      createNewTemplates(templateData)
         .then((response) => {
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
@@ -194,7 +194,12 @@ function CreateTemplate(props) {
           </div>
         </div>
       </div>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }
