@@ -9,16 +9,17 @@ import {
   addNFTToDrop,
   deleteNFTFromDrop,
   finalizeDrop,
-  getCollections,
+  getCollectionsByCategories,
   getNFTsFromDropPaginatedWOBody,
   getNFTsThroughId,
   getValidateAdminBalance,
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash,
+  updateDropTxHash
 } from "../../../../components/API/AxiosInterceptor";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
+import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
@@ -34,7 +35,6 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
-import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 
 const styles = {
   root: {
@@ -163,13 +163,17 @@ function AddNFT(props) {
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
-    getCollections(location.state.nftType, location.state.marketplaceId).then(
+    getCollectionsByCategories(
+      location.state.dropCategory,
+      location.state.marketplaceId
+    ).then(
       (response) => {
-        // console.log("Response from getting collections: ", response);
+        console.log("Response from getting collections: ", response);
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(response.data.collectionData);
       },
       (error) => {
+        console.log("Error from getting collections: ", error);
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);

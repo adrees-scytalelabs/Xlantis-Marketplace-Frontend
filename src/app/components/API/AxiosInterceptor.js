@@ -463,7 +463,7 @@ export const getMaticBalance = () => {
   return Axios.get(`/wallet-analytics/funds/`);
 };
 
-export const getDropCategories = () => {
+export const getCategoriesList = () => {
   return Axios.get(`/drop/categories`);
 };
 
@@ -491,6 +491,12 @@ export const getSuperAdminEarnings = () => {
 
 export const getAdminEarnings = () => {
   return Axios.get(`/earnings/admin`);
+};
+
+export const getCollectionsByCategories = (categoryName, marketPlaceId) => {
+  return Axios.get(
+    `/collection/category/${categoryName}?marketplaceId=${marketPlaceId}`
+  );
 };
 
 //DELETE REQUESTS
