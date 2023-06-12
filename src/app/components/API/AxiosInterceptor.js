@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `https://raindrop-backend.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  //baseURL: `https://raindrop-backend.herokuapp.com/`,
+   baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -121,6 +121,9 @@ export const setSuperAdminPlatformFee = (body) => {
 
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
+};
+export const updateTemplate = (templateId,body) => {
+  return Axios.put(`/nft-properties/template/${templateId}`, body);
 };
 
 export const updateDropStatus = (body) => {
@@ -439,7 +442,7 @@ export const getAdminsDefaultTemplates = () => {
   return Axios.get(`/nft-properties/admin/default`);
 };
 
-export const getStandardTemplate = (userType) => {
+export const getTemplate = (userType) => {
   return Axios.get(`/nft-properties/${userType}`);
 };
 
@@ -509,4 +512,7 @@ export const deleteNFTFromDrop = (nftId) => {
 
 export const deleteSuperAdminTemplate = (templateId) => {
   return Axios.delete(`/super-admin/template/${templateId}`);
+};
+export const deleteTemplate = (templateId) => {
+  return Axios.delete(`/nft-properties/template/${templateId}`);
 };

@@ -12,7 +12,7 @@ import {
   getAdminProfileDetails,
   getAdminsDefaultTemplates,
   getSavedTemplates,
-  getStandardTemplate,
+  getTemplate,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
@@ -254,7 +254,7 @@ function NewNFT(props) {
   };
 
   const getStandardTemplates = async (role) => {
-    await getStandardTemplate(role)
+    await getTemplate(role)
       .then((response) => {
         // console.log("response from getting standard Templates: ", response);
         setStandardTemplates(response.data.templates);
