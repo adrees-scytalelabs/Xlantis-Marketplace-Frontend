@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  deleteAdminTemplate,
-  getStandardTemplate,
+  deleteTemplate,
+  getTemplate,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -31,12 +31,6 @@ function AdminTemplate(props) {
     }
     setSnackbarOpen(false);
   };
-  const handleUpdatedData = (e, data) => {
-    e.preventDefault();
-    setModalData(data);
-    setUpdateModal(false);
-    setModalState(true);
-  };
   const handleClose = () => {
     setModalState(false);
     setDeleteState(false);
@@ -57,7 +51,7 @@ function AdminTemplate(props) {
   const deleteResponse = async (data) => {
     try {
       // console.log("Data for delete is: ", data);
-      deleteAdminTemplate(data._id)
+      deleteTemplate(data._id)
         .then((response) => {
           console.log("Response from deleting template: ", response);
           let variant = "success";
@@ -84,7 +78,7 @@ function AdminTemplate(props) {
     await deleteResponse(deleteData);
   };
   const getTemplates = async () => {
-    await getStandardTemplate("admin")
+    await getTemplate("admin")
       .then((response) => {
         // console.log("response from getting standard Templates: ", response);
         setTemplateData(response.data.templates);
@@ -92,6 +86,12 @@ function AdminTemplate(props) {
       .catch((error) => {
         console.log("Error from getting standard Templates: ", error);
       });
+  };
+  const handleUpdatedData = (e, data) => {
+    e.preventDefault();
+    setModalData(data);
+    setUpdateModal(false);
+    setModalState(true);
   };
   const handleOpen = (e, data) => {
     e.preventDefault();
@@ -137,7 +137,7 @@ function AdminTemplate(props) {
             templateData={templateData}
             handleOpen={handleOpen}
             handleDeleteModal={handleDeleteModal}
-            handleUpdatedData={handleOpen}
+            handleUpdatedData={handleUpdatedData}
           />
         </div>
       ) : (

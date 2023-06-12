@@ -122,6 +122,9 @@ export const setSuperAdminPlatformFee = (body) => {
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
 };
+export const updateTemplate = (templateId,body) => {
+  return Axios.put(`/nft-properties/template/${templateId}`, body);
+};
 
 export const updateDropStatus = (body) => {
   return Axios.put(`/drop/status/pending`, body);
@@ -439,7 +442,7 @@ export const getAdminsDefaultTemplates = () => {
   return Axios.get(`/nft-properties/admin/default`);
 };
 
-export const getStandardTemplate = (userType) => {
+export const getTemplate = (userType) => {
   return Axios.get(`/nft-properties/${userType}`);
 };
 
@@ -510,6 +513,6 @@ export const deleteNFTFromDrop = (nftId) => {
 export const deleteSuperAdminTemplate = (templateId) => {
   return Axios.delete(`/super-admin/template/${templateId}`);
 };
-export const deleteAdminTemplate = (templateId) => {
-  return Axios.delete(`/nft-properties/admin/template/${templateId}`);
+export const deleteTemplate = (templateId) => {
+  return Axios.delete(`/nft-properties/template/${templateId}`);
 };

@@ -1,7 +1,7 @@
 import { Tooltip, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { superAdminTemplateUpdate } from "../API/AxiosInterceptor";
+import { updateTemplate } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
 import NotificationSnackbar from '../Snackbar/NotificationSnackbar';
 
@@ -49,13 +49,12 @@ function TemplateDetails(props) {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
-      templateId: props.templateData._id,
       name: title,
       data: properties,
     };
     try {
       console.log(data);
-      superAdminTemplateUpdate(data)
+      updateTemplate(props.templateData._id,data)
         .then((response) => {
           console.log(response);
           let variant = "success";
