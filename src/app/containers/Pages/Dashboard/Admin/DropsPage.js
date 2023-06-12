@@ -142,6 +142,7 @@ function DropsPage(props) {
                         endTime: i.endTime,
                         nftType: i.dropType,
                         marketplaceId: i.marketplaceId,
+                        dropCategory: i.category,
                       }}
                     >
                       <DropsPageCard

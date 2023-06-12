@@ -1,7 +1,6 @@
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import {
@@ -11,8 +10,9 @@ import {
   deleteNFTFromBatch,
   getAdminProfileDetails,
   getAdminsDefaultTemplates,
+  getCollections,
   getSavedTemplates,
-  getStandardTemplate,
+  getTemplate,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
@@ -38,7 +38,6 @@ import NFTUpload from "../../../../components/Upload/NFTUpload";
 import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
-import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 
 const styles = {
   root: {
@@ -109,9 +108,9 @@ function NewNFT(props) {
 
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
+    setTemplate("default");
     getDefaultTemplate();
     getSavedTemplate();
-    setTemplate("default");
   };
 
   const handleStandardSelectTemplate = (e) => {
@@ -179,31 +178,28 @@ function NewNFT(props) {
 
   const [previewImage, setPreviewImage] = useState(defaultProfile);
   const [versionB, setVersionB] = useState("");
-  const { collectionData, loading } = useSelector(
-    (store) => store.NewNftCollection
-  );
-  const { defaultTemplate, loadingDefault } = useSelector(
-    (store) => store.defaultTemplate
-  );
-  const { templates, propertiesLoading } = useSelector(
-    (store) => store.newNftProperties
-  );
-  const dispatch = useDispatch();
 
-  let getCollections = (collectionType) => {
-    // setCollection("");
-    let marketplaceId = props.marketplaceId;
-    dispatch(getNewNftCollection({ collectionType, marketplaceId }));
-    // console.log("collectionResp",collectionData);
-    if (collectionType === "1155") {
-      setChangeCollectionList(collectionData);
-    }
-    setCollectionTypes(collectionData);
+  let getCollectionsUsingType = (collectionType) => {
+    getCollections(collectionType, props.marketplaceId)
+      .then((response) => {
+        console.log("Response from getting collections: ", response);
+        if (collectionType === "1155") {
+          setChangeCollectionList(response.data.collectionData);
+        }
+        setCollectionTypes(response.data.collectionData);
+      })
+      .catch((error) => {
+        console.log("Error from getting collections: ", error);
+      });
   };
+
   useEffect(() => {
-    getCollections(NFTType);
+    getCollectionsUsingType(NFTType);
+  }, [NFTType]);
+
+  useEffect(() => {
     getAdminProfile();
-  }, [loading]);
+  }, []);
 
   const getAdminProfile = () => {
     getAdminProfileDetails()
@@ -254,7 +250,7 @@ function NewNFT(props) {
   };
 
   const getStandardTemplates = async (role) => {
-    await getStandardTemplate(role)
+    await getTemplate(role)
       .then((response) => {
         // console.log("response from getting standard Templates: ", response);
         setStandardTemplates(response.data.templates);
@@ -1228,7 +1224,7 @@ function NewNFT(props) {
                     setWorkProgressModalShow={setWorkProgressModalShow}
                     NFTType={NFTType}
                     setNFTType={setNFTType}
-                    getCollections={getCollections}
+                    getCollectionsUsingType={getCollectionsUsingType}
                     collectionTypes={collectionTypes}
                     setCollection={setCollection}
                     setCollectionId={setCollectionId}
