@@ -1,8 +1,9 @@
+import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  deleteSuperAdminTemplate,
-  getSuperAdminTemplates,
+  deleteTemplate,
+  getTemplate,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -11,7 +12,14 @@ import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import PropertiesTable from "../../../../components/tables/PropertiesTable";
 
-function SavedTemplate(props) {
+function AdminTemplate(props) {
+  const [templateData, setTemplateData] = useState([]);
+  const [deleteData, setDeleteData] = useState([]);
+  const [open, setOpen] = useState(false);
+  const [modalState, setModalState] = useState(false);
+  const [deleteState, setDeleteState] = useState(false);
+  const [modalData, setModalData] = useState();
+  const [updateModal, setUpdateModal] = useState(true);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
@@ -24,41 +32,27 @@ function SavedTemplate(props) {
     }
     setSnackbarOpen(false);
   };
-  const [templateData, setTemplateData] = useState([]);
-  const [deleteData, setDeleteData] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [modalState, setModalState] = useState(false);
-  const [deleteState, setDeleteState] = useState(false);
-  const [modalData, setModalData] = useState();
-  const [updateModal, setUpdateModal] = useState(true);
-
-  const handleCloseBackdrop = () => {
-    setOpen(false);
-  };
-  const handleShowBackdrop = () => {
-    setOpen(true);
-  };
-  const handleOpen = (e, data) => {
-    e.preventDefault();
-    setModalData(data);
-    setUpdateModal(true);
-    setModalState(true);
-  };
   const handleClose = () => {
     setModalState(false);
     setDeleteState(false);
     setUpdateModal(false);
-    handleSavedTemplate();
+    getTemplates();
   };
   const handleDeleteModal = (e, data) => {
     e.preventDefault();
     setDeleteData(data);
     setDeleteState(true);
   };
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
   const deleteResponse = async (data) => {
     try {
       // console.log("Data for delete is: ", data);
-      deleteSuperAdminTemplate(data._id)
+      deleteTemplate(data._id)
         .then((response) => {
           console.log("Response from deleting template: ", response);
           let variant = "success";
@@ -68,7 +62,7 @@ function SavedTemplate(props) {
           handleClose();
         })
         .catch((error) => {
-          console.log("Error from deleting template: ", error);
+          console.log("Error from deleting template: ", error.response);
           handleClose();
         });
     } catch (e) {
@@ -84,79 +78,62 @@ function SavedTemplate(props) {
     e.preventDefault();
     await deleteResponse(deleteData);
   };
-  let handleSavedTemplate = async () => {
-    handleShowBackdrop();
-    try {
-      getSuperAdminTemplates()
-        .then((response) => {
-          console.log(
-            "Response from getting super admin templates: ",
-            response
-          );
-          setTemplateData(response.data.templates);
-          handleCloseBackdrop();
-        })
-        .catch((error) => {
-          console.log("Error from getting super admin templates: ", error);
-          let variant = "error";
-          setSnackbarMessage("Error fetching Templates.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          handleCloseBackdrop();
-        });
-    } catch (e) {
-      console.log("Error in axios request to create template", e);
-    }
+  const getTemplates = async () => {
+    await getTemplate("admin")
+      .then((response) => {
+        // console.log("response from getting standard Templates: ", response);
+        setTemplateData(response.data.templates);
+      })
+      .catch((error) => {
+        console.log("Error from getting standard Templates: ", error);
+      });
   };
-
   const handleUpdatedData = (e, data) => {
     e.preventDefault();
     setModalData(data);
     setUpdateModal(false);
     setModalState(true);
   };
-
+  const handleOpen = (e, data) => {
+    e.preventDefault();
+    setModalData(data);
+    setUpdateModal(true);
+    setModalState(true);
+  };
   useEffect(() => {
-    handleSavedTemplate();
-  }, []);
-
-  useEffect(() => {
-    setDeleteState("");
-
+    getTemplates();
     props.setActiveTab({
       dashboard: "",
-      manageAccounts: "",
-      accountApproval: "",
-      accounts: "",
-      sso: "",
-      wallet: "",
-      properties: "active",
-      template: "",
-      saved: "active",
+      newCollection: "",
+      myCollection: "",
+      newNFT: "",
+      myNFTs: "",
+      marketplace: "",
+      newDrop: "",
+      myDrops: "",
+      topUp: "",
+      templates: "active",
     });
-  }, [modalData]);
-
+  }, []);
   return (
     <div className="backgroundDefault">
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
-            <h3 className="page-title">Saved Template</h3>
+            <h3 className="page-title">Templates</h3>
             <ul className="breadcrumb">
-              <Link to={`/superAdminDashboard`}>
+              <Link to={`/dashboard`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                   Dashboard
                 </li>
               </Link>
-              <Link to={`/superAdminDashboard/properties`}>
-                <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                  Properties
-                </li>
-              </Link>
-              <li className="breadcrumb-item active">Saved Template</li>
+              <li className="breadcrumb-item active">Template</li>
             </ul>
           </div>
         </div>
+      </div>
+      <div>
+        <Button className="bttn mb-4 mt-3">Create Template</Button>
       </div>
       {templateData.length ? (
         <div className="row no-gutters">
@@ -196,4 +173,4 @@ function SavedTemplate(props) {
   );
 }
 
-export default SavedTemplate;
+export default AdminTemplate;

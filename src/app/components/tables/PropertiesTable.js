@@ -43,7 +43,7 @@ const styles = {
     },
   },
 };
-function SuperAdminPropertiesTable(props) {
+function PropertiesTable(props) {
   return (
     <Table responsive>
       <thead style={{ color: "black" }}>
@@ -112,4 +112,4 @@ function SuperAdminPropertiesTable(props) {
   );
 }
 
-export default SuperAdminPropertiesTable;
+export default PropertiesTable;
