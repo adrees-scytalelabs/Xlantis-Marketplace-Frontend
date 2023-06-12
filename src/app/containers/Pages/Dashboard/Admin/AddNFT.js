@@ -9,16 +9,17 @@ import {
   addNFTToDrop,
   deleteNFTFromDrop,
   finalizeDrop,
-  getCollections,
+  getCollectionsByCategories,
   getNFTsFromDropPaginatedWOBody,
   getNFTsThroughId,
   getValidateAdminBalance,
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash,
+  updateDropTxHash
 } from "../../../../components/API/AxiosInterceptor";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
+import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AddNFTDisplayCard from "../../../../components/Cards/AddNFTDisplayCard";
 import NFTDetailModal from "../../../../components/Modals/NFTDetailModal";
@@ -120,6 +121,7 @@ function AddNFT(props) {
   const [nftId, setNftId] = useState("");
   const [tokenId, setTokenId] = useState("");
   const [isDisabled, setIsDisabled] = useState(false);
+  const [disabledUpdateButton, setDisabledUpdateButton] = useState(true);
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [price, setPrice] = useState(null);
@@ -163,13 +165,17 @@ function AddNFT(props) {
   };
   let getCollection = () => {
     const version = Cookies.get("Version");
-    getCollections(location.state.nftType, location.state.marketplaceId).then(
+    getCollectionsByCategories(
+      location.state.dropCategory,
+      location.state.marketplaceId
+    ).then(
       (response) => {
-        // console.log("Response from getting collections: ", response);
+        console.log("Response from getting collections: ", response);
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(response.data.collectionData);
       },
       (error) => {
+        console.log("Error from getting collections: ", error);
         if (process.env.NODE_ENV === "development") {
           console.log(error);
           console.log(error.response);
@@ -711,6 +717,7 @@ function AddNFT(props) {
           console.log("Get validate admin balance: ", response.data);
           setCostInfo(response.data);
           setIsDisabled(true);
+          setDisabledUpdateButton(true);
           setEnableTime(true);
           let variant = "success";
           setSnackbarMessage("Drop Updated Successfully.");
@@ -830,6 +837,7 @@ function AddNFT(props) {
           async (response) => {
             setGrid(true);
             setIsAdded(true);
+            setDisabledUpdateButton(false);
             setTokenList([...tokenList, nftDetail]);
             let found = false;
             if (nftType === "1155") {
@@ -929,6 +937,7 @@ function AddNFT(props) {
         console.log("new obj", newObject);
         addNFTToDrop(data).then(
           (response) => {
+            setDisabledUpdateButton(false);
             console.log("nft drop add response: ", response);
             console.log("time", startTime, endTime);
             setIsAdded(true);
@@ -1159,7 +1168,7 @@ function AddNFT(props) {
           </div>
         </div>
         <UpdateDropAndPublishDrop
-          isDisabled={isDisabled}
+          isDisabled={disabledUpdateButton}
           versionB={versionB}
           handleSubmitEvent={handleSubmitEvent}
           enableTime={enableTime}

@@ -141,7 +141,7 @@ const NewTamplateModal = (props) => {
           }
           handleCloseBackdrop();
           let variant = "error";
-          setSnackbarMessage("Unable to Create Template."); 
+          setSnackbarMessage("Unable to Create Template.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
         });
@@ -350,7 +350,7 @@ const NewTamplateModal = (props) => {
                 style={{ cursor: "pointer", accentColor: "#F64D04" }}
                 onChange={(e) => setDefault(!defaultt)}
               />
-              <label for="makeDefault mb-0">Save as Default Template</label>
+              <label htmlFor="makeDefault mb-0">Save as Default Template</label>
             </div>
           </div>
           <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
