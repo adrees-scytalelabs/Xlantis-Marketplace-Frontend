@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Box,
   TextField,
   ThemeProvider,
   Tooltip,
@@ -166,6 +167,27 @@ function CollectionAutocomplete({
             required
             disabled={isDisabled}
             options={options}
+            renderOption={(props, option) => {
+              console.log("Option is: ", option);
+              return (
+                <Box
+                  component="li"
+                  sx={{
+                    "& > img": { mr: 2, flexShrink: 0 },
+                  }}
+                  {...props}
+                >
+                  <img
+                    width="20"
+                    src={option.thumbnail}
+                    srcSet={option.thumbnail}
+                    alt=""
+                    style={{ border: "1px solid black" }}
+                  />
+                  {option.name}
+                </Box>
+              );
+            }}
             getOptionLabel={(option) =>
               type === "collection"
                 ? option.name
