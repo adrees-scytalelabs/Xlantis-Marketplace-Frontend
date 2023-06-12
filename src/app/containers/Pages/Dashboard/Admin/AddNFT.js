@@ -35,7 +35,6 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
-import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
 
 const styles = {
   root: {
