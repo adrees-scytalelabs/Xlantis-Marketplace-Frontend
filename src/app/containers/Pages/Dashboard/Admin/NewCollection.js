@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import {
@@ -25,6 +25,8 @@ import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1
 import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
+import getCroppedImg from "../../../../components/Utils/Crop";
+import ImageCropModal from "../../../../components/Modals/ImageCropModal";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 
 function NewCollection(props) {
@@ -32,6 +34,15 @@ function NewCollection(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [imageSrc, setImageSrc] = useState("");
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("square");
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -505,9 +516,48 @@ function NewCollection(props) {
     }
   };
 
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setImageSrc("");
+  };
+
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+
+  const showCroppedImage = useCallback(async () => {
+    try {
+      setIsUploadingCroppedImage(true);
+      const imageNFT = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      setImageFile(imageNFT);
+      setFileURL(URL.createObjectURL(imageNFT));
+      setImageSrc("");
+      setAspect(1 / 1);
+      setIsUploadingCroppedImage(false);
+      setShowCropModal(false);
+      setImageCounter(imageCounter + 1);
+      setSnackbarMessage("Image Uploaded Succesfully");
+      setSnackbarSeverity("success");
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  })
+
   let onChangeFile = (e) => {
-    setImageFile(e.target.files[0]);
-    setFileURL(URL.createObjectURL(e.target.files[0]));
+    let file = e.target.files[0];
+    if (file) {
+      setCropShape("square");
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
+    }
+    // setImageFile(e.target.files[0]);
+    // setFileURL(URL.createObjectURL(e.target.files[0]));
   };
 
   let handleApprovalModalClose = () => {
@@ -663,6 +713,20 @@ function NewCollection(props) {
             <form>
               <div className="form-group">
                 <label>Select Preview Image</label>
+                <ImageCropModal
+                  show={showCropModal}
+                  handleClose={handleCloseImageCropModal}
+                  crop={crop}
+                  setCrop={setCrop}
+                  onCropComplete={onCropComplete}
+                  imageSrc={imageSrc}
+                  uploadImage={showCroppedImage}
+                  isUploadingCroppedImage={isUploadingCroppedImage}
+                  zoom={zoom}
+                  setZoom={setZoom}
+                  aspect={aspect}
+                  cropShape={cropShape}
+                />
                 <UploadFile
                   fileURL={fileURL}
                   isUploading={isUploadingIPFS}
