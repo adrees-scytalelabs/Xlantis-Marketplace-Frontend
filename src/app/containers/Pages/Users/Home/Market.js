@@ -39,14 +39,14 @@ function MarketPlace(props) {
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    let marketplaceId = location.state.marketplaceId;
-    dispatch(getMarketAuction({ start, end, marketplaceId }));
-    if (auctionLoading === 1) {
-      setBidableDrop(auctionData);
-      handleCloseBackdrop();
-    } else if (auctionLoading === 2) {
-      handleCloseBackdrop();
-    }
+    //let marketplaceId = location.state.marketplaceId;
+    // dispatch(getMarketAuction({ start, end, marketplaceId }));
+    // if (auctionLoading === 1) {
+    //   setBidableDrop(auctionData);
+    //   handleCloseBackdrop();
+    // } else if (auctionLoading === 2) {
+    //   handleCloseBackdrop();
+    // }
   };
 
   useEffect(() => {
