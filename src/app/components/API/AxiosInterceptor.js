@@ -1,7 +1,7 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `httpPs://raindrop-backend.herokuapp.com/`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
   // baseURL: `http://localhost:3000`,
 });
 
