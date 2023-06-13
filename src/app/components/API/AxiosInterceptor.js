@@ -484,6 +484,10 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
+export const getBalanceSpentHistory = () => {
+  return Axios.get(`/balance-history/my-history`);
+};
+
 export const getAdminProfileDetails = () => {
   return Axios.get(`/v1-sso/user/admin/profile`);
 };

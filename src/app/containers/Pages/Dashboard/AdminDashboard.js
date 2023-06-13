@@ -52,6 +52,7 @@ import NewNFT from "./Admin/NewNFT";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
 import AdminTemplate from "./Admin/AdminTemplate";
 
 const theme = createTheme({
@@ -184,6 +185,7 @@ function AdminDashboard(props) {
     topupHistory: "",
     categories: "",
     allTransactions: "",
+    balanceSpentHistory: "",
     templates: "",
   });
 
@@ -584,6 +586,14 @@ function AdminDashboard(props) {
               exact
               path={`topup-history`}
               element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              exact
+              path={`balance-spent-history`}
+              element={
+                <BalanceSpentHistoryPageAdmin setActiveTab={setActiveTab} />
+              }
             />
 
             <Route

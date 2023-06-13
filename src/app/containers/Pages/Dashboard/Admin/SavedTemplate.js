@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
-  deleteSuperAdminTemplate,
+  deleteTemplate,
   getSuperAdminTemplates,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -57,8 +57,7 @@ function SavedTemplate(props) {
   };
   const deleteResponse = async (data) => {
     try {
-      // console.log("Data for delete is: ", data);
-      deleteSuperAdminTemplate(data._id)
+      deleteTemplate(data._id)
         .then((response) => {
           console.log("Response from deleting template: ", response);
           let variant = "success";
@@ -68,7 +67,7 @@ function SavedTemplate(props) {
           handleClose();
         })
         .catch((error) => {
-          console.log("Error from deleting template: ", error);
+          console.log("Error from deleting template: ", error.response);
           handleClose();
         });
     } catch (e) {
@@ -97,7 +96,7 @@ function SavedTemplate(props) {
           handleCloseBackdrop();
         })
         .catch((error) => {
-          console.log("Error from getting super admin templates: ", error);
+          console.log("Error from getting super admin templates: ", error.response);
           let variant = "error";
           setSnackbarMessage("Error fetching Templates.");
           setSnackbarSeverity(variant);
