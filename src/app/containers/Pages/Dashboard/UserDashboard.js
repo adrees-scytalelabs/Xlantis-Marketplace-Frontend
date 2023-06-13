@@ -72,11 +72,11 @@ function UserDashboard(props) {
               path={`myNFTs`}
               element={<MyNFTs setActiveTab={setActiveTab} />}
             />
-            <Route
+            {/* <Route
               exact
               path={"topup-history"}
               element={<TopupHistoryPageUser setActiveTab={setActiveTab} />}
-            />
+            /> */}
             <Route
               exact
               path={`nftDetail/:nftId`}
@@ -108,11 +108,11 @@ function UserDashboard(props) {
               path={`marketPlace/drops/nfts/buy`}
               element={<NFTBuy setActiveTab={setActiveTab} />}
             />
-            <Route
+            {/* <Route
               exact
               path={`topUp`}
               element={<TopUp setActiveTab={setActiveTab} />}
-            />
+            /> */}
             <Route
               exact
               path={`marketPlace/:dropId/:nftId`}

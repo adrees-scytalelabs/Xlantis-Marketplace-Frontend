@@ -11,12 +11,13 @@ import { getMaticBalance } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function UserDashboardDefaultScreen(props) {
-  const [open,setOpen] = useState(false);
+  const [open, setOpen] = useState(false);
   const [balanceUSD, setBalanceUSD] = useState(0);
   const [balanceMatic, setBalanceMatic] = useState(0);
   const [totalNFTs, setTotalNFTs] = useState(0);
   const [hover, setHover] = useState(false);
   const [userName, setUserName] = useState("");
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const { nftCount } = useSelector((store) => store.userCount);
   const { userData, loading } = useSelector((store) => store.userProfile);
   const dispatch = useDispatch();
@@ -28,10 +29,10 @@ function UserDashboardDefaultScreen(props) {
     padding: "0 0.5rem",
   };
   const getBalance = () => {
-    setOpen(true)
+    setIsLoadingBalance(true);
     getMaticBalance()
       .then((response) => {
-        setOpen(false)
+        setIsLoadingBalance(false);
         console.log("response from getting matic balance: ", response);
         response.data.balanceInUsd &&
           setBalanceUSD(response.data?.balanceInUsd);
@@ -39,7 +40,7 @@ function UserDashboardDefaultScreen(props) {
           setBalanceMatic(response.data?.maticBalance);
       })
       .catch((error) => {
-        setOpen(false)
+        setIsLoadingBalance(false);
         console.log("Error from getting balance: ", error);
       });
   };
@@ -127,6 +128,7 @@ function UserDashboardDefaultScreen(props) {
               balanceMatic={balanceMatic}
               message="Balance"
               icon={<CurrencyExchangeIcon />}
+              isLoadingBalance={isLoadingBalance}
             />
           </div>
         </div>

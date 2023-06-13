@@ -42,7 +42,7 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.topUp}>
+            {/* <li className={props.activeTab.topUp}>
               <Link to={`/dashboard/topUp`}>
                 <AttachMoneyIcon /> <span>Top Up</span>
               </Link>
@@ -51,7 +51,7 @@ function AdminSidebar(props) {
               <Link to={`/dashboard/topup-history`}>
                 <HistoryIcon /> <span>Top-up History</span>
               </Link>
-            </li>
+            </li> */}
             <li className="menu-title">
               <span>SETTINGS</span>
             </li>

@@ -81,7 +81,6 @@ function TopUp(props) {
   }, []);
 
   const getBalance = () => {
-    setOpen(true);
     setIsLoadingBalance(true);
     getMaticBalance()
       .then((response) => {
@@ -90,7 +89,6 @@ function TopUp(props) {
           setBalanceUSD(response.data?.balanceInUsd);
         response.data.maticBalance &&
           setBalanceMatic(response.data?.maticBalance);
-        setOpen(false);
         setIsLoadingBalance(false);
       })
       .catch((error) => {
@@ -98,7 +96,6 @@ function TopUp(props) {
         setSnackbarMessage("Error Fetching Balance");
         setSnackbarSeverity("error");
         handleSnackbarOpen();
-        setOpen(false);
         setIsLoadingBalance(false);
       });
   };
