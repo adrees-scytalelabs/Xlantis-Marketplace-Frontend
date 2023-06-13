@@ -550,7 +550,7 @@ function AdminDashboard(props) {
             />
             <Route
               exact
-              path={`marketPlace`}
+              path={`:marketPlace/marketPlace`}
               element={
                 <MarketPlace
                   setActiveTab={setActiveTab}
