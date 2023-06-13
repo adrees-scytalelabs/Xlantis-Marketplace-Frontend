@@ -42,11 +42,11 @@ export const uploadImage = (body) => {
 };
 
 export const createNewAdminTemplates = (body) => {
-  return Axios.post(`/nft-properties/admin/template`, body);
+  return Axios.post(`/nft-properties/template`, body);
 };
 
-export const createNewSuperAdminTemplates = (body) => {
-  return Axios.post(`/super-admin/template`, body);
+export const createNewTemplates = (body) => {
+  return Axios.post(`/nft-properties/template`, body);
 };
 
 export const topUpAmount = (body) => {
@@ -121,6 +121,9 @@ export const setSuperAdminPlatformFee = (body) => {
 
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
+};
+export const updateTemplate = (templateId,body) => {
+  return Axios.put(`/nft-properties/template/${templateId}`, body);
 };
 
 export const updateDropStatus = (body) => {
@@ -439,7 +442,7 @@ export const getAdminsDefaultTemplates = () => {
   return Axios.get(`/nft-properties/admin/default`);
 };
 
-export const getStandardTemplate = (userType) => {
+export const getTemplate = (userType) => {
   return Axios.get(`/nft-properties/${userType}`);
 };
 
@@ -463,7 +466,7 @@ export const getMaticBalance = () => {
   return Axios.get(`/wallet-analytics/funds/`);
 };
 
-export const getDropCategories = () => {
+export const getCategoriesList = () => {
   return Axios.get(`/drop/categories`);
 };
 
@@ -481,6 +484,10 @@ export const getDropsByCategories = (category, start, end) => {
   });
 };
 
+export const getBalanceSpentHistory = () => {
+  return Axios.get(`/balance-history/my-history`);
+};
+
 export const getAdminProfileDetails = () => {
   return Axios.get(`/v1-sso/user/admin/profile`);
 };
@@ -491,6 +498,12 @@ export const getSuperAdminEarnings = () => {
 
 export const getAdminEarnings = () => {
   return Axios.get(`/earnings/admin`);
+};
+
+export const getCollectionsByCategories = (categoryName, marketPlaceId) => {
+  return Axios.get(
+    `/collection/category/${categoryName}?marketplaceId=${marketPlaceId}`
+  );
 };
 
 //DELETE REQUESTS
@@ -509,4 +522,7 @@ export const deleteNFTFromDrop = (nftId) => {
 
 export const deleteSuperAdminTemplate = (templateId) => {
   return Axios.delete(`/super-admin/template/${templateId}`);
+};
+export const deleteTemplate = (templateId) => {
+  return Axios.delete(`/nft-properties/template/${templateId}`);
 };

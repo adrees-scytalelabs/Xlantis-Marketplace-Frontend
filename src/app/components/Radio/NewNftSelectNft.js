@@ -117,7 +117,7 @@ function NewNftSelectNft({
   setWorkProgressModalShow,
   NFTType,
   setNFTType,
-  getCollections,
+  getCollectionsUsingType,
   collectionTypes,
   setCollection,
   setCollectionId,
@@ -138,7 +138,7 @@ function NewNftSelectNft({
       setWorkProgressModalShow,
       NFTType,
       setNFTType,
-      getCollections,
+      getCollectionsUsingType,
       collectionTypes,
       setCollection,
       setCollectionId,
@@ -204,7 +204,7 @@ function NewNftSelectNft({
                   value="ERC1155"
                   onChange={() => {
                     setNFTType("1155");
-                    getCollections("1155");
+                    getCollectionsUsingType("1155");
                   }}
                   checked={NFTType === "1155"}
                   control={<Radio color="secondary" />}
@@ -269,7 +269,7 @@ function NewNftSelectNft({
                   value="ERC1155"
                   onChange={() => {
                     setNFTType("1155");
-                    getCollections("1155");
+                    getCollectionsUsingType("1155");
                   }}
                   checked={NFTType === "1155"}
                   control={<Radio color="secondary" />}

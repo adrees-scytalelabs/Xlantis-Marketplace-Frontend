@@ -5,6 +5,7 @@ import Web3 from "web3";
 import {
   approveCollection,
   createNewCollection,
+  getCategoriesList,
   updateCollectionTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -26,6 +27,7 @@ import * as Addresses from "../../../../components/blockchain/Addresses/Addresse
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 import getCroppedImg from "../../../../components/Utils/Crop";
 import ImageCropModal from "../../../../components/Modals/ImageCropModal";
+import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 
 function NewCollection(props) {
   const navigate = useNavigate();
@@ -84,13 +86,27 @@ function NewCollection(props) {
   const [royaltyFee, setRoyaltyFee] = useState(null);
   const [approvalFlag, setApprovalFlag] = useState(false);
   const [workProgressModalShow, setWorkProgressModalShow] = useState(false);
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [category, setCategory] = useState("");
 
   const RoyaltyFeeText =
     "A royalty fee is a percentage of the revenue generated from the resale of a non-fungible token (NFT) that is paid to the original owner or creator of the NFT. The percentage of the royalty fee can be set by the NFT creator and can range from a small percentage to a significant portion of the resale price.\nNote: Royalty Fee is in percentage %";
 
+  const getCategories = () => {
+    getCategoriesList()
+      .then((response) => {
+        console.log("Response from getting categories list: ", response);
+        setCategoriesList(response.data.categories);
+      })
+      .catch((error) => {
+        console.log("Error from getting categories list: ", error);
+      });
+  };
+
   useEffect(() => {
     setVersion(Cookies.get("Version"));
     console.log("Market Place id", props.marketplaceId);
+    getCategories();
     props.setActiveTab({
       dashboard: "",
       newCollection: "active",
@@ -125,7 +141,57 @@ function NewCollection(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
-    if (royaltyFee >= 0 || royaltyFee <= 100) {
+    if (fileURL === defaultProfile) {
+      let variant = "error";
+      setSnackbarMessage("Please Add Preview Image.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionName === "" ||
+      collectionName === undefined ||
+      collectionName === null ||
+      collectionName === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Enter Collection Name.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionSymbol === "" ||
+      collectionSymbol === undefined ||
+      collectionSymbol === null ||
+      collectionSymbol === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Enter Collection Symbol.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      collectionDescription === "" ||
+      collectionDescription === undefined ||
+      collectionDescription === null ||
+      collectionDescription === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Add Collection Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (
+      category === "" ||
+      category === undefined ||
+      category === null ||
+      category === "undefined"
+    ) {
+      let variant = "error";
+      setSnackbarMessage("Please Select a Category.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (royaltyFee <= 0 || royaltyFee >= 100) {
+      let variant = "error";
+      setSnackbarMessage("Royalty Fee range is from 0 to 100.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else {
       // setIsSaving(true);
 
       handleShowBackdrop();
@@ -139,6 +205,7 @@ function NewCollection(props) {
       fileData.append("royaltyFee", royaltyFee);
       fileData.append("contractType", nftType);
       fileData.append("marketplaceId", props.marketplaceId);
+      fileData.append("category", category);
 
       let royaltyBlockchain = royaltyFee * 10000;
 
@@ -266,11 +333,6 @@ function NewCollection(props) {
             });
         }
       }
-    } else {
-      let variant = "error";
-      setSnackbarMessage("Royalty Fee range is from 0 to 100.");
-      setSnackbarSeverity(variant);
-      handleSnackbarOpen();
     }
   };
 
@@ -692,7 +754,20 @@ function NewCollection(props) {
                     placeholder="Enter Description of Collection"
                     setDescription={setCollectionDescription}
                   />
-
+                  <AutocompleteAddNft
+                    label="Select Category"
+                    options={categoriesList}
+                    placeholder={"Select Category"}
+                    onChange={(e, newValue) => {
+                      if (newValue == "") {
+                        setCategory();
+                      } else {
+                        console.log("New value is: ", newValue);
+                        setCategory(newValue);
+                      }
+                    }}
+                    type="category"
+                  />
                   <SelectRoyaltyFee
                     RoyaltyFeeText={RoyaltyFeeText}
                     values={royaltyFee}
@@ -729,7 +804,7 @@ function NewCollection(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      ></NetworkErrorModal>
+      />
       <RequestApprovalModal
         show={approvalModalShow}
         handleClose={handleApprovalModalClose}

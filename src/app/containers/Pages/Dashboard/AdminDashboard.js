@@ -52,6 +52,8 @@ import NewNFT from "./Admin/NewNFT";
 import TopupHistoryPageAdmin from "./Admin/TopupHistoryPageAdmin";
 import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
+import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
+import AdminTemplate from "./Admin/AdminTemplate";
 
 const theme = createTheme({
   components: {
@@ -136,7 +138,7 @@ function AdminDashboard(props) {
       getNotifications(0, 10);
     }
   }, [notificationLoading]);
-  
+
   function getNotifications(start, end) {
     dispatch(getHeaderNotification({ start, end, setNotificationsList }));
     // setNotificationsList(notification);
@@ -183,6 +185,8 @@ function AdminDashboard(props) {
     topupHistory: "",
     categories: "",
     allTransactions: "",
+    balanceSpentHistory: "",
+    templates: "",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
@@ -533,6 +537,11 @@ function AdminDashboard(props) {
               path={`nftDetail/:nftId`}
               element={<SingleNftDetail setActiveTab={setActiveTab} />}
             />
+            <Route
+              exact
+              path={`templates`}
+              element={<AdminTemplate setActiveTab={setActiveTab} />}
+            />
 
             <Route
               exact
@@ -577,6 +586,14 @@ function AdminDashboard(props) {
               exact
               path={`topup-history`}
               element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+            />
+
+            <Route
+              exact
+              path={`balance-spent-history`}
+              element={
+                <BalanceSpentHistoryPageAdmin setActiveTab={setActiveTab} />
+              }
             />
 
             <Route

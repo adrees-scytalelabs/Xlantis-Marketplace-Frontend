@@ -11,8 +11,9 @@ import {
   deleteNFTFromBatch,
   getAdminProfileDetails,
   getAdminsDefaultTemplates,
+  getCollections,
   getSavedTemplates,
-  getStandardTemplate,
+  getTemplate,
   lazyMintNFTs,
   mintBatchNFTs,
   sendVoucherForLazyMint,
@@ -111,9 +112,9 @@ function NewNFT(props) {
 
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
+    setTemplate("default");
     getDefaultTemplate();
     getSavedTemplate();
-    setTemplate("default");
   };
 
   const handleStandardSelectTemplate = (e) => {
@@ -202,20 +203,27 @@ function NewNFT(props) {
   );
   const dispatch = useDispatch();
 
-  let getCollections = (collectionType) => {
-    // setCollection("");
-    let marketplaceId = props.marketplaceId;
-    dispatch(getNewNftCollection({ collectionType, marketplaceId }));
-    // console.log("collectionResp",collectionData);
-    if (collectionType === "1155") {
-      setChangeCollectionList(collectionData);
-    }
-    setCollectionTypes(collectionData);
+  let getCollectionsUsingType = (collectionType) => {
+    getCollections(collectionType, props.marketplaceId)
+      .then((response) => {
+        console.log("Response from getting collections: ", response);
+        if (collectionType === "1155") {
+          setChangeCollectionList(response.data.collectionData);
+        }
+        setCollectionTypes(response.data.collectionData);
+      })
+      .catch((error) => {
+        console.log("Error from getting collections: ", error);
+      });
   };
+
   useEffect(() => {
-    getCollections(NFTType);
+    getCollectionsUsingType(NFTType);
+  }, [NFTType]);
+
+  useEffect(() => {
     getAdminProfile();
-  }, [loading]);
+  }, []);
 
   const getAdminProfile = () => {
     getAdminProfileDetails()
@@ -266,7 +274,7 @@ function NewNFT(props) {
   };
 
   const getStandardTemplates = async (role) => {
-    await getStandardTemplate(role)
+    await getTemplate(role)
       .then((response) => {
         // console.log("response from getting standard Templates: ", response);
         setStandardTemplates(response.data.templates);
@@ -1344,7 +1352,7 @@ function NewNFT(props) {
                     setWorkProgressModalShow={setWorkProgressModalShow}
                     NFTType={NFTType}
                     setNFTType={setNFTType}
-                    getCollections={getCollections}
+                    getCollectionsUsingType={getCollectionsUsingType}
                     collectionTypes={collectionTypes}
                     setCollection={setCollection}
                     setCollectionId={setCollectionId}
