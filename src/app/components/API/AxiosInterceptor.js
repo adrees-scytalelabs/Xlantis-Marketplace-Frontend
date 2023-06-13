@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `httpPs://raindrop-backend.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -45,8 +45,8 @@ export const createNewAdminTemplates = (body) => {
   return Axios.post(`/nft-properties/template`, body);
 };
 
-export const createNewSuperAdminTemplates = (body) => {
-  return Axios.post(`/super-admin/template`, body);
+export const createNewTemplates = (body) => {
+  return Axios.post(`/nft-properties/template`, body);
 };
 
 export const topUpAmount = (body) => {
@@ -466,7 +466,7 @@ export const getMaticBalance = () => {
   return Axios.get(`/wallet-analytics/funds/`);
 };
 
-export const getDropCategories = () => {
+export const getCategoriesList = () => {
   return Axios.get(`/drop/categories`);
 };
 
@@ -494,6 +494,12 @@ export const getSuperAdminEarnings = () => {
 
 export const getAdminEarnings = () => {
   return Axios.get(`/earnings/admin`);
+};
+
+export const getCollectionsByCategories = (categoryName, marketPlaceId) => {
+  return Axios.get(
+    `/collection/category/${categoryName}?marketplaceId=${marketPlaceId}`
+  );
 };
 
 //DELETE REQUESTS
