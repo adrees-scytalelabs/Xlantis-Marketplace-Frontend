@@ -41,10 +41,6 @@ export const uploadImage = (body) => {
   return Axios.post(`/upload/image`, body);
 };
 
-export const createNewAdminTemplates = (body) => {
-  return Axios.post(`/nft-properties/template`, body);
-};
-
 export const createNewTemplates = (body) => {
   return Axios.post(`/nft-properties/template`, body);
 };
@@ -119,9 +115,6 @@ export const setSuperAdminPlatformFee = (body) => {
 
 //PUT REQUESTS
 
-export const superAdminTemplateUpdate = (body) => {
-  return Axios.put(`/super-admin/template`, body);
-};
 export const updateTemplate = (templateId,body) => {
   return Axios.put(`/nft-properties/template/${templateId}`, body);
 };
@@ -520,9 +513,6 @@ export const deleteNFTFromDrop = (nftId) => {
   return Axios.delete(`/drop/nft/${nftId}`);
 };
 
-export const deleteSuperAdminTemplate = (templateId) => {
-  return Axios.delete(`/super-admin/template/${templateId}`);
-};
 export const deleteTemplate = (templateId) => {
   return Axios.delete(`/nft-properties/template/${templateId}`);
 };
