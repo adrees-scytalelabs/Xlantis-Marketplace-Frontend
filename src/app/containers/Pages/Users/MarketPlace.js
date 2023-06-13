@@ -40,13 +40,13 @@ function MarketPlace(props) {
 
   let getBidableDrops = (start, end) => {
     handleShowBackdrop();
-    dispatch(getMarketAuction({ start, end }));
-    if (auctionLoading === 1) {
-      setBidableDrop(auctionData);
-      handleCloseBackdrop();
-    } else if (auctionLoading === 2) {
-      handleCloseBackdrop();
-    }
+    // dispatch(getMarketAuction({ start, end }));
+    // if (auctionLoading === 1) {
+    //   setBidableDrop(auctionData);
+    //   handleCloseBackdrop();
+    // } else if (auctionLoading === 2) {
+    //   handleCloseBackdrop();
+    // }
   };
 
   useEffect(() => {
