@@ -221,7 +221,7 @@ const MarketPlaceTabs = (props) => {
               style={{ minHeight: "50vh" }}
             >
               <div className="col-12">
-                {props.open ? (
+                {props.fixedPriceOpen ? (
                   <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
                       <WhiteSpinner />
@@ -241,7 +241,7 @@ const MarketPlaceTabs = (props) => {
                         className="col-12 col-sm-6 col-md-4 col-xl-3 d-inline-block xlColDropWidth"
                         key={index}
                       >
-                        <OnSaleCard i={i} marketplaceId={props.marketplaceId}/>
+                        <OnSaleCard i={i} marketplaceId={props.marketplaceId} />
                       </div>
                     ))}
                   </div>
@@ -279,7 +279,7 @@ const MarketPlaceTabs = (props) => {
               style={{ minHeight: "50vh" }}
             >
               <div className="col-12">
-                {props.open ? (
+                {props.auctionOpen ? (
                   <div className="row no-gutters align-items-center justify-content-center">
                     <div className="col-12">
                       <WhiteSpinner />

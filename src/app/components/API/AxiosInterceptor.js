@@ -122,7 +122,8 @@ export const setSuperAdminPlatformFee = (body) => {
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
 };
-export const updateTemplate = (templateId,body) => {
+
+export const updateTemplate = (templateId, body) => {
   return Axios.put(`/nft-properties/template/${templateId}`, body);
 };
 
@@ -219,6 +220,11 @@ export const getMarketFixedPrice = (start, end, marketplaceId) => {
     `/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`
   );
 };
+
+export const getMarketAuction = (start, end, marketplaceId) => {
+  return Axios.get(`/drop/saleType/auction/${start}/${end}`);
+};
+
 export const getDropTxCostSummary = (dropId) => {
   return Axios.get(`/drop/${dropId}/tx-cost-summary`);
 };
