@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Box,
   TextField,
   ThemeProvider,
   Tooltip,
@@ -104,52 +105,6 @@ const makeTheme = createTheme({
       },
     },
   },
-  // overrides: {
-  //   MuiTextField: {
-  //     root: {
-  //       border: "1px solid #fff",
-  //       borderRadius: 5,
-  //     },
-  //   },
-  //   MuiOutlinedInput: {
-  //     root: {
-  //       fontFamily: "orbitron",
-  //       color: "#fff",
-  //       border: "1px solid #fff",
-  //       "&$focused": {},
-  //     },
-  //   },
-  //   MuiInput: {
-  //     root: {
-  //       fontFamily: "orbitron",
-  //       color: "#fff",
-  //       border: "none",
-  //       borderRadius: 5,
-  //       padding: "6px 15px !important",
-  //       "&$focused": {},
-  //     },
-  //     underline: {
-  //       "&$before": {},
-  //       "&::after": {
-  //         border: "none !important",
-  //       },
-  //     },
-  //   },
-  //   MuiAutocomplete: {
-  //     inputRoot: {},
-  //   },
-  //   MuiIconButton: {
-  //     root: {
-  //       color: "#fff !important",
-  //     },
-  //   },
-  //   MuiFormControlLabel: {
-  //     label: {
-  //       color: "white",
-  //       fontFamily: "inter",
-  //     },
-  //   },
-  // },
 });
 
 const classes = {
@@ -194,51 +149,125 @@ function AutocompleteAddNft({
           <label>{label}</label>
         )}
         <div className="filter-widget newNftWrapper">
-          <Autocomplete
-            id="combo-dox-demo"
-            required
-            disabled={isDisabled}
-            options={options}
-            getOptionLabel={(option) =>
-              type === "collection"
-                ? option.name
-                : type === "nft"
-                ? option.title
-                : option
-            }
-            onChange={onChange}
-            filterSelectedOptions
-            renderInput={(params) => (
-              <div>
-                <TextField
-                  sx={{
-                    "& input": {
-                      color: "white",
-                    },
-                    "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator": {
-                      color: "white",
-                      visibility: "visible",
-                    },
-                    "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator": {
-                      color: "white",
-                      visibility: "visible",
-                    },
-                    "& .MuiButtonBase-root.MuiAutocomplete-arr": {
-                      color: "white",
-                      visibility: "visible",
-                    },
-                  }}
-                  InputLabelProps={{
-                    style: { color: "white" },
-                  }}
-                  {...params}
-                  variant="outlined"
-                  placeholder={placeholder}
-                />
-              </div>
-            )}
-            style={{ padding: "6px 15px !important" }}
-          />
+          {label === "Select NFT" ? (
+            <Autocomplete
+              id="combo-dox-demo"
+              required
+              disabled={isDisabled}
+              options={options}
+              getOptionLabel={(option) =>
+                type === "collection"
+                  ? option.name
+                  : type === "nft"
+                  ? option.title
+                  : option
+              }
+              renderOption={(props, option) => {
+                console.log("Option is: ", option);
+                return (
+                  <Box
+                    component="li"
+                    sx={{
+                      "& > img": { mr: 2, flexShrink: 0 },
+                    }}
+                    {...props}
+                  >
+                    <img
+                      width="50px"
+                      height="40px"
+                      src={
+                        option.previewImageURI
+                          ? option.previewImageURI
+                          : option.nftURI
+                      }
+                      srcSet={option.nftURI}
+                      alt=""
+                      style={{ border: "1px solid black" }}
+                    />
+                    {option.title}
+                  </Box>
+                );
+              }}
+              onChange={onChange}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <div>
+                  <TextField
+                    sx={{
+                      "& input": {
+                        color: "white",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-arr": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "white" },
+                    }}
+                    {...params}
+                    variant="outlined"
+                    placeholder={placeholder}
+                  />
+                </div>
+              )}
+              style={{ padding: "6px 15px !important" }}
+            />
+          ) : (
+            <Autocomplete
+              id="combo-dox-demo"
+              required
+              disabled={isDisabled}
+              options={options}
+              getOptionLabel={(option) =>
+                type === "collection"
+                  ? option.name
+                  : type === "nft"
+                  ? option.title
+                  : option
+              }
+              onChange={onChange}
+              filterSelectedOptions
+              renderInput={(params) => (
+                <div>
+                  <TextField
+                    sx={{
+                      "& input": {
+                        color: "white",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                      "& .MuiButtonBase-root.MuiAutocomplete-arr": {
+                        color: "white",
+                        visibility: "visible",
+                      },
+                    }}
+                    InputLabelProps={{
+                      style: { color: "white" },
+                    }}
+                    {...params}
+                    variant="outlined"
+                    placeholder={placeholder}
+                  />
+                </div>
+              )}
+              style={{ padding: "6px 15px !important" }}
+            />
+          )}
         </div>
       </ThemeProvider>
     </div>
