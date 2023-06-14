@@ -187,6 +187,7 @@ function AdminDashboard(props) {
     allTransactions: "",
     balanceSpentHistory: "",
     templates: "",
+    notifications: "",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
@@ -540,6 +541,11 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`templates`}
+              element={<AdminTemplate setActiveTab={setActiveTab} />}
+            />
+                        <Route
+              exact
+              path={`notifications`}
               element={<AdminTemplate setActiveTab={setActiveTab} />}
             />
 
