@@ -17,6 +17,7 @@ import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
 import TopupHistoryPageUser from "./User/TopupHistoryPageUser";
 import TopUp from "../../../components/Topup/TopUp";
+import Notification from "./Admin/Notification";
 function UserDashboard(props) {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
@@ -42,6 +43,7 @@ function UserDashboard(props) {
     newRandomDrop: "",
     topUp: "",
     topupHistory: "",
+    notification: "",
   });
 
   return (
@@ -66,7 +68,13 @@ function UserDashboard(props) {
                 />
               }
             />
-
+            <Route
+              exact
+              path={`notifications`}
+              element={
+                <Notification match={path} setActiveTab={setActiveTab} />
+              }
+            />
             <Route
               exact
               path={`myNFTs`}
