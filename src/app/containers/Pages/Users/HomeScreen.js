@@ -29,42 +29,6 @@ function HomeScreen({ deviceType }) {
     if (location.state === null || location.state === undefined) {
       navigate("/");
     }
-    else{
-    console.log("marketplace id result in home Screen",location.state)
-    const searchParams = new URLSearchParams(location.search);
-    const id = searchParams.get("session_id");
-    const sessionId = localStorage.getItem("sessionId");
-    if (id != null) {
-      if (sessionId == id) {
-        const active = searchParams.get("active");
-        if (active == "true") {
-          let variant = "success";
-          setSnackbarMessage(
-            "Payment Successful!! Thank you for your purchase."
-          );
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          localStorage.removeItem("sessionId");
-          const searchParams = new URLSearchParams(window.location.search);
-          searchParams.delete("session_id");
-          searchParams.delete("active");
-          const newUrl = `${window.location.pathname}`;
-          window.history.replaceState(null, "", newUrl);
-        } else {
-          let variant = "error";
-          setSnackbarMessage("Payment Unsuccessful!");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          localStorage.removeItem("sessionId");
-          const searchParams = new URLSearchParams(window.location.search);
-          searchParams.delete("session_id");
-          searchParams.delete("active");
-          const newUrl = `${window.location.pathname}`;
-          window.history.replaceState(null, "", newUrl);
-        }
-      }
-    }
-  }
   });
   return (
     <div className="main-wrapper">
