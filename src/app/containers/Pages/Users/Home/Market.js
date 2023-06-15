@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "../../../../assets/css/style.css";
-import { getMarketFixedPrice } from "../../../../components/API/AxiosInterceptor";
-import { getMarketAuction } from "../../../../redux/getMarketPlaceDataSlice";
+import {
+  getMarketAuction,
+  getMarketFixedPrice,
+} from "../../../../components/API/AxiosInterceptor";
 import TrendingAndTop from "./TrendingAndTop";
 
 function MarketPlace(props) {
@@ -11,42 +12,51 @@ function MarketPlace(props) {
   let location = useLocation();
   const [bidableDrop, setBidableDrop] = useState([]);
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
-  const [open, setOpen] = useState(false);
-  const { auctionLoading, auctionData } = useSelector(
-    (store) => store.getMarketPlaceData
-  );
-  const dispatch = useDispatch();
-  const handleCloseBackdrop = () => {
-    setOpen(false);
+  const [fixedPriceLoaderOpen, setFixedPriceLoaderOpen] = useState(false);
+  const [auctionLoaderOpen, setAuctionLoaderOpen] = useState(false);
+
+  const handleCloseFixedPriceBackdrop = () => {
+    setFixedPriceLoaderOpen(false);
   };
-  const handleShowBackdrop = () => {
-    setOpen(true);
+  const handleShowFixedPriceBackdrop = () => {
+    setFixedPriceLoaderOpen(true);
   };
-  let getCubes = (start, end) => {
-    handleShowBackdrop();
+
+  const handleCloseAuctionBackdrop = () => {
+    setAuctionLoaderOpen(false);
+  };
+  const handleShowAuctionBackdrop = () => {
+    setAuctionLoaderOpen(true);
+  };
+
+  let getFixedPriceDrops = (start, end) => {
+    handleShowFixedPriceBackdrop();
     let marketplaceId = location.state.marketplaceId;
     getMarketFixedPrice(start, end, marketplaceId)
       .then((response) => {
         console.log("fixed price data in marketplaceId", response);
         setFixedPriceDrop(response.data.data);
-        handleCloseBackdrop();
+        handleCloseFixedPriceBackdrop();
       })
       .catch((error) => {
         console.log("Fixed Drop data endpoint error", error.response);
-        handleCloseBackdrop();
+        handleCloseFixedPriceBackdrop();
       });
   };
 
   let getBidableDrops = (start, end) => {
-    handleShowBackdrop();
-    //let marketplaceId = location.state.marketplaceId;
-    // dispatch(getMarketAuction({ start, end, marketplaceId }));
-    // if (auctionLoading === 1) {
-    //   setBidableDrop(auctionData);
-    //   handleCloseBackdrop();
-    // } else if (auctionLoading === 2) {
-    //   handleCloseBackdrop();
-    // }
+    handleShowAuctionBackdrop();
+    let marketplaceId = location.state.marketplaceId;
+    getMarketAuction(start, end, marketplaceId)
+      .then((response) => {
+        console.log("Response from getting auction drops: ", response);
+        setBidableDrop(response.data.auctionData);
+        handleCloseAuctionBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from getting auction drops: ", error);
+        handleCloseAuctionBackdrop();
+      });
   };
 
   useEffect(() => {
@@ -55,12 +65,13 @@ function MarketPlace(props) {
     } else {
       getBidableDrops(0, 4);
     }
-  }, [auctionLoading]);
+  }, []);
+
   useEffect(() => {
     if (location.state === null || location.state === undefined) {
       navigate("/");
     } else {
-      getCubes(0, 4);
+      getFixedPriceDrops(0, 4);
     }
   }, []);
 
@@ -86,7 +97,7 @@ function MarketPlace(props) {
             <TrendingAndTop
               fixedPriceDrop={fixedPriceDrop}
               fixedPriceDropLength={fixedPriceDrop.length}
-              open={open}
+              open={fixedPriceLoaderOpen}
               type={"fixedPriceDrops"}
               marketplaceId={location.state.marketplaceId}
             />
@@ -108,7 +119,7 @@ function MarketPlace(props) {
             <TrendingAndTop
               bidableDrop={bidableDrop}
               bidableDropLength={bidableDrop.length}
-              open={open}
+              open={auctionLoaderOpen}
               type={"bidableDrops"}
             />
           ) : null}

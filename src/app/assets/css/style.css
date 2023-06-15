@@ -848,6 +848,38 @@ select.newNftInput {
   display: none;
 }
 
+.responsive-field-input::-webkit-inner-spin-button,
+.responsive-field-input::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.responsive-field-input::-moz-number-spin-box {
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.responsive-field-input::-moz-number-up-button,
+.responsive-field-input::-moz-number-down-button {
+  display: none;
+}
+
+/* Hide arrows in Firefox */
+.responsive-field-input[type='number'] {
+  -moz-appearance: textfield;
+}
+
+/* Hide arrows in Internet Explorer */
+.responsive-field-input[type='number']::-webkit-inner-spin-button,
+.responsive-field-input[type='number']::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.responsive-field-input[type='number'] {
+  -ms-appearance: textfield;
+}
+
 .uploadLabel {
   display: inline-block;
   /* background-image: var(--linearGradient); */

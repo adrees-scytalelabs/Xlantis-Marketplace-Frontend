@@ -1,61 +1,70 @@
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import {
+  getMarketAuction,
+  getMarketFixedPrice,
+} from "../../../components/API/AxiosInterceptor";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MarketPlaceTabs from "../../../components/Tabs/MarketPlaceTabs";
-import { getMarketAuction } from "../../../redux/getMarketPlaceDataSlice";
-import { Grid } from "@mui/material";
-import { useLocation } from "react-router-dom";
-import { getMarketFixedPrice } from "../../../components/API/AxiosInterceptor";
 
 function MarketPlace(props) {
   let location = useLocation();
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [bidableDrop, setBidableDrop] = useState([]);
-  const [open, setOpen] = useState(false);
-  const { fixedPriceData, fixedPriceLoading, auctionLoading, auctionData } =
-    useSelector((store) => store.getMarketPlaceData);
-  const dispatch = useDispatch();
+  const [fixedPriceLoaderOpen, setFixedPriceLoaderOpen] = useState(false);
+  const [auctionLoaderOpen, setAuctionLoaderOpen] = useState(false);
 
-  const handleCloseBackdrop = () => {
-    setOpen(false);
+  const handleCloseFixedPriceBackdrop = () => {
+    setFixedPriceLoaderOpen(false);
   };
-  const handleShowBackdrop = () => {
-    setOpen(true);
+  const handleShowFixedPriceBackdrop = () => {
+    setFixedPriceLoaderOpen(true);
+  };
+
+  const handleCloseAuctionBackdrop = () => {
+    setAuctionLoaderOpen(false);
+  };
+  const handleShowAuctionBackdrop = () => {
+    setAuctionLoaderOpen(true);
   };
 
   let getCubes = (start, end) => {
-    handleShowBackdrop();
+    handleShowFixedPriceBackdrop();
     let marketplaceId = location.state.marketplaceId;
     getMarketFixedPrice(start, end, marketplaceId)
       .then((response) => {
         setFixedPriceDrop(response.data.data);
-        handleCloseBackdrop();
+        handleCloseFixedPriceBackdrop();
       })
       .catch((error) => {
         console.log("Error in fixed price drop data", error.data);
-        handleCloseBackdrop();
+        handleCloseFixedPriceBackdrop();
       });
   };
 
   let getBidableDrops = (start, end) => {
-    handleShowBackdrop();
-    // dispatch(getMarketAuction({ start, end }));
-    // if (auctionLoading === 1) {
-    //   setBidableDrop(auctionData);
-    //   handleCloseBackdrop();
-    // } else if (auctionLoading === 2) {
-    //   handleCloseBackdrop();
-    // }
+    handleShowAuctionBackdrop();
+    getMarketAuction(start, end)
+      .then((response) => {
+        console.log("Response from getting auction drops: ", response);
+        setBidableDrop(response.data.auctionData);
+        handleCloseAuctionBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from getting auction drops: ", error);
+        handleCloseAuctionBackdrop();
+      });
   };
 
   useEffect(() => {
     getBidableDrops(0, 4);
-  }, [auctionLoading]);
+  }, []);
 
   useEffect(() => {
     getCubes(0, 4);
-  }, [fixedPriceLoading]);
+  }, []);
 
   return (
     <div className="main-wrapper">
@@ -84,7 +93,8 @@ function MarketPlace(props) {
                       bidableDrop={bidableDrop}
                       bidableDropLength={bidableDrop.length}
                       marketplaceId={location.state.marketplaceId}
-                      open={open}
+                      fixedPriceOpen={fixedPriceLoaderOpen}
+                      auctionOpen={auctionLoaderOpen}
                     />
                   </Grid>
                 </div>
