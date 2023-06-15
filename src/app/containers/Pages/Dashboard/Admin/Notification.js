@@ -2,12 +2,58 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Menu, MenuItem, IconButton } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import axios from "axios";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
+import { io } from "socket.io-client";
+import RefreshIcon from "@mui/icons-material/Refresh";
 
 function Notification(props) {
   const [notifications, setNotifications] = useState([]);
+  const [socket, setSocket] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
+  const [userId, setUserId] = useState("");
   const open = Boolean(anchorEl);
+  useEffect(() => {
+    setSocket(io("http://localhost:3000/"));
+  }, []);
+  const getNotification = (start, end) => {
+    axios
+      .get(`/notifications/${start}/${end}`)
+      .then((response) => {
+        setNotifications(response.data.notifications);
+        console.log("data", response.data);
+      })
+      .catch((err) =>
+        console.log("error in fetching notification", err.response)
+      );
+  };
+  const readNotification = (notificationId) => {
+    let data = {
+      notificationId,
+    };
 
+    axios.patch("/notifications/hide", data).then(
+      (response) => {
+        axios
+          .get("/notifications/0/2000")
+          .then((response) => {
+            setNotifications(response.data.notifications);
+            console.log("data", response.data);
+          })
+          .catch((err) =>
+            console.log("error in fetching notification", err.response)
+          );
+        // getNotifications(0, 20000);
+      },
+      (error) => {
+        console.log("Error on disable: ", error);
+        console.log("Error on disable: ", error.response);
+      }
+    );
+  };
+  const handleRefresh = () => {
+    getNotification(0, 2000);
+  };
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -16,26 +62,36 @@ function Notification(props) {
     setAnchorEl(null);
   };
   useEffect(() => {
-    setNotifications([
-      {
-        id: 1,
-        message: "Your NFT has been sold.",
-        image: "https://via.placeholder.com/100",
-        time: "2 hours ago",
-      },
-      {
-        id: 2,
-        message: "A new drop is available.",
-        image: "https://via.placeholder.com/100",
-        time: "5 hours ago",
-      },
-      {
-        id: 3,
-        message: "Your order has been processed.",
-        image: "https://via.placeholder.com/100",
-        time: "1 day ago",
-      },
-    ]);
+    let userLogin = sessionStorage.getItem("Authorization");
+    let userIdentity = sessionStorage.getItem("userId");
+    console.log("user Id", userIdentity);
+    console.log("user Id", userLogin);
+    if (userLogin != null) {
+      setUserId(userIdentity);
+      if (userId !== "" && socket !== null) {
+        console.log("in this condition", userId);
+        socket.emit("user-logged-in", userIdentity);
+        socket.on("Notification", (notification) => {
+          console.log("notigic", notification);
+          getNotification(0, 2000);
+          // setNotificationsList((previousData) => [
+          //   ...previousData,
+          //   notification,
+          // ]);
+        });
+      } else if (userIdentity === "" && socket !== null) {
+        socket.emit("user-logged-out", userIdentity);
+      }
+    }
+  }, [socket, userId]);
+  useEffect(() => {
+    console.log("notfication props", props);
+    let userLogin = sessionStorage.getItem("Authorization");
+    let userIdentity = sessionStorage.getItem("userId");
+    if (userLogin != null) {
+      setUserId(userIdentity);
+      getNotification(0, 2000);
+    }
     props.setActiveTab({
       dashboard: "",
       newNFT: "",
@@ -81,95 +137,118 @@ function Notification(props) {
           }}
         >
           Notifications
+          <IconButton
+            aria-label="refresh"
+            onClick={handleRefresh}
+            size="small"
+            style={{ float: "right", marginTop: "-5px" }}
+          >
+            <RefreshIcon style={{ color: "black" }} />
+          </IconButton>
         </div>
+
         <div className="notifications-list">
-          {notifications.map((notification) => (
-            <div
-              key={notification.id}
-              className="notification-card"
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                padding: "10px",
-                borderBottom: "1px solid #ccc",
-              }}
-            >
+          {notifications !== undefined && notifications.length > 0 ? (
+            notifications.map((notification) => (
               <div
-                className="notification-image"
+                key={notification._id}
+                className="notification-card"
                 style={{
-                  marginRight: "10px",
-                  borderRadius: "50%",
-                  overflow: "hidden",
-                  width: "50px",
-                  height: "50px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "10px",
+                  borderBottom: "1px solid #ccc",
                 }}
               >
-                <img
-                  src={notification.image}
-                  alt="notification"
-                  style={{ width: "100%", height: "auto" }}
-                />
-              </div>
-              <div className="notification-content" style={{ flexGrow: 1 }}>
-                <p>{notification.message}</p>
-                <div
-                  className="notification-timestamp"
-                  style={{ textAlign: "right" }}
+                {/* <div
+                  className="notification-image"
+                  style={{
+                    marginRight: "10px",
+                    borderRadius: "50%",
+                    overflow: "hidden",
+                    width: "60px",
+                    height: "60px",
+                  }}
                 >
-                  {notification.time}
+                  <img
+                    // src={notification.image}
+                    alt="notification"
+                    style={{ width: "100%", height: "auto" }}
+                  />
+                </div> */}
+                <div className="notification-content" style={{ flexGrow: 1 }}>
+                  <p className="ml-4 mt-4">{notification.message}</p>
+                  <div
+                    className="notification-timestamp"
+                    style={{
+                      textAlign: "right",
+                      fontSize: "1px",
+                      color: "gray",
+                    }}
+                  >
+                    {notification.createdAt}
+                  </div>
+                </div>
+                <div className="notification-options">
+                  <IconButton
+                    aria-label="more"
+                    id={`notification-menu-${notification._id}`}
+                    size="small"
+                    onClick={handleClick}
+                    style={{ position: "relative", top: "-8px" }}
+                  >
+                    <MoreVertIcon style={{ color: "white" }} />
+                  </IconButton>
+                  <Menu
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={handleClose}
+                    onClick={handleClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: "visible",
+                        filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                        mt: 1.5,
+                        "& .MuiAvatar-root": {
+                          width: 32,
+                          height: 32,
+                          ml: -0.5,
+                          mr: 1,
+                        },
+                        "&:before": {
+                          content: '""',
+                          display: "block",
+                          position: "absolute",
+                          top: 0,
+                          right: 14,
+                          width: 10,
+                          height: 10,
+                          bgcolor: "background.paper",
+                          transform: "translateY(-50%) rotate(45deg)",
+                          zIndex: 0,
+                        },
+                      },
+                    }}
+                    transformOrigin={{ horizontal: "right", vertical: "top" }}
+                    anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        readNotification(notification._id);
+                      }}
+                    >
+                      Mark as read
+                    </MenuItem>
+                    <MenuItem>Delete</MenuItem>
+                  </Menu>
                 </div>
               </div>
-              <div className="notification-options">
-                <IconButton
-                  aria-label="more"
-                  id={`notification-menu-${notification.id}`}
-                  size="small"
-                  onClick={handleClick}
-                  style={{ position: "relative", top: "-8px" }}
-                >
-                  <MoreVertIcon style={{color:'white'}}/>
-                </IconButton>
-                <Menu
-                  anchorEl={anchorEl}
-                  open={open}
-                  onClose={handleClose}
-                  onClick={handleClose}
-                  PaperProps={{
-                    elevation: 0,
-                    sx: {
-                      overflow: "visible",
-                      filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                      mt: 1.5,
-                      "& .MuiAvatar-root": {
-                        width: 32,
-                        height: 32,
-                        ml: -0.5,
-                        mr: 1,
-                      },
-                      "&:before": {
-                        content: '""',
-                        display: "block",
-                        position: "absolute",
-                        top: 0,
-                        right: 14,
-                        width: 10,
-                        height: 10,
-                        bgcolor: "background.paper",
-                        transform: "translateY(-50%) rotate(45deg)",
-                        zIndex: 0,
-                      },
-                    },
-                  }}
-                  transformOrigin={{ horizontal: "right", vertical: "top" }}
-                  anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                >
-                  <MenuItem>Mark as read</MenuItem>
-                  <MenuItem>Delete</MenuItem>
-                </Menu>
-              </div>
-            </div>
-          ))}
+            ))
+          ) : (
+            <MessageCard msg="No Notfication" />
+          )}
         </div>
       </div>
     </div>

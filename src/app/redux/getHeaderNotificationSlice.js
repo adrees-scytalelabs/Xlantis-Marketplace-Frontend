@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-
+import { unwrapResult } from '@reduxjs/toolkit';
 const initialState = {
   notification: [],
   notificationLoading: 0,
@@ -16,6 +16,8 @@ export const getHeaderNotification = createAsyncThunk(
     try {
       const resp = await axios(`/notifications/${name.start}/${name.end}`);
       console.log("reduxResp notificiation", resp);
+      sessionStorage.setItem("notification",JSON.stringify(resp.data.notifications));
+      // console.log("i am here",resp.data.notifications)
       name.setNotificationsList(resp.data.notifications)
       return resp.data;
     } catch (error) {

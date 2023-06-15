@@ -35,12 +35,12 @@ function AdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard}>
-              <Link to={`/dashboard`}>
+              <Link to={`/dashboard`} state={{notification:props?.notification}}>
                 <i className="fa fa-home"></i> <span>Dashboard</span>
-              </Link>
+            </Link>
             </li>
             <li className={props.activeTab.notification}>
-              <Link to={`/dashboard/notifications`}>
+              <Link to={`/dashboard/notifications`} state={{notification:props?.notification}}>
                 <NotificationsIcon /> <span>Notifications</span>
               </Link>
             </li>

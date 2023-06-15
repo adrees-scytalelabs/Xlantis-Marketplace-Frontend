@@ -54,6 +54,7 @@ import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
 import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
 import AdminTemplate from "./Admin/AdminTemplate";
+import Notification from "./Admin/Notification";
 
 const theme = createTheme({
   components: {
@@ -546,7 +547,7 @@ function AdminDashboard(props) {
                         <Route
               exact
               path={`notifications`}
-              element={<AdminTemplate setActiveTab={setActiveTab} />}
+              element={<Notification setActiveTab={setActiveTab} />}
             />
 
             <Route
