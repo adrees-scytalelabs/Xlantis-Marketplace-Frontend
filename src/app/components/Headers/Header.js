@@ -71,7 +71,7 @@ function HeaderHome(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setSocket(io("http://localhost:3000/"));
+    setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");

@@ -14,7 +14,7 @@ function Notification(props) {
   const [userId, setUserId] = useState("");
   const open = Boolean(anchorEl);
   useEffect(() => {
-    setSocket(io("http://localhost:3000/"));
+    setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   const getNotification = (start, end) => {
     axios
