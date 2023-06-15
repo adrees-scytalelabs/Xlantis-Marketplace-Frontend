@@ -2,7 +2,7 @@ import { Tooltip, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 import {
-  createNewAdminTemplates,
+  createNewTemplates,
   getIsAvailableTemplates,
 } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
@@ -117,7 +117,7 @@ const NewTamplateModal = (props) => {
         data: properties,
       };
 
-      createNewAdminTemplates(templateData)
+      createNewTemplates(templateData)
         .then((response) => {
           console.log("response", response);
 

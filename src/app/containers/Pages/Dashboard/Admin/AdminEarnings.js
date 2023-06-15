@@ -310,7 +310,7 @@ const AdminEarnings = (props) => {
                 placement="top"
                 title={
                   <Typography fontSize={20} className="text-center">
-                    Graph contains dummy data for temporay time
+                    Graph contains dummy data for temporary time
                   </Typography>
                 }
                 arrow
