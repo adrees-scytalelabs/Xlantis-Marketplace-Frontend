@@ -17,9 +17,9 @@ function SelectSupplyAndPrice({
       {nftType === "1155" ? (
         <span>
           <label>Supply</label>
-          <span style={{ float: "right", fontSize: "12px" }}>
+          {/* <span style={{ float: "right", fontSize: "12px" }}>
             Out of ({nftTokenSupply})
-          </span>
+          </span> */}
           <div className="form-group">
             <div style={{ display: "flex" }}>
               <input
@@ -36,8 +36,9 @@ function SelectSupplyAndPrice({
                 type="number"
                 placeholder="0"
                 required
-                disabled={isDisabled}
-                value={values ?? ""}
+                disabled={true}
+                // value={values ?? ""}
+                value={nftTokenSupply}
                 className="form-control"
                 onChange={(e) => {
                   if (e.target.value >= 0) {
@@ -53,7 +54,7 @@ function SelectSupplyAndPrice({
                   }
                 }}
               />
-              <button
+              {/* <button
                 className="btn"
                 onClick={(e) => {
                   e.preventDefault();
@@ -67,7 +68,7 @@ function SelectSupplyAndPrice({
                 }}
               >
                 Max
-              </button>
+              </button> */}
             </div>
             {AlertMessage ? (
               <span style={{ fontSize: "10px", color: "red" }}>
