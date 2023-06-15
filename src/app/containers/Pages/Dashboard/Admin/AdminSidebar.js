@@ -77,7 +77,10 @@ function AdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.marketplace}>
-              <Link to={`${props.match}/marketPlace`} className="sidebarLink">
+              <Link
+                to={`${props.match}/${props.domain}/marketPlace`}
+                className="sidebarLink"
+              >
                 <BusinessIcon /> <span>MarketPlace</span>
               </Link>
             </li>

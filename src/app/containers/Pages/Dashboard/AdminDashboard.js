@@ -404,6 +404,7 @@ function AdminDashboard(props) {
         match={path}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        domain={props.jwtDecoded.domain}
       />
       <div className="page-wrapper">
         <div className="content container-fluid">
@@ -550,7 +551,7 @@ function AdminDashboard(props) {
             />
             <Route
               exact
-              path={`marketPlace`}
+              path={`:marketPlace/marketPlace`}
               element={
                 <MarketPlace
                   setActiveTab={setActiveTab}
