@@ -73,14 +73,20 @@ const AdminLoginSignupForms = () => {
           console.log("checker response", response);
           console.log("JWT submitted: ", response.data);
           if (response.status === 200) {
-            Cookies.set("Version", "v1-sso", {});
-            response.data.raindropToken &&
-              sessionStorage.setItem(
-                "Authorization",
-                response.data.raindropToken,
-                {}
-              );
-            setAdminSignInData(response.data);
+            if (response.data.success) {
+              Cookies.set("Version", "v1-sso", {});
+              response.data.raindropToken &&
+                sessionStorage.setItem(
+                  "Authorization",
+                  response.data.raindropToken,
+                  {}
+                );
+              setAdminSignInData(response.data);
+            } else {
+              setSnackbarMessage(response.data.message);
+              setSnackbarSeverity("error");
+              handleSnackbarOpen();
+            }
           }
         })
         .catch((error) => {

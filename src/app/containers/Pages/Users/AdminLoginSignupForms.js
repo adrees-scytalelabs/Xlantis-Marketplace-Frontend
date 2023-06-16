@@ -41,31 +41,38 @@ const AdminLoginSignupForms = () => {
         .then((response) => {
           console.log("JWT submitted: ", response);
           if (response.status === 200) {
-            Cookies.set("Version", "v1-sso", {});
-            setAdminSignInData(response.data);
-            console.log("1");
-            response.data.isInfoAdded === true &&
-              Cookies.set("InfoAdded", response.data.isInfoAdded, {});
-            console.log("2");
-            response.data.isVerified === true &&
-              Cookies.set("Verified", response.data.isVerified, {});
-            console.log("3");
-            response.data.raindropToken &&
-              sessionStorage.setItem(
-                "Authorization",
-                response.data.raindropToken,
-                {}
-              );
-            if (
+            if (response.data.success) {
+              Cookies.set("Version", "v1-sso", {});
+              setAdminSignInData(response.data);
+              console.log("1");
               response.data.isInfoAdded === true &&
+                Cookies.set("InfoAdded", response.data.isInfoAdded, {});
+              console.log("2");
               response.data.isVerified === true &&
-              response.data.isEnabled === true
-            ) {
-              let variant = "success";
-              setSnackbarMessage("Logged in successfully");
+                Cookies.set("Verified", response.data.isVerified, {});
+              console.log("3");
+              response.data.raindropToken &&
+                sessionStorage.setItem(
+                  "Authorization",
+                  response.data.raindropToken,
+                  {}
+                );
+              if (
+                response.data.isInfoAdded === true &&
+                response.data.isVerified === true &&
+                response.data.isEnabled === true
+              ) {
+                let variant = "success";
+                setSnackbarMessage("Logged in successfully");
+                setSnackbarSeverity(variant);
+                handleSnackbarOpen();
+                window.location.reload(false);
+              }
+            } else {
+              let variant = "error";
+              setSnackbarMessage(response.data.message);
               setSnackbarSeverity(variant);
               handleSnackbarOpen();
-              window.location.reload(false);
             }
           }
         })
