@@ -16,7 +16,7 @@ import {
   topUpAmount,
   updateDropStartTime,
   updateDropStatus,
-  updateDropTxHash
+  updateDropTxHash,
 } from "../../../../components/API/AxiosInterceptor";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 import CollectionAutocomplete from "../../../../components/Autocomplete/CollectionAutocomplete";
@@ -876,7 +876,7 @@ function AddNFT(props) {
               getNfts(collectionId);
               setNftDetail({});
               setPrice(0);
-              setSupply(1);
+              setSupply(0);
               if (key === "default") {
                 setKey("refresh");
               } else {
@@ -1078,6 +1078,7 @@ function AddNFT(props) {
                       setNftURI(value.nftURI);
                       setTokenId(value.nftId);
                       setNftTokenSupply(value.totalSupply);
+                      setSupply(value.totalSupply);
                       handleOpenNFTDetailModal(value);
                     }
                   }}
