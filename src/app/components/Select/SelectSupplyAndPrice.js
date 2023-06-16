@@ -37,8 +37,7 @@ function SelectSupplyAndPrice({
                 placeholder="0"
                 required
                 disabled={true}
-                // value={values ?? ""}
-                value={nftTokenSupply}
+                value={values ?? ""}
                 className="form-control"
                 onChange={(e) => {
                   if (e.target.value >= 0) {
