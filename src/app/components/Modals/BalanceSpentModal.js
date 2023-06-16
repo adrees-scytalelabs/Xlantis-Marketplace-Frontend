@@ -1,13 +1,8 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import MessageCard from "../MessageCards/MessageCard";
 
 const BalanceSpentModal = (props) => {
-  useEffect(() => {
-    console.log("Props in balance spent history modal: ", props);
-    console.log("Balance tx info: ", props.balanceHistoryModalData["txInfo"]);
-  }, [props]);
-
   return (
     <Modal show={props.show} onHide={props.handleClose} centered>
       <Modal.Header

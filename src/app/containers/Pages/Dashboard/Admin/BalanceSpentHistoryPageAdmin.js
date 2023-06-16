@@ -50,10 +50,7 @@ const BalanceSpentHistoryPageAdmin = (props) => {
   const getBalanceHistory = () => {
     getBalanceSpentHistory()
       .then((response) => {
-        console.log(
-          "Response from getting admin's balance spent history: ",
-          response
-        );
+        // console.log("Response from getting admin's balance spent history: ", response);
         setBalanceHistory(response.data.history);
       })
       .catch((error) => {
