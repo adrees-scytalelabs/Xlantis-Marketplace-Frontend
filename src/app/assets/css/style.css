@@ -10998,3 +10998,23 @@ object:hover {
 .custom-header .close {
   color: #fff;
 }
+.notification-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+  background-color: black;
+  transition: background-color 0.3s;
+  color: white;
+}
+.notification-card:hover {
+  background-color: white;
+  color: black;
+} 
+.vertIcon{
+  color:white;
+}
+.notification-card:hover .vertIcon{
+  color:black;
+}

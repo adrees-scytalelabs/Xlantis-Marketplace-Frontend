@@ -61,6 +61,29 @@ function Notification(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+  const formatDate = (date) => {
+    const backendDate = new Date(date);
+    const currentDate = new Date();
+    const timeDifference = currentDate - backendDate;
+    const hoursDifference = timeDifference / (1000 * 60 * 60);
+    const mintueDifference = hoursDifference * 60;
+    console.log("Hours Difference", hoursDifference);
+    console.log("Mintue Difference", mintueDifference);
+    if (mintueDifference < 60) {
+      return `${Math.floor(mintueDifference)} min ago`;
+    } else if (hoursDifference < 24) {
+      if (hoursDifference < 2) {
+        return `${Math.floor(hoursDifference)} hour ago`;
+      } else {
+        return `${Math.floor(hoursDifference)} hours ago`;
+      }
+    } else {
+      const year = backendDate.getFullYear();
+      const month = (backendDate.getMonth() + 1).toString().padStart(2, "0");
+      const day = backendDate.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    }
+  };
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
     let userIdentity = sessionStorage.getItem("userId");
@@ -143,24 +166,15 @@ function Notification(props) {
             size="small"
             style={{ float: "right", marginTop: "-5px" }}
           >
-            <RefreshIcon style={{ color: "black" }} />
+            Refresh
+            <RefreshIcon style={{ color: "black", marginLeft: "5px" }} />
           </IconButton>
         </div>
 
         <div className="notifications-list">
           {notifications !== undefined && notifications.length > 0 ? (
             notifications.map((notification) => (
-              <div
-                key={notification._id}
-                className="notification-card"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  padding: "10px",
-                  borderBottom: "1px solid #ccc",
-                }}
-              >
+              <div key={notification._id} className="notification-card">
                 {/* <div
                   className="notification-image"
                   style={{
@@ -187,10 +201,11 @@ function Notification(props) {
                       color: "gray",
                     }}
                   >
-                    {notification.createdAt}
+                    {formatDate(notification.createdAt)}
                   </div>
                 </div>
                 <div className="notification-options">
+                  <div className="">
                   <IconButton
                     aria-label="more"
                     id={`notification-menu-${notification._id}`}
@@ -198,8 +213,9 @@ function Notification(props) {
                     onClick={handleClick}
                     style={{ position: "relative", top: "-8px" }}
                   >
-                    <MoreVertIcon style={{ color: "white" }} />
+                    <MoreVertIcon className="vertIcon"/>
                   </IconButton>
+                  </div>
                   <Menu
                     anchorEl={anchorEl}
                     open={open}
@@ -241,7 +257,13 @@ function Notification(props) {
                     >
                       Mark as read
                     </MenuItem>
-                    <MenuItem>Delete</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        readNotification(notification._id);
+                      }}
+                    >
+                      Delete
+                    </MenuItem>
                   </Menu>
                 </div>
               </div>
