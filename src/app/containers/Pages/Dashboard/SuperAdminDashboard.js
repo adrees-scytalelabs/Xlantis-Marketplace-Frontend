@@ -26,6 +26,7 @@ import SuperAdminEarningsPage from "./Admin/SuperAdminEarningsPage";
 import SuperAdminSidebar from "./Admin/SuperAdminSidebar";
 import SuperAdminStats from "./Admin/SuperAdminStats";
 import TemplateProperties from "./Admin/TemplateProperties";
+import SuperAdminCategories from "./Admin/SuperAdminCategories";
 
 const theme = createTheme({
   components: {
@@ -69,6 +70,8 @@ function SuperAdminDashboard(props) {
     adminStats: "",
     PlatformFee: "",
     earnings: "",
+    categories: "",
+
   });
   const [tab, setTab] = useState(0);
 
@@ -289,6 +292,17 @@ function SuperAdminDashboard(props) {
               path={`manageAccounts`}
               element={
                 <AccountApproval
+                  setActiveTab={setActiveTab}
+                  tab={tab}
+                  setTab={setTab}
+                />
+              }
+            />
+               <Route
+              exact
+              path={`categories`}
+              element={
+                <SuperAdminCategories
                   setActiveTab={setActiveTab}
                   tab={tab}
                   setTab={setTab}

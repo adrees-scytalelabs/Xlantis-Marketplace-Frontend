@@ -182,7 +182,7 @@ function SuperAdminSidebar(props) {
               </Link>
             </li>
             <li className={props.activeTab.categories}>
-              <Link to={`${path}/earnings`} className="sidebarLink">
+              <Link to={`${path}/categories`} className="sidebarLink">
               <CategoryIcon />
                 <span>Categories</span>
               </Link>
