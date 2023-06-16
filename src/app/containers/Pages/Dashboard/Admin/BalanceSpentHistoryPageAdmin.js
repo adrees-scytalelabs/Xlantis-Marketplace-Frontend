@@ -37,6 +37,7 @@ const styles = {
 const BalanceSpentHistoryPageAdmin = (props) => {
   const [balanceHistory, setBalanceHistory] = useState([]);
   const [showBalanceSpentModal, setShowBalanceSpentModal] = useState(false);
+  const [balanceHistoryModalData, setBalanceHistoryModalData] = useState({});
 
   const handleCloseBalanceSpentModal = () => {
     setShowBalanceSpentModal(false);
@@ -104,6 +105,7 @@ const BalanceSpentHistoryPageAdmin = (props) => {
             balanceHistory={balanceHistory}
             styles={styles}
             handleShowBalanceSpentModal={handleShowBalanceSpentModal}
+            setBalanceHistoryModalData={setBalanceHistoryModalData}
           />
         ) : (
           // IF THERE IS NOT ROW FOR TABLE
@@ -113,7 +115,7 @@ const BalanceSpentHistoryPageAdmin = (props) => {
       <BalanceSpentModal
         show={showBalanceSpentModal}
         handleClose={handleCloseBalanceSpentModal}
-        balanceHistory={balanceHistory}
+        balanceHistoryModalData={balanceHistoryModalData}
       />
     </div>
   );

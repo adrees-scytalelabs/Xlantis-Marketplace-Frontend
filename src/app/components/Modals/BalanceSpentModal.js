@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
+import MessageCard from "../MessageCards/MessageCard";
 
 const BalanceSpentModal = (props) => {
+  useEffect(() => {
+    console.log("Props in balance spent history modal: ", props);
+    console.log("Balance tx info: ", props.balanceHistoryModalData["txInfo"]);
+  }, [props]);
+
   return (
     <Modal show={props.show} onHide={props.handleClose} centered>
       <Modal.Header
@@ -13,20 +19,22 @@ const BalanceSpentModal = (props) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="NewTemplateBody" style={{ borderBottom: "none" }}>
-        <div style={{ margin: "10px" }}>
-          <Row className="p-2">
-            <Col>Minting</Col>
-            <Col>100</Col>
-          </Row>
-          <Row className="p-2">
-            <Col>Approval</Col>
-            <Col>1000</Col>
-          </Row>
-          <Row className="p-2">
-            <Col>Collection Deployment</Col>
-            <Col>1000</Col>
-          </Row>
-        </div>
+        {props?.balanceHistoryModalData?.txInfo?.length > 0 ? (
+          <div style={{ margin: "10px" }}>
+            {props?.balanceHistoryModalData?.txInfo?.map((info, index) => {
+              return (
+                <Row className="p-2" key={index}>
+                  <Col>{info?.name}</Col>
+                  <Col>{info?.amountInUsd?.toFixed(5)}</Col>
+                </Row>
+              );
+            })}
+          </div>
+        ) : (
+          <div style={{ margin: "10px" }}>
+            <MessageCard msg="No Details Available" />
+          </div>
+        )}
       </Modal.Body>
       <Modal.Footer
         style={{
