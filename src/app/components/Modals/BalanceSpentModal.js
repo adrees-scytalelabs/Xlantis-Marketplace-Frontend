@@ -20,7 +20,7 @@ const BalanceSpentModal = (props) => {
               return (
                 <Row className="p-2" key={index}>
                   <Col>{info?.name}</Col>
-                  <Col>{info?.amountInUsd?.toFixed(5)}</Col>
+                  <Col>${info?.amountInUsd?.toFixed(5)}</Col>
                 </Row>
               );
             })}
