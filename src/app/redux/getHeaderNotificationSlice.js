@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { unwrapResult } from '@reduxjs/toolkit';
 const initialState = {
   notification: [],
   notificationLoading: 0,
