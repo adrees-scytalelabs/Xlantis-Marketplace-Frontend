@@ -12,10 +12,14 @@ import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import PropertiesTable from "../../../../components/tables/PropertiesTable";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
+import CreateCategoryModal from "../../../../components/Modals/CreateCategoryModal";
 
 function SuperAdminCategories(props) {
+  const [image, setImage] = useState(defaultProfile);
   const [categoryData, setCategoryData] = useState([]);
   const [newCategoryModalShow, setNewCategoryModalShow] = useState(false);
+  const [name, setName] = useState("");
   const [deleteData, setDeleteData] = useState([]);
   const [open, setOpen] = useState(false);
   const [modalState, setModalState] = useState(false);
@@ -129,17 +133,18 @@ function SuperAdminCategories(props) {
         // />
         null
       )}
-      {/* <DeleteModal
-        show={deleteState}
-        handleClose={handleClose}
-        handleDelete={handleNewCategoryModalClose}
+       <CreateCategoryModal
+        show={newCategoryModalShow}
+        handleClose={handleNewCategoryModalClose}
+        setName={setName}
+        setImage={setImage}
       />
-      <NewTamplateModal
+      {/* <NewTamplateModal
         handleClose={handleNewCategoryModalClose}
         show={newTemplateModalShow}
         useEffectLoader={useEffectLoader}
         setUseEffectLoader={setUseEffectLoader}
-      /> */}
+      />  */}
       <NotificationSnackbar
         open={snackbarOpen}
         handleClose={handleSnackbarClose}
