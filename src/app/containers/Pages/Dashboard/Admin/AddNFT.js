@@ -143,6 +143,7 @@ function AddNFT(props) {
   const [topUpModal, setTopUpModal] = useState(false);
   const [requiredAmount, setRequiredAmount] = useState(0);
   const [isCollectionDisable, setIsCollectionDisable] = useState(false);
+  const [isDropUpdated, setIsDropUpdated] = useState(false);
 
   const handleCloseTopUpModal = () => {
     setTopUpModal(false);
@@ -177,7 +178,7 @@ function AddNFT(props) {
         console.log("Error from getting collections: ", error.response);
         if (process.env.NODE_ENV === "development") {
           console.log(error);
-          console.log("error to get collections",error.response);
+          console.log("error to get collections", error.response);
         }
         if (error.response.data !== undefined) {
           if (
@@ -242,6 +243,7 @@ function AddNFT(props) {
   let getNfts = (id) => {
     getNFTsThroughId(id, location.state.marketplaceId).then(
       (response) => {
+        // console.log("Response from getting NFTs: ", response);
         const nft = response.data.data;
         setNftList(response.data.data);
       },
@@ -718,6 +720,7 @@ function AddNFT(props) {
           setIsDisabled(true);
           setDisabledUpdateButton(true);
           setEnableTime(true);
+          setIsDropUpdated(true);
           let variant = "success";
           setSnackbarMessage("Drop Updated Successfully.");
           setSnackbarSeverity(variant);
@@ -1095,6 +1098,7 @@ function AddNFT(props) {
                       classes={styles}
                       place="between"
                       handleRemoveNFT={handleRemoveNFT}
+                      isDropUpdated={isDropUpdated}
                     />
                   </div>
                 )}
@@ -1157,6 +1161,7 @@ function AddNFT(props) {
                             place="list"
                             handleRemoveNFT={handleRemoveNFT}
                             index={index}
+                            isDropUpdated={isDropUpdated}
                           />
                         </Grid>
                       ))}
