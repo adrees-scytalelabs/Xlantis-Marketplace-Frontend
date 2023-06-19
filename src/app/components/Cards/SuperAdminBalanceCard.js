@@ -1,6 +1,7 @@
 import { Card } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
+import WhiteSpinner from "../Spinners/WhiteSpinner";
 const SuperAdminBalanceCard = (props) => {
   return (
     <Card
@@ -21,14 +22,20 @@ const SuperAdminBalanceCard = (props) => {
               </h4>
             </section>
           </div>
-          <div className="col justify-content-between">
-            <h4 className={props.hoverH4}>
-              USD($): {props.content?.usd?.toFixed(2)}
-            </h4>
-            <h4 className={props.hoverH4}>
-              MATIC: {parseFloat(props.content?.matic?.inMatic).toFixed(4)}
-            </h4>
-          </div>
+          {props.isLoadingBalance ? (
+            <div className="col justify-content-between">
+              <WhiteSpinner />
+            </div>
+          ) : (
+            <div className="col justify-content-between">
+              <h4 className={props.hoverH4}>
+                USD($): {props.content?.usd?.toFixed(2)}
+              </h4>
+              <h4 className={props.hoverH4}>
+                MATIC: {parseFloat(props.content?.matic?.inMatic).toFixed(4)}
+              </h4>
+            </div>
+          )}
         </div>
       </Link>
     </Card>

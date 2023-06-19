@@ -4,7 +4,7 @@ import React from "react";
 function SuperAdminCreateTemplate(props) {
   return (
     <div className="row mt-3">
-      <div className="col-12 col-md-4 col-lg-4 col-sm-12">
+      <div className="col-12 col-md-4 col-lg-3 col-sm-12">
         <label>
           Key<span style={{ color: "#F64D04" }}>&#42;</span>
         </label>
@@ -21,7 +21,7 @@ function SuperAdminCreateTemplate(props) {
         </div>
       </div>
 
-      <div className="col-12 col-md-2 col-lg-1 col-sm-12 ml-2">
+      <div className="col-12 col-md-2 col-lg-2 col-sm-12 ml-2">
         <label className="ml-lg-2 ml-md-2">
           Type<span style={{ color: "#F64D04" }}>&#42;</span>
         </label>

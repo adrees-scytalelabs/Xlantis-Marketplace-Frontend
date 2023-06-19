@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Modal } from "react-bootstrap";
 
 const AdminFilterModal = ({ show, handleClose, handleApplyFilter }) => {
-  const [isAll, setIsAll] = useState(false);
   const [isSSO, setIsSSO] = useState(false);
   const [isWallet, setIsWallet] = useState(false);
   const [isDisabled, setIsDisabled] = useState(false);
@@ -39,23 +38,6 @@ const AdminFilterModal = ({ show, handleClose, handleApplyFilter }) => {
 
       <Modal.Body className="NewTemplateBody" style={{ borderBottom: "none" }}>
         <FormGroup>
-          {/* <FormControlLabel
-            control={
-              <Checkbox
-                sx={{
-                  color: "white",
-                  "&.Mui-checked": {
-                    color: "white",
-                  },
-                }}
-                onChange={(e) => {
-                  setIsAll(e.target.checked);
-                }}
-                checked={isAll}
-              />
-            }
-            label="All"
-          /> */}
           <FormControlLabel
             control={
               <Checkbox

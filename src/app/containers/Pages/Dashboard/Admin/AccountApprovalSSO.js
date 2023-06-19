@@ -10,6 +10,7 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function AccountApprovalSSO(props) {
   const [admins, setAdmins] = useState([]);
@@ -111,27 +112,33 @@ function AccountApprovalSSO(props) {
   };
   return (
     <div className="backgroundDefault">
-      <div className="row no-gutters">
-        <SuperAdminTable
-          admins={admins}
-          handleModalOpen={handleModalOpen}
-          ssoEnabled={true}
-          walletEnabled={false}
-          approval={true}
-          handleVerify={handleVerify}
-          setShow={setShow}
-          setModalData={setModalData}
-        />
-      </div>
-      <TablePagination
-        rowsPerPageOptions={[4, 8, 12, 24]}
-        component="div"
-        count={adminCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {admins.length === 0 ? (
+        <MessageCard msg="No data available" />
+      ) : (
+        <>
+          <div className="row no-gutters">
+            <SuperAdminTable
+              admins={admins}
+              handleModalOpen={handleModalOpen}
+              ssoEnabled={true}
+              walletEnabled={false}
+              approval={true}
+              handleVerify={handleVerify}
+              setShow={setShow}
+              setModalData={setModalData}
+            />
+          </div>
+          <TablePagination
+            rowsPerPageOptions={[4, 8, 12, 24]}
+            component="div"
+            count={adminCount}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </>
+      )}
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}
