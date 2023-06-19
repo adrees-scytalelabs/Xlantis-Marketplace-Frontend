@@ -14,10 +14,11 @@ import NotificationSnackbar from "../../../../components/Snackbar/NotificationSn
 import PropertiesTable from "../../../../components/tables/PropertiesTable";
 import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 import CreateCategoryModal from "../../../../components/Modals/CreateCategoryModal";
+import CategoryTable from "../../../../components/tables/CategoryTable";
 
 function SuperAdminCategories(props) {
   const [image, setImage] = useState(defaultProfile);
-  const [categoryData, setCategoryData] = useState([]);
+  // const [categoryData, setCategoryData] = useState([]);
   const [newCategoryModalShow, setNewCategoryModalShow] = useState(false);
   const [name, setName] = useState("");
   const [deleteData, setDeleteData] = useState([]);
@@ -26,10 +27,12 @@ function SuperAdminCategories(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
+  const [editData, setEditData] = useState();
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [useEffectLoader, setUseEffectLoader] = useState(false);
+  const categoryData = [{id:1,name:'Cars',image:'https://www.kasandbox.org/programming-images/avatars/spunky-sam.png'}]
   let handleNewCategoryModalClose = () => {
     setNewCategoryModalShow(false);
   }
@@ -46,16 +49,17 @@ function SuperAdminCategories(props) {
     }
     setSnackbarOpen(false);
   };
-  const handleClose = () => {
-    setModalState(false);
-    setDeleteState(false);
+  const handleEditModalClose = () => {
     setUpdateModal(false);
     //getTemplates();
   };
-  const handleDeleteModal = (e, data) => {
+  const handleEditModalOpen = (e, data) => {
     e.preventDefault();
-    setDeleteData(data);
-    setDeleteState(true);
+    // setEditData(data);
+    setImage(data.image);
+    setName(data.name);
+    handleNewCategoryModalOpen();
+    console.log("data of edit modal",data);
   };
   const handleCloseBackdrop = () => {
     setOpen(false);
@@ -109,42 +113,23 @@ function SuperAdminCategories(props) {
       <div>
         <Button className="bttn mb-4 mt-3" onClick={() => handleNewCategoryModalOpen()}>Create Category</Button>
       </div>
-      {categoryData.length ? (
+      {categoryData?.length ? (
         <div className="row no-gutters">
-          {/* <PropertiesTable
-            templateData={templateData}
-            handleOpen={handleOpen}
-            handleDeleteModal={handleDeleteModal}
-            handleUpdatedData={handleUpdatedData}
-          /> */}
+           <CategoryTable handleEditModalOpen={handleEditModalOpen} categoryData={categoryData}/>
         </div>
       ) : (
         <MessageCard msg="No Category created" />
       )}
       <CircularBackdrop open={open} />
-      {modalState === true && (
-        // <TemplateDetails
-        //   show={modalState}
-        //   handleClose={handleClose}
-        //   templateData={modalData}
-        //   setTemplateData={setModalData}
-        //   updateEnabled={updateModal}
-        //   handleUpdateData={handleUpdatedData}
-        // />
-        null
-      )}
        <CreateCategoryModal
         show={newCategoryModalShow}
         handleClose={handleNewCategoryModalClose}
         setName={setName}
+        name={name}
         setImage={setImage}
+        image={image}
       />
-      {/* <NewTamplateModal
-        handleClose={handleNewCategoryModalClose}
-        show={newTemplateModalShow}
-        useEffectLoader={useEffectLoader}
-        setUseEffectLoader={setUseEffectLoader}
-      />  */}
+     
       <NotificationSnackbar
         open={snackbarOpen}
         handleClose={handleSnackbarClose}

@@ -4,7 +4,7 @@ import { Typography } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import UploadFile from "../Upload/UploadFile";
 
-function CreateCategoryModal({ handleClose, show, setImage, setName }) {
+function CreateCategoryModal({ handleClose, show, setImage,image, setName,name }) {
   const [isUploading, setIsUploading] = useState(false);
   const [fileURL, setFileURL] = useState(defaultProfile);
   const handleCloseModal = () => {
@@ -18,8 +18,8 @@ function CreateCategoryModal({ handleClose, show, setImage, setName }) {
   let onChangeFile = (e) => {
     if (e.target.files && e.target.files[0]) {
       setIsUploading(true);
-      setImage(e.target.files[0]);
-      setFileURL(URL.createObjectURL(e.target.files[0]));
+      //setImage(e.target.files[0]);
+      setImage(URL.createObjectURL(e.target.files[0]));
       //setInputs((values) => ({ ...values, marketplaceImage: e.target.files[0]}));
       setIsUploading(false);
     }
@@ -57,7 +57,7 @@ function CreateCategoryModal({ handleClose, show, setImage, setName }) {
           <Col>
             <label>Select Category Image</label>
             <UploadFile
-              fileURL={fileURL}
+              fileURL={image}
               isUploading={isUploading}
               changeFile={onChangeFile}
               class="col-12 col-md-auto profile-img mr-3"
@@ -77,6 +77,7 @@ function CreateCategoryModal({ handleClose, show, setImage, setName }) {
               <input
               style={{padding:'10px'}}
                 type="text"
+                value={name}
                 placeholder="Enter Category Name"
                 className="form-control-login -login newNftInput"
                 onChange={(e) => {
