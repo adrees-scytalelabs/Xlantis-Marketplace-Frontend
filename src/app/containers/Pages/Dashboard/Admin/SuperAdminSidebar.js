@@ -6,6 +6,7 @@ import "../../../../assets/css/superAdmin.css";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import ManageAccountsIcon from "@mui/icons-material/ManageAccounts";
+import CategoryIcon from "@mui/icons-material/Category";
 
 function SuperAdminSidebar(props) {
   const [style, setStyle] = useState("dropdown-container1");
@@ -180,7 +181,12 @@ function SuperAdminSidebar(props) {
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Platform Fee</span>
               </Link>
             </li>
-
+            <li className={props.activeTab.categories}>
+              <Link to={`${path}/categories`} className="sidebarLink">
+              <CategoryIcon />
+                <span>Categories</span>
+              </Link>
+            </li>
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

@@ -174,10 +174,10 @@ function AddNFT(props) {
         setCollectionTypes(response.data.collectionData);
       },
       (error) => {
-        console.log("Error from getting collections: ", error);
+        console.log("Error from getting collections: ", error.response);
         if (process.env.NODE_ENV === "development") {
           console.log(error);
-          console.log(error.response);
+          console.log("error to get collections",error.response);
         }
         if (error.response.data !== undefined) {
           if (
@@ -330,7 +330,7 @@ function AddNFT(props) {
       })
       .catch((error) => {
         handleCloseBackdrop();
-        console.log("Error from getting drop NFTs: ", error);
+        console.log("Error from getting drop NFTs: ", error.response);
       });
   };
 
