@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { Typography } from "@mui/material";
-import { defaultProfile } from "../../components/ImageURLs/URLs";
 import UploadFile from "../Upload/UploadFile";
+import ImageCropModal from "./ImageCropModal";
+import getCroppedImg from "../Utils/Crop";
 
-function CreateCategoryModal({
+function CategoryModal({
   handleClose,
   show,
   setImage,
@@ -13,8 +14,49 @@ function CreateCategoryModal({
   name,
   viewDetail,
   editData,
+  setSnackbarMessage,
+  setSnackbarSeverity,
 }) {
   const [isUploading, setIsUploading] = useState(false);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageFile, setImageFile] = useState();
+  const [imageCounter, setImageCounter] = useState(0);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("square");
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setImageSrc("");
+  };
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+  const showCroppedImage = useCallback(async () => {
+    try {
+      setIsUploadingCroppedImage(true);
+      const image = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      setImageFile(image);
+      setImage(URL.createObjectURL(image));
+      setImageSrc("");
+      setAspect(1 / 1);
+      setIsUploadingCroppedImage(false);
+      setShowCropModal(false);
+      setImageCounter(imageCounter + 1);
+      setSnackbarMessage("Image Uploaded Succesfully");
+      setSnackbarSeverity("success");
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  });
   const handleCloseModal = () => {
     //props.setOpen(true);
     handleClose();
@@ -23,15 +65,17 @@ function CreateCategoryModal({
     handleClose();
   };
   let onChangeFile = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    let file = e.target.files[0];
+    if (file) {
       setIsUploading(true);
-      setImage(URL.createObjectURL(e.target.files[0]));
+      setCropShape("square");
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      // setImage(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
       setIsUploading(false);
     }
   };
-  // useEffect(()=>{
-  //   // props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
-  // },[props])
   return (
     <Modal show={show} onHide={handleClose} centered backdrop="static">
       <Modal.Header
@@ -65,7 +109,20 @@ function CreateCategoryModal({
             ) : (
               <label>Category Image</label>
             )}
-
+            <ImageCropModal
+              show={showCropModal}
+              handleClose={handleCloseImageCropModal}
+              crop={crop}
+              setCrop={setCrop}
+              onCropComplete={onCropComplete}
+              imageSrc={imageSrc}
+              uploadImage={showCroppedImage}
+              isUploadingCroppedImage={isUploadingCroppedImage}
+              zoom={zoom}
+              setZoom={setZoom}
+              aspect={aspect}
+              cropShape={cropShape}
+            />
             <UploadFile
               fileURL={image}
               isUploading={isUploading}
@@ -138,4 +195,4 @@ function CreateCategoryModal({
   );
 }
 
-export default CreateCategoryModal;
+export default CategoryModal;
