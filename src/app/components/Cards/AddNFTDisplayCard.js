@@ -36,7 +36,7 @@ const AddNFTDisplayCard = (props) => {
           </div>
         </CardContent>
       </Card>
-      {props.place === "list" ? (
+      {props.place === "list" && props.isDropUpdated === false ? (
         <CardActions>
           <Button
             onClick={(e) => {
