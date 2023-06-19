@@ -1,7 +1,7 @@
 import { Tooltip, Typography } from "@mui/material";
 import React from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
-import InfoIcon from '@mui/icons-material/Info';
+import InfoIcon from "@mui/icons-material/Info";
 
 const UploadFile = (props) => {
   return (
@@ -28,9 +28,11 @@ const UploadFile = (props) => {
             )}
           </div>
           <div className="co-12 col-md-auto">
-            <label htmlFor={props.inputId} className="uploadLabel">
-              {props.isUploading ? <WhiteSpinner /> : "Choose File"}
-            </label>
+            {props?.viewDetail !== true ? (
+              <label htmlFor={props.inputId} className="uploadLabel">
+                {props.isUploading ? <WhiteSpinner /> : "Choose File"}
+              </label>
+            ) : null}
             {props.inputId === "dropImage" && (
               <Tooltip
                 className="ml-2"
@@ -41,7 +43,7 @@ const UploadFile = (props) => {
                 }
               >
                 <span style={{ fontSize: "0.9rem" }}>
-                 <InfoIcon/>
+                  <InfoIcon />
                 </span>
               </Tooltip>
             )}
@@ -53,9 +55,11 @@ const UploadFile = (props) => {
               onChange={props.changeFile}
               hidden
             />
-            <small className="form-text text-muted">
-              Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-            </small>
+            {props?.viewDetail !== true ? (
+              <small className="form-text text-muted">
+                Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+              </small>
+            ) : null}
           </div>
         </div>
       </div>

@@ -27,14 +27,18 @@ function SuperAdminCategories(props) {
   const [deleteState, setDeleteState] = useState(false);
   const [modalData, setModalData] = useState();
   const [updateModal, setUpdateModal] = useState(true);
-  const [editData, setEditData] = useState();
+  const [editData, setEditData] = useState(false);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [viewDetail,setViewDetail] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [useEffectLoader, setUseEffectLoader] = useState(false);
   const categoryData = [{id:1,name:'Cars',image:'https://www.kasandbox.org/programming-images/avatars/spunky-sam.png'}]
   let handleNewCategoryModalClose = () => {
     setNewCategoryModalShow(false);
+    setViewDetail(false)
+    setName("");
+    setImage(defaultProfile);
   }
   let handleNewCategoryModalOpen = () => {
     setNewCategoryModalShow(true);
@@ -53,9 +57,15 @@ function SuperAdminCategories(props) {
     setUpdateModal(false);
     //getTemplates();
   };
+  const handleViewDetail = (e,data) =>{
+    setViewDetail(true);
+    setImage(data.image);
+    setName(data.name);
+    handleNewCategoryModalOpen();
+  }
   const handleEditModalOpen = (e, data) => {
     e.preventDefault();
-    // setEditData(data);
+    setEditData(true);
     setImage(data.image);
     setName(data.name);
     handleNewCategoryModalOpen();
@@ -115,7 +125,7 @@ function SuperAdminCategories(props) {
       </div>
       {categoryData?.length ? (
         <div className="row no-gutters">
-           <CategoryTable handleEditModalOpen={handleEditModalOpen} categoryData={categoryData}/>
+           <CategoryTable handleEditModalOpen={handleEditModalOpen} categoryData={categoryData} handleViewDetail={handleViewDetail}/>
         </div>
       ) : (
         <MessageCard msg="No Category created" />
@@ -128,8 +138,9 @@ function SuperAdminCategories(props) {
         name={name}
         setImage={setImage}
         image={image}
+        viewDetail={viewDetail}
+        editData={editData}
       />
-     
       <NotificationSnackbar
         open={snackbarOpen}
         handleClose={handleSnackbarClose}

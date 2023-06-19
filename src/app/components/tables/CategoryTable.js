@@ -44,7 +44,7 @@ const styles = {
   },
 };
 
-function CategoryTable({categoryData,handleEditModalOpen}) {
+function CategoryTable({categoryData,handleEditModalOpen,handleViewDetail}) {
   return (
     <Table responsive>
       <thead style={{ color: "black" }}>
@@ -77,7 +77,7 @@ function CategoryTable({categoryData,handleEditModalOpen}) {
             <td style={styles.collectionTitle}>
               <button
                 className="btn submit-btn propsActionBtn "
-                // onClick={(e) => props.handleOpen(e, i)}
+                onClick={(e) => handleViewDetail(e, i)}
               >
                 View
               </button>
