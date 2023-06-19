@@ -179,8 +179,8 @@ function PlatformFee(props) {
                 }
               }}
             />
-            <div class="input-group-prepend">
-              <span class="input-group-text bg-transparent text-white">%</span>
+            <div className="input-group-prepend">
+              <span className="input-group-text bg-transparent text-white">%</span>
             </div>
             {isDisabled ? (
               <button

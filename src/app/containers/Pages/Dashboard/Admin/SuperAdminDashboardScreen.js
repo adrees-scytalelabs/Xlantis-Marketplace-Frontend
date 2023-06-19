@@ -10,10 +10,12 @@ import {
   getAdminCountsV2,
   getSuperAdminBalance,
 } from "../../../../components/API/AxiosInterceptor";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const SuperAdminDashboardScreen = (props) => {
   const [totalAdmins, setTotalAdmins] = useState(0);
   const [totalVerifiedAdmins, setTotalVerifiedAdmins] = useState(0);
+  const [isLoadingBalance, setIsLoadingBalance] = useState(false);
   const [superAdminBalance, setSuperAdminBalance] = useState({
     usd: 0,
     matic: { inMatic: 0, inWei: 0 },
@@ -25,16 +27,35 @@ const SuperAdminDashboardScreen = (props) => {
   const [open, setOpen] = useState(false);
   const [hover, setHover] = useState(false);
   const path = useResolvedPath("").pathname;
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
 
   const getBalance = () => {
+    setIsLoadingBalance(true);
     getSuperAdminBalance()
       .then((response) => {
         console.log("Response from getting super admin balance: ", response);
         setMasterWalletBalance(response.data.masterWallet);
         setSuperAdminBalance(response.data.superAdmin);
+        setIsLoadingBalance(false);
       })
       .catch((error) => {
         console.log("Error from getting super admin balance: ", error);
+        setSnackbarMessage("Error fetching balance");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsLoadingBalance(false);
       });
   };
 
@@ -113,6 +134,7 @@ const SuperAdminDashboardScreen = (props) => {
               content={masterWalletBalance}
               message="Master Wallet Balance"
               icon={<CurrencyExchangeIcon />}
+              isLoadingBalance={isLoadingBalance}
             />
           </div>
           <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
@@ -130,6 +152,7 @@ const SuperAdminDashboardScreen = (props) => {
               content={superAdminBalance}
               message="Super Admin Balance"
               icon={<CurrencyExchangeIcon />}
+              isLoadingBalance={isLoadingBalance}
             />
           </div>
           <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
@@ -175,6 +198,12 @@ const SuperAdminDashboardScreen = (props) => {
           </div>
         </div>
         <CircularBackdrop open={open} />
+        <NotificationSnackbar
+          open={snackbarOpen}
+          handleClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          message={snackbarMessage}
+        />
       </div>
     </div>
   );

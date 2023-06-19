@@ -13,6 +13,7 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function AccountApprovalDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
@@ -170,29 +171,35 @@ function AccountApprovalDefaultScreen(props) {
 
   return (
     <div className="backgroundDefault">
-      <div className="row no-gutters">
-        <SuperAdminTable
-          admins={admins}
-          walletAdmins={walletAdmins}
-          handleModalOpen={handleModalOpen}
-          setShow={setShow}
-          setModalData={setModalData}
-          ssoEnabled={true}
-          walletEnabled={true}
-          approval={true}
-          handleVerifyWallet={handleVerifyWallet}
-          handleVerify={handleVerify}
-        />
-      </div>
-      <TablePagination
-        rowsPerPageOptions={[4, 8, 12, 24]}
-        component="div"
-        count={adminCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {admins.length === 0 && walletAdmins.length === 0 ? (
+        <MessageCard msg="No data available" />
+      ) : (
+        <>
+          <div className="row no-gutters">
+            <SuperAdminTable
+              admins={admins}
+              walletAdmins={walletAdmins}
+              handleModalOpen={handleModalOpen}
+              setShow={setShow}
+              setModalData={setModalData}
+              ssoEnabled={true}
+              walletEnabled={true}
+              approval={true}
+              handleVerifyWallet={handleVerifyWallet}
+              handleVerify={handleVerify}
+            />
+          </div>
+          <TablePagination
+            rowsPerPageOptions={[4, 8, 12, 24]}
+            component="div"
+            count={adminCount}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </>
+      )}
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

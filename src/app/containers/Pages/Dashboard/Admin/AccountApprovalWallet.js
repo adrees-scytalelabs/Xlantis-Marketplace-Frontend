@@ -10,6 +10,7 @@ import {
   handleModalOpen,
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
+import MessageCard from "../../../../components/MessageCards/MessageCard";
 
 function AccountApprovalWallet(props) {
   const [walletAdmins, setWalletAdmins] = useState([]);
@@ -114,27 +115,33 @@ function AccountApprovalWallet(props) {
   };
   return (
     <div className="backgroundDefault">
-      <div className="row no-gutters">
-        <SuperAdminTable
-          walletAdmins={walletAdmins}
-          handleModalOpen={handleModalOpen}
-          ssoEnabled={false}
-          walletEnabled={true}
-          approval={true}
-          handleVerifyWallet={handleVerifyWallet}
-          setShow={setShow}
-          setModalData={setModalData}
-        />
-      </div>
-      <TablePagination
-        rowsPerPageOptions={[4, 8, 12, 24]}
-        component="div"
-        count={adminCount}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {walletAdmins.length === 0 ? (
+        <MessageCard msg="No data available" />
+      ) : (
+        <>
+          <div className="row no-gutters">
+            <SuperAdminTable
+              walletAdmins={walletAdmins}
+              handleModalOpen={handleModalOpen}
+              ssoEnabled={false}
+              walletEnabled={true}
+              approval={true}
+              handleVerifyWallet={handleVerifyWallet}
+              setShow={setShow}
+              setModalData={setModalData}
+            />
+          </div>
+          <TablePagination
+            rowsPerPageOptions={[4, 8, 12, 24]}
+            component="div"
+            count={adminCount}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+          />
+        </>
+      )}
       <CircularBackdrop open={open} />
       <AdminInformationModal
         show={show}

@@ -13,7 +13,7 @@ import { Link, useResolvedPath } from "react-router-dom";
 import {
   disbaleAdminV1,
   enableAdminV1,
-  getVerifiedAdminsV1Paginated
+  getVerifiedAdminsV1Paginated,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminFilterModal from "../../../../components/Modals/AdminFilterModal";
@@ -256,8 +256,9 @@ function Accounts(props) {
           />
         </div>
         <div className="d-flex align-items-center justify-content-end mb-3 mr-3">
+          Filter{" "}
           <FilterListIcon
-            style={{ cursor: "pointer" }}
+            style={{ cursor: "pointer", marginLeft: "10px" }}
             onClick={handleOpenFilterModal}
           />
         </div>
