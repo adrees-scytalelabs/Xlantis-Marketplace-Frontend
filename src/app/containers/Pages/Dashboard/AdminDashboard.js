@@ -54,6 +54,7 @@ import SingleNftDetail from "./Admin/singleNftDetail";
 import AdminSettings from "./AdminSettings";
 import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
 import AdminTemplate from "./Admin/AdminTemplate";
+import Notification from "./Admin/Notification";
 
 const theme = createTheme({
   components: {
@@ -107,7 +108,7 @@ function AdminDashboard(props) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setSocket(io("http://localhost:3000/"));
+    setSocket(io("https://raindrop-backend.herokuapp.com/"));
   }, []);
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
@@ -187,6 +188,7 @@ function AdminDashboard(props) {
     allTransactions: "",
     balanceSpentHistory: "",
     templates: "",
+    notifications: "",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
@@ -542,6 +544,11 @@ function AdminDashboard(props) {
               exact
               path={`templates`}
               element={<AdminTemplate setActiveTab={setActiveTab} />}
+            />
+                        <Route
+              exact
+              path={`notifications`}
+              element={<Notification setActiveTab={setActiveTab} />}
             />
 
             <Route

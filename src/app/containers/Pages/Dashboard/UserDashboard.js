@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Route, Routes, useResolvedPath } from "react-router-dom";
+import { Route, Routes, useLocation, useResolvedPath } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 
@@ -17,10 +17,11 @@ import UserDashboardDefaultScreen from "./User/UserDashboardDefaultScreen";
 import UserSidebar from "./User/UserSidebar";
 import TopupHistoryPageUser from "./User/TopupHistoryPageUser";
 import TopUp from "../../../components/Topup/TopUp";
-function UserDashboard(props) {
+import Notification from "./Admin/Notification";
+function UserDashboard() {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
-
+  let location = useLocation();
   const [activeTab, setActiveTab] = useState({
     dashboard: "active",
     myNFTs: "",
@@ -42,16 +43,18 @@ function UserDashboard(props) {
     newRandomDrop: "",
     topUp: "",
     topupHistory: "",
-  });
+    notification: "",
+  },[]);
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
-      <HeaderHome selectedNav={""} role={null} />
+      <HeaderHome selectedNav={""} role={null}/>
 
       <UserSidebar
         match={path}
         activeTab={activeTab}
         setActiveTab={setActiveTab}
+        notification={location.state?.notification}
       />
       <div className="page-wrapper">
         <div className="content container-fluid">
@@ -63,10 +66,18 @@ function UserDashboard(props) {
                 <UserDashboardDefaultScreen
                   match={path}
                   setActiveTab={setActiveTab}
+                  notification={location.state?.notification}
                 />
               }
             />
-
+            <Route
+              exact
+              path={`notifications`}
+              element={
+                <Notification match={path} setActiveTab={setActiveTab}                   notification={location.state?.notification}
+                />
+              }
+            />
             <Route
               exact
               path={`myNFTs`}

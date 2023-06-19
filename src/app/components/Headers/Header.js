@@ -81,10 +81,7 @@ function HeaderHome(props) {
       if (userId !== "" && socket !== null) {
         socket.emit("user-logged-in", userIdentity);
         socket.on("Notification", (notification) => {
-          setNotificationsList((previousData) => [
-            ...previousData,
-            notification,
-          ]);
+          getNotifications(0, 2000);
         });
       } else if (userIdentity === "" && socket !== null) {
         socket.emit("user-logged-out", userIdentity);
@@ -96,7 +93,7 @@ function HeaderHome(props) {
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
       setUserId(userIdentity);
-      getNotifications(0, 10);
+      getNotifications(0, 2000);
     }
   }, [notificationLoading]);
 
@@ -235,7 +232,7 @@ function HeaderHome(props) {
 
     axios.patch("/notifications/hide", data).then(
       (response) => {
-        getNotifications(0, 10);
+        getNotifications(0, 2000);
       },
       (error) => {
         console.log("Error on disable: ", error);
@@ -550,14 +547,14 @@ function HeaderHome(props) {
                   </Link>
                 </li>
                 <li className="sidebar-items">
-                  <Link to={`/dashboard/marketPlace`}>
+                  <Link to={`/dashboard/notifications`}>
                     <span
                       style={{
                         padding: "10px 20px",
                         cursor: "pointer",
                       }}
                     >
-                      MarketPlace
+                      Notfications
                     </span>
                   </Link>
                 </li>
@@ -668,6 +665,7 @@ function HeaderHome(props) {
                 <Link
                   to="/dashboard"
                   style={{ color: "#fff", marginRight: "20px" }}
+                  state={{notification:notificationsList}}
                 >
                   Dashboard
                 </Link>

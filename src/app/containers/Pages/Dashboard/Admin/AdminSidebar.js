@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import AllTransactions from "./AllTransactions";
 
 function AdminSidebar(props) {
@@ -38,6 +39,11 @@ function AdminSidebar(props) {
             <li className={props.activeTab.dashboard}>
               <Link to={`${props.match}`} className="sidebarLink">
                 <i className="fa fa-home"></i> <span>Dashboard</span>
+              </Link>
+            </li>
+            <li className={props.activeTab.notifications}>
+              <Link to={`${props.match}/notifications`} className="sidebarLink">
+                <NotificationsIcon /> <span>Notifications</span>
               </Link>
             </li>
             <li className={props.activeTab.earnings}>

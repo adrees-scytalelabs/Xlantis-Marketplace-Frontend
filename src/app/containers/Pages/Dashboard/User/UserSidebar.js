@@ -5,6 +5,8 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import NotificationsIcon from "@mui/icons-material/Notifications";
+
 function AdminSidebar(props) {
   let navigate = useNavigate();
   let handleLogout = (e) => {
@@ -33,8 +35,13 @@ function AdminSidebar(props) {
               <span>Main</span>
             </li>
             <li className={props.activeTab.dashboard}>
-              <Link to={`/dashboard`}>
+              <Link to={`/dashboard`} state={{notification:props?.notification}}>
                 <i className="fa fa-home"></i> <span>Dashboard</span>
+            </Link>
+            </li>
+            <li className={props.activeTab.notification}>
+              <Link to={`/dashboard/notifications`} state={{notification:props?.notification}}>
+                <NotificationsIcon /> <span>Notifications</span>
               </Link>
             </li>
             <li className={props.activeTab.myNFTs}>
