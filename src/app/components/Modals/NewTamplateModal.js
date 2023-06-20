@@ -6,7 +6,6 @@ import {
   getIsAvailableTemplates,
 } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
-import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 const NewTamplateModal = (props) => {
   const [title, setTitle] = useState("");
@@ -21,17 +20,11 @@ const NewTamplateModal = (props) => {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  // const [snackbarOpen, setSnackbarOpen] = useState(false);
+  // const [snackbarMessage, setSnackbarMessage] = useState("");
+  // const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const handleSnackbarOpen = () => {
-    setSnackbarOpen(true);
-  };
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    setSnackbarOpen(false);
+    props?.setSnackbarOpen(true);
   };
   let handleAddProperty = (e) => {
     e.preventDefault();
@@ -91,18 +84,18 @@ const NewTamplateModal = (props) => {
       title === "undefined"
     ) {
       let variant = "error";
-      setSnackbarMessage("Please Enter Title");
-      setSnackbarSeverity(variant);
+      props?.setSnackbarMessage("Please Enter Title");
+      props?.setSnackbarSeverity(variant);
       handleSnackbarOpen();
     } else if (properties.length === 0) {
       let variant = "error";
-      setSnackbarMessage("There is no Template added");
-      setSnackbarSeverity(variant);
+      props?.setSnackbarMessage("There is no Template added");
+      props?.setSnackbarSeverity(variant);
       handleSnackbarOpen();
     } else if (properties.some((obj) => hasEmptyValue(obj))) {
       let variant = "error";
-      setSnackbarMessage("Please Fill All Empty Value");
-      setSnackbarSeverity(variant);
+      props?.setSnackbarMessage("Please Fill All Empty Value");
+      props?.setSnackbarSeverity(variant);
       handleSnackbarOpen();
     } else {
       handleShowBackdrop();
@@ -129,8 +122,8 @@ const NewTamplateModal = (props) => {
             : props.setUseEffectLoader(true);
           handleCloseBackdrop();
           let variant = "success";
-          setSnackbarMessage("New Template Created Successfully.");
-          setSnackbarSeverity(variant);
+          props?.setSnackbarMessage("New Template Created Successfully.");
+          props?.setSnackbarSeverity(variant);
           handleSnackbarOpen();
           props.handleClose();
         })
@@ -141,8 +134,8 @@ const NewTamplateModal = (props) => {
           }
           handleCloseBackdrop();
           let variant = "error";
-          setSnackbarMessage("Unable to Create Template.");
-          setSnackbarSeverity(variant);
+          props?.setSnackbarMessage("Unable to Create Template.");
+          props?.setSnackbarSeverity(variant);
           handleSnackbarOpen();
         });
     }
@@ -397,12 +390,6 @@ const NewTamplateModal = (props) => {
         </div>
         <CircularBackdrop open={open} />
       </Modal.Body>
-      <NotificationSnackbar
-        open={snackbarOpen}
-        handleClose={handleSnackbarClose}
-        severity={snackbarSeverity}
-        message={snackbarMessage}
-      />
     </Modal>
   );
 };
