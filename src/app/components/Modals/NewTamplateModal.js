@@ -20,9 +20,6 @@ const NewTamplateModal = (props) => {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  // const [snackbarOpen, setSnackbarOpen] = useState(false);
-  // const [snackbarMessage, setSnackbarMessage] = useState("");
-  // const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const handleSnackbarOpen = () => {
     props?.setSnackbarOpen(true);
   };
