@@ -157,6 +157,10 @@ function Accounts(props) {
       })
       .catch((error) => {
         console.log("Error from enabling admin: ", error);
+        let variant = "error";
+        setSnackbarMessage("Unable to enable Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
       });
   };
 
@@ -195,9 +199,17 @@ function Accounts(props) {
     await disbaleAdminV1(body)
       .then((response) => {
         console.log("Response from disabling admin: ", response);
+        let variant = "success";
+        setSnackbarMessage("Admin Disabled Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         
       })
       .catch((error) => {
+        let variant = "error";
+        setSnackbarMessage("Unable to disable Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
         console.log("Error from enabling admin: ", error);
       });
   };
