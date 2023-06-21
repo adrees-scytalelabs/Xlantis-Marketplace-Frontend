@@ -171,6 +171,10 @@ export const updateCollectionTxHash = (collectionId, body) => {
   return Axios.put(`/collection/txHash/${collectionId}`, body);
 };
 
+export const addCollectionToDrop = (body) => {
+  return Axios.put(`/drop/add-collection-nfts`, body);
+};
+
 //PATCH REQUESTS
 
 export const readNotifications = (body) => {
