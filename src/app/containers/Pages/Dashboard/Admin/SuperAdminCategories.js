@@ -2,8 +2,11 @@ import { Button } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import {
+  createCategory,
   deleteTemplate,
+  getCategories,
   getTemplate,
+  updateCategory,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
@@ -23,20 +26,89 @@ function SuperAdminCategories(props) {
   const [viewDetail, setViewDetail] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [useEffectLoader, setUseEffectLoader] = useState(false);
-  const categoryData = [
-    {
-      id: 1,
-      name: "Cars",
-      image:
-        "https://www.kasandbox.org/programming-images/avatars/spunky-sam.png",
-    },
-  ];
+  const [categoryData,setCategoryData]= useState();
+  const [updateName,setUpdateName]= useState("");
+  const [imageFile, setImageFile] = useState();
+  const handleCreateCategory = async () => {
+    if (!imageFile) {
+      setSnackbarMessage("Image is required.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    if (!name) {
+      setSnackbarMessage("Name is required.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("name", name);
+    setIsLoading(true);
+    try {
+      const response = await createCategory(formData);
+      console.log("response of categories", response);
+      setSnackbarMessage("Category Added Succesfully");
+      getCategoriesData()
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      handleNewCategoryModalClose();
+    } catch (error) {
+      console.error("Error fetching categories:", error.response);
+      setSnackbarMessage("Unable to add category");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+    finally{
+      setIsLoading(false);
+    }
+  };
+  const handleUpdateCategory = async () => {
+    if (!imageFile) {
+      setSnackbarMessage("Image is required.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+  
+    if (!name) {
+      setSnackbarMessage("Name is required.");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", imageFile);
+    formData.append("name", name);
+    setIsLoading(true);
+    try {
+      const response = await updateCategory(updateName,formData);
+      console.log("response of category update", response);
+      setSnackbarMessage("Category Updated Succesfully");
+      getCategoriesData()
+      setSnackbarSeverity("success");
+      setSnackbarOpen(true);
+      handleNewCategoryModalClose();
+    } catch (error) {
+      console.error("Error fetching category:", error.response);
+      setSnackbarMessage("Unable to update category");
+      setSnackbarSeverity("error");
+      setSnackbarOpen(true);
+    }
+    finally{
+      setIsLoading(false);
+    }
+  };
   let handleNewCategoryModalClose = () => {
     setNewCategoryModalShow(false);
     setViewDetail(false);
     setName("");
     setImage(defaultProfile);
+    setEditData(false);
   };
   let handleNewCategoryModalOpen = () => {
     setNewCategoryModalShow(true);
@@ -53,18 +125,29 @@ function SuperAdminCategories(props) {
   };
   const handleViewDetail = (e, data) => {
     setViewDetail(true);
-    setImage(data.image);
+    setImage(data.imageUrl);
     setName(data.name);
     handleNewCategoryModalOpen();
   };
   const handleEditModalOpen = (e, data) => {
     e.preventDefault();
     setEditData(true);
-    setImage(data.image);
+    setUpdateName(data.name);
+    setImage(data.imageUrl);
+    setImageFile(data.imageUrl);
     setName(data.name);
     handleNewCategoryModalOpen();
     console.log("data of edit modal", data);
   };
+  const getCategoriesData = async() =>{
+    try {
+      const response = await getCategories();
+      setCategoryData(response.data.categories);
+      console.log("response of categories",response);
+    } catch (error) {
+      console.error("Error fetching categories:", error.response);
+    }
+  }
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -72,6 +155,7 @@ function SuperAdminCategories(props) {
     setOpen(true);
   };
   useEffect(() => {
+    getCategoriesData();
     props.setActiveTab({
       dashboard: "",
       manageAccounts: "",
@@ -121,7 +205,6 @@ function SuperAdminCategories(props) {
       ) : (
         <MessageCard msg="No Category created" />
       )}
-      <CircularBackdrop open={open} />
       <CategoryModal
         show={newCategoryModalShow}
         handleClose={handleNewCategoryModalClose}
@@ -133,6 +216,12 @@ function SuperAdminCategories(props) {
         editData={editData}
         setSnackbarMessage={setSnackbarMessage}
         setSnackbarSeverity={setSnackbarSeverity}
+        setSnackbarOpen={setSnackbarOpen}
+        imageFile={imageFile}
+        setImageFile={setImageFile}
+        handleCreateCategory={handleCreateCategory}
+        isLoading={isLoading}
+        handleUpdateCategory={handleUpdateCategory}
       />
       <NotificationSnackbar
         open={snackbarOpen}

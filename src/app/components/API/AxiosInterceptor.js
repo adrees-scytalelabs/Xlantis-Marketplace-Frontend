@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `https://raindrop-backend.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  //baseURL: `https://raindrop-backend.herokuapp.com/`,
+   baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -13,6 +13,9 @@ Axios.defaults.headers.common[
 
 //POST REQUESTS
 
+export const createCategory = (body) => {
+  return Axios.post(`/category/`, body);
+};
 export const userLoginThroughWallet = (body) => {
   return Axios.post(`/v2-wallet-login/user/auth/login`, body);
 };
@@ -115,6 +118,9 @@ export const setSuperAdminPlatformFee = (body) => {
 
 //PUT REQUESTS
 
+export const updateCategory = (categoryName,body) => {
+  return Axios.put(`/category/${categoryName}`,body);
+};
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
 };
@@ -211,6 +217,11 @@ export const sendVoucherForLazyMint = (body) => {
 
 //GET REQUESTS
 
+export const getCategories = () => {
+  return Axios.get(
+    `/category/`
+  );
+};
 export const getMarketFixedPrice = (start, end, marketplaceId) => {
   return Axios.get(
     `/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`
