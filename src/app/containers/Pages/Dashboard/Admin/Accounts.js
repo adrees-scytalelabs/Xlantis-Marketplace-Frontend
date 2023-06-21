@@ -18,10 +18,12 @@ import {
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminFilterModal from "../../../../components/Modals/AdminFilterModal";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
+import WarningModal from "../../../../components/Modals/WarningModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import {
   handleModalClose,
   handleModalOpen,
+  handleWalletDisable,
 } from "../../../../components/Utils/SuperAdminFunctions";
 
 const theme = createTheme({
@@ -106,6 +108,10 @@ function Accounts(props) {
   const [page, setPage] = useState(0);
   const [open, setOpen] = useState(false);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [message, setMessage] = useState("");
+  const [genericFunction, setGenericFunction] = useState(null);
+  const [warningModalShow, setWarningModalShow] = useState(false);
+  const [id, setId] = useState();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -189,12 +195,33 @@ function Accounts(props) {
     await disbaleAdminV1(body)
       .then((response) => {
         console.log("Response from disabling admin: ", response);
+        
       })
       .catch((error) => {
         console.log("Error from enabling admin: ", error);
       });
   };
-
+  const handleWarningModalClose = () => {
+    setWarningModalShow(false);
+  };
+  const handleWarningModalOpen = (e, id, functionName) => {
+    if (functionName === "handleAdminDisable")
+      setMessage("Do you really want to disable this admin.");
+    else setMessage("Do you really want to enable this admin.");
+    setId(id);
+    setWarningModalShow(true);
+    if (functionName === "handleAdminDisable")
+      setGenericFunction(() => handleAdminDisableStatus);
+    else setGenericFunction(() => handleAdminEnableStatus);
+  };
+  const handleAdminDisableStatus = async (e, id) => {
+    await handleAdminDisable(e, id);
+    getAllAdmins();
+  };
+  const handleAdminEnableStatus = async (e, id) => {
+    await handleAdminEnable(e, id);
+    getAllAdmins();
+  };
   const getAllAdmins = async () => {
     setOpen(true);
     await getVerifiedAdminsV1Paginated(0, 1000)
@@ -329,8 +356,13 @@ function Accounts(props) {
                       <Button
                         onClick={async (e) => {
                           // setFilteredAdmins([]);
-                          await handleAdminDisable(e, i._id);
-                          getAllAdmins();
+                          handleWarningModalOpen(
+                            e,
+                            i._id,
+                            "handleAdminDisable"
+                          );
+                          // await handleAdminDisable(e, i._id);
+                          // getAllAdmins();
                         }}
                         sx={styles.approveBtn}
                       >
@@ -340,8 +372,9 @@ function Accounts(props) {
                       <Button
                         onClick={async (e) => {
                           // setFilteredAdmins([]);
-                          await handleAdminEnable(e, i._id);
-                          getAllAdmins();
+                          handleWarningModalOpen(e, i._id, "handleAdminEnable");
+                          // await handleAdminEnable(e, i._id);
+                          // getAllAdmins();
                         }}
                         sx={styles.approveBtn}
                       >
@@ -396,6 +429,13 @@ function Accounts(props) {
         handleClose={handleSnackbarClose}
         severity={snackbarSeverity}
         message={snackbarMessage}
+      />
+      <WarningModal
+        show={warningModalShow}
+        handleClose={handleWarningModalClose}
+        text={message}
+        handleApprove={genericFunction}
+        id={id}
       />
     </div>
   );
