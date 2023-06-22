@@ -299,6 +299,9 @@ export const getMyCollectionsPaginated = (start, end) => {
   return Axios.get(`/collection/myCollections/${start}/${end}`);
 };
 
+export const categoryAvailable = (categoryName) => {
+  return Axios.get(`/category/is-available?categoryName=${categoryName}`);
+};
 export const getMyCollectionsPaginatedMarketPlace = (
   start,
   end,

@@ -28,21 +28,19 @@ function SuperAdminCategories(props) {
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [useEffectLoader, setUseEffectLoader] = useState(false);
-  const [categoryData,setCategoryData]= useState();
-  const [updateName,setUpdateName]= useState("");
+  const [categoryData, setCategoryData] = useState();
+  const [createButton, setCreateButton] = useState(false);
+  const [updateName, setUpdateName] = useState("");
   const [imageFile, setImageFile] = useState();
+  const [valid, setValid] = useState("");
   const handleCreateCategory = async () => {
     if (!imageFile) {
-      setSnackbarMessage("Image is required.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      setCreateButton(true);
       return;
     }
-  
+
     if (!name) {
-      setSnackbarMessage("Name is required.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      setCreateButton(true);
       return;
     }
     const formData = new FormData();
@@ -53,32 +51,27 @@ function SuperAdminCategories(props) {
       const response = await createCategory(formData);
       console.log("response of categories", response);
       setSnackbarMessage("Category Added Succesfully");
-      getCategoriesData()
+      getCategoriesData();
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
+      setCreateButton(false);
       handleNewCategoryModalClose();
     } catch (error) {
       console.error("Error fetching categories:", error.response);
       setSnackbarMessage("Unable to add category");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
   const handleUpdateCategory = async () => {
     if (!imageFile) {
-      setSnackbarMessage("Image is required.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      setCreateButton(true);
       return;
     }
-  
     if (!name) {
-      setSnackbarMessage("Name is required.");
-      setSnackbarSeverity("error");
-      setSnackbarOpen(true);
+      setCreateButton(true);
       return;
     }
     const formData = new FormData();
@@ -86,10 +79,10 @@ function SuperAdminCategories(props) {
     formData.append("name", name);
     setIsLoading(true);
     try {
-      const response = await updateCategory(updateName,formData);
+      const response = await updateCategory(updateName, formData);
       console.log("response of category update", response);
       setSnackbarMessage("Category Updated Succesfully");
-      getCategoriesData()
+      getCategoriesData();
       setSnackbarSeverity("success");
       setSnackbarOpen(true);
       handleNewCategoryModalClose();
@@ -98,8 +91,7 @@ function SuperAdminCategories(props) {
       setSnackbarMessage("Unable to update category");
       setSnackbarSeverity("error");
       setSnackbarOpen(true);
-    }
-    finally{
+    } finally {
       setIsLoading(false);
     }
   };
@@ -109,6 +101,7 @@ function SuperAdminCategories(props) {
     setName("");
     setImage(defaultProfile);
     setEditData(false);
+    setCreateButton(false);
   };
   let handleNewCategoryModalOpen = () => {
     setNewCategoryModalShow(true);
@@ -137,17 +130,16 @@ function SuperAdminCategories(props) {
     setImageFile(data.imageUrl);
     setName(data.name);
     handleNewCategoryModalOpen();
-    console.log("data of edit modal", data);
   };
-  const getCategoriesData = async() =>{
+  const getCategoriesData = async () => {
     try {
       const response = await getCategories();
       setCategoryData(response.data.categories);
-      console.log("response of categories",response);
+      console.log("response of categories", response);
     } catch (error) {
       console.error("Error fetching categories:", error.response);
     }
-  }
+  };
   const handleCloseBackdrop = () => {
     setOpen(false);
   };
@@ -222,6 +214,9 @@ function SuperAdminCategories(props) {
         handleCreateCategory={handleCreateCategory}
         isLoading={isLoading}
         handleUpdateCategory={handleUpdateCategory}
+        valid={valid}
+        setValid={setValid}
+        createButton={createButton}
       />
       <NotificationSnackbar
         open={snackbarOpen}
