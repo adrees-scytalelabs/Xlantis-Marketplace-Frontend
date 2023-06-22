@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -300,7 +300,7 @@ export const getMyCollectionsPaginated = (start, end) => {
 };
 
 export const categoryAvailable = (categoryName) => {
-  return Axios.get(`/category/is-available?categoryName=${categoryName}`);
+  return Axios.get(`/category/is-available?marketplaceId=${categoryName}`);
 };
 export const getMyCollectionsPaginatedMarketPlace = (
   start,
