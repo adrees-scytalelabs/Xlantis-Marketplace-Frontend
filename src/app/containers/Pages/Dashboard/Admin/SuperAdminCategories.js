@@ -102,14 +102,18 @@ function SuperAdminCategories(props) {
           </div>
         </div>
       </div>
-      <div>
-        <Button
-          className="bttn mb-4 mt-3"
-          onClick={() => handleNewCategoryModalOpen()}
-        >
-          Create Category
-        </Button>
+
+      <div className="row">
+        <div className="col-12 mb-3" style={{ textAlign: "right" }}>
+          <Button
+            className="bttn mb-4 mt-3"
+            onClick={() => handleNewCategoryModalOpen()}
+          >
+            Create Category
+          </Button>
+        </div>
       </div>
+
       {categoryData?.length ? (
         <div className="row no-gutters">
           <CategoryTable
