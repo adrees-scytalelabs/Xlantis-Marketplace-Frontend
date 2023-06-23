@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `https://raindrop-backend.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  //baseURL: `https://raindrop-backend.herokuapp.com/`,
+   baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -28,7 +28,6 @@ export const adminLoginThroughSSO = (body) => {
 export const superAdminLoginThroughSSO = (body) => {
   return Axios.post(`/v1-sso/user/auth/super-admin-login`, body);
 };
-
 export const userLoginThroughSSO = (body) => {
   return Axios.post(`/v1-sso/user/auth/user-login`, body);
 };
@@ -210,6 +209,17 @@ export const sendVoucherForLazyMint = (body) => {
 };
 
 //GET REQUESTS
+
+export const stripelogin = () => {
+  return Axios.get(
+    `/stripe/login`
+  );
+};
+export const stripeOnBoarding = () => {
+  return Axios.get(
+    `stripe/account/onboarding-link`
+  );
+};
 
 export const getMarketFixedPrice = (start, end, marketplaceId) => {
   return Axios.get(
