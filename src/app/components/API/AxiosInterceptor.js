@@ -191,7 +191,7 @@ export const verifyAdminV2 = (body) => {
   return Axios.patch(`/super-admin/admin/verify?userType=v2`, body);
 };
 
-export const disbaleAdminV1 = (body) => {
+export const disableAdminV1 = (body) => {
   return Axios.patch(`/super-admin/disable?userType=v1`, body);
 };
 
@@ -300,7 +300,7 @@ export const getMyCollectionsPaginated = (start, end) => {
 };
 
 export const categoryAvailable = (categoryName) => {
-  return Axios.get(`/category/is-available?marketplaceId=${categoryName}`);
+  return Axios.get(`/category/is-available?categoryName=${categoryName}`);
 };
 export const getMyCollectionsPaginatedMarketPlace = (
   start,

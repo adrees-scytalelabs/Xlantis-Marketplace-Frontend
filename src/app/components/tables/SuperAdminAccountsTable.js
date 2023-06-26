@@ -1,6 +1,8 @@
-import { Button, Tooltip, Typography} from "@mui/material";
-import React from "react";
+import { Button, Tooltip, Typography } from "@mui/material";
+import React, { useState } from "react";
 import Table from "react-bootstrap/Table";
+import WarningModal from "../Modals/WarningModal";
+import { handleVerify } from "../Utils/SuperAdminFunctions";
 
 const styles = {
   noMaxWidth: {
@@ -31,233 +33,287 @@ const styles = {
   },
 };
 function SuperAdminTable(props) {
+  const [warningModalShow, setWarningModalShow] = useState(false);
+  const [message, setMessage] = useState("");
+  const [id, setId] = useState();
+  const [genericFunction, setGenericFunction] = useState(null);
+  const handleVerify = (e, id, functionName) => {
+    if (
+      functionName === "handleVerify" ||
+      functionName === "handleVerifyWallet"
+    )
+      setMessage("Do you really want to approve this admin.");
+    else if (
+      functionName === "handleEnableSSO" ||
+      functionName === "handleEnableWallet"
+    )
+      setMessage("Do you really want to enable this admin.");
+    else setMessage("Do you really want to disable this admin.");
+    setId(id);
+    setWarningModalShow(true);
+    if (functionName === "handleVerify")
+      setGenericFunction(() => props.handleVerify);
+    else if (functionName === "handleVerifyWallet")
+      setGenericFunction(() => props.handleVerifyWallet);
+    else if (functionName === "handleDisable")
+      setGenericFunction(() => props.handleDisable);
+    else if (functionName === "handleEnableSSO")
+      setGenericFunction(() => props.handleEnableSSO);
+    else if (functionName === "handleDisable")
+      setGenericFunction(() => props.handleDisable);
+    else if (functionName === "handleWalletDisable")
+      setGenericFunction(() => props.handleWalletDisable);
+    else if (functionName === "handleEnableWallet")
+      setGenericFunction(() => props.handleEnableWallet);
+  };
+  const handleWarningModalClose = () => {
+    setWarningModalShow(false);
+  };
   return (
-    <Table responsive>
-      <thead style={{ color: "black" }}>
-        <tr>
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-start align-items-center">
-              Username
-            </div>
-          </th>
-          {props.ssoEnabled === true && (
-            <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-start align-items-center ml-3">
-                Email
-              </div>
-            </th>
-          )}
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-start align-items-center">
-              Wallet Address
-            </div>
-          </th>
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-start align-items-center ml-5">
-              Details
-            </div>
-          </th>
-          {props.ssoEnabled === true && props.walletEnabled === true && (
+    <>
+      <Table responsive>
+        <thead style={{ color: "black" }}>
+          <tr>
             <th sx={styles.tableHeader}>
               <div className="row no-gutters justify-content-start align-items-center">
-                Login Type
+                Username
               </div>
             </th>
-          )}
-          {props.approval === true && (
+            {props.ssoEnabled === true && (
+              <th sx={styles.tableHeader}>
+                <div className="row no-gutters justify-content-start align-items-center ml-3">
+                  Email
+                </div>
+              </th>
+            )}
             <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-center align-items-center">
-                Approval Status
+              <div className="row no-gutters justify-content-start align-items-center">
+                Wallet Address
               </div>
             </th>
-          )}
-          {props.manageAccounts === true && (
             <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-center align-items-center">
-                Status
+              <div className="row no-gutters justify-content-start align-items-center ml-5">
+                Details
               </div>
             </th>
-          )}
-        </tr>
-      </thead>
+            {props.ssoEnabled === true && props.walletEnabled === true && (
+              <th sx={styles.tableHeader}>
+                <div className="row no-gutters justify-content-start align-items-center">
+                  Login Type
+                </div>
+              </th>
+            )}
+            {props.approval === true && (
+              <th sx={styles.tableHeader}>
+                <div className="row no-gutters justify-content-center align-items-center">
+                  Approval Status
+                </div>
+              </th>
+            )}
+            {props.manageAccounts === true && (
+              <th sx={styles.tableHeader}>
+                <div className="row no-gutters justify-content-center align-items-center">
+                  Status
+                </div>
+              </th>
+            )}
+          </tr>
+        </thead>
 
-      {props.ssoEnabled === true &&
-        props.admins.map((i, index) => {
-          return (
-            <tbody style={{ color: "white" }}>
-              <tr>
-                <td sx={styles.collectionTitle}>{i.username}</td>
-                <td sx={styles.collectionTitle}>{i.email}</td>
-                <td sx={styles.collectionTitle}>
-                  {i.walletAddress !== undefined ? (
+        {props.ssoEnabled === true &&
+          props.admins.map((i, index) => {
+            return (
+              <tbody style={{ color: "white" }}>
+                <tr>
+                  <td sx={styles.collectionTitle}>{i.username}</td>
+                  <td sx={styles.collectionTitle}>{i.email}</td>
+                  <td sx={styles.collectionTitle}>
+                    {i.walletAddress !== undefined ? (
+                      <Tooltip
+                        title={
+                          <Typography fontSize={16}>
+                            {i.walletAddress}
+                          </Typography>
+                        }
+                      >
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
+                      </Tooltip>
+                    ) : (
+                      <label className="ml-4">N/A</label>
+                    )}
+                  </td>
+                  <td sx={styles.collectionTitle}>
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) =>
+                        props.handleModalOpen(
+                          e,
+                          i,
+                          props.setShow,
+                          props.setModalData
+                        )
+                      }
+                    >
+                      View
+                    </button>
+                  </td>
+                  {props.ssoEnabled === true &&
+                    props.walletEnabled === true && (
+                      <td sx={styles.collectionTitle}>
+                        <span>
+                          <label className="ml-4">SSO</label>
+                        </span>
+                      </td>
+                    )}
+                  {props.approval === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleVerify");
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                  {props.statusEnable === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center ml-4">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleDisable");
+                          }}
+                        >
+                          Disable
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                  {props.statusDisable === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className="ml-4"
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleEnableSSO");
+                          }}
+                        >
+                          Enable
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              </tbody>
+            );
+          })}
+        {props.walletEnabled === true &&
+          props.walletAdmins.map((i, index) => {
+            return (
+              <tbody style={{ color: "white" }}>
+                <tr>
+                  <td sx={styles.collectionTitle}>{i.username}</td>
+                  {props.ssoEnabled === true &&
+                    props.walletEnabled === true && (
+                      <td sx={styles.collectionTitle}>
+                        <label className="ml-4">N/A</label>
+                      </td>
+                    )}
+                  <td sx={styles.collectionTitle}>
                     <Tooltip
-                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
+                      title={
+                        <Typography fontSize={16}>{i.walletAddress}</Typography>
+                      }
                     >
                       <span className="ml-4">
                         {i.walletAddress.slice(0, 8)}...
                       </span>
                     </Tooltip>
-                  ) : (
-                    <label className="ml-4">N/A</label>
-                  )}
-                </td>
-                <td sx={styles.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) =>
-                      props.handleModalOpen(
-                        e,
-                        i,
-                        props.setShow,
-                        props.setModalData
-                      )
-                    }
-                  >
-                    View
-                  </button>
-                </td>
-                {props.ssoEnabled === true && props.walletEnabled === true && (
+                  </td>
                   <td sx={styles.collectionTitle}>
-                    <span>
-                      <label className="ml-4">SSO</label>
-                    </span>
-                  </td>
-                )}
-                {props.approval === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center">
-                      <Button
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleVerify(e, i._id);
-                        }}
-                      >
-                        Approve
-                      </Button>
-                    </div>
-                  </td>
-                )}
-                {props.statusEnable === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center ml-4">
-                      <Button
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleDisable(e, i._id);
-                        }}
-                      >
-                        Disable
-                      </Button>
-                    </div>
-                  </td>
-                )}
-                {props.statusDisable === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center">
-                      <Button
-                        className="ml-4"
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleEnableSSO(e, i._id);
-                        }}
-                      >
-                        Enable
-                      </Button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            </tbody>
-          );
-        })}
-      {props.walletEnabled === true &&
-        props.walletAdmins.map((i, index) => {
-          return (
-            <tbody style={{ color: "white" }}>
-              <tr>
-                <td sx={styles.collectionTitle}>{i.username}</td>
-                {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td sx={styles.collectionTitle}>
-                    <label className="ml-4">N/A</label>
-                  </td>
-                )}
-                <td sx={styles.collectionTitle}>
-                <Tooltip
-                      title={<Typography fontSize={16}>{i.walletAddress}</Typography>}
+                    <button
+                      className="btn submit-btn propsActionBtn "
+                      onClick={(e) =>
+                        props.handleModalOpen(
+                          e,
+                          i,
+                          props.setShow,
+                          props.setModalData
+                        )
+                      }
                     >
-                    <span className="ml-4">
-                      {i.walletAddress.slice(0, 8)}...
-                    </span>
-                  </Tooltip>
-                </td>
-                <td sx={styles.collectionTitle}>
-                  <button
-                    className="btn submit-btn propsActionBtn "
-                    onClick={(e) =>
-                      props.handleModalOpen(
-                        e,
-                        i,
-                        props.setShow,
-                        props.setModalData
-                      )
-                    }
-                  >
-                    View
-                  </button>
-                </td>
-                {props.ssoEnabled === true && props.walletEnabled === true && (
-                  <td sx={styles.collectionTitle}>
-                    <label className="ml-4">Wallet</label>
+                      View
+                    </button>
                   </td>
-                )}
-                {props.approval === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center">
-                      <Button
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleVerifyWallet(e, i._id);
-                        }}
-                      >
-                        Approve
-                      </Button>
-                    </div>
-                  </td>
-                )}
-                {props.statusEnable === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center ml-4">
-                      <Button
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleWalletDisable(e, i._id);
-                        }}
-                      >
-                        Disable
-                      </Button>
-                    </div>
-                  </td>
-                )}
-                {props.statusDisable === true && (
-                  <td>
-                    <div className="row no-gutters justify-content-center align-items-center">
-                      <Button
-                        className="ml-4"
-                        sx={styles.approveBtn}
-                        onClick={(e) => {
-                          props.handleEnableWallet(e, i._id);
-                        }}
-                      >
-                        Enable
-                      </Button>
-                    </div>
-                  </td>
-                )}
-              </tr>
-            </tbody>
-          );
-        })}
-    </Table>
+                  {props.ssoEnabled === true &&
+                    props.walletEnabled === true && (
+                      <td sx={styles.collectionTitle}>
+                        <label className="ml-4">Wallet</label>
+                      </td>
+                    )}
+                  {props.approval === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleVerifyWallet");
+                          }}
+                        >
+                          Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                  {props.statusEnable === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center ml-4">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleWalletDisable");
+                          }}
+                        >
+                          Disable
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                  {props.statusDisable === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          className="ml-4"
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleWalletDisable");
+                          }}
+                        >
+                          Enable
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              </tbody>
+            );
+          })}
+      </Table>
+      <WarningModal
+        show={warningModalShow}
+        handleClose={handleWarningModalClose}
+        text={message}
+        handleApprove={genericFunction}
+        id={id}
+      />
+    </>
   );
 }
 

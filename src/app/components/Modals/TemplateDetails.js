@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { updateTemplate } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
-import NotificationSnackbar from '../Snackbar/NotificationSnackbar';
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function TemplateDetails(props) {
   const [title, setTitle] = useState("");
@@ -54,13 +54,13 @@ function TemplateDetails(props) {
     };
     try {
       console.log(data);
-      updateTemplate(props.templateData._id,data)
+      updateTemplate(props.templateData._id, data)
         .then((response) => {
-          console.log(response);
+          console.log("update response", response);
           let variant = "success";
-          setSnackbarMessage("Template Updated Successfully.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
+          props.setSnackbarMessage("Template Updated Successfully.");
+          props.setSnackbarSeverity(variant);
+          props.handleSnackbarOpen();
           handleCloseBackdrop();
           props.handleClose();
         })
@@ -69,12 +69,16 @@ function TemplateDetails(props) {
           console.log("Error on status pending nft: ", error.response);
           handleCloseBackdrop();
           let variant = "error";
-          setSnackbarMessage("Unable to Update the template.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
+          props.setSnackbarMessage("Unable to Update the template.");
+          props.setSnackbarSeverity(variant);
+          props.handleSnackbarOpen();
         });
     } catch (e) {
+      let variant = "error";
       console.log("Something wrong with updation", e);
+      props.setSnackbarMessage("Unable to Update the template.");
+      props.setSnackbarSeverity(variant);
+      props.handleSnackbarOpen();
     }
   };
   useEffect(() => {
@@ -84,18 +88,7 @@ function TemplateDetails(props) {
       setProperties(props.templateData.properties);
     }
   }, [props]);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
-  const [snackbarSeverity, setSnackbarSeverity] = useState("");
-  const handleSnackbarOpen = () => {
-    setSnackbarOpen(true);
-  };
-  const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-    setSnackbarOpen(false);
-  };
+
   return (
     props.show === true && (
       <>
@@ -230,7 +223,6 @@ function TemplateDetails(props) {
           </Modal.Footer>
         </Modal>
         <CircularBackdrop open={open} />
-        <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
       </>
     )
   );
