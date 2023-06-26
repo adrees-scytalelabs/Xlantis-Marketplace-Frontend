@@ -11,6 +11,7 @@ function SelectSupplyAndPrice({
   setPrice,
   AlertMessage,
   setAlertMessage,
+  isPriceDisable,
 }) {
   return (
     <div>
@@ -87,7 +88,7 @@ function SelectSupplyAndPrice({
       <div className="form-group">
         <div className="filter-widget newNftWrapper">
           <input
-            disabled={isDisabled}
+            disabled={isPriceDisable}
             value={price ?? ""}
             style={{
               backgroundColor: "#000",

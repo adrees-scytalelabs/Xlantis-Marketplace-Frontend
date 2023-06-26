@@ -7,9 +7,8 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { Modal, Spinner } from "react-bootstrap";
-import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 const AddAllNFTsModal = (props) => {
   // useEffect(() => {
@@ -26,8 +25,9 @@ const AddAllNFTsModal = (props) => {
       >
         <div className="form-group">
           <div className="filter-widget newNftWrapper">
-            <label>Price</label>
+            <label>Price (USD)</label>
             <input
+              disabled={props?.isPriceDisable}
               value={props.price ?? ""}
               style={{
                 backgroundColor: "#000",
@@ -48,9 +48,15 @@ const AddAllNFTsModal = (props) => {
             <small style={{ fontStyle: "italic" }}>
               *Note: Price will be same for all NFTs in the list below
             </small>
+            <br />
+            {props.isPriceValid ? null : (
+              <span style={{ fontStyle: "bold", color: "red" }}>
+                *Note: Price cannot be 0 or null
+              </span>
+            )}
           </div>
           <label>NFT in Collection</label>
-          {props.nftList.map((nft, key) => (
+          {props.nftList?.map((nft, key) => (
             <List
               sx={{
                 width: "100%",
@@ -64,11 +70,13 @@ const AddAllNFTsModal = (props) => {
                   <Avatar
                     variant="square"
                     alt="Remy Sharp"
-                    src={nft.previewImageURI ? nft.previewImageURI : nft.nftURI}
+                    src={
+                      nft?.previewImageURI ? nft?.previewImageURI : nft?.nftURI
+                    }
                   />
                 </ListItemAvatar>
                 <ListItemText
-                  primary={nft.title}
+                  primary={nft?.title}
                   secondary={
                     <React.Fragment>
                       <Typography
@@ -77,10 +85,10 @@ const AddAllNFTsModal = (props) => {
                         variant="body2"
                         color="white"
                       >
-                        {nft.description.length > 30 ? (
-                          <span>{`${nft.description.slice(0, 30)}...`}</span>
+                        {nft?.description?.length > 30 ? (
+                          <span>{`${nft?.description?.slice(0, 30)}...`}</span>
                         ) : (
-                          <span>{`${nft.description}`}</span>
+                          <span>{`${nft?.description}`}</span>
                         )}
                       </Typography>
                     </React.Fragment>
