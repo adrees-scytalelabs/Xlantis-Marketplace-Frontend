@@ -166,6 +166,9 @@ function AdminTemplate(props) {
           setTemplateData={setModalData}
           updateEnabled={updateModal}
           handleUpdateData={handleUpdatedData}
+          setSnackbarMessage={setSnackbarMessage}
+          setSnackbarSeverity={setSnackbarSeverity}
+          handleSnackbarOpen={handleSnackbarOpen}
         />
       )}
       <DeleteModal
@@ -178,6 +181,9 @@ function AdminTemplate(props) {
         show={newTemplateModalShow}
         useEffectLoader={useEffectLoader}
         setUseEffectLoader={setUseEffectLoader}
+        setSnackbarOpen={setSnackbarOpen}
+        setSnackbarMessage={setSnackbarMessage}
+        setSnackbarSeverity={setSnackbarSeverity}
       />
       <NotificationSnackbar
         open={snackbarOpen}
