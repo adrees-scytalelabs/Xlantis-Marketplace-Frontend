@@ -16,9 +16,19 @@ import {
   stripeOnBoarding,
 } from "../../../../components/API/AxiosInterceptor";
 import DropsCategories from "./DropsCategories";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+
   let handleLogout = (e) => {
     sessionStorage.removeItem("Address");
     sessionStorage.removeItem("Authorization");
@@ -39,9 +49,11 @@ function AdminSidebar(props) {
       .then((response) => {
         console.log("Response from stripe login: ", response);
         window.location.replace(response?.data?.link);
+        handleCloseBackdrop();
       })
       .catch((error) => {
         console.log("Error from stripe login: ", error);
+        handleCloseBackdrop();
       });
   };
 
@@ -57,6 +69,7 @@ function AdminSidebar(props) {
   };
 
   const checkStripeStatus = () => {
+    handleShowBackdrop();
     stripeAccountStatus()
       .then((response) => {
         console.log("Response from checking strip account status: ", response);
@@ -68,6 +81,7 @@ function AdminSidebar(props) {
       })
       .catch((error) => {
         console.log("Error from checking strip account status: ", error);
+        handleCloseBackdrop();
       });
   };
 
@@ -166,9 +180,9 @@ function AdminSidebar(props) {
               className={props.activeTab.stripeAccount}
               onClick={checkStripeStatus}
             >
-              <Link to={``}>
+              <a href="#">
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Stripe Account</span>
-              </Link>
+              </a>
             </li>
             <li className={props.activeTab.topUp}>
               <Link to={`${props.match}/topUp`}>
@@ -196,6 +210,7 @@ function AdminSidebar(props) {
           </ul>
         </div>
       </div>
+      <CircularBackdrop open={open} />
     </div>
   );
 }
