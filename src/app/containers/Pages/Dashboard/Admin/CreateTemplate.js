@@ -81,11 +81,11 @@ function CreateTemplate(props) {
         .then((response) => {
           setTitle("");
           setProperties([{ key: "", type: "boolean" }]);
-          handleCloseBackdrop();
           let variant = "success";
           setSnackbarMessage("New Template Created Successfully.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
+          handleCloseBackdrop();
           setValid("");
         })
         .catch((error) => {
@@ -102,6 +102,7 @@ function CreateTemplate(props) {
         });
     } catch (e) {
       console.log("Error in axios request to create template", e);
+      handleCloseBackdrop();
     }
   };
 

@@ -13,6 +13,9 @@ Axios.defaults.headers.common[
 
 //POST REQUESTS
 
+export const createCategory = (body) => {
+  return Axios.post(`/category/`, body);
+};
 export const userLoginThroughWallet = (body) => {
   return Axios.post(`/v2-wallet-login/user/auth/login`, body);
 };
@@ -114,6 +117,9 @@ export const setSuperAdminPlatformFee = (body) => {
 
 //PUT REQUESTS
 
+export const updateCategory = (categoryName,body) => {
+  return Axios.put(`/category/${categoryName}`,body);
+};
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
 };
@@ -184,7 +190,7 @@ export const verifyAdminV2 = (body) => {
   return Axios.patch(`/super-admin/admin/verify?userType=v2`, body);
 };
 
-export const disbaleAdminV1 = (body) => {
+export const disableAdminV1 = (body) => {
   return Axios.patch(`/super-admin/disable?userType=v1`, body);
 };
 
@@ -220,7 +226,11 @@ export const stripeOnBoarding = () => {
     `stripe/account/onboarding-link`
   );
 };
-
+export const getCategories = () => {
+  return Axios.get(
+    `/category/`
+  );
+};
 export const getMarketFixedPrice = (start, end, marketplaceId) => {
   return Axios.get(
     `/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`
@@ -298,6 +308,9 @@ export const getMyCollectionsPaginated = (start, end) => {
   return Axios.get(`/collection/myCollections/${start}/${end}`);
 };
 
+export const categoryAvailable = (categoryName) => {
+  return Axios.get(`/category/is-available?categoryName=${categoryName}`);
+};
 export const getMyCollectionsPaginatedMarketPlace = (
   start,
   end,

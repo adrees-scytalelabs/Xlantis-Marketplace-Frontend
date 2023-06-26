@@ -1,9 +1,11 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { Typography } from "@mui/material";
+import { CircularProgress, Typography } from "@mui/material";
 import UploadFile from "../Upload/UploadFile";
 import ImageCropModal from "./ImageCropModal";
 import getCroppedImg from "../Utils/Crop";
+import { categoryAvailable } from "../API/AxiosInterceptor";
+import { ErrorOutline } from "@mui/icons-material";
 
 function CategoryModal({
   handleClose,
@@ -16,6 +18,14 @@ function CategoryModal({
   editData,
   setSnackbarMessage,
   setSnackbarSeverity,
+  valid,
+  setValid,
+  setImageFile,
+  handleCreateCategory,
+  isLoading,
+  handleUpdateCategory,
+  createButton,
+  imageFile,
 }) {
   const [isUploading, setIsUploading] = useState(false);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
@@ -24,10 +34,29 @@ function CategoryModal({
   const [showCropModal, setShowCropModal] = useState(false);
   const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
   const [imageSrc, setImageSrc] = useState("");
-  const [imageFile, setImageFile] = useState();
   const [imageCounter, setImageCounter] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("square");
+
+  const checkAvailability = (e) => {
+    e.preventDefault();
+    let name = e.target.value;
+    categoryAvailable(name)
+      .then((response) => {
+        if (!response.data.exists) {
+          setValid("is-valid");
+        } else {
+          setValid("is-invalid");
+        }
+      })
+      .catch((error) => {
+        if (process.env.NODE_ENV === "development") {
+          setValid("is-invalid");
+          console.log(error);
+          console.log(error.response);
+        }
+      });
+  };
   const handleCloseImageCropModal = () => {
     setShowCropModal(false);
     setImageSrc("");
@@ -132,6 +161,12 @@ function CategoryModal({
               accept=".png,.jpg,.jpeg,.gif"
               inputId="uploadPreviewImg"
             />
+            {createButton && !imageFile && (
+              <span className="text-danger" style={{ fontSize: "10px" }}>
+                <ErrorOutline className="mr-1" />
+                <label>Image field cannot be empty.</label>
+              </span>
+            )}
           </Col>
         </Row>
         <Row>
@@ -141,18 +176,26 @@ function CategoryModal({
         </Row>
         <Row className="mt-3">
           <Col>
-            <div className="form-group newNftWrapper">
+            <div className="form-group newNftWrapper ">
               <input
                 style={{ padding: "10px" }}
                 type="text"
+                required
                 value={name}
                 disabled={viewDetail}
                 placeholder="Enter Category Name"
-                className="form-control-login -login newNftInput"
+                className={`newNftInput  form-control ${valid}`}
                 onChange={(e) => {
+                  checkAvailability(e);
                   setName(e.target.value);
                 }}
               />
+              {createButton && !name && (
+                <span className="text-danger" style={{ fontSize: "10px" }}>
+                  <ErrorOutline className="mr-1" />
+                  <label className="mt-2">Name field cannot be empty.</label>
+                </span>
+              )}
             </div>
           </Col>
         </Row>
@@ -175,18 +218,18 @@ function CategoryModal({
           editData == true ? (
             <button
               className="newTemplateBtn mb-3"
-              onClick={(e) => handleProceed()}
+              onClick={(e) => handleUpdateCategory()}
               style={{ backgroundColor: "#000" }}
             >
-              Update
+              {isLoading ? <CircularProgress size="sm" /> : "Update"}
             </button>
           ) : (
             <button
               className="newTemplateBtn mb-3"
-              onClick={(e) => handleProceed()}
+              onClick={(e) => handleCreateCategory()}
               style={{ backgroundColor: "#000" }}
             >
-              Create
+              {isLoading ? <CircularProgress size={20} /> : "Create"}
             </button>
           )
         ) : null}
