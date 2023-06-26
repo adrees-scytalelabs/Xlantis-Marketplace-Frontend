@@ -13,7 +13,7 @@ function AdminDashboardDefaultScreen(props) {
   const cardContainerStyle = {
     flex: "1 0 100%",
     padding: "0 0.5rem",
-    height:'100%'
+    height: "100%",
   };
   const [balanceUSD, setBalanceUSD] = useState(0);
   const [balanceMatic, setBalanceMatic] = useState(0);
@@ -78,6 +78,17 @@ function AdminDashboardDefaultScreen(props) {
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12">
           <div className="row">
+            <div className="col-12 mb-3" style={{ textAlign: "right" }}>
+              <button
+                className="newTemplateBtn mb-3 mr-2"
+                // onClick={handleCloseModal}
+                style={{ backgroundColor: "#000",fontSize: '1.2rem',padding:'15px' }}
+              >
+                Stripe Login
+              </button>
+            </div>
+          </div>
+          <div className="row">
             <div className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
               <div style={cardContainerStyle}>
                 <DisplayNumbersAndContentCard
@@ -133,7 +144,9 @@ function AdminDashboardDefaultScreen(props) {
                       ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
                       : "totalNftsAdminDashHeading"
                   }
-                  hoverH1={hover ? "superAdminBalanceHover" : "superAdminBalance"}
+                  hoverH1={
+                    hover ? "superAdminBalanceHover" : "superAdminBalance"
+                  }
                   balanceUSD={balanceUSD}
                   balanceMatic={balanceMatic}
                   message="Balance"
