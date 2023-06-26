@@ -14,6 +14,7 @@ import {
 } from "../../../../components/Utils/SuperAdminFunctions";
 import SuperAdminTable from "../../../../components/tables/SuperAdminAccountsTable";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import WarningModal from "../../../../components/Modals/WarningModal";
 
 function AccountApprovalDefaultScreen(props) {
   const [admins, setAdmins] = useState([]);
