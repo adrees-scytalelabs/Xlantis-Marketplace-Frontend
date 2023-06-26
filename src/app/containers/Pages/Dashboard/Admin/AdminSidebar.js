@@ -8,8 +8,14 @@ import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import AllTransactions from "./AllTransactions";
+import {
+  stripeAccountStatus,
+  stripeLogin,
+  stripeOnBoarding,
+} from "../../../../components/API/AxiosInterceptor";
+import DropsCategories from "./DropsCategories";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
@@ -27,6 +33,43 @@ function AdminSidebar(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
   }, []);
+
+  const handleStripeLogin = () => {
+    stripeLogin()
+      .then((response) => {
+        console.log("Response from stripe login: ", response);
+        window.location.replace(response?.data?.link);
+      })
+      .catch((error) => {
+        console.log("Error from stripe login: ", error);
+      });
+  };
+
+  const handleStripeOnBoarding = () => {
+    stripeOnBoarding()
+      .then((response) => {
+        console.log("Response from stripe on boarding: ", response);
+        window.location.replace(response?.data?.onboardingLink?.url);
+      })
+      .catch((error) => {
+        console.log("Error from stripe on boarding: ", error);
+      });
+  };
+
+  const checkStripeStatus = () => {
+    stripeAccountStatus()
+      .then((response) => {
+        console.log("Response from checking strip account status: ", response);
+        if (response?.data?.detailsSubmitted) {
+          handleStripeLogin();
+        } else {
+          handleStripeOnBoarding();
+        }
+      })
+      .catch((error) => {
+        console.log("Error from checking strip account status: ", error);
+      });
+  };
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -117,6 +160,14 @@ function AdminSidebar(props) {
             <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
                 <CategoryIcon /> <span>Categories</span>
+              </Link>
+            </li>
+            <li
+              className={props.activeTab.stripeAccount}
+              onClick={checkStripeStatus}
+            >
+              <Link to={``}>
+                <AttachMoneyIcon></AttachMoneyIcon> <span>Stripe Account</span>
               </Link>
             </li>
             <li className={props.activeTab.topUp}>

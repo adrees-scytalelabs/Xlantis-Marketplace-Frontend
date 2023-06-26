@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   getAdminCountsVersioned,
   getMaticBalance,
-  stripelogin,
+  stripeLogin,
   stripeOnBoarding,
 } from "../../../../components/API/AxiosInterceptor";
 import AdminBalanceCard from "../../../../components/Cards/AdminBalanceCard";
@@ -80,7 +80,7 @@ function AdminDashboardDefaultScreen(props) {
   };
   const handleStripeLogin = async () => {
     try {
-      const response = await stripelogin();
+      const response = await stripeLogin();
       window.location.replace(response.data.link);
       console.log("Response of stripe login ", response);
     } catch (error) {
