@@ -11,7 +11,7 @@ import React, { useEffect, useState } from "react";
 import { Table } from "react-bootstrap";
 import { Link, useResolvedPath } from "react-router-dom";
 import {
-  disbaleAdminV1,
+  disableAdminV1,
   enableAdminV1,
   getVerifiedAdminsV1Paginated,
 } from "../../../../components/API/AxiosInterceptor";
@@ -196,14 +196,13 @@ function Accounts(props) {
 
   const handleAdminDisable = async (e, id) => {
     const body = { adminId: id };
-    await disbaleAdminV1(body)
+    await disableAdminV1(body)
       .then((response) => {
         console.log("Response from disabling admin: ", response);
         let variant = "success";
         setSnackbarMessage("Admin Disabled Successfully.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
-        
       })
       .catch((error) => {
         let variant = "error";

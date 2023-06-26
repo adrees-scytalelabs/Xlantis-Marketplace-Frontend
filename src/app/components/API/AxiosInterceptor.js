@@ -185,7 +185,7 @@ export const verifyAdminV2 = (body) => {
   return Axios.patch(`/super-admin/admin/verify?userType=v2`, body);
 };
 
-export const disbaleAdminV1 = (body) => {
+export const disableAdminV1 = (body) => {
   return Axios.patch(`/super-admin/disable?userType=v1`, body);
 };
 

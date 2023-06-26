@@ -1427,6 +1427,9 @@ function NewNFT(props) {
         show={newTemplateModalShow}
         useEffectLoader={useEffectLoader}
         setUseEffectLoader={setUseEffectLoader}
+        setSnackbarOpen={setSnackbarOpen}
+        setSnackbarMessage={setSnackbarMessage}
+        setSnackbarSeverity={setSnackbarSeverity}
       />
       <ChangeCollectionConfirmationModal
         show={changeCollection}
