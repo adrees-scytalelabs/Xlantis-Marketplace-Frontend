@@ -621,6 +621,22 @@ form.checkoutForm label {
   border: 1px solid var(--border);
 }
 
+.modal-scrollbar {
+  overflow-y: auto;
+}
+
+.modal-scrollbar::-webkit-scrollbar {
+  width: 0.5em;
+}
+
+.modal-scrollbar::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.modal-scrollbar::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
 .custom-header .close {
   color: white
 }

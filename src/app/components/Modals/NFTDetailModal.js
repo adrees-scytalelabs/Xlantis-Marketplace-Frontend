@@ -4,25 +4,33 @@ import { Modal } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import NFTDetailModalCard from "../Cards/NFTDetailModalCard";
 
-
 const NFTDetailModal = (props) => {
-  useEffect(() => {}, [props.show]);
+  // useEffect(() => {
+  //   console.log("Props in nftDetail modal: ", props);
+  // }, [props]);
 
   return (
-    <Modal show={props.show} onHide={props.handleClose} size="lg">
+    <Modal show={props.show} onHide={props.handleClose} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title>{props.nftDetail.title}</Modal.Title>
+        <Modal.Title>NFT Details</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        <NFTDetailModalCard nftDetail={props.nftDetail} />
+      <Modal.Body style={{ background: "black", border: "1px solid white" }}>
+        <NFTDetailModalCard nftDetail={props?.nftDetail} />
       </Modal.Body>
-      <Modal.Footer>
-        <Button variant="text" onClick={props.handleClose}>
+      <Modal.Footer style={{ background: "black", border: "1px solid white" }}>
+        <button
+          className="newTemplateBtn mb-3"
+          style={{ minWidth: "120px" }}
+          onClick={props?.handleClose}
+        >
           Close
-        </Button>
-        <Button variant="text" onClick={props.handleEdit}>
+        </button>
+        {/* <Button variant="text" onClick={props?.handleClose}>
+          Close
+        </Button> */}
+        {/* <Button variant="text" onClick={props?.handleEdit}>
           Edit Details
-        </Button>
+        </Button> */}
       </Modal.Footer>
     </Modal>
   );

@@ -176,6 +176,10 @@ export const updateCollectionTxHash = (collectionId, body) => {
   return Axios.put(`/collection/txHash/${collectionId}`, body);
 };
 
+export const addCollectionToDrop = (body) => {
+  return Axios.put(`/drop/add-collection-nfts`, body);
+};
+
 //PATCH REQUESTS
 
 export const readNotifications = (body) => {
@@ -268,7 +272,7 @@ export const getIsAvailableTemplates = (name) => {
 
 export const getCollections = (nftType, marketplaceId) => {
   return Axios.get(
-    `/collection/collections/${nftType}?marketplaceId=${marketplaceId}`
+    `/collection/my-collections/${nftType}?marketplaceId=${marketplaceId}`
   );
 };
 
@@ -306,7 +310,7 @@ export const getNFTsFromSingleCollection = (collectionId) => {
 };
 
 export const getMyCollectionsPaginated = (start, end) => {
-  return Axios.get(`/collection/myCollections/${start}/${end}`);
+  return Axios.get(`/collection/my-collections/${start}/${end}`);
 };
 
 export const categoryAvailable = (categoryName) => {
@@ -333,7 +337,7 @@ export const getMyDropsPaginatedUsingStatus = (
   marketplaceId
 ) => {
   return Axios.get(
-    `/drop/myDrops/${status}/${start}/${end}?marketplaceId=${marketplaceId}`
+    `/drop/my-drops/${status}/${start}/${end}?marketplaceId=${marketplaceId}`
   );
 };
 
