@@ -43,6 +43,9 @@ function SuperAdminCategories(props) {
       setCreateButton(true);
       return;
     }
+    if(valid==="is-invalid"){
+      return;
+    }
     const formData = new FormData();
     formData.append("image", imageFile);
     formData.append("name", name);
@@ -72,6 +75,9 @@ function SuperAdminCategories(props) {
     }
     if (!name) {
       setCreateButton(true);
+      return;
+    }
+    if(valid==="is-invalid"){
       return;
     }
     const formData = new FormData();

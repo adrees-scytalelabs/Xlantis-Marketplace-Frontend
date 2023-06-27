@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
-import { CircularProgress, Typography } from "@mui/material";
+import { CircularProgress, Typography, Tooltip } from "@mui/material";
 import UploadFile from "../Upload/UploadFile";
 import ImageCropModal from "./ImageCropModal";
 import getCroppedImg from "../Utils/Crop";
@@ -38,6 +38,12 @@ function CategoryModal({
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("square");
 
+  const handleChange = (e) => {
+    setName(e.target.value);
+    if (!viewDetail) {
+      checkAvailability(e);
+    }
+  };
   const checkAvailability = (e) => {
     e.preventDefault();
     let name = e.target.value;
@@ -88,6 +94,7 @@ function CategoryModal({
   });
   const handleCloseModal = () => {
     //props.setOpen(true);
+    setValid("");
     handleClose();
   };
   const handleProceed = () => {
@@ -182,14 +189,14 @@ function CategoryModal({
                 type="text"
                 required
                 value={name}
-                disabled={viewDetail}
                 placeholder="Enter Category Name"
-                className={`newNftInput  form-control ${valid}`}
-                onChange={(e) => {
-                  checkAvailability(e);
-                  setName(e.target.value);
-                }}
+                disabled={viewDetail}
+                className={`newNftInput form-control ${valid}`}
+                onChange={handleChange}
               />
+              {valid === "is-invalid" && (
+                <div class="invalid-feedback">Name not available</div>
+              )}
               {createButton && !name && (
                 <span className="text-danger" style={{ fontSize: "10px" }}>
                   <ErrorOutline className="mr-1" />
@@ -215,7 +222,7 @@ function CategoryModal({
           Close
         </button>
         {viewDetail !== true ? (
-          editData == true ? (
+          editData === true ? (
             <button
               className="newTemplateBtn mb-3"
               onClick={(e) => handleUpdateCategory()}
