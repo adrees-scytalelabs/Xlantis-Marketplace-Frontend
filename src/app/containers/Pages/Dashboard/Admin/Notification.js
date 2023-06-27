@@ -6,6 +6,7 @@ import axios from "axios";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import { io } from "socket.io-client";
 import RefreshIcon from "@mui/icons-material/Refresh";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function Notification(props) {
   const [notifications, setNotifications] = useState([]);
@@ -149,6 +150,9 @@ function Notification(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="notifications-container">
         <div
           className="notifications-heading"
@@ -206,15 +210,15 @@ function Notification(props) {
                 </div>
                 <div className="notification-options">
                   <div className="">
-                  <IconButton
-                    aria-label="more"
-                    id={`notification-menu-${notification._id}`}
-                    size="small"
-                    onClick={handleClick}
-                    style={{ position: "relative", top: "-8px" }}
-                  >
-                    <MoreVertIcon className="vertIcon"/>
-                  </IconButton>
+                    <IconButton
+                      aria-label="more"
+                      id={`notification-menu-${notification._id}`}
+                      size="small"
+                      onClick={handleClick}
+                      style={{ position: "relative", top: "-8px" }}
+                    >
+                      <MoreVertIcon className="vertIcon" />
+                    </IconButton>
                   </div>
                   <Menu
                     anchorEl={anchorEl}

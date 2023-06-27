@@ -6,6 +6,7 @@ import CircularBackdrop from "../Backdrop/Backdrop";
 import AdminBalanceCard from "../Cards/AdminBalanceCard";
 import TopUpForm from "../Forms/TopUpForm";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../MessageCards/StripeAccountMessageCard";
 
 function TopUp(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -146,6 +147,9 @@ function TopUp(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
         <AdminBalanceCard
           onMouseEnter={() => setHover(true)}

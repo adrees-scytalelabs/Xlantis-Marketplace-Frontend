@@ -1,7 +1,6 @@
 import React from "react";
 import { Modal, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 const StripeAccountCreationModal = (props) => {
   const navigate = useNavigate();

@@ -8,6 +8,7 @@ import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const useStyles = {
   root: {
@@ -118,7 +119,9 @@ function MyCollection(props) {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body page-height">
         <div sx={useStyles.root}>
           {open ? (

@@ -4,6 +4,7 @@ import { getBalanceSpentHistory } from "../../../../components/API/AxiosIntercep
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BalanceSpentModal from "../../../../components/Modals/BalanceSpentModal";
 import BalanceSpentHistoryTable from "../../../../components/tables/BalanceSpentHistoryTable";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   noMaxWidth: {
@@ -95,6 +96,9 @@ const BalanceSpentHistoryPageAdmin = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body px-0">
         {/* LOADING TABLE */}
         {balanceHistory.length > 0 ? (

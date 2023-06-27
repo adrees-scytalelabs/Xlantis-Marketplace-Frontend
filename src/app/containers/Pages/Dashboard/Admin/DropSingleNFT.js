@@ -22,6 +22,7 @@ import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaC
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 const styles = {
   root: {
     flexGrow: 1,
@@ -82,7 +83,7 @@ const DropSingleNFT = (props) => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -462,6 +463,9 @@ const DropSingleNFT = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           <div className="row">
@@ -504,7 +508,12 @@ const DropSingleNFT = (props) => {
         dropData={data}
         isOpen={modalOpen}
       />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 };

@@ -42,6 +42,7 @@ import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
 import getCroppedImg from "../../../../components/Utils/Crop";
 import ImageCropModal from "../../../../components/Modals/ImageCropModal";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   root: {
@@ -769,10 +770,13 @@ function NewNFT(props) {
             handleSnackbarOpen();
             return;
           }
-  
+
           setIpfsHash(result[0].hash);
           setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-          console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
+          console.log(
+            "Hash of NFT: ",
+            `https://ipfs.io/ipfs/${result[0].hash}`
+          );
           let variant = "success";
           setSnackbarMessage("Image Uploaded to IPFS.");
           setSnackbarSeverity(variant);
@@ -819,8 +823,8 @@ function NewNFT(props) {
     const reader = new window.FileReader();
     let imageNFT = e.target.files[0];
     let typeImage;
-    const acceptedImageFormats = ['png', 'jpg', 'jpeg']
-    const fileExtension = (imageNFT.name).split('.').pop();
+    const acceptedImageFormats = ["png", "jpg", "jpeg"];
+    const fileExtension = imageNFT.name.split(".").pop();
 
     if (e.target.files[0].name.includes(".glb")) {
       typeImage = "glb";
@@ -836,8 +840,7 @@ function NewNFT(props) {
       setImageType("mp3");
       // setImage(e.target.files[0]);
       setImage(defaultProfile);
-    } else if(acceptedImageFormats.includes(fileExtension)) {
-
+    } else if (acceptedImageFormats.includes(fileExtension)) {
       console.log("File Extension : ", fileExtension);
       setImageType(e.target.files[0].type.split("/")[1]);
       typeImage = e.target.files[0].type.split("/")[1];
@@ -848,22 +851,20 @@ function NewNFT(props) {
         setPreviewImage(defaultProfile);
       }
 
-        setCropShape("square");
-        setIsUploadingIPFS(true);
-        setAspect(1 / 1);
-        setImageSrc(URL.createObjectURL(e.target.files[0]));
-        setShowCropModal(true);
-        return
-
-    }
-    else{
+      setCropShape("square");
+      setIsUploadingIPFS(true);
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
+      return;
+    } else {
       setSnackbarMessage("Unsupported file format");
       setSnackbarSeverity("error");
       handleSnackbarOpen();
       setIsUploadingIPFS(false);
-      return
+      return;
     }
-    
+
     reader.readAsArrayBuffer(e.target.files[0]);
     reader.onloadend = () => {
       ipfs.add(Buffer(reader.result), async (err, result) => {
@@ -1267,7 +1268,9 @@ function NewNFT(props) {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body px-0">
         <div className="row no-gutters">
           <div className="col-md-12 col-lg-6">

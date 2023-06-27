@@ -28,6 +28,7 @@ import SubmitButton from "../../../../components/buttons/SubmitButton";
 import getCroppedImg from "../../../../components/Utils/Crop";
 import ImageCropModal from "../../../../components/Modals/ImageCropModal";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function NewCollection(props) {
   const navigate = useNavigate();
@@ -546,7 +547,7 @@ function NewCollection(props) {
     } catch (e) {
       console.log("Error: ", e);
     }
-  })
+  });
 
   let onChangeFile = (e) => {
     let file = e.target.files[0];
@@ -707,6 +708,9 @@ function NewCollection(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body page-height px-0">
         <div className="row no-gutters">
           <div className="col-md-12 col-lg-6">

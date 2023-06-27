@@ -12,6 +12,7 @@ import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 const useStyles = {
   root: {
     borderRadius: 12,
@@ -164,7 +165,9 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         <div className="form-group">
           {open ? (

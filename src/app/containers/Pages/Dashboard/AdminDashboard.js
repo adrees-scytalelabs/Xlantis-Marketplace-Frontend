@@ -55,6 +55,10 @@ import AdminSettings from "./AdminSettings";
 import BalanceSpentHistoryPageAdmin from "./Admin/BalanceSpentHistoryPageAdmin";
 import AdminTemplate from "./Admin/AdminTemplate";
 import Notification from "./Admin/Notification";
+import {
+  stripeAccountStatus,
+  stripeOnBoarding,
+} from "../../../components/API/AxiosInterceptor";
 
 const theme = createTheme({
   components: {
@@ -83,6 +87,7 @@ function AdminDashboard(props) {
   const [slideNavClass, setSlideNavClass] = useState();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
+  const [isStripeLogin, setIsStripeLogin] = useState(false);
   const { notification, notificationLoading } = useSelector(
     (store) => store.getHeaderNotification
   );
@@ -107,9 +112,34 @@ function AdminDashboard(props) {
   }
   const dispatch = useDispatch();
 
+  const checkStripeStatus = () => {
+    stripeAccountStatus()
+      .then((response) => {
+        console.log("Response from getting stripe account status: ", response);
+        setIsStripeLogin(response.data.detailsSubmitted);
+      })
+      .catch((error) => {
+        console.log("Error from getting stripe account status: ", error);
+      });
+  };
+
+  const getOnboardingLink = () => {
+    console.log("Function called");
+    stripeOnBoarding()
+      .then((response) => {
+        console.log("Response from getting on boarding link: ", response);
+        window.location.replace(response?.data?.onboardingLink?.url);
+      })
+      .catch((error) => {
+        console.log("Error from getting on boarding link: ", error);
+      });
+  };
+
   useEffect(() => {
     setSocket(io("https://raindrop-backend.herokuapp.com/"));
+    checkStripeStatus();
   }, []);
+
   useEffect(() => {
     let userLogin = sessionStorage.getItem("Authorization");
     //console.log("Admin Login Detail", userLogin);
@@ -417,13 +447,23 @@ function AdminDashboard(props) {
                 <AdminDashboardDefaultScreen
                   match={path}
                   setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
 
             <Route
               path={`earnings`}
-              element={<AdminEarnings setActiveTab={setActiveTab} />}
+              element={
+                <AdminEarnings
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
             <Route
               path={`newNFT`}
@@ -434,6 +474,9 @@ function AdminDashboard(props) {
                   setSnackbarMessage={setSnackbarMessage}
                   setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -444,6 +487,9 @@ function AdminDashboard(props) {
                 <MyNFTs
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -451,12 +497,26 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`dropApproval`}
-              element={<DropApproval setActiveTab={setActiveTab} />}
+              element={
+                <DropApproval
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
             <Route
               exact
               path={`topUp`}
-              element={<TopUp setActiveTab={setActiveTab} />}
+              element={
+                <TopUp
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
@@ -469,6 +529,9 @@ function AdminDashboard(props) {
                   setSnackbarMessage={setSnackbarMessage}
                   setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -479,6 +542,9 @@ function AdminDashboard(props) {
                 <AddNFT
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -490,6 +556,9 @@ function AdminDashboard(props) {
                 <MyDrops
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -501,6 +570,9 @@ function AdminDashboard(props) {
                 <MyDropNFTs
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -508,7 +580,14 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`myDrops/nfts/singleNft`}
-              element={<DropSingleNFT setActiveTab={setActiveTab} />}
+              element={
+                <DropSingleNFT
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
@@ -521,6 +600,9 @@ function AdminDashboard(props) {
                   setSnackbarMessage={setSnackbarMessage}
                   setSnackbarSeverity={setSnackbarSeverity}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -531,6 +613,9 @@ function AdminDashboard(props) {
                 <MyCollection
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -538,23 +623,51 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`nftDetail/:nftId`}
-              element={<SingleNftDetail setActiveTab={setActiveTab} />}
+              element={
+                <SingleNftDetail
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
             <Route
               exact
               path={`templates`}
-              element={<AdminTemplate setActiveTab={setActiveTab} />}
+              element={
+                <AdminTemplate
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
-                        <Route
+            <Route
               exact
               path={`notifications`}
-              element={<Notification setActiveTab={setActiveTab} />}
+              element={
+                <Notification
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`collection/nfts/:collectionId`}
-              element={<CollectionNfts setActiveTab={setActiveTab} />}
+              element={
+                <CollectionNfts
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
             <Route
               exact
@@ -563,6 +676,9 @@ function AdminDashboard(props) {
                 <MarketPlace
                   setActiveTab={setActiveTab}
                   marketplaceId={props.jwtDecoded.marketplaceId}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />
@@ -570,50 +686,104 @@ function AdminDashboard(props) {
             <Route
               exact
               path={`marketPlace/drops/nfts`}
-              element={<DropNfts setActiveTab={setActiveTab} />}
+              element={
+                <DropNfts
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
             <Route
               exact
               path={`marketPlace/drops/nfts/buy`}
-              element={<NFTBuy setActiveTab={setActiveTab} />}
+              element={
+                <NFTBuy
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`marketPlace/:dropId/:nftId`}
-              element={<AuctionNFT setActiveTab={setActiveTab} />}
+              element={
+                <AuctionNFT
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`admin/settings`}
-              element={<AdminSettings setActiveTab={setActiveTab} />}
+              element={
+                <AdminSettings
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`topup-history`}
-              element={<TopupHistoryPageAdmin setActiveTab={setActiveTab} />}
+              element={
+                <TopupHistoryPageAdmin
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`balance-spent-history`}
               element={
-                <BalanceSpentHistoryPageAdmin setActiveTab={setActiveTab} />
+                <BalanceSpentHistoryPageAdmin
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
               }
             />
 
             <Route
               exact
               path={`dropsCategories`}
-              element={<DropsCategories setActiveTab={setActiveTab} />}
+              element={
+                <DropsCategories
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
               exact
               path={`dropsCategories/drops/:category`}
-              element={<DropsInCategories setActiveTab={setActiveTab} />}
+              element={
+                <DropsInCategories
+                  setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
+                />
+              }
             />
 
             <Route
@@ -622,6 +792,9 @@ function AdminDashboard(props) {
                 <AdminDashboardDefaultScreen
                   match={path}
                   setActiveTab={setActiveTab}
+                  setIsStripeLogin={setIsStripeLogin}
+                  isStripeLogin={isStripeLogin}
+                  getOnboardingLink={getOnboardingLink}
                 />
               }
             />

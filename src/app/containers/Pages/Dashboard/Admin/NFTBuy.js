@@ -1,4 +1,3 @@
-
 import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
@@ -8,7 +7,8 @@ import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
 import {
-  getBuyNFTTxCostSummarySSO, marketplaceBuyVersioned,
+  getBuyNFTTxCostSummarySSO,
+  marketplaceBuyVersioned,
 } from "../../../../components/API/AxiosInterceptor";
 import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -22,6 +22,7 @@ import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory72
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import BuyButton from "../../../../components/buttons/Buy";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   root: {
@@ -33,8 +34,7 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-
-}
+};
 
 const customTheme = createTheme({
   overrides: {
@@ -78,7 +78,7 @@ const NFTBuy = (props) => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -455,7 +455,9 @@ const NFTBuy = (props) => {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           <div className="row">
@@ -501,7 +503,12 @@ const NFTBuy = (props) => {
         isOpen={modalOpen}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 };

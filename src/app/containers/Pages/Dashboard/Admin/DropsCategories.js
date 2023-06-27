@@ -5,7 +5,13 @@ import MessageCard from "../../../../components/MessageCards/MessageCard";
 import { Grid } from "@mui/material";
 import MyCollectionsCard from "../../../../components/Cards/MyCollectionsCard";
 import CategoriesCards from "../../../../components/Cards/CategoriesCards";
-import { DigitalMemberShip, LandPlots, MetaRacers, XmannaMysteryBox } from "../../../../components/ImageURLs/URLs";
+import {
+  DigitalMemberShip,
+  LandPlots,
+  MetaRacers,
+  XmannaMysteryBox,
+} from "../../../../components/ImageURLs/URLs";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const useStyles = {
   root: {
@@ -71,6 +77,9 @@ const DropsCategories = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body page-height">
         <div sx={useStyles.root}>
           <Grid container spacing={2} direction="row" justify="flex-start">

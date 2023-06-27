@@ -29,6 +29,7 @@ import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete
 import getCroppedImg from "../../../../components/Utils/Crop";
 import ImageCropModal from "../../../../components/Modals/ImageCropModal";
 import StripeAccountCreationModal from "../../../../components/Modals/StripeAccountCreationModal";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const makeTheme = createTheme({
   overrides: {
@@ -540,6 +541,9 @@ function NewDrop(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body p-0">
         <div className="no-gutters">
           <label>Select Banner Image</label>

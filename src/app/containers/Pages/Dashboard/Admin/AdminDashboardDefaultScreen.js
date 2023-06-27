@@ -11,6 +11,7 @@ import AdminBalanceCard from "../../../../components/Cards/AdminBalanceCard";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function AdminDashboardDefaultScreen(props) {
   const cardContainerStyle = {
@@ -68,9 +69,7 @@ function AdminDashboardDefaultScreen(props) {
         window.location.replace(response.data.link);
       } else {
         setSnackbarOpen(true);
-        setSnackbarMessage(
-          "OnBoarding Process already completed."
-        );
+        setSnackbarMessage("OnBoarding Process already completed.");
         setSnackbarSeverity("error");
       }
       console.log("Response of stripe on boarding ", response);
@@ -125,6 +124,9 @@ function AdminDashboardDefaultScreen(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12">
           <div className="row">

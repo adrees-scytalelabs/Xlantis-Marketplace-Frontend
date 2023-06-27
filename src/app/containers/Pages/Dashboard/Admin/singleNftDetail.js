@@ -15,6 +15,7 @@ import NFTSale from "../../../../components/Modals/NFTSale";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
 import SummaryModal from "../../../../components/Modals/SummaryModal";
 import jwtDecode from "jwt-decode";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   media: {
@@ -170,6 +171,11 @@ const SingleNftDetail = (props) => {
             </div>
           </div>
         </div>
+        {props.isStripeLogin ? null : (
+          <StripeAccountMessageCard
+            getOnboardingLink={props.getOnboardingLink}
+          />
+        )}
         <ThemeProvider theme={makeTheme}>
           <div className="card-body p-0">
             {role === "user" ? (

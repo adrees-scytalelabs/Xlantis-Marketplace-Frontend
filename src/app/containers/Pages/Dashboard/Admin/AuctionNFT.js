@@ -1,12 +1,8 @@
-import {
-  createTheme,
-  Paper,
-  ThemeProvider
-} from "@mui/material";
+import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row, } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
@@ -33,6 +29,7 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import BidValue from "../../../../components/Select/BidValue";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const customTheme = createTheme({
   overrides: {
@@ -72,7 +69,7 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 const AuctionNFT = (props) => {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -82,7 +79,7 @@ const AuctionNFT = (props) => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -153,7 +150,9 @@ const AuctionNFT = (props) => {
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
     ) {
       let variant = "error";
-      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarMessage(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time."
+      );
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     }
@@ -361,7 +360,9 @@ const AuctionNFT = (props) => {
     ) {
       let variant = "error";
 
-      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarMessage(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time."
+      );
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     }
@@ -495,7 +496,9 @@ const AuctionNFT = (props) => {
       new Date(bidExpiryTime) > new Date(dropExpiryTime)
     ) {
       let variant = "error";
-      setSnackbarMessage("Bid Expiry Time cannot be more than Drop's Expiry Time.");
+      setSnackbarMessage(
+        "Bid Expiry Time cannot be more than Drop's Expiry Time."
+      );
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     }
@@ -520,7 +523,9 @@ const AuctionNFT = (props) => {
         .then((response) => {
           console.log("nft bid response", response.data);
           let variant = "success";
-          setSnackbarMessage("Bid Is Being Finalized. Transactions Are In Process.");
+          setSnackbarMessage(
+            "Bid Is Being Finalized. Transactions Are In Process."
+          );
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           handleCloseModal();
@@ -565,7 +570,9 @@ const AuctionNFT = (props) => {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
           <div className="row">
@@ -578,11 +585,7 @@ const AuctionNFT = (props) => {
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
               <Row style={{ marginTop: "5px" }}>
                 <Col>
-                  <PropertiesAccordian
-                    keys={keys}
-                    properties={properties}
-                  />
-
+                  <PropertiesAccordian keys={keys} properties={properties} />
                 </Col>
               </Row>
               <Row style={{ marginTop: "5px" }}>
@@ -623,7 +626,12 @@ const AuctionNFT = (props) => {
         isOpen={modalOpen}
       />
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 };
