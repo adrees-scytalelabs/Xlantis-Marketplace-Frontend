@@ -120,6 +120,7 @@ function AutocompleteAddNft({
   placeholder,
   onChange,
   type,
+  handleOpenAddNFTModal,
 }) {
   const selectNFTText =
     "Only NFTs that are not currently listed for sale will be listed/shown in the drop-down menu";
@@ -150,77 +151,96 @@ function AutocompleteAddNft({
         )}
         <div className="filter-widget newNftWrapper">
           {label === "Select NFT" ? (
-            <Autocomplete
-              id="combo-dox-demo"
-              required
-              disabled={isDisabled}
-              options={options}
-              getOptionLabel={(option) =>
-                type === "collection"
-                  ? option.name
-                  : type === "nft"
-                  ? option.title
-                  : option
-              }
-              renderOption={(props, option) => {
-                console.log("Option is: ", option);
-                return (
-                  <Box
-                    component="li"
-                    sx={{
-                      "& > img": { mr: 2, flexShrink: 0 },
-                    }}
-                    {...props}
-                  >
-                    <img
-                      width="50px"
-                      height="40px"
-                      src={
-                        option.previewImageURI
-                          ? option.previewImageURI
-                          : option.nftURI
-                      }
-                      srcSet={option.nftURI}
-                      alt=""
-                      style={{ border: "1px solid black" }}
+            <div style={{ display: "flex" }}>
+              <Autocomplete
+                id="combo-dox-demo"
+                required
+                fullWidth
+                disabled={isDisabled}
+                options={options}
+                getOptionLabel={(option) =>
+                  type === "collection"
+                    ? option.name
+                    : type === "nft"
+                    ? option.title
+                    : option
+                }
+                renderOption={(props, option) => {
+                  console.log("Option is: ", option);
+                  return (
+                    <Box
+                      component="li"
+                      sx={{
+                        "& > img": { mr: 2, flexShrink: 0 },
+                      }}
+                      {...props}
+                    >
+                      <img
+                        width="50px"
+                        height="40px"
+                        src={
+                          option.previewImageURI
+                            ? option.previewImageURI
+                            : option.nftURI
+                        }
+                        srcSet={option.nftURI}
+                        alt=""
+                        style={{ border: "1px solid black" }}
+                      />
+                      {option.title}
+                    </Box>
+                  );
+                }}
+                onChange={onChange}
+                filterSelectedOptions
+                renderInput={(params) => (
+                  <div>
+                    <TextField
+                      sx={{
+                        "& input": {
+                          color: "white",
+                        },
+                        "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator":
+                          {
+                            color: "white",
+                            visibility: "visible",
+                          },
+                        "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator":
+                          {
+                            color: "white",
+                            visibility: "visible",
+                          },
+                        "& .MuiButtonBase-root.MuiAutocomplete-arr": {
+                          color: "white",
+                          visibility: "visible",
+                        },
+                      }}
+                      InputLabelProps={{
+                        style: { color: "white" },
+                      }}
+                      {...params}
+                      variant="outlined"
+                      placeholder={placeholder}
                     />
-                    {option.title}
-                  </Box>
-                );
-              }}
-              onChange={onChange}
-              filterSelectedOptions
-              renderInput={(params) => (
-                <div>
-                  <TextField
-                    sx={{
-                      "& input": {
-                        color: "white",
-                      },
-                      "& .MuiButtonBase-root.MuiAutocomplete-clearIndicator": {
-                        color: "white",
-                        visibility: "visible",
-                      },
-                      "& .MuiButtonBase-root.MuiAutocomplete-popupIndicator": {
-                        color: "white",
-                        visibility: "visible",
-                      },
-                      "& .MuiButtonBase-root.MuiAutocomplete-arr": {
-                        color: "white",
-                        visibility: "visible",
-                      },
-                    }}
-                    InputLabelProps={{
-                      style: { color: "white" },
-                    }}
-                    {...params}
-                    variant="outlined"
-                    placeholder={placeholder}
-                  />
-                </div>
-              )}
-              style={{ padding: "6px 15px !important" }}
-            />
+                  </div>
+                )}
+                style={{ padding: "6px 15px !important" }}
+              />
+              <button
+                className="btn"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleOpenAddNFTModal();
+                }}
+                style={{
+                  backgroundColor: "#000",
+                  marginLeft: "5px",
+                  border: "1px solid white",
+                }}
+              >
+                Add All
+              </button>
+            </div>
           ) : (
             <Autocomplete
               id="combo-dox-demo"

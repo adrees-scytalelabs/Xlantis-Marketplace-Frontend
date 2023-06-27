@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import Web3 from "web3";
 import {
+  addCollectionToDrop,
   addNFTToDrop,
   deleteNFTFromDrop,
   finalizeDrop,
@@ -35,6 +36,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import AddAllNFTsModal from "../../../../components/Modals/AddAllNFTsModal";
 
 const styles = {
   root: {
@@ -124,6 +126,7 @@ function AddNFT(props) {
   const [isUploadingData, setIsUploadingData] = useState(false);
   const [tokenList, setTokenList] = useState([]);
   const [price, setPrice] = useState(null);
+  const [collectionPrice, setCollectionPrice] = useState(null);
   const [supply, setSupply] = useState(null);
   const [saleType, setSaleType] = useState("");
   const [nftType, setNftType] = useState("");
@@ -144,6 +147,43 @@ function AddNFT(props) {
   const [requiredAmount, setRequiredAmount] = useState(0);
   const [isCollectionDisable, setIsCollectionDisable] = useState(false);
   const [isDropUpdated, setIsDropUpdated] = useState(false);
+  const [showAddNFTsModal, setShowAddNFTsModal] = useState(false);
+  const [isAddingAllNFTs, setIsAddingAllNFTs] = useState(false);
+  const [nftDetailModal, setNftDetailModal] = useState(false);
+  const [nftDetailModalData, setNftDetailModalData] = useState({});
+  const [isPriceDisable, setIsPriceDisable] = useState(false);
+  const [isCollectionPriceValid, setIsCollectionPriceValid] = useState(true);
+
+  const handleOpenAddAllNFTsModal = () => {
+    if (collection && collectionId) {
+      if (nftList.length === 0) {
+        setSnackbarMessage("There is no NFTs available in the list");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+      } else {
+        setShowAddNFTsModal(true);
+      }
+    } else {
+      setSnackbarMessage("Please Select a collection to add all NFTs");
+      setSnackbarSeverity("error");
+      handleSnackbarOpen();
+    }
+  };
+
+  const handleOpenNFTDetailModal = (nftDetail) => {
+    setNftDetailModalData(nftDetail);
+    setNftDetailModal(true);
+  };
+
+  const handleCloseNFTDetailModal = () => {
+    setNftDetailModal(false);
+  };
+
+  const handleCloseAddAllNFTsModal = () => {
+    setCollectionPrice(null);
+    setIsCollectionPriceValid(true);
+    setShowAddNFTsModal(false);
+  };
 
   const handleCloseTopUpModal = () => {
     setTopUpModal(false);
@@ -163,9 +203,9 @@ function AddNFT(props) {
     setMOdalOpen(false);
     setTransactionModal(true);
   };
-  let getCollection = () => {
+  let getCollection = async () => {
     const version = Cookies.get("Version");
-    getCollectionsByCategories(
+    await getCollectionsByCategories(
       location.state.dropCategory,
       location.state.marketplaceId
     ).then(
@@ -173,6 +213,7 @@ function AddNFT(props) {
         console.log("Response from getting collections: ", response);
         setChangeCollectionList(response.data.collectionData);
         setCollectionTypes(response.data.collectionData);
+        return response.data.collectionData;
       },
       (error) => {
         console.log("Error from getting collections: ", error.response);
@@ -312,9 +353,9 @@ function AddNFT(props) {
     });
   }
 
-  const getNFTsInDrop = (dropId) => {
+  const getNFTsInDrop = async (dropId) => {
     handleShowBackdrop();
-    getNFTsFromDropPaginatedWOBody(
+    await getNFTsFromDropPaginatedWOBody(
       dropId,
       0,
       1000,
@@ -326,6 +367,21 @@ function AddNFT(props) {
           setTokenList(response.data.data);
           setGrid(true);
           setIsAdded(true);
+          // setCollectionId(response.data.data[0].collectionId._id);
+          const index = collectionTypes.findIndex(
+            (collection) =>
+              collection._id === response.data.data[0].collectionId._id
+          );
+          if (index !== -1) {
+            let collection = collectionTypes[index];
+            setCollection(collection.name);
+            setCollectionId(collection._id);
+            setNftContractAddress(collection.nftContractAddress);
+            setNftList([]);
+            setNftName("");
+            getNfts(collection._id);
+            setIsCollectionDisable(true);
+          }
         }
         handleCloseBackdrop();
         console.log("NFT contract address: ", nftContractAddresses);
@@ -346,6 +402,7 @@ function AddNFT(props) {
         let list = [...tokenList];
         list.splice(index, 1);
         setTokenList(list);
+        setIsPriceDisable(false);
         if (list.length === 0) {
           setIsCollectionDisable(false);
           setCollection("");
@@ -372,6 +429,67 @@ function AddNFT(props) {
       });
   };
 
+  const handleAddAllNFTs = (e, price) => {
+    if (price === 0 || price === undefined || price === null || price === "0") {
+      setIsCollectionPriceValid(false);
+    } else {
+      setIsAddingAllNFTs(true);
+      const body = { collectionId: collectionId, dropId: dropId, price: price };
+      addCollectionToDrop(body)
+        .then((response) => {
+          // console.log("Response from adding all NFTs in drop: ", response);
+          setIsAddingAllNFTs(false);
+          setTokenList(nftList);
+          handleCloseAddAllNFTsModal();
+          setSnackbarMessage("All NFTs Added in drop successfully");
+          setSnackbarSeverity("success");
+          handleSnackbarOpen();
+          setGrid(true);
+          setIsAdded(true);
+          setDisabledUpdateButton(false);
+          setIsPriceDisable(true);
+          setCollectionPrice(null);
+          setIsCollectionPriceValid(true);
+
+          setIsCollectionDisable(true);
+          let variant = "success";
+          setSnackbarMessage("NFT Added Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          setNftName("");
+          setNftId("");
+          setNftURI("");
+          setTokenId("");
+          setNftTokenSupply(0);
+          setNftList([]);
+          getNfts(collectionId);
+          setNftDetail({});
+          setPrice(0);
+          setSupply(0);
+          if (key === "default") {
+            setKey("refresh");
+          } else {
+            setKey("default");
+          }
+          setIsUploadingData(false);
+          handleCloseBackdrop();
+        })
+        .catch((error) => {
+          console.log("Error from adding all NFTs in drop: ", error);
+          let variant = "error";
+          setSnackbarMessage("Error while adding NFTs.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          setIsAddingAllNFTs(false);
+          handleCloseAddAllNFTsModal();
+        });
+    }
+  };
+
+  useEffect(() => {
+    getNFTsInDrop(location.state.dropId);
+  }, [collectionTypes]);
+
   useEffect(() => {
     setIsDisabled(false);
     setGrid(false);
@@ -383,7 +501,6 @@ function AddNFT(props) {
     setNftType(type);
     getCollection();
     console.log("Location.state in Add NFT: ", location.state);
-    getNFTsInDrop(location.state.dropId);
     props.setActiveTab({
       dashboard: "",
       newCollection: "",
@@ -866,6 +983,9 @@ function AddNFT(props) {
               }
 
               setIsCollectionDisable(true);
+              if (nftList.length === tokenList.length) {
+                setIsPriceDisable(true);
+              }
               let variant = "success";
               setSnackbarMessage("NFT Added Successfully.");
               setSnackbarSeverity(variant);
@@ -990,13 +1110,7 @@ function AddNFT(props) {
       }
     }
   };
-  let handleOpenNFTDetailModal = (nftObject) => {
-    setNftDetail(nftObject);
-  };
-  let handleCloseNFTDetailModal = () => {
-    console.log("Close button called from modal.");
-    setOpenDialog(false);
-  };
+
   let handleEdit = () => {
     setOpenDialog(false);
     setOpenEditModal(true);
@@ -1080,12 +1194,14 @@ function AddNFT(props) {
                       setNftId(value._id);
                       setNftURI(value.nftURI);
                       setTokenId(value.nftId);
-                      setNftTokenSupply(value.totalSupply);
-                      setSupply(value.totalSupply);
-                      handleOpenNFTDetailModal(value);
+                      setNftTokenSupply(value.ownedSupply);
+                      setSupply(value.ownedSupply);
+                      setNftDetailModalData(value);
+                      setNftDetail(value);
                     }
                   }}
                   type="nft"
+                  handleOpenAddNFTModal={handleOpenAddAllNFTsModal}
                 />
                 {nftName != "" && (
                   <div
@@ -1099,6 +1215,7 @@ function AddNFT(props) {
                       place="between"
                       handleRemoveNFT={handleRemoveNFT}
                       isDropUpdated={isDropUpdated}
+                      handleOpenNFTDetailModal={handleOpenNFTDetailModal}
                     />
                   </div>
                 )}
@@ -1114,6 +1231,7 @@ function AddNFT(props) {
                   AlertMessage={AlertMessage}
                   setAlertMessage={setAlertMessage}
                   price={price}
+                  isPriceDisable={isPriceDisable}
                 />
               </div>
               <button
@@ -1162,6 +1280,7 @@ function AddNFT(props) {
                             handleRemoveNFT={handleRemoveNFT}
                             index={index}
                             isDropUpdated={isDropUpdated}
+                            handleOpenNFTDetailModal={handleOpenNFTDetailModal}
                           />
                         </Grid>
                       ))}
@@ -1194,12 +1313,6 @@ function AddNFT(props) {
         show={show}
         handleClose={handleClose}
         network={network}
-      />
-      <NFTDetailModal
-        show={openDialog}
-        handleClose={handleCloseNFTDetailModal}
-        nftDetail={nftDetail}
-        handleEdit={handleEdit}
       />
       {modalOpen === true && (
         <PublishDropModal
@@ -1239,6 +1352,22 @@ function AddNFT(props) {
         handleClose={handleSnackbarClose}
         severity={snackbarSeverity}
         message={snackbarMessage}
+      />
+      <AddAllNFTsModal
+        show={showAddNFTsModal}
+        handleClose={handleCloseAddAllNFTsModal}
+        nftList={nftList}
+        setPrice={setCollectionPrice}
+        price={collectionPrice}
+        handleAddAllNFTs={handleAddAllNFTs}
+        isUploading={isAddingAllNFTs}
+        isPriceDisable={isPriceDisable}
+        isPriceValid={isCollectionPriceValid}
+      />
+      <NFTDetailModal
+        show={nftDetailModal}
+        handleClose={handleCloseNFTDetailModal}
+        nftDetail={nftDetailModalData}
       />
     </div>
   );
