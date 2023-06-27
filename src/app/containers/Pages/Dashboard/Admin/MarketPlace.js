@@ -144,7 +144,7 @@ const MarketPlace = (props) => {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
       )}
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>

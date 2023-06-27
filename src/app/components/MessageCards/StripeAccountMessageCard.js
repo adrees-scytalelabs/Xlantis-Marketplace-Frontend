@@ -27,7 +27,20 @@ const StripeAccountMessageCard = (props) => {
         </Button>
       </div>
       <div className="flex-shrink-1">
-        <CloseIcon />
+        <button
+          style={{
+            background: "transparent",
+            border: "none",
+            color: "white",
+            margin: "4px",
+          }}
+        >
+          <CloseIcon
+            onClick={() => {
+              props.setIsStripeLogin(true);
+            }}
+          />
+        </button>
       </div>
     </div>
   );

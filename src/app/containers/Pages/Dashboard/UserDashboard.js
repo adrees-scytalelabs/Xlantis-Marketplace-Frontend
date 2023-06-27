@@ -22,33 +22,36 @@ function UserDashboard() {
   const path = useResolvedPath("").pathname;
   const [slideNavClass] = useState();
   let location = useLocation();
-  const [activeTab, setActiveTab] = useState({
-    dashboard: "active",
-    myNFTs: "",
-    totalUserAccount: "",
-    pendingUserAccount: "",
-    resolvedDisputedOrders: "",
-    tradeListOrders: "",
-    earningsList: "",
-    referralEarnings: "",
-    settings: "",
-    changePassword: "",
-    newNFT: "",
-    newCube: "",
-    myDrops: "",
-    newDrop: "",
-    newSeason: "",
-    newCollection: "",
-    myCubes: "",
-    newRandomDrop: "",
-    topUp: "",
-    topupHistory: "",
-    notification: "",
-  },[]);
+  const [activeTab, setActiveTab] = useState(
+    {
+      dashboard: "active",
+      myNFTs: "",
+      totalUserAccount: "",
+      pendingUserAccount: "",
+      resolvedDisputedOrders: "",
+      tradeListOrders: "",
+      earningsList: "",
+      referralEarnings: "",
+      settings: "",
+      changePassword: "",
+      newNFT: "",
+      newCube: "",
+      myDrops: "",
+      newDrop: "",
+      newSeason: "",
+      newCollection: "",
+      myCubes: "",
+      newRandomDrop: "",
+      topUp: "",
+      topupHistory: "",
+      notification: "",
+    },
+    []
+  );
 
   return (
     <div className={`main-wrapper ${slideNavClass}`}>
-      <HeaderHome selectedNav={""} role={null}/>
+      <HeaderHome selectedNav={""} role={null} />
 
       <UserSidebar
         match={path}
@@ -74,7 +77,11 @@ function UserDashboard() {
               exact
               path={`notifications`}
               element={
-                <Notification match={path} setActiveTab={setActiveTab}                   notification={location.state?.notification}
+                <Notification
+                  match={path}
+                  setActiveTab={setActiveTab}
+                  notification={location.state?.notification}
+                  isStripeLogin={true}
                 />
               }
             />

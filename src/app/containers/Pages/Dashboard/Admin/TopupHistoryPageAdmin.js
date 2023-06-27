@@ -84,7 +84,7 @@ const TopupHistoryPageAdmin = (props) => {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
       )}
       <div className="card-body px-0">
         {/* LOADING TABLE */}
