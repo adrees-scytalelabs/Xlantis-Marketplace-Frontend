@@ -148,7 +148,7 @@ function TopUp(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
       )}
       <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
         <AdminBalanceCard

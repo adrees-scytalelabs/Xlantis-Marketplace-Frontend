@@ -1269,7 +1269,7 @@ function NewNFT(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
       )}
       <div className="card-body px-0">
         <div className="row no-gutters">

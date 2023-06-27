@@ -87,7 +87,7 @@ function AdminDashboard(props) {
   const [slideNavClass, setSlideNavClass] = useState();
   const [userId, setUserId] = useState("");
   const [socket, setSocket] = useState(null);
-  const [isStripeLogin, setIsStripeLogin] = useState(false);
+  const [isStripeLogin, setIsStripeLogin] = useState(true);
   const { notification, notificationLoading } = useSelector(
     (store) => store.getHeaderNotification
   );

@@ -107,7 +107,7 @@ function CollectionNfts(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
       )}
       <div className="card-body">
         {tokenList.length !== 0 ? (

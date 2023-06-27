@@ -174,6 +174,7 @@ const SingleNftDetail = (props) => {
         {props.isStripeLogin ? null : (
           <StripeAccountMessageCard
             getOnboardingLink={props.getOnboardingLink}
+            setIsStripeLogin={props.setIsStripeLogin}
           />
         )}
         <ThemeProvider theme={makeTheme}>
