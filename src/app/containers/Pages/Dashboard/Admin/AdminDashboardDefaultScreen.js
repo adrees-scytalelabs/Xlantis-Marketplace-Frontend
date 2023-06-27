@@ -130,32 +130,6 @@ function AdminDashboardDefaultScreen(props) {
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12">
           <div className="row">
-            <div className="col-12 mb-3" style={{ textAlign: "right" }}>
-              <button
-                className="newTemplateBtn mb-3 mr-2"
-                onClick={handleStripeOnBoarding}
-                style={{
-                  backgroundColor: "#000",
-                  fontSize: "1.2rem",
-                  padding: "15px",
-                }}
-              >
-                Stripe Onboarding
-              </button>
-              <button
-                className="newTemplateBtn mb-3 mr-2"
-                onClick={handleStripeLogin}
-                style={{
-                  backgroundColor: "#000",
-                  fontSize: "1.2rem",
-                  padding: "15px",
-                }}
-              >
-                Stripe Login
-              </button>
-            </div>
-          </div>
-          <div className="row">
             <div className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
               <div style={cardContainerStyle}>
                 <DisplayNumbersAndContentCard
