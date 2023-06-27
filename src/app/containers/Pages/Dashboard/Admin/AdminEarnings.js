@@ -10,6 +10,7 @@ import {
 } from "../../../../components/API/AxiosInterceptor";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const AdminEarnings = (props) => {
   const [balance, setBalance] = useState(0);
@@ -125,6 +126,9 @@ const AdminEarnings = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="m-2">
         <div className="row">
           <Grid container spacing={0}>

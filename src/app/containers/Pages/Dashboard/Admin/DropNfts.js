@@ -12,7 +12,11 @@ import DropNFTCard from "../../../../components/Cards/DropNFTCard";
 import MessageCardDropNfts from "../../../../components/MessageCards/MessageCardDropNfts";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import DropBanner from "../../../../components/banners/DropBanner";
-import { DropBannerDefaultImage, defaultProfile } from "../../../../components/ImageURLs/URLs";
+import {
+  DropBannerDefaultImage,
+  defaultProfile,
+} from "../../../../components/ImageURLs/URLs";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 const styles = {
   root: {
     flexGrow: 1,
@@ -133,7 +137,9 @@ function MyNFTs(props) {
   const [audio, setAudio] = useState();
   const [versionB, setVersionB] = useState("");
   const [dropTitleImage, setDropTitleImage] = useState(defaultProfile);
-  const [dropBannerImage, setDropBannerImage] = useState(DropBannerDefaultImage);
+  const [dropBannerImage, setDropBannerImage] = useState(
+    DropBannerDefaultImage
+  );
 
   const [windowSize, setWindowSize] = useState(window.innerWidth);
 
@@ -287,7 +293,9 @@ function MyNFTs(props) {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body page-height px-0">
         <DropBanner bannerURL={dropBannerImage} titleURL={dropTitleImage} />
 

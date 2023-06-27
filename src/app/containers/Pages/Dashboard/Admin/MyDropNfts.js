@@ -6,6 +6,7 @@ import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   root: {
@@ -190,6 +191,9 @@ function MyDropNFTs(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body px-0">
         <form>
           <div className="form-group">

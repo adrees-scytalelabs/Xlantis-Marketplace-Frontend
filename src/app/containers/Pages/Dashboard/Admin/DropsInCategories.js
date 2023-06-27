@@ -5,6 +5,7 @@ import CategoryDropsCards from "../../../../components/Cards/CategoryDropsCards"
 import { Spinner } from "react-bootstrap";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import { Grid } from "@mui/material";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   root: {
@@ -55,10 +56,7 @@ const DropsInCategories = (props) => {
   }, []);
 
   return (
-    <div
-      className="card"
-      style={{ backgroundColor: "#000", border: "None" }}
-    >
+    <div className="card" style={{ backgroundColor: "#000", border: "None" }}>
       <div className="page-header mt-4 mt-lg-2 pt-lg-2 mt-4 mt-lg-2 pt-lg-2">
         <div className="row">
           <div className="col-sm-12">
@@ -79,6 +77,9 @@ const DropsInCategories = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body">
         <div className="form-group">
           {open ? (

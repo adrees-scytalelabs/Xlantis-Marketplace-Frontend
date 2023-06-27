@@ -36,6 +36,7 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 import AddAllNFTsModal from "../../../../components/Modals/AddAllNFTsModal";
 
 const styles = {
@@ -1152,6 +1153,9 @@ function AddNFT(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body p-0">
         <div className="row">
           <div className="col-md-12 col-lg-6">

@@ -1201,6 +1201,7 @@ li.menu-title {
   color: rgb(251, 254, 255);
   border: 1px solid var(--border);
   border-right: 0px;
+  cursor: pointer;
 }
 
 div#sidebar::-webkit-scrollbar {

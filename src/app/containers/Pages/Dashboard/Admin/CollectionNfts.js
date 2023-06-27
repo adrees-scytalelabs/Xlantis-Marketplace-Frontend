@@ -8,6 +8,7 @@ import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CollectionSaleModal from "../../../../components/Modals/CollectionSaleModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
@@ -105,6 +106,9 @@ function CollectionNfts(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body">
         {tokenList.length !== 0 ? (
           <div>

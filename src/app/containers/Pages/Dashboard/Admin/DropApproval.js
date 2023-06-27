@@ -1,4 +1,3 @@
-
 import { TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
@@ -15,6 +14,7 @@ import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collec
 import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function DropApproval(props) {
   const [network, setNetwork] = useState("");
@@ -25,7 +25,7 @@ function DropApproval(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -230,7 +230,9 @@ function DropApproval(props) {
             approveCollection(approvalData)
               .then((response) => {
                 let variant = "success";
-                setSnackbarMessage("Collection Approved For Fixed Price Successfully.");
+                setSnackbarMessage(
+                  "Collection Approved For Fixed Price Successfully."
+                );
                 setSnackbarSeverity(variant);
                 handleSnackbarOpen();
                 setIsFixedPriceApproved(true);
@@ -298,7 +300,9 @@ function DropApproval(props) {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body">
         <div className="row">
           <DropApprovalTable
@@ -324,7 +328,12 @@ function DropApproval(props) {
         network={network}
       ></NetworkErrorModal>
       <CircularBackdrop open={open} />
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

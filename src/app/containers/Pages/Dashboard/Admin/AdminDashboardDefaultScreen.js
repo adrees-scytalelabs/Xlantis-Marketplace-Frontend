@@ -4,10 +4,14 @@ import React, { useEffect, useState } from "react";
 import {
   getAdminCountsVersioned,
   getMaticBalance,
+  stripeLogin,
+  stripeOnBoarding,
 } from "../../../../components/API/AxiosInterceptor";
 import AdminBalanceCard from "../../../../components/Cards/AdminBalanceCard";
 import DisplayNumbersAndContentCard from "../../../../components/Cards/DisplayNumbersAndContentCard";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function AdminDashboardDefaultScreen(props) {
   const cardContainerStyle = {
@@ -21,6 +25,18 @@ function AdminDashboardDefaultScreen(props) {
   const [totalCollections, setTotalCollections] = useState(0);
   const [hover, setHover] = useState(false);
   const [hoverCollections, setHoverCollections] = useState(false);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
   const getBalance = () => {
     getMaticBalance()
       .then((response) => {
@@ -46,7 +62,40 @@ function AdminDashboardDefaultScreen(props) {
         console.log("Error from getting admin counts: ", error);
       });
   }, []);
-
+  const handleStripeOnBoarding = async () => {
+    try {
+      const response = await stripeOnBoarding();
+      if (!response.data.success) {
+        window.location.replace(response.data.link);
+      } else {
+        setSnackbarOpen(true);
+        setSnackbarMessage("OnBoarding Process already completed.");
+        setSnackbarSeverity("error");
+      }
+      console.log("Response of stripe on boarding ", response);
+    } catch (error) {
+      console.log("Unable to get stripe on boarding detail: ", error.response);
+    }
+  };
+  const handleStripeLogin = async () => {
+    try {
+      const response = await stripeLogin();
+      window.location.replace(response.data.link);
+      console.log("Response of stripe login ", response);
+    } catch (error) {
+      console.log("Unable to get stripe login detail: ", error.response);
+      if (
+        error.response.data.message ===
+        "Cannot create a login link for an account that has not completed onboarding."
+      ) {
+        setSnackbarOpen(true);
+        setSnackbarMessage(
+          "Cannot create a login link for an account that has not completed onboarding."
+        );
+        setSnackbarSeverity("error");
+      }
+    }
+  };
   useEffect(() => {
     props.setActiveTab({
       dashboard: "active",
@@ -75,14 +124,32 @@ function AdminDashboardDefaultScreen(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
         <div className="col-12">
           <div className="row">
             <div className="col-12 mb-3" style={{ textAlign: "right" }}>
               <button
                 className="newTemplateBtn mb-3 mr-2"
-                // onClick={handleCloseModal}
-                style={{ backgroundColor: "#000",fontSize: '1.2rem',padding:'15px' }}
+                onClick={handleStripeOnBoarding}
+                style={{
+                  backgroundColor: "#000",
+                  fontSize: "1.2rem",
+                  padding: "15px",
+                }}
+              >
+                Stripe Onboarding
+              </button>
+              <button
+                className="newTemplateBtn mb-3 mr-2"
+                onClick={handleStripeLogin}
+                style={{
+                  backgroundColor: "#000",
+                  fontSize: "1.2rem",
+                  padding: "15px",
+                }}
               >
                 Stripe Login
               </button>
@@ -156,6 +223,12 @@ function AdminDashboardDefaultScreen(props) {
             </div>
           </div>
         </div>
+        <NotificationSnackbar
+          open={snackbarOpen}
+          handleClose={handleSnackbarClose}
+          severity={snackbarSeverity}
+          message={snackbarMessage}
+        />
       </div>
     </>
   );

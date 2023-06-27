@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { getTopUpHistoryOfAdmin } from "../../../../components/API/AxiosInterceptor";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import TopupHistoryTable from "../../../../components/tables/TopupHistoryTabke";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const styles = {
   noMaxWidth: {
@@ -82,6 +83,9 @@ const TopupHistoryPageAdmin = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body px-0">
         {/* LOADING TABLE */}
         {topupHistory.length > 0 ? (

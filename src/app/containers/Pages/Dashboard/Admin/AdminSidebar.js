@@ -8,11 +8,27 @@ import { Link } from "react-router-dom";
 import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
-import NotificationsIcon from '@mui/icons-material/Notifications';
+import NotificationsIcon from "@mui/icons-material/Notifications";
 import AllTransactions from "./AllTransactions";
+import {
+  stripeAccountStatus,
+  stripeLogin,
+  stripeOnBoarding,
+} from "../../../../components/API/AxiosInterceptor";
+import DropsCategories from "./DropsCategories";
+import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 
 function AdminSidebar(props) {
   const [versionB, setVersionB] = useState("");
+  const [open, setOpen] = useState(false);
+
+  const handleCloseBackdrop = () => {
+    setOpen(false);
+  };
+  const handleShowBackdrop = () => {
+    setOpen(true);
+  };
+
   let handleLogout = (e) => {
     sessionStorage.removeItem("Address");
     sessionStorage.removeItem("Authorization");
@@ -27,6 +43,47 @@ function AdminSidebar(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
   }, []);
+
+  const handleStripeLogin = () => {
+    stripeLogin()
+      .then((response) => {
+        console.log("Response from stripe login: ", response);
+        window.location.replace(response?.data?.link);
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from stripe login: ", error);
+        handleCloseBackdrop();
+      });
+  };
+
+  const handleStripeOnBoarding = () => {
+    stripeOnBoarding()
+      .then((response) => {
+        console.log("Response from stripe on boarding: ", response);
+        window.location.replace(response?.data?.onboardingLink?.url);
+      })
+      .catch((error) => {
+        console.log("Error from stripe on boarding: ", error);
+      });
+  };
+
+  const checkStripeStatus = () => {
+    handleShowBackdrop();
+    stripeAccountStatus()
+      .then((response) => {
+        console.log("Response from checking strip account status: ", response);
+        if (response?.data?.detailsSubmitted) {
+          handleStripeLogin();
+        } else {
+          handleStripeOnBoarding();
+        }
+      })
+      .catch((error) => {
+        console.log("Error from checking strip account status: ", error);
+        handleCloseBackdrop();
+      });
+  };
 
   return (
     <div className="sidebar backgroundDefault" id="sidebar">
@@ -119,6 +176,14 @@ function AdminSidebar(props) {
                 <CategoryIcon /> <span>Categories</span>
               </Link>
             </li>
+            <li
+              className={props.activeTab.stripeAccount}
+              onClick={checkStripeStatus}
+            >
+              <a href="#">
+                <AttachMoneyIcon></AttachMoneyIcon> <span>Stripe Account</span>
+              </a>
+            </li>
             <li className={props.activeTab.topUp}>
               <Link to={`${props.match}/topUp`}>
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
@@ -145,6 +210,7 @@ function AdminSidebar(props) {
           </ul>
         </div>
       </div>
+      <CircularBackdrop open={open} />
     </div>
   );
 }

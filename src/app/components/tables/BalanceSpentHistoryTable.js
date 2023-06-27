@@ -18,7 +18,7 @@ const BalanceSpentHistoryTable = (props) => {
       {/* TABLE BODY */}
       <tbody style={{ color: "white" }}>
         {props.balanceHistory.map((history, index) => (
-          <tr>
+          <tr key={index}>
             <td style={props.styles.collectionTitle}>{index + 1}</td>
             <td style={props.styles.collectionTitle}>{history.type}</td>
             <td style={props.styles.collectionTitle}>

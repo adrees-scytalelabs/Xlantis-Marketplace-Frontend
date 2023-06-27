@@ -6,6 +6,8 @@ import Web3 from "web3";
 import {
   createNewDrop,
   getCategoriesList,
+  stripeAccountStatus,
+  stripeOnBoarding,
   uploadImage,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
@@ -26,6 +28,8 @@ import DropBannerUpload from "../../../../components/Upload/DropBannerUpload";
 import AutocompleteAddNft from "../../../../components/Autocomplete/Autocomplete";
 import getCroppedImg from "../../../../components/Utils/Crop";
 import ImageCropModal from "../../../../components/Modals/ImageCropModal";
+import StripeAccountCreationModal from "../../../../components/Modals/StripeAccountCreationModal";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const makeTheme = createTheme({
   overrides: {
@@ -88,8 +92,27 @@ function NewDrop(props) {
   const [imageCounter, setImageCounter] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
+  const [showStripeAccountCreationModal, setShowStripeAccountCreationModal] =
+    useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const handleCloseNetworkModal = () => setShowNetworkModal(false);
   const handleShowNetworkModal = () => setShowNetworkModal(true);
+
+  const handleShowLoader = () => {
+    setIsLoading(true);
+  };
+
+  const handleCloseLoader = () => {
+    setIsLoading(false);
+  };
+
+  const handleShowStripeAccountCreationModal = () => {
+    setShowStripeAccountCreationModal(true);
+  };
+
+  const handleCloseStripeAccountCreationModal = () => {
+    setShowStripeAccountCreationModal(false);
+  };
 
   const [open, setOpen] = useState(false);
   const handleCloseBackdrop = () => {
@@ -112,9 +135,40 @@ function NewDrop(props) {
       });
   };
 
+  const checkStripeStatus = () => {
+    stripeAccountStatus()
+      .then((response) => {
+        console.log("Response from getting stripe account status: ", response);
+        if (response.data.isAccountCreated) {
+          handleShowStripeAccountCreationModal();
+        }
+        handleCloseBackdrop();
+      })
+      .catch((error) => {
+        console.log("Error from getting stripe account status: ", error);
+        handleCloseBackdrop();
+      });
+  };
+
+  const getOnboardingLink = () => {
+    handleShowLoader();
+    stripeOnBoarding()
+      .then((response) => {
+        console.log("Response from getting on boarding link: ", response);
+        handleCloseLoader();
+        window.location.replace(response?.data?.onboardingLink?.url);
+      })
+      .catch((error) => {
+        console.log("Error from getting on boarding link: ", error);
+        handleCloseLoader();
+      });
+  };
+
   useEffect(() => {
+    handleShowBackdrop();
     setVersionB(Cookies.get("Version"));
     getCategories();
+    checkStripeStatus();
 
     props.setActiveTab({
       dashboard: "",
@@ -457,9 +511,7 @@ function NewDrop(props) {
     } catch (e) {
       console.log("Error: ", e);
     }
-    
   });
-
 
   let onChangeFile = (e) => {
     const file = e.target.files[0];
@@ -489,6 +541,9 @@ function NewDrop(props) {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body p-0">
         <div className="no-gutters">
           <label>Select Banner Image</label>
@@ -615,6 +670,12 @@ function NewDrop(props) {
         handleClose={handleSnackbarClose}
         severity={snackbarSeverity}
         message={snackbarMessage}
+      />
+      <StripeAccountCreationModal
+        show={showStripeAccountCreationModal}
+        handleClose={handleCloseStripeAccountCreationModal}
+        getOnboardingLink={getOnboardingLink}
+        isLoading={isLoading}
       />
     </div>
   );

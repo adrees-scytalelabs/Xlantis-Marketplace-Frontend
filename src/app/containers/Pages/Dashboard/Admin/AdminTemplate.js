@@ -12,6 +12,7 @@ import NewTamplateModal from "../../../../components/Modals/NewTamplateModal";
 import TemplateDetails from "../../../../components/Modals/TemplateDetails";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import PropertiesTable from "../../../../components/tables/PropertiesTable";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function AdminTemplate(props) {
   const [templateData, setTemplateData] = useState([]);
@@ -142,15 +143,16 @@ function AdminTemplate(props) {
           </div>
         </div>
       </div>
-      <div className="row">
-        <div className="col-12 mb-3" style={{ textAlign: "right" }}>
-          <Button
-            className="bttn mb-4 mt-3"
-            onClick={() => handleNewTemplateModalOpen()}
-          >
-            Create Template
-          </Button>
-        </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
+      <div>
+        <Button
+          className="bttn mb-4 mt-3"
+          onClick={() => handleNewTemplateModalOpen()}
+        >
+          Create Template
+        </Button>
       </div>
       {templateData.length ? (
         <div className="row no-gutters">

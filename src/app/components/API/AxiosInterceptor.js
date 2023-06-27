@@ -31,7 +31,6 @@ export const adminLoginThroughSSO = (body) => {
 export const superAdminLoginThroughSSO = (body) => {
   return Axios.post(`/v1-sso/user/auth/super-admin-login`, body);
 };
-
 export const userLoginThroughSSO = (body) => {
   return Axios.post(`/v1-sso/user/auth/user-login`, body);
 };
@@ -118,8 +117,8 @@ export const setSuperAdminPlatformFee = (body) => {
 
 //PUT REQUESTS
 
-export const updateCategory = (categoryName,body) => {
-  return Axios.put(`/category/${categoryName}`,body);
+export const updateCategory = (categoryName, body) => {
+  return Axios.put(`/category/${categoryName}`, body);
 };
 export const superAdminTemplateUpdate = (body) => {
   return Axios.put(`/super-admin/template`, body);
@@ -221,11 +220,22 @@ export const sendVoucherForLazyMint = (body) => {
 
 //GET REQUESTS
 
-export const getCategories = () => {
-  return Axios.get(
-    `/category/`
-  );
+export const stripeLogin = () => {
+  return Axios.get(`/stripe/account/login`);
 };
+
+export const stripeOnBoarding = () => {
+  return Axios.get(`/stripe/account/onboarding-link`);
+};
+
+export const stripeAccountStatus = () => {
+  return Axios.get(`/stripe/account/status`);
+};
+
+export const getCategories = () => {
+  return Axios.get(`/category/`);
+};
+
 export const getMarketFixedPrice = (start, end, marketplaceId) => {
   return Axios.get(
     `/drop/saleType/fixed-price/${start}/${end}?marketplaceId=${marketplaceId}`

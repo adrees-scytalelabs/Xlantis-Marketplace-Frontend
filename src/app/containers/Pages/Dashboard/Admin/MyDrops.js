@@ -1,9 +1,16 @@
-
-import { Box, Tab, Tabs, ThemeProvider, Typography, createTheme } from '@mui/material';
+import {
+  Box,
+  Tab,
+  Tabs,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import DropsPage from "./DropsPage";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -58,7 +65,7 @@ const styles = {
     color: "#fff",
     fontFamily: "orbitron",
   },
-}
+};
 
 const MyDrops = (props) => {
   let location = useLocation();
@@ -74,7 +81,7 @@ const MyDrops = (props) => {
 
   useEffect(() => {
     if (location.state != null) {
-      console.log("this is location of drop", location)
+      console.log("this is location of drop", location);
       setValue(location.state.value);
     }
     props.setActiveTab({
@@ -107,6 +114,9 @@ const MyDrops = (props) => {
           </div>
         </div>
       </div>
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <ThemeProvider theme={customTheme}>
         <div>
           <Tabs
@@ -116,38 +126,22 @@ const MyDrops = (props) => {
             indicatorColor="primary"
             textColor="primary"
           >
-            <Tab
-              label="Draft"
-              sx={styles.tabsProps}
-              {...a11yProps(0)}
-            />
-            <Tab
-              label="Pending"
-              sx={styles.tabsProps}
-              {...a11yProps(1)}
-            />
-            <Tab
-              label="Active"
-              sx={styles.tabsProps}
-              {...a11yProps(2)}
-            />
-            <Tab
-              label="Close"
-              sx={styles.tabsProps}
-              {...a11yProps(3)}
-            />
+            <Tab label="Draft" sx={styles.tabsProps} {...a11yProps(0)} />
+            <Tab label="Pending" sx={styles.tabsProps} {...a11yProps(1)} />
+            <Tab label="Active" sx={styles.tabsProps} {...a11yProps(2)} />
+            <Tab label="Close" sx={styles.tabsProps} {...a11yProps(3)} />
           </Tabs>
           <TabPanel value={value} index={0}>
-            <DropsPage status="draft" marketplaceId={props.marketplaceId}/>
+            <DropsPage status="draft" marketplaceId={props.marketplaceId} />
           </TabPanel>
           <TabPanel value={value} index={1}>
-            <DropsPage status="pending" marketplaceId={props.marketplaceId}/>
+            <DropsPage status="pending" marketplaceId={props.marketplaceId} />
           </TabPanel>
           <TabPanel value={value} index={2}>
-            <DropsPage status="active" marketplaceId={props.marketplaceId}/>
+            <DropsPage status="active" marketplaceId={props.marketplaceId} />
           </TabPanel>
           <TabPanel value={value} index={3}>
-            <DropsPage status="closed" marketplaceId={props.marketplaceId}/>
+            <DropsPage status="closed" marketplaceId={props.marketplaceId} />
           </TabPanel>
         </div>
       </ThemeProvider>

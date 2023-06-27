@@ -10,6 +10,7 @@ import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import MarketPlacePage from "./MarketPlacePage";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 const styles = {
   root: {},
   tabsProps: {
@@ -142,7 +143,9 @@ const MarketPlace = (props) => {
           </div>
         </div>
       </div>
-
+      {props.isStripeLogin ? null : (
+        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} />
+      )}
       <div className="card-body page-height px-0">
         <ThemeProvider theme={customTheme}>
           <div className="row no-gutters">
