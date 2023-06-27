@@ -28,7 +28,7 @@ function AdminTemplate(props) {
   const [useEffectLoader, setUseEffectLoader] = useState(false);
   let handleNewTemplateModalClose = () => {
     setNewTemplateModalShow(false);
-  }
+  };
   let handleNewTemplateModalOpen = () => {
     setNewTemplateModalShow(true);
   };
@@ -142,8 +142,15 @@ function AdminTemplate(props) {
           </div>
         </div>
       </div>
-      <div>
-        <Button className="bttn mb-4 mt-3" onClick={() => handleNewTemplateModalOpen()}>Create Template</Button>
+      <div className="row">
+        <div className="col-12 mb-3" style={{ textAlign: "right" }}>
+          <Button
+            className="bttn mb-4 mt-3"
+            onClick={() => handleNewTemplateModalOpen()}
+          >
+            Create Template
+          </Button>
+        </div>
       </div>
       {templateData.length ? (
         <div className="row no-gutters">
