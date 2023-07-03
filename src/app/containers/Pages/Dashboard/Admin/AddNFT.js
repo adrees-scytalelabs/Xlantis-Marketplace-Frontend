@@ -154,6 +154,7 @@ function AddNFT(props) {
   const [nftDetailModalData, setNftDetailModalData] = useState({});
   const [isPriceDisable, setIsPriceDisable] = useState(false);
   const [isCollectionPriceValid, setIsCollectionPriceValid] = useState(true);
+  const [isAddAllDisabled, setIsAddAllDisabled] = useState(false);
 
   const handleOpenAddAllNFTsModal = () => {
     if (collection && collectionId) {
@@ -410,7 +411,9 @@ function AddNFT(props) {
           setCollectionId("");
           setNftContractAddress("");
           setCollectionTypes([]);
+          setNftList([]);
           getCollection();
+          setIsAddAllDisabled(false);
           setGrid(false);
           setIsAdded(false);
         } else {
@@ -451,7 +454,7 @@ function AddNFT(props) {
           setIsPriceDisable(true);
           setCollectionPrice(null);
           setIsCollectionPriceValid(true);
-
+          setIsAddAllDisabled(true);
           setIsCollectionDisable(true);
           let variant = "success";
           setSnackbarMessage("NFT Added Successfully.");
@@ -1000,6 +1003,7 @@ function AddNFT(props) {
               getNfts(collectionId);
               setNftDetail({});
               setPrice(0);
+              setIsAddAllDisabled(true);
               setSupply(0);
               if (key === "default") {
                 setKey("refresh");
@@ -1154,7 +1158,10 @@ function AddNFT(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body p-0">
         <div className="row">
@@ -1206,6 +1213,7 @@ function AddNFT(props) {
                   }}
                   type="nft"
                   handleOpenAddNFTModal={handleOpenAddAllNFTsModal}
+                  isAddAllDisabled={isAddAllDisabled}
                 />
                 {nftName != "" && (
                   <div

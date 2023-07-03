@@ -177,7 +177,7 @@ export const updateCollectionTxHash = (collectionId, body) => {
 };
 
 export const addCollectionToDrop = (body) => {
-  return Axios.put(`/drop/add-collection-nfts`, body);
+  return Axios.put(`/drop/collection`, body);
 };
 
 //PATCH REQUESTS
@@ -322,7 +322,7 @@ export const getMyCollectionsPaginatedMarketPlace = (
   marketplaceId
 ) => {
   return Axios.get(
-    `/collection/myCollections/${start}/${end}?marketplaceId=${marketplaceId}`
+    `/collection/my-collections/${start}/${end}?marketplaceId=${marketplaceId}`
   );
 };
 
