@@ -47,15 +47,7 @@ function TemplateDetails(props) {
   };
   let updateData = (e) => {
     e.preventDefault();
-    console.log("properties lenth",properties.length);
     handleShowBackdrop();
-    if(properties.length===0){
-      let variant = "error";
-      props.setSnackbarMessage("Template properties cannot be empty.");
-      props.setSnackbarSeverity(variant);
-      props.handleSnackbarOpen();
-      return;
-    }
     let data = {
       name: title,
       data: properties,
