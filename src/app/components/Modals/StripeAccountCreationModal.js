@@ -5,7 +5,12 @@ import { useNavigate } from "react-router-dom";
 const StripeAccountCreationModal = (props) => {
   const navigate = useNavigate();
   return (
-    <Modal show={props.show} onHide={props.handleClose} centered>
+    <Modal
+      show={props.show}
+      onHide={props.handleClose}
+      centered
+      backdrop="static"
+    >
       <Modal.Header>
         <Modal.Title>Create your Account!</Modal.Title>
       </Modal.Header>

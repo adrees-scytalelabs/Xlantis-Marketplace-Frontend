@@ -322,7 +322,7 @@ export const getMyCollectionsPaginatedMarketPlace = (
   marketplaceId
 ) => {
   return Axios.get(
-    `/collection/myCollections/${start}/${end}?marketplaceId=${marketplaceId}`
+    `/collection/my-collections/${start}/${end}?marketplaceId=${marketplaceId}`
   );
 };
 
