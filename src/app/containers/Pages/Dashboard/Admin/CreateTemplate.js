@@ -69,6 +69,10 @@ function CreateTemplate(props) {
     setProperties(data);
   };
 
+  function hasEmptyValue(obj) {
+    return Object.values(obj).some((value) => value === null || value === "");
+  }
+
   let handleSaveTemplate = (e) => {
     e.preventDefault();
     handleShowBackdrop();
@@ -77,29 +81,44 @@ function CreateTemplate(props) {
       data: properties,
     };
     try {
-      createNewTemplates(templateData)
-        .then((response) => {
-          setTitle("");
-          setProperties([{ key: "", type: "boolean" }]);
-          let variant = "success";
-          setSnackbarMessage("New Template Created Successfully.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          handleCloseBackdrop();
-          setValid("");
-        })
-        .catch((error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          handleCloseBackdrop();
+      console.log("Template values are: ", { title, properties });
+      if (title === null || title === "" || title === undefined) {
+        setSnackbarMessage("Please enter title for template");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+      } else if (properties.length === 0) {
+        setSnackbarMessage("No properties added");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+      } else if (properties.some((obj) => hasEmptyValue(obj))) {
+        setSnackbarMessage("Please Fill All Empty Value");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+      } else {
+        createNewTemplates(templateData)
+          .then((response) => {
+            setTitle("");
+            setProperties([{ key: "", type: "boolean" }]);
+            let variant = "success";
+            setSnackbarMessage("New Template Created Successfully.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+            handleCloseBackdrop();
+            setValid("");
+          })
+          .catch((error) => {
+            if (process.env.NODE_ENV === "development") {
+              console.log(error);
+              console.log(error.response);
+            }
+            handleCloseBackdrop();
 
-          let variant = "error";
-          setSnackbarMessage("Unable to Create Template.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-        });
+            let variant = "error";
+            setSnackbarMessage("Unable to Create Template.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+          });
+      }
     } catch (e) {
       console.log("Error in axios request to create template", e);
       handleCloseBackdrop();
