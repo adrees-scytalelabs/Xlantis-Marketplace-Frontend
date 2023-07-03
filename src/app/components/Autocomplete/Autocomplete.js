@@ -121,6 +121,7 @@ function AutocompleteAddNft({
   onChange,
   type,
   handleOpenAddNFTModal,
+  isAddAllDisabled,
 }) {
   const selectNFTText =
     "Only NFTs that are not currently listed for sale will be listed/shown in the drop-down menu";
@@ -228,6 +229,7 @@ function AutocompleteAddNft({
               />
               <button
                 className="btn"
+                disabled={isAddAllDisabled}
                 onClick={(e) => {
                   e.preventDefault();
                   handleOpenAddNFTModal();
