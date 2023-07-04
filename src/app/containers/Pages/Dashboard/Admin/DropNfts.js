@@ -283,18 +283,21 @@ function MyNFTs(props) {
                   Dashboard
                 </li>
               </Link>
-              <Link to={`/dashboard/marketPlace`}>
+              <Link to={`/dashboard/${props.domain}/marketPlace`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                  Market Place
+                  MarketPlace
                 </li>
               </Link>
-              <li className="breadcrumb-item active">Market Place Drops</li>
+              <li className="breadcrumb-item active">MarketPlace Drops</li>
             </ul>
           </div>
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body page-height px-0">
         <DropBanner bannerURL={dropBannerImage} titleURL={dropTitleImage} />
@@ -334,6 +337,9 @@ function MyNFTs(props) {
                             endTime: location.state?.endTime,
                             nftId: location.state?.nftId,
                             dropId: location.state?.dropId,
+                            saleType: location.state.saleType,
+                            bannerURL: location.state.bannerURL,
+                            titleURL: location.state.titleURL,
                           }}
                         >
                           <DropNFTCard
@@ -347,7 +353,7 @@ function MyNFTs(props) {
                       ) : (
                         <Link
                           onClick={(e) => handleStop(e)}
-                          to={`/dashboard/marketPlace/${i.dropId}/${i._id}`}
+                          to={`/dashboard/:marketPlace/marketPlace/${i.dropId}/${i._id}`}
                           state={{
                             nftContractAddress:
                               i.collectionId.nftContractAddress,

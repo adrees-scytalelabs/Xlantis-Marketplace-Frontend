@@ -434,20 +434,25 @@ const NFTBuy = (props) => {
                   Dashboard
                 </li>
               </Link>
-              <Link to={`/dashboard/marketPlace`}>
+              <Link to={`/dashboard/${props.domain}/marketPlace`}>
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
                   Market Place
                 </li>
               </Link>
               <Link
-                to={`/dashboard/marketPlace/drops/nfts`}
+                to={`/dashboard/${props.domain}/marketPlace/drops/nfts`}
                 state={{
                   nftId: location.state.nftId,
                   dropId: location.state.dropId,
+                  startTime: location.state.startTime,
+                  endTime: location.state.endTime,
+                  saleType: location.state.saleType,
+                  bannerURL: location.state.bannerURL,
+                  titleURL: location.state.titleURL,
                 }}
               >
                 <li className="breadcrumb-item slash" style={{ color: "#777" }}>
-                  Market Place Drops
+                  MarketPlace Drops
                 </li>
               </Link>
               <li className="breadcrumb-item active">Buy Details</li>
@@ -456,7 +461,10 @@ const NFTBuy = (props) => {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">

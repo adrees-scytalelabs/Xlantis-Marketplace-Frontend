@@ -679,44 +679,48 @@ function AdminDashboard(props) {
                   setIsStripeLogin={setIsStripeLogin}
                   isStripeLogin={isStripeLogin}
                   getOnboardingLink={getOnboardingLink}
+                  domain={props.jwtDecoded.domain}
                 />
               }
             />
 
             <Route
               exact
-              path={`marketPlace/drops/nfts`}
+              path={`:marketPlace/marketPlace/drops/nfts`}
               element={
                 <DropNfts
                   setActiveTab={setActiveTab}
                   setIsStripeLogin={setIsStripeLogin}
                   isStripeLogin={isStripeLogin}
                   getOnboardingLink={getOnboardingLink}
+                  domain={props.jwtDecoded.domain}
                 />
               }
             />
             <Route
               exact
-              path={`marketPlace/drops/nfts/buy`}
+              path={`:marketPlace/marketPlace/drops/nfts/buy`}
               element={
                 <NFTBuy
                   setActiveTab={setActiveTab}
                   setIsStripeLogin={setIsStripeLogin}
                   isStripeLogin={isStripeLogin}
                   getOnboardingLink={getOnboardingLink}
+                  domain={props.jwtDecoded.domain}
                 />
               }
             />
 
             <Route
               exact
-              path={`marketPlace/:dropId/:nftId`}
+              path={`:marketPlace/marketPlace/:dropId/:nftId`}
               element={
                 <AuctionNFT
                   setActiveTab={setActiveTab}
                   setIsStripeLogin={setIsStripeLogin}
                   isStripeLogin={isStripeLogin}
                   getOnboardingLink={getOnboardingLink}
+                  domain={props.jwtDecoded.domain}
                 />
               }
             />
