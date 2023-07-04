@@ -1,15 +1,16 @@
 import { Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 import InfoIcon from "@mui/icons-material/Info";
 
 const UploadFile = (props) => {
+  const [isLoadingImage, setIsLoadingImage] = useState(true);
   return (
     <div className="filter-widget">
       <div className="form-group">
         <div className="row no-gutters align-items-end justify-content-start">
           <div className={props.class}>
-            {props.isUploading ? (
+            {isLoadingImage ? (
               <div
                 className="text-center"
                 style={{
@@ -22,9 +23,13 @@ const UploadFile = (props) => {
                 <div style={{ marginTop: "50%" }}>
                   <WhiteSpinner />{" "}
                 </div>
+                <img src={props.fileURL} alt="" onLoad={() => {
+                  setIsLoadingImage(false)
+                }}
+                />
               </div>
             ) : (
-              <img src={props.fileURL} alt="Selfie" />
+              <img src={props.fileURL} alt="Selfie"/>
             )}
           </div>
           <div className="co-12 col-md-auto">
