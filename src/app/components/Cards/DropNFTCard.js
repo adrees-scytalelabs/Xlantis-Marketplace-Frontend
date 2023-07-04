@@ -1,9 +1,10 @@
-import PauseIcon from '@mui/icons-material/Pause';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from "@mui/icons-material/Pause";
+import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import CornerRibbon from "react-corner-ribbon";
 import { truncate } from "../../assets/js/utils";
+
 const DropNFTCard = (props) => {
   return (
     <Card
@@ -72,17 +73,15 @@ const DropNFTCard = (props) => {
         ) : null}
       </div>
       <CardContent>
-        <div
-          style={{ minHeight: "60px" }}
-        >
+        <div style={{ minHeight: "60px" }}>
           <div className="align-self-end">
-            <div className='text-center'>
+            <div className="text-center">
               <Typography
                 variant="h6"
                 component="div"
                 sx={props.cardClasses.cardTitle}
               >
-                {truncate(props.details.title.length, 15)}
+                {truncate(props.details.title, 15)}
               </Typography>
             </div>
             <Typography
@@ -93,7 +92,6 @@ const DropNFTCard = (props) => {
               {truncate(props.details.description, 50)}
             </Typography>
           </div>
-
         </div>
         <div className="align-self-end text-center text-lg-right py-3  p-lg-0">
           <p className="nftPrice mb-0 p-0" style={{ lineHeight: "1.6" }}>
