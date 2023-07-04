@@ -32,8 +32,10 @@ function SelectRoyaltyFee({ values, setRoyaltyFee, RoyaltyFeeText }) {
           placeholder="0"
           className="form-control newNftInput"
           onChange={(e) => {
-            if (e.target.value >= 0 && e.target.value <= 100) {
-              setRoyaltyFee(e.target.value);
+            const value = e.target.value;
+            const regex = /^\d*\.?\d{0,4}$/;
+            if (regex.test(value) && value >= 0 && value <= 100) {
+              setRoyaltyFee(value);
             }
           }}
         />
