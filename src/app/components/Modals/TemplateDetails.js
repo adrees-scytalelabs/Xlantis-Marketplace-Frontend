@@ -1,10 +1,46 @@
-import { Tooltip, Typography } from "@mui/material";
+import {
+  Typography,
+  TextField,
+  Box,
+  Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  MenuItem,
+  Tooltip,
+  Grid,
+  InputAdornment,
+  IconButton,
+  ThemeProvider,
+  createTheme,
+} from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
 import { updateTemplate } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
-import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 
+const makeTheme = createTheme({
+  components: {
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: {
+          fontFamily: "orbitron",
+          color: "#fff",
+          border: "1px solid white",
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            border: "none !important",
+          },
+        },
+        input: {
+          "&.Mui-disabled": {
+            WebkitTextFillColor: "#fff",
+          },
+        },
+      },
+    },
+  },
+});
 function TemplateDetails(props) {
   const [title, setTitle] = useState("");
   const [open, setOpen] = useState(false);
@@ -15,27 +51,31 @@ function TemplateDetails(props) {
   const handleShowBackdrop = () => {
     setOpen(true);
   };
-  let handleChangeTile = (e) => {
+
+  const handleChangeTile = (e) => {
     props.setTemplateData((existingValues) => ({
       ...existingValues,
       name: e.target.value,
     }));
   };
-  let handlePropertyChange = (index, event) => {
+
+  const handlePropertyChange = (index, event) => {
     let data = [...properties];
     data[index][event.target.name] = event.target.value;
     setProperties(data);
     props.setTemplateData((existingValues) => ({
       ...existingValues,
-      properties: properties,
+      properties: data,
     }));
   };
-  let handleAddProperty = (e) => {
+
+  const handleAddProperty = (e) => {
     e.preventDefault();
     let newData = { key: "", type: "boolean" };
     setProperties([...properties, newData]);
   };
-  let handleRemoveProperty = async (e, index) => {
+
+  const handleRemoveProperty = (e, index) => {
     e.preventDefault();
     let data = [...properties];
     data.splice(index, 1);
@@ -45,14 +85,16 @@ function TemplateDetails(props) {
       properties: data,
     }));
   };
-  let updateData = (e) => {
+
+  const updateData = (e) => {
     e.preventDefault();
     handleShowBackdrop();
-    if(properties.length===0){
+    if (properties.length === 0) {
       let variant = "error";
       props.setSnackbarMessage("Template properties cannot be empty.");
       props.setSnackbarSeverity(variant);
       props.handleSnackbarOpen();
+      handleCloseBackdrop();
       return;
     }
     let data = {
@@ -88,6 +130,7 @@ function TemplateDetails(props) {
       props.handleSnackbarOpen();
     }
   };
+
   useEffect(() => {
     if (props.show === true) {
       console.log(props.templateData);
@@ -99,136 +142,204 @@ function TemplateDetails(props) {
   return (
     props.show === true && (
       <>
-        <Modal
-          show={props.show}
-          onHide={props.handleClose}
-          centered
-          backdrop="static"
-        >
-          <Modal.Header
-            className="NewTemplateHeader"
-            style={{ background: "black" }}
+        <ThemeProvider theme={makeTheme}>
+          <Dialog
+            open={props.show}
+            onClose={props.handleClose}
+            maxWidth="md"
+            fullWidth
           >
-            <Modal.Title style={{ color: "white" }}>
-              Template Details
-            </Modal.Title>
-          </Modal.Header>
+            <DialogTitle
+              style={{
+                background: "#000",
+                color: "white",
+                border: "1px solid white",
+              }}
+            >
+              <Typography variant="h6">Template Details</Typography>
+            </DialogTitle>
 
-          <Modal.Body
-            className="NewTemplateBody"
-            style={{ borderBottom: "none" }}
-          >
-            <div style={{ margin: "10px" }}>
-              <Row className="justify-content-center align-items-center no-gutters">
-                <Col>
-                  <h4>Title</h4>
-                  <input
-                    name="title"
-                    type="text"
-                    disabled={props.updateEnabled}
-                    value={title}
-                    className="newNftProps mt-1"
-                    onChange={(e) => {
-                      setTitle(e.target.value);
-                      handleChangeTile(e);
-                    }}
-                  />
-                </Col>
-              </Row>
-              {properties.map((i, index) => (
-                <Row key={index} className="no-gutters mt-3">
-                  <Col xs={12} lg={4} md={4} sm={12}>
-                    <h4>Key</h4>
-                    <input
-                      name="key"
+            <DialogContent
+              style={{
+                background: "#000",
+                border: "1px solid white",
+                borderBottom: "none",
+              }}
+            >
+              <Box sx={{ margin: "10px" }}>
+                <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <Typography variant="h5" style={{ color: "white" }}>
+                      Title
+                    </Typography>
+                    <TextField
+                      name="title"
                       type="text"
                       disabled={props.updateEnabled}
-                      value={i.key}
+                      value={title}
                       className="newNftProps mt-1"
-                      onChange={(e) => handlePropertyChange(index, e)}
+                      onChange={(e) => {
+                        setTitle(e.target.value);
+                        handleChangeTile(e);
+                      }}
                     />
-                  </Col>
-
-                  <Col xs={12} lg={4} md={4} sm={12} className="ml-5">
-                    <h4 className="ml-4">Type</h4>
-                    <select
-                      name="type"
-                      id="valueType"
-                      className="templatesSelect"
-                      placeholder="Select a Type"
-                      disabled={props.updateEnabled}
-                      value={i.type}
-                      onChange={(e) => handlePropertyChange(index, e)}
-                      style={{ padding: "9px" }}
-                    >
-                      <option value="boolean" defaultValue>
-                        Boolean
-                      </option>
-                      <option value="string">String</option>
-                      <option value="number">Number</option>
-                    </select>
-                  </Col>
-                  {props.updateEnabled === false && (
-                    <Col
-                      xs={12}
-                      lg={2}
-                      md={4}
-                      sm={12}
-                      className="ml-4 mt-2 mt-lg-0"
-                    >
-                      <h4>Action</h4>
-                      <Tooltip
-                        placement="bottom"
-                        title={
-                          <Typography fontSize={16}>
-                            Remove a property
-                          </Typography>
-                        }
+                  </Grid>
+                </Grid>
+                {properties.map((i, index) => (
+                  <Grid container spacing={3} key={index}>
+                    <Grid item xs={12} lg={4} md={4} sm={12}>
+                      <Typography
+                        className="mt-2 mb-1"
+                        variant="h6"
+                        style={{ color: "white" }}
                       >
-                        <button
-                          className="btn btn-submit btn-lg propsActionBtn"
-                          onClick={(e) => handleRemoveProperty(e, index)}
-                          disabled={props.updateEnabled}
+                        Key
+                      </Typography>
+                      <TextField
+                        name="key"
+                        type="text"
+                        disabled={props.updateEnabled}
+                        value={i.key}
+                        className="newNftProps mt-1"
+                        onChange={(e) => handlePropertyChange(index, e)}
+                      />
+                    </Grid>
+
+                    <Grid item xs={12} lg={4} md={4} sm={12}>
+                      <Typography
+                        variant="h6"
+                        className="mt-2 mb-1"
+                        style={{ color: "white" }}
+                      >
+                        Type
+                      </Typography>
+                      <TextField
+                        fullWidth
+                        select
+                        name="type"
+                        id="valueType"
+                        className="templatesSelect"
+                        placeholder="Select a Type"
+                        disabled={props.updateEnabled}
+                        value={i.type}
+                        InputProps={{
+                          endAdornment: (
+                            <InputAdornment position="end">
+                              <IconButton>
+                                <ExpandMoreIcon style={{ color: "white" }} />
+                              </IconButton>
+                            </InputAdornment>
+                          ),
+                        }}
+                        onChange={(e) => handlePropertyChange(index, e)}
+                        SelectProps={{
+                          style: {
+                            color: "white",
+                          },
+                        }}
+                      >
+                        <MenuItem value="boolean">Boolean</MenuItem>
+                        <MenuItem value="string">String</MenuItem>
+                        <MenuItem value="number">Number</MenuItem>
+                      </TextField>
+                    </Grid>
+                    {props.updateEnabled === false && (
+                      <Grid item xs={12} lg={2} md={4} sm={12}>
+                        <Typography
+                          variant="h6"
+                          className="mt-2 mb-1"
+                          style={{ color: "white" }}
                         >
-                          -
-                        </button>
-                      </Tooltip>
-                    </Col>
-                  )}
-                </Row>
-              ))}
-              {props.updateEnabled === false && (
-                <Row className="mt-4 ml-1">
-                  <button
-                    className="btn btn-submit btn-lg propsActionBtn mb-4"
-                    onClick={(e) => handleAddProperty(e)}
-                  >
-                    <h4 className="mt-2">Add new property</h4>
-                  </button>
-                </Row>
-              )}
-            </div>
-          </Modal.Body>
-          <Modal.Footer
-            style={{
-              backgroundColor: "#000",
-              border: "1px solid white",
-              borderTop: "none",
-            }}
-          >
-            <button className="newTemplateBtn mb-3" onClick={props.handleClose}>
-              Close
-            </button>
-            {props.updateEnabled === false && (
-              <button
-                className="newTemplateBtn mb-3"
-                onClick={(e) => updateData(e)}
+                          Action
+                        </Typography>
+                        <Tooltip
+                          placement="bottom"
+                          title={
+                            <Typography fontSize={16}>
+                              Remove a property
+                            </Typography>
+                          }
+                        >
+                          <Button
+                            className="btn propsActionBtn"
+                            onClick={(e) => handleRemoveProperty(e, index)}
+                            style={{ padding: "17px", float: "" }}
+                            disabled={props.updateEnabled}
+                          >
+                            -
+                          </Button>
+                        </Tooltip>
+                      </Grid>
+                    )}
+                  </Grid>
+                ))}
+                {props.updateEnabled === false && (
+                  <Grid container spacing={3} className="mt-3">
+                    <Grid item>
+                      <Button
+                        className="btn propsActionBtn"
+                        variant="outlined"
+                        onClick={(e) => handleAddProperty(e)}
+                      >
+                        <Typography
+                          variant="h6"
+                          padding={1}
+                          sx={{ textTransform: "none" }}
+                        >
+                          Add new property
+                        </Typography>
+                      </Button>
+                    </Grid>
+                  </Grid>
+                )}
+              </Box>
+            </DialogContent>
+            <DialogActions
+              style={{
+                backgroundColor: "#000",
+                border: "1px solid white",
+                borderTop: "none",
+              }}
+            >
+              <Button
+                className="btn propsActionBtn"
+                onClick={props.handleClose}
+                color="secondary"
               >
-                Update
-              </button>
-            )}
-          </Modal.Footer>
-        </Modal>
+                <Typography
+                  variant="h6"
+                  sx={{
+                    textTransform: "none",
+                    padding: "4px",
+                    paddingLeft: "18px",
+                    paddingRight: "18px",
+                  }}
+                >
+                  Close
+                </Typography>
+              </Button>
+              {props.updateEnabled === false && (
+                <Button
+                  className="btn propsActionBtn"
+                  onClick={(e) => updateData(e)}
+                  color="primary"
+                >
+                  <Typography
+                    variant="h6"
+                    sx={{
+                      textTransform: "none",
+                      padding: "4px",
+                      paddingLeft: "18px",
+                      paddingRight: "18px",
+                    }}
+                  >
+                    Update
+                  </Typography>
+                </Button>
+              )}
+            </DialogActions>
+          </Dialog>
+        </ThemeProvider>
         <CircularBackdrop open={open} />
       </>
     )
