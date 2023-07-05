@@ -139,7 +139,7 @@ function NewDrop(props) {
     stripeAccountStatus()
       .then((response) => {
         console.log("Response from getting stripe account status: ", response);
-        if (!response.data.isAccountCreated) {
+        if (!response.data.detailsSubmitted) {
           handleShowStripeAccountCreationModal();
         }
         handleCloseBackdrop();
@@ -542,7 +542,10 @@ function NewDrop(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body p-0">
         <div className="no-gutters">
