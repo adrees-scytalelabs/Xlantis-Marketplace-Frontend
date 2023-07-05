@@ -70,6 +70,7 @@ function UserDashboard() {
                   match={path}
                   setActiveTab={setActiveTab}
                   notification={location.state?.notification}
+                  isStripeLogin={true}
                 />
               }
             />
@@ -88,7 +89,9 @@ function UserDashboard() {
             <Route
               exact
               path={`myNFTs`}
-              element={<MyNFTs setActiveTab={setActiveTab} />}
+              element={
+                <MyNFTs setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
             {/* <Route
               exact
@@ -98,33 +101,51 @@ function UserDashboard() {
             <Route
               exact
               path={`nftDetail/:nftId`}
-              element={<SingleNftDetail setActiveTab={setActiveTab} />}
+              element={
+                <SingleNftDetail
+                  setActiveTab={setActiveTab}
+                  isStripeLogin={true}
+                />
+              }
             />
             <Route
               exact
               path={`myDrops`}
-              element={<MyDrops setActiveTab={setActiveTab} />}
+              element={
+                <MyDrops setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
 
             <Route
               exact
               path={`myCollection`}
-              element={<MyCollection setActiveTab={setActiveTab} />}
+              element={
+                <MyCollection
+                  setActiveTab={setActiveTab}
+                  isStripeLogin={true}
+                />
+              }
             />
             <Route
               exact
               path={`marketPlace`}
-              element={<MarketPlace setActiveTab={setActiveTab} />}
+              element={
+                <MarketPlace setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
             <Route
               exact
               path={`marketPlace/drops/nfts`}
-              element={<DropNfts setActiveTab={setActiveTab} />}
+              element={
+                <DropNfts setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
             <Route
               exact
               path={`marketPlace/drops/nfts/buy`}
-              element={<NFTBuy setActiveTab={setActiveTab} />}
+              element={
+                <NFTBuy setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
             {/* <Route
               exact
@@ -134,12 +155,19 @@ function UserDashboard() {
             <Route
               exact
               path={`marketPlace/:dropId/:nftId`}
-              element={<AuctionNFT setActiveTab={setActiveTab} />}
+              element={
+                <AuctionNFT setActiveTab={setActiveTab} isStripeLogin={true} />
+              }
             />
             <Route
               exact
               path={`collection/nfts/:collectionId`}
-              element={<CollectionNfts setActiveTab={setActiveTab} />}
+              element={
+                <CollectionNfts
+                  setActiveTab={setActiveTab}
+                  isStripeLogin={true}
+                />
+              }
             />
             <Route
               path={`/`}
@@ -147,6 +175,7 @@ function UserDashboard() {
                 <UserDashboardDefaultScreen
                   match={path}
                   setActiveTab={setActiveTab}
+                  isStripeLogin={true}
                 />
               }
             />
