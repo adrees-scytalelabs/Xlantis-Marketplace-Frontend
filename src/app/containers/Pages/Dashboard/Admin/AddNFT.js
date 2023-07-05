@@ -370,6 +370,7 @@ function AddNFT(props) {
           setIsAddAllDisabled(true);
           setGrid(true);
           setIsAdded(true);
+          setDisabledUpdateButton(false);
           // setCollectionId(response.data.data[0].collectionId._id);
           const index = collectionTypes.findIndex(
             (collection) =>
