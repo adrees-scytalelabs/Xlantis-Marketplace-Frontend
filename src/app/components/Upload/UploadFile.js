@@ -1,16 +1,27 @@
 import { Tooltip, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 import InfoIcon from "@mui/icons-material/Info";
 
 const UploadFile = (props) => {
-  const [isLoadingImage, setIsLoadingImage] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageLoaded, setImageLoaded] = useState(false);
+
+  useEffect(() => {
+    const img = new Image();
+    img.onload = () => {
+      setIsLoading(false);
+      setImageLoaded(true);
+    };
+    img.src = props.fileURL;
+  }, [props.fileURL]);
+
   return (
     <div className="filter-widget">
       <div className="form-group">
         <div className="row no-gutters align-items-end justify-content-start">
           <div className={props.class}>
-            {isLoadingImage ? (
+            {isLoading ? (
               <div
                 className="text-center"
                 style={{
@@ -19,23 +30,18 @@ const UploadFile = (props) => {
                   width: "220px",
                 }}
               >
-                {" "}
                 <div style={{ marginTop: "50%" }}>
-                  <WhiteSpinner />{" "}
+                  <WhiteSpinner />
                 </div>
-                <img src={props.fileURL} alt="" onLoad={() => {
-                  setIsLoadingImage(false)
-                }}
-                />
               </div>
-            ) : (
-              <img src={props.fileURL} alt="Selfie"/>
-            )}
+            ) : imageLoaded ? (
+              <img src={props.fileURL} alt="Selfie" />
+            ) : null}
           </div>
           <div className="co-12 col-md-auto">
             {props?.viewDetail !== true ? (
               <label htmlFor={props.inputId} className="uploadLabel">
-                {props.isUploading ? <WhiteSpinner /> : "Choose File"}
+                {isLoading ? <WhiteSpinner /> : "Choose File"}
               </label>
             ) : null}
             {props.inputId === "dropImage" && (
