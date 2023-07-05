@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Navigate } from "react-router-dom";
 import { Grid, Tooltip, Typography, Alert } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import UploadFile from "../Upload/UploadFile";
 import InfoIcon from "@mui/icons-material/Info";
+import ImageCropModal from "../Modals/ImageCropModal";
+import getCroppedImg from "../Utils/Crop";
 
 function AdminSSORedirectForm({
   handleSubmitDetails,
@@ -16,9 +18,9 @@ function AdminSSORedirectForm({
   setAvailability,
   setUpdate,
   updated,
-  setImage,
   setInputs,
   isDomainAvailable,
+  setImage
 }) {
   const indsutries = [
     { industry: "IT" },
@@ -33,7 +35,17 @@ function AdminSSORedirectForm({
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [isUploading, setIsUploading] = useState(false);
-  const [fileURL, setFileURL] = useState(defaultProfile);
+  const [crop, setCrop] = useState({ x: 0, y: 0 });
+  const [zoom, setZoom] = useState(1);
+  const [aspect, setAspect] = useState(1 / 1);
+  const [showCropModal, setShowCropModal] = useState(false);
+  const [isUploadingCroppedImage, setIsUploadingCroppedImage] = useState();
+  const [imageSrc, setImageSrc] = useState("");
+  const [imageCounter, setImageCounter] = useState(0);
+  const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
+  const [cropShape, setCropShape] = useState("square");
+  const [imageFile, setImageFile] = useState(defaultProfile);
+
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -43,12 +55,44 @@ function AdminSSORedirectForm({
     }
     setSnackbarOpen(false);
   };
+  const handleCloseImageCropModal = () => {
+    setShowCropModal(false);
+    setImageSrc("");
+  };
+  const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
+    setCroppedAreaPixels(croppedAreaPixels);
+  }, []);
+  const showCroppedImage = useCallback(async () => {
+    try {
+      setIsUploadingCroppedImage(true);
+      const image = await getCroppedImg(
+        imageSrc,
+        croppedAreaPixels,
+        imageCounter,
+        0
+      );
+      setImage(image);
+      setImageFile(URL.createObjectURL(image));
+      setImageSrc("");
+      setAspect(1 / 1);
+      setIsUploadingCroppedImage(false);
+      setShowCropModal(false);
+      setImageCounter(imageCounter + 1);
+      setSnackbarMessage("Image Uploaded Succesfully");
+      setSnackbarSeverity("success");
+    } catch (e) {
+      console.log("Error: ", e);
+    }
+  });
   let onChangeFile = (e) => {
-    if (e.target.files && e.target.files[0]) {
+    let file = e.target.files[0];
+    if (file) {
       setIsUploading(true);
-      setImage(e.target.files[0]);
-      setFileURL(URL.createObjectURL(e.target.files[0]));
-      //setInputs((values) => ({ ...values, marketplaceImage: e.target.files[0]}));
+      setCropShape("square");
+      setAspect(1 / 1);
+      setImageSrc(URL.createObjectURL(e.target.files[0]));
+      // setImage(URL.createObjectURL(e.target.files[0]));
+      setShowCropModal(true);
       setIsUploading(false);
     }
   };
@@ -71,8 +115,22 @@ function AdminSSORedirectForm({
       <form onSubmit={handleSubmitDetails} autoComplete="off">
         <h2>Finish Account Setup</h2>
         <label>Select Marketplace Image</label>
+        <ImageCropModal
+          show={showCropModal}
+          handleClose={handleCloseImageCropModal}
+          crop={crop}
+          setCrop={setCrop}
+          onCropComplete={onCropComplete}
+          imageSrc={imageSrc}
+          uploadImage={showCroppedImage}
+          isUploadingCroppedImage={isUploadingCroppedImage}
+          zoom={zoom}
+          setZoom={setZoom}
+          aspect={aspect}
+          cropShape={cropShape}
+        />
         <UploadFile
-          fileURL={fileURL}
+          fileURL={imageFile}
           isUploading={isUploading}
           changeFile={onChangeFile}
           class="col-12 col-md-auto profile-img mr-3"
@@ -186,9 +244,8 @@ function AdminSSORedirectForm({
                       required
                       value={inputs?.domain || ""}
                       placeholder="Username"
-                      className={`form-control-login -login newNftInput ${
-                        inputError ? "input-error" : ""
-                      }`}
+                      className={`form-control-login -login newNftInput ${inputError ? "input-error" : ""
+                        }`}
                       pattern="^\S*$"
                       title="Please do not use spaces in the Username"
                       onChange={(e) => {

@@ -180,11 +180,15 @@ function AutocompleteAddNft({
                         width="50px"
                         height="40px"
                         src={
-                          option.previewImageURI
+                          option.previewImageURI !== ""
                             ? option.previewImageURI
                             : option.nftURI
                         }
-                        srcSet={option.nftURI}
+                        srcSet={
+                          option.previewImageURI !== ""
+                            ? option.previewImageURI
+                            : option.nftURI
+                        }
                         alt=""
                         style={{ border: "1px solid black" }}
                       />

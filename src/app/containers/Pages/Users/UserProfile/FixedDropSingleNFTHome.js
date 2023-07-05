@@ -11,7 +11,7 @@ import {
   TextField,
   ThemeProvider,
   Typography,
-  createTheme
+  createTheme,
 } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
@@ -49,10 +49,12 @@ import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1
 import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
 import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 import BlurLinearIcon from "@mui/icons-material/BlurLinear";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import TradeHistoryTable from "../../../../components/tables/TradeHistoryTable";
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 
 const customTheme = createTheme({
   overrides: {
@@ -911,11 +913,82 @@ const FixedDropSingleNFTHome = () => {
                             paddingTop: "100%",
                           }}
                           title={nftData?.title}
-                          image={nftData?.nftURI}
+                          image={
+                            nftData.previewImageURI
+                              ? nftData?.previewImageURI
+                              : nftData?.nftURI
+                          }
                         />
                       </div>
                     </Card>
                   </Paper>
+                  <div>
+                    {nftData.previewImageURI !== "" ? (
+                      nftData.nftFormat === "mp3" ? (
+                        <div
+                          className="w-100"
+                          style={{
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>
+                            <AudioPlayer
+                              style={{ borderRadius: "1rem" }}
+                              autoPlay
+                              layout="horizontal"
+                              src={nftData?.nftURI}
+                              onPlay={(e) => console.log("onPlay")}
+                              showSkipControls={false}
+                              showJumpControls={false}
+                              header={`Now playing: ${nftData.title}`}
+                              showDownloadProgress
+                            />
+                          </div>
+                        </div>
+                      ) : (
+                        <div
+                          className="w-100"
+                          style={{
+                            display: "flex",
+                            margin: "10px",
+                            justifyContent: "center",
+                            alignItems: "center",
+                          }}
+                        >
+                          <GLTFModel
+                            src={nftData.nftURI}
+                            width={250}
+                            height={250}
+                          >
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            <AmbientLight color={0xffffff} />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 100, y: 200, z: 100 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 50, y: 200, z: 100 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 0, y: 0, z: 0 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: 0, y: 100, z: 200 }}
+                            />
+                            <DirectionLight
+                              color={0xffffff}
+                              position={{ x: -100, y: 200, z: -100 }}
+                            />
+                          </GLTFModel>
+                        </div>
+                      )
+                    ) : null}
+                  </div>
                 </div>
                 <div className="col-md-12 col-lg-8 pl-md-3">
                   <FixedDropSingleNFTCard

@@ -180,6 +180,7 @@ const AdminSSORedirect = () => {
     sessionStorage.removeItem("userId");
     const formData = new FormData();
     formData.append("marketplaceImage", image);
+    console.log("marketplaceImage",image);
     Object.entries(inputs).forEach(([key, value]) => {
       formData.append(key, value);
     });
@@ -192,7 +193,7 @@ const AdminSSORedirect = () => {
         setSucess(response.data.success);
       })
       .catch((error) => {
-        console.log("Error from admin login add info using route,", error);
+        console.log("Error from admin login add info using route,", error.response);
       });
   };
 
@@ -219,6 +220,7 @@ const AdminSSORedirect = () => {
                   updated={updated}
                   setInputs={setInputs}
                   isDomainAvailable={isDomainAvailable}
+                  image={image}
                 />
               </div>
             </div>
