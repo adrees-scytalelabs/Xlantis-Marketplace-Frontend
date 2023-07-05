@@ -1114,7 +1114,9 @@ const FixedDropSingleNFTHome = () => {
                             data-for="registerTip"
                             onClick={(e) => {
                               console.log(e);
-                              navigate("/user-account");
+                              if (!account){
+                                navigate("/user-account");
+                              }
                             }}
                           >
                             Buy
