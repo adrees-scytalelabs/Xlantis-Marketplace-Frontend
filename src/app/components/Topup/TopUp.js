@@ -31,7 +31,7 @@ function TopUp(props) {
     setOpen(true);
   };
   let location = useLocation();
-  const [amount, setAmount] = useState(0.1);
+  const [amount, setAmount] = useState(0.5);
   const [balanceUSD, setBalanceUSD] = useState(0);
   const [balanceMatic, setBalanceMatic] = useState(0);
   const [isLoadingBalance, setIsLoadingBalance] = useState(false);
