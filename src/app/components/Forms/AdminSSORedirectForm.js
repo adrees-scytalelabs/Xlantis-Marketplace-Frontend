@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { Grid, Tooltip, Typography, Alert } from "@mui/material";
 import { defaultProfile } from "../../components/ImageURLs/URLs";
@@ -18,6 +18,7 @@ function AdminSSORedirectForm({
   updated,
   setImage,
   setInputs,
+  isDomainAvailable,
 }) {
   const indsutries = [
     { industry: "IT" },
@@ -33,6 +34,7 @@ function AdminSSORedirectForm({
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [fileURL, setFileURL] = useState(defaultProfile);
+  console.log("isDomainAvailable", isDomainAvailable);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -62,7 +64,9 @@ function AdminSSORedirectForm({
       setErrorMessage("");
     }
   };
-
+  useEffect(() => {
+    handleAvailability();
+  }, [inputs?.domain]);
   return (
     <>
       <form onSubmit={handleSubmitDetails} autoComplete="off">
@@ -191,6 +195,7 @@ function AdminSSORedirectForm({
                       onChange={(e) => {
                         handleChangeValues(e);
                         handlePatternValidation(e);
+                        handleAvailability(e);
                       }}
                       onBlur={(e) => {
                         setAvailability();
@@ -198,13 +203,19 @@ function AdminSSORedirectForm({
                       }}
                     />
                     {getIcon()}
-
                     {inputError && (
                       <Alert severity="error" style={{ marginTop: "5px" }}>
                         {errorMessage}
                       </Alert>
                     )}
                   </div>
+                  {inputs?.domain !== "" &&
+                    inputs?.domain !== undefined &&
+                    (!isDomainAvailable ? (
+                      <Alert severity="success">UserName available</Alert>
+                    ) : (
+                      <Alert severity="error">UserName not available</Alert>
+                    ))}
                 </div>
                 <div className="row no-gutters justify-content-center justify-content-md-end align-items-end w-100 mt-4 pt-md-3">
                   <div className="col-12 col-md-8 col-lg-6">

@@ -17,7 +17,6 @@ import CategoryTable from "../../../../components/tables/CategoryTable";
 
 function SuperAdminCategories(props) {
   const [image, setImage] = useState(defaultProfile);
-  // const [categoryData, setCategoryData] = useState([]);
   const [newCategoryModalShow, setNewCategoryModalShow] = useState(false);
   const [name, setName] = useState("");
   const [open, setOpen] = useState(false);

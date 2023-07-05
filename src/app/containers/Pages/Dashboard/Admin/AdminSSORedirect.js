@@ -218,6 +218,7 @@ const AdminSSORedirect = () => {
                   setUpdate={setUpdated}
                   updated={updated}
                   setInputs={setInputs}
+                  isDomainAvailable={isDomainAvailable}
                 />
               </div>
             </div>
