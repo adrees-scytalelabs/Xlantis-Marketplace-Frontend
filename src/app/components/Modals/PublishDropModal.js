@@ -187,6 +187,7 @@ const PublishDropModal = (props) => {
             onClose={props.handleClose}
             closeAfterTransition
             className="mt-5"
+            hideBackdrop
           >
             <Box className="mt-4 p-4" style={{backgroundColor:'black',border:'2px solid white'}}>
               <Fade in={props.open}>
