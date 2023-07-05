@@ -34,7 +34,6 @@ function AdminSSORedirectForm({
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
   const [isUploading, setIsUploading] = useState(false);
   const [fileURL, setFileURL] = useState(defaultProfile);
-  console.log("isDomainAvailable", isDomainAvailable);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
