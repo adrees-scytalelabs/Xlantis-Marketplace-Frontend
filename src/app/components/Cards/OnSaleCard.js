@@ -49,57 +49,6 @@ const OnSaleCard = (props) => {
                 image={props.i.image}
                 title="Drop Image"
               />
-              <div
-                style={{
-                  position: "absolute",
-                  bottom: 0,
-                  left: 0,
-                  width: "100%",
-                }}
-                className="p-3"
-              >
-                <div className="row no-gutters justify-content-between align-itmes-end">
-                  <div className="col-2 w-100">
-                    <Link to="/">
-                      <div
-                        style={{
-                          backgroundColor: "transparent",
-                        }}
-                      >
-                        <img
-                          src={defaultProfile}
-                          alt="a sample nft"
-                          style={{
-                            width: "75px",
-                            height: "75px",
-                            objectFit: "cover",
-                          }}
-                        />
-                      </div>
-                    </Link>
-                  </div>
-                  <div className="col-8 w-100 text-right align-self-end">
-                    <Link
-                      to={`/${marketPlace}/fixdropnft/${props.i._id}`}
-                      state={{
-                        saleType: props.i.saleType,
-                        description: props.i.description,
-                        bannerURL: props.i.bannerURL,
-                        imageURL: props.i.image,
-                        dropTitle: props.i.title,
-                        marketplaceId: props.marketplaceId,
-                      }}
-                    >
-                      <button className="exploreBtn">
-                        Explore{" "}
-                        <span>
-                          <OpenInNewIcon style={{ fontSize: "1rem" }} />
-                        </span>
-                      </button>
-                    </Link>
-                  </div>
-                </div>
-              </div>
             </div>
             <CardContent style={{ paddingBottom: 16, width: "100%" }}>
               <div style={{ minHeight: "60px" }}>
