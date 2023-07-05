@@ -121,7 +121,7 @@ function AdminSidebar(props) {
             <li className={props.activeTab.myCollections}>
               <Link to={`${props.match}/myCollection`} className="sidebarLink">
                 <i className="fas fa-layer-group"></i>
-                <span>Collections</span>
+                <span>My Collections</span>
               </Link>
             </li>
             <li className={props.activeTab.newNFT}>
