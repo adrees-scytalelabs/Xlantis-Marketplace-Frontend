@@ -367,6 +367,7 @@ function AddNFT(props) {
         console.log("Response from getting drop NFTs: ", response);
         if (response.data.data.length > 0) {
           setTokenList(response.data.data);
+          setIsAddAllDisabled(true);
           setGrid(true);
           setIsAdded(true);
           // setCollectionId(response.data.data[0].collectionId._id);

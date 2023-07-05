@@ -1,5 +1,5 @@
 import { Card, CardContent, CardMedia, Typography } from "@mui/material";
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Link, useParams } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
@@ -39,7 +39,7 @@ const defaultStyles = {
 };
 
 function FixedDropNFTCard(props) {
-  let {marketPlace} = useParams();
+  let { marketPlace } = useParams();
   const rarity = props.type;
   let singleNFTid = props.data._id;
   const selectedRarity = {
@@ -58,22 +58,22 @@ function FixedDropNFTCard(props) {
         ? mastercraft
         : defaultStyles,
   };
-  useEffect(()=>{
-      console.log("props data in single nft",props)
-  },[props])
+  useEffect(() => {
+    console.log("props data in single nft", props);
+  }, [props]);
 
   return (
     <Link
       to={`/${marketPlace}/fixedDropNFTHome/${singleNFTid}`}
       state={{
         nftDetails: props.data,
-        orderListing:props.orderListing,
+        orderListing: props.orderListing,
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
         imageURL: props.titleImage,
         bannerURL: props.dropbanner,
-        marketplaceId:props.marketplaceId
+        marketplaceId: props.marketplaceId,
       }}
     >
       <Card
@@ -88,7 +88,11 @@ function FixedDropNFTCard(props) {
         <div style={{ position: "relative" }}>
           <CardMedia
             sx={props.classes.media}
-            image={props.data.nftURI}
+            image={
+              props.data.previewImageURI !== ""
+                ? props.data.previewImageURI
+                : props.data.nftURI
+            }
             title="NFT Image"
           />
           {props.data.currentOrderListingId.isSold === true ? (
