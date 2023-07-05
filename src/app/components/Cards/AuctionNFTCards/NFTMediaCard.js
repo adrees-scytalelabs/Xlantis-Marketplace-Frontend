@@ -1,4 +1,4 @@
-import { Card, CardMedia } from "@mui/material";
+import { CardMedia } from "@mui/material";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense } from "react";
@@ -34,7 +34,6 @@ const NFTMediaCard = (props) => {
                 <OrbitControls />
               </Canvas>
             </div>
-            <div></div>
             <div className="mt-100">
               <CardMedia
                 sx={props.classes.media}
