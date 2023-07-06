@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React, { useEffect } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { Typography } from "@mui/material";
 
@@ -64,19 +64,26 @@ function TopUpModal(props) {
         </Row>
         <Row>
           <Col>
-            <input
-              type="number"
-              required
-              // defaultValue={Math.abs(props.amount - props.required).toFixed(4)}
-              value={props.topUpAmount}
-              placeholder="Enter Top Up Amount"
-              className="form-control newNftInput"
-              min={0.1}
-              style={{ backgroundColor: "#000", color: "white" }}
-              onChange={(e) => {
-                props.setAmount(e.target.value);
-              }}
-            />
+            <div className="input-group form-group newNftWrapper">
+              <div class="input-group-prepend">
+                <span class="input-group-text bg-transparent text-white">
+                  $
+                </span>
+              </div>
+              <input
+                type="number"
+                required
+                // defaultValue={Math.abs(props.amount - props.required).toFixed(4)}
+                value={props.topUpAmount}
+                placeholder="Enter Top Up Amount"
+                className="form-control newNftInput"
+                min={0.1}
+                style={{ backgroundColor: "#000", color: "white" }}
+                onChange={(e) => {
+                  props.setAmount(e.target.value);
+                }}
+              />
+            </div>
           </Col>
         </Row>
       </Modal.Body>
