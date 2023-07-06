@@ -102,8 +102,10 @@ function SelectSupplyAndPrice({
             className="form-control"
             onChange={(e) => {
               console.log("On change function: ", e.target.value);
-              if (e.target.value >= 0) {
-                setPrice(e.target.value);
+              const value = e.target.value;
+              const regex = /^\d*\.?\d{0,2}$/;
+              if (regex.test(value) && value >= 0) {
+                setPrice(value);
               }
             }}
           />
