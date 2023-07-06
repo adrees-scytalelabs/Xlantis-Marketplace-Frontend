@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 function SelectSupplyAndPrice({
   price,
@@ -12,7 +12,20 @@ function SelectSupplyAndPrice({
   AlertMessage,
   setAlertMessage,
   isPriceDisable,
+  error,
+  setError
 }) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const changePrice = (e) =>{
+    setPrice(e.target.value);
+    if(e.target.value<0.5){
+      setErrorMessage("Value must be greater than 0.5");
+      setError(true)
+    }
+    else{
+      setError(false);
+    }
+  }
   return (
     <div>
       {nftType === "1155" ? (
@@ -104,11 +117,12 @@ function SelectSupplyAndPrice({
               console.log("On change function: ", e.target.value);
               const value = e.target.value;
               const regex = /^\d*\.?\d{0,2}$/;
-              if (regex.test(value) && value >= 0) {
-                setPrice(value);
+              if (regex.test(value)) {
+                changePrice(e)
               }
             }}
           />
+           {error && <span style={{ color: "red" }}>{errorMessage}</span>}
         </div>
       </div>
     </div>

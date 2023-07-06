@@ -112,6 +112,7 @@ function AddNFT(props) {
   const [nftContractAddresses, setNftContractAddress] = useState("");
   const [key, setKey] = useState("default");
   const [grid, setGrid] = useState(false);
+  const [error,setError] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -1246,12 +1247,14 @@ function AddNFT(props) {
                   setAlertMessage={setAlertMessage}
                   price={price}
                   isPriceDisable={isPriceDisable}
+                  error={error}
+                  setError={setError}
                 />
               </div>
               <button
                 className="bttn"
                 type="button"
-                disabled={isDisabled}
+                disabled={isDisabled || error}
                 onClick={(e) => handleAddClick(e)}
               >
                 <i className="fa fa-plus"></i> Add NFT To Drop
