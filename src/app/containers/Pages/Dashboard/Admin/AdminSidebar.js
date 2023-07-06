@@ -171,11 +171,11 @@ function AdminSidebar(props) {
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-            <li className={props.activeTab.categories}>
+            {/* <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
                 <CategoryIcon /> <span>Categories</span>
               </Link>
-            </li>
+            </li> */}
             <li
               className={props.activeTab.stripeAccount}
               onClick={checkStripeStatus}
