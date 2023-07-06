@@ -143,7 +143,7 @@ function AddNFT(props) {
   const [modalOpen, setMOdalOpen] = useState(false);
   const [data, setData] = useState();
   const [costInfo, setCostInfo] = useState({});
-  const [amount, setAmount] = useState(0.1);
+  const [amount, setAmount] = useState(0.5);
   const [topUpModal, setTopUpModal] = useState(false);
   const [requiredAmount, setRequiredAmount] = useState(0);
   const [isCollectionDisable, setIsCollectionDisable] = useState(false);

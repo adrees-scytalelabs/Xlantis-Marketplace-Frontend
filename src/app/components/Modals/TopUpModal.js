@@ -1,8 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Col, Modal, Row } from "react-bootstrap";
 import { Typography } from "@mui/material";
 
 function TopUpModal(props) {
+  const [errorMessage, setErrorMessage] = useState("");
+  const [error, setError] = useState(false);
+
   const handleClose = () => {
     props.setOpen(true);
     props.handleClose();
@@ -77,12 +80,26 @@ function TopUpModal(props) {
                 value={props.topUpAmount}
                 placeholder="Enter Top Up Amount"
                 className="form-control newNftInput"
-                min={0.1}
+                min={0.5}
+                step={0.1}
                 style={{ backgroundColor: "#000", color: "white" }}
                 onChange={(e) => {
-                  props.setAmount(e.target.value);
+                  const value = e.target.value;
+                  const regex = /^\d*\.?\d{0,2}$/;
+                  if (regex.test(value)) {
+                    props.setAmount(e.target.value);
+                    if (e.target.value < 0.5 || e.target.value > 999999.99) {
+                      setErrorMessage(
+                        "Value must be greater than $0.5 and less than $999,999.99"
+                      );
+                      setError(true);
+                    } else {
+                      setError(false);
+                    }
+                  }
                 }}
               />
+              {error && <span style={{ color: "red" }}>{errorMessage}</span>}
             </div>
           </Col>
         </Row>
@@ -105,6 +122,7 @@ function TopUpModal(props) {
           className="newTemplateBtn mb-3"
           onClick={(e) => handleProceed()}
           style={{ backgroundColor: "#000" }}
+          disabled={error}
         >
           Proceed
         </button>
