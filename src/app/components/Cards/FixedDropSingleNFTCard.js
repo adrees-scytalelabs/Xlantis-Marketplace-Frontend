@@ -165,7 +165,7 @@ const FixedDropSingleNFTCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {props.nftData.supplyType ? props.nftData.supplyType : null}
+              {props.nftData?.supplyType ? props.nftData?.supplyType : null}
             </Col>
           </Row>
         ) : null}
@@ -287,7 +287,7 @@ const FixedDropSingleNFTCard = (props) => {
                 <button
                   className="responsive-field-button"
                   style={{ backgroundColor: "transparent" }}
-                  onClick={() => incNum(props.orderListing?.supply)}
+                  onClick={() => incNum(props.nftData?.currentOrderListingId?.supply)}
                 >
                   +
                 </button>
