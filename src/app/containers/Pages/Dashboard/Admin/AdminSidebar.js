@@ -103,12 +103,6 @@ function AdminSidebar(props) {
                 <NotificationsIcon /> <span>Notifications</span>
               </Link>
             </li>
-            <li className={props.activeTab.earnings}>
-              <Link to={`${props.match}/earnings`} className="sidebarLink">
-                <CurrencyExchangeIcon />
-                <span>Earning</span>
-              </Link>
-            </li>
             <li className={props.activeTab.newCollection}>
               <Link
                 to={`${props.match}/createNewCollection`}
@@ -134,33 +128,6 @@ function AdminSidebar(props) {
                 <ListAltIcon /> <span>My NFTs</span>
               </Link>
             </li>
-            <li className={props.activeTab.templates}>
-              <Link to={`${props.match}/templates`} className="sidebarLink">
-                <i className="fa fa-file-medical"></i> <span>Templates</span>
-              </Link>
-            </li>
-            <li className={props.activeTab.marketplace}>
-              <Link
-                to={`${props.match}/${props.domain}/marketPlace`}
-                className="sidebarLink"
-              >
-                <BusinessIcon /> <span>MarketPlace</span>
-              </Link>
-            </li>
-            {/* <li className={props.activeTab.allTransactions}>
-              <Link to={`${props.match}/allTransactions`} className="sidebarLink">
-                <ListAltIcon /> <span>All Transactions</span>
-              </Link>
-            </li> */}
-            {versionB !== "v1-sso" ? (
-              <li className={props.activeTab.dropApproval}>
-                <Link to={`${props.match}/dropApproval`}>
-                  <i className="fas fa-check-circle"></i>{" "}
-                  <span>Drop Approval</span>
-                </Link>
-              </li>
-            ) : null}
-
             <li className={props.activeTab.newDrop}>
               <Link to={`${props.match}/newDrop`}>
                 <i className="fas fa-plus"></i> <span>New Drop</span>
@@ -171,11 +138,19 @@ function AdminSidebar(props) {
                 <StorageIcon></StorageIcon> <span>My Drops</span>
               </Link>
             </li>
-            {/* <li className={props.activeTab.categories}>
-              <Link to={`${props.match}/dropsCategories`}>
-                <CategoryIcon /> <span>Categories</span>
+            <li className={props.activeTab.marketplace}>
+              <Link
+                to={`${props.match}/${props.domain}/marketPlace`}
+                className="sidebarLink"
+              >
+                <BusinessIcon /> <span>MarketPlace</span>
               </Link>
-            </li> */}
+            </li>
+            <li className={props.activeTab.templates}>
+              <Link to={`${props.match}/templates`} className="sidebarLink">
+                <i className="fa fa-file-medical"></i> <span>Templates</span>
+              </Link>
+            </li>
             <li
               className={props.activeTab.stripeAccount}
               onClick={checkStripeStatus}
@@ -184,6 +159,32 @@ function AdminSidebar(props) {
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Stripe Account</span>
               </a>
             </li>
+            <li className={props.activeTab.earnings}>
+              <Link to={`${props.match}/earnings`} className="sidebarLink">
+                <CurrencyExchangeIcon />
+                <span>Earning</span>
+              </Link>
+            </li>
+            {/* <li className={props.activeTab.allTransactions}>
+              <Link to={`${props.match}/allTransactions`} className="sidebarLink">
+                <ListAltIcon /> <span>All Transactions</span>
+              </Link>
+            </li> */}
+            {/* {versionB !== "v1-sso" ? (
+              <li className={props.activeTab.dropApproval}>
+                <Link to={`${props.match}/dropApproval`}>
+                  <i className="fas fa-check-circle"></i>{" "}
+                  <span>Drop Approval</span>
+                </Link>
+              </li>
+            ) : null} */}
+
+           
+            {/* <li className={props.activeTab.categories}>
+              <Link to={`${props.match}/dropsCategories`}>
+                <CategoryIcon /> <span>Categories</span>
+              </Link>
+            </li> */}
             <li className={props.activeTab.topUp}>
               <Link to={`${props.match}/topUp`}>
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Top Up</span>
