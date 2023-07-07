@@ -19,7 +19,7 @@ function SelectSupplyAndPrice({
   const changePrice = (e) =>{
     setPrice(e.target.value);
     if(e.target.value<0.5){
-      setErrorMessage("Value must be greater than 0.5");
+      setErrorMessage("Value must be greater than or equal to 0.5");
       setError(true)
     }
     else{

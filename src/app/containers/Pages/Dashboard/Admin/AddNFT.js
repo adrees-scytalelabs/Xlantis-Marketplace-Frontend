@@ -437,7 +437,7 @@ function AddNFT(props) {
   };
 
   const handleAddAllNFTs = (e, price) => {
-    if (price === 0 || price === undefined || price === null || price === "0") {
+    if (price === 0 || price === undefined || price === null || price === "0" || price<0.5) {
       setIsCollectionPriceValid(false);
     } else {
       setIsAddingAllNFTs(true);
@@ -482,7 +482,7 @@ function AddNFT(props) {
           handleCloseBackdrop();
         })
         .catch((error) => {
-          console.log("Error from adding all NFTs in drop: ", error);
+          console.log("Error from adding all NFTs in drop: ", error.response);
           let variant = "error";
           setSnackbarMessage("Error while adding NFTs.");
           setSnackbarSeverity(variant);
@@ -1380,6 +1380,7 @@ function AddNFT(props) {
         isUploading={isAddingAllNFTs}
         isPriceDisable={isPriceDisable}
         isPriceValid={isCollectionPriceValid}
+        setIsPriceValid={setIsCollectionPriceValid}
       />
       <NFTDetailModal
         show={nftDetailModal}
