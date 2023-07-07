@@ -169,8 +169,8 @@ const FixedDropSingleNFTCard = (props) => {
             </Col>
           </Row>
         ) : null}
-        {props.orderListing.supply ? (
-          <Row style={{ paddingBottom: "5px" }}>
+        {props.nftData?.currentOrderListingId?.supply ? (
+          <><Row style={{ paddingBottom: "5px" }}>
             <Col lg={3} xs={6}>
               <Typography
                 variant="body1"
@@ -180,7 +180,7 @@ const FixedDropSingleNFTCard = (props) => {
                   fontFamily: "orbitron",
                 }}
               >
-                <strong>Token Supply </strong>
+                <strong>Total Supply </strong>
               </Typography>
             </Col>
             <Col
@@ -193,9 +193,61 @@ const FixedDropSingleNFTCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {props.orderListing.supply}
+              {props.nftData?.currentOrderListingId?.totalSupplyOnSale}
             </Col>
-          </Row>
+          </Row><Row style={{ paddingBottom: "5px" }}>
+              <Col lg={3} xs={6}>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  style={{
+                    color: "#F64D04",
+                    fontFamily: "orbitron",
+                  }}
+                >
+                  <strong>Available Supply </strong>
+                </Typography>
+              </Col>
+              <Col
+                xs={6}
+                md={3}
+                lg={5}
+                style={{
+                  color: "white",
+                  fontFamily: "inter",
+                  fontSize: "1rem",
+                }}
+              >
+                {props.nftData?.currentOrderListingId?.supply}
+              </Col>
+            </Row>
+            <Row style={{ paddingBottom: "5px" }}>
+              <Col lg={3} xs={6}>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  style={{
+                    color: "#F64D04",
+                    fontFamily: "orbitron",
+                  }}
+                >
+                  <strong>Supply Sold </strong>
+                </Typography>
+              </Col>
+              <Col
+                xs={6}
+                md={3}
+                lg={5}
+                style={{
+                  color: "white",
+                  fontFamily: "inter",
+                  fontSize: "1rem",
+                }}
+              >
+                {props.nftData?.currentOrderListingId?.supplySold}
+              </Col>
+            </Row></>
+          
         ) : null}
         {props.nftData.supplyType === "Variable" ? (
           <Row style={{ paddingTop: "25px" }}>

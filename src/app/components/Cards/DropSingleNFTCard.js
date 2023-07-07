@@ -33,6 +33,48 @@ const DropSingleNFTCard = (props) => {
             {props.nftDetail.description}
           </Col>
         </Row>
+        <Row>
+          <Col>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
+            >
+              <strong>Total Supply </strong>
+            </Typography>
+          </Col>
+          <Col style={{ color: "white", fontFamily: "inter" }}>
+            {props.nftDetail?.currentOrderListingId?.totalSupplyOnSale}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
+            >
+              <strong>Available Supply </strong>
+            </Typography>
+          </Col>
+          <Col style={{ color: "white", fontFamily: "inter" }}>
+            {props.nftDetail?.currentOrderListingId?.supply}
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
+            >
+              <strong>Supply Sold </strong>
+            </Typography>
+          </Col>
+          <Col style={{ color: "white", fontFamily: "inter" }}>
+            {props.nftDetail?.currentOrderListingId?.supplySold}
+          </Col>
+        </Row>
       </CardContent>
     </Card>
   );
