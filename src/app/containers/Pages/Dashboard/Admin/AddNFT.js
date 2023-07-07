@@ -439,7 +439,6 @@ function AddNFT(props) {
   const handleAddAllNFTs = (e, price) => {
     if (
       !price ||
-      typeof price !== "number" ||
       price < 0.5 ||
       price > 999999.99
     ) {
