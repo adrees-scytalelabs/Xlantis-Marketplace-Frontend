@@ -27,10 +27,7 @@ const DropsPageCard = (props) => {
           title="Drop Image"
         />
         <CardContent>
-          <div
-            className=""
-            style={{ minHeight: "60px" }}
-          >
+          <div className="" style={{ minHeight: "60px" }}>
             <div className="text-center">
               <Typography
                 gutterBottom
@@ -41,14 +38,35 @@ const DropsPageCard = (props) => {
                 {truncate(props.dropDetails.title, 15)}
               </Typography>
             </div>
-            
+
             <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
                 variant="body2"
-                sx={props.cardClasses.cardTitle}
                 component="p"
+                sx={{
+                  color: "#999",
+                  fontFamily: "inter",
+                  fontSize: "0.985rem",
+                  marginTop: "0.3rem",
+                }}
               >
+                <strong>Description: </strong>
                 {truncate(props.dropDetails.description, 70)}
+              </Typography>
+            </div>
+            <div className="row no-gutters justify-content-start align-items-center pb-2">
+              <Typography
+                variant="body2"                
+                component="p"
+                sx={{
+                  color: "#999",
+                  fontFamily: "inter",
+                  fontSize: "0.985rem",
+                  marginTop: "0.15rem",
+                }}
+              >
+                <strong>Category Name: </strong>
+                {truncate(props.dropDetails.category, 70)}
               </Typography>
             </div>
           </div>
@@ -81,10 +99,7 @@ const DropsPageCard = (props) => {
             <Typography variant="h6" gutterBottom className="text-center">
               {new Date() < new Date(props.dropDetails.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="info"
-                    sx={props.cardClasses.textAlert}
-                  >
+                  <Alert severity="info" sx={props.cardClasses.textAlert}>
                     <span
                       style={{
                         fontFamily: "orbitron",
@@ -96,18 +111,23 @@ const DropsPageCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
+                        renderer={(props) => {
                           if (props.days === 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                            return (
+                              <span>
+                                {props.hours}:{props.minutes}:{props.seconds}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {props.days} days {props.hours} hr
+                              </span>
+                            );
                           }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
+                        }}
                       />
                     </span>
                   </Alert>
@@ -115,10 +135,7 @@ const DropsPageCard = (props) => {
               ) : new Date() > new Date(props.dropDetails.startTime) &&
                 new Date() < new Date(props.dropDetails.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="warning"
-                    sx={props.cardClasses.textAlert}
-                  >
+                  <Alert severity="warning" sx={props.cardClasses.textAlert}>
                     <span
                       style={{
                         fontFamily: "orbitron",
@@ -132,15 +149,21 @@ const DropsPageCard = (props) => {
                       <Countdown
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
+                        renderer={(props) => {
                           if (props.days === 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                            return (
+                              <span>
+                                {props.hours}:{props.minutes}:{props.seconds}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {props.days} days {props.hours} hr
+                              </span>
+                            );
                           }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
+                        }}
                       />
                     </span>
                   </Alert>
@@ -165,10 +188,7 @@ const DropsPageCard = (props) => {
             <Typography variant="h6" gutterBottom className="text-center">
               {new Date() < new Date(props.dropDetails.startTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="info"
-                    sx={props.cardClasses.textAlert}
-                  >
+                  <Alert severity="info" sx={props.cardClasses.textAlert}>
                     <span
                       style={{
                         fontFamily: "orbitron",
@@ -182,15 +202,21 @@ const DropsPageCard = (props) => {
                       <Countdown
                         date={new Date(props.dropDetails.startTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
+                        renderer={(props) => {
                           if (props.days === 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                            return (
+                              <span>
+                                {props.hours}:{props.minutes}:{props.seconds}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {props.days} days {props.hours} hr
+                              </span>
+                            );
                           }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
+                        }}
                       />
                     </span>
                   </Alert>
@@ -198,10 +224,7 @@ const DropsPageCard = (props) => {
               ) : new Date() > new Date(props.dropDetails.startTime) &&
                 new Date() < new Date(props.dropDetails.endTime) ? (
                 <div style={{ marginTop: "1rem" }}>
-                  <Alert
-                    severity="warning"
-                    sx={props.cardClasses.textAlert}
-                  >
+                  <Alert severity="warning" sx={props.cardClasses.textAlert}>
                     <span
                       style={{
                         fontFamily: "orbitron",
@@ -213,18 +236,23 @@ const DropsPageCard = (props) => {
                     <br></br>
                     <span>
                       <Countdown
-
                         date={new Date(props.dropDetails.endTime)}
                         style={{ fontFamily: "orbitron" }}
-                        renderer={props => {
+                        renderer={(props) => {
                           if (props.days === 0) {
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
+                            return (
+                              <span>
+                                {props.hours}:{props.minutes}:{props.seconds}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {props.days} days {props.hours} hr
+                              </span>
+                            );
                           }
-                          else {
-                            return <span>{props.days} days {props.hours} hr</span>
-                          }
-                        }
-                        }
+                        }}
                       />
                     </span>
                   </Alert>

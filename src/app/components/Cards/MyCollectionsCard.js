@@ -53,7 +53,18 @@ const MyCollectionsCard = (props) => {
               sx={styles.cardDescriptions}
               component="p"
             >
+              <strong>Description: </strong>
               {truncate(props.i.description, 50)}
+            </Typography>
+          </div>
+          <div className="row no-gutters justify-content-start align-items-center pb-2">
+          <Typography
+              variant="body2"
+              sx={styles.cardDescriptions}
+              component="p"
+            >
+              <strong>Category Name: </strong>
+              {truncate(props.i.category, 50)}
             </Typography>
           </div>
         </CardContent>
