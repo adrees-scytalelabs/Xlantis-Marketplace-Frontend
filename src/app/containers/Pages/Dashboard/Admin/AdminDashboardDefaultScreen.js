@@ -50,7 +50,7 @@ function AdminDashboardDefaultScreen(props) {
           setBalanceMatic(response.data?.walletBalance?.InMatic);
       })
       .catch((error) => {
-        console.log("Error from getting balance: ", error);
+        console.log("Error from getting balance: ", error.response);
       });
   };
   useEffect(() => {

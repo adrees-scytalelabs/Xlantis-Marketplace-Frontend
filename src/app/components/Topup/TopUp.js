@@ -93,7 +93,7 @@ function TopUp(props) {
         setIsLoadingBalance(false);
       })
       .catch((error) => {
-        console.log("Error from getting balance: ", error);
+        console.log("Error from getting balance: ", error.response);
         setSnackbarMessage("Error Fetching Balance");
         setSnackbarSeverity("error");
         handleSnackbarOpen();

@@ -18,6 +18,16 @@ function PublishSuccessfully(props) {
             >
               Drop Is Being Finalized. Transactions Are In Process.
             </div>
+            <div
+              style={{
+                color: "#000",
+                fontWeight: "bold",
+                fontSize: "1rem",
+                margin: "0",
+              }}
+            >
+             Note: The drop will be automatically moved from the draft tab to the pending tab within 30-60 seconds.
+            </div>
           </Modal.Body>
           <Modal.Footer>
             <button

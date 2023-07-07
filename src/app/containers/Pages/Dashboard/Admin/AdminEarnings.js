@@ -58,7 +58,7 @@ const AdminEarnings = (props) => {
         setIsLoadingBalance(false);
       })
       .catch((error) => {
-        console.log("Error from getting matic balance: ", error);
+        console.log("Error from getting matic balance: ", error.response);
         setSnackbarMessage("Error fetching balance");
         setSnackbarSeverity("error");
         handleSnackbarOpen();
