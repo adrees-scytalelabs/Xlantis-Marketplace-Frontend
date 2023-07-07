@@ -112,6 +112,7 @@ function AddNFT(props) {
   const [nftContractAddresses, setNftContractAddress] = useState("");
   const [key, setKey] = useState("default");
   const [grid, setGrid] = useState(false);
+  const [error,setError] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -436,7 +437,7 @@ function AddNFT(props) {
   };
 
   const handleAddAllNFTs = (e, price) => {
-    if (price === 0 || price === undefined || price === null || price === "0") {
+    if (price === 0 || price === undefined || price === null || price === "0" || price<0.5 ||price>999999.99) {
       setIsCollectionPriceValid(false);
     } else {
       setIsAddingAllNFTs(true);
@@ -481,7 +482,7 @@ function AddNFT(props) {
           handleCloseBackdrop();
         })
         .catch((error) => {
-          console.log("Error from adding all NFTs in drop: ", error);
+          console.log("Error from adding all NFTs in drop: ", error.response);
           let variant = "error";
           setSnackbarMessage("Error while adding NFTs.");
           setSnackbarSeverity(variant);
@@ -1246,12 +1247,14 @@ function AddNFT(props) {
                   setAlertMessage={setAlertMessage}
                   price={price}
                   isPriceDisable={isPriceDisable}
+                  error={error}
+                  setError={setError}
                 />
               </div>
               <button
                 className="bttn"
                 type="button"
-                disabled={isDisabled}
+                disabled={isDisabled || error}
                 onClick={(e) => handleAddClick(e)}
               >
                 <i className="fa fa-plus"></i> Add NFT To Drop
@@ -1377,6 +1380,7 @@ function AddNFT(props) {
         isUploading={isAddingAllNFTs}
         isPriceDisable={isPriceDisable}
         isPriceValid={isCollectionPriceValid}
+        setIsPriceValid={setIsCollectionPriceValid}
       />
       <NFTDetailModal
         show={nftDetailModal}
