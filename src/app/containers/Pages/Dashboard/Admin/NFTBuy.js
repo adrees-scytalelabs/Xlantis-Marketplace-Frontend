@@ -485,14 +485,14 @@ const NFTBuy = (props) => {
                 </Col>
               </Row>
               <br></br>
-              <BuyButton
+              {/* <BuyButton
                 isSold={location.state.nftDetail.currentOrderListingId.isSold}
                 startTime={location.state.startTime}
                 endTime={location.state.endTime}
                 versionB={versionB}
                 handleOpenModal={handleOpenModal}
                 handleBuy={handleBuy}
-              />
+              /> */}
             </div>
           </div>
         </div>
