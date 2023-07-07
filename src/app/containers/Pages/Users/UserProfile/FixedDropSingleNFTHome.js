@@ -561,7 +561,13 @@ const FixedDropSingleNFTHome = () => {
     return hex;
   };
   let handlePurchase = async () => {
-    if (num < 0 || num === 0) {
+    if (
+      num < 0 ||
+      num === 0 ||
+      num === undefined ||
+      num === null ||
+      num === ""
+    ) {
       let variant = "error";
       setSnackbarMessage("Supply must be greater than 0");
       setSnackbarSeverity(variant);
@@ -1004,6 +1010,7 @@ const FixedDropSingleNFTHome = () => {
                     buttonStyle={buttonStyle}
                     styles={styles}
                     inputStyle={inputStyle}
+                    singleNFTPrice={price}
                   />
                   <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
                     <Col>
@@ -1114,7 +1121,7 @@ const FixedDropSingleNFTHome = () => {
                             data-for="registerTip"
                             onClick={(e) => {
                               console.log(e);
-                              if (!account){
+                              if (!account) {
                                 navigate("/user-account");
                               }
                             }}

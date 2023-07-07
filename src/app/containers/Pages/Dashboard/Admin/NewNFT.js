@@ -551,192 +551,211 @@ function NewNFT(props) {
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     } else {
-      handleShowBackdrop();
-      setIsUploadingData(true);
-
-      let ipfsMetaData;
-      let metaData = {
-        name: name,
-        description: description,
-        image: nftURI,
-        properties: properties,
-        collection: { name: collection },
-        creator: {
-          address: adminData?.walletAddress,
-          name: adminData?.username,
-          profileImage: adminData?.imageURL,
-        },
-      };
-      const reader = new window.FileReader();
-      const blob = new Blob([JSON.stringify(metaData, null, 2)], {
-        type: "application/json",
-      });
-      var dataIpfsHash;
-      reader.readAsArrayBuffer(blob);
-      reader.onloadend = () => {
-        ipfs.add(Buffer(reader.result), async (err, result) => {
-          if (err) {
-            console.log("Error: ", err);
-            let variant = "error";
-            setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
-            setSnackbarSeverity(variant);
-            handleSnackbarOpen();
-            return;
-          }
-          ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
-          setMetaDataURI(ipfsMetaData);
-
-          let propertiesObject = {};
-          properties.map((property) => {
-            propertiesObject[property.key] = property.value;
-          });
-          let data = {
-            collectionId: collectionId,
-            title: name,
-            description: description,
-            nftURI: nftURI,
-            previewImageURI: previewImageURI,
-            metadataURI: nftURI,
-            nftFormat: imageType,
-            totalSupply: tokenSupply,
-            supplyType: supplyType,
-            properties: propertiesObject,
-            marketplaceId: props.marketplaceId,
-          };
-
-          if (previewImageURI !== "") {
-            data["previewImageURI"] = previewImageURI;
-          }
-
-          if (batchId === "") {
-            createNewBatch(data)
-              .then((response) => {
-                setBatchId(response.data.batchId);
-                setNftId(response.data.nftId);
-                setTokenList([
-                  ...tokenList,
-                  {
-                    collectionId: collectionId,
-                    title: name,
-                    description: description,
-                    nftURI: nftURI,
-                    previewImageURI: previewImageURI,
-                    nftFormat: imageType,
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    totalSupply: tokenSupply,
-                    collectiontitle: collection,
-                    supplytype: supplyType,
-
-                    nftId: response.data.nftId,
-                  },
-                ]);
-
-                let cookieData = [
-                  ...tokenList,
-                  {
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    nftURI: nftURI,
-                    title: name,
-                    description: description,
-                    totalSupply: tokenSupply,
-                    collectiontitle: collection,
-                    supplytype: supplyType,
-                    collectionId: collectionId,
-                    marketplaceId: props.marketplaceId,
-                    nftId: response.data.nftId,
-                    previewImageURI: previewImageURI,
-                    nftFormat: imageType,
-                  },
-                ];
-
-                Cookies.set("Batch-ID", response.data.batchId, {});
-
-                Cookies.set("NFT-Detail", cookieData, {});
-              })
-              .catch((error) => {
-                console.log("Error on batch mint: ", error);
-              });
-          } else {
-            data["batchId"] = batchId;
-            addNFTToBatch(data)
-              .then((response) => {
-                setNftId(response.data.nftId);
-                setTokenList([
-                  ...tokenList,
-                  {
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    nftURI: nftURI,
-                    title: name,
-                    description: description,
-                    totalSupply: tokenSupply,
-                    collectiontitle: collection,
-                    supplytype: supplyType,
-                    collectionId: collectionId,
-                    nftId: response.data.nftId,
-                    marketplaceId: props.marketplaceId,
-                    previewImageURI: previewImageURI,
-                  },
-                ]);
-
-                let cookieData = [
-                  ...tokenList,
-                  {
-                    properties: properties,
-                    ipfsHash: ipfsHash,
-                    nftURI: nftURI,
-                    title: name,
-                    description: description,
-                    totalSupply: tokenSupply,
-                    collectiontitle: collection,
-                    supplytype: supplyType,
-                    collectionId: collectionId,
-                    marketplaceId: props.marketplaceId,
-                    nftId: response.data.nftId,
-                    previewImageURI: previewImageURI,
-                  },
-                ];
-
-                Cookies.remove("NFT-Detail");
-
-                Cookies.set("NFT-Detail", cookieData, {});
-              })
-              .catch((error) => {
-                console.log("Batch minting into existing batch error: ", error);
-              });
-          }
-
-          //SETTING STATES TO DEFAULT VALUES
-
-          // setProperties([{ key: "", value: "" }]);
-          handleSetProperties(defaultTemplates?.properties);
-          setNftId("");
-          setNftURI("");
-          setPreviewImageURI("");
-          setIpfsHash("");
-          setImage(defaultProfile);
-          setName("");
-          setDescription("");
-          setRarity("");
-          setTokenSupply(1);
-          setSupplyType("Single");
-          setTemplate("default");
-          setIpfsHash("");
-          setIsGlbFile(false);
-          setIsMp3File(false);
-          let variant = "success";
-          setSnackbarMessage("Meta Data Uploaded to IPFS.");
+      let flagCheckPreviewImage = true;
+      if (imageType === "mp3" || imageType === "glb" || imageType === "gltf") {
+        if (
+          previewImageURI === "" ||
+          previewImageURI === undefined ||
+          previewImageURI === null
+        ) {
+          flagCheckPreviewImage = false;
+          let variant = "error";
+          setSnackbarMessage("Please Upload Preview Image.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
-          setSnackbarMessage("NFT Has Been Added to Batch");
-          setSnackbarSeverity("success");
-          handleSnackbarOpen();
-          setIsUploadingData(false);
-          handleCloseBackdrop();
+        }
+      }
+      if (flagCheckPreviewImage) {
+        handleShowBackdrop();
+        setIsUploadingData(true);
+
+        let ipfsMetaData;
+        let metaData = {
+          name: name,
+          description: description,
+          image: nftURI,
+          properties: properties,
+          collection: { name: collection },
+          creator: {
+            address: adminData?.walletAddress,
+            name: adminData?.username,
+            profileImage: adminData?.imageURL,
+          },
+        };
+        const reader = new window.FileReader();
+        const blob = new Blob([JSON.stringify(metaData, null, 2)], {
+          type: "application/json",
         });
-      };
+        var dataIpfsHash;
+        reader.readAsArrayBuffer(blob);
+        reader.onloadend = () => {
+          ipfs.add(Buffer(reader.result), async (err, result) => {
+            if (err) {
+              console.log("Error: ", err);
+              let variant = "error";
+              setSnackbarMessage("Unable to Upload Meta Data to IPFS.");
+              setSnackbarSeverity(variant);
+              handleSnackbarOpen();
+              return;
+            }
+            ipfsMetaData = `https://ipfs.io/ipfs/${result[0].hash}`;
+            setMetaDataURI(ipfsMetaData);
+
+            let propertiesObject = {};
+            properties.map((property) => {
+              propertiesObject[property.key] = property.value;
+            });
+            let data = {
+              collectionId: collectionId,
+              title: name,
+              description: description,
+              nftURI: nftURI,
+              previewImageURI: previewImageURI,
+              metadataURI: nftURI,
+              nftFormat: imageType,
+              totalSupply: tokenSupply,
+              supplyType: supplyType,
+              properties: propertiesObject,
+              marketplaceId: props.marketplaceId,
+            };
+
+            if (previewImageURI !== "") {
+              data["previewImageURI"] = previewImageURI;
+            }
+
+            if (batchId === "") {
+              createNewBatch(data)
+                .then((response) => {
+                  setBatchId(response.data.batchId);
+                  setNftId(response.data.nftId);
+                  setTokenList([
+                    ...tokenList,
+                    {
+                      collectionId: collectionId,
+                      title: name,
+                      description: description,
+                      nftURI: nftURI,
+                      previewImageURI: previewImageURI,
+                      nftFormat: imageType,
+                      properties: properties,
+                      ipfsHash: ipfsHash,
+                      totalSupply: tokenSupply,
+                      collectiontitle: collection,
+                      supplytype: supplyType,
+
+                      nftId: response.data.nftId,
+                    },
+                  ]);
+
+                  let cookieData = [
+                    ...tokenList,
+                    {
+                      properties: properties,
+                      ipfsHash: ipfsHash,
+                      nftURI: nftURI,
+                      title: name,
+                      description: description,
+                      totalSupply: tokenSupply,
+                      collectiontitle: collection,
+                      supplytype: supplyType,
+                      collectionId: collectionId,
+                      marketplaceId: props.marketplaceId,
+                      nftId: response.data.nftId,
+                      previewImageURI: previewImageURI,
+                      nftFormat: imageType,
+                    },
+                  ];
+
+                  Cookies.set("Batch-ID", response.data.batchId, {});
+
+                  Cookies.set("NFT-Detail", cookieData, {});
+                })
+                .catch((error) => {
+                  console.log("Error on batch mint: ", error);
+                });
+            } else {
+              data["batchId"] = batchId;
+              addNFTToBatch(data)
+                .then((response) => {
+                  setNftId(response.data.nftId);
+                  setTokenList([
+                    ...tokenList,
+                    {
+                      properties: properties,
+                      ipfsHash: ipfsHash,
+                      nftURI: nftURI,
+                      title: name,
+                      description: description,
+                      totalSupply: tokenSupply,
+                      collectiontitle: collection,
+                      supplytype: supplyType,
+                      collectionId: collectionId,
+                      nftId: response.data.nftId,
+                      marketplaceId: props.marketplaceId,
+                      previewImageURI: previewImageURI,
+                    },
+                  ]);
+
+                  let cookieData = [
+                    ...tokenList,
+                    {
+                      properties: properties,
+                      ipfsHash: ipfsHash,
+                      nftURI: nftURI,
+                      title: name,
+                      description: description,
+                      totalSupply: tokenSupply,
+                      collectiontitle: collection,
+                      supplytype: supplyType,
+                      collectionId: collectionId,
+                      marketplaceId: props.marketplaceId,
+                      nftId: response.data.nftId,
+                      previewImageURI: previewImageURI,
+                    },
+                  ];
+
+                  Cookies.remove("NFT-Detail");
+
+                  Cookies.set("NFT-Detail", cookieData, {});
+                })
+                .catch((error) => {
+                  console.log(
+                    "Batch minting into existing batch error: ",
+                    error
+                  );
+                });
+            }
+
+            //SETTING STATES TO DEFAULT VALUES
+
+            // setProperties([{ key: "", value: "" }]);
+            handleSetProperties(defaultTemplates?.properties);
+            setNftId("");
+            setNftURI("");
+            setPreviewImageURI("");
+            setIpfsHash("");
+            setImage(defaultProfile);
+            setName("");
+            setDescription("");
+            setRarity("");
+            setTokenSupply(1);
+            setSupplyType("Single");
+            setTemplate("default");
+            setIpfsHash("");
+            setIsGlbFile(false);
+            setIsMp3File(false);
+            let variant = "success";
+            setSnackbarMessage("Meta Data Uploaded to IPFS.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+            setSnackbarMessage("NFT Has Been Added to Batch");
+            setSnackbarSeverity("success");
+            handleSnackbarOpen();
+            setIsUploadingData(false);
+            handleCloseBackdrop();
+          });
+        };
+      }
     }
   };
   const handleCloseImageCropModal = () => {
@@ -1269,7 +1288,10 @@ function NewNFT(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body px-0">
         <div className="row no-gutters">
