@@ -112,7 +112,7 @@ function AddNFT(props) {
   const [nftContractAddresses, setNftContractAddress] = useState("");
   const [key, setKey] = useState("default");
   const [grid, setGrid] = useState(false);
-  const [error,setError] = useState(false);
+  const [error, setError] = useState(false);
   const [collectionId, setCollectionId] = useState("");
   const [changeCollectionList, setChangeCollectionList] = useState([]);
   const [nftName, setNftName] = useState("");
@@ -437,7 +437,12 @@ function AddNFT(props) {
   };
 
   const handleAddAllNFTs = (e, price) => {
-    if (price === 0 || price === undefined || price === null || price === "0" || price<0.5 ||price>999999.99) {
+    if (
+      !price ||
+      typeof price !== "number" ||
+      price < 0.5 ||
+      price > 999999.99
+    ) {
       setIsCollectionPriceValid(false);
     } else {
       setIsAddingAllNFTs(true);

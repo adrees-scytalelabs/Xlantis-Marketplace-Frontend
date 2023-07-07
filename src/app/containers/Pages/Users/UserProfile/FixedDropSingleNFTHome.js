@@ -560,14 +560,9 @@ const FixedDropSingleNFTHome = () => {
     console.log("conversion to hex: ", hex);
     return hex;
   };
+  
   let handlePurchase = async () => {
-    if (
-      num < 0 ||
-      num === 0 ||
-      num === undefined ||
-      num === null ||
-      num === ""
-    ) {
+    if (num <= 0 || num === undefined || num === null || num === "") {
       let variant = "error";
       setSnackbarMessage("Supply must be greater than 0");
       setSnackbarSeverity(variant);
