@@ -514,6 +514,10 @@ function NewNFT(props) {
     }
   };
 
+  function hasEmptyValue(obj) {
+    return Object.values(obj).some((value) => value === null || value === "");
+  }
+
   const handleAddClick = (e) => {
     e.preventDefault();
     if (image === defaultProfile) {
@@ -529,6 +533,16 @@ function NewNFT(props) {
     } else if (description === "") {
       let variant = "error";
       setSnackbarMessage("Please Enter Artwork Description.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (properties.length === 0) {
+      let variant = "error";
+      setSnackbarMessage("Please add properties to continue");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } else if (properties.some((obj) => hasEmptyValue(obj))) {
+      let variant = "error";
+      setSnackbarMessage("Please Fill All Empty Value of properties");
       setSnackbarSeverity(variant);
       handleSnackbarOpen();
     } else if (
