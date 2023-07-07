@@ -28,6 +28,7 @@ function AdminDashboardDefaultScreen(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [snackbarSeverity, setSnackbarSeverity] = useState("");
+  const [adminBalance, setAdminBalance] = useState(0);
   const handleSnackbarOpen = () => {
     setSnackbarOpen(true);
   };
@@ -41,10 +42,12 @@ function AdminDashboardDefaultScreen(props) {
     getMaticBalance()
       .then((response) => {
         console.log("response from getting matic balance: ", response);
-        response.data.balanceInUsd &&
-          setBalanceUSD(response.data?.balanceInUsd);
-        response.data.maticBalance &&
-          setBalanceMatic(response.data?.maticBalance);
+        response.data.walletBalance?.InUsd &&
+        setAdminBalance(response.data?.usdBalance?.InUsd);
+        response.data.walletBalance?.InUsd &&
+          setBalanceUSD(response.data?.walletBalance?.InUsd);
+        response.data.walletBalance?.InMatic &&
+          setBalanceMatic(response.data?.walletBalance?.InMatic);
       })
       .catch((error) => {
         console.log("Error from getting balance: ", error);
@@ -190,7 +193,29 @@ function AdminDashboardDefaultScreen(props) {
                   }
                   balanceUSD={balanceUSD}
                   balanceMatic={balanceMatic}
-                  message="Balance"
+                  message="Wallet Balance"
+                  showMatic={true}
+                  icon={<CurrencyExchangeIcon />}
+                />
+              </div>
+            </div>
+            <div className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
+              <div style={cardContainerStyle}>
+                <AdminBalanceCard
+                  onMouseEnter={() => setHover(true)}
+                  onMouseLeave={() => setHover(false)}
+                  linkTo={``}
+                  hoverH4={
+                    hover
+                      ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
+                      : "totalNftsAdminDashHeading"
+                  }
+                  hoverH1={
+                    hover ? "superAdminBalanceHover" : "superAdminBalance"
+                  }
+                  balanceUSD={adminBalance}
+                  message="USD Balance"
+                  showMatic={false}
                   icon={<CurrencyExchangeIcon />}
                 />
               </div>

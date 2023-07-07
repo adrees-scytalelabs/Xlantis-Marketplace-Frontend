@@ -86,10 +86,10 @@ function TopUp(props) {
     getMaticBalance()
       .then((response) => {
         console.log("response from getting matic balance: ", response);
-        response.data.balanceInUsd &&
-          setBalanceUSD(response.data?.balanceInUsd);
-        response.data.maticBalance &&
-          setBalanceMatic(response.data?.maticBalance);
+        response.data.walletBalance?.InUsd &&
+          setBalanceUSD(response.data?.walletBalance?.InUsd);
+        response.data.walletBalance?.InMatic &&
+          setBalanceMatic(response.data?.walletBalance?.InMatic);
         setIsLoadingBalance(false);
       })
       .catch((error) => {
@@ -163,7 +163,7 @@ function TopUp(props) {
           hoverH1={hover ? "superAdminBalanceHover" : "superAdminBalance"}
           balanceUSD={balanceUSD}
           balanceMatic={balanceMatic}
-          message="Balance"
+          message="Wallet Balance"
           icon={<CurrencyExchangeIcon />}
           isLoadingBalance={isLoadingBalance}
         />

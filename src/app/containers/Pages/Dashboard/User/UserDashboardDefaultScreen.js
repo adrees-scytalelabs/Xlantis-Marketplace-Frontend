@@ -28,22 +28,6 @@ function UserDashboardDefaultScreen(props) {
     maxWidth: "100%",
     padding: "0 0.5rem",
   };
-  const getBalance = () => {
-    setIsLoadingBalance(true);
-    getMaticBalance()
-      .then((response) => {
-        setIsLoadingBalance(false);
-        console.log("response from getting matic balance: ", response);
-        response.data.balanceInUsd &&
-          setBalanceUSD(response.data?.balanceInUsd);
-        response.data.maticBalance &&
-          setBalanceMatic(response.data?.maticBalance);
-      })
-      .catch((error) => {
-        setIsLoadingBalance(false);
-        console.log("Error from getting balance: ", error);
-      });
-  };
 
   useEffect(() => {
     dispatch(getUserCount());
@@ -59,7 +43,6 @@ function UserDashboardDefaultScreen(props) {
   }, [loading]);
 
   useEffect(() => {
-    getBalance();
     props.setActiveTab({
       dashboard: "active",
       newNFT: "",
@@ -92,7 +75,7 @@ function UserDashboardDefaultScreen(props) {
         </div>
       </div>
       <div className="row no-gutters justify-content-center justify-content-sm-start align-items-center mt-5 mb-5">
-        <div className="col-12" style={{ display: "flex", flexWrap: "wrap" }}>
+        <div className="col-6" style={{ display: "flex", flexWrap: "wrap" }}>
           <div style={cardContainerStyle}>
             <DisplayNumbersAndContentCard
               onMouseEnter={() => setHover(true)}
@@ -111,24 +94,6 @@ function UserDashboardDefaultScreen(props) {
               content={totalNFTs}
               message="Total NFTs"
               icon={<ListAltIcon />}
-            />
-          </div>
-          <div style={cardContainerStyle}>
-            <AdminBalanceCard
-              onMouseEnter={() => setHover(true)}
-              onMouseLeave={() => setHover(false)}
-              linkTo={``}
-              hoverH4={
-                hover
-                  ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                  : "totalNftsAdminDashHeading"
-              }
-              hoverH1={hover ? "superAdminBalanceHover" : "superAdminBalance"}
-              balanceUSD={balanceUSD}
-              balanceMatic={balanceMatic}
-              message="Balance"
-              icon={<CurrencyExchangeIcon />}
-              isLoadingBalance={isLoadingBalance}
             />
           </div>
         </div>

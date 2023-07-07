@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 const AdminBalanceCard = (props) => {
+  let balance = props.balanceUSD;
+  let formattedBalance = Number(balance.toString().match(/^\d+(?:\.\d{0,2})?/)).toFixed(2);
   return (
     <Card
     style={{
@@ -28,17 +30,20 @@ const AdminBalanceCard = (props) => {
               </h4>
             </section>
           </div>
-          <div className="col justify-content-between">
+          <div className="col justify-content-between" style={{padding:'20px'}}>
             {props.isLoadingBalance ? (
               <WhiteSpinner />
             ) : (
               <>
                 <h4 className={props.hoverH4}>
-                  USD($): {props.balanceUSD?.toFixed(2)}
+                  USD($): {formattedBalance}
                 </h4>
-                <h4 className={props.hoverH4}>
+                {props.showMatic===true &&(
+                  <h4 className={props.hoverH4}>
                   MATIC: {props.balanceMatic?.toFixed(4)}
                 </h4>
+                )}
+                
               </>
             )}
           </div>
