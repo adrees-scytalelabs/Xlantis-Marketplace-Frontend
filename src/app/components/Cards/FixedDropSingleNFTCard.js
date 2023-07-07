@@ -1,16 +1,27 @@
 import { Card, CardContent, Typography } from "@mui/material";
 import React from "react";
 import { Col, Row } from "react-bootstrap";
+
 const FixedDropSingleNFTCard = (props) => {
+
   let incNum = (max) => {
-    if (props.num < max) {
-      props.setNum(Number(props.num) + 1);
-    } else {
+    if (props.singleNFTPrice * Number(props.num + 1) > 999999.99) {
       props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value can't be greater than token supply");
+      props.setSnackbarMessage(
+        "Total buying price cannot be greater than $999,999.99"
+      );
       props.setSnackbarOpen(true);
+    } else {
+      if (props.num < max) {
+        props.setNum(Number(props.num) + 1);
+      } else {
+        props.setSnackbarSeverity("error");
+        props.setSnackbarMessage("Value can't be greater than token supply");
+        props.setSnackbarOpen(true);
+      }
     }
   };
+
   let decNum = () => {
     if (props.num > 1) {
       props.setNum(props.num - 1);
@@ -20,10 +31,11 @@ const FixedDropSingleNFTCard = (props) => {
       props.setSnackbarOpen(true);
     }
   };
+
   const handleKeyPress = (event) => {
     const keyCode = event.which || event.keyCode;
     const char = String.fromCharCode(keyCode);
-  
+
     // Check if the character is a number
     if (!/^\d+$/.test(char)) {
       // If not, prevent the input
@@ -33,10 +45,10 @@ const FixedDropSingleNFTCard = (props) => {
       event.preventDefault();
     }
   };
-  
+
   const handleChange = (event) => {
     const value = event.target.value;
-     if (value === "") {
+    if (value === "") {
       props.setNum(value);
     } else if (value < 1) {
       props.setSnackbarSeverity("error");
@@ -45,6 +57,12 @@ const FixedDropSingleNFTCard = (props) => {
     } else if (value > props.orderListing?.supply) {
       props.setSnackbarSeverity("error");
       props.setSnackbarMessage("Value can't be greater than token supply");
+      props.setSnackbarOpen(true);
+    } else if (props.singleNFTPrice * value > 999999.99) {
+      props.setSnackbarSeverity("error");
+      props.setSnackbarMessage(
+        "Total buying price cannot be greater than $999,999.99"
+      );
       props.setSnackbarOpen(true);
     } else {
       props.setNum(value);
@@ -180,10 +198,8 @@ const FixedDropSingleNFTCard = (props) => {
           </Row>
         ) : null}
         {props.nftData.supplyType === "Variable" ? (
-          <Row 
-          style={{paddingTop: "25px"}}
-          >
-            <Col lg={3} xs={6} style={{paddingTop: "15px"}}>
+          <Row style={{ paddingTop: "25px" }}>
+            <Col lg={3} xs={6} style={{ paddingTop: "15px" }}>
               <Typography
                 variant="body1"
                 component="p"
@@ -200,7 +216,11 @@ const FixedDropSingleNFTCard = (props) => {
                 className="responsive-field"
                 style={{ border: "1px solid red", width: "100%" }}
               >
-                <button className="responsive-field-button" onClick={decNum} style={{backgroundColor:'transparent'}}>
+                <button
+                  className="responsive-field-button"
+                  onClick={decNum}
+                  style={{ backgroundColor: "transparent" }}
+                >
                   -
                 </button>
                 <input
@@ -210,11 +230,11 @@ const FixedDropSingleNFTCard = (props) => {
                   placeholder="1"
                   onKeyPress={handleKeyPress}
                   onChange={handleChange}
-                  style={{backgroundColor:'transparent'}}
+                  style={{ backgroundColor: "transparent" }}
                 />
                 <button
                   className="responsive-field-button"
-                  style={{backgroundColor:'transparent'}}
+                  style={{ backgroundColor: "transparent" }}
                   onClick={() => incNum(props.orderListing?.supply)}
                 >
                   +

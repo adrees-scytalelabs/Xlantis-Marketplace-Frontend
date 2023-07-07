@@ -1,5 +1,6 @@
 import { Box, Grid, Tooltip, Typography } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function NewNftTemplates({
   setProperties,
@@ -15,6 +16,21 @@ function NewNftTemplates({
   templateData,
   defaultTemplates,
 }) {
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [snackbarSeverity, setSnackbarSeverity] = useState("");
+
+  const handleSnackbarOpen = () => {
+    setSnackbarOpen(true);
+  };
+
+  const handleSnackbarClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setSnackbarOpen(false);
+  };
+
   const handleSelectTemplate = (e) => {
     setExtractedDataProps(null);
     //console.log(e.target.value, " Template selected!");
@@ -73,9 +89,15 @@ function NewNftTemplates({
 
   let handleRemoveProperty = (e, index) => {
     e.preventDefault();
-    let data = [...properties];
-    data.splice(index, 1);
-    setProperties(data);
+    if (properties.length === 1) {
+      setSnackbarMessage("Cannot Remove All Properties");
+      setSnackbarSeverity("error");
+      handleSnackbarOpen();
+    } else {
+      let data = [...properties];
+      data.splice(index, 1);
+      setProperties(data);
+    }
   };
 
   let handleAddProperty = (e) => {
@@ -652,6 +674,12 @@ function NewNftTemplates({
           ))
         )}
       </div>
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

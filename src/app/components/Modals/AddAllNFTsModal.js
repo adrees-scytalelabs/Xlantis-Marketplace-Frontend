@@ -13,7 +13,7 @@ import { Modal, Spinner } from "react-bootstrap";
 const AddAllNFTsModal = (props) => {
   const changePrice = (e) =>{
     props.setPrice(e.target.value);
-    if(e.target.value<0.5){
+    if(e.target.value<0.5 || e.target.value > 999999.99){
       props.setIsPriceValid(false)
     }
     else{
@@ -59,7 +59,7 @@ const AddAllNFTsModal = (props) => {
             <br />
             {props.isPriceValid ? null : (
               <span style={{ fontStyle: "bold", color: "red" }}>
-                *Note: Price cannot be less than 0.5 or null
+                *Note: Price must be greater than $0.5 and less than $999,999.99
               </span>
             )}
           </div>

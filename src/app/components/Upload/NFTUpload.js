@@ -6,6 +6,7 @@ import UploadFile from "./UploadFile";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
 import { defaultProfile } from "../ImageURLs/URLs";
+import WhiteSpinner from "../Spinners/WhiteSpinner";
 
 function Model(props) {
   const { scene } = useGLTF(props.nftURI);
@@ -70,14 +71,57 @@ const NFTUpload = (props) => {
             </div>
           </div>
           <label>Select Preview Image</label>
-          <UploadFile
-            fileURL={props.previewImageURI ? props.previewImageURI : defaultProfile}
-            isUploading={props.isUploadingPreview}
-            changeFile={props.onChangePreviewImage}
-            class="co-12 col-md-auto profile-img mr-3"
-            accept=".png,.jpg,.jpeg,.gif"
-            inputId="uploadPreviewImg1"
-          />
+          <div className="filter-widget">
+            <div className="form-group">
+              <div className="row no-gutters align-items-end justify-content-start">
+                <div className="co-12 col-md-auto profile-img mr-3">
+                  {props.isUploadingPreview ? (
+                    <div
+                      className="text-center"
+                      style={{
+                        border: "1px solid white",
+                        height: "250px",
+                        width: "220px",
+                      }}
+                    >
+                      <div style={{ marginTop: "50%" }}>
+                        <WhiteSpinner />
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={
+                        props.previewImageURI
+                          ? props.previewImageURI
+                          : defaultProfile
+                      }
+                      alt="Selfie"
+                    />
+                  )}
+                </div>
+                <div className="co-12 col-md-auto">
+                  <label htmlFor="uploadPreviewImg" className="uploadLabel">
+                    {props.isUploadingPreview ? (
+                      <WhiteSpinner />
+                    ) : (
+                      "Choose File"
+                    )}
+                  </label>
+                  <input
+                    name="sampleFile"
+                    type="file"
+                    id="uploadPreviewImg"
+                    accept=".png,.jpg,.jpeg,.gif"
+                    onChange={props.onChangePreviewImage}
+                    hidden
+                  />
+                  <small className="form-text text-muted">
+                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : props.isMp3File ? (
         <div>
@@ -125,14 +169,57 @@ const NFTUpload = (props) => {
             </div>
           </div>
           <label>Select Preview Image</label>
-          <UploadFile
-            fileURL={props.previewImageURI ? props.previewImageURI : defaultProfile}
-            isUploading={props.isUploadingPreview}
-            changeFile={props.onChangePreviewImage}
-            class="co-12 col-md-auto profile-img mr-3"
-            accept=".png,.jpg,.jpeg,.gif"
-            inputId="uploadPreviewImg"
-          />
+          <div className="filter-widget">
+            <div className="form-group">
+              <div className="row no-gutters align-items-end justify-content-start">
+                <div className="co-12 col-md-auto profile-img mr-3">
+                  {props.isUploadingPreview ? (
+                    <div
+                      className="text-center"
+                      style={{
+                        border: "1px solid white",
+                        height: "250px",
+                        width: "220px",
+                      }}
+                    >
+                      <div style={{ marginTop: "50%" }}>
+                        <WhiteSpinner />
+                      </div>
+                    </div>
+                  ) : (
+                    <img
+                      src={
+                        props.previewImageURI
+                          ? props.previewImageURI
+                          : defaultProfile
+                      }
+                      alt="Selfie"
+                    />
+                  )}
+                </div>
+                <div className="co-12 col-md-auto">
+                  <label htmlFor="uploadPreviewImg" className="uploadLabel">
+                    {props.isUploadingPreview ? (
+                      <WhiteSpinner />
+                    ) : (
+                      "Choose File"
+                    )}
+                  </label>
+                  <input
+                    name="sampleFile"
+                    type="file"
+                    id="uploadPreviewImg"
+                    accept=".png,.jpg,.jpeg,.gif"
+                    onChange={props.onChangePreviewImage}
+                    hidden
+                  />
+                  <small className="form-text text-muted">
+                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                  </small>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div>

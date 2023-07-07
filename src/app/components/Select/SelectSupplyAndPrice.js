@@ -17,12 +17,12 @@ function SelectSupplyAndPrice({
 }) {
   const [errorMessage, setErrorMessage] = useState("");
   const changePrice = (e) =>{
-    setPrice(e.target.value);
-    if(e.target.value<0.5){
-      setErrorMessage("Value must be greater than or equal to 0.5");
-      setError(true)
-    }
-    else{
+    const value = e.target.value;
+    setPrice(value);
+    if (value < 0.5 || value > 999999.99) {
+      setErrorMessage("Value must be greater than $0.5 and less than $999,999.99");
+      setError(true);
+    } else {
       setError(false);
     }
   }
