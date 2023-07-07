@@ -493,7 +493,7 @@ export const checkDomain = (params) => {
 };
 
 export const getMaticBalance = () => {
-  return Axios.get(`/user/balances`);
+  return Axios.get(`/wallet-analytics/funds/`);
 };
 
 export const getCategoriesList = () => {
