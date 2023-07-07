@@ -109,7 +109,6 @@ const FixedPriceDropNFTs = () => {
       .then((response) => {
         console.log("data from backend", response);
         setDropData(response.data.data);
-        setOrderListing(response.data.orderListingData);
         handleCloseBackdrop();
       })
       .catch((error) => {
@@ -210,7 +209,6 @@ const FixedPriceDropNFTs = () => {
                           titleImage={titleImage}
                           dropbanner={bannerImage}
                           data={i}
-                          orderListing={orderListing[index]}
                           type={"Epic"}
                           saleType={saleType}
                           description={description}

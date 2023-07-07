@@ -67,7 +67,6 @@ function FixedDropNFTCard(props) {
       to={`/${marketPlace}/fixedDropNFTHome/${singleNFTid}`}
       state={{
         nftDetails: props.data,
-        orderListing: props.orderListing,
         dropId: props.data.dropId,
         saleType: props.saleType,
         description: props.description,
@@ -161,7 +160,7 @@ function FixedDropNFTCard(props) {
             }}
           >
             <strong>Token Supply: </strong>
-            {props.orderListing.supply}
+            {props.data?.currentOrderListingId?.supply}
           </Typography>
         </CardContent>
       </Card>
