@@ -67,7 +67,6 @@ function MyDropNFTs(props) {
     };
     getNFTsFromDropPaginated(location.state.dropId, start, end, data)
       .then((response) => {
-        console.log("NFT data",response.data);
         let nfts = response.data.data;
         let newState = nfts.map((obj) => {
           return { ...obj, isPlaying: false };

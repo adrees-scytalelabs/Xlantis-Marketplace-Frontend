@@ -2,7 +2,6 @@ import { Card, CardContent, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { Col, Row } from "react-bootstrap";
 const DropSingleNFTCard = (props) => {
-  console.log("data in props",props)
   return (
     <Card sx={{ backgroundColor: "#000" }}>
       <CardContent>
