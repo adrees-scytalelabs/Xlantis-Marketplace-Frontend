@@ -6,7 +6,7 @@ function TopUpForm({ amount, setAmount, handleTopUpAmount }) {
   const changeAmount = (e) =>{
     setAmount(e.target.value);
     if(e.target.value<0.5){
-      setErrorMessage("Value must be greater than 0.5");
+      setErrorMessage("Value must be greater than or equal to 0.5");
       setError(true)
     }
     else{

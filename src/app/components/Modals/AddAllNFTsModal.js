@@ -11,9 +11,15 @@ import React from "react";
 import { Modal, Spinner } from "react-bootstrap";
 
 const AddAllNFTsModal = (props) => {
-  // useEffect(() => {
-  //   console.log("Props are: ", props);
-  // }, []);
+  const changePrice = (e) =>{
+    props.setPrice(e.target.value);
+    if(e.target.value<0.5){
+      props.setIsPriceValid(false)
+    }
+    else{
+      props.setIsPriceValid(true);
+    }
+  }
   return (
     <Modal show={props.show} onHide={props.handleClose} centered scrollable>
       <Modal.Header closeButton>
@@ -40,8 +46,10 @@ const AddAllNFTsModal = (props) => {
               placeholder={0}
               className="form-control"
               onChange={(e) => {
-                if (e.target.value >= 0) {
-                  props.setPrice(e.target.value);
+                const value = e.target.value;
+                const regex = /^\d*\.?\d{0,2}$/;
+                if (regex.test(value)) {
+                  changePrice(e)
                 }
               }}
             />
@@ -51,7 +59,7 @@ const AddAllNFTsModal = (props) => {
             <br />
             {props.isPriceValid ? null : (
               <span style={{ fontStyle: "bold", color: "red" }}>
-                *Note: Price cannot be 0 or null
+                *Note: Price cannot be less than 0.5 or null
               </span>
             )}
           </div>
