@@ -64,7 +64,7 @@ const MyCollectionsCard = (props) => {
               component="p"
             >
               <strong>Category Name: </strong>
-              {props.i.category}
+              {truncate(props.i.category, 50)}
             </Typography>
           </div>
         </CardContent>

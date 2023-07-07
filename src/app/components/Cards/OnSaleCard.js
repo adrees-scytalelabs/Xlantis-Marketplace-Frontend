@@ -76,17 +76,34 @@ const OnSaleCard = (props) => {
                     sx={{
                       color: "#999",
                       fontFamily: "inter",
-                      fontSize: "12px",
+                      fontSize: "0.985rem",
+                      marginTop: "0.3rem",
                     }}
                   >
+                    <strong>Description: </strong>
                     {truncate(props.i.description, 50)}
+                  </Typography>
+                </div>
+                <div>
+                <Typography
+                    variant="body2"
+                    component="p"
+                    sx={{
+                      color: "#999",
+                      fontFamily: "inter",
+                      fontSize: "0.985rem",
+                      marginTop: "0.3rem",
+                    }}
+                  >
+                    <strong>Category Name: </strong>
+                    {truncate(props.i.category, 50)}
                   </Typography>
                 </div>
               </div>
               <div className=" text-right">
                 <p className="nftPrice mb-0 p-0">
                   {props.i.NFTIds.length > 1
-                    ? `${props.i.NFTIds.length} NFTs`
+                    ? `${props.i.NFTIds.length} NFT(s)`
                     : `${props.i.NFTIds.length} NFT`}
                 </p>
               </div>

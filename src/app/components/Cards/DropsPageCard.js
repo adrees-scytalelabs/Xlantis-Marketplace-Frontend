@@ -66,7 +66,7 @@ const DropsPageCard = (props) => {
                 }}
               >
                 <strong>Category Name: </strong>
-                {props.dropDetails.category}
+                {truncate(props.dropDetails.category, 70)}
               </Typography>
             </div>
           </div>
