@@ -37,6 +37,7 @@ const OnSaleCard = (props) => {
               imageURL: props.i.image,
               dropTitle: props.i.title,
               marketplaceId: props.marketplaceId,
+              dropId: props.i._id,
             }}
             style={{ width: "100%" }}
           >
@@ -85,7 +86,7 @@ const OnSaleCard = (props) => {
                   </Typography>
                 </div>
                 <div>
-                <Typography
+                  <Typography
                     variant="body2"
                     component="p"
                     sx={{

@@ -57,10 +57,11 @@ const NFTUpload = (props) => {
                   )}
                 </label>
                 <input
+                  disabled={props.isUploadingIPFS}
                   name="sampleFile"
                   type="file"
                   id="uploadGlbFile"
-                  accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                  accept=".png,.jpg,.jpeg,.gif,.mp3"
                   onChange={props.onChangeFile}
                   hidden
                 />
@@ -155,10 +156,11 @@ const NFTUpload = (props) => {
                   )}
                 </label>
                 <input
+                  disabled={props.isUploadingIPFS}
                   name="sampleFile"
                   type="file"
                   id="uploadMp3"
-                  accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+                  accept=".png,.jpg,.jpeg,.gif,.mp3"
                   onChange={props.onChangeFile}
                   hidden
                 />
@@ -221,6 +223,48 @@ const NFTUpload = (props) => {
             </div>
           </div>
         </div>
+      ) : props.isGIFFile ? (
+        <div className="filter-widget">
+          <div className="form-group">
+            <div className="row no-gutters align-items-end justify-content-start">
+              <div className="co-12 col-md-auto profile-img mr-3">
+                {props.isUploadingIPFS ? (
+                  <div
+                    className="text-center"
+                    style={{
+                      border: "1px solid white",
+                      height: "250px",
+                      width: "220px",
+                    }}
+                  >
+                    <div style={{ marginTop: "50%" }}>
+                      <WhiteSpinner />
+                    </div>
+                  </div>
+                ) : (
+                  <img src={props.nftURI} alt="Selfie" />
+                )}
+              </div>
+              <div className="co-12 col-md-auto">
+                <label htmlFor="uploadPreviewImg" className="uploadLabel">
+                  {props.isUploadingIPFS ? <WhiteSpinner /> : "Choose File"}
+                </label>
+                <input
+                  disabled={props.isUploadingIPFS}
+                  name="sampleFile"
+                  type="file"
+                  id="uploadPreviewImg"
+                  accept=".png,.jpg,.jpeg,.gif,.mp3"
+                  onChange={props.onChangeFile}
+                  hidden
+                />
+                <small className="form-text text-muted">
+                  Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                </small>
+              </div>
+            </div>
+          </div>
+        </div>
       ) : (
         <div>
           <UploadFile
@@ -228,7 +272,7 @@ const NFTUpload = (props) => {
             isUploading={props.isUploadingIPFS}
             changeFile={props.onChangeFile}
             class="col-12 col-md-auto profile-img mr-3"
-            accept=".png,.jpg,.jpeg,.gif,.glb,.mp3"
+            accept=".png,.jpg,.jpeg,.gif,.mp3"
             inputId="upload"
           />
         </div>

@@ -59,6 +59,7 @@ const UploadFile = (props) => {
               </Tooltip>
             )}
             <input
+              disabled={props.isUploading}
               name="sampleFile"
               type="file"
               id={props.inputId}
