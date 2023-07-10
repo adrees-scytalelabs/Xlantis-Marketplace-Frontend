@@ -113,9 +113,17 @@ function TopUp(props) {
     };
     topUpAmount(data)
       .then((response) => {
-        localStorage.setItem("sessionId", response.data.checkoutSessionId);
-        window.location.replace(response.data.sessionUrl);
-        handleCloseBackdrop();
+        console.log("Response from top up endpoint: ", response);
+        if (response.data.success === false) {
+          setSnackbarSeverity(response.data.errorType);
+          setSnackbarMessage(response.data.message);
+          handleSnackbarOpen();
+          handleCloseBackdrop();
+        } else {
+          localStorage.setItem("sessionId", response.data.checkoutSessionId);
+          window.location.replace(response.data.sessionUrl);
+          handleCloseBackdrop();
+        }
       })
       .catch((error) => {
         if (process.env.NODE_ENV === "development") {
@@ -148,7 +156,10 @@ function TopUp(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="col-12 col-lg-5 col-md-5 col-sm-5 col-xl-5 mr-sm-3 mb-2 mb-sm-3 totalNftsAdminDash">
         <AdminBalanceCard
