@@ -191,28 +191,6 @@ function AdminDashboardDefaultScreen(props) {
                   hoverH1={
                     hover ? "superAdminBalanceHover" : "superAdminBalance"
                   }
-                  balanceUSD={balanceUSD}
-                  balanceMatic={balanceMatic}
-                  message="Wallet Balance"
-                  showMatic={true}
-                  icon={<CurrencyExchangeIcon />}
-                />
-              </div>
-            </div>
-            <div className="col-12 col-sm-6 col-md-6 col-lg-4 mb-4">
-              <div style={cardContainerStyle}>
-                <AdminBalanceCard
-                  onMouseEnter={() => setHover(true)}
-                  onMouseLeave={() => setHover(false)}
-                  linkTo={``}
-                  hoverH4={
-                    hover
-                      ? "totalNftsAdminDashHeadingHover totalNftsAdminDashHeading"
-                      : "totalNftsAdminDashHeading"
-                  }
-                  hoverH1={
-                    hover ? "superAdminBalanceHover" : "superAdminBalance"
-                  }
                   balanceUSD={adminBalance}
                   message="USD Balance"
                   showMatic={false}
