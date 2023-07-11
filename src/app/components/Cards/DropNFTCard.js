@@ -83,12 +83,18 @@ const DropNFTCard = (props) => {
               >
                 {truncate(props.details.title, 15)}
               </Typography>
-            </div>
+            </div>    
             <Typography
               variant="body2"
               component="p"
-              sx={props.cardClasses.cardDescriptions}
+              sx={{
+                color: "#999",
+                fontFamily: "inter",
+                fontSize: "0.985rem",
+                marginTop: "0.3rem",
+              }}
             >
+              <strong>Description : {""}</strong>
               {truncate(props.details.description, 50)}
             </Typography>
           </div>
