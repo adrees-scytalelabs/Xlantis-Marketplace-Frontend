@@ -8,7 +8,11 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-import { DropBannerDefaultImage, defaultProfile } from "../../../components/ImageURLs/URLs";
+import {
+  DropBannerDefaultImage,
+  defaultProfile,
+} from "../../../components/ImageURLs/URLs";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 const styles = {
   root: {
     flexGrow: 1,
@@ -68,12 +72,8 @@ const FixedPriceDropNFTs = () => {
   const [orderListing, setOrderListing] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
-  const [titleImage, setTitleImage] = useState(
-    defaultProfile
-  );
-  const [bannerImage, setBannerImage] = useState(
-    DropBannerDefaultImage
-  );
+  const [titleImage, setTitleImage] = useState(defaultProfile);
+  const [bannerImage, setBannerImage] = useState(DropBannerDefaultImage);
   let navigate = useNavigate();
   const dropID = useParams();
   const location = useLocation();
@@ -101,11 +101,9 @@ const FixedPriceDropNFTs = () => {
   };
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
-
     const version = Cookies.get("Version");
-    //console.log("version", version);
-    let marketplaceId = location.state.marketplaceId
-    getNFTsFromDropPaginatedWOBody(dropId, start, end,marketplaceId)
+    let marketplaceId = location.state.marketplaceId;
+    getNFTsFromDropPaginatedWOBody(dropId, start, end, marketplaceId)
       .then((response) => {
         console.log("data from backend", response);
         setDropData(response.data.data);
@@ -186,41 +184,45 @@ const FixedPriceDropNFTs = () => {
                 </div>
               </div>
               <div className="row no-gutters w-100">
-                <Grid
-                  container
-                  spacing={3}
-                  direction="row"
-                  justifyContent="flex-start"
-                  style={{ marginBottom: "24px" }}
-                >
-                  {dropData.length !== 0 &&
-                    dropData?.map((i, index) => (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={3}
-                        lg={2}
-                        spacing={1}
-                        direction="row"
-                        key={index}
-                      >
-                        <FixedDropNFTCard
-                          titleImage={titleImage}
-                          dropbanner={bannerImage}
-                          data={i}
-                          type={"Epic"}
-                          saleType={saleType}
-                          description={description}
-                          startTime={startTime}
-                          endTime={endTime}
-                          classes={styles}
-                          cardClasses={cardStyles}
-                          marketplaceId={location.state.marketplaceId}
-                        />
-                      </Grid>
-                    ))}
-                </Grid>
+                {open ? (
+                  <CircularBackdrop open={open} />
+                ) : (
+                  <Grid
+                    container
+                    spacing={3}
+                    direction="row"
+                    justifyContent="flex-start"
+                    style={{ marginBottom: "24px" }}
+                  >
+                    {dropData.length !== 0 &&
+                      dropData?.map((i, index) => (
+                        <Grid
+                          item
+                          xs={12}
+                          sm={6}
+                          md={3}
+                          lg={2}
+                          spacing={1}
+                          direction="row"
+                          key={index}
+                        >
+                          <FixedDropNFTCard
+                            titleImage={titleImage}
+                            dropbanner={bannerImage}
+                            data={i}
+                            type={"Epic"}
+                            saleType={saleType}
+                            description={description}
+                            startTime={startTime}
+                            endTime={endTime}
+                            classes={styles}
+                            cardClasses={cardStyles}
+                            marketplaceId={location.state.marketplaceId}
+                          />
+                        </Grid>
+                      ))}
+                  </Grid>
+                )}
               </div>
             </div>
           </>
