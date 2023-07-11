@@ -11,13 +11,16 @@ export const getHeaderNotification = createAsyncThunk(
     axios.defaults.headers.common[
       "Authorization"
     ] = `Bearer ${sessionStorage.getItem("Authorization")}`;
-    console.log("auth checker",sessionStorage.getItem("Authorization"))
+    console.log("auth checker", sessionStorage.getItem("Authorization"));
     try {
       const resp = await axios(`/notifications/${name.start}/${name.end}`);
       console.log("reduxResp notificiation", resp);
-      sessionStorage.setItem("notification",JSON.stringify(resp.data.notifications));
+      sessionStorage.setItem(
+        "notification",
+        JSON.stringify(resp.data.notifications)
+      );
       // console.log("i am here",resp.data.notifications)
-      name.setNotificationsList(resp.data.notifications)
+      name.setNotificationsList(resp.data.notifications.reverse()); // showing latest notification on top
       return resp.data;
     } catch (error) {
       if (process.env.NODE_ENV === "development") {

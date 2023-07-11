@@ -437,11 +437,7 @@ function AddNFT(props) {
   };
 
   const handleAddAllNFTs = (e, price) => {
-    if (
-      !price ||
-      price < 0.5 ||
-      price > 999999.99
-    ) {
+    if (!price || price < 0.5 || price > 999999.99) {
       setIsCollectionPriceValid(false);
     } else {
       setIsAddingAllNFTs(true);
@@ -488,7 +484,7 @@ function AddNFT(props) {
         .catch((error) => {
           console.log("Error from adding all NFTs in drop: ", error.response);
           let variant = "error";
-          setSnackbarMessage("Error while adding NFTs.");
+          setSnackbarMessage(error?.response?.data?.message); // response message in case of error is shown as it is coming from backend
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           setIsAddingAllNFTs(false);
@@ -965,6 +961,7 @@ function AddNFT(props) {
         }
         addNFTToDrop(data).then(
           async (response) => {
+            console.log("Response from adding NFTs in drop: ", response);
             setGrid(true);
             setIsAdded(true);
             setDisabledUpdateButton(false);
