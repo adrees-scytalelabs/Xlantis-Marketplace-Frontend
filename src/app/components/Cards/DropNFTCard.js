@@ -6,6 +6,7 @@ import CornerRibbon from "react-corner-ribbon";
 import { truncate } from "../../assets/js/utils";
 
 const DropNFTCard = (props) => {
+  console.log("props in drop card of nfts", props);
   return (
     <Card
       variant="outlined"
@@ -61,14 +62,14 @@ const DropNFTCard = (props) => {
             )}
           </div>
         ) : null}
-        {props.details.currentOrderListingId.isSold === true ? (
+        {props?.details?.currentOrderListingId?.supply === 0 ? (
           <CornerRibbon
             position="top-right"
             fontColor="#f0f0f0"
             backgroundColor="#f44336"
             style={{ fontWeight: "bold" }}
           >
-            SOLD
+            <Typography variant="h6"> Sold</Typography>
           </CornerRibbon>
         ) : null}
       </div>
