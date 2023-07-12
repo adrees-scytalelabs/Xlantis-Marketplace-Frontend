@@ -166,7 +166,7 @@ function AdminDashboard(props) {
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
       setUserId(userIdentity);
-      getNotifications(0, 10);
+      getNotifications(0, 2000);
     }
   }, [notificationLoading]);
 
@@ -182,7 +182,7 @@ function AdminDashboard(props) {
 
     axios.patch("/notifications/hide", data).then(
       (response) => {
-        getNotifications(0, 10);
+        getNotifications(0, 2000);
       },
       (error) => {
         console.log("Error on disable: ", error);
