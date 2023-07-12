@@ -8,7 +8,10 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-import { DropBannerDefaultImage, defaultProfile } from "../../../components/ImageURLs/URLs";
+import {
+  DropBannerDefaultImage,
+  defaultProfile,
+} from "../../../components/ImageURLs/URLs";
 const styles = {
   root: {
     flexGrow: 1,
@@ -68,12 +71,8 @@ const FixedPriceDropNFTs = () => {
   const [orderListing, setOrderListing] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
-  const [titleImage, setTitleImage] = useState(
-    defaultProfile
-  );
-  const [bannerImage, setBannerImage] = useState(
-    DropBannerDefaultImage
-  );
+  const [titleImage, setTitleImage] = useState(defaultProfile);
+  const [bannerImage, setBannerImage] = useState(DropBannerDefaultImage);
   let navigate = useNavigate();
   const dropID = useParams();
   const location = useLocation();
@@ -104,8 +103,8 @@ const FixedPriceDropNFTs = () => {
 
     const version = Cookies.get("Version");
     //console.log("version", version);
-    let marketplaceId = location.state.marketplaceId
-    getNFTsFromDropPaginatedWOBody(dropId, start, end,marketplaceId)
+    let marketplaceId = location.state.marketplaceId;
+    getNFTsFromDropPaginatedWOBody(dropId, start, end, marketplaceId)
       .then((response) => {
         console.log("data from backend", response);
         setDropData(response.data.data);
@@ -132,7 +131,11 @@ const FixedPriceDropNFTs = () => {
     <div className="main-wrapper">
       <div className="home-section home-full-height">
         <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} role={null} />
+          <HeaderHome
+            selectedNav={"Home"}
+            role={null}
+            marketplaceId={location.state.marketplaceId}
+          />
         </div>
         {!dropData ? (
           <div
