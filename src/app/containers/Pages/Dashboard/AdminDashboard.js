@@ -219,6 +219,7 @@ function AdminDashboard(props) {
     balanceSpentHistory: "",
     templates: "",
     notifications: "",
+    logout:"",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);
