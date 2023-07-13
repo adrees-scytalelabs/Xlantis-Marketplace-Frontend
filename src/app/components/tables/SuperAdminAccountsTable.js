@@ -48,7 +48,7 @@ function SuperAdminTable(props) {
       functionName === "handleEnableWallet"
     )
       setMessage("Do you really want to enable this admin.");
-    else setMessage("Do you really want to disable this admin.");
+    else if (functionName==="handleDelete") setMessage("Do you really want to delete this admin.");
     setId(id);
     setWarningModalShow(true);
     if (functionName === "handleVerify")
@@ -65,6 +65,8 @@ function SuperAdminTable(props) {
       setGenericFunction(() => props.handleWalletDisable);
     else if (functionName === "handleEnableWallet")
       setGenericFunction(() => props.handleEnableWallet);
+      else if (functionName === "handleDelete")
+      setGenericFunction(() => props.handleDelete);
   };
   const handleWarningModalClose = () => {
     setWarningModalShow(false);
@@ -107,6 +109,13 @@ function SuperAdminTable(props) {
               <th sx={styles.tableHeader}>
                 <div className="row no-gutters justify-content-center align-items-center">
                   Approval Status
+                </div>
+              </th>
+            )}
+             {props.approval === true && (
+              <th sx={styles.tableHeader}>
+                <div className="row no-gutters justify-content-center align-items-center">
+                  Delete Account
                 </div>
               </th>
             )}
@@ -177,6 +186,20 @@ function SuperAdminTable(props) {
                           }}
                         >
                           Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                       {props.approval === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleDelete");
+                          }}
+                        >
+                          Delete
                         </Button>
                       </div>
                     </td>
@@ -268,6 +291,20 @@ function SuperAdminTable(props) {
                           }}
                         >
                           Approve
+                        </Button>
+                      </div>
+                    </td>
+                  )}
+                    {props.approval === true && (
+                    <td>
+                      <div className="row no-gutters justify-content-center align-items-center">
+                        <Button
+                          sx={styles.approveBtn}
+                          onClick={(e) => {
+                            handleVerify(e, i._id, "handleDelete");
+                          }}
+                        >
+                          Delete
                         </Button>
                       </div>
                     </td>

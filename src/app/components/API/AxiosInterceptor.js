@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -209,7 +209,9 @@ export const enableAdminV1 = (body) => {
 export const enableAdminV2 = (body) => {
   return Axios.patch(`/super-admin/enable?userType=v2`, body);
 };
-
+export const removeAdmin = (body) => {
+  return Axios.patch(`/super-admin/admin/remove`, body);
+};
 export const updateDropStartTime = (body) => {
   return Axios.patch(`/drop/start-time`, body);
 };

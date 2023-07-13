@@ -78,7 +78,34 @@ function AccountApprovalDefaultScreen(props) {
       }
     );
   };
+  const handleDelete = (e,id) =>{
+    e.preventDefault();
+    handleShowBackdrop();
+    let data = {
+      adminId: id,
+    };
 
+    axios.patch(`/super-admin/admin/remove`, data).then(
+      (response) => {
+        handleCloseBackdrop();
+        getUnverifiedAdminsSSO(0, rowsPerPage);
+        getUnverifiedAdminsWallet(0, rowsPerPage);
+        let variant = "success";
+        setSnackbarMessage("Admin Remove Successfully.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      },
+      (error) => {
+        console.log("Error on remove: ", error);
+        console.log("Error on remove: ", error.response);
+        handleCloseBackdrop();
+        let variant = "error";
+        setSnackbarMessage("Unable to remove Admin.");
+        setSnackbarSeverity(variant);
+        handleSnackbarOpen();
+      }
+    );
+  }
   useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
     getUnverifiedAdminsWallet(0, rowsPerPage);
@@ -188,6 +215,7 @@ function AccountApprovalDefaultScreen(props) {
               approval={true}
               handleVerifyWallet={handleVerifyWallet}
               handleVerify={handleVerify}
+              handleDelete={handleDelete}
             />
           </div>
           <TablePagination
