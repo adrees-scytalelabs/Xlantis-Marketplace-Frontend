@@ -618,6 +618,7 @@ function AddNFT(props) {
       };
       updateDropStartTime(data).then(
         (response) => {
+          console.log("Response from updating drop start time: ", response);
           getTxCost(event);
           let variant = "success";
           setSnackbarMessage("Time Successfully Updated.");
