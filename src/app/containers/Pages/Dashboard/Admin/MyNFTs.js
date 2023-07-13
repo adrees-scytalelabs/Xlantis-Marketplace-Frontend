@@ -32,41 +32,47 @@ const useStyles = {
 };
 
 const makeTheme = createTheme({
-  overrides: {
+  components: {
     MuiTablePagination: {
-      caption: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      base: {
-        border: 0,
-        color: "#fff",
-        padding: "0 30px",
-        fontWeight: "bold",
-        fontFamily: "orbitron",
-      },
-      label: {
-        textTransform: "capitalize",
-        color: "#fff",
-      },
-      input: {
-        fontWeight: "bold",
-        color: "#fff",
-      },
-      body2: {
-        fontWeight: "bold",
-        color: "#fff",
-        fontFamily: "orbitron",
-      },
-      selectIcon: {
-        color: "#fff",
+      //each component having its own style overrides
+      styleOverrides: {
+        caption: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        root: {
+          color: "#ffffff",
+        },
+        base: {
+          border: 0,
+          color: "#fff",
+          padding: "0 30px",
+          fontWeight: "bold",
+          fontFamily: "orbitron",
+        },
+        label: {
+          textTransform: "capitalize",
+          color: "#fff",
+        },
+        input: {
+          fontWeight: "bold",
+          color: "#fff",
+        },
+        body2: {
+          fontWeight: "bold",
+          color: "#fff",
+          fontFamily: "orbitron",
+        },
+        selectIcon: {
+          color: "#fff",
+        },
       },
     },
   },
 });
 
 function MyNFTs(props) {
-  const [rowsPerPage, setRowsPerPage] = useState(8);
+  const [rowsPerPage, setRowsPerPage] = useState(4);
   const [totalNfts, setTotalNfts] = useState(0);
   const [page, setPage] = useState(0);
   const [tokenList, setTokenList] = useState([]);
@@ -116,7 +122,7 @@ function MyNFTs(props) {
   };
 
   useEffect(() => {
-    getMyNFTs(0, rowsPerPage);
+    getMyNFTs(0, 10000); //this will be changed after changing from backend
   }, []);
 
   useEffect(() => {
@@ -139,12 +145,12 @@ function MyNFTs(props) {
     setPage(newPage);
     console.log("Start", newPage * rowsPerPage);
     console.log("End", newPage * rowsPerPage + rowsPerPage);
-    getMyNFTs(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
+    // getMyNFTs(newPage * rowsPerPage, newPage * rowsPerPage + rowsPerPage);
   };
 
   const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    getMyNFTs(0, parseInt(event.target.value, 10));
+    setRowsPerPage(+event.target.value);
+    // getMyNFTs(0, parseInt(event.target.value, 10));
     setPage(0);
   };
 
@@ -166,7 +172,10 @@ function MyNFTs(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className={`card-body px-0 ${!tokenList.length && "page-height"}`}>
         <div className="form-group">
@@ -180,11 +189,14 @@ function MyNFTs(props) {
             <MessageCard msg="No items to display"></MessageCard>
           ) : (
             <Grid container spacing={2} direction="row" justify="flex-start">
-              {tokenList.map((i, index) => (
-                <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
-                  <NFTCard data={i} />
-                </Grid>
-              ))}
+              {/* Slicing the NFT according to rows per page */}
+              {tokenList
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((i, index) => (
+                  <Grid item xs={12} sm={4} lg={3} xl={2} key={index}>
+                    <NFTCard data={i} />
+                  </Grid>
+                ))}
             </Grid>
           )}
         </div>

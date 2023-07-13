@@ -107,6 +107,7 @@ const TrendingAndTop = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    props?.setState(newValue)
   };
 
   const getWindowWidth = () => {
@@ -166,7 +167,6 @@ const TrendingAndTop = (props) => {
   }
 
   useEffect(() => {
-    console.log("now i am here and market place id", props.marketplaceId);
     const controller = new AbortController();
     getWindowWidth();
 

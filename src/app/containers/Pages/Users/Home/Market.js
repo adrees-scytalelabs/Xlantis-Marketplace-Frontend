@@ -14,6 +14,7 @@ function MarketPlace(props) {
   const [fixedPriceDrop, setFixedPriceDrop] = useState([]);
   const [fixedPriceLoaderOpen, setFixedPriceLoaderOpen] = useState(false);
   const [auctionLoaderOpen, setAuctionLoaderOpen] = useState(false);
+  const [state,setState]=useState()
 
   const handleCloseFixedPriceBackdrop = () => {
     setFixedPriceLoaderOpen(false);
@@ -73,7 +74,7 @@ function MarketPlace(props) {
     } else {
       getFixedPriceDrops(0, 4);
     }
-  }, []);
+  }, [state]);
 
   return (
     <div className="container-fluid">
@@ -100,6 +101,7 @@ function MarketPlace(props) {
               open={fixedPriceLoaderOpen}
               type={"fixedPriceDrops"}
               marketplaceId={location.state.marketplaceId}
+              setState={setState}
             />
           ) : null}
         </div>
@@ -121,6 +123,7 @@ function MarketPlace(props) {
               bidableDropLength={bidableDrop.length}
               open={auctionLoaderOpen}
               type={"bidableDrops"}
+              setState={setState}
             />
           ) : null}
         </div>
