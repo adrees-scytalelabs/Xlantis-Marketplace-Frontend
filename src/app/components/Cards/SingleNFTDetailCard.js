@@ -39,7 +39,31 @@ const SingleNFTDetailCard = (props) => {
               component="p"
               sx={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
-              <strong>Token Supply </strong>
+              <strong>Total Supply </strong>
+            </Typography>
+          </Col>
+          <Col>{props.nftDetail.totalSupply}</Col>
+        </Row>
+        <Row>
+          <Col>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
+            >
+              <strong>Available Supply </strong>
+            </Typography>
+          </Col>
+          <Col>{props.nftDetail.totalSupply-props.supply}</Col>
+        </Row>
+        <Row>
+          <Col>
+            <Typography
+              variant="body1"
+              component="p"
+              sx={{ color: "#F64D04", fontFamily: "orbitron" }}
+            >
+              <strong>Supply Sold </strong>
             </Typography>
           </Col>
           <Col>{props.supply}</Col>

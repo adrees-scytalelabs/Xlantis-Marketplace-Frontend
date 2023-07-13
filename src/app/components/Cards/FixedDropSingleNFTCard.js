@@ -3,45 +3,41 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 
 const FixedDropSingleNFTCard = (props) => {
-
   let incNum = (max) => {
-    if (props.singleNFTPrice * Number(props.num + 1) > 999999.99) {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage(
+    if (props?.singleNFTPrice * Number(props?.num + 1) > 999999.99) {
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage(
         "Total buying price cannot be greater than $999,999.99"
       );
-      props.setSnackbarOpen(true);
+      props?.setSnackbarOpen(true);
     } else {
-      if (props.num < max) {
-        props.setNum(Number(props.num) + 1);
+      if (props?.num < max) {
+        props?.setNum(Number(props?.num) + 1);
       } else {
-        props.setSnackbarSeverity("error");
-        props.setSnackbarMessage("Value can't be greater than token supply");
-        props.setSnackbarOpen(true);
+        props?.setSnackbarSeverity("error");
+        props?.setSnackbarMessage("Value can't be greater than token supply");
+        props?.setSnackbarOpen(true);
       }
     }
   };
 
   let decNum = () => {
-    if (props.num > 1) {
-      props.setNum(props.num - 1);
+    if (props?.num > 1) {
+      props?.setNum(props?.num - 1);
     } else {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value can't be negative");
-      props.setSnackbarOpen(true);
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage("Value can't be negative");
+      props?.setSnackbarOpen(true);
     }
   };
 
   const handleKeyPress = (event) => {
     const keyCode = event.which || event.keyCode;
     const char = String.fromCharCode(keyCode);
-
-    // Check if the character is a number
     if (!/^\d+$/.test(char)) {
-      // If not, prevent the input
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value must be greater than zero");
-      props.setSnackbarOpen(true);
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage("Value must be greater than zero");
+      props?.setSnackbarOpen(true);
       event.preventDefault();
     }
   };
@@ -49,23 +45,23 @@ const FixedDropSingleNFTCard = (props) => {
   const handleChange = (event) => {
     const value = event.target.value;
     if (value === "") {
-      props.setNum(value);
+      props?.setNum(value);
     } else if (value < 1) {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value must be greater than or equal to 1");
-      props.setSnackbarOpen(true);
-    } else if (value > props.orderListing?.supply) {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage("Value can't be greater than token supply");
-      props.setSnackbarOpen(true);
-    } else if (props.singleNFTPrice * value > 999999.99) {
-      props.setSnackbarSeverity("error");
-      props.setSnackbarMessage(
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage("Value must be greater than or equal to 1");
+      props?.setSnackbarOpen(true);
+    } else if (value > props?.orderListing?.supply) {
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage("Value can't be greater than token supply");
+      props?.setSnackbarOpen(true);
+    } else if (props?.singleNFTPrice * value > 999999.99) {
+      props?.setSnackbarSeverity("error");
+      props?.setSnackbarMessage(
         "Total buying price cannot be greater than $999,999.99"
       );
-      props.setSnackbarOpen(true);
+      props?.setSnackbarOpen(true);
     } else {
-      props.setNum(value);
+      props?.setNum(value);
     }
   };
   return (
@@ -91,7 +87,7 @@ const FixedDropSingleNFTCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {props.nftData.title}
+              {props?.nftData?.title}
             </Typography>
           </Col>
         </Row>
@@ -115,7 +111,7 @@ const FixedDropSingleNFTCard = (props) => {
               fontSize: "1rem",
             }}
           >
-            {props.nftData.description}
+            {props?.nftData?.description}
           </Col>
         </Row>
         <Row style={{ paddingBottom: "5px" }}>
@@ -138,10 +134,10 @@ const FixedDropSingleNFTCard = (props) => {
               fontSize: "1rem",
             }}
           >
-            {props.price} USD
+            {props?.price} USD
           </Col>
         </Row>
-        {props.nftData.supplyType ? (
+        {props?.nftData?.supplyType ? (
           <Row style={{ paddingBottom: "5px" }}>
             <Col lg={3} xs={6}>
               <Typography
@@ -165,37 +161,39 @@ const FixedDropSingleNFTCard = (props) => {
                 fontSize: "1rem",
               }}
             >
-              {props.nftData?.supplyType ? props.nftData?.supplyType : null}
+              {props?.nftData?.supplyType ? props?.nftData?.supplyType : null}
             </Col>
           </Row>
         ) : null}
-        {props.nftData?.currentOrderListingId?.supply ? (
-          <><Row style={{ paddingBottom: "5px" }}>
-            <Col lg={3} xs={6}>
-              <Typography
-                variant="body1"
-                component="p"
+        {props?.nftData?.currentOrderListingId?.supply ? (
+          <>
+            <Row style={{ paddingBottom: "5px" }}>
+              <Col lg={3} xs={6}>
+                <Typography
+                  variant="body1"
+                  component="p"
+                  style={{
+                    color: "#F64D04",
+                    fontFamily: "orbitron",
+                  }}
+                >
+                  <strong>Total Supply </strong>
+                </Typography>
+              </Col>
+              <Col
+                xs={6}
+                md={3}
+                lg={5}
                 style={{
-                  color: "#F64D04",
-                  fontFamily: "orbitron",
+                  color: "white",
+                  fontFamily: "inter",
+                  fontSize: "1rem",
                 }}
               >
-                <strong>Total Supply </strong>
-              </Typography>
-            </Col>
-            <Col
-              xs={6}
-              md={3}
-              lg={5}
-              style={{
-                color: "white",
-                fontFamily: "inter",
-                fontSize: "1rem",
-              }}
-            >
-              {props.nftData?.currentOrderListingId?.totalSupplyOnSale}
-            </Col>
-          </Row><Row style={{ paddingBottom: "5px" }}>
+                {props?.nftData?.currentOrderListingId?.totalSupplyOnSale}
+              </Col>
+            </Row>
+            <Row style={{ paddingBottom: "5px" }}>
               <Col lg={3} xs={6}>
                 <Typography
                   variant="body1"
@@ -218,7 +216,7 @@ const FixedDropSingleNFTCard = (props) => {
                   fontSize: "1rem",
                 }}
               >
-                {props.nftData?.currentOrderListingId?.supply}
+                {props?.nftData?.currentOrderListingId?.supply}
               </Col>
             </Row>
             <Row style={{ paddingBottom: "5px" }}>
@@ -244,12 +242,12 @@ const FixedDropSingleNFTCard = (props) => {
                   fontSize: "1rem",
                 }}
               >
-                {props.nftData?.currentOrderListingId?.supplySold}
+                {props?.nftData?.currentOrderListingId?.supplySold}
               </Col>
-            </Row></>
-          
+            </Row>
+          </>
         ) : null}
-        {props.nftData.supplyType === "Variable" ? (
+        {props?.nftData?.supplyType === "Variable" ? (
           <Row style={{ paddingTop: "25px" }}>
             <Col lg={3} xs={6} style={{ paddingTop: "15px" }}>
               <Typography
@@ -263,22 +261,21 @@ const FixedDropSingleNFTCard = (props) => {
                 <strong>Select Supply </strong>
               </Typography>
             </Col>
-            <Col xs={6} md={3} lg={2}>
+            <Col xs={6} md={3} lg={3} xl={2}>
               <div
                 className="responsive-field"
-                style={{ border: "1px solid red", width: "100%" }}
+                style={{ border: "1px solid red" }}
               >
                 <button
                   className="responsive-field-button"
                   onClick={decNum}
-                  style={{ backgroundColor: "transparent" }}
                 >
                   -
                 </button>
                 <input
-                  className="responsive-field-input"
+                  className="input"
                   type="number"
-                  value={props.num ?? ""}
+                  value={props?.num ?? ""}
                   placeholder="1"
                   onKeyPress={handleKeyPress}
                   onChange={handleChange}
@@ -287,7 +284,9 @@ const FixedDropSingleNFTCard = (props) => {
                 <button
                   className="responsive-field-button"
                   style={{ backgroundColor: "transparent" }}
-                  onClick={() => incNum(props.nftData?.currentOrderListingId?.supply)}
+                  onClick={() =>
+                    incNum(props?.nftData?.currentOrderListingId?.supply)
+                  }
                 >
                   +
                 </button>
