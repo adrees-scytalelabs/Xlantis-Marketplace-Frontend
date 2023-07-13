@@ -102,6 +102,7 @@ const FixedPriceDropNFTs = () => {
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
     const version = Cookies.get("Version");
+    //console.log("version", version);
     let marketplaceId = location.state.marketplaceId;
     getNFTsFromDropPaginatedWOBody(dropId, start, end, marketplaceId)
       .then((response) => {
@@ -131,7 +132,11 @@ const FixedPriceDropNFTs = () => {
       <Box flexGrow={1}>
         <div className="home-section home-full-height">
           <div style={{ minHeight: "95px" }}>
-            <HeaderHome selectedNav={"Market"} role={null} />
+          <HeaderHome
+            selectedNav={"Home"}
+            role={null}
+            marketplaceId={location.state.marketplaceId}
+          />
           </div>
           {!dropData ? (
             <div
