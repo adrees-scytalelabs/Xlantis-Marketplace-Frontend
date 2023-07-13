@@ -884,6 +884,7 @@ function AddNFT(props) {
     event.preventDefault();
     handleResponse(event, web3, accounts);
   };
+
   const handlePublishEvent = async (event) => {
     event.preventDefault();
     const web3 = window.web3;
@@ -892,6 +893,7 @@ function AddNFT(props) {
     await handleTimeEvent(event);
     await handleDropData(event, web3, accounts);
   };
+  
   const handleAddClick = async (e) => {
     handleShowBackdrop();
     e.preventDefault();
