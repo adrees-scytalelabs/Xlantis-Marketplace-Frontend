@@ -191,9 +191,10 @@ function AdminDashboardDefaultScreen(props) {
                   hoverH1={
                     hover ? "superAdminBalanceHover" : "superAdminBalance"
                   }
-                  balanceUSD={adminBalance}
-                  message="USD Balance"
-                  showMatic={false}
+                  balanceUSD={balanceUSD}
+                  balanceMatic={balanceMatic}
+                  message="Wallet Balance"
+                  showMatic={true}
                   icon={<CurrencyExchangeIcon />}
                 />
               </div>
