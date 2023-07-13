@@ -297,7 +297,7 @@ function NewNftSelectNft({
             <Autocomplete
               id="combo-dox-demo"
               disabled
-              options={collectionTypes}
+              options={[]}
               getOptionLabel={(option) => option.name}
               onChange={(event, value) => {
                 if (value == null) setCollection("");

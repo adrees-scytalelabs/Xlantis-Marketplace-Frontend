@@ -30,8 +30,8 @@ function TopUpForm({ amount, setAmount, handleTopUpAmount }) {
 
       <div className="row mt-3">
         <div className="row col-lg-6 col-md-6 col-sm-12 input-group form-group newNftWrapper">
-          <div class="input-group-prepend">
-            <span class="input-group-text bg-transparent text-white">$</span>
+          <div className="input-group-prepend">
+            <span className="input-group-text bg-transparent text-white">$</span>
           </div>
           <input
             type="number"

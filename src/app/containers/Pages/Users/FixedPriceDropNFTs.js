@@ -1,5 +1,5 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import { Grid } from "@mui/material";
+import { Grid, Typography, Box } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
@@ -8,7 +8,11 @@ import FixedDropNFTCard from "../../../components/Cards/FixedDropNFTCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
-import { DropBannerDefaultImage, defaultProfile } from "../../../components/ImageURLs/URLs";
+import {
+  DropBannerDefaultImage,
+  defaultProfile,
+} from "../../../components/ImageURLs/URLs";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 const styles = {
   root: {
     flexGrow: 1,
@@ -68,12 +72,8 @@ const FixedPriceDropNFTs = () => {
   const [orderListing, setOrderListing] = useState([]);
   const [open, setOpen] = useState(false);
   const [dropTitle, setDropTitle] = useState("");
-  const [titleImage, setTitleImage] = useState(
-    defaultProfile
-  );
-  const [bannerImage, setBannerImage] = useState(
-    DropBannerDefaultImage
-  );
+  const [titleImage, setTitleImage] = useState(defaultProfile);
+  const [bannerImage, setBannerImage] = useState(DropBannerDefaultImage);
   let navigate = useNavigate();
   const dropID = useParams();
   const location = useLocation();
@@ -101,11 +101,10 @@ const FixedPriceDropNFTs = () => {
   };
   let getNFTs = (dropId, start, end) => {
     handleShowBackdrop();
-
     const version = Cookies.get("Version");
     //console.log("version", version);
-    let marketplaceId = location.state.marketplaceId
-    getNFTsFromDropPaginatedWOBody(dropId, start, end,marketplaceId)
+    let marketplaceId = location.state.marketplaceId;
+    getNFTsFromDropPaginatedWOBody(dropId, start, end, marketplaceId)
       .then((response) => {
         console.log("data from backend", response);
         setDropData(response.data.data);
@@ -129,109 +128,129 @@ const FixedPriceDropNFTs = () => {
   }, []);
 
   return (
-    <div className="main-wrapper">
-      <div className="home-section home-full-height">
-        <div style={{ minHeight: "95px" }}>
-          <HeaderHome selectedNav={"Market"} role={null} />
-        </div>
-        {!dropData ? (
-          <div
-            className="row no-gutters w-100 justify-content-center align-items-center"
-            style={{ minHeight: "75vh" }}
-          >
-            <div className="col-12">
-              <WhiteSpinner />
-            </div>
+    <Box display="flex" flexDirection="column" minHeight="100vh">
+      <Box flexGrow={1}>
+        <div className="home-section home-full-height">
+          <div style={{ minHeight: "95px" }}>
+          <HeaderHome
+            selectedNav={"Home"}
+            role={null}
+            marketplaceId={location.state.marketplaceId}
+          />
           </div>
-        ) : (
-          <>
-            <div className="row no-gutters">
+          {!dropData ? (
+            <div
+              className="row no-gutters w-100 justify-content-center align-items-center"
+              style={{ minHeight: "75vh" }}
+            >
               <div className="col-12">
-                <div className="bannerWrapper">
-                  <img src={bannerImage} className="bannerImg" />
+                <WhiteSpinner />
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className="row no-gutters">
+                <div className="col-12">
+                  <div className="bannerWrapper">
+                    <img src={bannerImage} className="bannerImg" />
 
-                  <div className="dropThumbWrapper">
-                    <img src={titleImage} className="thumbImg" />
+                    <div className="dropThumbWrapper">
+                      <img src={titleImage} className="thumbImg" />
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="container-fluid mt-5">
-              <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
-                <div className="col-12">
-                  <h1 className="marketCatHeadings">NFTs inside {dropTitle}</h1>
+              <div className="container-fluid mt-5">
+                <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
+                  <div className="col-12">
+                    <h1 className="marketCatHeadings">
+                      NFTs inside {dropTitle}
+                    </h1>
+                  </div>
+                  <div className="col-12 col-md-6">
+                    <h3
+                      style={{
+                        fontFamily: "inter",
+                        textTransform: "capitalize",
+                        marginBottom: 0,
+                      }}
+                    >
+                      {saleType} Drop
+                    </h3>
+                    <p
+                      style={{
+                        fontFamily: "inter",
+                        textTransform: "capitalize",
+                      }}
+                    >
+                      {description}
+                    </p>
+                  </div>
+                  <div className="col-12 col-md-6 text-right align-self-md-top">
+                    <button className="bidBtn" onClick={handleGoBack}>
+                      <ArrowBackIcon />
+                      {"  "}
+                      Back to Market Place
+                    </button>
+                  </div>
                 </div>
-                <div className="col-12 col-md-6">
-                  <h3
-                    style={{
-                      fontFamily: "inter",
-                      textTransform: "capitalize",
-                      marginBottom: 0,
-                    }}
-                  >
-                    {saleType} Drop
-                  </h3>
-                  <p
-                    style={{ fontFamily: "inter", textTransform: "capitalize" }}
-                  >
-                    {description}
-                  </p>
-                </div>
-                <div className="col-12 col-md-6 text-right align-self-md-top">
-                  <button className="bidBtn" onClick={handleGoBack}>
-                    <ArrowBackIcon />
-                    {"  "}
-                    Back to Market Place
-                  </button>
+                <div className="row no-gutters w-100">
+                  {open ? (
+                    <CircularBackdrop open={open} />
+                  ) : (
+                    <Grid
+                      container
+                      spacing={3}
+                      direction="row"
+                      justifyContent="flex-start"
+                      style={{ marginBottom: "24px" }}
+                    >
+                      {dropData.length !== 0 ? (
+                        dropData.map((i, index) => (
+                          <Grid
+                            item
+                            xs={12}
+                            sm={6}
+                            md={3}
+                            lg={2}
+                            spacing={1}
+                            direction="row"
+                            key={index}
+                          >
+                            <FixedDropNFTCard
+                              titleImage={titleImage}
+                              dropbanner={bannerImage}
+                              data={i}
+                              type={"Epic"}
+                              saleType={saleType}
+                              description={description}
+                              startTime={startTime}
+                              endTime={endTime}
+                              classes={styles}
+                              cardClasses={cardStyles}
+                              marketplaceId={location.state.marketplaceId}
+                            />
+                          </Grid>
+                        ))
+                      ) : (
+                        <div className="row no-gutters w-100 justify-content-center align-items-center mt-5">
+                          <div className="col-12 mt-5">
+                            <Typography variant="h6" align="center">
+                              No items to display
+                            </Typography>
+                          </div>
+                        </div>
+                      )}
+                    </Grid>
+                  )}
                 </div>
               </div>
-              <div className="row no-gutters w-100">
-                <Grid
-                  container
-                  spacing={3}
-                  direction="row"
-                  justifyContent="flex-start"
-                  style={{ marginBottom: "24px" }}
-                >
-                  {dropData.length !== 0 &&
-                    dropData?.map((i, index) => (
-                      <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        md={3}
-                        lg={2}
-                        spacing={1}
-                        direction="row"
-                        key={index}
-                      >
-                        <FixedDropNFTCard
-                          titleImage={titleImage}
-                          dropbanner={bannerImage}
-                          data={i}
-                          type={"Epic"}
-                          saleType={saleType}
-                          description={description}
-                          startTime={startTime}
-                          endTime={endTime}
-                          classes={styles}
-                          cardClasses={cardStyles}
-                          marketplaceId={location.state.marketplaceId}
-                        />
-                      </Grid>
-                    ))}
-                </Grid>
-              </div>
-            </div>
-          </>
-        )}
-      </div>
-      <div className="row no-gutters">
-        <div className="col-12">
-          <Footer />
+            </>
+          )}
         </div>
-      </div>
-    </div>
+      </Box>
+      <Footer />
+    </Box>
   );
 };
 

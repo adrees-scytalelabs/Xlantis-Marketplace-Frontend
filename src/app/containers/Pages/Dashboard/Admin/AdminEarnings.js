@@ -54,7 +54,7 @@ const AdminEarnings = (props) => {
     setIsLoadingBalance(true);
     getMaticBalance()
       .then((response) => {
-        setBalance(response.data?.usdBalance?.InUsd);
+        setBalance(response.data?.walletBalance?.InUsd);
         setIsLoadingBalance(false);
       })
       .catch((error) => {
@@ -150,7 +150,7 @@ const AdminEarnings = (props) => {
                       ) : (
                         <h1 className="col">
                           <span style={{ fontFamily: "Orbitron" }}>
-                            ${balance}
+                            ${parseFloat(balance).toFixed(2)}
                           </span>
                         </h1>
                       )}

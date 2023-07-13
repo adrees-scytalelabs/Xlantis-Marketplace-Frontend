@@ -107,6 +107,7 @@ const TrendingAndTop = (props) => {
 
   const handleChange = (event, newValue) => {
     setValue(newValue);
+    props?.setState(newValue)
   };
 
   const getWindowWidth = () => {
@@ -166,7 +167,6 @@ const TrendingAndTop = (props) => {
   }
 
   useEffect(() => {
-    console.log("now i am here and market place id", props.marketplaceId);
     const controller = new AbortController();
     getWindowWidth();
 
@@ -236,7 +236,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : activeFixedDrop.length === 0 ? (
-                    <MessageCard msg="No items to display"></MessageCard>
+                    <MessageCard msg="No items to display" />
                   ) : (
                     <div
                       className="row no-gutters w-100 align-items-center position-relative "
@@ -266,7 +266,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : activeAuctionDrop.length === 0 ? (
-                    <MessageCard msg="This feature is coming soon"></MessageCard>
+                    <MessageCard msg="This feature is coming soon" />
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -282,7 +282,7 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <MessageCard msg="No items to display"></MessageCard>
+                  <MessageCard msg="No items to display" />
                 )}
               </div>
             </div>
@@ -298,7 +298,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingFixedDrop.length === 0 ? (
-                    <MessageCard msg="No items to display"></MessageCard>
+                    <MessageCard msg="No items to display" />
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -324,7 +324,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : pendingAuctionDrop.length === 0 ? (
-                    <MessageCard msg="This feature is coming soon"></MessageCard>
+                    <MessageCard msg="This feature is coming soon" />
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -356,7 +356,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : closedFixedDrop.length === 0 ? (
-                    <MessageCard msg="No items to display"></MessageCard>
+                    <MessageCard msg="No items to display" />
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -382,7 +382,7 @@ const TrendingAndTop = (props) => {
                       </div>
                     </div>
                   ) : closedAuctionDrop.length === 0 ? (
-                    <MessageCard msg="This feature is coming soon"></MessageCard>
+                    <MessageCard msg="This feature is coming soon" />
                   ) : (
                     <div className="row no-gutters w-100 align-items-center position-relative ">
                       <div className="saleCardSlider">
@@ -398,7 +398,7 @@ const TrendingAndTop = (props) => {
                     </div>
                   )
                 ) : (
-                  <MessageCard msg="No items to display"></MessageCard>
+                  <MessageCard msg="No items to display" />
                 )}
               </div>
             </div>

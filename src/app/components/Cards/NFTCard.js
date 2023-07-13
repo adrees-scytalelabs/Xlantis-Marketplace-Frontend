@@ -1,4 +1,4 @@
-import { Card, CardContent, CardMedia } from "@mui/material";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import React from "react";
 import { Link } from "react-router-dom";
 import "../../assets/css/bootstrap.min.css";
@@ -27,7 +27,6 @@ const styles = {
 };
 
 function NFTCard(props) {
-  console.log("propsinprops",props)
   return (
     <Link to={"/dashboard/nftDetail/" + props.data._id} state={{supply:props.data.supply,totalSupply:props.data?.totalSupply}}>
       <Card style={{ height: "100%" }} id="nftCardProps">
@@ -53,14 +52,19 @@ function NFTCard(props) {
               ></TypographyText>
             </div>
             <div className="row no-gutters justify-content-start align-items-center">
-              <TypographyText
-                variant="body2"
-                component="p"
-                style={{ minHeight: "2.5rem" }}
-                class={styles.cardDescriptions}
-                value={truncate(props.data.description, 50)}
-                isSpan={false}
-              ></TypographyText>
+            <Typography
+              variant="body2"
+              component="p"
+              sx={{
+                color: "#999",
+                fontFamily: "inter",
+                fontSize: "0.985rem",
+                marginTop: "0.3rem",
+              }}
+            >
+              <strong>Description : {""}</strong>
+              {truncate(props.data.description, 50)}
+            </Typography>
             </div>
           </CardContent>
         </div>
