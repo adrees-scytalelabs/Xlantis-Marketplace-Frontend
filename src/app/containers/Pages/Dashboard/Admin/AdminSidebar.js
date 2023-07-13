@@ -179,7 +179,6 @@ function AdminSidebar(props) {
               </li>
             ) : null} */}
 
-           
             {/* <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
                 <CategoryIcon /> <span>Categories</span>
@@ -195,11 +194,11 @@ function AdminSidebar(props) {
                 <HistoryIcon /> <span>Top-up History</span>
               </Link>
             </li>
-            <li className={props.activeTab.balanceSpentHistory}>
+            {/* <li className={props.activeTab.balanceSpentHistory}>
               <Link to={`${props.match}/balance-spent-history`}>
                 <HistoryIcon /> <span>Balance Spent Hsitory</span>
               </Link>
-            </li>
+            </li> */}
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>
