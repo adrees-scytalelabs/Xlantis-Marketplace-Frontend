@@ -595,7 +595,7 @@ function AddNFT(props) {
     event.preventDefault();
 
     // start date must be 5 minutes more than current time to avoid transaction failing.
-    if (new Date(new Date().getTime() + 5 * 60 * 1000) >= new Date(startTime)) {
+    if (startTimeStamp < 5 * 60 * 1000 + new Date().getTime()) {
       let variant = "error";
       setSnackbarMessage(
         "Drop start time must be more than 5 minutes than current time."
