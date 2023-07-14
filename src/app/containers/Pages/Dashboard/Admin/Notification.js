@@ -21,7 +21,7 @@ function Notification(props) {
     axios
       .get(`/notifications/${start}/${end}`)
       .then((response) => {
-        setNotifications(response.data.notifications);
+        setNotifications(response.data.notifications.reverse()); //showing latest notification first
         console.log("data", response.data);
       })
       .catch((err) =>
@@ -151,7 +151,10 @@ function Notification(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="notifications-container">
         <div

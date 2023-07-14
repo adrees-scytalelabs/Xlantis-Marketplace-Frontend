@@ -181,12 +181,12 @@ function SuperAdminSidebar(props) {
                 <AttachMoneyIcon></AttachMoneyIcon> <span>Platform Fee</span>
               </Link>
             </li>
-            <li className={props.activeTab.categories}>
+            {/* <li className={props.activeTab.categories}>
               <Link to={`${path}/categories`} className="sidebarLink">
               <CategoryIcon />
                 <span>Categories</span>
               </Link>
-            </li>
+            </li> */}
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>

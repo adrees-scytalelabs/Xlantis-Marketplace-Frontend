@@ -264,9 +264,15 @@ function AddNFT(props) {
     topUpAmount(data).then(
       (response) => {
         console.log("Response from top up endpoint: ", response);
-        localStorage.setItem("sessionId", response.data.checkoutSessionId);
-        window.location.replace(response.data.sessionUrl);
-        handleCloseBackdrop();
+        if (response.data.success === false) {
+          setSnackbarSeverity(response.data.errorType);
+          setSnackbarMessage(response.data.message);
+          handleSnackbarOpen();
+        } else {
+          localStorage.setItem("sessionId", response.data.checkoutSessionId);
+          window.location.replace(response.data.sessionUrl);
+          handleCloseBackdrop();
+        }
       },
       (error) => {
         if (process.env.NODE_ENV === "development") {
@@ -437,11 +443,7 @@ function AddNFT(props) {
   };
 
   const handleAddAllNFTs = (e, price) => {
-    if (
-      !price ||
-      price < 0.5 ||
-      price > 999999.99
-    ) {
+    if (!price || price < 0.5 || price > 999999.99) {
       setIsCollectionPriceValid(false);
     } else {
       setIsAddingAllNFTs(true);
@@ -488,7 +490,7 @@ function AddNFT(props) {
         .catch((error) => {
           console.log("Error from adding all NFTs in drop: ", error.response);
           let variant = "error";
-          setSnackbarMessage("Error while adding NFTs.");
+          setSnackbarMessage(error?.response?.data?.message); // response message in case of error is shown as it is coming from backend
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
           setIsAddingAllNFTs(false);
@@ -616,6 +618,7 @@ function AddNFT(props) {
       };
       updateDropStartTime(data).then(
         (response) => {
+          console.log("Response from updating drop start time: ", response);
           getTxCost(event);
           let variant = "success";
           setSnackbarMessage("Time Successfully Updated.");
@@ -882,6 +885,7 @@ function AddNFT(props) {
     event.preventDefault();
     handleResponse(event, web3, accounts);
   };
+
   const handlePublishEvent = async (event) => {
     event.preventDefault();
     const web3 = window.web3;
@@ -890,6 +894,7 @@ function AddNFT(props) {
     await handleTimeEvent(event);
     await handleDropData(event, web3, accounts);
   };
+  
   const handleAddClick = async (e) => {
     handleShowBackdrop();
     e.preventDefault();
@@ -965,6 +970,7 @@ function AddNFT(props) {
         }
         addNFTToDrop(data).then(
           async (response) => {
+            console.log("Response from adding NFTs in drop: ", response);
             setGrid(true);
             setIsAdded(true);
             setDisabledUpdateButton(false);

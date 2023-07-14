@@ -9,7 +9,7 @@ import HistoryIcon from "@mui/icons-material/History";
 import CategoryIcon from "@mui/icons-material/Category";
 import CurrencyExchangeIcon from "@mui/icons-material/CurrencyExchange";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import AllTransactions from "./AllTransactions";
+import LogoutIcon from '@mui/icons-material/Logout';
 import {
   stripeAccountStatus,
   stripeLogin,
@@ -89,7 +89,7 @@ function AdminSidebar(props) {
     <div className="sidebar backgroundDefault" id="sidebar">
       <div className="sidebar-inner slimscroll">
         <div id="sidebar-menu" className="sidebar-menu">
-          <ul>
+          <ul style={{background:"black"}}>
             <li className="menu-title">
               <span>Main</span>
             </li>
@@ -179,7 +179,6 @@ function AdminSidebar(props) {
               </li>
             ) : null} */}
 
-           
             {/* <li className={props.activeTab.categories}>
               <Link to={`${props.match}/dropsCategories`}>
                 <CategoryIcon /> <span>Categories</span>
@@ -195,17 +194,17 @@ function AdminSidebar(props) {
                 <HistoryIcon /> <span>Top-up History</span>
               </Link>
             </li>
-            <li className={props.activeTab.balanceSpentHistory}>
+            {/* <li className={props.activeTab.balanceSpentHistory}>
               <Link to={`${props.match}/balance-spent-history`}>
                 <HistoryIcon /> <span>Balance Spent Hsitory</span>
               </Link>
-            </li>
+            </li> */}
             <li className="menu-title mt-5">
               <span>Settings</span>
             </li>
-            <li>
-              <Link to={"/"} onClick={handleLogout} className="sidebarLink">
-                <i className="fa fa-sign-out-alt"></i> <span>Logout</span>
+            <li className={props.activeTab.logout}>
+              <Link to={"/"}  onClick={handleLogout}>
+                <LogoutIcon/><span>Logout</span>
               </Link>
             </li>
           </ul>

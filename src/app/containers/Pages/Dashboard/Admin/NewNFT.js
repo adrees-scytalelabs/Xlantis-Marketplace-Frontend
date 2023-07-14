@@ -344,6 +344,7 @@ function NewNFT(props) {
       topUp: "",
     });
   }, []);
+
   let loadWeb3 = async () => {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum);
@@ -492,6 +493,11 @@ function NewNFT(props) {
           Cookies.remove("Batch-ID");
           setTokenList([]);
           setBatchId("");
+
+          // Setting collection to default values when removing all NFTs from queue
+          setCollection("");
+          setCollectionId("");
+          setNftContractAddress("");
         })
         .catch((error) => {
           handleCloseBackdrop();
@@ -773,11 +779,13 @@ function NewNFT(props) {
       }
     }
   };
+
   const handleCloseImageCropModal = () => {
     setShowCropModal(false);
     setIsUploadingIPFS(false);
     setImageSrc("");
   };
+
   const onCropComplete = useCallback((croppedArea, croppedAreaPixels) => {
     setCroppedAreaPixels(croppedAreaPixels);
   }, []);
@@ -848,6 +856,7 @@ function NewNFT(props) {
       console.log("Error: ", e);
     }
   });
+
   let onChangeFile = (e) => {
     if (e.target.files[0]) {
       setIsUploadingIPFS(true);

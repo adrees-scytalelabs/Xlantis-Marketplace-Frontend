@@ -305,7 +305,7 @@ function MyNFTs(props) {
         <div className="container-fluid mt-5">
           <div className="row no-gutters justify-content-start align-items-end my-4 pt-5">
             <div className="col-12">
-              <h1 className="marketCatHeadings">NFTs inside Sample Drop </h1>
+              <h1 className="marketCatHeadings">NFTs inside Drop </h1>
             </div>
             <div className="col-12">
               <h3 style={{ fontFamily: "inter" }}>Fixed Price Drop</h3>

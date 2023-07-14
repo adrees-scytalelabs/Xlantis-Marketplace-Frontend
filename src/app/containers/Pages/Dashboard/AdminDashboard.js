@@ -82,7 +82,7 @@ function AdminDashboard(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorElPopper, setAnchorElPopper] = React.useState(null);
   const openPopper = Boolean(anchorElPopper);
-  const [notificationsList, setNotificationsList] = useState({});
+  const [notificationsList, setNotificationsList] = useState([]);
   const [menuOpenedClass, setMenuOpenedClass] = useState();
   const [slideNavClass, setSlideNavClass] = useState();
   const [userId, setUserId] = useState("");
@@ -151,9 +151,9 @@ function AdminDashboard(props) {
         socket.emit("user-logged-in", userIdentity);
         socket.on("Notification", (notification) => {
           setNotificationsList((previousData) => [
-            ...previousData,
             notification,
-          ]);
+            ...previousData,
+          ]); // latest notification will be on top
         });
       } else if (userIdentity === "" && socket !== null) {
         socket.emit("user-logged-out", userIdentity);
@@ -166,7 +166,7 @@ function AdminDashboard(props) {
     let userIdentity = sessionStorage.getItem("userId");
     if (userLogin != null) {
       setUserId(userIdentity);
-      getNotifications(0, 10);
+      getNotifications(0, 2000);
     }
   }, [notificationLoading]);
 
@@ -182,7 +182,7 @@ function AdminDashboard(props) {
 
     axios.patch("/notifications/hide", data).then(
       (response) => {
-        getNotifications(0, 10);
+        getNotifications(0, 2000);
       },
       (error) => {
         console.log("Error on disable: ", error);
@@ -219,6 +219,7 @@ function AdminDashboard(props) {
     balanceSpentHistory: "",
     templates: "",
     notifications: "",
+    logout:"",
   });
 
   const [menuAnchorEl, setMenuAnchorEl] = React.useState(null);

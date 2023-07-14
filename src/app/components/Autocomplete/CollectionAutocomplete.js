@@ -166,7 +166,7 @@ function CollectionAutocomplete({
             id="combo-dox-demo"
             required
             disabled={isDisabled}
-            options={options}
+            options={isDisabled ? [] : options}
             renderOption={(props, option) => {
               console.log("Option is: ", option);
               return (
