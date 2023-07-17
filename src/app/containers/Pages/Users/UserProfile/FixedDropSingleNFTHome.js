@@ -571,14 +571,20 @@ const FixedDropSingleNFTHome = () => {
     } else {
       console.log("Authorization", sessionStorage.getItem("Authorization"));
       console.log("Nft detail: ", nftData);
+
+      // endpoint body
+
       let data = {
-        dropId: nftData?.dropId,
-        nftId: nftData?._id,
         supply: num,
+        orderListingId: location.state.orderListingId,
       };
+
+      //debugging 
+
       console.log("Data", data);
       console.log("Purchase Function Called");
       console.log("NFT ID");
+
       marketplaceBuy(data)
         .then((response) => {
           localStorage.setItem("sessionId", response.data.checkoutSessionId);

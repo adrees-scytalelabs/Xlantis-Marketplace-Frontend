@@ -74,6 +74,7 @@ function FixedDropNFTCard(props) {
         imageURL: props.titleImage,
         bannerURL: props.dropbanner,
         marketplaceId: props.marketplaceId,
+        orderListingId: props.data.currentOrderListingId._id,
       }}
     >
       <Card
