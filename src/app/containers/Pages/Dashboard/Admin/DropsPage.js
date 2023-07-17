@@ -8,7 +8,6 @@ import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 
 const styles = {
-  root: {},
   media: {
     height: 0,
     paddingTop: "100%",
@@ -80,7 +79,7 @@ function DropsPage(props) {
     let marketplaceId = props.marketplaceId;
     getMyDropsPaginatedUsingStatus(status, start, end, marketplaceId)
       .then((response) => {
-        // console.log("Response from getting my drop: ", response);
+        console.log("Response from getting my drop: ", response);
         setTokenList(response?.data?.data);
         setTotalDrops(response?.data?.dropCount);
         handleCloseBackdrop();
