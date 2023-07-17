@@ -195,6 +195,7 @@ const FixedDropSingleNFTHome = () => {
         imageURL: imageURL,
         bannerURL: bannerURL,
         marketplaceId: location.state.marketplaceId,
+        dropId: location.state.dropId,
       },
     });
   };
@@ -560,7 +561,7 @@ const FixedDropSingleNFTHome = () => {
     console.log("conversion to hex: ", hex);
     return hex;
   };
-  
+
   let handlePurchase = async () => {
     if (num <= 0 || num === undefined || num === null || num === "") {
       let variant = "error";

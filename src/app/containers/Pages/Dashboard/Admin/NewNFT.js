@@ -192,6 +192,7 @@ function NewNFT(props) {
   const [imageCounter, setImageCounter] = useState(0);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
+  const [isGIFFile, setIsGIFFile] = useState(false);
 
   const { collectionData, loading } = useSelector(
     (store) => store.NewNftCollection
@@ -857,104 +858,116 @@ function NewNFT(props) {
   });
 
   let onChangeFile = (e) => {
-    setIsUploadingIPFS(true);
-    setIsGlbFile(false);
-    setIsMp3File(false);
-    setNftURI("");
+    if (e.target.files[0]) {
+      setIsUploadingIPFS(true);
+      setIsGlbFile(false);
+      setIsMp3File(false);
+      setIsGIFFile(false);
+      setNftURI("");
 
-    const reader = new window.FileReader();
-    let imageNFT = e.target.files[0];
-    let typeImage;
-    const acceptedImageFormats = ["png", "jpg", "jpeg"];
-    const fileExtension = imageNFT.name.split(".").pop();
+      const reader = new window.FileReader();
+      let imageNFT = e.target.files[0];
+      let typeImage;
+      const acceptedImageFormats = ["png", "jpg", "jpeg"];
+      const fileExtension = imageNFT.name.split(".").pop();
 
-    if (e.target.files[0].name.includes(".glb")) {
-      typeImage = "glb";
-      setImageType("glb");
-      // setImage(e.target.files[0]);
-      setImage(defaultProfile);
-    } else if (
-      e.target.files[0].type.split("/")[1] === "mp3" ||
-      e.target.files[0].name.includes(".mp3")
-    ) {
-      typeImage = "mp3";
-      setIsMp3File(true);
-      setImageType("mp3");
-      // setImage(e.target.files[0]);
-      setImage(defaultProfile);
-    } else if (acceptedImageFormats.includes(fileExtension)) {
-      console.log("File Extension : ", fileExtension);
-      setImageType(e.target.files[0].type.split("/")[1]);
-      typeImage = e.target.files[0].type.split("/")[1];
-      // setImage(e.target.files[0]);
+      // if (e.target.files[0].name.includes(".glb")) {
+      //   typeImage = "glb";
+      //   setImageType("glb");
+      //   // setImage(e.target.files[0]);
+      //   setImage(defaultProfile);
+      // } else
+      if (
+        e.target.files[0].type.split("/")[1] === "mp3" ||
+        e.target.files[0].name.includes(".mp3")
+      ) {
+        typeImage = "mp3";
+        setIsMp3File(true);
+        setImageType("mp3");
+        // setImage(e.target.files[0]);
+        setImage(defaultProfile);
+      } else if (e.target.files[0].type.split("/")[1] === "gif") {
+        typeImage = "gif";
+        setImageType("gif");
+        setIsGIFFile(true);
+        setIsUploadingIPFS(true);
+      } else if (acceptedImageFormats.includes(fileExtension)) {
+        console.log("File Extension : ", fileExtension);
+        setImageType(e.target.files[0].type.split("/")[1]);
+        typeImage = e.target.files[0].type.split("/")[1];
+        // setImage(e.target.files[0]);
 
-      if (previewImageURI !== "") {
-        setPreviewImageURI("");
-        setPreviewImage(defaultProfile);
+        if (previewImageURI !== "") {
+          setPreviewImageURI("");
+          setPreviewImage(defaultProfile);
+        }
+
+        setCropShape("square");
+        setIsUploadingIPFS(true);
+        setAspect(1 / 1);
+        setImageSrc(URL.createObjectURL(e.target.files[0]));
+        setShowCropModal(true);
+        return;
+      } else {
+        setSnackbarMessage("Unsupported file format");
+        setSnackbarSeverity("error");
+        handleSnackbarOpen();
+        setIsUploadingIPFS(false);
+        return;
       }
 
-      setCropShape("square");
-      setIsUploadingIPFS(true);
-      setAspect(1 / 1);
-      setImageSrc(URL.createObjectURL(e.target.files[0]));
-      setShowCropModal(true);
-      return;
-    } else {
-      setSnackbarMessage("Unsupported file format");
-      setSnackbarSeverity("error");
-      handleSnackbarOpen();
-      setIsUploadingIPFS(false);
-      return;
-    }
+      reader.readAsArrayBuffer(e.target.files[0]);
+      reader.onloadend = () => {
+        ipfs.add(Buffer(reader.result), async (err, result) => {
+          if (err) {
+            console.log("err", err);
+            setIsUploadingIPFS(false);
+            let variant = "error";
+            setSnackbarMessage("Unable to Upload Image to IPFS.");
+            setSnackbarSeverity(variant);
+            handleSnackbarOpen();
+            return;
+          }
 
-    reader.readAsArrayBuffer(e.target.files[0]);
-    reader.onloadend = () => {
-      ipfs.add(Buffer(reader.result), async (err, result) => {
-        if (err) {
-          console.log("err", err);
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          setSnackbarMessage("Unable to Upload Image to IPFS.");
+          setIpfsHash(result[0].hash);
+          setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+          console.log(
+            "Hash of NFT: ",
+            `https://ipfs.io/ipfs/${result[0].hash}`
+          );
+          let variant = "success";
+          setSnackbarMessage("Image Uploaded to IPFS.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
-          return;
-        }
-
-        setIpfsHash(result[0].hash);
-        setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
-        console.log("Hash of NFT: ", `https://ipfs.io/ipfs/${result[0].hash}`);
-        let variant = "success";
-        setSnackbarMessage("Image Uploaded to IPFS.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-        if (typeImage === "glb") {
-          setIsGlbFile(true);
-        }
-      });
-    };
-    let fileData = new FormData();
-    fileData.append("image", imageNFT);
-    uploadImage(fileData)
-      .then((response) => {
-        console.log("response.data.url", response.data.url);
-        setImage(response.data.url);
-        setIsUploadingIPFS(false);
-        let variant = "success";
-        setSnackbarMessage("Image Uploaded Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === "development") {
-          console.log(error);
-          console.log(error.response);
-        }
-        setIsUploadingIPFS(false);
-        let variant = "error";
-        setSnackbarMessage("Unable to Upload Image.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      });
+          if (typeImage === "glb") {
+            setIsGlbFile(true);
+          }
+        });
+      };
+      let fileData = new FormData();
+      fileData.append("image", imageNFT);
+      uploadImage(fileData)
+        .then((response) => {
+          console.log("response.data.url", response.data.url);
+          setImage(response.data.url);
+          setIsUploadingIPFS(false);
+          let variant = "success";
+          setSnackbarMessage("Image Uploaded Successfully.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+        })
+        .catch((error) => {
+          if (process.env.NODE_ENV === "development") {
+            console.log(error);
+            console.log(error.response);
+          }
+          setIsUploadingIPFS(false);
+          let variant = "error";
+          setSnackbarMessage("Unable to Upload Image.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+        });
+    }
   };
 
   let handleOpenNFTDetailModal = (nftObject) => {
@@ -1347,6 +1360,7 @@ function NewNFT(props) {
                   onChangeFile={onChangeFile}
                   previewImageURI={previewImageURI}
                   isUploadingPreview={isUploadingPreview}
+                  isGIFFile={isGIFFile}
                 />
                 <div className="form-group newNftFields">
                   <label>Title</label>
