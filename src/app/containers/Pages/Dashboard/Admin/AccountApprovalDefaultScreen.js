@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   getUnverifiedAdminsV1Paginated,
   getUnverifiedAdminsV2Paginated,
+  removeAdmin,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
@@ -78,34 +79,33 @@ function AccountApprovalDefaultScreen(props) {
       }
     );
   };
-  const handleDelete = (e,id) =>{
+  const handleDelete = async (e, id) => {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
       adminId: id,
     };
-
-    axios.patch(`/super-admin/admin/remove`, data).then(
-      (response) => {
-        handleCloseBackdrop();
-        getUnverifiedAdminsSSO(0, rowsPerPage);
-        getUnverifiedAdminsWallet(0, rowsPerPage);
-        let variant = "success";
-        setSnackbarMessage("Admin Remove Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      },
-      (error) => {
-        console.log("Error on remove: ", error);
-        console.log("Error on remove: ", error.response);
-        handleCloseBackdrop();
-        let variant = "error";
-        setSnackbarMessage("Unable to remove Admin.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      }
-    );
-  }
+  
+    try {
+      await removeAdmin(data);
+      handleCloseBackdrop();
+      getUnverifiedAdminsSSO(0, rowsPerPage);
+      getUnverifiedAdminsWallet(0, rowsPerPage);
+      let variant = "success";
+      setSnackbarMessage("Admin Remove Successfully.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } catch (error) {
+      console.log("Error on remove: ", error);
+      console.log("Error on remove: ", error.response);
+      handleCloseBackdrop();
+      let variant = "error";
+      setSnackbarMessage("Unable to remove Admin.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    }
+  };
+  
   useEffect(() => {
     getUnverifiedAdminsSSO(0, rowsPerPage);
     getUnverifiedAdminsWallet(0, rowsPerPage);

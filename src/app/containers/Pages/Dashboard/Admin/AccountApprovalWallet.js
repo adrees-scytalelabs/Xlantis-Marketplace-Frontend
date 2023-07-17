@@ -1,7 +1,7 @@
 import { TablePagination } from "@mui/material";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
-import { getUnverifiedAdminsV2Paginated } from "../../../../components/API/AxiosInterceptor";
+import { getUnverifiedAdminsV2Paginated, removeAdmin } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
 import AdminInformationModal from "../../../../components/Modals/AdminInformationModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
@@ -60,33 +60,31 @@ function AccountApprovalWallet(props) {
     }
     setSnackbarOpen(false);
   };
-  const handleDelete = (e,id) =>{
+  const handleDelete = async (e, id) => {
     e.preventDefault();
     handleShowBackdrop();
     let data = {
       adminId: id,
     };
-
-    axios.patch(`/super-admin/admin/remove`, data).then(
-      (response) => {
-        handleCloseBackdrop();
-        getUnverifiedAdminsWallet(0, rowsPerPage);
-        let variant = "success";
-        setSnackbarMessage("Admin Remove Successfully.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      },
-      (error) => {
-        console.log("Error on remove: ", error);
-        console.log("Error on remove: ", error.response);
-        handleCloseBackdrop();
-        let variant = "error";
-        setSnackbarMessage("Unable to remove Admin.");
-        setSnackbarSeverity(variant);
-        handleSnackbarOpen();
-      }
-    );
-  }
+  
+    try {
+      await removeAdmin(data);
+      handleCloseBackdrop();
+      getUnverifiedAdminsWallet(0, rowsPerPage);
+      let variant = "success";
+      setSnackbarMessage("Admin Remove Successfully.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    } catch (error) {
+      console.log("Error on remove: ", error);
+      console.log("Error on remove: ", error.response);
+      handleCloseBackdrop();
+      let variant = "error";
+      setSnackbarMessage("Unable to remove Admin.");
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+    }
+  };
   const handleVerifyWallet = (e, verifyAdminId) => {
     e.preventDefault();
     handleShowBackdrop();

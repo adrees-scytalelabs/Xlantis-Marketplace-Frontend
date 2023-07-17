@@ -38,35 +38,38 @@ function SuperAdminTable(props) {
   const [id, setId] = useState();
   const [genericFunction, setGenericFunction] = useState(null);
   const handleVerify = (e, id, functionName) => {
-    if (
-      functionName === "handleVerify" ||
-      functionName === "handleVerifyWallet"
-    )
-      setMessage("Do you really want to approve this admin.");
-    else if (
-      functionName === "handleEnableSSO" ||
-      functionName === "handleEnableWallet"
-    )
-      setMessage("Do you really want to enable this admin.");
-    else if (functionName==="handleDelete") setMessage("Do you really want to delete this admin.");
+    let message = "";
+    let genericFunction = null;
+
+    switch (functionName) {
+      case "handleVerify":
+        message = "Do you really want to approve this admin.";
+        genericFunction = props.handleVerify;
+        break;
+      case "handleVerifyWallet":
+        message = "Do you really want to approve this admin.";
+        genericFunction = props.handleVerifyWallet;
+        break;
+      case "handleEnableSSO":
+        message = "Do you really want to enable this admin.";
+        genericFunction = props.handleEnableSSO;
+        break;
+      case "handleEnableWallet":
+        message = "Do you really want to enable this admin.";
+        genericFunction = props.handleEnableWallet;
+        break;
+      case "handleDelete":
+        message = "Do you really want to delete this admin.";
+        genericFunction = props.handleDelete;
+        break;
+      default:
+        break;
+    }
+
+    setMessage(message);
     setId(id);
     setWarningModalShow(true);
-    if (functionName === "handleVerify")
-      setGenericFunction(() => props.handleVerify);
-    else if (functionName === "handleVerifyWallet")
-      setGenericFunction(() => props.handleVerifyWallet);
-    else if (functionName === "handleDisable")
-      setGenericFunction(() => props.handleDisable);
-    else if (functionName === "handleEnableSSO")
-      setGenericFunction(() => props.handleEnableSSO);
-    else if (functionName === "handleDisable")
-      setGenericFunction(() => props.handleDisable);
-    else if (functionName === "handleWalletDisable")
-      setGenericFunction(() => props.handleWalletDisable);
-    else if (functionName === "handleEnableWallet")
-      setGenericFunction(() => props.handleEnableWallet);
-      else if (functionName === "handleDelete")
-      setGenericFunction(() => props.handleDelete);
+    setGenericFunction(() => genericFunction);
   };
   const handleWarningModalClose = () => {
     setWarningModalShow(false);
@@ -112,7 +115,7 @@ function SuperAdminTable(props) {
                 </div>
               </th>
             )}
-             {props.approval === true && (
+            {props.approval === true && (
               <th sx={styles.tableHeader}>
                 <div className="row no-gutters justify-content-center align-items-center">
                   Delete Account
@@ -190,7 +193,7 @@ function SuperAdminTable(props) {
                       </div>
                     </td>
                   )}
-                       {props.approval === true && (
+                  {props.approval === true && (
                     <td>
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
@@ -295,7 +298,7 @@ function SuperAdminTable(props) {
                       </div>
                     </td>
                   )}
-                    {props.approval === true && (
+                  {props.approval === true && (
                     <td>
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
