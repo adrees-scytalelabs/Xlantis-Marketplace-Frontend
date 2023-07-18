@@ -115,6 +115,10 @@ export const setSuperAdminPlatformFee = (body) => {
   return Axios.post(`/platform-fee/super-admin`, body);
 };
 
+export const uploadImageToIpfs = (body) => {
+  return Axios.post(`/upload-ipfs/image`, body);
+};
+
 //PUT REQUESTS
 
 export const updateCategory = (categoryName, body) => {
@@ -181,6 +185,10 @@ export const addCollectionToDrop = (body) => {
 };
 
 //PATCH REQUESTS
+
+export const batchMintFinalize = (batchId) => {
+  return Axios.patch(`batch-mint/finalize/${batchId}`);
+};
 
 export const readNotifications = (body) => {
   return Axios.patch(`/notifications/hide`, body);
