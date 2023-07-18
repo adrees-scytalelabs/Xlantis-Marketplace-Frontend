@@ -1,6 +1,5 @@
 import Cookies from "js-cookie";
 import React, { useCallback, useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import {
   updateAdminProfileSSO,
@@ -13,6 +12,7 @@ import ProfileDetailInput from "../../../components/Input/ProfileDetailInput";
 import ImageCropModal from "../../../components/Modals/ImageCropModal";
 import ProfileUpdationConfirmationModal from "../../../components/Modals/ProfileUpdationConfirmationModal";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
+import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 import getCroppedImg from "../../../components/Utils/Crop";
 import ProfileDetailBanner from "../../../components/banners/ProfileDetailBanner";
 import { getAdminProfileData } from "../../../redux/getAdminProfileDataSlice";
@@ -336,13 +336,7 @@ function SettingDashboardDefault(props) {
                     />
                     {isSaving ? (
                       <div className="text-center">
-                        <Spinner
-                          animation="border"
-                          role="status"
-                          style={{ color: "#ff0000" }}
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </Spinner>
+                        <WhiteSpinner />
                       </div>
                     ) : (
                       <div className="submit-section">
@@ -408,13 +402,7 @@ function SettingDashboardDefault(props) {
                     />
                     {isSaving ? (
                       <div className="text-center">
-                        <Spinner
-                          animation="border"
-                          role="status"
-                          style={{ color: "#ff0000" }}
-                        >
-                          <span className="sr-only">Loading...</span>
-                        </Spinner>
+                        <WhiteSpinner />
                       </div>
                     ) : (
                       <div className="submit-section">

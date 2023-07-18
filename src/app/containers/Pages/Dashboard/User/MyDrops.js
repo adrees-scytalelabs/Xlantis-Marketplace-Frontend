@@ -1,12 +1,11 @@
+import { Grid, TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getMyDropsPaginated } from "../../../../components/API/AxiosInterceptor";
 import MyDropsCard from "../../../../components/Cards/MyDropsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-import { Grid, TablePagination } from "@mui/material";
-
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const styles = {
   root: {
@@ -15,8 +14,8 @@ const styles = {
   media: {
     height: 0,
     paddingTop: "100%",
-  }
-}
+  },
+};
 function MyDrops(props) {
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage, setRowsPerPage] = useState(8);
@@ -104,11 +103,7 @@ function MyDrops(props) {
         <div className="form-group">
           {open ? (
             <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              ></Spinner>
+              <WhiteSpinner />
               <span style={{ color: "#ff0000" }} className="sr-only">
                 Loading...
               </span>
@@ -126,14 +121,13 @@ function MyDrops(props) {
                 <Grid item xs={12} sm={6} md={3} key={index}>
                   <Link to={"myDrops/cubes/" + i._id}>
                     <MyDropsCard dropDetails={i} classes={styles} />
-                  </Link >
-                </Grid >
-              ))
-              }
-            </Grid >
+                  </Link>
+                </Grid>
+              ))}
+            </Grid>
           )}
-        </div >
-      </div >
+        </div>
+      </div>
       <TablePagination
         rowsPerPageOptions={[4, 8, 12, 24]}
         component="div"
@@ -143,7 +137,7 @@ function MyDrops(props) {
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-    </div >
+    </div>
   );
 }
 

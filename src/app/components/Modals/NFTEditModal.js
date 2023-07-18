@@ -1,17 +1,24 @@
-import { Autocomplete, Button, FormControl, FormControlLabel, Radio, RadioGroup, TextField } from '@mui/material';
+import {
+  Autocomplete,
+  Button,
+  FormControl,
+  FormControlLabel,
+  Radio,
+  RadioGroup,
+  TextField,
+} from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Col, Modal, Row, Spinner } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import ipfs from '../../components/IPFS/ipfs';
+import ipfs from "../../components/IPFS/ipfs";
 import { uploadToS3 } from "../API/AxiosInterceptor";
-import { defaultProfile } from '../ImageURLs/URLs';
-import NotificationSnackbar from '../Snackbar/NotificationSnackbar';
+import { defaultProfile } from "../ImageURLs/URLs";
+import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 const NFTEditModal = (props) => {
-
-
   const [nftDetail, setNftDetail] = useState({});
   const [isUploadingIPFS, setIsUploadingIPFS] = useState(false);
   const [imageType, setImageType] = useState("");
@@ -38,7 +45,7 @@ const NFTEditModal = (props) => {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -257,11 +264,7 @@ const NFTEditModal = (props) => {
                   >
                     {isUploadingIPFS ? (
                       <div className="text-center">
-                        <Spinner
-                          animation="border"
-                          role="status"
-                          style={{ color: "#fff" }}
-                        ></Spinner>
+                        <CircularProgress sx={{ color: "#FFFFFF" }} />
                       </div>
                     ) : (
                       <span>
@@ -303,11 +306,7 @@ const NFTEditModal = (props) => {
                         >
                           {isUploadingPreview ? (
                             <div className="text-center">
-                              <Spinner
-                                animation="border"
-                                role="status"
-                                style={{ color: "#fff" }}
-                              ></Spinner>
+                              <CircularProgress sx={{ color: "#FFFFFF" }} />
                             </div>
                           ) : (
                             <span>
@@ -353,11 +352,7 @@ const NFTEditModal = (props) => {
                   >
                     {isUploadingIPFS ? (
                       <div className="text-center">
-                        <Spinner
-                          animation="border"
-                          role="status"
-                          style={{ color: "#fff" }}
-                        ></Spinner>
+                        <CircularProgress sx={{ color: "#FFFFFF" }} />
                       </div>
                     ) : (
                       <span>
@@ -399,11 +394,7 @@ const NFTEditModal = (props) => {
                         >
                           {isUploadingPreview ? (
                             <div className="text-center">
-                              <Spinner
-                                animation="border"
-                                role="status"
-                                style={{ color: "#fff" }}
-                              ></Spinner>
+                              <CircularProgress sx={{ color: "#FFFFFF" }} />
                             </div>
                           ) : (
                             <span>
@@ -443,11 +434,7 @@ const NFTEditModal = (props) => {
                 >
                   {isUploadingIPFS ? (
                     <div className="text-center text-wrap">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#fff" }}
-                      ></Spinner>
+                      <CircularProgress sx={{ color: "#FFFFFF" }} />
                     </div>
                   ) : (
                     <div className="mt-4">
@@ -692,11 +679,7 @@ const NFTEditModal = (props) => {
         </Button>
         {props.isUploadingData ? (
           <div className="text-center">
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#a70000" }}
-            ></Spinner>
+            <CircularProgress sx={{ color: "#FFFFFF" }} />
           </div>
         ) : (
           <button
@@ -708,7 +691,12 @@ const NFTEditModal = (props) => {
           </button>
         )}
       </Modal.Footer>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </Modal>
   );
 };

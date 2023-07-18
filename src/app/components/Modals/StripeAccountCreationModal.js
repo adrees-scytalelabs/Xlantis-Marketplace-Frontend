@@ -1,5 +1,6 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 
 const StripeAccountCreationModal = (props) => {
@@ -57,11 +58,7 @@ const StripeAccountCreationModal = (props) => {
             }}
             className="newTemplateBtn mb-3"
           >
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#fbfeff" }}
-            />
+            <CircularProgress size={28} sx={{ color: "#FFFFFF" }} />
           </button>
         ) : (
           <button

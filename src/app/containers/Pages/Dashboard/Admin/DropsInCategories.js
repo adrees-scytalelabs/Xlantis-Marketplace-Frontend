@@ -1,11 +1,11 @@
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getDropsByCategories } from "../../../../components/API/AxiosInterceptor";
 import CategoryDropsCards from "../../../../components/Cards/CategoryDropsCards";
-import { Spinner } from "react-bootstrap";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
-import { Grid } from "@mui/material";
 import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const styles = {
   root: {
@@ -78,17 +78,16 @@ const DropsInCategories = (props) => {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body">
         <div className="form-group">
           {open ? (
             <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              />
+              <WhiteSpinner />
               <span style={{ color: "#ff0000" }} className="sr-only">
                 Loading...
               </span>

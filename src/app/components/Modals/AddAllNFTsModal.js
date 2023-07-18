@@ -7,19 +7,19 @@ import {
   ListItemText,
   Typography,
 } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 
 const AddAllNFTsModal = (props) => {
-  const changePrice = (e) =>{
+  const changePrice = (e) => {
     props.setPrice(e.target.value);
-    if(e.target.value<0.5 || e.target.value > 999999.99){
-      props.setIsPriceValid(false)
-    }
-    else{
+    if (e.target.value < 0.5 || e.target.value > 999999.99) {
+      props.setIsPriceValid(false);
+    } else {
       props.setIsPriceValid(true);
     }
-  }
+  };
   return (
     <Modal show={props.show} onHide={props.handleClose} centered scrollable>
       <Modal.Header closeButton>
@@ -49,7 +49,7 @@ const AddAllNFTsModal = (props) => {
                 const value = e.target.value;
                 const regex = /^\d*\.?\d{0,2}$/;
                 if (regex.test(value)) {
-                  changePrice(e)
+                  changePrice(e);
                 }
               }}
             />
@@ -137,11 +137,7 @@ const AddAllNFTsModal = (props) => {
             }}
             className="newTemplateBtn mb-3"
           >
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#fbfeff" }}
-            />
+            <CircularProgress size={30} sx={{ color: "#FFFFFF" }} />
           </button>
         ) : (
           <button

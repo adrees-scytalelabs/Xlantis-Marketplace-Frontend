@@ -1,5 +1,6 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import React, { useState } from "react";
-import { Button, Modal, Spinner } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import { uploadToS3 } from "../API/AxiosInterceptor";
@@ -7,7 +8,6 @@ import { defaultProfile } from "../ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 
 function CreateNewCollectionModal(props) {
-
   const [collectionTitle, setCollectionTitle] = useState();
   const [collectionImage, setCollectionImage] = useState(defaultProfile);
   const [isUploadingCollectionImage, setIsUploadingCollectionImage] =
@@ -19,7 +19,7 @@ function CreateNewCollectionModal(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -95,11 +95,7 @@ function CreateNewCollectionModal(props) {
                   >
                     {isUploadingCollectionImage ? (
                       <div className="text-center">
-                        <Spinner
-                          animation="border"
-                          role="status"
-                          style={{ color: "#fff" }}
-                        ></Spinner>
+                        <CircularProgress sx={{ color: "#FFFFFF" }} />
                       </div>
                     ) : (
                       <span>
@@ -129,11 +125,7 @@ function CreateNewCollectionModal(props) {
         </Button>
         {props.isCreating ? (
           <div align="center" className="text-center">
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#ff0000" }}
-            ></Spinner>
+            <CircularProgress sx={{ color: "#FFFFFF" }} />
             <span style={{ color: "#ff0000" }} className="sr-only">
               Loading...
             </span>
@@ -149,7 +141,12 @@ function CreateNewCollectionModal(props) {
           </Button>
         )}
       </Modal.Footer>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </Modal>
   );
 }

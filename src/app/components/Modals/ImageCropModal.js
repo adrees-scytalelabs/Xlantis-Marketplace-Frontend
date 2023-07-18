@@ -1,6 +1,6 @@
 import { CircularProgress } from "@mui/material";
 import React, { useEffect } from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import Cropper from "react-easy-crop";
 
 const ImageCropModal = (props) => {
@@ -53,11 +53,7 @@ const ImageCropModal = (props) => {
               justifyContent: "center",
             }}
           >
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#fbfeff" }}
-            ></Spinner>
+            <CircularProgress size={30} sx={{ color: "#FFFFFF" }} />
           </button>
         ) : (
           <button

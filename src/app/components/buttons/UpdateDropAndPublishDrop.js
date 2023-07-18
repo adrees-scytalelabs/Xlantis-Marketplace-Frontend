@@ -1,9 +1,9 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import { Spinner } from "react-bootstrap";
-import DateTimePicker from "react-datetime-picker";
-import "react-datetime-picker/dist/DateTimePicker.css";
 import "react-calendar/dist/Calendar.css";
 import "react-clock/dist/Clock.css";
+import DateTimePicker from "react-datetime-picker";
+import "react-datetime-picker/dist/DateTimePicker.css";
 
 function UpdateDropAndPublishDrop({
   isDisabled,
@@ -79,14 +79,8 @@ function UpdateDropAndPublishDrop({
           </div>
           <div className="submit-section" style={{ marginBottom: "3%" }}>
             {isSaving ? (
-              <div className="text-center">
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#fff" }}
-                >
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
+              <div style={{ float: "right" }}>
+                <CircularProgress sx={{ color: "#FFFFFF" }} />
               </div>
             ) : (
               <button
