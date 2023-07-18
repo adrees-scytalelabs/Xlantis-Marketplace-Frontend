@@ -1,8 +1,23 @@
 import React, { useState } from "react";
-import { Modal, Form, Button, Row, Col } from "react-bootstrap";
+import { Modal, Form, Row, Col } from "react-bootstrap";
 import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
 import DateTimePicker from "react-datetime-picker";
 import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
+import Button from "@mui/material/Button";
+
+const stylesMUI = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
+};
 
 const NFTSale = ({
   show,
@@ -21,7 +36,7 @@ const NFTSale = ({
   endTime,
   openSummaryModal,
 }) => {
-  const [num,setNum] = useState(0);
+  const [num, setNum] = useState(0);
   return (
     <Modal show={show} onHide={handleClose} centered>
       <Modal.Header
@@ -66,7 +81,6 @@ const NFTSale = ({
           <div className="mb-3">
             <Button
               className="mb-4"
-              variant="outline-light"
               style={{
                 marginRight: "10px",
                 width: "100%",
@@ -74,7 +88,10 @@ const NFTSale = ({
                 borderRadius: "5px",
                 backgroundColor: "transparent",
               }}
-              onClick={(e) => {setNum(1)}}
+              sx={stylesMUI.buttons}
+              onClick={(e) => {
+                setNum(1);
+              }}
             >
               Floor <br />
               <label style={{ fontSize: "6px" }}>1 USD</label>
@@ -130,12 +147,14 @@ const NFTSale = ({
         }}
       >
         <Button
+          sx={stylesMUI.buttons}
           style={{ backgroundColor: "transparent" }}
           onClick={handleClose}
         >
           Close
         </Button>
         <Button
+          sx={stylesMUI.buttons}
           style={{ backgroundColor: "transparent" }}
           onClick={openSummaryModal}
         >

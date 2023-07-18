@@ -1,7 +1,8 @@
 import { CardMedia } from "@mui/material";
 import React, { useEffect } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
+import Button from "@mui/material/Button";
 
 const styles = {
   media: {
@@ -9,6 +10,17 @@ const styles = {
     paddingTop: "100%",
     // width: "50%",
     // height: "50%",
+  },
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
   },
 };
 
@@ -108,12 +120,14 @@ const CollectionSaleModal = ({
       >
         <Button
           style={{ backgroundColor: "transparent" }}
+          sx={styles.buttons}
           onClick={handleClose}
         >
           Close
         </Button>
         <Button
           style={{ backgroundColor: "transparent" }}
+          sx={styles.buttons}
           onClick={handleOpenWorkProgressModal}
         >
           Confirm

@@ -1,11 +1,26 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useState } from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import { uploadToS3 } from "../API/AxiosInterceptor";
 import { defaultProfile } from "../ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import Button from "@mui/material/Button";
+
+const styles = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
+};
 
 function CreateNewCollectionModal(props) {
   const [collectionTitle, setCollectionTitle] = useState();
@@ -120,7 +135,7 @@ function CreateNewCollectionModal(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" onClick={props.handleClose}>
+        <Button sx={styles.buttons} onClick={props.handleClose}>
           Close
         </Button>
         {props.isCreating ? (
@@ -132,7 +147,7 @@ function CreateNewCollectionModal(props) {
           </div>
         ) : (
           <Button
-            variant="primary"
+            sx={styles.buttons}
             onClick={() =>
               props.createCollections(collectionTitle, collectionImage)
             }

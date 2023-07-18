@@ -1,13 +1,29 @@
+import Button from "@mui/material/Button";
 import React from "react";
-import { Modal, Form, Button, Row, Col } from "react-bootstrap";
-import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
-import DateTimePicker from "react-datetime-picker";
-import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
+import { Modal } from "react-bootstrap";
+
+const styles = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
+};
 
 function SummaryModal({ show, handleClose }) {
   return (
     <Modal show={show} onHide={handleClose} size="md" centered>
-      <Modal.Header closeButton className="custom-header" style={{backgroundColor:'black'}}>
+      <Modal.Header
+        closeButton
+        className="custom-header"
+        style={{ backgroundColor: "black" }}
+      >
         <Modal.Title>Summary</Modal.Title>
       </Modal.Header>
       <Modal.Body
@@ -38,12 +54,14 @@ function SummaryModal({ show, handleClose }) {
         style={{ backgroundColor: "black", border: "1px solid white" }}
       >
         <Button
+          sx={styles.buttons}
           style={{ backgroundColor: "transparent" }}
           onClick={handleClose}
         >
           Close
         </Button>
         <Button
+          sx={styles.buttons}
           style={{ backgroundColor: "transparent" }}
           onClick={handleClose}
         >

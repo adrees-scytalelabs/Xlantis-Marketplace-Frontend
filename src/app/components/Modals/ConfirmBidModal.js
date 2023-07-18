@@ -1,8 +1,25 @@
 import { Typography } from "@mui/material";
 import React from "react";
-import { Button, Col, Modal, Row } from "react-bootstrap";
+import { Col, Modal, Row } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
+import Button from '@mui/material/Button';
+
+
+const styles = {
+    buttons: {
+      margin: "5px 0px 5px 7px",
+      backgroundColor: "#000",
+      border: "1px solid #F64D04",
+      color: "#fff",
+      padding: "10px",
+      fontFamily: "orbitron",
+      "&:hover": {
+        boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+      },
+    },
+  };
+
 function ConfirmBidModal(props) {
     return (
         <Modal show={props.show} onHide={props.handleClose}>
@@ -51,10 +68,10 @@ function ConfirmBidModal(props) {
 
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="primary" onClick={props.handleClose}>
+                <Button sx={styles.buttons} variant="primary" onClick={props.handleClose}>
                     Close
                 </Button>
-                <Button variant="primary" onClick={props.ConfirmBidding}>
+                <Button sx={styles.buttons} variant="primary" onClick={props.ConfirmBidding}>
                     Yes, Proceed!
                 </Button>
             </Modal.Footer>
