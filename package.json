@@ -19,6 +19,7 @@
     "@walletconnect/web3-provider": "^1.8.0",
     "axios": "0.19.2",
     "bootstrap": "^5.2.3",
+    "date-fns": "^2.30.0",
     "ethers": "5.7.2",
     "framer-motion": "^10.12.18",
     "ipfs-api": "26.1.2",

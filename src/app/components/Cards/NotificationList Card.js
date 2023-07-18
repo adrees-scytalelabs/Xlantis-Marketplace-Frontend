@@ -1,10 +1,10 @@
 import CloseIcon from "@mui/icons-material/Close";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import { ListItem, ListItemText } from "@mui/material";
+import { Divider, ListItem, ListItemText, Paper, List } from "@mui/material";
 import { grey } from "@mui/material/colors";
 import React, { useEffect, useState } from "react";
-import { FixedSizeList as List } from "react-window";
 import "../../assets/css/notificationStyle.css";
+import { formatDistanceToNow } from "date-fns";
 
 export default function NotificationList(props) {
   function handleNotificationClick(event) {
@@ -15,31 +15,13 @@ export default function NotificationList(props) {
     props.close(id);
     console.log("Icon clicked");
   }
-  function Row({ index, style }) {
-    useEffect(() => {});
-    return (
-      <ListItem
-        divider
-        style={{
-          backgroundColor: "white",
-          color: "white",
-          border: "1px solid black",
-        }}
-        onClick={handleNotificationClick}
-      >
-        <ListItemText
-          secondary={data[index].message}
-          style={{ wordWrap: "break-word" }}
-        />
-        <CloseIcon
-          style={{ fontSize: 15, color: grey[600] }}
-          onClick={(e) => {
-            handleIconClick(e, data[index]._id);
-          }}
-        />
-      </ListItem>
-    );
-  }
+
+  //function for format date to passed time till current time
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return formatDistanceToNow(date, { addSuffix: true });
+  };
+
   const [data, setData] = useState(props.notifications);
 
   useEffect(() => {
@@ -48,26 +30,81 @@ export default function NotificationList(props) {
   }, [props]);
 
   return props.notifications.length != 0 ? (
-    <List
-      className={props.notifications}
-      height={300}
-      itemCount={props.itemCount}
-      itemSize={47}
-      width={300}
-      style={{ backgroundColor: "#000", color: "white" }}
-    >
-      {Row}
-    </List>
+    <div style={{ width: "370px", background: "white" }} className="h-auto">
+      <div
+        style={{
+          margin: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <NotificationsIcon sx={{ marginRight: "3px" }} />
+        Notifications
+      </div>
+      <Divider />
+      <div className="d-flex flex-column justify-content-center">
+        <div className="d-flex justify-content-center">
+          <Paper style={{ overflow: "auto" }}>
+            <List
+              sx={{
+                overflow: "auto",
+                maxWidth: 370,
+                position: "relative",
+                overflow: "auto",
+                maxHeight: 300,
+              }}
+              style={{ backgroundColor: "#FFF", color: "#00AEAE" }}
+            >
+              {data.map((row, index) => (
+                <ListItem
+                  key={index}
+                  divider
+                  style={{
+                    backgroundColor: "white",
+                    color: "black",
+                  }}
+                  onClick={handleNotificationClick}
+                >
+                  <ListItemText
+                    primary={row.message}
+                    secondary={formatDate(row.createdAt)}
+                    style={{ wordWrap: "break-word" }}
+                  />
+                  <CloseIcon
+                    style={{ fontSize: 15, color: grey[600] }}
+                    sx={{ padding: "0px" }}
+                    onClick={(e) => {
+                      handleIconClick(e, row._id);
+                    }}
+                  />
+                </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </div>
+      </div>
+    </div>
   ) : (
     <div
       style={{
-        width: "300px",
+        width: "370px",
         backgroundColor: "white",
         color: "black",
       }}
       className="p-2 h-auto"
     >
-      Notifications
+      <div
+        style={{
+          margin: "10px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <NotificationsIcon sx={{ marginRight: "3px" }} />
+        Notifications
+      </div>
       <hr className="hr" />
       <div className="d-flex flex-column justify-content-center">
         <div className="d-flex justify-content-center">
