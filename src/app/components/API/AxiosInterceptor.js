@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  //baseURL: `https://raindrop-backend.herokuapp.com/`,
-   baseURL: `http://localhost:3000`,
+  baseURL: `https://raindrop-backend.herokuapp.com/`,
+  // baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -113,6 +113,10 @@ export const userSignUp = (body) => {
 
 export const setSuperAdminPlatformFee = (body) => {
   return Axios.post(`/platform-fee/super-admin`, body);
+};
+
+export const uploadImageToIpfs = (body) => {
+  return Axios.post(`/upload-ipfs/image`, body);
 };
 
 //PUT REQUESTS
