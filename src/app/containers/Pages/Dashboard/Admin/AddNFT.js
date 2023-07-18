@@ -102,7 +102,9 @@ function AddNFT(props) {
   const [isSaving, setIsSaving] = useState(false);
   const [enableTime, setEnableTime] = useState(false);
   const [dropId, setDropId] = useState("");
-  const [startTime, setStartTime] = useState(new Date());
+  const [startTime, setStartTime] = useState(
+    new Date(new Date().getTime() + 5 * 60 * 1000)
+  ); // drop sale start time must be more than 5 minutes then current time
   const [endTime, setEndTime] = useState(new Date());
   const [nftList, setNftList] = useState([]);
   const [buttonName, setbuttonName] = useState("bttn");
@@ -206,6 +208,7 @@ function AddNFT(props) {
     setMOdalOpen(false);
     setTransactionModal(true);
   };
+
   let getCollection = async () => {
     const version = Cookies.get("Version");
     await getCollectionsByCategories(
@@ -251,10 +254,12 @@ function AddNFT(props) {
     widgetHeight: "700px",
     widgetWidth: "500px",
   };
+
   const getHash = (id) => {
     const hex = Web3.utils.toHex(id);
     return hex;
   };
+
   const handleTopUpAmount = () => {
     handleShowBackdrop();
     console.log("Inside top up function");
@@ -290,6 +295,7 @@ function AddNFT(props) {
       }
     );
   };
+
   let getNfts = (id) => {
     getNFTsThroughId(id, location.state.marketplaceId).then(
       (response) => {
@@ -315,6 +321,7 @@ function AddNFT(props) {
       }
     );
   };
+
   let handlePublish = () => {
     let dropData = {
       dropId,
@@ -346,6 +353,7 @@ function AddNFT(props) {
       }
     );
   };
+
   function openTransak() {
     handleCloseModal();
     const transak = new transakSDK(settings);
@@ -542,6 +550,11 @@ function AddNFT(props) {
 
   const handleSubmitEvent = async (event) => {
     event.preventDefault();
+
+    // resetting start and end time to show current date and time on the date picker
+    setStartTime(new Date(new Date().getTime() + 5 * 60 * 1000));
+    setEndTime(new Date());
+
     if (isAdded) {
       handleShowBackdrop();
       await handleBuyDetail();
@@ -580,7 +593,18 @@ function AddNFT(props) {
 
   const handleTimeEvent = async (event) => {
     event.preventDefault();
-    if (
+
+    // start date must be 5 minutes more than current time to avoid transaction failing.
+    if (startTimeStamp < 5 * 60 * 1000 + new Date().getTime()) {
+      let variant = "error";
+      setSnackbarMessage(
+        "Drop start time must be more than 5 minutes than current time."
+      );
+      setSnackbarSeverity(variant);
+      handleSnackbarOpen();
+      setIsSaving(false);
+      handleCloseBackdrop();
+    } else if (
       startTimeStamp === endTimeStamp ||
       new Date(startTime) === new Date(endTime)
     ) {
@@ -728,6 +752,7 @@ function AddNFT(props) {
       console.log("Fixed Price not work properly", e);
     }
   };
+
   const handleAuction = async (
     event,
     web3,
@@ -798,11 +823,13 @@ function AddNFT(props) {
       console.log("Contract Issue", e);
     }
   };
+
   const handleResponse = async (event) => {
     event.preventDefault();
     console.log("SaleType", saleType);
     await networkChecker(event);
   };
+
   const networkChecker = async (event) => {
     await loadWeb3();
     const web3 = window.web3;
@@ -841,6 +868,7 @@ function AddNFT(props) {
       }
     }
   };
+
   const handleBuyDetail = async () => {
     console.log("dropId", dropId);
     try {
@@ -881,6 +909,7 @@ function AddNFT(props) {
       console.log("Cost detail end point not work properly", e);
     }
   };
+
   const handleDropData = async (event, web3, accounts) => {
     event.preventDefault();
     handleResponse(event, web3, accounts);
@@ -894,7 +923,7 @@ function AddNFT(props) {
     await handleTimeEvent(event);
     await handleDropData(event, web3, accounts);
   };
-  
+
   const handleAddClick = async (e) => {
     handleShowBackdrop();
     e.preventDefault();
@@ -1133,6 +1162,7 @@ function AddNFT(props) {
     setOpenDialog(false);
     setOpenEditModal(true);
   };
+
   let handleEditClose = () => {
     setOpenEditModal(false);
   };
