@@ -5,6 +5,7 @@ import {
   CardActions,
   CardContent,
   CardMedia,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -56,7 +57,7 @@ const DropsPageCard = (props) => {
             </div>
             <div className="row no-gutters justify-content-start align-items-center pb-2">
               <Typography
-                variant="body2"                
+                variant="body2"
                 component="p"
                 sx={{
                   color: "#999",
@@ -80,19 +81,32 @@ const DropsPageCard = (props) => {
           {props.dropDetails.status === "draft" ? (
             <Typography variant="h6" gutterBottom className="text-center">
               (
-              <Typography
-                variant="body2"
-                style={{ marginTop: "1rem" }}
-                component="p"
+              <Tooltip
+                title={
+                  props.dropDetails.isTxFailed ? (
+                    <Typography>
+                      Transaction for this drop has been failed. Try again to
+                      publish drop
+                    </Typography>
+                  ) : null
+                }
+                arrow
               >
-                <Alert
-                  severity="info"
-                  sx={props.cardClasses.textAlert}
-                  style={{ fontWeight: "bold" }}
+                <Typography
+                  variant="body2"
+                  style={{ marginTop: "1rem" }}
+                  component="p"
                 >
-                  Publish Drop
-                </Alert>
-              </Typography>
+                  <Alert
+                    severity={props.dropDetails.isTxFailed ? "error" : "info"}
+                    icon={props.dropDetails.isTxFailed ? null : false}
+                    sx={props.cardClasses.textAlert}
+                    style={{ fontWeight: "bold" }}
+                  >
+                    Publish Drop
+                  </Alert>
+                </Typography>
+              </Tooltip>
               )
             </Typography>
           ) : props.dropDetails.saleType === "auction" ? (
