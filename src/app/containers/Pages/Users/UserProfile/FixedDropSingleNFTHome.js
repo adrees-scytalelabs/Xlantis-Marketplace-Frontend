@@ -10,6 +10,7 @@ import {
   Paper,
   TextField,
   ThemeProvider,
+  Tooltip,
   Typography,
   createTheme,
 } from "@mui/material";
@@ -19,7 +20,6 @@ import React, { useEffect, useState } from "react";
 import { Col, Row, Table } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import ReactTooltip from "react-tooltip";
 import Web3 from "web3";
 import {
   finalizeAuctionBid,
@@ -1032,7 +1032,7 @@ const FixedDropSingleNFTHome = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           {nftProperties[0][0] !== "" &&
-                          nftProperties.length != 0 ? (
+                            nftProperties.length != 0 ? (
                             <Table striped bordered hover>
                               <thead style={{ background: "black" }}>
                                 <tr>
@@ -1088,9 +1088,9 @@ const FixedDropSingleNFTHome = () => {
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
-                      nftData?.currentOrderListingId.isSold === false &&
-                      new Date() >= startTime &&
-                      new Date() < endTime ? (
+                        nftData?.currentOrderListingId.isSold === false &&
+                        new Date() >= startTime &&
+                        new Date() < endTime ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
@@ -1113,58 +1113,21 @@ const FixedDropSingleNFTHome = () => {
                       ) : (
                         <div
                           className="col-12 col-md-4 mt-2 mt-md-0"
-                          data-tip
-                          data-for="registerTip"
                         >
-                          <button
-                            className="bidBtn-disabled w-100"
-                            type="button"
-                            data-tip
-                            data-for="registerTip"
-                            onClick={(e) => {
-                              console.log(e);
-                              if (!account) {
-                                navigate("/user-account");
-                              }
-                            }}
-                          >
-                            Buy
-                          </button>
-
-                          {!account ? (
-                            <ReactTooltip
-                              id="registerTip"
-                              place="top"
-                              effect="solid"
+                          <Tooltip title={!account ? "Please Login First!" : nftData?.currentOrderListingId.isSold === true ? "NFT has been sold out" : new Date() < startTime ? "Sale Has Not Started Yet" : new Date() > endTime ? "Sale Has Ended" : null} placement="top" arrow>
+                            <button
+                              className="bidBtn-disabled w-100"
+                              type="button"
+                              onClick={(e) => {
+                                console.log(e);
+                                if (!account) {
+                                  navigate("/user-account");
+                                }
+                              }}
                             >
-                              Please Login First!
-                            </ReactTooltip>
-                          ) : nftData?.currentOrderListingId.isSold === true ? (
-                            <ReactTooltip
-                              id="registerTip"
-                              place="top"
-                              effect="solid"
-                            >
-                              NFT has been sold out
-                            </ReactTooltip>
-                          ) : new Date() < startTime ? (
-                            <ReactTooltip
-                              id="registerTip"
-                              place="top"
-                              effect="solid"
-                              style={{ color: "white" }}
-                            >
-                              Sale Has Not Started Yet
-                            </ReactTooltip>
-                          ) : new Date() > endTime ? (
-                            <ReactTooltip
-                              id="registerTip"
-                              place="top"
-                              effect="solid"
-                            >
-                              Sale Has Ended
-                            </ReactTooltip>
-                          ) : null}
+                              Buy
+                            </button>
+                          </Tooltip>
                         </div>
                       )}
                     </div>

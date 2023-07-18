@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import UAParser from "ua-parser-js";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import { getMarketPlace } from "../../../components/API/AxiosInterceptor";
+import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import NotificationSnackbar from "../../../components/Snackbar/NotificationSnackbar";
 import DomainList from "./DomainLists";
 import HomeBanner from "./Home/HomeBanner";
-import CircularBackdrop from "../../../components/Backdrop/Backdrop";
 
 function MarketLists() {
   const [marketPlaces, setMarketPlaces] = useState();

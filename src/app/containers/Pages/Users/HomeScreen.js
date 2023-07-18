@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
-import UAParser from "ua-parser-js";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
 import Footer from "../../../components/Footers/Footer";
@@ -33,14 +32,14 @@ function HomeScreen({ deviceType }) {
   return (
     <div className="main-wrapper">
       <div className="home-section home-full-height">
-        <HeaderHome selectedNav={"Home"} role={null} marketplaceId={location.state.marketplaceId}/>
+        <HeaderHome selectedNav={"Home"} role={null} marketplaceId={location.state.marketplaceId} />
         <div id="hBanner">
           <HomeBanner />
         </div>
 
         <div className="row no-gutters mt-5">
           {/* <MarketLists></MarketLists> */}
-          <Market deviceType={deviceType} marketPlace={marketPlace}/>
+          <Market deviceType={deviceType} marketPlace={marketPlace} />
         </div>
       </div>
       <Footer position={"relative"} />
@@ -54,18 +53,5 @@ function HomeScreen({ deviceType }) {
   );
 }
 
-HomeScreen.getInitialProps = ({ req }) => {
-  let userAgent;
-  if (req) {
-    userAgent = req.headers["user-agent"];
-  } else {
-    userAgent = navigator.userAgent;
-  }
-  const parser = new UAParser();
-  parser.setUA(userAgent);
-  const result = parser.getResult();
-  const deviceType = (result.device && result.device.type) || "desktop";
-  return { deviceType };
-};
 
 export default HomeScreen;
