@@ -1,13 +1,11 @@
+import axios from "axios";
 import React from "react";
 import ReactDOM from "react-dom/client";
-import "./index.css";
-import * as serviceWorker from "./serviceWorker";
-import App from "./app/containers/App/Application";
-import axios from "axios";
-import { CookiesProvider } from "react-cookie";
 import { Provider } from 'react-redux';
-import { store } from './store';
+import App from "./app/containers/App/Application";
+import "./index.css";
 import reportWebVitals from './reportWebVitals';
+import { store } from './store';
 
 // axios.defaults.withCredentials = true;
 
@@ -19,11 +17,9 @@ else axios.defaults.baseURL = `https://raindrop-backend.herokuapp.com/`;
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <CookiesProvider>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </CookiesProvider>
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
