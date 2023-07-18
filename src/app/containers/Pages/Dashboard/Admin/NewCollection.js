@@ -19,10 +19,8 @@ import SelectDescription from "../../../../components/Select/SelectDescription";
 import SelectRoyaltyFee from "../../../../components/Select/SelectRoyaltyFee";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import UploadFile from "../../../../components/Upload/UploadFile";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
-import Factory1155Contract from "../../../../components/blockchain/Abis/Factory1155.json";
-import Factory721Contract from "../../../../components/blockchain/Abis/Factory721.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
+
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import SubmitButton from "../../../../components/buttons/SubmitButton";
 import getCroppedImg from "../../../../components/Utils/Crop";
@@ -266,8 +264,8 @@ function NewCollection(props) {
               let CloneId = getHash(collectionID);
               setIsSaving(false);
               console.log("ERC721 COLLECTION CREATION");
-              const abi = Factory721Contract;
-              const address = Addresses.Factory721Address;
+              const abi = Factory1155;
+              const address = Addresses.Factory1155;
               var cloneContractAddress;
               var myContractInstance = await new web3.eth.Contract(
                 abi,
@@ -374,8 +372,8 @@ function NewCollection(props) {
             let CloneId = getHash(collectionID);
             if (nftType === "1155") {
               console.log("ERC1155 COLLECTION CREATION");
-              const abi = Factory1155Contract;
-              const address = Addresses.Factory1155Address;
+              const abi = Factory1155;
+              const address = Addresses.Factory1155;
               var cloneContractAddress;
               var myContractInstance = await new web3.eth.Contract(
                 abi,
@@ -435,8 +433,8 @@ function NewCollection(props) {
                 });
             } else if (nftType === "721") {
               console.log("ERC721 COLLECTION CREATION");
-              const abi = Factory721Contract;
-              const address = Addresses.Factory721Address;
+              const abi = Factory1155;
+              const address = Addresses.Factory1155;
               var cloneContractAddress;
               var myContractInstance = await new web3.eth.Contract(
                 abi,
@@ -614,11 +612,11 @@ function NewCollection(props) {
       let addressDropFactory;
       let abiNft;
       if (nftType === "1155") {
-        abiNft = CreateNFTContract1155;
-        addressDropFactory = Addresses.AuctionDropFactory1155;
+        abiNft = Factory1155;
+        addressDropFactory = Addresses.Factory1155;
       } else if (nftType === "721") {
-        abiNft = CreateNFTContract721;
-        addressDropFactory = Addresses.AuctionDropFactory721;
+        abiNft = Factory1155;
+        addressDropFactory = Addresses.Factory1155;
       }
 
       console.log("Contract Address: ", nftContractAddress);

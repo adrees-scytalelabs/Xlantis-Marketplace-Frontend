@@ -8,13 +8,12 @@ import {
   getMyCollectionsPaginated,
 } from "../../../../components/API/AxiosInterceptor";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
-import CreateNFTContract1155 from "../../../../components/blockchain/Abis/Collectible1155.json";
-import CreateNFTContract721 from "../../../../components/blockchain/Abis/Collectible721.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import DropApprovalTable from "../../../../components/tables/DropApprovalTable";
-import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 function DropApproval(props) {
   const [network, setNetwork] = useState("");
@@ -118,11 +117,11 @@ function DropApproval(props) {
       let addressDropFactory;
       let abiNft;
       if (i.contractType === "1155") {
-        abiNft = CreateNFTContract1155;
-        addressDropFactory = Addresses.AuctionDropFactory1155;
+        abiNft = Factory1155;
+        addressDropFactory = Addresses.Factory1155;
       } else if (i.contractType === "721") {
-        abiNft = CreateNFTContract721;
-        addressDropFactory = Addresses.AuctionDropFactory721;
+        abiNft = Factory1155;
+        addressDropFactory = Addresses.Factory1155;
       }
 
       console.log("Contract Address: ", i.nftContractAddress);
@@ -187,12 +186,12 @@ function DropApproval(props) {
         let abiNft;
         if (i.contractType === "1155") {
           console.log("1155 enter");
-          abiNft = CreateNFTContract1155;
-          addressDropFactory = Addresses.FactoryDrop1155;
+          abiNft = Factory1155;
+          addressDropFactory = Addresses.Factory1155;
         } else if (i.contractType === "721") {
           console.log("721 enter");
-          abiNft = CreateNFTContract721;
-          addressDropFactory = Addresses.FactoryDrop721;
+          abiNft = Factory1155;
+          addressDropFactory = Addresses.Factory1155;
         }
 
         console.log("Contract Address: ", i.nftContractAddress);

@@ -11,18 +11,15 @@ import PropertiesAccordian from "../../../../components/Accordian/PropertiesAcco
 import {
   acceptAuctionBid,
   getAuctionAcceptBidTxSummary,
-  getNFTBidListPaginated,
-  marketplaceBuyVersioned,
+  getNFTBidListPaginated
 } from "../../../../components/API/AxiosInterceptor";
-import abiAuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import abiAuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
-import DropFactory from "../../../../components/blockchain/Abis/DropFactory.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import DropSingleNFTCard from "../../../../components/Cards/DropSingleNFTCard";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 import AcceptBidTxModal from "../../../../components/Modals/AcceptBidTxModal";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
-import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 const styles = {
   root: {
     flexGrow: 1,
@@ -187,80 +184,9 @@ const DropSingleNFT = (props) => {
     return hex;
   };
 
-  let handleBuy = async () => {
-    console.log("Nft detail: ", nftDetail);
-    let dropIdHex = getHash(nftDetail.dropId);
-    console.log(dropIdHex);
-    setOpenDialog(false);
-    setIsSaving(true);
-    await loadWeb3();
-    const web3 = window.web3;
-    const accounts = await web3.eth.getAccounts();
-    const network = await web3.eth.net.getNetworkType();
-    if (network !== "private") {
-      setNetwork(network);
-      setIsSaving(false);
-      handleShowNetworkModal();
-    } else {
-      handleShowBackdrop();
-      const addressDropFactory = Addresses.FactoryDrop;
-      const abiDropFactory = DropFactory;
 
-      var myContractInstance = await new web3.eth.Contract(
-        abiDropFactory,
-        addressDropFactory
-      );
-      console.log("myContractInstance", myContractInstance);
-
-      await myContractInstance.methods
-        .executeOrder(
-          dropIdHex,
-          nftDetail.collectionId.nftContractAddress,
-          nftDetail.nftId,
-          nftDetail.tokenSupply,
-          nftDetail.currentOrderListingId.price
-        )
-        .send({ from: accounts[0] }, (err, response) => {
-          console.log("get transaction", err, response);
-          let data = {
-            dropId: nftDetail.dropId,
-            nftId: nftDetail._id,
-            txHash: response,
-          };
-
-          console.log("data", data);
-          marketplaceBuyVersioned(versionB, data)
-            .then((response) => {
-              console.log(
-                "Transaction Hash sending on backend response: ",
-                response
-              );
-            })
-            .catch((error) => {
-              console.log(
-                "Transaction hash on backend error: ",
-                error.response
-              );
-            });
-
-          if (err !== null) {
-            console.log("err", err);
-            let variant = "error";
-            setSnackbarMessage("User Canceled Transaction.");
-            setSnackbarSeverity(variant);
-            handleSnackbarOpen();
-            handleCloseBackdrop();
-            setIsSaving(false);
-          }
-        })
-        .on("receipt", (receipt) => {
-          console.log("receipt", receipt);
-        });
-    }
-  };
 
   let getBidList = (nftId) => {
-    let version = Cookies.get("Version");
     getNFTBidListPaginated(nftId, 0, 1000)
       .then((response) => {
         console.log("Response from getting bid: ", response);
@@ -316,11 +242,11 @@ const DropSingleNFT = (props) => {
       let addressAuctionFactory;
 
       if (contractType === "1155") {
-        abiAuctionFactory = abiAuctionDropFactory1155;
-        addressAuctionFactory = Addresses.AuctionDropFactory1155;
+        abiAuctionFactory = Factory1155;
+        addressAuctionFactory = Addresses.Factory1155;
       } else if (contractType === "721") {
-        abiAuctionFactory = abiAuctionDropFactory721;
-        addressAuctionFactory = Addresses.AuctionDropFactory721;
+        abiAuctionFactory = Factory1155;
+        addressAuctionFactory = Addresses.Factory1155;
       }
 
       let dropIdHash = getHash(nftDetail.dropId);

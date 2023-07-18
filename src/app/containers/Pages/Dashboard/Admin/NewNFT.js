@@ -38,7 +38,7 @@ import NewNftSelectSupply from "../../../../components/Radio/NewNftSelectSupply"
 import NewNftTemplates from "../../../../components/Select/NewNftTemplates";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import NFTUpload from "../../../../components/Upload/NFTUpload";
-import CreateNFTContract from "../../../../components/blockchain/Abis/Collectible1155.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import AddNftQueue from "../../../../components/buttons/AddNftQueue";
 import BatchCreateNft from "../../../../components/buttons/BatchCreateNft";
 import { getNewNftCollection } from "../../../../redux/getNewNftCollectionSlice";
@@ -422,7 +422,7 @@ function NewNFT(props) {
       } else {
         handleShowBackdrop();
         const address = nftContractAddress;
-        const abi = CreateNFTContract;
+        const abi = Factory1155;
         let totalImages = tokenList.length;
         let AmountofNFTs = [];
         let IPFsURIs = [];

@@ -30,10 +30,7 @@ import PublishSuccessfully from "../../../../components/Modals/PublishSuccessful
 import TopUpModal from "../../../../components/Modals/TopUpModal";
 import SelectSupplyAndPrice from "../../../../components/Select/SelectSupplyAndPrice";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
-import AuctionDropFactory1155 from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import AuctionDropFactory721 from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
-import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
-import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import UpdateDropAndPublishDrop from "../../../../components/buttons/UpdateDropAndPublishDrop";
 import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
@@ -694,11 +691,11 @@ function AddNFT(props) {
   ) => {
     event.preventDefault();
     if (nftType === "721") {
-      address = Addresses.FactoryDrop721;
-      abi = DropFactory721;
+      address = Addresses.Factory1155;
+      abi = Factory1155;
     } else if (nftType === "1155") {
-      address = Addresses.FactoryDrop1155;
-      abi = DropFactory1155;
+      address = Addresses.Factory1155;
+      abi = Factory1155;
     }
     var myContractInstance = await new web3.eth.Contract(abi, address);
     try {
@@ -762,11 +759,11 @@ function AddNFT(props) {
     dropCloneId
   ) => {
     if (nftType === "721") {
-      address = Addresses.AuctionDropFactory721;
-      abi = AuctionDropFactory721;
+      address = Addresses.Factory1155;
+      abi = Factory1155;
     } else if (nftType === "1155") {
-      address = Addresses.AuctionDropFactory1155;
-      abi = AuctionDropFactory1155;
+      address = Addresses.Factory1155;
+      abi = Factory1155;
     }
     var myContractInstance = await new web3.eth.Contract(abi, address);
     try {

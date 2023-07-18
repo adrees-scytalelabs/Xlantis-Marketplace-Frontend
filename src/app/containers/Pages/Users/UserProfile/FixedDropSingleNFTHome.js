@@ -42,12 +42,7 @@ import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
-import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
-import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
-import DropFactory1155 from "../../../../components/blockchain/Abis/DropFactory1155.json";
-import DropFactory721 from "../../../../components/blockchain/Abis/DropFactory721.json";
-import ERC20SaleDrop from "../../../../components/blockchain/Abis/ERC20SaleDrop.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -359,16 +354,16 @@ const FixedDropSingleNFTHome = () => {
         let contractAbi;
 
         if (nftData?.collectionId.contractType === "1155") {
-          contractAddress = Addresses.AuctionDropFactory1155;
-          contractAbi = AuctionDropFactory1155ABI;
+          contractAddress = Addresses.Factory1155;
+          contractAbi = Factory1155;
           console.log(
             "hello",
             contractAddress,
             nftData?.collectionId.contractType
           );
         } else if (nftData?.collectionId.contractType === "721") {
-          contractAddress = Addresses.AuctionDropFactory721;
-          contractAbi = AuctionDropFactory721ABI;
+          contractAddress = Addresses.Factory1155;
+          contractAbi = Factory1155;
         }
 
         let myContractInstance = await new web3.eth.Contract(
@@ -512,9 +507,9 @@ const FixedDropSingleNFTHome = () => {
     if (network !== "private") {
       setNetwork(network);
     } else {
-      const addressErc20Auction = Addresses.AuctionERC20;
-      const addressDropClone = dropCloneAddress;
-      const abiERC20 = ERC20Abi;
+      const addressErc20Auction = Addresses.Factory1155;
+      const addressDropClone = Factory1155;
+      const abiERC20 = Factory1155;
 
       let bidValue = web3.utils.toWei(biddingValue, "ether");
       var myContractInstance = await new web3.eth.Contract(
@@ -616,12 +611,12 @@ const FixedDropSingleNFTHome = () => {
     } else {
       handleShowBackdrop();
 
-      const addressDropFactory721 = Addresses.FactoryDrop721;
-      const abiDropFactory721 = DropFactory721;
-      const addressDropFactory1155 = Addresses.FactoryDrop1155;
-      const abiDropFactory1155 = DropFactory1155;
-      const addressERC20 = Addresses.ERC20SaleDrop;
-      const abiERC20 = ERC20SaleDrop;
+      const addressDropFactory721 = Addresses.Factory1155;
+      const abiDropFactory721 = Factory1155;
+      const addressDropFactory1155 = Addresses.Factory1155;
+      const abiDropFactory1155 = Factory1155;
+      const addressERC20 = Addresses.Factory1155;
+      const abiERC20 = Factory1155;
       let addressApprove;
       if (nftData?.collectionId.contractType === "1155") {
         console.log("IN 1155");

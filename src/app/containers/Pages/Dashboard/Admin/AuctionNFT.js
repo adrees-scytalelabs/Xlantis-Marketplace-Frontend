@@ -7,9 +7,7 @@ import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
 import CircularBackdrop from "../../../../components/Backdrop/Backdrop";
-import AuctionDropFactory1155ABI from "../../../../components/blockchain/Abis/AuctionDropFactory1155.json";
-import AuctionDropFactory721ABI from "../../../../components/blockchain/Abis/AuctionDropFactory721.json";
-import ERC20Abi from "../../../../components/blockchain/Abis/AuctionERC20.json";
+import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
 import AuctionNFTDetailCard from "../../../../components/Cards/AuctionNFTCards/AuctionNFTDetailCard";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
@@ -27,9 +25,9 @@ import {
   sendBidData,
   sendBidDataVersioned,
 } from "../../../../components/API/AxiosInterceptor";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 import BidValue from "../../../../components/Select/BidValue";
 import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
-import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 
 const customTheme = createTheme({
   overrides: {
@@ -314,9 +312,9 @@ const AuctionNFT = (props) => {
       setNetwork(network);
       handleShow();
     } else {
-      const addressErc20Auction = Addresses.AuctionERC20;
+      const addressErc20Auction = Addresses.Factory1155;
       const addressDropClone = dropCloneAddress;
-      const abiERC20 = ERC20Abi;
+      const abiERC20 = Factory1155;
 
       let bidValue = web3.utils.toWei(biddingValue, "ether");
 
@@ -404,12 +402,12 @@ const AuctionNFT = (props) => {
         let contractAbi;
 
         if (contractType === "1155") {
-          contractAddress = Addresses.AuctionDropFactory1155;
-          contractAbi = AuctionDropFactory1155ABI;
+          contractAddress = Addresses.Factory1155;
+          contractAbi = Factory1155;
           console.log("hello", contractAddress, contractType);
         } else if (contractType === "721") {
-          contractAddress = Addresses.AuctionDropFactory721;
-          contractAbi = AuctionDropFactory721ABI;
+          contractAddress = Addresses.Factory1155;
+          contractAbi = Factory1155;
         }
 
         let myContractInstance = await new web3.eth.Contract(
