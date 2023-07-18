@@ -1,8 +1,8 @@
 import axios from "axios";
 import { getAuthorizationSession } from "../Utils/sessions";
 export const Axios = axios.create({
-  baseURL: `https://raindrop-backend.herokuapp.com/`,
-  // baseURL: `http://localhost:3000`,
+  //baseURL: `https://raindrop-backend.herokuapp.com/`,
+   baseURL: `http://localhost:3000`,
 });
 
 //SETTING HEADER
@@ -181,6 +181,10 @@ export const addCollectionToDrop = (body) => {
 };
 
 //PATCH REQUESTS
+
+export const batchMintFinalize = (batchId) => {
+  return Axios.patch(`batch-mint/finalize/${batchId}`);
+};
 
 export const readNotifications = (body) => {
   return Axios.patch(`/notifications/hide`, body);
