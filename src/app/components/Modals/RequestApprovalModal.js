@@ -1,6 +1,7 @@
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
+import { Grid } from "@mui/material";
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import BlackSpinner from "../Spinners/BlackSpinner";
 
 const RequestApprovalModal = (props) => {
@@ -26,11 +27,31 @@ const RequestApprovalModal = (props) => {
           Give approval to put NFTs on sale.
         </div>
         <div style={{ margin: "10px" }}>
-          <Row className="justify-content-center align-items-center no-gutters">
-            <Col style={{ color: "#000" }}>
+          <Grid
+            container
+            spacing={1}
+            className="justify-content-center align-items-center no-gutters"
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              style={{ color: "#000" }}
+            >
               Give Approval to Fixed Price Drop.
-            </Col>
-            <Col className="text-right">
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              className="text-right"
+            >
               {props.approvingFixedPrice ? (
                 <BlackSpinner />
               ) : props.isFixedPriceApproved ? (
@@ -53,8 +74,8 @@ const RequestApprovalModal = (props) => {
                   Approve
                 </button>
               )}
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </div>
       </Modal.Body>
       <Modal.Footer>

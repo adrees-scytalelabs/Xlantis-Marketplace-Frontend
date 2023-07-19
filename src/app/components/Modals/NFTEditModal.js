@@ -3,6 +3,7 @@ import {
   Button,
   FormControl,
   FormControlLabel,
+  Grid,
   Radio,
   RadioGroup,
   TextField,
@@ -10,7 +11,7 @@ import {
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import ipfs from "../../components/IPFS/ipfs";
@@ -601,8 +602,8 @@ const NFTEditModal = (props) => {
                 {nftDetail.properties?.map((property, index) => {
                   return (
                     <div key={index}>
-                      <Row>
-                        <Col>
+                      <Grid container spacing={1}>
+                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                           <div className="form-group">
                             <label>Key</label>
                             <div className="filter-widget">
@@ -617,8 +618,8 @@ const NFTEditModal = (props) => {
                               />
                             </div>
                           </div>
-                        </Col>
-                        <Col>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                           <div className="form-group">
                             <label>Value</label>
                             <div className="filter-widget">
@@ -633,8 +634,8 @@ const NFTEditModal = (props) => {
                               />
                             </div>
                           </div>
-                        </Col>
-                        <Col>
+                        </Grid>
+                        <Grid item xs={12} sm={12} md={4} lg={4} xl={4}>
                           <div className="form-group">
                             <label>Action</label>
                             <div className="filter-widget">
@@ -647,8 +648,8 @@ const NFTEditModal = (props) => {
                               </button>
                             </div>
                           </div>
-                        </Col>
-                      </Row>
+                        </Grid>
+                      </Grid>
                     </div>
                   );
                 })}

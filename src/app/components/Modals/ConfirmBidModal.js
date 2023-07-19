@@ -1,9 +1,9 @@
-import { Typography } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
+import Button from '@mui/material/Button';
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
-import Button from '@mui/material/Button';
 
 
 const styles = {
@@ -29,40 +29,40 @@ function ConfirmBidModal(props) {
             <Modal.Body className="text-center"> <i className="fas fa-exclamation-circle fa-10x"></i></Modal.Body>
             <Modal.Body>
                 <h3>Are You Sue you want to Bid</h3>
-                <Row>
+                <Grid container spacing={1}>
 
-                    <Col>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                         <Typography variant="h6" gutterBottom  >Your Balance:</Typography>
-                    </Col>
-                    <Col className="text-right">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6} className="text-right">
                         <Typography variant="h6" gutterBottom color="textSecondary" >{props.balance / 10 ** 18}</Typography>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                         <Typography variant="h6" gutterBottom  >Minimum Bid (WETH):</Typography>
-                    </Col>
-                    <Col className="text-right">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6} className="text-right">
                         <Typography variant="h6" gutterBottom color="textSecondary" >{props.minimumBid / 10 ** 18}</Typography>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={1}>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                         <Typography variant="h6" gutterBottom  >Bid Delta (WETH):</Typography>
-                    </Col>
-                    <Col className="text-right">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6} className="text-right">
                         <Typography variant="h6" gutterBottom color="textSecondary" >{props.bidDelta / 10 ** 18}</Typography>
-                    </Col>
-                </Row>
-                <Row>
+                    </Grid>
+                </Grid>
+                <Grid container spacing={1}>
 
-                    <Col>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                         <Typography variant="h6" gutterBottom  >You will Pay:</Typography>
-                    </Col>
-                    <Col className="text-right">
+                    </Grid>
+                    <Grid item xs={12} sm={6} md={6} lg={6} xl={6} className="text-right">
                         <Typography variant="h6" gutterBottom color="textSecondary" >{props.bid}</Typography>
-                    </Col>
-                </Row>
+                    </Grid>
+                </Grid>
 
 
 

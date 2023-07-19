@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
 import { Typography } from "@mui/material";
+import React, { useState } from "react";
+import { Modal } from "react-bootstrap";
 
 function TopUpModal(props) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -48,25 +48,25 @@ function TopUpModal(props) {
           justifyContent: "center",
         }}
       >
-        <Row className="mt-3">
-          <Col>
+        <div className="mt-3">
+          <div>
             <label className="nftPrice">Current Balance : </label>
             <label className="ml-2"> ${props.amount.toFixed(3)}</label>
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col>
+          </div>
+        </div>
+        <div className="mt-3">
+          <div>
             <label className="nftPrice">Required Balance : </label>
             <label className="ml-2"> ${props.required.toFixed(4)}</label>
-          </Col>
-        </Row>
-        <Row className="mt-3 mb-2">
-          <Col>
+          </div>
+        </div>
+        <div className="mt-3 mb-2">
+          <div>
             <h1 className="nftPrice">Select your Top Up Amount</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </div>
+        </div>
+        <div>
+          <div>
             <div className="input-group form-group newNftWrapper">
               <div class="input-group-prepend">
                 <span class="input-group-text bg-transparent text-white">
@@ -101,8 +101,8 @@ function TopUpModal(props) {
               />
               {error && <span style={{ color: "red" }}>{errorMessage}</span>}
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Modal.Body>
       <Modal.Footer
         style={{

@@ -1,11 +1,11 @@
-import React, { useState, useCallback } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
-import { CircularProgress, Typography, Tooltip } from "@mui/material";
-import UploadFile from "../Upload/UploadFile";
-import ImageCropModal from "./ImageCropModal";
-import getCroppedImg from "../Utils/Crop";
-import { categoryAvailable } from "../API/AxiosInterceptor";
 import { ErrorOutline } from "@mui/icons-material";
+import { CircularProgress, Typography } from "@mui/material";
+import React, { useCallback, useState } from "react";
+import { Modal } from "react-bootstrap";
+import { categoryAvailable } from "../API/AxiosInterceptor";
+import UploadFile from "../Upload/UploadFile";
+import getCroppedImg from "../Utils/Crop";
+import ImageCropModal from "./ImageCropModal";
 
 function CategoryModal({
   handleClose,
@@ -138,8 +138,8 @@ function CategoryModal({
           justifyContent: "center",
         }}
       >
-        <Row>
-          <Col>
+        <div>
+          <div>
             {viewDetail !== true ? (
               <label>Select Category Image</label>
             ) : (
@@ -174,15 +174,13 @@ function CategoryModal({
                 <label>Image field cannot be empty.</label>
               </span>
             )}
-          </Col>
-        </Row>
-        <Row>
-          <Typography variant="h6" className="ml-3">
-            Category Name
-          </Typography>
-        </Row>
-        <Row className="mt-3">
-          <Col>
+          </div>
+        </div>
+        <div>
+          <Typography variant="h6">Category Name</Typography>
+        </div>
+        <div className="mt-3">
+          <div>
             <div className="form-group newNftWrapper ">
               <input
                 style={{ padding: "10px" }}
@@ -204,8 +202,8 @@ function CategoryModal({
                 </span>
               )}
             </div>
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Modal.Body>
       <Modal.Footer
         style={{

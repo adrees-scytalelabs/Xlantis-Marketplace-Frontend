@@ -2,7 +2,6 @@ import { Paper, ThemeProvider, createTheme } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
@@ -149,7 +148,6 @@ const NFTBuy = (props) => {
     return hex;
   };
 
-
   function openTransak() {
     handleCloseModal();
     const transak = new transakSDK(settings);
@@ -291,14 +289,14 @@ const NFTBuy = (props) => {
             </div>
             <div className="col-md-12 col-lg-8">
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
-              <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
-                <Col>
+              <div style={{ marginTop: "5px", marginBottom: "5px" }}>
+                <div>
                   <PropertiesAccordian
                     keys={Object.keys(location.state.nftDetail.properties)}
                     properties={location.state.nftDetail.properties}
                   />
-                </Col>
-              </Row>
+                </div>
+              </div>
               <br></br>
               {/* <BuyButton
                 isSold={location.state.nftDetail.currentOrderListingId.isSold}

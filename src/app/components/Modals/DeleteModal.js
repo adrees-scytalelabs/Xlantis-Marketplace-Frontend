@@ -1,7 +1,7 @@
 
-import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import React from "react";
+import { Modal } from "react-bootstrap";
 function DeleteModal(props) {
   return (
     <Modal
@@ -38,12 +38,12 @@ function DeleteModal(props) {
           <br></br>
           Are You Sure?{" "}
         </h3>
-        <Row className="mt-3">
-          <Col>
+        <div className="mt-3">
+          <div>
             Do you really want to delete this template. You cannot undo this
             action.
-          </Col>
-        </Row>
+          </div>
+        </div>
       </Modal.Body>
       <Modal.Footer
         style={{

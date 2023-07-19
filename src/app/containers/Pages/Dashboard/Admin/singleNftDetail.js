@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from "@mui/material";
+import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { Button, Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation, useParams } from "react-router-dom";
 import {
@@ -8,16 +8,27 @@ import {
   getTradeHistory,
 } from "../../../../components/API/AxiosInterceptor";
 import PropertiesAccordian from "../../../../components/Accordian/PropertiesAccordian";
+import TradeHistoryAccordian from "../../../../components/Accordian/TradeHistoryAccordian";
 import NFTMediaCard from "../../../../components/Cards/AuctionNFTCards/NFTMediaCard";
 import SingleNFTDetailCard from "../../../../components/Cards/SingleNFTDetailCard";
-import TradeHistoryAccordian from "../../../../components/Accordian/TradeHistoryAccordian";
-import NFTSale from "../../../../components/Modals/NFTSale";
-import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import SummaryModal from "../../../../components/Modals/SummaryModal";
-import jwtDecode from "jwt-decode";
 import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
+import NFTSale from "../../../../components/Modals/NFTSale";
+import SummaryModal from "../../../../components/Modals/SummaryModal";
+import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
+import Button from "@mui/material/Button";
 
 const styles = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
   media: {
     marginTop: "15px",
     width: "100%",
@@ -186,6 +197,7 @@ const SingleNftDetail = (props) => {
               >
                 <div className="col-11">
                   <Button
+                    sx={styles.buttons}
                     style={{
                       float: "right",
                       padding: "12px 10px",
@@ -210,16 +222,16 @@ const SingleNftDetail = (props) => {
                   nftDetail={nftDetail}
                   supply={location.state.supply}
                 />
-                <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
-                  <Col>
+                <div style={{ marginTop: "5px", marginBottom: "5px" }}>
+                  <div>
                     <PropertiesAccordian keys={keys} properties={properties} />
-                  </Col>
-                </Row>
-                <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
-                  <Col>
+                  </div>
+                </div>
+                <div style={{ marginTop: "5px", marginBottom: "5px" }}>
+                  <div>
                     <TradeHistoryAccordian tradeHistory={tradeHistory} />
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

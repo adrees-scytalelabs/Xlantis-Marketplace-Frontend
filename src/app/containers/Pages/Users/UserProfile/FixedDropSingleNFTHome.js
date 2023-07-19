@@ -1,4 +1,5 @@
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import BlurLinearIcon from "@mui/icons-material/BlurLinear";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ListIcon from "@mui/icons-material/List";
 import {
@@ -17,8 +18,11 @@ import {
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "react-bootstrap";
+import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
+import { Table } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
+import AudioPlayer from "react-h5-audio-player";
+import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import Web3 from "web3";
 import {
@@ -41,15 +45,11 @@ import MessageCard from "../../../../components/MessageCards/MessageCard";
 import BidTxModal from "../../../../components/Modals/BidTxModal";
 import BuyTxModal from "../../../../components/Modals/BuyTxModal";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 import Factory1155 from "../../../../components/blockchain/Abis/Factory1155.json";
 import * as Addresses from "../../../../components/blockchain/Addresses/Addresses";
-import AudioPlayer from "react-h5-audio-player";
-import "react-h5-audio-player/lib/styles.css";
-import BlurLinearIcon from "@mui/icons-material/BlurLinear";
-import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
 import TradeHistoryTable from "../../../../components/tables/TradeHistoryTable";
-import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
 
 const customTheme = createTheme({
   overrides: {
@@ -574,7 +574,7 @@ const FixedDropSingleNFTHome = () => {
         orderListingId: location.state.orderListingId,
       };
 
-      //debugging 
+      //debugging
 
       console.log("Data", data);
       console.log("Purchase Function Called");
@@ -1009,8 +1009,8 @@ const FixedDropSingleNFTHome = () => {
                     inputStyle={inputStyle}
                     singleNFTPrice={price}
                   />
-                  <Row style={{ marginTop: "5px", marginBottom: "5px" }}>
-                    <Col>
+                  <div style={{ marginTop: "5px", marginBottom: "5px" }}>
+                    <div>
                       <Accordion style={{ background: "black" }}>
                         <AccordionSummary
                           expandIcon={
@@ -1027,7 +1027,7 @@ const FixedDropSingleNFTHome = () => {
                         </AccordionSummary>
                         <AccordionDetails>
                           {nftProperties[0][0] !== "" &&
-                            nftProperties.length != 0 ? (
+                          nftProperties.length != 0 ? (
                             <Table striped bordered hover>
                               <thead style={{ background: "black" }}>
                                 <tr>
@@ -1049,12 +1049,12 @@ const FixedDropSingleNFTHome = () => {
                           )}
                         </AccordionDetails>
                       </Accordion>
-                    </Col>
-                  </Row>
+                    </div>
+                  </div>
 
                   {/* DISPLAYING TRADE HISTORY */}
-                  <Row>
-                    <Col>
+                  <div>
+                    <div>
                       <Accordion style={{ background: "black" }}>
                         <AccordionSummary
                           expandIcon={
@@ -1077,15 +1077,15 @@ const FixedDropSingleNFTHome = () => {
                           )}
                         </AccordionDetails>
                       </Accordion>
-                    </Col>
-                  </Row>
+                    </div>
+                  </div>
                   <br></br>
                   {theDrop?.saleType !== "auction" ? (
                     <div className="row no-gutters">
                       {account &&
-                        nftData?.currentOrderListingId.isSold === false &&
-                        new Date() >= startTime &&
-                        new Date() < endTime ? (
+                      nftData?.currentOrderListingId.isSold === false &&
+                      new Date() >= startTime &&
+                      new Date() < endTime ? (
                         <div className="col-12 col-md-4 mt-2 mt-md-0">
                           <button
                             className="bidBtn w-100"
@@ -1106,10 +1106,22 @@ const FixedDropSingleNFTHome = () => {
                           </button>
                         </div>
                       ) : (
-                        <div
-                          className="col-12 col-md-4 mt-2 mt-md-0"
-                        >
-                          <Tooltip title={!account ? "Please Login First!" : nftData?.currentOrderListingId.isSold === true ? "NFT has been sold out" : new Date() < startTime ? "Sale Has Not Started Yet" : new Date() > endTime ? "Sale Has Ended" : null} placement="top" arrow>
+                        <div className="col-12 col-md-4 mt-2 mt-md-0">
+                          <Tooltip
+                            title={
+                              !account
+                                ? "Please Login First!"
+                                : nftData?.currentOrderListingId.isSold === true
+                                ? "NFT has been sold out"
+                                : new Date() < startTime
+                                ? "Sale Has Not Started Yet"
+                                : new Date() > endTime
+                                ? "Sale Has Ended"
+                                : null
+                            }
+                            placement="top"
+                            arrow
+                          >
                             <button
                               className="bidBtn-disabled w-100"
                               type="button"
@@ -1128,8 +1140,8 @@ const FixedDropSingleNFTHome = () => {
                     </div>
                   ) : theDrop.saleType === "auction" ? (
                     <div className="col-12">
-                      <Row style={{ marginTop: "5px" }}>
-                        <Col>
+                      <div style={{ marginTop: "5px" }}>
+                        <div>
                           <form>
                             <label
                               style={{ color: "#F64D04", marginTop: "10px" }}
@@ -1188,11 +1200,11 @@ const FixedDropSingleNFTHome = () => {
                               </div>
                             </div>
                           </form>
-                        </Col>
-                      </Row>
+                        </div>
+                      </div>
 
-                      <Row style={{ marginTop: "5px" }}>
-                        <Col>
+                      <div style={{ marginTop: "5px" }}>
+                        <div>
                           <Accordion>
                             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
                               <Typography
@@ -1223,8 +1235,8 @@ const FixedDropSingleNFTHome = () => {
                               </Table>
                             </AccordionDetails>
                           </Accordion>
-                        </Col>
-                      </Row>
+                        </div>
+                      </div>
                     </div>
                   ) : null}
                 </div>

@@ -1,5 +1,6 @@
+import { Grid } from "@mui/material";
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
+import { Modal } from "react-bootstrap";
 import MessageCard from "../MessageCards/MessageCard";
 
 const BalanceSpentModal = (props) => {
@@ -18,10 +19,14 @@ const BalanceSpentModal = (props) => {
           <div style={{ margin: "10px" }}>
             {props?.balanceHistoryModalData?.txInfo?.map((info, index) => {
               return (
-                <Row className="p-2" key={index}>
-                  <Col>{info?.name}</Col>
-                  <Col>${info?.amountInUsd?.toFixed(5)}</Col>
-                </Row>
+                <Grid container spacing={1} className="p-2" key={index}>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    {info?.name}
+                  </Grid>
+                  <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
+                    ${info?.amountInUsd?.toFixed(5)}
+                  </Grid>
+                </Grid>
               );
             })}
           </div>

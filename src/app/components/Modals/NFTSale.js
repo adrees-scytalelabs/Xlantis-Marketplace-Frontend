@@ -1,9 +1,10 @@
+import { Grid } from "@mui/material";
+import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import { Modal, Form, Row, Col } from "react-bootstrap";
-import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
+import { Form, Modal } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
-import Button from "@mui/material/Button";
+import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
 
 const stylesMUI = {
   buttons: {
@@ -57,8 +58,8 @@ const NFTSale = ({
         }}
       >
         <Form>
-          <Row>
-            <Col xs={6}>
+          <Grid container spacing={1}>
+            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
               <SelectNFTAndSaleType
                 label="Select NFT Type"
                 onChangeWorkInProgress={() => {
@@ -69,14 +70,14 @@ const NFTSale = ({
                 }}
                 type={nftType}
                 radioType="nft"
-              ></SelectNFTAndSaleType>
-            </Col>
-            <Col xs={6}>
+              />
+            </Grid>
+            <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
               <div className="col-12">
                 <NFTMediaCard nftDetail={nftDetail} classes={styles} />
               </div>
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
           <h3 className="mt-3 mb-3">Set Price</h3>
           <div className="mb-3">
             <Button

@@ -1,15 +1,17 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+
 const SingleNFTDetailCard = (props) => {
   return (
-    <Card sx={{
-      backgroundColor: "#000",
-      border: "1px solid #fff",
-    }}>
-      <CardContent sx={{ color: "#fff", }}>
-        <Row>
-          <Col>
+    <Card
+      sx={{
+        backgroundColor: "#000",
+        border: "1px solid #fff",
+      }}
+    >
+      <CardContent sx={{ color: "#fff" }}>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -17,11 +19,13 @@ const SingleNFTDetailCard = (props) => {
             >
               <strong>NFT Title </strong>
             </Typography>
-          </Col>
-          <Col>{props.nftDetail.title}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            {props.nftDetail.title}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -29,11 +33,13 @@ const SingleNFTDetailCard = (props) => {
             >
               <strong>NFT Description </strong>
             </Typography>
-          </Col>
-          <Col>{props.nftDetail.description}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            {props.nftDetail.description}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -41,11 +47,13 @@ const SingleNFTDetailCard = (props) => {
             >
               <strong>Total Supply </strong>
             </Typography>
-          </Col>
-          <Col>{props.nftDetail.totalSupply}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            {props.nftDetail.totalSupply}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -53,11 +61,13 @@ const SingleNFTDetailCard = (props) => {
             >
               <strong>Available Supply </strong>
             </Typography>
-          </Col>
-          <Col>{props.nftDetail.totalSupply-props.supply}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            {props.nftDetail.totalSupply - props.supply}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -65,9 +75,11 @@ const SingleNFTDetailCard = (props) => {
             >
               <strong>Supply Sold </strong>
             </Typography>
-          </Col>
-          <Col>{props.supply}</Col>
-        </Row>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
+            {props.supply}
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

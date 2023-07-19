@@ -1,6 +1,5 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
 
 const FixedDropSingleNFTCard = (props) => {
   let incNum = (max) => {
@@ -67,8 +66,8 @@ const FixedDropSingleNFTCard = (props) => {
   return (
     <Card style={{ backgroundColor: "#000" }}>
       <CardContent>
-        <Row style={{ paddingBottom: "5px" }}>
-          <Col lg={3} xs={6}>
+        <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
             <Typography
               variant="body1"
               component="p"
@@ -76,8 +75,8 @@ const FixedDropSingleNFTCard = (props) => {
             >
               <strong>NFT Title </strong>
             </Typography>
-          </Col>
-          <Col xs={6} md={3} lg={5}>
+          </Grid>
+          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
             <Typography
               className=""
               variant="body1"
@@ -89,10 +88,10 @@ const FixedDropSingleNFTCard = (props) => {
             >
               {props?.nftData?.title}
             </Typography>
-          </Col>
-        </Row>
-        <Row style={{ paddingBottom: "5px" }}>
-          <Col lg={3} xs={6}>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
             <Typography
               variant="body1"
               component="p"
@@ -100,11 +99,14 @@ const FixedDropSingleNFTCard = (props) => {
             >
               <strong>NFT Description </strong>
             </Typography>
-          </Col>
-          <Col
-            xs={6}
-            md={3}
-            lg={5}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            xl={3}
             style={{
               color: "white",
               fontFamily: "inter",
@@ -112,10 +114,10 @@ const FixedDropSingleNFTCard = (props) => {
             }}
           >
             {props?.nftData?.description}
-          </Col>
-        </Row>
-        <Row style={{ paddingBottom: "5px" }}>
-          <Col lg={3} xs={6}>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+          <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
             <Typography
               variant="body1"
               component="p"
@@ -123,11 +125,14 @@ const FixedDropSingleNFTCard = (props) => {
             >
               <strong>Price </strong>
             </Typography>
-          </Col>
-          <Col
-            xs={6}
-            md={3}
-            lg={5}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={4}
+            xl={3}
             style={{
               color: "white",
               fontFamily: "inter",
@@ -135,11 +140,11 @@ const FixedDropSingleNFTCard = (props) => {
             }}
           >
             {props?.price} USD
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
         {props?.nftData?.supplyType ? (
-          <Row style={{ paddingBottom: "5px" }}>
-            <Col lg={3} xs={6}>
+          <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+            <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
               <Typography
                 variant="body1"
                 component="p"
@@ -150,11 +155,14 @@ const FixedDropSingleNFTCard = (props) => {
               >
                 <strong>Supply Type </strong>
               </Typography>
-            </Col>
-            <Col
-              xs={6}
-              md={3}
-              lg={5}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={4}
+              xl={3}
               style={{
                 color: "white",
                 fontFamily: "inter",
@@ -162,13 +170,13 @@ const FixedDropSingleNFTCard = (props) => {
               }}
             >
               {props?.nftData?.supplyType ? props?.nftData?.supplyType : null}
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         ) : null}
         {props?.nftData?.currentOrderListingId?.supply ? (
           <>
-            <Row style={{ paddingBottom: "5px" }}>
-              <Col lg={3} xs={6}>
+            <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+              <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -179,11 +187,14 @@ const FixedDropSingleNFTCard = (props) => {
                 >
                   <strong>Total Supply </strong>
                 </Typography>
-              </Col>
-              <Col
-                xs={6}
-                md={3}
-                lg={5}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={4}
+                xl={3}
                 style={{
                   color: "white",
                   fontFamily: "inter",
@@ -191,10 +202,10 @@ const FixedDropSingleNFTCard = (props) => {
                 }}
               >
                 {props?.nftData?.currentOrderListingId?.totalSupplyOnSale}
-              </Col>
-            </Row>
-            <Row style={{ paddingBottom: "5px" }}>
-              <Col lg={3} xs={6}>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+              <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -205,11 +216,14 @@ const FixedDropSingleNFTCard = (props) => {
                 >
                   <strong>Available Supply </strong>
                 </Typography>
-              </Col>
-              <Col
-                xs={6}
-                md={3}
-                lg={5}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={4}
+                xl={3}
                 style={{
                   color: "white",
                   fontFamily: "inter",
@@ -217,10 +231,10 @@ const FixedDropSingleNFTCard = (props) => {
                 }}
               >
                 {props?.nftData?.currentOrderListingId?.supply}
-              </Col>
-            </Row>
-            <Row style={{ paddingBottom: "5px" }}>
-              <Col lg={3} xs={6}>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1} style={{ paddingBottom: "5px" }}>
+              <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -231,11 +245,14 @@ const FixedDropSingleNFTCard = (props) => {
                 >
                   <strong>Supply Sold </strong>
                 </Typography>
-              </Col>
-              <Col
-                xs={6}
-                md={3}
-                lg={5}
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={4}
+                xl={3}
                 style={{
                   color: "white",
                   fontFamily: "inter",
@@ -243,13 +260,21 @@ const FixedDropSingleNFTCard = (props) => {
                 }}
               >
                 {props?.nftData?.currentOrderListingId?.supplySold}
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
           </>
         ) : null}
         {props?.nftData?.supplyType === "Variable" ? (
-          <Row style={{ paddingTop: "25px" }}>
-            <Col lg={3} xs={6} style={{ paddingTop: "15px" }}>
+          <Grid container spacing={1} style={{ paddingTop: "25px" }}>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={4}
+              xl={3}
+              style={{ paddingTop: "15px" }}
+            >
               <Typography
                 variant="body1"
                 component="p"
@@ -260,16 +285,13 @@ const FixedDropSingleNFTCard = (props) => {
               >
                 <strong>Select Supply </strong>
               </Typography>
-            </Col>
-            <Col xs={6} md={3} lg={3} xl={2}>
+            </Grid>
+            <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
               <div
                 className="responsive-field"
                 style={{ border: "1px solid red" }}
               >
-                <button
-                  className="responsive-field-button"
-                  onClick={decNum}
-                >
+                <button className="responsive-field-button" onClick={decNum}>
                   -
                 </button>
                 <input
@@ -291,8 +313,8 @@ const FixedDropSingleNFTCard = (props) => {
                   +
                 </button>
               </div>
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         ) : null}
       </CardContent>
     </Card>

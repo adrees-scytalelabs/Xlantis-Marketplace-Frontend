@@ -1,6 +1,6 @@
-import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
 import WarningAmberIcon from "@mui/icons-material/WarningAmber";
+import React from "react";
+import { Modal } from "react-bootstrap";
 function WarningModal(props) {
   const handleVerify = (e) => {
     props.handleApprove(e, props?.id);
@@ -41,9 +41,9 @@ function WarningModal(props) {
           <br></br>
           Are You Sure?{" "}
         </h3>
-        <Row className="mt-3">
-          <Col className="text-center">{props?.text}</Col>
-        </Row>
+        <div className="mt-3">
+          <div className="text-center">{props?.text}</div>
+        </div>
       </Modal.Body>
       <Modal.Footer
         style={{
