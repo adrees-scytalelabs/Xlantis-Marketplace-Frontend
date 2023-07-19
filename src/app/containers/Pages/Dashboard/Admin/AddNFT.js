@@ -284,11 +284,13 @@ function AddNFT(props) {
           setSnackbarMessage("Something went wrong.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
+          handleCloseBackdrop();
         }
         let variant = "error";
         setSnackbarMessage("Something went wrong.");
         setSnackbarSeverity(variant);
         handleSnackbarOpen();
+        handleCloseBackdrop();
       }
     );
   };

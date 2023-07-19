@@ -7,11 +7,14 @@ import {
   Radio,
   RadioGroup,
   TextField,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  CircularProgress,
 } from "@mui/material";
-import CircularProgress from "@mui/material/CircularProgress";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Modal } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 import ipfs from "../../components/IPFS/ipfs";
@@ -220,11 +223,9 @@ const NFTEditModal = (props) => {
   };
 
   return (
-    <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Header closeButton>
-        Edit Detail of NFT {nftDetail.title}
-      </Modal.Header>
-      <Modal.Body>
+    <Dialog open={props.show} onClose={props.handleClose}>
+      <DialogTitle>Edit Detail of NFT {nftDetail.title}</DialogTitle>
+      <DialogContent>
         <form>
           <div className="form-group">
             <label>Select Artwork</label>
@@ -673,8 +674,8 @@ const NFTEditModal = (props) => {
             </div>
           </div>
         </form>
-      </Modal.Body>
-      <Modal.Footer>
+      </DialogContent>
+      <DialogActions>
         <Button variant="sceondary" onClick={props.handleClose}>
           Cancel
         </Button>
@@ -691,14 +692,14 @@ const NFTEditModal = (props) => {
             Update
           </button>
         )}
-      </Modal.Footer>
+      </DialogActions>
       <NotificationSnackbar
         open={snackbarOpen}
         handleClose={handleSnackbarClose}
         severity={snackbarSeverity}
         message={snackbarMessage}
       />
-    </Modal>
+    </Dialog>
   );
 };
 

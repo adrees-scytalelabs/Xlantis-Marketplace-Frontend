@@ -1,111 +1,63 @@
 import {
-  Box,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
   CircularProgress,
-  Container,
-  IconButton,
-  Typography,
 } from "@mui/material";
 import React, { useEffect } from "react";
 import Cropper from "react-easy-crop";
-import { style } from "../styles/MuiModalStyle";
 import CloseIcon from "@mui/icons-material/Close";
-import { Modal } from "react-bootstrap";
 
 const ImageCropModal = (props) => {
   useEffect(() => {
     //console.log("Props are: ", props);
   }, [props.aspect]);
   return (
-    // <Modal open={props.show} onClose={props.handleClose}>
-    //   <Box sx={style.box}>
-    //     {/* HEADER CONTAINER */}
-    //     <Container sx={style.containerHeader}>
-    //       <div>
-    //         <Typography sx={style.text}>Crop your picture</Typography>
-    //       </div>
-    //       <div>
-    //         <IconButton sx={{ color: "white" }}>
-    //           <CloseIcon onClick={props.handleClose} />
-    //         </IconButton>
-    //       </div>
-    //     </Container>
-
-    //     {/* BODY */}
-    //     <Container sx={style.containerBody}>
-    //       {props.imageSrc ? (
-    //         <div className="crop-container">
-    //           <Cropper
-    //             image={props.imageSrc}
-    //             crop={props.crop}
-    //             onCropChange={props.setCrop}
-    //             aspect={props.aspect}
-    //             cropShape={props.cropShape}
-    //             zoom={props.zoom}
-    //             showGrid={true}
-    //             rotation={0}
-    //             onCropComplete={props.onCropComplete}
-    //           />
-    //         </div>
-    //       ) : null}
-    //     </Container>
-
-    //     {/* FOOTER CONTAINER */}
-    //     <Container sx={style.containerFooter}>
-    //       {props.isUploadingCroppedImage ? (
-    //         <button
-    //           className="btn"
-    //           type="button"
-    //           style={{
-    //             width: "25%",
-    //             margin: "10px",
-    //             marginRight: 0,
-    //             backgroundColor: "#000",
-    //             border: "1px solid #fff",
-    //             borderRadius: 0,
-    //             padding: 10,
-    //             height: "46px",
-    //             display: "flex",
-    //             alignItems: "center",
-    //             justifyContent: "center",
-    //           }}
-    //         >
-    //           <CircularProgress size={30} sx={{ color: "#FFFFFF" }} />
-    //         </button>
-    //       ) : (
-    //         <button
-    //           className="btn"
-    //           type="button"
-    //           style={{
-    //             margin: "10px",
-    //             marginRight: 0,
-    //             backgroundColor: "#000",
-    //             border: "1px solid #fff",
-    //             borderRadius: 0,
-    //             padding: 10,
-    //             width: "25%",
-    //             height: "46px",
-    //           }}
-    //           onClick={() => props.uploadImage()}
-    //         >
-    //           Upload
-    //         </button>
-    //       )}
-    //     </Container>
-    //   </Box>
-    // </Modal>
-
-    <Modal
-      show={props.show}
-      backdrop="static"
-      centered
-      onHide={props.handleClose}
+    <Dialog
+      open={props.show}
+      onClose={props.handleClose}
+      maxWidth="sm"
+      fullWidth
+      PaperProps={{
+        style: {
+          background: "#000",
+          color: "white",
+          border: "1px solid white",
+        },
+      }}
     >
-      <Modal.Header closeButton className="custom-header">
+      <DialogTitle
+        className=""
+        onClose={props.handleClose}
+        style={{
+          color: "white",
+          borderBottom: "none",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+      >
         Crop your picture
-      </Modal.Header>
-      <Modal.Body>
+        <Button
+          variant="contained"
+          sx={{ color: "white", backgroundColor: "black" }}
+          onClick={(e) => props.handleClose(e, props.setShow)}
+        >
+          <CloseIcon />
+        </Button>
+      </DialogTitle>
+      <DialogContent
+        style={{
+          background: "#000",
+        }}
+      >
         {props.imageSrc ? (
-          <div className="crop-container">
+          <div
+            className="crop-container"
+            style={{ position: "relative", zIndex: 1 }}
+          >
             <Cropper
               image={props.imageSrc}
               crop={props.crop}
@@ -119,12 +71,19 @@ const ImageCropModal = (props) => {
             />
           </div>
         ) : null}
-      </Modal.Body>
-      <Modal.Footer>
+      </DialogContent>
+      <DialogActions
+        style={{
+          backgroundColor: "#000",
+          border: "1px solid white",
+          borderTop: "none",
+          marginTop: "20px",
+        }}
+      >
         {props.isUploadingCroppedImage ? (
-          <button
-            className="btn"
-            type="button"
+          <Button
+            variant="contained"
+            className="btn btn-sm btn-block propsActionBtn"
             style={{
               width: "25%",
               margin: "10px",
@@ -137,31 +96,28 @@ const ImageCropModal = (props) => {
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
+              color: "#FFFFFF",
             }}
           >
-            <CircularProgress size={30} sx={{ color: "#FFFFFF" }} />
-          </button>
+            <CircularProgress size={30} />
+          </Button>
         ) : (
-          <button
-            className="btn"
-            type="button"
+          <Button
+            variant="contained"
+            className="btn btn-sm btn-block propsActionBtn"
             style={{
-              margin: "10px",
-              marginRight: 0,
-              backgroundColor: "#000",
-              border: "1px solid #fff",
               borderRadius: 0,
               padding: 10,
               width: "25%",
               height: "46px",
             }}
-            onClick={() => props.uploadImage()}
+            onClick={props.uploadImage}
           >
             Upload
-          </button>
+          </Button>
         )}
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

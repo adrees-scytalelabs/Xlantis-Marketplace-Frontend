@@ -25,7 +25,7 @@ const styles = {
   },
   tableHeader: {
     "& th": {
-      fontSize: "1.25rem",
+      fontSize: "1rem",
       fontWeight: "bold",
       padding: "14px",
       color: "#000",

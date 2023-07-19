@@ -1,36 +1,56 @@
 import React from "react";
-import { Table } from "react-bootstrap";
+import {
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
 
+const styles = {
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  },
+};
 const BalanceSpentHistoryTable = (props) => {
   return (
-    <Table responsive>
-      <thead style={{ color: "black" }}>
-        <tr>
-          <th style={props.styles.tableHeader}>Sr No.</th>
-          <th style={props.styles.tableHeader}>Type</th>
-          <th style={props.styles.tableHeader}>Amount Spend</th>
-          <th style={props.styles.tableHeader}>Date</th>
-          <th style={props.styles.tableHeader}>Time</th>
-          <th style={props.styles.tableHeader}>Details</th>
-        </tr>
-      </thead>
+    <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+      <Table>
+        <TableHead sx={styles.tableHeader}>
+          <TableRow>
+            <TableCell>Sr No.</TableCell>
+            <TableCell>Type</TableCell>
+            <TableCell>Amount Spend</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Time</TableCell>
+            <TableCell>Details</TableCell>
+          </TableRow>
+        </TableHead>
 
-      {/* TABLE BODY */}
-      <tbody style={{ color: "white" }}>
+        {/* TABLE BODY */}
         {props.balanceHistory.map((history, index) => (
-          <tr key={index}>
-            <td style={props.styles.collectionTitle}>{index + 1}</td>
-            <td style={props.styles.collectionTitle}>{history.type}</td>
-            <td style={props.styles.collectionTitle}>
-              ${history.amountSpentInUsd.toFixed(5)}
-            </td>
-            <td style={props.styles.collectionTitle}>
-              {new Date(history.createdAt).toDateString()}
-            </td>
-            <td style={props.styles.collectionTitle}>
+          <TableRow key={index} style={styles.text}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{history.type}</TableCell>
+            <TableCell>${history.amountSpentInUsd.toFixed(5)}</TableCell>
+            <TableCell>{new Date(history.createdAt).toDateString()}</TableCell>
+            <TableCell>
               {new Date(history.createdAt).toLocaleTimeString()}
-            </td>
-            <td style={props.styles.collectionTitle}>
+            </TableCell>
+            <TableCell>
               <button
                 className="btn btn-submit propsActionBtn"
                 onClick={() => {
@@ -40,11 +60,11 @@ const BalanceSpentHistoryTable = (props) => {
               >
                 View
               </button>
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </Table>
+      </Table>
+    </TableContainer>
   );
 };
 

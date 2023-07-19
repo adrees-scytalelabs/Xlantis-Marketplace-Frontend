@@ -1,7 +1,13 @@
-import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import React from "react";
-import Table from "react-bootstrap/Table";
+import {
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper
+} from "@mui/material";
 
 const styles = {
   root: {
@@ -23,9 +29,13 @@ const styles = {
     marginBottom: 12,
   },
   tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
   },
   collectionTitle: {
     color: "#fff",
@@ -46,43 +56,43 @@ const styles = {
 
 function CategoryTable({categoryData,handleEditModalOpen,handleViewDetail}) {
   return (
-    <Table responsive>
-      <thead style={{ color: "black" }}>
-        <tr>
-          <th style={styles.tableHeader}>
+    <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+    <Table>
+    <TableHead sx={styles.tableHeader}>
+        <TableRow>
+          <TableCell>
             <div className="row no-gutters justify-content-start align-items-center">
               #
             </div>
-            </th>
-            <th style={styles.tableHeader}>
+            </TableCell>
+            <TableCell>
             <div className="row no-gutters justify-content-start align-items-center">
               Category Name
             </div>
-          </th>
-          <th style={styles.tableHeader}>
+          </TableCell>
+          <TableCell>
             <div className="ml-5">Details</div>
-          </th>
-          <th style={styles.tableHeader}>
+          </TableCell>
+          <TableCell>
             <div className="row no-gutters justify-content-start align-items-center">
               Edit
             </div>
-          </th>
-        </tr>
-      </thead>
-      <tbody style={{ color: "white" }}>
+          </TableCell>
+        </TableRow>
+      </TableHead>
         {categoryData?.map((i, index) => (
-          <tr key={index}>
-            <td style={styles.collectionTitle}>{index}</td>
-            <td style={styles.collectionTitle}>{i.name}</td>
-            <td style={styles.collectionTitle}>
+          <TableRow key={index} style={styles.collectionTitle}>
+            <TableCell>{index}</TableCell>
+            <TableCell>{i.name}</TableCell>
+            <TableCell>
               <button
                 className="btn submit-btn propsActionBtn "
                 onClick={(e) => handleViewDetail(e, i)}
               >
                 View
               </button>
-            </td>
-            <td style={styles.collectionTitle}>
+            </TableCell>
+            <TableCell>
               <span className="ml-1">
                 <button style={{ background: "transparent", border: "none" }}>
                   <EditIcon
@@ -91,11 +101,11 @@ function CategoryTable({categoryData,handleEditModalOpen,handleViewDetail}) {
                   />
                 </button>
               </span>
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
     </Table>
+    </TableContainer>
   );
 }
 

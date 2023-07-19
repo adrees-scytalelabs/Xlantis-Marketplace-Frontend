@@ -1,6 +1,13 @@
-import { Button } from "@mui/material";
+import {
+  Button,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
 import React from "react";
-import Table from "react-bootstrap/Table";
 const styles = {
   root: {
     maxWidth: 345,
@@ -18,9 +25,13 @@ const styles = {
     marginBottom: 12,
   },
   tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
   },
   collectionTitle: {
     color: "#fff",
@@ -36,41 +47,39 @@ const styles = {
       background: "#f00",
     },
   },
-}
-
+};
 
 function DropApprovalTable({
   collections,
   giveAuctionApproval,
-  giveFixedPriceApproval
+  giveFixedPriceApproval,
 }) {
   return (
-    <Table responsive>
-      <thead>
-        <tr>
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-start align-items-center">
-              Collection
-            </div>
-          </th>
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-center align-items-center">
-              Auction
-            </div>
-          </th>
-          <th sx={styles.tableHeader}>
-            <div className="row no-gutters justify-content-center align-items-center">
-              Fixed Price
-            </div>
-          </th>
-        </tr>
-      </thead>
-      {collections.map((i, index) => (
-        <tbody>
-          <tr>
-            <td sx={styles.collectionTitle}>{i.name}</td>
-            <td>
-
+    <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+      <Table>
+        <TableHead sx={styles.tableHeader}>
+          <TableRow>
+            <TableCell>
+              <div className="row no-gutters justify-content-start align-items-center">
+                Collection
+              </div>
+            </TableCell>
+            <TableCell>
+              <div className="row no-gutters justify-content-center align-items-center">
+                Auction
+              </div>
+            </TableCell>
+            <TableCell>
+              <div className="row no-gutters justify-content-center align-items-center">
+                Fixed Price
+              </div>
+            </TableCell>
+          </TableRow>
+        </TableHead>
+        {collections.map((i, index) => (
+          <TableRow style={styles.collectionTitle}>
+            <TableCell>{i.name}</TableCell>
+            <TableCell>
               {i.isAuctionDropVerified ? (
                 <div className="row no-gutters justify-content-center align-items-center">
                   <Button disabled>
@@ -85,7 +94,6 @@ function DropApprovalTable({
                 <div className="row no-gutters justify-content-center align-items-center">
                   <Button
                     sx={styles.approveBtn}
-
                     onClick={(e) => {
                       giveAuctionApproval(i);
                     }}
@@ -94,9 +102,8 @@ function DropApprovalTable({
                   </Button>
                 </div>
               )}
-
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
               {i.isFixedPriceDropVerified ? (
                 <div className="row no-gutters justify-content-center align-items-center">
                   <Button disabled>
@@ -119,11 +126,11 @@ function DropApprovalTable({
                   </Button>
                 </div>
               )}
-            </td>
-          </tr>
-        </tbody>
-      ))}
-    </Table>
+            </TableCell>
+          </TableRow>
+        ))}
+      </Table>
+    </TableContainer>
   );
 }
 

@@ -1,21 +1,19 @@
 import CheckIcon from "@mui/icons-material/Check";
-import { Grid } from "@mui/material";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import React from "react";
-import { Modal } from "react-bootstrap";
 import BlackSpinner from "../Spinners/BlackSpinner";
 
 const RequestApprovalModal = (props) => {
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
+    <Dialog
+      open={props.show}
+      onClose={props.handleClose}
       centered
-      backdrop="static"
+      fullWidth
+      maxWidth="sm"
     >
-      <Modal.Header closeButton className="custom-header">
-        Approval Required
-      </Modal.Header>
-      <Modal.Body>
+      <DialogTitle>Approval Required</DialogTitle>
+      <DialogContent>
         <div
           style={{
             color: "#000",
@@ -57,9 +55,9 @@ const RequestApprovalModal = (props) => {
               ) : props.isFixedPriceApproved ? (
                 <CheckIcon color="success" style={{ color: "green" }} />
               ) : (
-                <button
-                  className="btn"
-                  type="button"
+                <Button
+                  variant="contained"
+                  disableElevation
                   disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
@@ -72,19 +70,19 @@ const RequestApprovalModal = (props) => {
                   onClick={props.giveFixPriceApproval}
                 >
                   Approve
-                </button>
+                </Button>
               )}
             </Grid>
           </Grid>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
+      </DialogContent>
+      <DialogActions>
         {props.doneLoader ? (
           <BlackSpinner />
         ) : (
-          <button
-            className="btn"
-            type="button"
+          <Button
+            variant="contained"
+            disableElevation
             style={{
               margin: "10px",
               marginRight: 0,
@@ -96,10 +94,10 @@ const RequestApprovalModal = (props) => {
             onClick={props.done}
           >
             Done
-          </button>
+          </Button>
         )}
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 
