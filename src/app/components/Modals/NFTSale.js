@@ -1,7 +1,7 @@
-import { Grid } from "@mui/material";
+import { Grid,TextField } from "@mui/material";
 import Button from "@mui/material/Button";
 import React, { useState } from "react";
-import { Form, Modal } from "react-bootstrap";
+import {Modal } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
 import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
@@ -57,7 +57,6 @@ const NFTSale = ({
           border: "1px solid white",
         }}
       >
-        <Form>
           <Grid container spacing={1}>
             <Grid item xs={6} sm={6} md={6} lg={6} xl={6}>
               <SelectNFTAndSaleType
@@ -97,15 +96,18 @@ const NFTSale = ({
               Floor <br />
               <label style={{ fontSize: "6px" }}>1 USD</label>
             </Button>
-            <Form.Control
+            <TextField
               type="number"
               placeholder="Enter price"
               value={num}
-              style={{
-                borderColor: "white",
-                color: "white",
-                backgroundColor: "black",
-              }}
+              fullWidth
+              InputProps={{
+                style: {
+                  borderColor: 'white',
+                  color: 'white',
+                  backgroundColor: 'black',
+                },
+              }}        
             />
           </div>
           <h3>Duration</h3>
@@ -138,7 +140,6 @@ const NFTSale = ({
               />
             </div>
           </div>
-        </Form>
       </Modal.Body>
       <Modal.Footer
         style={{
