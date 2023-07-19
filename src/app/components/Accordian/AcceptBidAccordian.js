@@ -1,21 +1,48 @@
-
-
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ListIcon from '@mui/icons-material/List';
-import { Accordion, AccordionDetails, AccordionSummary, Tooltip, Typography } from '@mui/material';
-import React from 'react';
-import { Table } from "react-bootstrap";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ListIcon from "@mui/icons-material/List";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Tooltip,
+  Typography,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
+import React from "react";
 import Countdown from "react-countdown";
 
-
+const styles = {
+  noMaxWidth: {
+    maxWidth: "none",
+  },
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  },
+};
 function AcceptBidAccordian({
   bidDetail,
   isSold,
   versionB,
   handleAcceptBid,
-  handleOpenModal
+  handleOpenModal,
 }) {
-
   return (
     <div>
       <Accordion>
@@ -29,31 +56,34 @@ function AcceptBidAccordian({
           </Typography>
         </AccordionSummary>
         <AccordionDetails>
-          <Table striped hover bordered size="sm" responsive>
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Bidder</th>
-                <th>Bid</th>
-                <th>Expiration</th>
-                <th colSpan={2}></th>
-              </tr>
-            </thead>
-            <tbody>
+          <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+            <Table size="small">
+              <TableHead sx={styles.tableHeader}>
+                <TableRow>
+                  <TableCell>#</TableCell>
+                  <TableCell>Bidder</TableCell>
+                  <TableCell>Bid</TableCell>
+                  <TableCell>Expiration</TableCell>
+                  <TableCell colSpan={2}></TableCell>
+                </TableRow>
+              </TableHead>
+
               {bidDetail?.map((bid, index) => (
-                <tr key={index}>
-                  <td>{index + 1}</td>
-                  <td>
-                  <Tooltip
-                      title={<Typography fontSize={16}>{bid.bidderAddress}</Typography>}
+                <TableRow key={index}>
+                  <TableCell style={styles.text}>{index + 1}</TableCell>
+                  <TableCell style={styles.text}>
+                    <Tooltip
+                      title={
+                        <Typography fontSize={16}>
+                          {bid.bidderAddress}
+                        </Typography>
+                      }
                     >
-                      <span>
-                        {bid.bidderAddress.slice(0, 8)}...
-                      </span>
+                      <span>{bid.bidderAddress.slice(0, 8)}...</span>
                     </Tooltip>
-                  </td>
-                  <td>{bid.bidAmount}</td>
-                  <td>
+                  </TableCell>
+                  <TableCell style={styles.text}>{bid.bidAmount}</TableCell>
+                  <TableCell style={styles.text}>
                     {bid.isAccepted ? (
                       <span>Accepted</span>
                     ) : new Date() > new Date(bid.expiryTime) ? (
@@ -61,26 +91,30 @@ function AcceptBidAccordian({
                     ) : (
                       <Countdown
                         date={new Date(bid.expiryTime)}
-                        renderer={props => {  
-                            if (props.days==0){
-                            return <span>{props.hours}:{props.minutes}:{props.seconds}</span>
-                            }
-                            else {
-                              return <span>{props.days} days {props.hours} hr</span>
-                            }
+                        renderer={(props) => {
+                          if (props.days == 0) {
+                            return (
+                              <span>
+                                {props.hours}:{props.minutes}:{props.seconds}
+                              </span>
+                            );
+                          } else {
+                            return (
+                              <span>
+                                {props.days} days {props.hours} hr
+                              </span>
+                            );
                           }
-                        }
-
+                        }}
                       />
                     )}
-                  </td>
-                  <td>
+                  </TableCell>
+                  <TableCell>
                     {new Date() > new Date(bid.expiryTime) ? (
                       <button className="btn" disabled>
                         Accept
                       </button>
-                    ) : bid.isAccepted ||
-                      isSold ? (
+                    ) : bid.isAccepted || isSold ? (
                       <button className="btn" disabled>
                         Accept
                       </button>
@@ -96,17 +130,15 @@ function AcceptBidAccordian({
                         Accept
                       </button>
                     )}
-                  </td>
-                </tr>
+                  </TableCell>
+                </TableRow>
               ))}
-            </tbody>
-          </Table>
+            </Table>
+          </TableContainer>
         </AccordionDetails>
       </Accordion>
     </div>
-
-
-  )
+  );
 }
 
 export default AcceptBidAccordian;

@@ -1,36 +1,55 @@
 import React from "react";
-import { Table } from "react-bootstrap";
-
+import {
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
+const styles = {
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
+  },
+  collectionTitle: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  },
+};
 const TopupHistoryTable = ({ topupHistory, styles }) => {
   return (
-    <Table responsive>
-      <thead style={{ color: "black" }}>
-        <tr>
-          <th style={styles.tableHeader}>Tx No.</th>
-          <th style={styles.tableHeader}>Amount (USD)</th>
-          <th style={styles.tableHeader}>Amount (MATIC)</th>
-          <th style={styles.tableHeader}>Date</th>
-          <th style={styles.tableHeader}>Time</th>
-        </tr>
-      </thead>
-
-      {/* TABLE BODY */}
-      <tbody style={{ color: "white" }}>
+    <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+      <Table>
+        <TableHead sx={styles.tableHeader}>
+          <TableRow>
+            <TableCell>Tx No.</TableCell>
+            <TableCell>Amount (USD)</TableCell>
+            <TableCell>Amount (MATIC)</TableCell>
+            <TableCell>Date</TableCell>
+            <TableCell>Time</TableCell>
+          </TableRow>
+        </TableHead>
         {topupHistory.map((row, index) => (
-          <tr key={index}>
-            <td style={styles.collectionTitle}>{index + 1}</td>
-            <td style={styles.collectionTitle}>{row.amountInUSD}</td>
-            <td style={styles.collectionTitle}>{row.amountInMatic}</td>
-            <td style={styles.collectionTitle}>
-              {new Date(row.date).toDateString()}
-            </td>
-            <td style={styles.collectionTitle}>
+          <TableRow key={index} style={styles.collectionTitle}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>{row.amountInUSD}</TableCell>
+            <TableCell>{row.amountInMatic}</TableCell>
+            <TableCell>{new Date(row.date).toDateString()}</TableCell>
+            <TableCell style={styles.collectionTitle}>
               {new Date(row.date).toLocaleTimeString()}
-            </td>
-          </tr>
+            </TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </Table>
+      </Table>
+    </TableContainer>
   );
 };
 

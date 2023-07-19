@@ -3,14 +3,18 @@ import {
   CardContent,
   CardMedia,
   Grid,
-  Paper,
   ThemeProvider,
   Typography,
   createTheme,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
 } from "@mui/material";
 import React from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Table } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -19,6 +23,21 @@ const styles = {
     height: 0,
     paddingTop: "60%",
   },
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  }
 };
 
 const theme = createTheme({
@@ -232,25 +251,30 @@ const NFTDetailModalCard = (props) => {
               </Grid>
               <Grid container spacing={1}>
                 <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                  <TableContainer
+                    component={Paper}
+                    sx={{ backgroundColor: "black" }}
+                  >
+                    <Table striped bordered hover>
+                      <TableHead sx={styles.tableHeader}>
+                        <TableRow>
+                          <TableCell>Key</TableCell>
+                          <TableCell>Value</TableCell>
+                        </TableRow>
+                      </TableHead>
                       {props?.nftDetail?.properties &&
                         Object.keys(props?.nftDetail?.properties)?.map(
                           (i, index) => (
-                            <tr key={index}>
-                              <td>{i}</td>
-                              <td>{props.nftDetail.properties[i]}</td>
-                            </tr>
+                            <TableRow key={index}>
+                              <TableCell style={styles.text}>{i}</TableCell>
+                              <TableCell style={styles.text}>
+                                {props.nftDetail.properties[i]}
+                              </TableCell>
+                            </TableRow>
                           )
                         )}
-                    </tbody>
-                  </Table>
+                    </Table>
+                  </TableContainer>
                 </Grid>
               </Grid>
             </CardContent>

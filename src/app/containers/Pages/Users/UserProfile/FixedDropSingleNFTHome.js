@@ -14,12 +14,16 @@ import {
   Tooltip,
   Typography,
   createTheme,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
 } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Table } from "react-bootstrap";
 import DateTimePicker from "react-datetime-picker";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
@@ -86,6 +90,24 @@ const customTheme = createTheme({
 const styles = {
   border: "1px solid #F64D04",
   borderRadius: "5px",
+  noMaxWidth: {
+    maxWidth: "none",
+  },
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "white",
+      backgroundColor: "red",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  },
 };
 const buttonStyle = {
   backgroundColor: "transparent",
@@ -1028,22 +1050,29 @@ const FixedDropSingleNFTHome = () => {
                         <AccordionDetails>
                           {nftProperties[0][0] !== "" &&
                           nftProperties.length != 0 ? (
-                            <Table striped bordered hover>
-                              <thead style={{ background: "black" }}>
-                                <tr>
-                                  <th>Key</th>
-                                  <th>Value</th>
-                                </tr>
-                              </thead>
-                              <tbody style={{ background: "black" }}>
+                            <TableContainer
+                              component={Paper}
+                              sx={{ backgroundColor: "black" }}
+                            >
+                              <Table striped bordered hover>
+                                <TableHead sx={styles.tableHeader}>
+                                  <TableRow>
+                                    <TableCell>Key</TableCell>
+                                    <TableCell>Value</TableCell>
+                                  </TableRow>
+                                </TableHead>
                                 {nftProperties?.map((i, index) => (
-                                  <tr key={index}>
-                                    <td>{i[0]}</td>
-                                    <td>{i[1]}</td>
-                                  </tr>
+                                  <TableRow key={index}>
+                                    <TableCell style={styles.text}>
+                                      {i[0]}
+                                    </TableCell>
+                                    <TableCell style={styles.text}>
+                                      {i[1]}
+                                    </TableCell>
+                                  </TableRow>
                                 ))}
-                              </tbody>
-                            </Table>
+                              </Table>
+                            </TableContainer>
                           ) : (
                             <MessageCard msg="No Properties" />
                           )}

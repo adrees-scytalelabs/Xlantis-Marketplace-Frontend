@@ -1,8 +1,16 @@
-import { Button, Tooltip, Typography } from "@mui/material";
+import {
+  Button,
+  Tooltip,
+  Typography,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
 import React, { useState } from "react";
-import Table from "react-bootstrap/Table";
 import WarningModal from "../Modals/WarningModal";
-import { handleVerify } from "../Utils/SuperAdminFunctions";
 
 const styles = {
   noMaxWidth: {
@@ -12,14 +20,19 @@ const styles = {
     fontSize: 14,
   },
   tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
   },
   collectionTitle: {
     color: "#fff",
     fontSize: "1rem",
     fontFamily: "inter",
+    paddingTop: "10px",
   },
   approveBtn: {
     backgroundColor: "#F64D04",
@@ -27,6 +40,7 @@ const styles = {
     padding: "6px 24px",
     border: "1px solid #F64D04",
     borderRadius: "0px 15px",
+
     "&$hover": {
       boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
     },
@@ -76,70 +90,73 @@ function SuperAdminTable(props) {
   };
   return (
     <>
-      <Table responsive>
-        <thead style={{ color: "black" }}>
-          <tr>
-            <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-start align-items-center">
-                Username
-              </div>
-            </th>
-            {props.ssoEnabled === true && (
-              <th sx={styles.tableHeader}>
-                <div className="row no-gutters justify-content-start align-items-center ml-3">
-                  Email
-                </div>
-              </th>
-            )}
-            <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-start align-items-center">
-                Wallet Address
-              </div>
-            </th>
-            <th sx={styles.tableHeader}>
-              <div className="row no-gutters justify-content-start align-items-center ml-5">
-                Details
-              </div>
-            </th>
-            {props.ssoEnabled === true && props.walletEnabled === true && (
-              <th sx={styles.tableHeader}>
+      <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+        <Table>
+          <TableHead sx={styles.tableHeader}>
+            <TableRow>
+              <TableCell>
                 <div className="row no-gutters justify-content-start align-items-center">
-                  Login Type
+                  Username
                 </div>
-              </th>
-            )}
-            {props.approval === true && (
-              <th sx={styles.tableHeader}>
-                <div className="row no-gutters justify-content-center align-items-center">
-                  Approval Status
+              </TableCell>
+              {props.ssoEnabled && (
+                <TableCell>
+                  <div className="row no-gutters justify-content-start align-items-center ml-3">
+                    Email
+                  </div>
+                </TableCell>
+              )}
+              <TableCell>
+                <div className="row no-gutters justify-content-start align-items-center">
+                  Wallet Address
                 </div>
-              </th>
-            )}
-            {props.approval === true && (
-              <th sx={styles.tableHeader}>
-                <div className="row no-gutters justify-content-center align-items-center">
-                  Delete Account
+              </TableCell>
+              <TableCell>
+                <div className="row no-gutters justify-content-start align-items-center ml-5">
+                  Details
                 </div>
-              </th>
-            )}
-            {props.manageAccounts === true && (
-              <th sx={styles.tableHeader}>
-                <div className="row no-gutters justify-content-center align-items-center">
-                  Status
-                </div>
-              </th>
-            )}
-          </tr>
-        </thead>
-
-        {props.ssoEnabled === true &&
-          props.admins.map((i, index) => {
-            return (
-              <tbody style={{ color: "white" }}>
-                <tr>
-                  <td sx={styles.collectionTitle}>{i.username}</td>
-                  <td sx={styles.collectionTitle}>{i.email}</td>
-                  <td sx={styles.collectionTitle}>
+              </TableCell>
+              {props.ssoEnabled && props.walletEnabled && (
+                <TableCell>
+                  <div className="row no-gutters justify-content-start align-items-center">
+                    Login Type
+                  </div>
+                </TableCell>
+              )}
+              {props.approval && (
+                <TableCell>
+                  <div className="row no-gutters justify-content-center align-items-center">
+                    Approval Status
+                  </div>
+                </TableCell>
+              )}
+              {props.approval && (
+                <TableCell>
+                  <div className="row no-gutters justify-content-center align-items-center">
+                    Delete Account
+                  </div>
+                </TableCell>
+              )}
+              {props.manageAccounts && (
+                <TableCell>
+                  <div className="row no-gutters justify-content-center align-items-center">
+                    Status
+                  </div>
+                </TableCell>
+              )}
+            </TableRow>
+          </TableHead>
+          {props.ssoEnabled === true &&
+            props.admins.map((i, index) => {
+              return (
+                <TableRow key={index}>
+                  <TableCell style={styles.collectionTitle}>
+                    {i.username}
+                  </TableCell>
+                  <TableCell style={styles.collectionTitle}>
+                    {i.email}
+                  </TableCell>
+                  <TableCell style={styles.collectionTitle}>
                     {i.walletAddress !== undefined ? (
                       <Tooltip
                         title={
@@ -155,8 +172,8 @@ function SuperAdminTable(props) {
                     ) : (
                       <label className="ml-4">N/A</label>
                     )}
-                  </td>
-                  <td sx={styles.collectionTitle}>
+                  </TableCell>
+                  <TableCell style={styles.collectionTitle}>
                     <button
                       className="btn submit-btn propsActionBtn "
                       onClick={(e) =>
@@ -170,20 +187,20 @@ function SuperAdminTable(props) {
                     >
                       View
                     </button>
-                  </td>
+                  </TableCell>
                   {props.ssoEnabled === true &&
                     props.walletEnabled === true && (
-                      <td sx={styles.collectionTitle}>
+                      <TableCell style={styles.collectionTitle}>
                         <span>
                           <label className="ml-4">SSO</label>
                         </span>
-                      </td>
+                      </TableCell>
                     )}
                   {props.approval === true && (
-                    <td>
+                    <TableCell>
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
-                          sx={styles.approveBtn}
+                          style={styles.approveBtn}
                           onClick={(e) => {
                             handleVerify(e, i._id, "handleVerify");
                           }}
@@ -191,13 +208,13 @@ function SuperAdminTable(props) {
                           Approve
                         </Button>
                       </div>
-                    </td>
+                    </TableCell>
                   )}
                   {props.approval === true && (
-                    <td>
+                    <TableCell>
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
-                          sx={styles.approveBtn}
+                          style={styles.approveBtn}
                           onClick={(e) => {
                             handleVerify(e, i._id, "handleDelete");
                           }}
@@ -205,13 +222,13 @@ function SuperAdminTable(props) {
                           Delete
                         </Button>
                       </div>
-                    </td>
+                    </TableCell>
                   )}
                   {props.statusEnable === true && (
-                    <td>
+                    <TableCell>
                       <div className="row no-gutters justify-content-center align-items-center ml-4">
                         <Button
-                          sx={styles.approveBtn}
+                          style={styles.approveBtn}
                           onClick={(e) => {
                             handleVerify(e, i._id, "handleDisable");
                           }}
@@ -219,14 +236,14 @@ function SuperAdminTable(props) {
                           Disable
                         </Button>
                       </div>
-                    </td>
+                    </TableCell>
                   )}
                   {props.statusDisable === true && (
-                    <td>
+                    <TableCell>
                       <div className="row no-gutters justify-content-center align-items-center">
                         <Button
                           className="ml-4"
-                          sx={styles.approveBtn}
+                          style={styles.approveBtn}
                           onClick={(e) => {
                             handleVerify(e, i._id, "handleEnableSSO");
                           }}
@@ -234,118 +251,122 @@ function SuperAdminTable(props) {
                           Enable
                         </Button>
                       </div>
-                    </td>
+                    </TableCell>
                   )}
-                </tr>
-              </tbody>
-            );
-          })}
-        {props.walletEnabled === true &&
-          props.walletAdmins.map((i, index) => {
-            return (
-              <tbody style={{ color: "white" }}>
-                <tr>
-                  <td sx={styles.collectionTitle}>{i.username}</td>
-                  {props.ssoEnabled === true &&
-                    props.walletEnabled === true && (
-                      <td sx={styles.collectionTitle}>
-                        <label className="ml-4">N/A</label>
-                      </td>
+                </TableRow>
+              );
+            })}
+          {props.walletEnabled === true &&
+            props.walletAdmins.map((i, index) => {
+              return (
+                <tbody style={{ color: "white" }}>
+                  <TableRow>
+                    <TableCell style={styles.collectionTitle}>
+                      {i.username}
+                    </TableCell>
+                    {props.ssoEnabled === true &&
+                      props.walletEnabled === true && (
+                        <TableCell style={styles.collectionTitle}>
+                          <label className="ml-4">N/A</label>
+                        </TableCell>
+                      )}
+                    <TableCell style={styles.collectionTitle}>
+                      <Tooltip
+                        title={
+                          <Typography fontSize={16}>
+                            {i.walletAddress}
+                          </Typography>
+                        }
+                      >
+                        <span className="ml-4">
+                          {i.walletAddress.slice(0, 8)}...
+                        </span>
+                      </Tooltip>
+                    </TableCell>
+                    <TableCell style={styles.collectionTitle}>
+                      <button
+                        className="btn submit-btn propsActionBtn "
+                        onClick={(e) =>
+                          props.handleModalOpen(
+                            e,
+                            i,
+                            props.setShow,
+                            props.setModalData
+                          )
+                        }
+                      >
+                        View
+                      </button>
+                    </TableCell>
+                    {props.ssoEnabled === true &&
+                      props.walletEnabled === true && (
+                        <TableCell style={styles.collectionTitle}>
+                          <label className="ml-4">Wallet</label>
+                        </TableCell>
+                      )}
+                    {props.approval === true && (
+                      <TableCell>
+                        <div className="row no-gutters justify-content-center align-items-center">
+                          <Button
+                            style={styles.approveBtn}
+                            onClick={(e) => {
+                              handleVerify(e, i._id, "handleVerifyWallet");
+                            }}
+                          >
+                            Approve
+                          </Button>
+                        </div>
+                      </TableCell>
                     )}
-                  <td sx={styles.collectionTitle}>
-                    <Tooltip
-                      title={
-                        <Typography fontSize={16}>{i.walletAddress}</Typography>
-                      }
-                    >
-                      <span className="ml-4">
-                        {i.walletAddress.slice(0, 8)}...
-                      </span>
-                    </Tooltip>
-                  </td>
-                  <td sx={styles.collectionTitle}>
-                    <button
-                      className="btn submit-btn propsActionBtn "
-                      onClick={(e) =>
-                        props.handleModalOpen(
-                          e,
-                          i,
-                          props.setShow,
-                          props.setModalData
-                        )
-                      }
-                    >
-                      View
-                    </button>
-                  </td>
-                  {props.ssoEnabled === true &&
-                    props.walletEnabled === true && (
-                      <td sx={styles.collectionTitle}>
-                        <label className="ml-4">Wallet</label>
-                      </td>
+                    {props.approval === true && (
+                      <TableCell>
+                        <div className="row no-gutters justify-content-center align-items-center">
+                          <Button
+                            style={styles.approveBtn}
+                            onClick={(e) => {
+                              handleVerify(e, i._id, "handleDelete");
+                            }}
+                          >
+                            Delete
+                          </Button>
+                        </div>
+                      </TableCell>
                     )}
-                  {props.approval === true && (
-                    <td>
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          sx={styles.approveBtn}
-                          onClick={(e) => {
-                            handleVerify(e, i._id, "handleVerifyWallet");
-                          }}
-                        >
-                          Approve
-                        </Button>
-                      </div>
-                    </td>
-                  )}
-                  {props.approval === true && (
-                    <td>
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          sx={styles.approveBtn}
-                          onClick={(e) => {
-                            handleVerify(e, i._id, "handleDelete");
-                          }}
-                        >
-                          Delete
-                        </Button>
-                      </div>
-                    </td>
-                  )}
-                  {props.statusEnable === true && (
-                    <td>
-                      <div className="row no-gutters justify-content-center align-items-center ml-4">
-                        <Button
-                          sx={styles.approveBtn}
-                          onClick={(e) => {
-                            handleVerify(e, i._id, "handleWalletDisable");
-                          }}
-                        >
-                          Disable
-                        </Button>
-                      </div>
-                    </td>
-                  )}
-                  {props.statusDisable === true && (
-                    <td>
-                      <div className="row no-gutters justify-content-center align-items-center">
-                        <Button
-                          className="ml-4"
-                          sx={styles.approveBtn}
-                          onClick={(e) => {
-                            handleVerify(e, i._id, "handleWalletDisable");
-                          }}
-                        >
-                          Enable
-                        </Button>
-                      </div>
-                    </td>
-                  )}
-                </tr>
-              </tbody>
-            );
-          })}
-      </Table>
+                    {props.statusEnable === true && (
+                      <TableCell>
+                        <div className="row no-gutters justify-content-center align-items-center ml-4">
+                          <Button
+                            style={styles.approveBtn}
+                            onClick={(e) => {
+                              handleVerify(e, i._id, "handleWalletDisable");
+                            }}
+                          >
+                            Disable
+                          </Button>
+                        </div>
+                      </TableCell>
+                    )}
+                    {props.statusDisable === true && (
+                      <TableCell>
+                        <div className="row no-gutters justify-content-center align-items-center">
+                          <Button
+                            className="ml-4"
+                            style={styles.approveBtn}
+                            onClick={(e) => {
+                              handleVerify(e, i._id, "handleWalletDisable");
+                            }}
+                          >
+                            Enable
+                          </Button>
+                        </div>
+                      </TableCell>
+                    )}
+                  </TableRow>
+                </tbody>
+              );
+            })}
+        </Table>
+      </TableContainer>
       <WarningModal
         show={warningModalShow}
         handleClose={handleWarningModalClose}
