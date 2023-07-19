@@ -195,6 +195,7 @@ function NewNFT(props) {
   const [croppedAreaPixels, setCroppedAreaPixels] = useState(null);
   const [cropShape, setCropShape] = useState("round");
   const [isGIFFile, setIsGIFFile] = useState(false);
+  const [imageWithoutCrop,setImageWithoutCrop] = useState();
 
   const { collectionData, loading } = useSelector(
     (store) => store.NewNftCollection
@@ -647,7 +648,7 @@ function NewNFT(props) {
           collectionId: collectionId,
           title: name,
           description: description,
-          nftURI: nftURI,
+          nftURI: image,
           previewImageURI: previewImageURI,
           metadataURI: nftURI,
           nftFormat: imageType,
@@ -672,7 +673,7 @@ function NewNFT(props) {
                   collectionId: collectionId,
                   title: name,
                   description: description,
-                  nftURI: nftURI,
+                  nftURI: image,
                   previewImageURI: previewImageURI,
                   nftFormat: imageType,
                   properties: properties,
@@ -690,7 +691,7 @@ function NewNFT(props) {
                 {
                   properties: properties,
                   ipfsHash: ipfsHash,
-                  nftURI: nftURI,
+                  nftURI: image,
                   title: name,
                   description: description,
                   totalSupply: tokenSupply,
@@ -721,7 +722,7 @@ function NewNFT(props) {
                 {
                   properties: properties,
                   ipfsHash: ipfsHash,
-                  nftURI: nftURI,
+                  nftURI: image,
                   title: name,
                   description: description,
                   totalSupply: tokenSupply,
@@ -739,7 +740,7 @@ function NewNFT(props) {
                 {
                   properties: properties,
                   ipfsHash: ipfsHash,
-                  nftURI: nftURI,
+                  nftURI: image,
                   title: name,
                   description: description,
                   totalSupply: tokenSupply,
@@ -811,32 +812,35 @@ function NewNFT(props) {
         imageCounter,
         0
       );
-      const reader = new window.FileReader();
-      reader.readAsArrayBuffer(imageNFT);
-      reader.onloadend = () => {
-        ipfs.add(Buffer(reader.result), async (err, result) => {
-          if (err) {
-            console.log("err", err);
-            setIsUploadingIPFS(false);
-            let variant = "error";
-            setSnackbarMessage("Unable to Upload Image to IPFS.");
-            setSnackbarSeverity(variant);
-            handleSnackbarOpen();
-            return;
-          }
-
-          setIpfsHash(result[0].hash);
-          setNftURI(`https://ipfs.io/ipfs/${result[0].hash}`);
+      const nftFormData = new FormData();
+      nftFormData.append("image", imageWithoutCrop);
+      //uploading image on IPFS using backend endpoint
+      uploadImageToIpfs(nftFormData)
+        .then((response) => {
+          console.log("Response from uploading image on IPFS: ", response);
+          setIpfsHash(response.data.IpfsData.IpfsHash);
+          setNftURI(`https://ipfs.io/ipfs/${response.data.IpfsData.IpfsHash}`);
           console.log(
             "Hash of NFT: ",
-            `https://ipfs.io/ipfs/${result[0].hash}`
+            `https://ipfs.io/ipfs/${response.data.IpfsData.IpfsHash}`
           );
           let variant = "success";
           setSnackbarMessage("Image Uploaded to IPFS.");
           setSnackbarSeverity(variant);
           handleSnackbarOpen();
+          if (imageType === "glb") {
+            setIsGlbFile(true);
+          }
+        })
+        .catch((error) => {
+          console.log("err", error);
+          setIsUploadingIPFS(false);
+          let variant = "error";
+          setSnackbarMessage("Unable to Upload Image to IPFS.");
+          setSnackbarSeverity(variant);
+          handleSnackbarOpen();
+          return;
         });
-      };
       let fileData = new FormData();
       fileData.append("image", imageNFT);
       uploadImage(fileData)
@@ -925,61 +929,7 @@ function NewNFT(props) {
         setIsUploadingIPFS(false);
         return;
       }
-
-      const nftFormData = new FormData();
-      nftFormData.append("image", e.target.files[0]);
-
-      //uploading image on IPFS using backend endpoint
-      uploadImageToIpfs(nftFormData)
-        .then((response) => {
-          console.log("Response from uploading image on IPFS: ", response);
-          setIpfsHash(response.data.IpfsData.IpfsHash);
-          setNftURI(`https://ipfs.io/ipfs/${response.data.IpfsData.IpfsHash}`);
-          console.log(
-            "Hash of NFT: ",
-            `https://ipfs.io/ipfs/${response.data.IpfsData.IpfsHash}`
-          );
-          let variant = "success";
-          setSnackbarMessage("Image Uploaded to IPFS.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          if (typeImage === "glb") {
-            setIsGlbFile(true);
-          }
-        })
-        .catch((error) => {
-          console.log("err", error);
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          setSnackbarMessage("Unable to Upload Image to IPFS.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-          return;
-        });
-
-      let fileData = new FormData();
-      fileData.append("image", imageNFT);
-      uploadImage(fileData)
-        .then((response) => {
-          console.log("response.data.url", response.data.url);
-          setImage(response.data.url);
-          setIsUploadingIPFS(false);
-          let variant = "success";
-          setSnackbarMessage("Image Uploaded Successfully.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-        })
-        .catch((error) => {
-          if (process.env.NODE_ENV === "development") {
-            console.log(error);
-            console.log(error.response);
-          }
-          setIsUploadingIPFS(false);
-          let variant = "error";
-          setSnackbarMessage("Unable to Upload Image.");
-          setSnackbarSeverity(variant);
-          handleSnackbarOpen();
-        });
+      setImageWithoutCrop(e.target.files[0]);
     }
   };
 
@@ -1370,7 +1320,7 @@ function NewNFT(props) {
                   isMp3File={isMp3File}
                   onChangePreviewImage={onChangePreviewImage}
                   isGlbFile={isGlbFile}
-                  nftURI={nftURI}
+                  nftURI={image}
                   isUploadingIPFS={isUploadingIPFS}
                   onChangeFile={onChangeFile}
                   previewImageURI={previewImageURI}
