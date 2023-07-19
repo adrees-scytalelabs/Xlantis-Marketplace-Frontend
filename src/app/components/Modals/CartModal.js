@@ -1,6 +1,18 @@
-import { Backdrop, Fade, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, ThemeProvider, Typography, createTheme } from '@mui/material';
+import {
+  Backdrop,
+  Fade,
+  Modal,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import React from "react";
-import { Modal } from 'react-bootstrap';
 import { Link } from "react-router-dom";
 
 const styles = {
@@ -10,7 +22,6 @@ const styles = {
     justifyContent: "center",
   },
   paper: {
-
     border: "1px solid #fff",
     borderRadius: 5,
     // boxShadow: theme.shadows[5],
@@ -45,7 +56,6 @@ const styles = {
     textAlign: "center",
   },
   wrapper: {
-
     padding: "4px 0px",
   },
   buttons: {
@@ -89,7 +99,7 @@ const styles = {
     height: 120,
     objectFit: "cover",
   },
-}
+};
 
 const makeTheme = createTheme({
   overrides: {
@@ -160,7 +170,6 @@ let tableData = [
 ];
 
 const CartModal = (props) => {
-
   return (
     <div>
       <ThemeProvider theme={makeTheme}>

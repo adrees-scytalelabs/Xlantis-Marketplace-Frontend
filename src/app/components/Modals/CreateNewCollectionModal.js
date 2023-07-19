@@ -1,12 +1,14 @@
 import CircularProgress from "@mui/material/CircularProgress";
 import React, { useState } from "react";
-import { Modal } from "react-bootstrap";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
 import { uploadToS3 } from "../API/AxiosInterceptor";
 import { defaultProfile } from "../ImageURLs/URLs";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
 import Button from "@mui/material/Button";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Container, IconButton, Modal, Typography } from "@mui/material";
+import { style } from "../styles/MuiModalStyle";
 
 const styles = {
   buttons: {
@@ -67,95 +69,109 @@ function CreateNewCollectionModal(props) {
   };
 
   return (
-    <Modal show={props.show} onHide={props.handleClose}>
-      <Modal.Header closeButton>
-        <Modal.Title>Create New Collection</Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <div className="container">
-          <div className="form-group">
-            <label>Collection Title</label>
+    <Modal open={props.show} onClose={props.handleClose}>
+      <Box sx={style.box}>
+        {/* HEADER CONTAINER */}
+        <Container sx={style.containerHeader}>
+          <div>
+            <Typography sx={style.text}>Create New Collection</Typography>
+          </div>
+          <div>
+            <IconButton sx={{ color: "white" }}>
+              <CloseIcon onClick={props.handleClose} />
+            </IconButton>
+          </div>
+        </Container>
+
+        {/* BODY */}
+        <Container sx={style.containerBody}>
+          <div className="container">
             <div className="form-group">
-              <div className="filter-widget">
-                <input
-                  type="text"
-                  required
-                  defaultValue={collectionTitle}
-                  placeholder=""
-                  className="form-control"
-                  onChange={(e) => {
-                    setCollectionTitle(e.target.value);
-                  }}
-                />
-              </div>
-            </div>
-            <label className="focus-label">Image Artist Photo</label>
-            <div className="form-group">
-              <div className="change-avatar">
-                <div className="profile-img">
-                  <div
-                    style={{
-                      background: "#E9ECEF",
-                      width: "100px",
-                      height: "100px",
+              <label>Collection Title</label>
+              <div className="form-group">
+                <div className="filter-widget">
+                  <input
+                    type="text"
+                    required
+                    defaultValue={collectionTitle}
+                    placeholder=""
+                    className="form-control"
+                    onChange={(e) => {
+                      setCollectionTitle(e.target.value);
                     }}
-                  >
-                    <img src={collectionImage} alt="Selfie" />
-                  </div>
+                  />
                 </div>
-                <div className="upload-img">
-                  <div
-                    className="change-photo-btn"
-                    style={{ backgroundColor: "rgb(167,0,0)" }}
-                  >
-                    {isUploadingCollectionImage ? (
-                      <div className="text-center">
-                        <CircularProgress sx={{ color: "#FFFFFF" }} />
-                      </div>
-                    ) : (
-                      <span>
-                        <i className="fa fa-upload"></i>Upload photo
-                      </span>
-                    )}
-                    <input
-                      name="sampleFile"
-                      type="file"
-                      className="upload"
-                      accept=".png,.jpg,.jpeg,.gif"
-                      onChange={onChangeImageHandler}
-                    />
+              </div>
+              <label className="focus-label">Image Artist Photo</label>
+              <div className="form-group">
+                <div className="change-avatar">
+                  <div className="profile-img">
+                    <div
+                      style={{
+                        background: "#E9ECEF",
+                        width: "100px",
+                        height: "100px",
+                      }}
+                    >
+                      <img src={collectionImage} alt="Selfie" />
+                    </div>
                   </div>
-                  <small className="form-text text-muted">
-                    Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
-                  </small>
+                  <div className="upload-img">
+                    <div
+                      className="change-photo-btn"
+                      style={{ backgroundColor: "rgb(167,0,0)" }}
+                    >
+                      {isUploadingCollectionImage ? (
+                        <div className="text-center">
+                          <CircularProgress sx={{ color: "#FFFFFF" }} />
+                        </div>
+                      ) : (
+                        <span>
+                          <i className="fa fa-upload"></i>Upload photo
+                        </span>
+                      )}
+                      <input
+                        name="sampleFile"
+                        type="file"
+                        className="upload"
+                        accept=".png,.jpg,.jpeg,.gif"
+                        onChange={onChangeImageHandler}
+                      />
+                    </div>
+                    <small className="form-text text-muted">
+                      Allowed JPG, JPEG, PNG, GIF. Max size of 5MB
+                    </small>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button sx={styles.buttons} onClick={props.handleClose}>
-          Close
-        </Button>
-        {props.isCreating ? (
-          <div align="center" className="text-center">
-            <CircularProgress sx={{ color: "#FFFFFF" }} />
-            <span style={{ color: "#ff0000" }} className="sr-only">
-              Loading...
-            </span>
-          </div>
-        ) : (
-          <Button
-            sx={styles.buttons}
-            onClick={() =>
-              props.createCollections(collectionTitle, collectionImage)
-            }
-          >
-            Create
+        </Container>
+
+        {/* FOOTER CONTAINER */}
+        <Container sx={style.containerFooter}>
+          <Button sx={styles.buttons} onClick={props.handleClose}>
+            Close
           </Button>
-        )}
-      </Modal.Footer>
+          {props.isCreating ? (
+            <div align="center" className="text-center">
+              <CircularProgress sx={{ color: "#FFFFFF" }} />
+              <span style={{ color: "#ff0000" }} className="sr-only">
+                Loading...
+              </span>
+            </div>
+          ) : (
+            <Button
+              sx={styles.buttons}
+              onClick={() =>
+                props.createCollections(collectionTitle, collectionImage)
+              }
+            >
+              Create
+            </Button>
+          )}
+        </Container>
+      </Box>
       <NotificationSnackbar
         open={snackbarOpen}
         handleClose={handleSnackbarClose}

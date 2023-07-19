@@ -1,11 +1,33 @@
 import { ErrorOutline } from "@mui/icons-material";
-import { CircularProgress, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Container,
+  IconButton,
+  Modal,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import React, { useCallback, useState } from "react";
-import { Modal } from "react-bootstrap";
 import { categoryAvailable } from "../API/AxiosInterceptor";
 import UploadFile from "../Upload/UploadFile";
 import getCroppedImg from "../Utils/Crop";
 import ImageCropModal from "./ImageCropModal";
+import { style } from "../styles/MuiModalStyle";
+import CloseIcon from "@mui/icons-material/Close";
+
+const theme = createTheme({
+  components: {
+    MuiModal: {
+      styleOverrides: {
+        backdrop: {
+          pointerEvents: "none",
+        },
+      },
+    },
+  },
+});
 
 function CategoryModal({
   handleClose,
@@ -113,133 +135,125 @@ function CategoryModal({
     }
   };
   return (
-    <Modal show={show} onHide={handleClose} centered backdrop="static">
-      <Modal.Header
-        closeButton
-        className="text-center"
-        style={{
-          backgroundColor: "#000",
-        }}
-      >
-        <Typography
-          variant="h6"
-          className="text-center"
-          sx={{ marginLeft: "42%" }}
-        >
-          Category
-        </Typography>
-      </Modal.Header>
-      <Modal.Body
-        style={{
-          border: "1px solid white",
-          borderTop: "none",
-          borderBottom: "none",
-          backgroundColor: "#000",
-          justifyContent: "center",
-        }}
-      >
-        <div>
-          <div>
-            {viewDetail !== true ? (
-              <label>Select Category Image</label>
-            ) : (
-              <label>Category Image</label>
-            )}
-            <ImageCropModal
-              show={showCropModal}
-              handleClose={handleCloseImageCropModal}
-              crop={crop}
-              setCrop={setCrop}
-              onCropComplete={onCropComplete}
-              imageSrc={imageSrc}
-              uploadImage={showCroppedImage}
-              isUploadingCroppedImage={isUploadingCroppedImage}
-              zoom={zoom}
-              setZoom={setZoom}
-              aspect={aspect}
-              cropShape={cropShape}
-            />
-            <UploadFile
-              fileURL={image}
-              isUploading={isUploading}
-              viewDetail={viewDetail}
-              changeFile={onChangeFile}
-              class="col-12 col-md-auto profile-img mr-3"
-              accept=".png,.jpg,.jpeg,.gif"
-              inputId="uploadPreviewImg"
-            />
-            {createButton && !imageFile && (
-              <span className="text-danger" style={{ fontSize: "10px" }}>
-                <ErrorOutline className="mr-1" />
-                <label>Image field cannot be empty.</label>
-              </span>
-            )}
-          </div>
-        </div>
-        <div>
-          <Typography variant="h6">Category Name</Typography>
-        </div>
-        <div className="mt-3">
-          <div>
-            <div className="form-group newNftWrapper ">
-              <input
-                style={{ padding: "10px" }}
-                type="text"
-                required
-                value={name}
-                placeholder="Enter Category Name"
-                disabled={viewDetail}
-                className={`newNftInput form-control ${valid}`}
-                onChange={handleChange}
-              />
-              {valid === "is-invalid" && (
-                <div class="invalid-feedback">Name not available</div>
-              )}
-              {createButton && !name && (
-                <span className="text-danger" style={{ fontSize: "10px" }}>
-                  <ErrorOutline className="mr-1" />
-                  <label className="mt-2">Name field cannot be empty.</label>
-                </span>
-              )}
+    <ThemeProvider theme={theme}>
+      <Modal open={show} onClose={handleClose}>
+        <Box sx={style.box}>
+          {/* HEADER CONTAINER */}
+          <Container sx={style.containerHeader}>
+            <div>
+              <Typography sx={style.text}>Category</Typography>
             </div>
-          </div>
-        </div>
-      </Modal.Body>
-      <Modal.Footer
-        style={{
-          backgroundColor: "#000",
-          border: "1px solid white",
-          borderTop: "none",
-        }}
-      >
-        <button
-          className="newTemplateBtn mb-3"
-          onClick={handleCloseModal}
-          style={{ backgroundColor: "#000" }}
-        >
-          Close
-        </button>
-        {viewDetail !== true ? (
-          editData === true ? (
+            <div>
+              <IconButton sx={{ color: "white" }}>
+                <CloseIcon onClick={handleClose} />
+              </IconButton>
+            </div>
+          </Container>
+
+          {/* BODY */}
+          <Container sx={style.containerBody}>
+            <div>
+              <div>
+                {viewDetail !== true ? (
+                  <label>Select Category Image</label>
+                ) : (
+                  <label>Category Image</label>
+                )}
+                <ImageCropModal
+                  show={showCropModal}
+                  handleClose={handleCloseImageCropModal}
+                  crop={crop}
+                  setCrop={setCrop}
+                  onCropComplete={onCropComplete}
+                  imageSrc={imageSrc}
+                  uploadImage={showCroppedImage}
+                  isUploadingCroppedImage={isUploadingCroppedImage}
+                  zoom={zoom}
+                  setZoom={setZoom}
+                  aspect={aspect}
+                  cropShape={cropShape}
+                />
+                <UploadFile
+                  fileURL={image}
+                  isUploading={isUploading}
+                  viewDetail={viewDetail}
+                  changeFile={onChangeFile}
+                  class="col-12 col-md-auto profile-img mr-3"
+                  accept=".png,.jpg,.jpeg,.gif"
+                  inputId="uploadPreviewImg"
+                />
+                {createButton && !imageFile && (
+                  <span className="text-danger" style={{ fontSize: "10px" }}>
+                    <ErrorOutline className="mr-1" />
+                    <label>Image field cannot be empty.</label>
+                  </span>
+                )}
+              </div>
+            </div>
+            <div>
+              <Typography variant="h6">Category Name</Typography>
+            </div>
+            <div className="mt-3">
+              <div>
+                <div className="form-group newNftWrapper ">
+                  <input
+                    style={{ padding: "10px" }}
+                    type="text"
+                    required
+                    value={name}
+                    placeholder="Enter Category Name"
+                    disabled={viewDetail}
+                    className={`newNftInput form-control ${valid}`}
+                    onChange={handleChange}
+                  />
+                  {valid === "is-invalid" && (
+                    <div class="invalid-feedback">Name not available</div>
+                  )}
+                  {createButton && !name && (
+                    <span className="text-danger" style={{ fontSize: "10px" }}>
+                      <ErrorOutline className="mr-1" />
+                      <label className="mt-2">
+                        Name field cannot be empty.
+                      </label>
+                    </span>
+                  )}
+                </div>
+              </div>
+            </div>
+          </Container>
+
+          {/* FOOTER CONTAINER */}
+          <Container sx={style.containerFooter}>
             <button
               className="newTemplateBtn mb-3"
-              onClick={(e) => handleUpdateCategory()}
+              onClick={handleCloseModal}
               style={{ backgroundColor: "#000" }}
             >
-              {isLoading ? <CircularProgress size="sm" /> : "Update"}
+              Close
             </button>
-          ) : (
-            <button
-              className="newTemplateBtn mb-3"
-              onClick={(e) => handleCreateCategory()}
-              style={{ backgroundColor: "#000" }}
-            >
-              {isLoading ? <CircularProgress size={20} /> : "Create"}
-            </button>
-          )
-        ) : null}
-      </Modal.Footer>
-    </Modal>
+            {viewDetail !== true ? (
+              editData === true ? (
+                <button
+                  className="newTemplateBtn mb-3"
+                  onClick={(e) => handleUpdateCategory()}
+                  style={{ backgroundColor: "#000" }}
+                >
+                  {isLoading ? <CircularProgress size="sm" /> : "Update"}
+                </button>
+              ) : (
+                <button
+                  className="newTemplateBtn mb-3"
+                  onClick={(e) => handleCreateCategory()}
+                  style={{ backgroundColor: "#000" }}
+                >
+                  {isLoading ? <CircularProgress size={20} /> : "Create"}
+                </button>
+              )
+            ) : null}
+          </Container>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 }
 
