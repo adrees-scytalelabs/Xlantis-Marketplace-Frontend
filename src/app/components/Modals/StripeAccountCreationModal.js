@@ -1,5 +1,10 @@
 import React from "react";
-import { Dialog, DialogTitle, DialogContent, DialogActions } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CircularProgress from "@mui/material/CircularProgress";
 import Button from "@mui/material/Button";
@@ -12,18 +17,41 @@ const StripeAccountCreationModal = (props) => {
     }
   };
   return (
-    <Dialog open={props.show} onClose={handleClose}  BackdropProps={{
-      transitionDuration: 0, // Disable any animation for static dialog
-    }} fullWidth maxWidth="sm" centered>
-      <DialogTitle className="text-center" sx={{background:"black",color:'white',border:"1px solid white"}}>Create your Account!</DialogTitle>
-      <DialogContent style={{ border: "1px solid white",borderTop: "none", borderBottom: "none", backgroundColor: "#000", justifyContent: "center" ,color:"white"}}>
+    <Dialog
+      open={props.show}
+      onClose={handleClose}
+      BackdropProps={{
+        transitionDuration: 0, // Disable any animation for static dialog
+      }}
+      fullWidth
+      maxWidth="sm"
+      centered
+    >
+      <DialogTitle
+        className="text-center"
+        sx={{ background: "black", color: "white", border: "1px solid white" }}
+      >
+        Create your Account!
+      </DialogTitle>
+      <DialogContent
+        style={{
+          border: "1px solid white",
+          borderTop: "none",
+          borderBottom: "none",
+          backgroundColor: "#000",
+          justifyContent: "center",
+          color: "white",
+        }}
+      >
         <div className="mt-3">
           <p>You don't have a stripe account yet.</p>
           <p>Create your account to access additional features.</p>
           {/* Provide options for the user to sign up or take any other desired action */}
         </div>
       </DialogContent>
-      <DialogActions style={{ backgroundColor: "#000", border: "1px solid white" }}>
+      <DialogActions
+        style={{ backgroundColor: "#000", border: "1px solid white" }}
+      >
         <button
           className="newTemplateBtn mb-3"
           onClick={() => {
