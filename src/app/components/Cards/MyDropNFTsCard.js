@@ -16,7 +16,7 @@ const MyDropNFTsCard = (props) => {
       sx={props.classes.cardHeight}
     >
       <div style={{ position: "relative" }}>
-        {props.nftDetails.currentOrderListingId.isSold === true ? (
+        {props?.nftDetails?.currentOrderListingId?.supply === 0 ? (
           <CornerRibbon
             position="top-right"
             fontColor="#f0f0f0"
