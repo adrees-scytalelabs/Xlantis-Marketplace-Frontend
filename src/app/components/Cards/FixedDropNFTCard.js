@@ -96,7 +96,7 @@ function FixedDropNFTCard(props) {
             }
             title="NFT Image"
           />
-          {props.data.currentOrderListingId.isSold === true ? (
+          {props?.data?.currentOrderListingId?.supply === 0 ? (
             <CornerRibbon
               position="top-right"
               fontColor="#f0f0f0"
