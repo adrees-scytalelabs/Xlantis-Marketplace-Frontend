@@ -2,7 +2,6 @@ import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { useLocation, useParams } from "react-router-dom";
 import Web3 from "web3";
@@ -569,7 +568,10 @@ const AuctionNFT = (props) => {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <ThemeProvider theme={customTheme}>
         <div className="card-body px-0">
@@ -581,13 +583,13 @@ const AuctionNFT = (props) => {
             </div>
             <div className="col-md-12 col-lg-8">
               <AuctionNFTDetailCard nftDetail={nftDetail} price={price} />
-              <Row style={{ marginTop: "5px" }}>
-                <Col>
+              <div style={{ marginTop: "5px" }}>
+                <div>
                   <PropertiesAccordian keys={keys} properties={properties} />
-                </Col>
-              </Row>
-              <Row style={{ marginTop: "5px" }}>
-                <Col>
+                </div>
+              </div>
+              <div style={{ marginTop: "5px" }}>
+                <div>
                   <BidValue
                     biddingValue={biddingValue}
                     bidExpiryTime={bidExpiryTime}
@@ -598,14 +600,14 @@ const AuctionNFT = (props) => {
                     handleOpenModal={handleOpenModal}
                     handleBidSubmit={handleBidSubmit}
                   />
-                </Col>
-              </Row>
+                </div>
+              </div>
 
-              <Row style={{ marginTop: "5px" }}>
-                <Col>
+              <div style={{ marginTop: "5px" }}>
+                <div>
                   <Bids bidDetail={bidDetail} />
-                </Col>
-              </Row>
+                </div>
+              </div>
             </div>
           </div>
         </div>

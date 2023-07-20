@@ -1,9 +1,17 @@
-import { TablePagination} from "@mui/material";
+import {
+  TablePagination,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
 import Web3 from "web3";
 import NetworkErrorModal from "../../../../components/Modals/NetworkErrorModal";
-import Table from "react-bootstrap/Table";
+
 const styles = {
   root: {
     maxWidth: 345,
@@ -26,14 +34,18 @@ const styles = {
     marginBottom: 12,
   },
   tableHeader: {
-    color: "#000",
-    fontSize: "1.25rem",
-    fontWeight: "bold",
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
   },
   collectionTitle: {
     color: "#fff",
     fontSize: "1rem",
-    // textAlign:"center"          
+    // textAlign:"center"
   },
   approveBtn: {
     backgroundColor: "transparent",
@@ -72,7 +84,7 @@ function AllTransactionsPage(props) {
   useEffect(() => {
     setVersionB(Cookies.get("Version"));
 
-// eslint-disable-next-line
+    // eslint-disable-next-line
   }, []);
 
   const handleChangePage = (event, newPage) => {
@@ -100,117 +112,106 @@ function AllTransactionsPage(props) {
     }
   };
 
-  
- 
   return (
     <div className="backgroundDefault">
       {/* Page Header */}
-      
+
       {/* Page Content */}
       <div className="card-body">
-      <div style={{ display: 'flex' }}>
-            <div style={{ marginRight: '20px' }}>
-                <select value="Value" className="templatesSelect" >
-                <option value="">Type : All</option>
-                <option value="filter1">Type : Deposit</option>
-                <option value="filter2">Type : Received</option>
-                </select>
-            </div>
-            <div style={{ marginRight: '20px' }}>
-            
-                    <input
-                      style={{"backgroundColor":"#fff"}}
-                      type="text"
-                      required
-                    //   value={}
-                      placeholder="Value : All"
-                      className="form-control newNftInput"
-                    //   onChange={(e) => {
-                    //     setName(e.target.value);
-                    //   }}
-                    />
-              
-            </div>
-            <div style={{ marginRight: '20px' }}>
-            
-                    <input
-                      style={{"backgroundColor":"#fff"}}
-                      type="text"
-                      required
-                    //   value={}
-                      placeholder="From"
-                      className="form-control newNftInput"
-                    //   onChange={(e) => {
-                    //     setName(e.target.value);
-                    //   }}
-                    />
-              
-            </div>
-            <div>
-                    <input
-                      style={{"backgroundColor":"#fff"}}
-                      type="text"
-                      required
-                    //   value={}
-                      placeholder="To"
-                      className="form-control newNftInput"
-                    //   onChange={(e) => {
-                    //     setName(e.target.value);
-                    //   }}
-                    />
-              
-            </div>
+        <div style={{ display: "flex" }}>
+          <div style={{ marginRight: "20px" }}>
+            <select value="Value" className="templatesSelect">
+              <option value="">Type : All</option>
+              <option value="filter1">Type : Deposit</option>
+              <option value="filter2">Type : Received</option>
+            </select>
           </div>
-          <br></br>
+          <div style={{ marginRight: "20px" }}>
+            <input
+              style={{ backgroundColor: "#fff" }}
+              type="text"
+              required
+              //   value={}
+              placeholder="Value : All"
+              className="form-control newNftInput"
+              //   onChange={(e) => {
+              //     setName(e.target.value);
+              //   }}
+            />
+          </div>
+          <div style={{ marginRight: "20px" }}>
+            <input
+              style={{ backgroundColor: "#fff" }}
+              type="text"
+              required
+              //   value={}
+              placeholder="From"
+              className="form-control newNftInput"
+              //   onChange={(e) => {
+              //     setName(e.target.value);
+              //   }}
+            />
+          </div>
+          <div>
+            <input
+              style={{ backgroundColor: "#fff" }}
+              type="text"
+              required
+              //   value={}
+              placeholder="To"
+              className="form-control newNftInput"
+              //   onChange={(e) => {
+              //     setName(e.target.value);
+              //   }}
+            />
+          </div>
+        </div>
+        <br></br>
         <div className="row">
           {/* <div className="col-md-12 col-lg-6"> */}
-         
-          
-
-          <Table responsive>
-            <thead>
-              <tr>
-                <th className={styles.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Date
-                  </div>
-                </th>
-                <th className={styles.tableHeader}>
-                  <div className="row no-gutters justify-content-start align-items-center">
-                    Time
-                  </div>
-                </th>
-                <th className={styles.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Description
-                  </div>
-                </th>
-                <th className={styles.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Amount
-                  </div>
-                </th>
-                <th className={styles.tableHeader}>
-                  <div className="row no-gutters justify-content-center align-items-center">
-                    Type
-                  </div>
-                </th>
-              </tr>
-            </thead>
-            {/* {collections.map((i, index) => ( */}
-              <tbody>
-                <tr>
-                  <td className={styles.collectionTitle}>2019-11-22</td>
-                  <td className={styles.collectionTitle}>6:55</td>
-                  <td className={styles.collectionTitle} style={{"textAlign" : "center"}}>Drop Approval</td>
-                  <td className={styles.collectionTitle} style={{"textAlign" : "center"}}>12$</td>
-                  <td className={styles.collectionTitle} style={{"textAlign" : "center"}}>Deposit</td>
-
-
-                </tr>
-              </tbody>
-            {/* ))} */}
-          </Table>
+          <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+            <Table>
+              <TableHead sx={styles.tableHeader}>
+                <TableRow>
+                  <TableCell>
+                    <div className="row no-gutters justify-content-start align-items-center">
+                      Date
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="row no-gutters justify-content-start align-items-center">
+                      Time
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="row no-gutters justify-content-center align-items-center">
+                      Description
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="row no-gutters justify-content-center align-items-center">
+                      Amount
+                    </div>
+                  </TableCell>
+                  <TableCell>
+                    <div className="row no-gutters justify-content-center align-items-center">
+                      Type
+                    </div>
+                  </TableCell>
+                </TableRow>
+              </TableHead>
+              {/* {collections.map((i, index) => ( */}
+              <TableRow style={styles.collectionTitle}>
+                <TableCell>2019-11-22</TableCell>
+                <TableCell>6:55</TableCell>
+                <TableCell style={{ textAlign: "center" }}>
+                  Drop Approval
+                </TableCell>
+                <TableCell style={{ textAlign: "center" }}>12$</TableCell>
+                <TableCell style={{ textAlign: "center" }}>Deposit</TableCell>
+              </TableRow>
+            </Table>
+          </TableContainer>
         </div>
       </div>
       {/* </div> */}

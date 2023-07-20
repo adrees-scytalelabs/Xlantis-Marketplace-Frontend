@@ -1,13 +1,24 @@
-import { Card, CardActionArea, CardContent, CardMedia, Grid, TablePagination, Typography } from '@mui/material';
+import {
+  Card,
+  CardActionArea,
+  CardContent,
+  CardMedia,
+  Grid,
+  TablePagination,
+  Typography,
+} from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
-import { createCollection, getMyCollectionsPaginated } from "../../../../components/API/AxiosInterceptor";
-import { defaultProfile } from '../../../../components/ImageURLs/URLs';
+import {
+  createCollection,
+  getMyCollectionsPaginated,
+} from "../../../../components/API/AxiosInterceptor";
+import { defaultProfile } from "../../../../components/ImageURLs/URLs";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import CreateNewCollectionModal from "../../../../components/Modals/CreateNewCollectionModal";
-import NotificationSnackbar from '../../../../components/Snackbar/NotificationSnackbar';
+import NotificationSnackbar from "../../../../components/Snackbar/NotificationSnackbar";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 const styles = {
   root: {
     minWidth: 250,
@@ -19,7 +30,7 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-}
+};
 
 function MyCollection(props) {
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -29,7 +40,7 @@ function MyCollection(props) {
     setSnackbarOpen(true);
   };
   const handleSnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     setSnackbarOpen(false);
@@ -180,13 +191,7 @@ function MyCollection(props) {
         <div sx={styles.root}>
           {open ? (
             <div align="center" className="text-center">
-              <Spinner
-                animation="border"
-                role="status"
-                style={{ color: "#ff0000" }}
-              >
-                {" "}
-              </Spinner>
+              <WhiteSpinner />
             </div>
           ) : collections.length === 0 ? (
             <MessageCard msg="No items to display"></MessageCard>
@@ -240,7 +245,12 @@ function MyCollection(props) {
         createCollections={createCollections}
         isCreating={isCreating}
       ></CreateNewCollectionModal>
-      <NotificationSnackbar open={snackbarOpen} handleClose={handleSnackbarClose} severity={snackbarSeverity} message={snackbarMessage} />
+      <NotificationSnackbar
+        open={snackbarOpen}
+        handleClose={handleSnackbarClose}
+        severity={snackbarSeverity}
+        message={snackbarMessage}
+      />
     </div>
   );
 }

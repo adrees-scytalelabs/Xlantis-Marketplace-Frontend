@@ -1,12 +1,11 @@
-import React, { Suspense, useEffect } from "react";
-import { Spinner } from "react-bootstrap";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { Canvas } from "@react-three/fiber";
+import React, { Suspense } from "react";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
-import UploadFile from "./UploadFile";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
 import { defaultProfile } from "../ImageURLs/URLs";
 import WhiteSpinner from "../Spinners/WhiteSpinner";
+import UploadFile from "./UploadFile";
 
 function Model(props) {
   const { scene } = useGLTF(props.nftURI);
@@ -46,11 +45,7 @@ const NFTUpload = (props) => {
                 <label htmlFor="uploadGlbFile" className="uploadLabel">
                   {props.isUploadingIPFS ? (
                     <div className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#fbfeff" }}
-                      ></Spinner>
+                      <WhiteSpinner />
                     </div>
                   ) : (
                     "Choose File"
@@ -145,11 +140,7 @@ const NFTUpload = (props) => {
                 <label htmlFor="uploadMp3" className="uploadLabel">
                   {props.isUploadingIPFS ? (
                     <div className="text-center">
-                      <Spinner
-                        animation="border"
-                        role="status"
-                        style={{ color: "#fbfeff" }}
-                      ></Spinner>
+                      <WhiteSpinner />
                     </div>
                   ) : (
                     "Choose File"

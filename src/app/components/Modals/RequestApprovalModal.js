@@ -1,20 +1,19 @@
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid } from "@mui/material";
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
 import BlackSpinner from "../Spinners/BlackSpinner";
 
 const RequestApprovalModal = (props) => {
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
+    <Dialog
+      open={props.show}
+      onClose={props.handleClose}
       centered
-      backdrop="static"
+      fullWidth
+      maxWidth="sm"
     >
-      <Modal.Header closeButton className="custom-header">
-        Approval Required
-      </Modal.Header>
-      <Modal.Body>
+      <DialogTitle>Approval Required</DialogTitle>
+      <DialogContent>
         <div
           style={{
             color: "#000",
@@ -26,19 +25,39 @@ const RequestApprovalModal = (props) => {
           Give approval to put NFTs on sale.
         </div>
         <div style={{ margin: "10px" }}>
-          <Row className="justify-content-center align-items-center no-gutters">
-            <Col style={{ color: "#000" }}>
+          <Grid
+            container
+            spacing={1}
+            className="justify-content-center align-items-center no-gutters"
+          >
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              style={{ color: "#000" }}
+            >
               Give Approval to Fixed Price Drop.
-            </Col>
-            <Col className="text-right">
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={6}
+              lg={6}
+              xl={6}
+              className="text-right"
+            >
               {props.approvingFixedPrice ? (
                 <BlackSpinner />
               ) : props.isFixedPriceApproved ? (
                 <CheckIcon color="success" style={{ color: "green" }} />
               ) : (
-                <button
-                  className="btn"
-                  type="button"
+                <Button
+                  variant="contained"
+                  disableElevation
                   disabled={props.approvalFlag ? true : false}
                   style={{
                     margin: "10px",
@@ -51,19 +70,19 @@ const RequestApprovalModal = (props) => {
                   onClick={props.giveFixPriceApproval}
                 >
                   Approve
-                </button>
+                </Button>
               )}
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </div>
-      </Modal.Body>
-      <Modal.Footer>
+      </DialogContent>
+      <DialogActions>
         {props.doneLoader ? (
           <BlackSpinner />
         ) : (
-          <button
-            className="btn"
-            type="button"
+          <Button
+            variant="contained"
+            disableElevation
             style={{
               margin: "10px",
               marginRight: 0,
@@ -75,10 +94,10 @@ const RequestApprovalModal = (props) => {
             onClick={props.done}
           >
             Done
-          </button>
+          </Button>
         )}
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

@@ -1,15 +1,15 @@
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import { Badge, Paper, Popper,ClickAwayListener } from "@mui/material";
+import { Badge, ClickAwayListener, Paper, Popper } from "@mui/material";
+import CircularProgress from "@mui/material/CircularProgress";
 import transakSDK from "@transak/transak-sdk";
 import WalletConnectProvider from "@walletconnect/web3-provider";
+import axios from "axios";
 import { ethers } from "ethers";
 import Cookies from "js-cookie";
 import jwtDecode from "jwt-decode";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import axios from "axios";
 import {
   Link,
   Navigate,
@@ -23,23 +23,18 @@ import Web3 from "web3";
 import Web3Modal from "web3modal";
 import "../../assets/css/bootstrap.min.css";
 import "../../assets/css/style.css";
+import Logo from "../../assets/img/WhiteLogo.png";
 import "../../assets/plugins/fontawesome/css/all.min.css";
 import "../../assets/plugins/fontawesome/css/fontawesome.min.css";
-import Logo from "../../assets/img/WhiteLogo.png";
 import { getHeaderNotification } from "../../redux/getHeaderNotificationSlice";
 import { getUserProfile } from "../../redux/getUserProfileSlice";
-import {
-  adminLoginThroughWallet,
-  readNotifications,
-  userLoginThroughWallet,
-} from "../API/AxiosInterceptor";
 import NotificationList from "../Cards/NotificationList Card";
 import CartModal from "../Modals/CartModal";
 import NetworkErrorModal from "../Modals/NetworkErrorModal";
 import SSOWalletModal from "../Modals/SSOWalletModal";
 import WorkInProgressModal from "../Modals/WorkInProgressModal";
-import { hoverClassStyleTest } from "../Utils/CustomStyling";
 import NotificationSnackbar from "../Snackbar/NotificationSnackbar";
+import { hoverClassStyleTest } from "../Utils/CustomStyling";
 
 function HeaderHome(props) {
   const [openSnackBar, setOpenSnackBar] = useState(false);
@@ -633,13 +628,7 @@ function HeaderHome(props) {
           <li>
             {isLoading ? (
               <div className="text-center">
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#fff" }}
-                >
-                  <span className="sr-only">Loading...</span>
-                </Spinner>
+                <CircularProgress sx={{ color: "#FFFFFF" }} />
               </div>
             ) : sessionStorage.getItem("Address") &&
               props.role === "admin" ? null : sessionStorage.getItem(
@@ -665,7 +654,7 @@ function HeaderHome(props) {
                 <Link
                   to="/dashboard"
                   style={{ color: "#fff", marginRight: "20px" }}
-                  state={{notification:notificationsList}}
+                  state={{ notification: notificationsList }}
                 >
                   Dashboard
                 </Link>

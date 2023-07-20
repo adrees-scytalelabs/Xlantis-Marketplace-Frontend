@@ -2,14 +2,19 @@ import {
   Card,
   CardContent,
   CardMedia,
-  Paper,
+  Grid,
   ThemeProvider,
   Typography,
   createTheme,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
 } from "@mui/material";
-import React, { useEffect } from "react";
+import React from "react";
 import { AmbientLight, DirectionLight, GLTFModel } from "react-3d-viewer";
-import { Col, Row, Table } from "react-bootstrap";
 import AudioPlayer from "react-h5-audio-player";
 import "react-h5-audio-player/lib/styles.css";
 
@@ -18,6 +23,21 @@ const styles = {
     height: 0,
     paddingTop: "60%",
   },
+  tableHeader: {
+    "& th": {
+      fontSize: "1rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "#000",
+      backgroundColor: "white",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  }
 };
 
 const theme = createTheme({
@@ -47,8 +67,8 @@ const NFTDetailModalCard = (props) => {
   return (
     <ThemeProvider theme={theme}>
       <Card>
-        <Row>
-          <Col>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Paper elevation={10}>
               <CardMedia
                 variant="outlined"
@@ -131,11 +151,11 @@ const NFTDetailModalCard = (props) => {
                 )
               ) : null}
             </div>
-          </Col>
-          <Col>
+          </Grid>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <CardContent>
-              <Row style={{ marginBottom: "5px" }}>
-                <Col>
+              <Grid container spacing={1} style={{ marginBottom: "5px" }}>
+                <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -143,8 +163,16 @@ const NFTDetailModalCard = (props) => {
                   >
                     <strong>Title: </strong>
                   </Typography>
-                </Col>
-                <Col style={{ justifyContent: "right" }}>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  style={{ justifyContent: "right" }}
+                >
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -152,10 +180,10 @@ const NFTDetailModalCard = (props) => {
                   >
                     {props?.nftDetail?.title}
                   </Typography>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "5px" }}>
-                <Col>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1} style={{ marginBottom: "5px" }}>
+                <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -163,8 +191,16 @@ const NFTDetailModalCard = (props) => {
                   >
                     <strong>Description: </strong>
                   </Typography>
-                </Col>
-                <Col style={{ justifyContent: "right" }}>
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  style={{ justifyContent: "right" }}
+                >
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -172,10 +208,10 @@ const NFTDetailModalCard = (props) => {
                   >
                     {props.nftDetail.description}
                   </Typography>
-                </Col>
-              </Row>
-              <Row style={{ marginBottom: "5px" }}>
-                <Col>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1} style={{ marginBottom: "5px" }}>
+                <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -183,8 +219,16 @@ const NFTDetailModalCard = (props) => {
                   >
                     <strong>Total Supply: </strong>
                   </Typography>
-                </Col>
-                <Col className="align-self-end">
+                </Grid>
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={6}
+                  xl={6}
+                  className="align-self-end"
+                >
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -192,30 +236,10 @@ const NFTDetailModalCard = (props) => {
                   >
                     {props.nftDetail.totalSupply}
                   </Typography>
-                </Col>
-              </Row>
-              {/* <Row style={{ marginBottom: "5px" }}>
-                <Col>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    <strong>Collection: </strong>
-                  </Typography>
-                </Col>
-                <Col>
-                  <Typography
-                    variant="body2"
-                    color="textSecondary"
-                    component="p"
-                  >
-                    {props.nftDetail.collectiontitle}
-                  </Typography>
-                </Col>
-              </Row> */}
-              <Row>
-                <Col>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
                   <Typography
                     variant="body2"
                     color="textSecondary"
@@ -223,34 +247,39 @@ const NFTDetailModalCard = (props) => {
                   >
                     <strong>Properties: </strong>
                   </Typography>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <Table striped bordered hover>
-                    <thead>
-                      <tr>
-                        <th>Key</th>
-                        <th>Value</th>
-                      </tr>
-                    </thead>
-                    <tbody>
+                </Grid>
+              </Grid>
+              <Grid container spacing={1}>
+                <Grid item xs={12} sm={12} md={12} lg={12} xl={12}>
+                  <TableContainer
+                    component={Paper}
+                    sx={{ backgroundColor: "black" }}
+                  >
+                    <Table striped bordered hover>
+                      <TableHead sx={styles.tableHeader}>
+                        <TableRow>
+                          <TableCell>Key</TableCell>
+                          <TableCell>Value</TableCell>
+                        </TableRow>
+                      </TableHead>
                       {props?.nftDetail?.properties &&
                         Object.keys(props?.nftDetail?.properties)?.map(
                           (i, index) => (
-                            <tr key={index}>
-                              <td>{i}</td>
-                              <td>{props.nftDetail.properties[i]}</td>
-                            </tr>
+                            <TableRow key={index}>
+                              <TableCell style={styles.text}>{i}</TableCell>
+                              <TableCell style={styles.text}>
+                                {props.nftDetail.properties[i]}
+                              </TableCell>
+                            </TableRow>
                           )
                         )}
-                    </tbody>
-                  </Table>
-                </Col>
-              </Row>
+                    </Table>
+                  </TableContainer>
+                </Grid>
+              </Grid>
             </CardContent>
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       </Card>
     </ThemeProvider>
   );

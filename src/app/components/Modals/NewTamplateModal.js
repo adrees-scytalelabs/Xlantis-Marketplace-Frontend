@@ -1,11 +1,31 @@
-import { Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Container,
+  Modal,
+  ThemeProvider,
+  Tooltip,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import React, { useState } from "react";
-import { Modal } from "react-bootstrap";
 import {
   createNewTemplates,
   getIsAvailableTemplates,
 } from "../API/AxiosInterceptor";
 import CircularBackdrop from "../Backdrop/Backdrop";
+import { style } from "../styles/MuiModalStyle";
+
+const theme = createTheme({
+  components: {
+    MuiModal: {
+      styleOverrides: {
+        backdrop: {
+          pointerEvents: "none",
+        },
+      },
+    },
+  },
+});
 
 const NewTamplateModal = (props) => {
   const [title, setTitle] = useState("");
@@ -187,207 +207,217 @@ const NewTamplateModal = (props) => {
   };
 
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
-      centered
-      backdrop="static"
-    >
-      <Modal.Header
-        className="NewTemplateHeader"
-        style={{ background: "black" }}
-      >
-        <Modal.Title style={{ color: "white" }}>
-          Create New Template
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body className="NewTemplateBody">
-        <div>
-          <div className="row no-gutters justify-content-center align-items-center">
-            <div className="col-12">
-              <div className="form-group w-100">
-                <label>
-                  Title<span style={{ color: "#F64D04" }}>&#42;</span>
-                </label>
-                <div className="filter-widget">
-                  <div style={{ position: "relative" }}>
-                    <input
-                      name="title"
-                      type="text"
-                      placeholder="Enter title of the property"
-                      required
-                      value={title}
-                      style={{ paddingRight: "20px" }}
-                      className="newNftProps"
-                      onBlur={(e) => {
-                        setAvailable();
-                        handleAvailibility(e);
-                      }}
-                      onChange={(e) => {
-                        console.log("title", e.target.value);
-                        setTitle(e.target.value);
-                      }}
-                    />
-                    {getIcon()}
-                  </div>
-                </div>
-              </div>
+    <ThemeProvider theme={theme}>
+      <Modal open={props.show} onClose={props.handleClose}>
+        <Box sx={style.box}>
+          {/* HEADER CONTAINER */}
+          <Container sx={style.containerHeader}>
+            <div>
+              <Typography sx={style.text}>Create New Template</Typography>
             </div>
-            <div className="row no-gutters justify-content-md-between align-items-center">
-              <div className="w-100 my-3">
-                {properties.map((property, index) => {
-                  return (
-                    <div key={index}>
-                      <div className="row no-gutters justify-content-md-between align-items-center">
-                        <div className="col-12 col-md-5">
-                          <div className="form-group w-100">
-                            <label>
-                              Key<span style={{ color: "#F64D04" }}>&#42;</span>
-                            </label>
-                            <div className="filter-widget">
-                              <input
-                                name="key"
-                                type="text"
-                                placeholder="Enter key of the property"
-                                required
-                                value={property.key}
-                                className="newNftProps"
-                                onChange={(e) => handlePropertyChange(index, e)}
-                              />
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-5">
-                          <div className="form-group w-100">
-                            <label>
-                              Type
-                              <span style={{ color: "#F64D04" }}>&#42;</span>
-                            </label>
-                            <div className="w-100 position-relative mb-4">
-                              <select
-                                name="type"
-                                id="valueType"
-                                className="templatesSelect"
-                                placeholder="Select a Type"
-                                onChange={(e) => handlePropertyChange(index, e)}
-                              >
-                                <option value="boolean" defaultValue>
-                                  Boolean
-                                </option>
-                                <option value="string">String</option>
-                                <option value="number">Number</option>
-                              </select>
-                            </div>
-                          </div>
-                        </div>
-                        <div className="col-12 col-md-auto text-right">
-                          <div className="form-group">
-                            <label>Action</label>
-                            <div className="filter-widget">
-                              <Tooltip
-                                placement="bottom"
-                                title={
-                                  <Typography fontSize={16}>
-                                    Remove a property
-                                  </Typography>
-                                }
-                              >
-                                <button
-                                  className="btn btn-submit btn-lg propsActionBtn"
-                                  onClick={(e) =>
-                                    handleRemoveProperty(e, index)
-                                  }
-                                >
-                                  -
-                                </button>
-                              </Tooltip>
-                            </div>
-                          </div>
-                        </div>
+          </Container>
+
+          {/* BODY */}
+          <Container sx={style.containerBody}>
+            <div>
+              <div className="row no-gutters justify-content-center align-items-center">
+                <div className="col-12">
+                  <div className="form-group w-100">
+                    <label>
+                      Title<span style={{ color: "#F64D04" }}>&#42;</span>
+                    </label>
+                    <div className="filter-widget">
+                      <div style={{ position: "relative" }}>
+                        <input
+                          name="title"
+                          type="text"
+                          placeholder="Enter title of the property"
+                          required
+                          value={title}
+                          style={{ paddingRight: "20px" }}
+                          className="newNftProps"
+                          onBlur={(e) => {
+                            setAvailable();
+                            handleAvailibility(e);
+                          }}
+                          onChange={(e) => {
+                            console.log("title", e.target.value);
+                            setTitle(e.target.value);
+                          }}
+                        />
+                        {getIcon()}
                       </div>
                     </div>
-                  );
-                })}
-                <div className="row no-gutters align-items-center justify-content-end">
-                  <div className="col-auto">
-                    <Tooltip
-                      placement="right"
-                      title={
-                        <Typography fontSize={16}>Add property</Typography>
-                      }
-                    >
-                      <button
-                        className="btn btn-submit btn-lg propsActionBtn mb-4"
-                        onClick={(e) => handleAddProperty(e)}
-                      >
-                        +
-                      </button>
-                    </Tooltip>
+                  </div>
+                </div>
+                <div className="row no-gutters justify-content-md-between align-items-center">
+                  <div className="w-100 my-3">
+                    {properties.map((property, index) => {
+                      return (
+                        <div key={index}>
+                          <div className="row no-gutters justify-content-md-between align-items-center">
+                            <div className="col-12 col-md-5">
+                              <div className="form-group w-100">
+                                <label>
+                                  Key
+                                  <span style={{ color: "#F64D04" }}>
+                                    &#42;
+                                  </span>
+                                </label>
+                                <div className="filter-widget">
+                                  <input
+                                    name="key"
+                                    type="text"
+                                    placeholder="Enter key of the property"
+                                    required
+                                    value={property.key}
+                                    className="newNftProps"
+                                    onChange={(e) =>
+                                      handlePropertyChange(index, e)
+                                    }
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-5">
+                              <div className="form-group w-100">
+                                <label>
+                                  Type
+                                  <span style={{ color: "#F64D04" }}>
+                                    &#42;
+                                  </span>
+                                </label>
+                                <div className="w-100 position-relative mb-4">
+                                  <select
+                                    name="type"
+                                    id="valueType"
+                                    className="templatesSelect"
+                                    placeholder="Select a Type"
+                                    onChange={(e) =>
+                                      handlePropertyChange(index, e)
+                                    }
+                                  >
+                                    <option value="boolean" defaultValue>
+                                      Boolean
+                                    </option>
+                                    <option value="string">String</option>
+                                    <option value="number">Number</option>
+                                  </select>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="col-12 col-md-auto text-right">
+                              <div className="form-group">
+                                <label>Action</label>
+                                <div className="filter-widget">
+                                  <Tooltip
+                                    placement="bottom"
+                                    title={
+                                      <Typography fontSize={16}>
+                                        Remove a property
+                                      </Typography>
+                                    }
+                                  >
+                                    <button
+                                      className="btn btn-submit btn-lg propsActionBtn"
+                                      onClick={(e) =>
+                                        handleRemoveProperty(e, index)
+                                      }
+                                    >
+                                      -
+                                    </button>
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                    <div className="row no-gutters align-items-center justify-content-end">
+                      <div className="col-auto">
+                        <Tooltip
+                          placement="right"
+                          title={
+                            <Typography fontSize={16}>Add property</Typography>
+                          }
+                        >
+                          <button
+                            className="btn btn-submit btn-lg propsActionBtn mb-4"
+                            onClick={(e) => handleAddProperty(e)}
+                          >
+                            +
+                          </button>
+                        </Tooltip>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-        <div className="row no-gutters w-100 mt-3 mt-sm-4 mb-2 mb-sm-3 align-items-center justify-content-center">
-          <div className="col-12 col-sm-7 pr-sm-1 align-self-sm-end text-center text-sm-left my-2 my-sm-0">
-            <div className="">
-              <input
-                id="makeDefault"
-                name="make default"
-                type="checkbox"
-                className="mr-2"
-                style={{ cursor: "pointer", accentColor: "#F64D04" }}
-                onChange={(e) => setDefault(!defaultt)}
-              />
-              <label htmlFor="makeDefault mb-0">Save as Default Template</label>
+            <div className="row no-gutters w-100 mt-3 mt-sm-4 mb-2 mb-sm-3 align-items-center justify-content-center">
+              <div className="col-12 col-sm-7 pr-sm-1 align-self-sm-end text-center text-sm-left my-2 my-sm-0">
+                <div className="">
+                  <input
+                    id="makeDefault"
+                    name="make default"
+                    type="checkbox"
+                    className="mr-2"
+                    style={{ cursor: "pointer", accentColor: "#F64D04" }}
+                    onChange={(e) => setDefault(!defaultt)}
+                  />
+                  <label htmlFor="makeDefault mb-0">
+                    Save as Default Template
+                  </label>
+                </div>
+              </div>
+              <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
+                {available ? (
+                  <Tooltip
+                    placement="bottom"
+                    title={
+                      <Typography fontSize={16}>
+                        Template title already taken
+                      </Typography>
+                    }
+                  >
+                    <button
+                      className="newTemplateBtn"
+                      disabled
+                      onClick={(e) => handleSaveTemplate(e)}
+                    >
+                      Save Template
+                    </button>
+                  </Tooltip>
+                ) : (
+                  <button
+                    className="newTemplateBtn"
+                    onClick={(e) => handleSaveTemplate(e)}
+                  >
+                    Save Template
+                  </button>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="col-12 col-sm-5 pl-sm-1 text-center text-sm-right">
-            {available ? (
-              <Tooltip
-                placement="bottom"
-                title={
-                  <Typography fontSize={16}>
-                    Template title already taken
-                  </Typography>
-                }
-              >
-                <button
-                  className="newTemplateBtn"
-                  disabled
-                  onClick={(e) => handleSaveTemplate(e)}
+            <div className="mt-2 row no-gutters align-items-center">
+              <div className="col-12">
+                <h6
+                  style={{
+                    fontFamily: "inter",
+                    fontStyle: "italic",
+                    fontSize: "10px",
+                    color: "#F64D04",
+                  }}
                 >
-                  Save Template
-                </button>
-              </Tooltip>
-            ) : (
-              <button
-                className="newTemplateBtn"
-                onClick={(e) => handleSaveTemplate(e)}
-              >
-                Save Template
-              </button>
-            )}
-          </div>
-        </div>
-        <div className="mt-2 row no-gutters align-items-center">
-          <div className="col-12">
-            <h6
-              style={{
-                fontFamily: "inter",
-                fontStyle: "italic",
-                fontSize: "10px",
-                color: "#F64D04",
-              }}
-            >
-              Press Esc to exit without saving
-            </h6>
-          </div>
-        </div>
-        <CircularBackdrop open={open} />
-      </Modal.Body>
-    </Modal>
+                  Press Esc to exit without saving
+                </h6>
+              </div>
+            </div>
+            <CircularBackdrop open={open} />
+          </Container>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 };
 

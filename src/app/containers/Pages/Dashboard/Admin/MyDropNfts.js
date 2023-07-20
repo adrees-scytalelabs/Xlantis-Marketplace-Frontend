@@ -1,12 +1,12 @@
 import { Grid, TablePagination } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link, useLocation, useResolvedPath } from "react-router-dom";
 import { getNFTsFromDropPaginated } from "../../../../components/API/AxiosInterceptor";
 import MyDropNFTsCard from "../../../../components/Cards/MyDropNFTsCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
 import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 
 const styles = {
   root: {
@@ -192,18 +192,17 @@ function MyDropNFTs(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body px-0">
         <form>
           <div className="form-group">
             {open ? (
               <div align="center" className="text-center">
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#fbfeff" }}
-                ></Spinner>
+                <WhiteSpinner />
                 <span style={{ color: "#fbfeff" }} className="sr-only">
                   Loading...
                 </span>

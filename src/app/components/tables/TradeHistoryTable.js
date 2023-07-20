@@ -1,7 +1,35 @@
-import { Tooltip, Typography } from "@mui/material";
+import {
+  Tooltip,
+  Typography,
+  Table,
+  TableCell,
+  TableHead,
+  TableRow,
+  TableContainer,
+  Paper,
+} from "@mui/material";
 import React from "react";
-import { Table } from "react-bootstrap";
 
+const styles = {
+  noMaxWidth: {
+    maxWidth: "none",
+  },
+  tableHeader: {
+    "& th": {
+      fontSize: "1.25rem",
+      fontWeight: "bold",
+      padding: "14px",
+      color: "white",
+      backgroundColor: "red",
+    },
+  },
+  text: {
+    color: "#fff",
+    fontSize: "1rem",
+    fontFamily: "inter",
+    paddingTop: "10px",
+  },
+};
 const TradeHistoryTable = ({ tradeHistory }) => {
   const formatDate = (date) => {
     const backendDate = new Date(date);
@@ -28,28 +56,28 @@ const TradeHistoryTable = ({ tradeHistory }) => {
   };
 
   return (
-    <Table striped bordered hover responsive>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Unit Price</th>
-          <th>Quantity</th>
-          <th>From</th>
-          <th>To</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody>
+    <TableContainer component={Paper} sx={{ backgroundColor: "black" }}>
+      <Table striped bordered hover>
+        <TableHead sx={styles.tableHeader}>
+          <TableRow>
+            <TableCell>#</TableCell>
+            <TableCell>Unit Price</TableCell>
+            <TableCell>Quantity</TableCell>
+            <TableCell>From</TableCell>
+            <TableCell>To</TableCell>
+            <TableCell>Date</TableCell>
+          </TableRow>
+        </TableHead>
         {tradeHistory?.map((i, index) => (
-          <tr key={index}>
-            <td>{index + 1}</td>
-            <td>
+          <TableRow key={index} style={styles.text}>
+            <TableCell>{index + 1}</TableCell>
+            <TableCell>
               <span className="ml-3">{i.unitPrice}</span>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
               <span className="ml-3">{i.supply}</span>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
               <Tooltip
                 title={
                   <Typography fontSize={16}>
@@ -62,8 +90,8 @@ const TradeHistoryTable = ({ tradeHistory }) => {
                   ...
                 </span>
               </Tooltip>
-            </td>
-            <td>
+            </TableCell>
+            <TableCell>
               {" "}
               <Tooltip
                 title={
@@ -77,12 +105,12 @@ const TradeHistoryTable = ({ tradeHistory }) => {
                   ...
                 </span>
               </Tooltip>
-            </td>
-            <td>{formatDate(i.soldAt)}</td>
-          </tr>
+            </TableCell>
+            <TableCell>{formatDate(i.soldAt)}</TableCell>
+          </TableRow>
         ))}
-      </tbody>
-    </Table>
+      </Table>
+    </TableContainer>
   );
 };
 

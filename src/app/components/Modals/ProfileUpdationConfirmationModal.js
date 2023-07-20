@@ -1,62 +1,66 @@
 import React from "react";
-import { Modal } from "react-bootstrap";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 
 const ProfileUpdationConfirmationModal = (props) => {
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
-      centered
-      backdrop="static"
+    <Dialog
+      open={props.show}
+      onClose={props.handleClose}
+      maxWidth="sm"
+      fullWidth
     >
-      <Modal.Header closeButton className="custom-header">
-        Confirmation
-      </Modal.Header>
-      <Modal.Body>
-        <div
-          style={{
-            color: "#000",
-            fontWeight: "bold",
-            fontSize: "1.175rem",
-            margin: "1rem 0",
-          }}
-        >
+      <DialogTitle className="custom-header">Confirmation</DialogTitle>
+      <DialogContent
+        sx={{
+          border: "1px solid white",
+          borderBottom: "none",
+          color: "white",
+          fontWeight: "bold",
+          fontSize: "1.175rem",
+          background: "black",
+        }}
+      >
+        <label style={{ marginTop: "10px" }}>
           Are you sure you want to update the data?
-        </div>
-      </Modal.Body>
-      <Modal.Footer>
+        </label>
+      </DialogContent>
+      <DialogActions
+        sx={{
+          background: "black",
+          border: "1px solid white",
+          borderTop: "none",
+        }}
+      >
         <button
-          className="btn"
-          type="button"
+          className="btn propsActionBtn"
+          onClick={() => props.handleClose()}
           style={{
-            margin: "10px",
             marginRight: 0,
-            backgroundColor: "#000",
-            border: "1px solid #fff",
             borderRadius: 0,
             padding: 10,
           }}
-          onClick={() => props.handleClose()}
         >
           Cancel
         </button>
         <button
-          className="btn"
-          type="button"
+          className="btn propsActionBtn"
+          onClick={() => props.updateData()}
           style={{
-            margin: "10px",
             marginRight: 0,
-            backgroundColor: "#000",
-            border: "1px solid #fff",
             borderRadius: 0,
             padding: 10,
           }}
-          onClick={() => props.updateData()}
         >
           Update
         </button>
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

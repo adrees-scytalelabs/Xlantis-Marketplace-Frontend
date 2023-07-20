@@ -1,39 +1,56 @@
 import React from "react";
-import { Modal, Spinner } from "react-bootstrap";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
+import CircularProgress from "@mui/material/CircularProgress";
+import Button from "@mui/material/Button";
 
 const StripeAccountCreationModal = (props) => {
   const navigate = useNavigate();
+  const handleClose = (event, reason) => {
+    if (reason !== "backdropClick") {
+      props.handleClose();
+    }
+  };
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
+    <Dialog
+      open={props.show}
+      onClose={handleClose}
+      BackdropProps={{
+        transitionDuration: 0, // Disable any animation for static dialog
+      }}
+      fullWidth
+      maxWidth="sm"
       centered
-      backdrop="static"
     >
-      <Modal.Header>
-        <Modal.Title>Create your Account!</Modal.Title>
-      </Modal.Header>
-      <Modal.Body
+      <DialogTitle
+        className="text-center"
+        sx={{ background: "black", color: "white", border: "1px solid white" }}
+      >
+        Create your Account!
+      </DialogTitle>
+      <DialogContent
         style={{
           border: "1px solid white",
           borderTop: "none",
           borderBottom: "none",
           backgroundColor: "#000",
           justifyContent: "center",
+          color: "white",
         }}
       >
-        <div>
+        <div className="mt-3">
           <p>You don't have a stripe account yet.</p>
           <p>Create your account to access additional features.</p>
           {/* Provide options for the user to sign up or take any other desired action */}
         </div>
-      </Modal.Body>
-      <Modal.Footer
-        style={{
-          backgroundColor: "#000",
-          border: "1px solid white",
-        }}
+      </DialogContent>
+      <DialogActions
+        style={{ backgroundColor: "#000", border: "1px solid white" }}
       >
         <button
           className="newTemplateBtn mb-3"
@@ -57,11 +74,7 @@ const StripeAccountCreationModal = (props) => {
             }}
             className="newTemplateBtn mb-3"
           >
-            <Spinner
-              animation="border"
-              role="status"
-              style={{ color: "#fbfeff" }}
-            />
+            <CircularProgress size={28} sx={{ color: "#FFFFFF" }} />
           </button>
         ) : (
           <button
@@ -72,8 +85,8 @@ const StripeAccountCreationModal = (props) => {
             Create Account
           </button>
         )}
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 };
 

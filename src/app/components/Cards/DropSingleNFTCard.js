@@ -1,12 +1,12 @@
-import { Card, CardContent, Typography } from "@mui/material";
-import React, { useEffect } from "react";
-import { Col, Row } from "react-bootstrap";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
+import React from "react";
+
 const DropSingleNFTCard = (props) => {
   return (
     <Card sx={{ backgroundColor: "#000" }}>
       <CardContent>
-        <Row>
-          <Col>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -14,13 +14,21 @@ const DropSingleNFTCard = (props) => {
             >
               <strong>NFT Title </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail.title}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -28,13 +36,21 @@ const DropSingleNFTCard = (props) => {
             >
               <strong>NFT Description </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail.description}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -42,13 +58,21 @@ const DropSingleNFTCard = (props) => {
             >
               <strong>Total Supply </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail?.currentOrderListingId?.totalSupplyOnSale}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -56,13 +80,21 @@ const DropSingleNFTCard = (props) => {
             >
               <strong>Available Supply </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail?.currentOrderListingId?.supply}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -70,11 +102,19 @@ const DropSingleNFTCard = (props) => {
             >
               <strong>Supply Sold </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail?.currentOrderListingId?.supplySold}
-          </Col>
-        </Row>
+          </Grid>
+        </Grid>
       </CardContent>
     </Card>
   );

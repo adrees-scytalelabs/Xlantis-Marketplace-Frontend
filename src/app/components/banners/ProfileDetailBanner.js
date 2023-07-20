@@ -1,13 +1,14 @@
-import EditIcon from '@mui/icons-material/Edit';
-import React from 'react';
-import { Spinner } from "react-bootstrap";
+import EditIcon from "@mui/icons-material/Edit";
+import CircularProgress from "@mui/material/CircularProgress";
+import React from "react";
+
 function ProfileDetailBanner({
   bannerImage,
   isUploadingBannerIPFS,
   onChangeBannerFile,
   profileImage,
   isUploadingIPFS,
-  onChangeFile
+  onChangeFile,
 }) {
   return (
     <div>
@@ -22,11 +23,7 @@ function ProfileDetailBanner({
                 className="text-center"
                 style={{ position: "relative", top: "150px", right: "10px" }}
               >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
+                <CircularProgress sx={{ color: "#FFFFFF" }} />
               </div>
             ) : (
               <label htmlFor="banner-file-input" className="banner-input-label">
@@ -54,11 +51,7 @@ function ProfileDetailBanner({
                 className="text-center"
                 style={{ position: "relative", top: "70px" }}
               >
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#FFFFFF" }}
-                ></Spinner>
+                <CircularProgress sx={{ color: "#FFFFFF" }} />
               </div>
             ) : (
               <label
@@ -80,7 +73,7 @@ function ProfileDetailBanner({
         </div>
       </div>
     </div>
-  )
+  );
 }
 
-export default ProfileDetailBanner
+export default ProfileDetailBanner;

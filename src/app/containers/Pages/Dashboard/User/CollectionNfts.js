@@ -1,9 +1,9 @@
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getCollections } from '../../../../components/API/AxiosInterceptor';
 import NFTCard from '../../../../components/Cards/NFTCard';
-import { Grid } from "@mui/material";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 function CollectionNfts(props) {
     const { collectionId } = useParams();
     const [tokenList, setTokenList] = useState([]);
@@ -70,13 +70,7 @@ function CollectionNfts(props) {
 
                         {open ? (
                             <div align="center" className="text-center">
-                                <Spinner
-                                    animation="border"
-                                    role="status"
-                                    style={{ color: "#ff0000" }}
-                                >
-
-                                </Spinner>
+                                <WhiteSpinner />
                                 <span style={{ color: "#ff0000" }} className="sr-only">Loading...</span>
                             </div>
                         ) : (

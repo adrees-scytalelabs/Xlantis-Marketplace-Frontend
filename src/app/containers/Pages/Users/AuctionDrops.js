@@ -1,6 +1,5 @@
-import { Grid, TablePagination } from '@mui/material';
+import { Grid, TablePagination } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "../../../assets/css/bootstrap.min.css";
 import "../../../assets/css/style.css";
@@ -10,6 +9,7 @@ import OnAuctionDropCard from "../../../components/Cards/OnAuctionDropCard";
 import Footer from "../../../components/Footers/Footer";
 import HeaderHome from "../../../components/Headers/Header";
 import MessageCard from "../../../components/MessageCards/MessageCard";
+import WhiteSpinner from "../../../components/Spinners/WhiteSpinner";
 
 const styles = {
   root: {
@@ -19,8 +19,7 @@ const styles = {
     height: 0,
     paddingTop: "100%",
   },
-
-}
+};
 
 function AuctionDrops() {
   const [tokenList, setTokenList] = useState([]);
@@ -80,11 +79,7 @@ function AuctionDrops() {
             >
               {open ? (
                 <div align="center" className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#ff0000" }}
-                  />
+                  <WhiteSpinner />
                   <span style={{ color: "#ff0000" }} className="sr-only">
                     Loading...
                   </span>

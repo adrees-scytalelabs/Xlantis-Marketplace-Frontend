@@ -1,14 +1,10 @@
+import CircularProgress from "@mui/material/CircularProgress";
 import React from "react";
-import { Spinner } from "react-bootstrap";
 
 const WhiteSpinner = () => {
   return (
     <div align="center" className="text-center">
-      <Spinner
-        animation="border"
-        role="status"
-        style={{ color: "#fff" }}
-      ></Spinner>
+      <CircularProgress sx={{ color: "#FFFFFF" }} size={30} />
       <span className="sr-only spinnerWhite">Loading...</span>
     </div>
   );

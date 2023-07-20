@@ -1,73 +1,86 @@
-
+import HighlightOffIcon from "@mui/icons-material/HighlightOff";
+import {
+  Box,
+  Container,
+  IconButton,
+  Modal,
+  ThemeProvider,
+  Typography,
+  createTheme,
+} from "@mui/material";
 import React from "react";
-import { Col, Modal, Row } from "react-bootstrap";
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import { style } from "../styles/MuiModalStyle";
+import CloseIcon from "@mui/icons-material/Close";
+
+const theme = createTheme({
+  components: {
+    MuiModal: {
+      styleOverrides: {
+        backdrop: {
+          pointerEvents: "none",
+        },
+      },
+    },
+  },
+});
+
 function DeleteModal(props) {
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
-      style={{}}
-      centered
-      backdrop="static"
-    >
-      <Modal.Header
-        closeButton
-        style={{
-          backgroundColor: "white",
-        }}
-      >
-        <Modal.Title style={{ color: "black" }}>Delete Template</Modal.Title>
-      </Modal.Header>
-      <Modal.Body
-        style={{
-          border: "1px solid white",
-          borderTop: "none",
-          borderBottom: "none",
-          backgroundColor: "#000",
-          justifyContent: "center",
-        }}
-      >
-        <h3 style={{ textAlign: "center" }}>
-          {" "}
-          <HighlightOffIcon
-            fontSize="large"
-            style={{ color: "red", fontSize: '4.7rem' }}
-            className="mb-3"
-          ></HighlightOffIcon>
-          <br></br>
-          Are You Sure?{" "}
-        </h3>
-        <Row className="mt-3">
-          <Col>
-            Do you really want to delete this template. You cannot undo this
-            action.
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer
-        style={{
-          backgroundColor: "#000",
-          border: "1px solid white",
-          borderTop: "none",
-        }}
-      >
-        <button
-          className="newTemplateBtn mb-3"
-          onClick={props.handleClose}
-          style={{ backgroundColor: "gray" }}
-        >
-          Close
-        </button>
-        <button
-          className="newTemplateBtn mb-3"
-          onClick={props.handleDelete}
-          style={{ backgroundColor: "red" }}
-        >
-          Delete
-        </button>
-      </Modal.Footer>
-    </Modal>
+    <ThemeProvider theme={theme}>
+      <Modal open={props.show} onClose={props.handleClose}>
+        <Box sx={style.box}>
+          {/* HEADER CONTAINER */}
+          <Container sx={style.containerHeader}>
+            <div>
+              <Typography sx={style.text}>Delete Template</Typography>
+            </div>
+            <div>
+              <IconButton sx={{ color: "white" }}>
+                <CloseIcon onClick={props.handleClose} />
+              </IconButton>
+            </div>
+          </Container>
+
+          {/* BODY */}
+          <Container sx={style.containerBody}>
+            <h3 style={{ textAlign: "center" }}>
+              {" "}
+              <HighlightOffIcon
+                fontSize="large"
+                style={{ color: "red", fontSize: "4.7rem" }}
+                className="mb-3"
+              ></HighlightOffIcon>
+              <br></br>
+              Are You Sure?{" "}
+            </h3>
+            <div className="mt-3">
+              <div>
+                Do you really want to delete this template. You cannot undo this
+                action.
+              </div>
+            </div>
+          </Container>
+
+          {/* FOOTER CONTAINER */}
+          <Container sx={style.containerFooter}>
+            <button
+              className="newTemplateBtn mb-3"
+              onClick={props.handleClose}
+              style={{ backgroundColor: "gray" }}
+            >
+              Close
+            </button>
+            <button
+              className="newTemplateBtn mb-3"
+              onClick={props.handleDelete}
+              style={{ backgroundColor: "red" }}
+            >
+              Delete
+            </button>
+          </Container>
+        </Box>
+      </Modal>
+    </ThemeProvider>
   );
 }
 

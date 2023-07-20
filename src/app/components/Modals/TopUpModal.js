@@ -1,6 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { Col, Modal, Row } from "react-bootstrap";
-import { Typography } from "@mui/material";
+import React, { useState } from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Typography,
+  Button,
+  TextField,
+} from "@mui/material";
 
 function TopUpModal(props) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -14,32 +21,23 @@ function TopUpModal(props) {
     props.topUp();
     props.handleClose();
   };
-  // useEffect(()=>{
-  //   // props.setAmount(Math.abs(props.amount - props.required).toFixed(4));
-  // },[props])
+
+
   return (
-    <Modal
-      show={props.show}
-      onHide={props.handleClose}
-      centered
-      backdrop="static"
-    >
-      <Modal.Header
-        closeButton
+    <Dialog open={props.show} onClose={handleClose} maxWidth="sm" fullWidth>
+      <DialogTitle
         className="text-center"
         style={{
           backgroundColor: "#000",
+          color:'white',
+          border:'1px solid white'
         }}
       >
-        <Typography
-          variant="h6"
-          className="text-center"
-          sx={{ marginLeft: "42%" }}
-        >
+        <Typography variant="h6" className="text-center" >
           Top Up
         </Typography>
-      </Modal.Header>
-      <Modal.Body
+      </DialogTitle>
+      <DialogContent
         style={{
           border: "1px solid white",
           borderTop: "none",
@@ -48,30 +46,28 @@ function TopUpModal(props) {
           justifyContent: "center",
         }}
       >
-        <Row className="mt-3">
-          <Col>
+        <div className="mt-3">
+          <div>
             <label className="nftPrice">Current Balance : </label>
-            <label className="ml-2"> ${props.amount.toFixed(3)}</label>
-          </Col>
-        </Row>
-        <Row className="mt-3">
-          <Col>
+            <label className="ml-2" style={{color:'white'}}> ${props.amount.toFixed(3)}</label>
+          </div>
+        </div>
+        <div className="mt-3">
+          <div>
             <label className="nftPrice">Required Balance : </label>
-            <label className="ml-2"> ${props.required.toFixed(4)}</label>
-          </Col>
-        </Row>
-        <Row className="mt-3 mb-2">
-          <Col>
+            <label className="ml-2" style={{color:'white'}}> ${props.required.toFixed(4)}</label>
+          </div>
+        </div>
+        <div className="mt-3 mb-2">
+          <div>
             <h1 className="nftPrice">Select your Top Up Amount</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </div>
+        </div>
+        <div>
+          <div>
             <div className="input-group form-group newNftWrapper">
-              <div class="input-group-prepend">
-                <span class="input-group-text bg-transparent text-white">
-                  $
-                </span>
+              <div className="input-group-prepend">
+                <span className="input-group-text bg-transparent text-white">$</span>
               </div>
               <input
                 type="number"
@@ -101,17 +97,17 @@ function TopUpModal(props) {
               />
               {error && <span style={{ color: "red" }}>{errorMessage}</span>}
             </div>
-          </Col>
-        </Row>
-      </Modal.Body>
-      <Modal.Footer
+          </div>
+        </div>
+      </DialogContent>
+      <DialogActions
         style={{
           backgroundColor: "#000",
           border: "1px solid white",
           borderTop: "none",
         }}
       >
-        <button
+         <button
           className="newTemplateBtn mb-3"
           onClick={handleClose}
           style={{ backgroundColor: "#000" }}
@@ -126,8 +122,8 @@ function TopUpModal(props) {
         >
           Proceed
         </button>
-      </Modal.Footer>
-    </Modal>
+      </DialogActions>
+    </Dialog>
   );
 }
 

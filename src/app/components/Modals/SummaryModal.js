@@ -1,16 +1,33 @@
+import Button from "@mui/material/Button";
+import { Box, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React from "react";
-import { Modal, Form, Button, Row, Col } from "react-bootstrap";
-import SelectNFTAndSaleType from "../Radio/SelectNFTAndSaleType";
-import DateTimePicker from "react-datetime-picker";
-import NFTMediaCard from "../Cards/AuctionNFTCards/NFTMediaCard";
+
+const styles = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
+};
 
 function SummaryModal({ show, handleClose }) {
   return (
-    <Modal show={show} onHide={handleClose} size="md" centered>
-      <Modal.Header closeButton className="custom-header" style={{backgroundColor:'black'}}>
-        <Modal.Title>Summary</Modal.Title>
-      </Modal.Header>
-      <Modal.Body
+    <Dialog
+      open={show}
+      onClose={handleClose}
+      size="md"
+      fullWidth
+      maxWidth="sm"
+      centered
+    >
+      <DialogTitle style={{ backgroundColor: "black" }}>Summary</DialogTitle>
+      <DialogContent
         style={{
           backgroundColor: "black",
           border: "1px solid white",
@@ -33,24 +50,16 @@ function SummaryModal({ show, handleClose }) {
           <span>Total Cost</span>
           <span>$10</span>
         </div>
-      </Modal.Body>
-      <Modal.Footer
-        style={{ backgroundColor: "black", border: "1px solid white" }}
-      >
-        <Button
-          style={{ backgroundColor: "transparent" }}
-          onClick={handleClose}
-        >
+      </DialogContent>
+      <DialogActions style={{ backgroundColor: "black", border: "1px solid white" }}>
+        <Box sx={styles.buttons} component={Button} onClick={handleClose}>
           Close
-        </Button>
-        <Button
-          style={{ backgroundColor: "transparent" }}
-          onClick={handleClose}
-        >
+        </Box>
+        <Box sx={styles.buttons} component={Button} onClick={handleClose}>
           Proceed
-        </Button>
-      </Modal.Footer>
-    </Modal>
+        </Box>
+      </DialogActions>
+    </Dialog>
   );
 }
 

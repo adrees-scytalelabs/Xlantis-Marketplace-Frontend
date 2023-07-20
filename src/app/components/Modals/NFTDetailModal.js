@@ -1,38 +1,65 @@
-import { Button } from "@mui/material";
-import React, { useEffect } from "react";
-import { Modal } from "react-bootstrap";
+import React from "react";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Button,
+} from "@mui/material";
 import "react-h5-audio-player/lib/styles.css";
 import NFTDetailModalCard from "../Cards/NFTDetailModalCard";
+import CloseIcon from "@mui/icons-material/Close";
 
 const NFTDetailModal = (props) => {
-  // useEffect(() => {
-  //   console.log("Props in nftDetail modal: ", props);
-  // }, [props]);
-
   return (
-    <Modal show={props.show} onHide={props.handleClose} size="lg" centered>
-      <Modal.Header closeButton>
-        <Modal.Title>NFT Details</Modal.Title>
-      </Modal.Header>
-      <Modal.Body style={{ background: "black", border: "1px solid white" }}>
+    <Dialog
+      open={props.show}
+      onClose={props.handleClose}
+      maxWidth="md"
+      fullWidth
+    >
+      <DialogTitle
+        style={{
+          color: "white",
+          borderBottom: "none",
+          display: "flex",
+          background: "black",
+          justifyContent: "space-between",
+          alignItems: "center",
+          border: "1px solid white",
+        }}
+      >
+        NFT Details
+        <Button
+          variant="contained"
+          sx={{
+            color: "white",
+            backgroundColor: "black",
+            border: "none",
+            "&:hover": {
+              backgroundColor: "black",
+            },
+          }}
+          onClick={props.handleClose}
+        >
+          <CloseIcon />
+        </Button>
+      </DialogTitle>
+      <DialogContent style={{ background: "black", border: "1px solid white" }}>
         <NFTDetailModalCard nftDetail={props?.nftDetail} />
-      </Modal.Body>
-      <Modal.Footer style={{ background: "black", border: "1px solid white" }}>
+      </DialogContent>
+      <DialogActions style={{ background: "black", border: "1px solid white" }}>
         <button
-          className="newTemplateBtn mb-3"
-          style={{ minWidth: "120px" }}
+          variant="contained"
+          className="newTemplateBtn"
           onClick={props?.handleClose}
+          style={{ minWidth: "120px" }}
         >
           Close
         </button>
-        {/* <Button variant="text" onClick={props?.handleClose}>
-          Close
-        </Button> */}
-        {/* <Button variant="text" onClick={props?.handleEdit}>
-          Edit Details
-        </Button> */}
-      </Modal.Footer>
-    </Modal>
+        {/* Add any additional buttons here */}
+      </DialogActions>
+    </Dialog>
   );
 };
 

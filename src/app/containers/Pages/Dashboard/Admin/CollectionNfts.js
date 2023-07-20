@@ -1,14 +1,30 @@
 import { Grid } from "@mui/material";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Button, Spinner } from "react-bootstrap";
 import { Link, useParams } from "react-router-dom";
 import { getNFTsFromSingleCollection } from "../../../../components/API/AxiosInterceptor";
 import NFTCard from "../../../../components/Cards/NFTCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
 import CollectionSaleModal from "../../../../components/Modals/CollectionSaleModal";
 import WorkInProgressModal from "../../../../components/Modals/WorkInProgressModal";
-import StripeAccountMessageCard from "../../../../components/MessageCards/StripeAccountMessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
+import Button from "@mui/material/Button";
+
+const styles = {
+  buttons: {
+    margin: "5px 0px 5px 7px",
+    backgroundColor: "#000",
+    border: "1px solid #F64D04",
+    color: "#fff",
+    padding: "10px",
+    fontFamily: "orbitron",
+    "&:hover": {
+      boxShadow: "0px 0px 20px 5px rgb(246 77 4 / 35%)",
+    },
+  },
+};
+
 function CollectionNfts(props) {
   const { collectionId } = useParams();
   const [tokenList, setTokenList] = useState([]);
@@ -107,7 +123,10 @@ function CollectionNfts(props) {
         </div>
       </div>
       {props.isStripeLogin ? null : (
-        <StripeAccountMessageCard getOnboardingLink={props.getOnboardingLink} setIsStripeLogin={props.setIsStripeLogin} />
+        <StripeAccountMessageCard
+          getOnboardingLink={props.getOnboardingLink}
+          setIsStripeLogin={props.setIsStripeLogin}
+        />
       )}
       <div className="card-body">
         {tokenList.length !== 0 ? (
@@ -115,6 +134,7 @@ function CollectionNfts(props) {
             <Button
               // onClick={handleCollectionSaleModalOpen} //temporarily commenting while backend is working on it
               onClick={handleOpenWorkProgressModal}
+              sx={styles.buttons}
               style={{
                 float: "right",
                 padding: "12px 10px",
@@ -130,11 +150,7 @@ function CollectionNfts(props) {
           <div className="form-group">
             {open ? (
               <div align="center" className="text-center">
-                <Spinner
-                  animation="border"
-                  role="status"
-                  style={{ color: "#ff0000" }}
-                ></Spinner>
+                <WhiteSpinner />
                 <span style={{ color: "#ff0000" }} className="sr-only">
                   Loading...
                 </span>

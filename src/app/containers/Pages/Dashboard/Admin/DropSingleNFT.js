@@ -2,7 +2,6 @@ import { createTheme, Paper, ThemeProvider } from "@mui/material";
 import transakSDK from "@transak/transak-sdk";
 import Cookies from "js-cookie";
 import React, { useEffect, useState } from "react";
-import { Col, Row } from "react-bootstrap";
 import "react-h5-audio-player/lib/styles.css";
 import { Link, useLocation } from "react-router-dom";
 import Web3 from "web3";
@@ -402,14 +401,14 @@ const DropSingleNFT = (props) => {
             </div>
             <div className="col-md-12 col-lg-8">
               <DropSingleNFTCard nftDetail={nftDetail} />
-              <Row style={{ marginTop: "5px" }}>
-                <Col>
+              <div style={{ marginTop: "5px" }}>
+                <div>
                   <PropertiesAccordian keys={keys} properties={properties} />
-                </Col>
-              </Row>
+                </div>
+              </div>
               {location.state.saleType === "auction" ? (
-                <Row style={{ marginTop: "5px" }}>
-                  <Col>
+                <div style={{ marginTop: "5px" }}>
+                  <div>
                     <AcceptBidAccordian
                       versionB={versionB}
                       bidDetail={bidDetail}
@@ -419,8 +418,8 @@ const DropSingleNFT = (props) => {
                       handleAcceptBid={handleAcceptBid}
                       handleOpenModal={handleOpenModal}
                     />
-                  </Col>
-                </Row>
+                  </div>
+                </div>
               ) : null}
             </div>
           </div>

@@ -1,12 +1,12 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { Card, CardContent, Grid, Typography } from "@mui/material";
 import React from "react";
-import { Col, Row } from "react-bootstrap";
+
 const AuctionNFTDetailCard = (props) => {
   return (
     <Card style={{ backgroundColor: "#000" }}>
       <CardContent>
-        <Row>
-          <Col>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               color="textSecondary"
@@ -15,13 +15,21 @@ const AuctionNFTDetailCard = (props) => {
             >
               <strong>NFT Title </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail.title}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               color="textSecondary"
@@ -30,13 +38,21 @@ const AuctionNFTDetailCard = (props) => {
             >
               <strong>NFT Description </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
             {props.nftDetail.description}
-          </Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -44,11 +60,21 @@ const AuctionNFTDetailCard = (props) => {
             >
               <strong>Total Supply </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>{props?.nftDetail?.currentOrderListingId?.totalSupplyOnSale}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
+            {props?.nftDetail?.currentOrderListingId?.totalSupplyOnSale}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
@@ -56,25 +82,45 @@ const AuctionNFTDetailCard = (props) => {
             >
               <strong>Available Supply </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>{props?.nftDetail?.currentOrderListingId?.supply}</Col>
-        </Row>
-        <Row>
-          <Col>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
+            {props?.nftDetail?.currentOrderListingId?.supply}
+          </Grid>
+        </Grid>
+        <Grid container spacing={1}>
+          <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
             <Typography
               variant="body1"
               component="p"
-            style={{ color: "#F64D04", fontFamily: "orbitron" }}
+              style={{ color: "#F64D04", fontFamily: "orbitron" }}
             >
               <strong>Supply Sold </strong>
             </Typography>
-          </Col>
-          <Col style={{ color: "white", fontFamily: "inter" }}>{props?.nftDetail?.currentOrderListingId?.supplySold}</Col>
-        </Row>
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={6}
+            lg={6}
+            xl={6}
+            style={{ color: "white", fontFamily: "inter" }}
+          >
+            {props?.nftDetail?.currentOrderListingId?.supplySold}
+          </Grid>
+        </Grid>
         {props.nftDetail.nftType === "1155" ? (
           <span>
-            <Row>
-              <Col>
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -82,13 +128,21 @@ const AuctionNFTDetailCard = (props) => {
                 >
                   <strong>Supply Type </strong>
                 </Typography>
-              </Col>
-              <Col style={{ color: "white", fontFamily: "inter" }}>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={6}
+                lg={6}
+                xl={6}
+                style={{ color: "white", fontFamily: "inter" }}
+              >
                 {props.nftDetail.supplyType}
-              </Col>
-            </Row>
-            <Row>
-              <Col>
+              </Grid>
+            </Grid>
+            <Grid container spacing={1}>
+              <Grid item xs={12} sm={6} md={6} lg={6} xl={6}>
                 <Typography
                   variant="body1"
                   component="p"
@@ -96,11 +150,19 @@ const AuctionNFTDetailCard = (props) => {
                 >
                   <strong>Token Supply </strong>
                 </Typography>
-              </Col>
-              <Col style={{ color: "white", fontFamily: "inter" }}>
+              </Grid>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={6}
+                lg={6}
+                xl={6}
+                style={{ color: "white", fontFamily: "inter" }}
+              >
                 {props.nftDetail.tokenSupply}
-              </Col>
-            </Row>
+              </Grid>
+            </Grid>
           </span>
         ) : null}
       </CardContent>

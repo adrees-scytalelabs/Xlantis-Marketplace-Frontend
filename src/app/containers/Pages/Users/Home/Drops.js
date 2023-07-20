@@ -1,11 +1,10 @@
-
-import { Grid } from '@mui/material';
+import { Grid } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import { Spinner } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import { getDropsPaginated } from "../../../../components/API/AxiosInterceptor";
 import OnAuctionDropCard from "../../../../components/Cards/OnAuctionDropCard";
 import MessageCard from "../../../../components/MessageCards/MessageCard";
+import WhiteSpinner from "../../../../components/Spinners/WhiteSpinner";
 function Drops() {
   const [tokenList, setTokenList] = useState([]);
   const [rowsPerPage] = useState(4);
@@ -49,11 +48,7 @@ function Drops() {
             <div className="form-group">
               {open ? (
                 <div align="center" className="text-center">
-                  <Spinner
-                    animation="border"
-                    role="status"
-                    style={{ color: "#ff0000" }}
-                  />
+                  <WhiteSpinner />
                   <span style={{ color: "#ff0000" }} className="sr-only">
                     Loading...
                   </span>
