@@ -25,7 +25,6 @@
     "react": "^18.2.0",
     "react-3d-viewer": "1.0.12",
     "react-app-rewired": "^2.2.1",
-    "react-bootstrap": "1.0.0",
     "react-corner-ribbon": "^0.0.5",
     "react-countdown": "2.3.1",
     "react-country-region-selector": "3.6.1",
